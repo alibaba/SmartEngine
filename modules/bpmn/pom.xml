@@ -9,7 +9,6 @@
 	</parent>
 
 	<artifactId>engine.modules.bpmn</artifactId>
-	<packaging>jar</packaging>
 	<name>Smart Engine Modules - BPMN</name>
 
 </project>

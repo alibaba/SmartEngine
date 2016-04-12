@@ -1,6 +1,6 @@
-package com.alibaba.smart.framework.engine.core.definition;
+package com.alibaba.smart.framework.engine.definition;
 
-import com.alibaba.smart.framework.engine.core.assembly.Base;
+import com.alibaba.smart.framework.engine.assembly.Base;
 
 import java.util.List;
 

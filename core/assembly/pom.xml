@@ -9,7 +9,6 @@
 	</parent>
 
 	<artifactId>engine.core.assembly</artifactId>
-	<packaging>jar</packaging>
 	<name>Smart Engine Core - Assembly</name>
 
 </project>

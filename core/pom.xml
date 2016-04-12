@@ -14,5 +14,7 @@
 
 	<modules>
 		<module>assembly</module>
+		<module>spi</module>
+		<module>runtime</module>
 	</modules>
 </project>
