@@ -28,6 +28,7 @@
 
 	<modules>
 		<module>core</module>
+		<module>modules</module>
 	</modules>
 
 	<dependencies>
@@ -50,6 +51,15 @@
 			<!-- ======================================== -->
 			<!-- 3nd Dependency -->
 			<!-- ======================================== -->
+
+			<!-- commons -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.4</version>
+			</dependency>
+
+			<!-- cglib -->
 			<dependency>
 				<groupId>cglib</groupId>
 				<artifactId>cglib-nodep</artifactId>

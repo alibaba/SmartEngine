@@ -11,4 +11,16 @@
 	<artifactId>engine.core.runtime</artifactId>
 	<name>Smart Engine Core - Runtime</name>
 
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>engine.core.spi</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+	</dependencies>
+
 </project>

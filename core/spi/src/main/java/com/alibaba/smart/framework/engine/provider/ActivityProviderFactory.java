@@ -5,7 +5,6 @@ import com.alibaba.smart.framework.engine.assembly.Activity;
 /**
  * Created by ettear on 16-4-11.
  */
-public interface ActivityProviderFactory {
-    ActivityProvider createActivityProvider(Activity activity);
-
+public interface ActivityProviderFactory<M extends Activity> extends ProviderFactory<M> {
+    ActivityProvider<M> createActivityProvider(Activity activity);
 }
