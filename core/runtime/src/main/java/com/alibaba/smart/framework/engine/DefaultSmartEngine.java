@@ -5,45 +5,82 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 import com.alibaba.smart.framework.engine.extensibility.impl.DefaultExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.InstanceManager;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * Default Smart Engine
  * Created by ettear on 16-4-12.
  */
-@Data
 public class DefaultSmartEngine implements SmartEngine {
 
-    @Getter(AccessLevel.PROTECTED)
-    @Setter(AccessLevel.NONE)
+    private final static String DEFAULT_MODULE="framework";
+
     private ExtensionPointRegistry extensionPointRegistry;
-    @Getter(AccessLevel.PROTECTED)
-    @Setter(AccessLevel.NONE)
-    private ClassLoader            classLoader;
+    private Map<String, ClassLoader> classLoaders = new ConcurrentHashMap<>();
 
     private Deployer        deployer;
     private InstanceManager instanceManager;
 
+    public DefaultSmartEngine() throws EngineException {
+        this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
+        ClassLoader classLoader = DefaultSmartEngine.class.getClassLoader();
+        this.install(DEFAULT_MODULE, classLoader);
+
+        this.deployer = this.extensionPointRegistry.getExtensionPoint(Deployer.class);
+        this.instanceManager = this.extensionPointRegistry.getExtensionPoint(InstanceManager.class);
+    }
+
     @Override
-    public void init(ClassLoader classLoader) throws EngineException{
-        ClassLoader frameworkClassLoader=DefaultSmartEngine.class.getClassLoader();
-        if (null == classLoader) {
-            classLoader = frameworkClassLoader;
+    public void install(String moduleName, ClassLoader classLoader) throws EngineException {
+        if (StringUtils.isBlank(moduleName)) {
+            moduleName = DEFAULT_MODULE;
         }
-        this.classLoader=classLoader;
-
-        ExtensionPointRegistry extensionPointRegistry=new DefaultExtensionPointRegistry();
-        try {
-            extensionPointRegistry.load(frameworkClassLoader);
-            if(classLoader != frameworkClassLoader){
-                extensionPointRegistry.load(classLoader);
+        if(!this.classLoaders.containsKey(moduleName)){
+            this.classLoaders.put(moduleName,classLoader);
+            try {
+                if (classLoader != DefaultSmartEngine.class.getClassLoader()) {
+                    this.extensionPointRegistry.load(moduleName,classLoader);
+                }
+            } catch (ExtensionPointLoadException loadException) {
+                throw new EngineException("Init engine failure!", loadException);
             }
-        }catch (ExtensionPointLoadException loadException){
-            throw new EngineException("Init engine failure!",loadException);
+
         }
+    }
 
+    @Override
+    public void start() {
+        this.extensionPointRegistry.start();
+    }
 
+    @Override
+    public void stop() {
+        this.extensionPointRegistry.stop();
+    }
+
+    @Override
+    public ExtensionPointRegistry getExtensionPointRegistry() {
+        return extensionPointRegistry;
+    }
+
+    @Override
+    public ClassLoader getClassLoader(String moduleName) {
+        if (StringUtils.isBlank(moduleName)) {
+            moduleName = DEFAULT_MODULE;
+        }
+        return this.classLoaders.get(moduleName);
+    }
+
+    @Override
+    public Deployer getDeployer() {
+        return deployer;
+    }
+
+    @Override
+    public InstanceManager getInstanceManager() {
+        return instanceManager;
     }
 }

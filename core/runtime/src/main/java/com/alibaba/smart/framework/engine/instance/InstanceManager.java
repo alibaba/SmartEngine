@@ -6,9 +6,10 @@ import com.alibaba.smart.framework.engine.invocation.Event;
  * Created by ettear on 16-4-12.
  */
 public interface InstanceManager {
-    Instance start(String definitionId,String version,Event startEvent);
+    Instance start(String processId,String version,Event startEvent);
 
-    Instance get(String instanceId);
+    void stop(String instanceId);
 
-    void end(String definitionId);
+    Instance load(String instanceId);
+
 }

@@ -8,6 +8,6 @@ import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPoint
  */
 public interface ClassLoaderExtensionPoint {
 
-    void load(ClassLoader classLoader) throws ExtensionPointLoadException;
+    void load(String moduleName,ClassLoader classLoader) throws ExtensionPointLoadException;
 
 }

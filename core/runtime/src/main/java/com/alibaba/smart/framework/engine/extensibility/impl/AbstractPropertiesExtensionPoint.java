@@ -31,7 +31,7 @@ public abstract class AbstractPropertiesExtensionPoint {
      * @param classLoader ClassLoader
      * @throws ExtensionPointLoadException
      */
-    public void load(ClassLoader classLoader) throws ExtensionPointLoadException {
+    public void load(String moduleName,ClassLoader classLoader) throws ExtensionPointLoadException {
         Enumeration<URL> extensionConfigFiles;
         try {
             extensionConfigFiles = classLoader.getResources(

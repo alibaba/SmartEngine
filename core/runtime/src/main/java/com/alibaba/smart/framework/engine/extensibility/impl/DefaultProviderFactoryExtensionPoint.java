@@ -40,7 +40,7 @@ public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExte
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> ProviderFactory<T> getProviderFactory(Class<T> modelType) {
+    public  ProviderFactory getProviderFactory(Class<?> modelType) {
         return this.providerFactories.get(modelType);
     }
 }
