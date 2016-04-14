@@ -1,11 +1,11 @@
-package com.alibaba.smart.framework.flow.model;
+package com.alibaba.smart.framework.process.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
 
-import com.alibaba.smart.framework.flow.model.bpmn.ProcessActivity;
+import com.alibaba.smart.framework.process.model.bpmn.ProcessActivity;
 
 @Data
 public class ProcessDefinition  {

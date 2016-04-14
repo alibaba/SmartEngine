@@ -1,8 +1,8 @@
-package com.alibaba.smart.framework.flow.model.bpmn.sequenceflow;
+package com.alibaba.smart.framework.process.model.bpmn.sequenceflow;
 
-import com.alibaba.smart.framework.flow.model.bpmn.BaseProcessNode;
-import com.alibaba.smart.framework.flow.model.bpmn.ProcessActivity;
-import com.alibaba.smart.framework.flow.model.bpmn.gateway.RestrictionExpression;
+import com.alibaba.smart.framework.process.model.bpmn.BaseProcessNode;
+import com.alibaba.smart.framework.process.model.bpmn.ProcessActivity;
+import com.alibaba.smart.framework.process.model.bpmn.gateway.RestrictionExpression;
 
 public class ProcessSequenceFlow extends BaseProcessNode {
 

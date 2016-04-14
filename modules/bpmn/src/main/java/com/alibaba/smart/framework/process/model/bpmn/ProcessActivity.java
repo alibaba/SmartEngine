@@ -1,9 +1,9 @@
-package com.alibaba.smart.framework.flow.model.bpmn;
+package com.alibaba.smart.framework.process.model.bpmn;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.smart.framework.flow.model.bpmn.sequenceflow.ProcessSequenceFlow;
+import com.alibaba.smart.framework.process.model.bpmn.sequenceflow.ProcessSequenceFlow;
 
 public class ProcessActivity extends BaseProcessNode {
 

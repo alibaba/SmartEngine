@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.flow.model.bpmn;
+package com.alibaba.smart.framework.process.model.bpmn;
 
 
 public class BaseProcessNode {
