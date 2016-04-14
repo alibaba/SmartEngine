@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.alibaba.smart.framework.process.model.bpmn.sequenceflow.ProcessSequenceFlow;
 
+/**
+ * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
+ */
 public class ProcessActivity extends BaseProcessNode {
 
     private List<ProcessSequenceFlow> incomingFlowList  = new ArrayList<ProcessSequenceFlow>(4);

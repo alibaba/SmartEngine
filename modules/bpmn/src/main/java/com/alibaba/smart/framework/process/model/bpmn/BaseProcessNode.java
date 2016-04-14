@@ -1,6 +1,8 @@
 package com.alibaba.smart.framework.process.model.bpmn;
 
-
+/**
+ * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
+ */
 public class BaseProcessNode {
 
     private Long   id;

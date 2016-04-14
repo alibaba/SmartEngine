@@ -7,8 +7,11 @@ import lombok.Data;
 
 import com.alibaba.smart.framework.process.model.bpmn.ProcessActivity;
 
+/**
+ * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
+ */
 @Data
-public class ProcessDefinition  {
+public class ProcessDefinition {
 
     private Long                  id;
     private String                name;

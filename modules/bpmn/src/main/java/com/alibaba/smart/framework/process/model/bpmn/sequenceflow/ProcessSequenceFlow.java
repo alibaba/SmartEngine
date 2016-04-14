@@ -4,6 +4,9 @@ import com.alibaba.smart.framework.process.model.bpmn.BaseProcessNode;
 import com.alibaba.smart.framework.process.model.bpmn.ProcessActivity;
 import com.alibaba.smart.framework.process.model.bpmn.gateway.RestrictionExpression;
 
+/**
+ * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
+ */
 public class ProcessSequenceFlow extends BaseProcessNode {
 
     private ProcessActivity       sourceActivity;
