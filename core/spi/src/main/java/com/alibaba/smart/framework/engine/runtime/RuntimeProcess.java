@@ -1,14 +1,14 @@
 package com.alibaba.smart.framework.engine.runtime;
 
-import com.alibaba.smart.framework.engine.assembly.Activity;
+import com.alibaba.smart.framework.engine.assembly.Process;
+
+import java.util.Map;
 
 /**
+ * RuntimeProcess
  * Created by ettear on 16-4-12.
  */
-public interface RuntimeProcess extends RuntimeActivity {
-    String getId();
+public interface RuntimeProcess extends RuntimeActivity<Process> {
 
-    String getName();
-
-    String getVersion();
+    Map<String, RuntimeActivity> getActivities();
 }

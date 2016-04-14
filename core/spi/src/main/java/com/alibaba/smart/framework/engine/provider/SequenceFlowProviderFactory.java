@@ -8,6 +8,6 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeSequenceFlow;
  */
 public interface SequenceFlowProviderFactory<M extends SequenceFlow> extends ProviderFactory<M> {
 
-    SequenceFlowProvider createSequenceFlowProvider(RuntimeSequenceFlow sequenceFlow);
+    SequenceFlowProvider<M> createSequenceFlowProvider(RuntimeSequenceFlow sequenceFlow);
 
 }

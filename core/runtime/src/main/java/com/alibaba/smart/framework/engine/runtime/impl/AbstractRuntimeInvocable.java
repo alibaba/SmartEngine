@@ -1,0 +1,63 @@
+package com.alibaba.smart.framework.engine.runtime.impl;
+
+import com.alibaba.smart.framework.engine.assembly.Invocable;
+import com.alibaba.smart.framework.engine.context.Context;
+import com.alibaba.smart.framework.engine.invocation.Invoker;
+import com.alibaba.smart.framework.engine.invocation.Message;
+import com.alibaba.smart.framework.engine.provider.InvocableProvider;
+import com.alibaba.smart.framework.engine.runtime.RuntimeInvocable;
+import lombok.Data;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * DefaultRuntimeInvocable
+ * Created by ettear on 16-4-14.
+ */
+@Data
+public abstract class AbstractRuntimeInvocable<M extends Invocable> implements RuntimeInvocable<M> {
+
+    private M                 model;
+    private InvocableProvider provider;
+    private Map<String, Invoker> invokers = new ConcurrentHashMap<>();
+
+    @Override
+    public String getId() {
+        return this.model.getId();
+    }
+
+    @Override
+    public Class<?> getModelType() {
+        return this.model.getClass();
+    }
+
+    @Override
+    public M getModel() {
+        return this.model;
+    }
+
+    @Override
+    public Message invoke(String event, Context context) {
+        return this.getInvoker(event).invoke(context);
+    }
+
+    @Override
+    public Message invokeAsync(String event, Context context) {
+        return this.getInvoker(event).invoke(context);
+    }
+
+    private Invoker getInvoker(String event) {
+        Invoker invoker = this.invokers.get(event);
+        if (null != invoker) {
+            return invoker;
+        }
+        invoker = this.provider.createInvoker(event);
+        if (null != invoker) {
+            this.invokers.put(event, invoker);
+        } else {
+            invoker = Invoker.DO_NOTHING_INVOKER;
+        }
+        return invoker;
+    }
+}
