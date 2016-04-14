@@ -7,9 +7,7 @@ import java.util.Map;
 /**
  * Created by ettear on 16-4-11.
  */
-public interface RuntimeActivity extends Activity, Invocable {
-
-    Class<?> getModelType();
+public interface RuntimeActivity<M extends Activity> extends RuntimeInvocable<M> {
 
     Map<String, RuntimeSequenceFlow> getIncomeSequenceFlows();
 

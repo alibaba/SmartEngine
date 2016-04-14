@@ -11,4 +11,11 @@
 	<artifactId>engine.modules.base</artifactId>
 	<name>Smart Engine Modules - Base</name>
 
+	<dependencies>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>engine.core.spi</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+	</dependencies>
 </project>

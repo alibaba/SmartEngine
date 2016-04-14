@@ -8,5 +8,5 @@ import lombok.Data;
  */
 @Data
 public abstract class AbstractBase implements Base{
-    boolean unresolved;
+    boolean unresolved=true;
 }

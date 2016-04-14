@@ -6,7 +6,7 @@ import com.alibaba.smart.framework.engine.deployment.Deployer;
 import com.alibaba.smart.framework.engine.deployment.impl.DefaultDeployer;
 import com.alibaba.smart.framework.engine.extensibility.ClassLoaderExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensibility.ProcessorExtensionPoint;
+import com.alibaba.smart.framework.engine.extensibility.AssemblyProcessorExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 import com.alibaba.smart.framework.engine.instance.InstanceManager;
@@ -25,7 +25,7 @@ public class DefaultExtensionPointRegistry implements ExtensionPointRegistry{
 
     public DefaultExtensionPointRegistry(SmartEngine engine){
         this.extensionPoints.put(SmartEngine.class, engine);
-        this.extensionPoints.put(ProcessorExtensionPoint.class, new DefaultProcessorExtensionPoint(this));
+        this.extensionPoints.put(AssemblyProcessorExtensionPoint.class, new DefaultAssemblyProcessorExtensionPoint(this));
         this.extensionPoints.put(ProviderFactoryExtensionPoint.class, new DefaultProviderFactoryExtensionPoint(this));
         this.extensionPoints.put(Deployer.class,new DefaultDeployer(this));
         this.extensionPoints.put(InstanceManager.class,new DefaultInstanceManager(this));
