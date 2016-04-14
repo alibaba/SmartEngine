@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.process.model.bpmn;
+package com.alibaba.smart.framework.process.model.bpmn.activity;
 
 import java.util.ArrayList;
 import java.util.List;

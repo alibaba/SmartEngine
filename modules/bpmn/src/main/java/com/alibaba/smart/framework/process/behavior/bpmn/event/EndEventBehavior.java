@@ -1,12 +1,15 @@
 package com.alibaba.smart.framework.process.behavior.bpmn.event;
 
+import com.alibaba.smart.framework.process.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.process.context.ProcessContext;
 
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
  */
-public interface EndEventBehavior {
+public class EndEventBehavior implements ActivityBehavior {
 
-    public void execute(ProcessContext execution);
+    public void execute(ProcessContext context){
+        
+    }
 
 }

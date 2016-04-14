@@ -1,19 +1,19 @@
-package com.alibaba.smart.framework.process.model.bpmn;
+package com.alibaba.smart.framework.process.model.bpmn.activity;
 
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
  */
 public class BaseProcessNode {
 
-    private Long   id;
+    private String   id;
 
     private String name;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -48,5 +48,6 @@ public class BaseProcessNode {
         } else if (!name.equals(other.name)) return false;
         return true;
     }
+ 
 
 }

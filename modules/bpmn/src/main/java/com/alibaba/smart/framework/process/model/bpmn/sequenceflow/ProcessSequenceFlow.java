@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.process.model.bpmn.sequenceflow;
 
-import com.alibaba.smart.framework.process.model.bpmn.BaseProcessNode;
-import com.alibaba.smart.framework.process.model.bpmn.ProcessActivity;
+import com.alibaba.smart.framework.process.model.bpmn.activity.BaseProcessNode;
+import com.alibaba.smart.framework.process.model.bpmn.activity.ProcessActivity;
 import com.alibaba.smart.framework.process.model.bpmn.gateway.RestrictionExpression;
 
 /**
