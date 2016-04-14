@@ -40,6 +40,26 @@ public class DefaultAssemblyProcessorExtensionPoint extends AbstractPropertiesEx
     }
 
     @Override
+    public void start() {
+        for (StAXArtifactProcessor stAXArtifactProcessor : artifactProcessors.values()) {
+            stAXArtifactProcessor.start();
+        }
+        for (StAXAttributeProcessor stAXAttributeProcessor : attributeProcessors.values()) {
+            stAXAttributeProcessor.start();
+        }
+    }
+
+    @Override
+    public void stop() {
+        for (StAXArtifactProcessor stAXArtifactProcessor : artifactProcessors.values()) {
+            stAXArtifactProcessor.stop();
+        }
+        for (StAXAttributeProcessor stAXAttributeProcessor : attributeProcessors.values()) {
+            stAXAttributeProcessor.stop();
+        }
+    }
+
+    @Override
     protected void initExtension(ClassLoader classLoader, String type, Object artifactProcessorObject)
             throws ExtensionPointLoadException {
         if (artifactProcessorObject instanceof StAXArtifactProcessor) {

@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.extensibility.impl;
 
+import com.alibaba.smart.framework.engine.extensibility.ClassLoaderExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 
@@ -14,7 +15,7 @@ import java.util.Properties;
  * 配置文件扩展点
  * Created by ettear on 16-4-12.
  */
-public abstract class AbstractPropertiesExtensionPoint {
+public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExtensionPoint {
 
     /**
      * 扩展点注册器
@@ -31,11 +32,12 @@ public abstract class AbstractPropertiesExtensionPoint {
      * @param classLoader ClassLoader
      * @throws ExtensionPointLoadException
      */
+    @Override
     public void load(String moduleName,ClassLoader classLoader) throws ExtensionPointLoadException {
         Enumeration<URL> extensionConfigFiles;
         try {
             extensionConfigFiles = classLoader.getResources(
-                    "/smart/" + getExtensionName() + ".properties");
+                    "smart/" + getExtensionName() + ".properties");
         } catch (IOException e) {
             throw new ExtensionPointLoadException("Scan config file " + getExtensionName() + " failure!", e);
         }

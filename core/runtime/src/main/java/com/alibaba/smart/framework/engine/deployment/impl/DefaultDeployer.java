@@ -24,7 +24,9 @@ import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcessComponent;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeSequenceFlow;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -34,6 +36,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 /**
  * 默认部署器
@@ -102,9 +107,23 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
 
         //Assembly: process xml file
         ProcessorContext context = new ProcessorContext();
-        ProcessDefinition definition;
         try {
-            return (ProcessDefinition) this.assemblyProcessorExtensionPoint.read(reader, context);
+            boolean findStart=false;
+            do{
+                int event = reader.next();
+                if (event == END_ELEMENT) {
+                    break;
+                }
+                if (event == START_ELEMENT) {
+                    findStart=true;
+                    break;
+                }
+            }while (reader.hasNext());
+            if(findStart) {
+                return (ProcessDefinition) this.assemblyProcessorExtensionPoint.read(reader, context);
+            }else{
+                throw new DeployException("Read process config file[" + uri + "] failure! Not found start element!");
+            }
         } catch (ProcessorReadException | XMLStreamException e) {
             throw new DeployException("Read process config file[" + uri + "] failure!", e);
         }
@@ -118,6 +137,11 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
 
         String processId = definition.getId();
         String version = definition.getVersion();
+
+        if(StringUtils.isBlank(processId) || StringUtils.isBlank(version)){
+            //TODO ettear exception
+            return null;
+        }
 
         //Build runtime model;
         DefaultRuntimeProcessComponent processComponent = new DefaultRuntimeProcessComponent();

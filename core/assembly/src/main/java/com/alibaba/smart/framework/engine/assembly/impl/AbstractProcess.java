@@ -10,6 +10,6 @@ import java.util.List;
  * Created by ettear on 16-4-13.
  */
 @Data
-public class AbstractProcess extends AbstractActivity implements Process {
+public abstract class AbstractProcess extends AbstractActivity implements Process {
     private List<Base> elements;
 }

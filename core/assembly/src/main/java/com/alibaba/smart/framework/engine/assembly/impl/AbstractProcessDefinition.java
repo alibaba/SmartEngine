@@ -8,7 +8,7 @@ import lombok.Data;
  * Created by ettear on 16-4-13.
  */
 @Data
-public class AbstractProcessDefinition extends AbstractBase implements ProcessDefinition {
+public abstract class AbstractProcessDefinition extends AbstractBase implements ProcessDefinition {
     private String id;
 
     private String name;

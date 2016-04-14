@@ -38,6 +38,16 @@ public abstract class AbstractRuntimeInvocable<M extends Invocable> implements R
     }
 
     @Override
+    public void start() {
+        this.provider.start();
+    }
+
+    @Override
+    public void stop() {
+        this.provider.stop();
+    }
+
+    @Override
     public Message invoke(String event, Context context) {
         return this.getInvoker(event).invoke(context);
     }

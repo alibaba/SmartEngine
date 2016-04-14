@@ -39,9 +39,16 @@ public class DefaultSmartEngine implements SmartEngine {
             moduleName = DEFAULT_MODULE;
         }
         if(!this.classLoaders.containsKey(moduleName)){
-            this.classLoaders.put(moduleName,classLoader);
             try {
-                if (classLoader != DefaultSmartEngine.class.getClassLoader()) {
+                boolean loaded=false;
+                for (ClassLoader loader : classLoaders.values()) {
+                    if(loader==classLoader){
+                        loaded=true;
+                        break;
+                    }
+                }
+                this.classLoaders.put(moduleName,classLoader);
+                if (!loaded) {
                     this.extensionPointRegistry.load(moduleName,classLoader);
                 }
             } catch (ExtensionPointLoadException loadException) {

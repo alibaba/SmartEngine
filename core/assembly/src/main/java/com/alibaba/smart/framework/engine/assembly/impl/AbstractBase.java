@@ -6,7 +6,16 @@ import lombok.Data;
 /**
  * Created by ettear on 16-4-12.
  */
-@Data
 public abstract class AbstractBase implements Base{
-    boolean unresolved=true;
+    private boolean unresolved;
+
+    @Override
+    public boolean isUnresolved() {
+        return unresolved;
+    }
+
+    @Override
+    public void setUnresolved(boolean unresolved) {
+        this.unresolved = unresolved;
+    }
 }

@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.extensibility;
 import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
 import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
 import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorResolveException;
+import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -12,7 +13,7 @@ import javax.xml.stream.XMLStreamReader;
  * XML处理器扩展点
  * Created by ettear on 16-4-12.
  */
-public interface AssemblyProcessorExtensionPoint extends ClassLoaderExtensionPoint {
+public interface AssemblyProcessorExtensionPoint extends ClassLoaderExtensionPoint,LifeCycleListener {
 
     /**
      * Reads a model from an XMLStreamReader.

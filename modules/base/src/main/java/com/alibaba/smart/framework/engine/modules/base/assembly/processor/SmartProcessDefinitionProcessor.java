@@ -27,6 +27,10 @@ public class SmartProcessDefinitionProcessor extends AbstractStAXArtifactProcess
     public SmartProcessDefinition read(XMLStreamReader reader, ProcessorContext context)
             throws ProcessorReadException, XMLStreamException {
         SmartProcessDefinition smartProcessDefinition = new SmartProcessDefinition();
+        smartProcessDefinition.setId(this.getString(reader, "id"));
+        smartProcessDefinition.setVersion(this.getString(reader, "version"));
+        smartProcessDefinition.setName(this.getString(reader, "name"));
+
         while (this.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
             if (element instanceof com.alibaba.smart.framework.engine.assembly.Process) {

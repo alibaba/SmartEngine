@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.extensibility.impl;
 
+import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
@@ -22,6 +23,24 @@ public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExte
 
     public DefaultProviderFactoryExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
+    }
+
+    @Override
+    public void start() {
+        for (ProviderFactory providerFactory : providerFactories.values()) {
+            if(providerFactory instanceof LifeCycleListener){
+                ((LifeCycleListener)providerFactory).start();
+            }
+        }
+    }
+
+    @Override
+    public void stop() {
+        for (ProviderFactory providerFactory : providerFactories.values()) {
+            if(providerFactory instanceof LifeCycleListener){
+                ((LifeCycleListener)providerFactory).stop();
+            }
+        }
     }
 
     @Override
