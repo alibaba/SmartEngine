@@ -10,14 +10,14 @@ public interface InstanceStore {
      * 保存实例
      * @param instance 实例
      */
-    void save(Instance instance);
+    void save(ProcessInstance instance);
 
     /**
      * 加载实例
      * @param instanceId 实例ID
      * @return 实例
      */
-    Instance load(String instanceId);
+    ProcessInstance load(String instanceId);
 
     /**
      * 删除实例

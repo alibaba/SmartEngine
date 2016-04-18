@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
-import com.alibaba.smart.framework.engine.instance.Instance;
+import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.InstanceStore;
 
 import java.util.Map;
@@ -12,15 +12,15 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryInstanceStore implements InstanceStore {
 
-    private Map<String, Instance> instances = new ConcurrentHashMap<>();
+    private Map<String, ProcessInstance> instances = new ConcurrentHashMap<>();
 
     @Override
-    public void save(Instance instance) {
-        this.instances.put(instance.getId(),instance);
+    public void save(ProcessInstance instance) {
+        this.instances.put(instance.getId(), instance);
     }
 
     @Override
-    public Instance load(String instanceId) {
+    public ProcessInstance load(String instanceId) {
         return this.instances.get(instanceId);
     }
 

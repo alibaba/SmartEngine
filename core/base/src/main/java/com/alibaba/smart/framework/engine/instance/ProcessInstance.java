@@ -5,8 +5,11 @@ import java.util.List;
 /**
  * Created by ettear on 16-4-12.
  */
-public interface Instance {
+public interface ProcessInstance {
+
     String getId();
-    List<Task> getTasks();
-    List<Status> getStatus();
+
+    List<ExecutionInstance> getRunningExecutions();
+
+    List<ExecutionInstance> getExecutions();
 }

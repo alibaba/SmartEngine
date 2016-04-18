@@ -8,11 +8,7 @@ public interface Message {
 
     <T> void setBody(T body);
 
-    Object getMessageID();
-
-    void setMessageID(Object messageID);
-
     boolean isFault();
 
-    <T> void setFaultBody(T faultBody);
+    boolean isSuspend();
 }

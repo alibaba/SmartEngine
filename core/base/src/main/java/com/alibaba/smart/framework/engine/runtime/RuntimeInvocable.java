@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.runtime;
 
 import com.alibaba.smart.framework.engine.assembly.Invocable;
-import com.alibaba.smart.framework.engine.context.Context;
+import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.invocation.Message;
 
@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.invocation.Message;
  * Created by ettear on 16-4-14.
  */
 public interface RuntimeInvocable<M extends Invocable> extends LifeCycleListener {
+
     String getId();
 
     Class<?> getModelType();
@@ -18,15 +19,17 @@ public interface RuntimeInvocable<M extends Invocable> extends LifeCycleListener
 
     /**
      * Invoke an operation with a context message
+     *
      * @param context The request message
      * @return The response message
      */
-    Message invoke(String event,Context context);
+    Message invoke(String event, InstanceContext context);
 
     /**
      * Asynchronously invoke an operation with a context message
+     *
      * @param context The request message
      */
-    Message invokeAsync(String event,Context context);
+    Message invokeAsync(String event, InstanceContext context);
 
 }

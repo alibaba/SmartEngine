@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.runtime.impl;
 
 import com.alibaba.smart.framework.engine.assembly.Invocable;
-import com.alibaba.smart.framework.engine.context.Context;
+import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DoNothingInvoker;
@@ -49,12 +49,12 @@ public abstract class AbstractRuntimeInvocable<M extends Invocable> implements R
     }
 
     @Override
-    public Message invoke(String event, Context context) {
+    public Message invoke(String event, InstanceContext context) {
         return this.getInvoker(event).invoke(context);
     }
 
     @Override
-    public Message invokeAsync(String event, Context context) {
+    public Message invokeAsync(String event, InstanceContext context) {
         return this.getInvoker(event).invoke(context);
     }
 

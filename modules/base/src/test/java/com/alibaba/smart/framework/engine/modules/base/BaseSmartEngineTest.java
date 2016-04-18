@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.modules.base;
 import com.alibaba.smart.framework.engine.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.deployment.Deployer;
-import com.alibaba.smart.framework.engine.instance.Instance;
+import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.InstanceManager;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
 import org.junit.Assert;
@@ -24,7 +24,7 @@ public class BaseSmartEngineTest {
         Assert.assertNotNull(component);
 
         InstanceManager instanceManager=smartEngine.getInstanceManager();
-        Instance instance = instanceManager.start("testSmartProcess", "1.0.0", null);
+        ProcessInstance instance = instanceManager.start("testSmartProcess", "1.0.0", null);
 
 
     }
