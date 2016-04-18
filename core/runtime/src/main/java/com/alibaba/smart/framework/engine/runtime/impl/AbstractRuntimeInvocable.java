@@ -4,6 +4,7 @@ import com.alibaba.smart.framework.engine.assembly.Invocable;
 import com.alibaba.smart.framework.engine.context.Context;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
+import com.alibaba.smart.framework.engine.invocation.impl.DoNothingInvoker;
 import com.alibaba.smart.framework.engine.provider.InvocableProvider;
 import com.alibaba.smart.framework.engine.runtime.RuntimeInvocable;
 import lombok.Data;
@@ -66,7 +67,7 @@ public abstract class AbstractRuntimeInvocable<M extends Invocable> implements R
         if (null != invoker) {
             this.invokers.put(event, invoker);
         } else {
-            invoker = Invoker.DO_NOTHING_INVOKER;
+            invoker = DoNothingInvoker.instance;
         }
         return invoker;
     }

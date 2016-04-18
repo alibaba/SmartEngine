@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.instance.Instance;
 import com.alibaba.smart.framework.engine.instance.InstanceManager;
 import com.alibaba.smart.framework.engine.instance.InstanceStore;
 import com.alibaba.smart.framework.engine.invocation.Event;
+import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
 
 /**
  * Created by ettear on 16-4-13.
@@ -28,6 +29,8 @@ public class DefaultInstanceManager implements InstanceManager,LifeCycleListener
 
     @Override
     public Instance start(String processId, String version, Event startEvent) {
+        RuntimeProcessComponent processComponent=this.deployer.getProcess(processId,version);
+        processComponent.getProcess().start();
         return null;
     }
 
@@ -50,5 +53,11 @@ public class DefaultInstanceManager implements InstanceManager,LifeCycleListener
     @Override
     public void stop() {
 
+    }
+
+    private Instance createInstance(RuntimeProcessComponent runtimeProcessComponent){
+        DefaultInstance instance=new DefaultInstance();
+
+        return instance;
     }
 }
