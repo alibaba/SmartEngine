@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://smart.alibaba-inc.com/schema/process"
-           targetNamespace="http://smart.alibaba-inc.com/schema/process" id="testSmartProcess" version="1.0.0"
-           name="Test Smart Process">
+	targetNamespace="http://smart.alibaba-inc.com/schema/process" id="testSmartProcess"
+	version="1.0.0" name="Test Smart Process">
 
 	<process>
 		<activity id="startOrder" />
-		<sequenceFlow id="doStart" sourceRef="startOrder" targetRef="payment"/>
+		<sequenceFlow id="doStart" sourceRef="startOrder"
+			targetRef="payment" />
 
 		<activity id="payment" />
-		<sequenceFlow id="doPayment" sourceRef="payment" targetRef="shipment"/>
-		<sequenceFlow id="doClose" sourceRef="payment" targetRef="closed"/>
+		<sequenceFlow id="doPayment" sourceRef="payment"
+			targetRef="shipment" />
+		<sequenceFlow id="doClose" sourceRef="payment" targetRef="closed" />
 
 		<activity id="shipment" />
-		<sequenceFlow id="doShipment" sourceRef="shipment" targetRef="receive"/>
+		<sequenceFlow id="doShipment" sourceRef="shipment"
+			targetRef="receive" />
 
 		<activity id="receive" />
-		<sequenceFlow id="doReceive" sourceRef="receive" targetRef="complete"/>
-		<sequenceFlow id="doClose" sourceRef="receive" targetRef="closed"/>
+		<sequenceFlow id="doReceive" sourceRef="receive"
+			targetRef="complete" />
+		<sequenceFlow id="doClose" sourceRef="receive" targetRef="closed" />
 
 		<activity id="closed" />
 		<activity id="complete" />

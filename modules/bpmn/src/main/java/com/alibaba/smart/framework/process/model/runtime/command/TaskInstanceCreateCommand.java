@@ -3,8 +3,9 @@ package com.alibaba.smart.framework.process.model.runtime.command;
 import lombok.Data;
 
 @Data
-public class ProcessInstanceSignalCommand<T> {
+public class TaskInstanceCreateCommand<T> {
 
-    private Long executionId; ;
+    private Long taskId;
+    private Long userId;
     private T    request;
 }
