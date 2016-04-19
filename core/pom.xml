@@ -13,6 +13,7 @@
 	<name>Smart Engine Core</name>
 
 	<modules>
+		<module>api</module>
 		<module>assembly</module>
 		<module>base</module>
 		<module>spi</module>

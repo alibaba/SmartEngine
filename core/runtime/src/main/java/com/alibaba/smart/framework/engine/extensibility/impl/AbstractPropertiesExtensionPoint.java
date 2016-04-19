@@ -22,6 +22,9 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
      */
     private ExtensionPointRegistry extensionPointRegistry;
 
+    public AbstractPropertiesExtensionPoint() {
+    }
+
     public AbstractPropertiesExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
@@ -102,4 +105,9 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
      * @return 扩展点名称
      */
     protected abstract String getExtensionName();
+
+    public void setExtensionPointRegistry(
+            ExtensionPointRegistry extensionPointRegistry) {
+        this.extensionPointRegistry = extensionPointRegistry;
+    }
 }

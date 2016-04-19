@@ -1,16 +1,18 @@
-package com.alibaba.smart.framework.engine.instance;
+package com.alibaba.smart.framework.engine.instance.store;
+
+import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 
 /**
  * 实例存储
  * Created by ettear on 16-4-13.
  */
-public interface InstanceStore {
+public interface ProcessInstanceStorage {
 
     /**
      * 保存实例
      * @param instance 实例
      */
-    void save(ProcessInstance instance);
+    ProcessInstance save(ProcessInstance instance);
 
     /**
      * 加载实例

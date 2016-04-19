@@ -1,22 +1,25 @@
-package com.alibaba.smart.framework.engine.instance.impl;
+package com.alibaba.smart.framework.engine.modules.storage.memory;
 
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.instance.InstanceStore;
+import com.alibaba.smart.framework.engine.instance.store.ProcessInstanceStorage;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 内存实例存储
  * Created by ettear on 16-4-13.
  */
-public class MemoryInstanceStore implements InstanceStore {
+public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
 
     private Map<String, ProcessInstance> instances = new ConcurrentHashMap<>();
 
     @Override
-    public void save(ProcessInstance instance) {
+    public ProcessInstance save(ProcessInstance instance) {
+        instance.setId(UUID.randomUUID().toString());
         this.instances.put(instance.getId(), instance);
+        return instance;
     }
 
     @Override

@@ -4,7 +4,9 @@ import com.alibaba.smart.framework.engine.deployment.Deployer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 import com.alibaba.smart.framework.engine.extensibility.impl.DefaultExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.InstanceManager;
+import com.alibaba.smart.framework.engine.instance.manager.ExecutionManager;
+import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
+import com.alibaba.smart.framework.engine.instance.manager.TaskManager;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
@@ -16,21 +18,15 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultSmartEngine implements SmartEngine {
 
-    private final static String DEFAULT_MODULE="framework";
+    private final static String DEFAULT_MODULE = "framework";
 
     private ExtensionPointRegistry extensionPointRegistry;
     private Map<String, ClassLoader> classLoaders = new ConcurrentHashMap<>();
-
-    private Deployer        deployer;
-    private InstanceManager instanceManager;
 
     public DefaultSmartEngine() throws EngineException {
         this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
         ClassLoader classLoader = DefaultSmartEngine.class.getClassLoader();
         this.install(DEFAULT_MODULE, classLoader);
-
-        this.deployer = this.extensionPointRegistry.getExtensionPoint(Deployer.class);
-        this.instanceManager = this.extensionPointRegistry.getExtensionPoint(InstanceManager.class);
     }
 
     @Override
@@ -38,18 +34,18 @@ public class DefaultSmartEngine implements SmartEngine {
         if (StringUtils.isBlank(moduleName)) {
             moduleName = DEFAULT_MODULE;
         }
-        if(!this.classLoaders.containsKey(moduleName)){
+        if (!this.classLoaders.containsKey(moduleName)) {
             try {
-                boolean loaded=false;
+                boolean loaded = false;
                 for (ClassLoader loader : classLoaders.values()) {
-                    if(loader==classLoader){
-                        loaded=true;
+                    if (loader == classLoader) {
+                        loaded = true;
                         break;
                     }
                 }
-                this.classLoaders.put(moduleName,classLoader);
+                this.classLoaders.put(moduleName, classLoader);
                 if (!loaded) {
-                    this.extensionPointRegistry.load(moduleName,classLoader);
+                    this.extensionPointRegistry.load(moduleName, classLoader);
                 }
             } catch (ExtensionPointLoadException loadException) {
                 throw new EngineException("Init engine failure!", loadException);
@@ -69,11 +65,6 @@ public class DefaultSmartEngine implements SmartEngine {
     }
 
     @Override
-    public ExtensionPointRegistry getExtensionPointRegistry() {
-        return extensionPointRegistry;
-    }
-
-    @Override
     public ClassLoader getClassLoader(String moduleName) {
         if (StringUtils.isBlank(moduleName)) {
             moduleName = DEFAULT_MODULE;
@@ -83,11 +74,25 @@ public class DefaultSmartEngine implements SmartEngine {
 
     @Override
     public Deployer getDeployer() {
-        return deployer;
+        return this.extensionPointRegistry.getExtensionPoint(Deployer.class);
     }
 
     @Override
-    public InstanceManager getInstanceManager() {
-        return instanceManager;
+    public ProcessManager getProcessManager() {
+        return this.extensionPointRegistry.getExtensionPoint(ProcessManager.class);
+    }
+
+    @Override
+    public ExecutionManager getExecutionManager() {
+        return this.extensionPointRegistry.getExtensionPoint(ExecutionManager.class);
+    }
+
+    @Override
+    public TaskManager getTaskManager() {
+        return this.extensionPointRegistry.getExtensionPoint(TaskManager.class);
+    }
+
+    public ExtensionPointRegistry getExtensionPointRegistry() {
+        return extensionPointRegistry;
     }
 }

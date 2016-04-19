@@ -1,9 +1,9 @@
 package com.alibaba.smart.framework.engine.context;
 
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.instance.ExecutionManager;
+import com.alibaba.smart.framework.engine.instance.manager.ExecutionInstanceManager;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.instance.TaskManager;
+import com.alibaba.smart.framework.engine.instance.manager.TaskManager;
 
 /**
  * Created by ettear on 16-4-11.
@@ -13,7 +13,7 @@ public interface InstanceContext{
     Context getActivityContext();
     ProcessInstance getInstance();
     ExecutionInstance getCurrentExecution();
-    ExecutionManager getExecutionManager();
+    ExecutionInstanceManager getExecutionManager();
     TaskManager getTaskManager();
 
 }

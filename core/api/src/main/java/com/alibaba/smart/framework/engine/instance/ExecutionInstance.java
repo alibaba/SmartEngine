@@ -5,7 +5,7 @@ package com.alibaba.smart.framework.engine.instance;
  */
 public interface ExecutionInstance {
     String getId();
-    String getParentId();
     String getProcessInstanceId();
+    String getStatus();
     ActivityInstance getActivity();
 }
