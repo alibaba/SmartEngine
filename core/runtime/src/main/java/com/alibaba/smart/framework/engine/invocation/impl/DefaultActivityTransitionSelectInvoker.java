@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.RuntimeSequenceFlow;
+import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,12 +32,12 @@ public class DefaultActivityTransitionSelectInvoker implements Invoker {
         ProcessInstance processInstance = context.getProcessInstance();
         ExecutionInstance executionInstance = context.getCurrentExecution();
         ActivityInstance currentActivityInstance = executionInstance.getActivity();
-        Map<String, RuntimeSequenceFlow> outcomeSequenceFlows = this.runtimeActivity.getOutcomeSequenceFlows();
-        if (null != outcomeSequenceFlows && !outcomeSequenceFlows.isEmpty()) {
-            for (Map.Entry<String, RuntimeSequenceFlow> sequenceFlowEntry : outcomeSequenceFlows.entrySet()) {
-                RuntimeSequenceFlow sequenceFlow = sequenceFlowEntry.getValue();
-                sequenceFlow.getSource();
-                sequenceFlow.getTarget();
+        Map<String, RuntimeTransition> outcomeTransitions = this.runtimeActivity.getOutcomeTransitions();
+        if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
+            for (Map.Entry<String, RuntimeTransition> transitionEntry : outcomeTransitions.entrySet()) {
+                RuntimeTransition runtimeTransition = transitionEntry.getValue();
+                runtimeTransition.getSource();
+                runtimeTransition.getTarget();
 
                 TransitionInstanceFactory transitionInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
                         TransitionInstanceFactory.class);
@@ -45,12 +45,12 @@ public class DefaultActivityTransitionSelectInvoker implements Invoker {
                         ActivityInstanceFactory.class);
 
                 TransitionInstance transitionInstance = transitionInstanceFactory.create();
-                transitionInstance.setSequenceFlowId(sequenceFlow.getId());
+                transitionInstance.setTransitionId(runtimeTransition.getId());
                 transitionInstance.setSourceActivityInstanceId(currentActivityInstance.getInstanceId());
 
                 ActivityInstance activityInstance = activityInstanceFactory.create();
                 activityInstance.setInstanceId(InstanceIdUtils.uuid());
-                activityInstance.setActivityId(sequenceFlow.getTarget().getId());
+                activityInstance.setActivityId(runtimeTransition.getTarget().getId());
                 activityInstance.setProcessInstanceId(processInstance.getInstanceId());
                 activityInstance.addIncomeTransition(transitionInstance);
 

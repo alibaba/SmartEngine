@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.runtime;
 
 import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.invocation.Message;
 
 import java.util.Map;
 
@@ -18,13 +19,13 @@ public interface RuntimeProcess extends RuntimeActivity<Process> {
      * @param context 实例上下文
      * @return 是否暂停
      */
-    boolean run(InstanceContext context);
+    Message run(InstanceContext context);
 
     /**
      * 继续执行流程
      * @param context 实例上下文
      * @return 是否暂停
      */
-    boolean resume(InstanceContext context);
+    Message resume(InstanceContext context);
 
 }

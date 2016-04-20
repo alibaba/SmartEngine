@@ -6,10 +6,6 @@ package com.alibaba.smart.framework.engine.instance;
  */
 public interface ExecutionInstance extends Instance {
 
-    String getParentId();
-
-    void setParentId(String parentId);
-
     String getProcessInstanceId();
 
     void setProcessInstanceId(String processInstanceId);

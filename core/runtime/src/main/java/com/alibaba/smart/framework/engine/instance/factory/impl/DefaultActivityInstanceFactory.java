@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.instance.factory.impl;
 import com.alibaba.smart.framework.engine.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
+import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
 
 /**
  * 默认活动实例工厂实现
@@ -12,6 +13,8 @@ public class DefaultActivityInstanceFactory implements ActivityInstanceFactory {
 
     @Override
     public ActivityInstance create() {
-        return new DefaultActivityInstance();
+        DefaultActivityInstance defaultActivityInstance = new DefaultActivityInstance();
+        defaultActivityInstance.setInstanceId(InstanceIdUtils.uuid());
+        return defaultActivityInstance;
     }
 }

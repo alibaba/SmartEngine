@@ -18,8 +18,4 @@ public interface InstanceContext {
     ExecutionInstance getCurrentExecution();
 
     void setCurrentExecution(ExecutionInstance executionInstance);
-
-    ExecutionInstance getParentExecution();
-
-    void setParentExecution(ExecutionInstance executionInstance);
 }

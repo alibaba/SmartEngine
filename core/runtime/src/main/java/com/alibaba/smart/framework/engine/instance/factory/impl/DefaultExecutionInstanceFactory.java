@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.instance.factory.impl;
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
+import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
 
 /**
  * 默认执行实例工厂实现
@@ -12,6 +13,8 @@ public class DefaultExecutionInstanceFactory implements ExecutionInstanceFactory
 
     @Override
     public ExecutionInstance create() {
-        return new DefaultExecutionInstance();
+        DefaultExecutionInstance defaultExecutionInstance = new DefaultExecutionInstance();
+        defaultExecutionInstance.setInstanceId(InstanceIdUtils.uuid());
+        return defaultExecutionInstance;
     }
 }

@@ -1,17 +1,17 @@
 package com.alibaba.smart.framework.engine.modules.base.provider;
 
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartSequenceFlow;
-import com.alibaba.smart.framework.engine.provider.factory.SequenceFlowProviderFactory;
-import com.alibaba.smart.framework.engine.runtime.RuntimeSequenceFlow;
+import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
+import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 
 /**
  * Created by ettear on 16-4-14.
  */
-public class SmartSequenceFlowProviderFactory implements SequenceFlowProviderFactory<SmartSequenceFlow>{
+public class SmartSequenceFlowProviderFactory implements TransitionProviderFactory<SmartSequenceFlow> {
 
     @Override
-    public SmartSequenceFlowProvider createSequenceFlowProvider(RuntimeSequenceFlow sequenceFlow) {
-        return new SmartSequenceFlowProvider(sequenceFlow);
+    public SmartSequenceFlowProvider createTransitionProvider(RuntimeTransition runtimeTransition) {
+        return new SmartSequenceFlowProvider(runtimeTransition);
     }
 
     @Override

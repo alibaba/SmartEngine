@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.runtime;
 
 import com.alibaba.smart.framework.engine.assembly.Activity;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.invocation.Message;
 
 import java.util.Map;
 
@@ -10,11 +11,11 @@ import java.util.Map;
  */
 public interface RuntimeActivity<M extends Activity> extends RuntimeInvocable<M> {
 
-    Map<String, RuntimeSequenceFlow> getIncomeSequenceFlows();
+    Map<String, RuntimeTransition> getIncomeTransitions();
 
-    Map<String, RuntimeSequenceFlow> getOutcomeSequenceFlows();
+    Map<String, RuntimeTransition> getOutcomeTransitions();
 
-    boolean execute(InstanceContext context);
+    Message execute(InstanceContext context);
 
     boolean isStartActivity();
 }

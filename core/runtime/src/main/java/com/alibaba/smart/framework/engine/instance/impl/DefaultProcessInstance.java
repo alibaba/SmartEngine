@@ -15,7 +15,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class DefaultProcessInstance extends AbstractInstance implements ProcessInstance {
-
+    private String processId;
+    private String processVersion;
+    private String parentInstanceId;
+    private String parentExecutionInstanceId;
     /**
      * Running executions
      */

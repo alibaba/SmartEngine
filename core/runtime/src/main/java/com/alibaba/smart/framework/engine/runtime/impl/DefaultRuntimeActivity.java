@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultActivityTransitionSelectInvoker;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.RuntimeSequenceFlow;
+import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
@@ -36,25 +36,18 @@ public class DefaultRuntimeActivity<M extends Activity> extends AbstractRuntimeI
         EXECUTE_EVENTS.add(AtomicOperationEvent.ACTIVITY_START.name());
         EXECUTE_EVENTS.add(AtomicOperationEvent.ACTIVITY_EXECUTE.name());
         EXECUTE_EVENTS.add(AtomicOperationEvent.ACTIVITY_END.name());
-
     }
 
-    private Map<String, RuntimeSequenceFlow> incomeSequenceFlows  = new ConcurrentHashMap<>();
-    private Map<String, RuntimeSequenceFlow> outcomeSequenceFlows = new ConcurrentHashMap<>();
-
-    public void addIncomeSequenceFlows(String sequenceId, RuntimeSequenceFlow income) {
-        incomeSequenceFlows.put(sequenceId, income);
-    }
-
-    public void addOutcomeSequenceFlows(String sequenceId, RuntimeSequenceFlow outcome) {
-        outcomeSequenceFlows.put(sequenceId, outcome);
-    }
+    private Map<String, RuntimeTransition> incomeTransitions  = new ConcurrentHashMap<>();
+    private Map<String, RuntimeTransition> outcomeTransitions = new ConcurrentHashMap<>();
 
     @Override
-    public boolean execute(InstanceContext context) {
+    public Message execute(InstanceContext context) {
         ExecutionInstance executionInstance = context.getCurrentExecution();
+        Message activityExecuteMessage = new DefaultMessage();
         if (executionInstance.isSuspend()) {
-            return true;
+            activityExecuteMessage.setSuspend(true);
+            return activityExecuteMessage;
         }
         ActivityInstance activityInstance = executionInstance.getActivity();
         String currentStep = activityInstance.getCurrentStep();
@@ -70,12 +63,13 @@ public class DefaultRuntimeActivity<M extends Activity> extends AbstractRuntimeI
         }
         while (executeEventIterator.hasNext()) {
             String event = executeEventIterator.next();
-            Message message = this.invokeActivity(event, context);
-            if (message.isSuspend()) {
-                return true;
+            Message invokerMessage = this.invokeActivity(event, context);
+            if (invokerMessage.isSuspend()) {
+                activityExecuteMessage.setSuspend(true);
+                break;
             }
         }
-        return false;
+        return activityExecuteMessage;
     }
 
     @Override
@@ -110,5 +104,14 @@ public class DefaultRuntimeActivity<M extends Activity> extends AbstractRuntimeI
             executionInstance.setFault(true);
         }
         return message;
+    }
+
+    //Getter & Setter
+    public void addIncomeTransition(String transitionId, RuntimeTransition income) {
+        this.incomeTransitions.put(transitionId, income);
+    }
+
+    public void addOutcomeTransition(String transitionId, RuntimeTransition outcome) {
+        this.outcomeTransitions.put(transitionId, outcome);
     }
 }

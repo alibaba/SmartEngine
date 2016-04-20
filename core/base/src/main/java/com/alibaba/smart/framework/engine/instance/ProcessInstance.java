@@ -8,6 +8,22 @@ import java.util.Map;
  * Created by ettear on 16-4-12.
  */
 public interface ProcessInstance extends Instance {
+    String getProcessId();
+
+    void setProcessId(String processId);
+
+    String getProcessVersion();
+
+    void setProcessVersion(String processVersion);
+
+    String getParentInstanceId();
+
+    void setParentInstanceId(String parentInstanceId);
+
+    String getParentExecutionInstanceId();
+
+    void setParentExecutionInstanceId(String parentExecutionInstanceId);
+
     /**
      * 获取流程的执行实例
      * @return 流程执行实例

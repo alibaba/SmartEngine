@@ -15,6 +15,5 @@ public class DefaultInstanceContext implements InstanceContext{
     private Context processContext;
     private ProcessInstance processInstance;
     private ExecutionInstance currentExecution;
-    private ExecutionInstance parentExecution;
 
 }

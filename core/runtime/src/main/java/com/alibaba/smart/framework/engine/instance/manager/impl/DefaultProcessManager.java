@@ -5,7 +5,10 @@ import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
 import com.alibaba.smart.framework.engine.instance.store.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
@@ -23,6 +26,7 @@ public class DefaultProcessManager implements ProcessManager, LifeCycleListener 
     private ProcessContainer       processContainer;
     private ProcessInstanceStorage processInstanceStorage;
     private InstanceContextFactory instanceContextFactory;
+    private ProcessInstanceFactory processInstanceFactory;
 
     public DefaultProcessManager(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -33,6 +37,8 @@ public class DefaultProcessManager implements ProcessManager, LifeCycleListener 
         this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
         this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
+        this.processInstanceFactory = this.extensionPointRegistry.getExtensionPoint(
+                ProcessInstanceFactory.class);
     }
 
     @Override
@@ -45,8 +51,12 @@ public class DefaultProcessManager implements ProcessManager, LifeCycleListener 
         RuntimeProcessComponent processComponent = this.processContainer.get(processId, version);
         RuntimeProcess runtimeProcess = processComponent.getProcess();
         InstanceContext instanceContext = this.instanceContextFactory.create();
+        ProcessInstance processInstance = processInstanceFactory.create();
+        processInstance.setProcessId(processId);
+        processInstance.setProcessVersion(processId);
+        instanceContext.setProcessInstance(processInstance);
         runtimeProcess.run(instanceContext);
-        return instanceContext.getProcessInstance();
+        return processInstance;
     }
 
     @Override

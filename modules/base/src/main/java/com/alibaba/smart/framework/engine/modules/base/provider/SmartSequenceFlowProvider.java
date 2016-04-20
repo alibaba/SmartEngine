@@ -4,36 +4,21 @@ import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartSequenceFlow;
 import com.alibaba.smart.framework.engine.modules.base.invocation.SmartInvoker;
-import com.alibaba.smart.framework.engine.provider.SequenceFlowProvider;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
-import com.alibaba.smart.framework.engine.runtime.RuntimeSequenceFlow;
+import com.alibaba.smart.framework.engine.provider.TransitionProvider;
+import com.alibaba.smart.framework.engine.provider.impl.AbstractTransitionProvider;
+import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 
 /**
  * Created by ettear on 16-4-14.
  */
-public class SmartSequenceFlowProvider implements SequenceFlowProvider<SmartSequenceFlow> {
+public class SmartSequenceFlowProvider extends AbstractTransitionProvider<SmartSequenceFlow> implements TransitionProvider<SmartSequenceFlow> {
 
-    private RuntimeSequenceFlow sequenceFlow;
-
-    public SmartSequenceFlowProvider(RuntimeSequenceFlow sequenceFlow) {
-        this.sequenceFlow = sequenceFlow;
+    public SmartSequenceFlowProvider(RuntimeTransition runtimeTransition) {
+       super(runtimeTransition);
     }
 
     @Override
-    public Invoker createInvoker(String event) {
-        if(AtomicOperationEvent.TRANSITION_EXECUTE.name().equals(event)){
-            return new SmartInvoker("Execute sequence flow "+sequenceFlow.getId());
-        }
-        return null;
-    }
-
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void stop() {
-
+    protected Invoker createExecuteInvoker() {
+        return new SmartInvoker("Execute sequence flow " + this.getRuntimeTransition().getId());
     }
 }

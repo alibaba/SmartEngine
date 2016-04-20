@@ -2,32 +2,28 @@ package com.alibaba.smart.framework.engine.modules.base.provider;
 
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartProcess;
+import com.alibaba.smart.framework.engine.modules.base.invocation.SmartInvoker;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
+import com.alibaba.smart.framework.engine.provider.impl.AbstractProcessProvider;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 
 /**
  * Created by ettear on 16-4-14.
  */
-public class SmartProcessProvider implements ActivityProvider<SmartProcess> {
+public class SmartProcessProvider extends AbstractProcessProvider<SmartProcess> implements ActivityProvider<SmartProcess> {
 
-    private RuntimeProcess process;
 
-    public SmartProcessProvider(RuntimeProcess process) {
-        this.process = process;
+    public SmartProcessProvider(RuntimeProcess runtimeProcess) {
+        super(runtimeProcess);
     }
 
     @Override
-    public Invoker createInvoker(String event) {
-        return null;
+    protected Invoker createStartInvoker() {
+        return new SmartInvoker("Start process " + this.getRuntimeProcess().getId());
     }
 
     @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void stop() {
-
+    protected Invoker createEndInvoker() {
+        return new SmartInvoker("End process " + this.getRuntimeProcess().getId());
     }
 }

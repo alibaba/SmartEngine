@@ -5,7 +5,7 @@ import com.alibaba.smart.framework.engine.assembly.Activity;
 import com.alibaba.smart.framework.engine.assembly.Base;
 import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.assembly.SequenceFlow;
+import com.alibaba.smart.framework.engine.assembly.Transition;
 import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
 import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
@@ -17,15 +17,15 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
-import com.alibaba.smart.framework.engine.provider.SequenceFlowProvider;
-import com.alibaba.smart.framework.engine.provider.factory.SequenceFlowProviderFactory;
+import com.alibaba.smart.framework.engine.provider.TransitionProvider;
+import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
-import com.alibaba.smart.framework.engine.runtime.RuntimeSequenceFlow;
+import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcessComponent;
-import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeSequenceFlow;
+import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeTransition;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.stream.XMLInputFactory;
@@ -173,20 +173,20 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
         runtimeProcess.setClassLoader(classLoader);
         runtimeProcess.setModel(process);
 
-        Map<String,RuntimeSequenceFlow> runtimeSequenceFlows = new HashMap<>();
+        Map<String,RuntimeTransition> runtimeTransitions = new HashMap<>();
         Map<String, RuntimeActivity> runtimeActivities = new HashMap<>();
         for (Base element : elements) {
             if (element instanceof Process) {
                 DefaultRuntimeProcess runtimeNode = this.buildRuntimeProcess((Process) element, classLoader);
                 runtimeActivities.put(runtimeNode.getId(), runtimeNode);
-            } else if (element instanceof SequenceFlow) {
-                DefaultRuntimeSequenceFlow runtimeSequenceFlow = new DefaultRuntimeSequenceFlow();
-                runtimeSequenceFlow.setExtensionPointRegistry(this.extensionPointRegistry);
+            } else if (element instanceof Transition) {
+                DefaultRuntimeTransition runtimeTransition = new DefaultRuntimeTransition();
+                runtimeTransition.setExtensionPointRegistry(this.extensionPointRegistry);
 
-                SequenceFlow sequenceFlow = (SequenceFlow) element;
-                runtimeSequenceFlow.setModel(sequenceFlow);
+                Transition transition = (Transition) element;
+                runtimeTransition.setModel(transition);
 
-                runtimeSequenceFlows.put(runtimeSequenceFlow.getId(),runtimeSequenceFlow);
+                runtimeTransitions.put(runtimeTransition.getId(), runtimeTransition);
 
             } else if (element instanceof Activity) {
                 DefaultRuntimeActivity runtimeActivity = new DefaultRuntimeActivity();
@@ -199,27 +199,27 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
             }
         }
 
-        //Process Sequence Flow
-        for (Map.Entry<String,RuntimeSequenceFlow> runtimeSequenceFlowEntry : runtimeSequenceFlows.entrySet()) {
-            DefaultRuntimeSequenceFlow runtimeSequenceFlow=(DefaultRuntimeSequenceFlow)runtimeSequenceFlowEntry.getValue();
-            String sourceRef = runtimeSequenceFlow.getModel().getSourceRef();
-            String targetRef = runtimeSequenceFlow.getModel().getTargetRef();
+        //Process Transition Flow
+        for (Map.Entry<String,RuntimeTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
+            DefaultRuntimeTransition runtimeTransition=(DefaultRuntimeTransition)runtimeTransitionEntry.getValue();
+            String sourceRef = runtimeTransition.getModel().getSourceRef();
+            String targetRef = runtimeTransition.getModel().getTargetRef();
             DefaultRuntimeActivity source = (DefaultRuntimeActivity) runtimeActivities.get(sourceRef);
             DefaultRuntimeActivity target = (DefaultRuntimeActivity) runtimeActivities.get(targetRef);
 
-            runtimeSequenceFlow.setSource(source);
-            runtimeSequenceFlow.setTarget(target);
-            source.addOutcomeSequenceFlows(runtimeSequenceFlow.getId(), runtimeSequenceFlow);
-            target.addIncomeSequenceFlows(runtimeSequenceFlow.getId(), runtimeSequenceFlow);
+            runtimeTransition.setSource(source);
+            runtimeTransition.setTarget(target);
+            source.addOutcomeTransition(runtimeTransition.getId(), runtimeTransition);
+            target.addIncomeTransition(runtimeTransition.getId(), runtimeTransition);
         }
 
-        //Create Invoker for Sequence Flow
-        for (Map.Entry<String,RuntimeSequenceFlow> runtimeSequenceFlowEntry : runtimeSequenceFlows.entrySet()) {
-            DefaultRuntimeSequenceFlow runtimeSequenceFlow=(DefaultRuntimeSequenceFlow)runtimeSequenceFlowEntry.getValue();
-            SequenceFlowProviderFactory providerFactory = (SequenceFlowProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(
-                    runtimeSequenceFlow.getModelType());
-            SequenceFlowProvider sequenceFlowProvider = providerFactory.createSequenceFlowProvider(runtimeSequenceFlow);
-            runtimeSequenceFlow.setProvider(sequenceFlowProvider);
+        //Create Invoker for Transition Flow
+        for (Map.Entry<String,RuntimeTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
+            DefaultRuntimeTransition runtimeTransition=(DefaultRuntimeTransition)runtimeTransitionEntry.getValue();
+            TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(
+                    runtimeTransition.getModelType());
+            TransitionProvider transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
+            runtimeTransition.setProvider(transitionProvider);
         }
 
         //Create Invoker for Activity
@@ -236,7 +236,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
         }
 
         runtimeProcess.setActivities(runtimeActivities);
-        runtimeProcess.setSequenceFlows(runtimeSequenceFlows);
+        runtimeProcess.setTransitions(runtimeTransitions);
         return runtimeProcess;
     }
 }

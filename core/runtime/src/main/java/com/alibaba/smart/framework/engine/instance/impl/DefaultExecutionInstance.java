@@ -13,7 +13,6 @@ import lombok.EqualsAndHashCode;
 @Data
 public class DefaultExecutionInstance extends AbstractInstance implements ExecutionInstance {
 
-    private String           parentId;
     private String           processInstanceId;
     private ActivityInstance activity;
     private boolean          suspend;

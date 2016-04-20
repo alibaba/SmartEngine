@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.instance.factory.impl;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
+import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
 
 /**
  * 默认流程实例工厂实现
@@ -12,6 +13,8 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
     @Override
     public ProcessInstance create() {
-        return new DefaultProcessInstance();
+        DefaultProcessInstance defaultProcessInstance = new DefaultProcessInstance();
+        defaultProcessInstance.setInstanceId(InstanceIdUtils.uuid());
+        return defaultProcessInstance;
     }
 }

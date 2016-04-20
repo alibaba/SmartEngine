@@ -10,16 +10,19 @@ import com.alibaba.smart.framework.engine.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.manager.ExecutionManager;
 import com.alibaba.smart.framework.engine.instance.store.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Message;
+import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
-import com.alibaba.smart.framework.engine.runtime.RuntimeSequenceFlow;
+import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,22 +37,21 @@ public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> imple
 
     private Map<String, RuntimeActivity> activities;
 
-    private Map<String, RuntimeSequenceFlow> sequenceFlows;
+    private Map<String, RuntimeTransition> transitions;
 
     private RuntimeActivity startActivity;
 
     @Override
-    public boolean run(InstanceContext context) {
+    public Message run(InstanceContext context) {
         //从扩展注册机获取实例工厂
-        ProcessInstanceFactory processInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
-                ProcessInstanceFactory.class);
         ExecutionInstanceFactory executionInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
                 ExecutionInstanceFactory.class);
         ActivityInstanceFactory activityInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
                 ActivityInstanceFactory.class);
 
         //流程实例ID
-        String processInstanceId = InstanceIdUtils.uuid();
+        ProcessInstance processInstance = context.getProcessInstance();
+        String processInstanceId = processInstance.getInstanceId();
         //构建活动实例: 指向开始节点
         ActivityInstance activityInstance = activityInstanceFactory.create();
         activityInstance.setInstanceId(InstanceIdUtils.uuid());
@@ -60,13 +62,8 @@ public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> imple
         executionInstance.setInstanceId(InstanceIdUtils.uuid());
         executionInstance.setProcessInstanceId(processInstanceId);
         executionInstance.setActivity(activityInstance);
-        //构建流程实例
-        ProcessInstance processInstance = processInstanceFactory.create();
-        processInstance.setInstanceId(processInstanceId);
-        processInstance.addExecution(executionInstance);
-        //实例添加到当前上下文中
-        context.setCurrentExecution(executionInstance);
-        context.setProcessInstance(processInstance);
+        context.setCurrentExecution(executionInstance);//执行实例添加到当前上下文中
+        processInstance.addExecution(executionInstance);//执行实例添加到流程实例
         //执行流程启动事件
         this.invoke(AtomicOperationEvent.PROCESS_START.name(),
                     context);
@@ -75,55 +72,84 @@ public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> imple
     }
 
     @Override
-    public boolean resume(InstanceContext context) {
-        ActivityInstance activityInstance = context.getCurrentExecution().getActivity();
+    public Message resume(InstanceContext context) {
+        ProcessInstance processInstance=context.getProcessInstance();
+        ExecutionInstance currentExecutionInstance=context.getCurrentExecution();
+        ActivityInstance activityInstance = currentExecutionInstance.getActivity();
         String activityId = activityInstance.getActivityId();
         RuntimeActivity runtimeActivity=this.getActivities().get(activityId);
 
-        boolean suspend =  this.runProcess(runtimeActivity, context);
-        if(!suspend){
-            ExecutionInstance parent=context.getParentExecution();
-            //TODO ettear 调用parent执行 parent流程
+        Message processMessage =  this.runProcess(runtimeActivity, context);
+        if(!processMessage.isSuspend()){
+            ExecutionManager executionManager=this.getExtensionPointRegistry().getExtensionPoint(ExecutionManager.class);
+
+            Map<String,Object> variables=new HashMap<>();
+            //TODO 执行结果放入
+            ProcessInstance parentProcessInstance=executionManager.signal(
+                    processInstance.getParentInstanceId(), processInstance.getParentExecutionInstanceId(),
+                                                         variables);
+            if(null!=parentProcessInstance && null!=parentProcessInstance.getExecutions()){
+                for (Map.Entry<String, ExecutionInstance> executionInstanceEntry : parentProcessInstance.getExecutions().entrySet()) {
+                    if(executionInstanceEntry.getValue().isSuspend()){
+                        processMessage.setSuspend(true);
+                        break;
+                    }
+                }
+            }
         }
-        return suspend;
+        return processMessage;
     }
 
     @Override
-    public boolean execute(InstanceContext context) {
-
+    public Message execute(InstanceContext context) {
+        //TODO ettear resume
         ExecutionInstance currentExecutionInstance=context.getCurrentExecution();
         currentExecutionInstance.setSuspend(true);
 
         //创建子流程上下文
         InstanceContextFactory instanceContextFactory = this.getExtensionPointRegistry().getExtensionPoint(
                 InstanceContextFactory.class);
+        ProcessInstanceFactory processInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
+                ProcessInstanceFactory.class);
+
         InstanceContext subInstanceContext = instanceContextFactory.create();
-        subInstanceContext.setParentExecution(currentExecutionInstance);
+        ProcessInstance processInstance=processInstanceFactory.create();
+        processInstance.setProcessId(this.getId());
+        //processInstance.getProcessVersion(this.get); TODO ettear add version;
+        processInstance.setParentInstanceId(currentExecutionInstance.getProcessInstanceId());
+        processInstance.setParentExecutionInstanceId(currentExecutionInstance.getInstanceId());
+        subInstanceContext.setProcessInstance(processInstance);
         //运行子流程
-        boolean suspend=this.run(subInstanceContext);
-        if(!suspend){
+        Message processMessage=this.run(subInstanceContext);
+        if(!processMessage.isSuspend()){
+            //如果子流程结束，当前流程继续执行
             currentExecutionInstance.setSuspend(false);
         }
-        return suspend;
+        return processMessage;
     }
 
-    private boolean runProcess(RuntimeActivity startActivity, InstanceContext context){
-        boolean suspend = this.executeActivity(startActivity, context);
+    private Message runProcess(RuntimeActivity startActivity, InstanceContext context){
+        Message processMessage = this.executeActivity(startActivity, context);
         //存储
         this.getExtensionPointRegistry().getExtensionPoint(ProcessInstanceStorage.class).save(context.getProcessInstance());
-        if(!suspend) {
+        if(!processMessage.isSuspend()) {
             this.invoke(AtomicOperationEvent.PROCESS_END.name(),
                         context);
         }
-        return suspend;
+        return processMessage;
     }
 
-    private boolean executeActivity(RuntimeActivity runtimeActivity, InstanceContext context) {
-        boolean suspend = runtimeActivity.execute(context);
-        if (suspend) {
-            return true;
+    private Message executeActivity(RuntimeActivity runtimeActivity, InstanceContext context) {
+        //执行当前节点
+        Message activityExecuteMessage = runtimeActivity.execute(context);
+
+        Message processMessage=new DefaultMessage();
+        if (activityExecuteMessage.isSuspend()) {
+            processMessage.setSuspend(true);
+            return processMessage;
         }
 
+        //执行后续节点选择
         Message transitionSelectMessage = runtimeActivity.invoke(AtomicOperationEvent.ACTIVITY_TRANSITION_SELECT.name(),
                                                                  context);
         if (null != transitionSelectMessage) {
@@ -132,16 +158,18 @@ public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> imple
                 List<?> executionObjects = (List<?>) transitionSelectBody;
                 if (!executionObjects.isEmpty()) {
                     for (Object executionObject : executionObjects) {
+                        //执行所有实例
                         if (executionObject instanceof ExecutionInstance) {
                             ExecutionInstance executionInstance = (ExecutionInstance) executionObject;
                             context.setCurrentExecution(executionInstance);
                             TransitionInstance transitionInstance = executionInstance.getActivity().getIncomeTransitions().get(
                                     0);
-                            RuntimeSequenceFlow runtimeSequenceFlow = this.sequenceFlows.get(
-                                    transitionInstance.getSequenceFlowId());
-
-                            runtimeSequenceFlow.execute(context);
-                            RuntimeActivity target = runtimeSequenceFlow.getTarget();
+                            RuntimeTransition runtimeTransition = this.transitions.get(
+                                    transitionInstance.getTransitionId());
+                            //执行Transition
+                            runtimeTransition.execute(context);
+                            RuntimeActivity target = runtimeTransition.getTarget();
+                            //执行Activity
                             this.executeActivity(target, context);
                         }
                     }
@@ -149,15 +177,16 @@ public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> imple
                     if (null != executionInstances && executionInstances.isEmpty()) {
                         for (Map.Entry<String, ExecutionInstance> executionInstanceEntry : executionInstances.entrySet()) {
                             ExecutionInstance executionInstance = executionInstanceEntry.getValue();
-                            if (!StringUtils.equals("completed", executionInstance.getStatus())) {//TODO ettear
-                                return true;
+                            if (executionInstance.isSuspend()) {//存在暂停的执行实例
+                                processMessage.setSuspend(true);
+                                break;
                             }
                         }
                     }
                 }
             }
         }
-        return false;
+        return processMessage;
     }
 
 }

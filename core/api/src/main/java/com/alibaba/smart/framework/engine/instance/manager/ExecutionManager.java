@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.instance.manager;
 
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 
 import java.util.List;
 import java.util.Map;
@@ -14,5 +15,5 @@ public interface ExecutionManager {
 
     //List<ExecutionInstance> findByProcess(String processInstanceId);
 
-    void signal(String processInstanceId,String executionId, Map<String, Object> variables);
+    ProcessInstance signal(String processInstanceId,String executionInstanceId, Map<String, Object> variables);
 }
