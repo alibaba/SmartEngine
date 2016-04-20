@@ -5,5 +5,9 @@ package com.alibaba.smart.framework.engine.instance;
  */
 public interface TransitionInstance {
     String getSequenceFlowId();
+    void setSequenceFlowId(String sequenceFlowId);
     String getSourceActivityInstanceId();
+    void setSourceActivityInstanceId(String sourceActivityInstanceId);
+    String getTargetActivityInstanceId();
+    void setTargetActivityInstanceId(String sourceActivityInstanceId);
 }

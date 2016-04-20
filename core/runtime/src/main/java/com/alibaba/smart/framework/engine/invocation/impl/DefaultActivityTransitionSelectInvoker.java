@@ -1,13 +1,13 @@
 package com.alibaba.smart.framework.engine.invocation.impl;
 
 import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.TransitionInstance;
-import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
-import com.alibaba.smart.framework.engine.instance.impl.DefaultTransitionInstance;
-import com.alibaba.smart.framework.engine.instance.manager.ExecutionInstanceManager;
+import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.factory.TransitionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
@@ -24,7 +24,8 @@ import java.util.Map;
  */
 public class DefaultActivityTransitionSelectInvoker implements Invoker {
 
-    private RuntimeActivity          runtimeActivity;
+    private RuntimeActivity        runtimeActivity;
+    private ExtensionPointRegistry extensionPointRegistry;
 
     @Override
     public Message invoke(InstanceContext context) {
@@ -38,17 +39,20 @@ public class DefaultActivityTransitionSelectInvoker implements Invoker {
                 sequenceFlow.getSource();
                 sequenceFlow.getTarget();
 
-                List<TransitionInstance> transitionInstances = new ArrayList<>();
-                DefaultTransitionInstance transitionInstance = new DefaultTransitionInstance();
+                TransitionInstanceFactory transitionInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
+                        TransitionInstanceFactory.class);
+                ActivityInstanceFactory activityInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
+                        ActivityInstanceFactory.class);
+
+                TransitionInstance transitionInstance = transitionInstanceFactory.create();
                 transitionInstance.setSequenceFlowId(sequenceFlow.getId());
                 transitionInstance.setSourceActivityInstanceId(currentActivityInstance.getInstanceId());
-                transitionInstances.add(transitionInstance);
 
-                DefaultActivityInstance activityInstance = new DefaultActivityInstance();
+                ActivityInstance activityInstance = activityInstanceFactory.create();
                 activityInstance.setInstanceId(InstanceIdUtils.uuid());
                 activityInstance.setActivityId(sequenceFlow.getTarget().getId());
                 activityInstance.setProcessInstanceId(processInstance.getInstanceId());
-                activityInstance.setIncomeTransitions(transitionInstances);
+                activityInstance.addIncomeTransition(transitionInstance);
 
                 //this.executionInstanceManager.updateActivity(processInstance.getInstanceId(), executionInstance.getInstanceId(),
                 //                                             activityInstance);
@@ -74,5 +78,14 @@ public class DefaultActivityTransitionSelectInvoker implements Invoker {
 
     public void setRuntimeActivity(RuntimeActivity runtimeActivity) {
         this.runtimeActivity = runtimeActivity;
+    }
+
+    public ExtensionPointRegistry getExtensionPointRegistry() {
+        return extensionPointRegistry;
+    }
+
+    public void setExtensionPointRegistry(
+            ExtensionPointRegistry extensionPointRegistry) {
+        this.extensionPointRegistry = extensionPointRegistry;
     }
 }

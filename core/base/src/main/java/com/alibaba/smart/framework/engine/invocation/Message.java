@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.invocation;
 
 /**
+ * Message
  * Created by ettear on 16-4-11.
  */
 public interface Message {
@@ -10,5 +11,10 @@ public interface Message {
 
     boolean isFault();
 
+    void setFault(boolean fault);
+
     boolean isSuspend();
+
+    void setSuspend(boolean suspend);
+
 }

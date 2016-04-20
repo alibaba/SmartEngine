@@ -10,4 +10,5 @@ import lombok.Data;
 public class DefaultTransitionInstance implements TransitionInstance {
     private String sequenceFlowId;
     private String sourceActivityInstanceId;
+    private String targetActivityInstanceId;
 }

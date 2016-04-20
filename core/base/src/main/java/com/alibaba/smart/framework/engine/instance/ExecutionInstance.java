@@ -8,9 +8,21 @@ public interface ExecutionInstance extends Instance {
 
     String getParentId();
 
+    void setParentId(String parentId);
+
     String getProcessInstanceId();
+
+    void setProcessInstanceId(String processInstanceId);
 
     ActivityInstance getActivity();
 
     void setActivity(ActivityInstance activityInstance);
+
+    boolean isSuspend();
+
+    void setSuspend(boolean suspend);
+
+    boolean isFault();
+
+    void setFault(boolean fault);
 }

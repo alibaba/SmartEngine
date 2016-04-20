@@ -6,7 +6,11 @@ package com.alibaba.smart.framework.engine.instance;
  */
 public interface TaskInstance extends Instance {
     String getName();
+    void setName(String name);
     String getProcessInstanceId();
+    void setProcessInstanceId(String processInstanceId);
     String getExecutionInstanceId();
+    void setExecutionInstanceId(String executionInstanceId);
     String getActivityInstanceId();
+    void setActivityInstanceId(String activityInstanceId);
 }

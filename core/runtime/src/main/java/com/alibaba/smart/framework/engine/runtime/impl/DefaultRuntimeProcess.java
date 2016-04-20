@@ -2,9 +2,13 @@ package com.alibaba.smart.framework.engine.runtime.impl;
 
 import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.TransitionInstance;
-import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
+import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.store.ProcessInstanceStorage;
@@ -39,17 +43,26 @@ public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> imple
     public boolean execute(InstanceContext context) {
         String processInstanceId = InstanceIdUtils.uuid();
 
-        DefaultActivityInstance activityInstance = new DefaultActivityInstance();
+        ProcessInstanceFactory processInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
+                ProcessInstanceFactory.class);
+
+        ExecutionInstanceFactory executionInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
+                ExecutionInstanceFactory.class);
+
+        ActivityInstanceFactory activityInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
+                ActivityInstanceFactory.class);
+
+        ActivityInstance activityInstance = activityInstanceFactory.create();
         activityInstance.setInstanceId(InstanceIdUtils.uuid());
         activityInstance.setProcessInstanceId(processInstanceId);
         activityInstance.setActivityId(this.startActivity.getId());
 
-        DefaultExecutionInstance executionInstance = new DefaultExecutionInstance();
+        ExecutionInstance executionInstance = executionInstanceFactory.create();
         executionInstance.setInstanceId(InstanceIdUtils.uuid());
         executionInstance.setProcessInstanceId(processInstanceId);
         executionInstance.setActivity(activityInstance);
 
-        DefaultProcessInstance processInstance = new DefaultProcessInstance();
+        ProcessInstance processInstance = processInstanceFactory.create();
         processInstance.setInstanceId(processInstanceId);
         processInstance.addExecution(executionInstance);
 
@@ -70,7 +83,7 @@ public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> imple
 
         Message transitionSelectMessage = runtimeActivity.invoke(AtomicOperationEvent.ACTIVITY_TRANSITION_SELECT.name(),
                                                                  context);
-        if(null!=transitionSelectMessage) {
+        if (null != transitionSelectMessage) {
             Object transitionSelectBody = transitionSelectMessage.getBody();
             if (null != transitionSelectBody && transitionSelectBody instanceof List) {
                 List<?> executionObjects = (List<?>) transitionSelectBody;

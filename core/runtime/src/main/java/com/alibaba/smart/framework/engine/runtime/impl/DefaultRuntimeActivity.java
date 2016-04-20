@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.runtime.impl;
 
 import com.alibaba.smart.framework.engine.assembly.Activity;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
-import com.alibaba.smart.framework.engine.instance.manager.ExecutionInstanceManager;
+import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
@@ -33,6 +33,7 @@ public class DefaultRuntimeActivity<M extends Activity> extends AbstractRuntimeI
     public void addOutcomeSequenceFlows(String sequenceId, RuntimeSequenceFlow outcome) {
         outcomeSequenceFlows.put(sequenceId, outcome);
     }
+
     @Override
     public boolean execute(InstanceContext context) {
         Message startMessage = this.invokeActivity(AtomicOperationEvent.ACTIVITY_START.name(),
@@ -62,23 +63,26 @@ public class DefaultRuntimeActivity<M extends Activity> extends AbstractRuntimeI
         if (AtomicOperationEvent.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
             DefaultActivityTransitionSelectInvoker invoker = new DefaultActivityTransitionSelectInvoker();
             invoker.setRuntimeActivity(this);
-            //invoker.setExecutionInstanceManager(this.getExtensionPointRegistry().getExtensionPoint(ExecutionInstanceManager.class));
+            invoker.setExtensionPointRegistry(this.getExtensionPointRegistry());
             return invoker;
-        }else {
+        } else {
             return super.createDefaultInvoker(event);
         }
     }
 
     private Message invokeActivity(String event, InstanceContext context) {
         Message message = this.invoke(event, context);
-        if(null==message){
-            message=new DefaultMessage();
+        if (null == message) {
+            message = new DefaultMessage();
         }
+        ExecutionInstance executionInstance = context.getCurrentExecution();
         if (message.isSuspend()) {
-            String processInstanceId = context.getProcessInstance().getInstanceId();
-            String executionInstanceId = context.getCurrentExecution().getInstanceId();
-            this.getExtensionPointRegistry().getExtensionPoint(ExecutionInstanceManager.class).suspend(
-                    processInstanceId, executionInstanceId, event);
+            executionInstance.setSuspend(true);
+        }
+        if (message.isFault()) {
+            message.setSuspend(true);
+            executionInstance.setSuspend(true);
+            executionInstance.setFault(true);
         }
         return message;
     }
