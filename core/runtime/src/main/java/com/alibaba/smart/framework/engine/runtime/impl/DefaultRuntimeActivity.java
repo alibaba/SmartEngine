@@ -75,19 +75,7 @@ public class DefaultRuntimeActivity<M extends Activity> extends AbstractRuntimeI
                 return true;
             }
         }
-
-        Message startMessage = this.invokeActivity(AtomicOperationEvent.ACTIVITY_START.name(),
-                                                   context);
-        if (startMessage.isSuspend()) {
-            return true;
-        }
-        Message executeMessage = this.invokeActivity(AtomicOperationEvent.ACTIVITY_EXECUTE.name(),
-                                                     context);
-        if (executeMessage.isSuspend()) {
-            return true;
-        }
-        Message endMessage = this.invokeActivity(AtomicOperationEvent.ACTIVITY_END.name(), context);
-        return endMessage.isSuspend();
+        return false;
     }
 
     @Override
