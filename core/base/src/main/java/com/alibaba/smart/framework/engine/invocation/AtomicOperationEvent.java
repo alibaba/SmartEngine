@@ -5,7 +5,6 @@ package com.alibaba.smart.framework.engine.invocation;
  */
 public enum  AtomicOperationEvent {
     PROCESS_START,
-    PROCESS_START_INITIAL,
     PROCESS_END,
 
     ACTIVITY_START,

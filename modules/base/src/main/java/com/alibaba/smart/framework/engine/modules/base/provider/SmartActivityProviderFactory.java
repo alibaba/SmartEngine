@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.base.provider;
 
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartActivity;
-import com.alibaba.smart.framework.engine.provider.ActivityProviderFactory;
+import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 
 /**

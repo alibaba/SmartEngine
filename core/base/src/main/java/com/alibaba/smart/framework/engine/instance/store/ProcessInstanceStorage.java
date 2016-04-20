@@ -1,9 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.store;
 
-import com.alibaba.smart.framework.engine.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.instance.TaskInstance;
 
 /**
  * 流程实例存储
@@ -13,12 +10,14 @@ public interface ProcessInstanceStorage {
 
     /**
      * 保存流程实例
+     *
      * @param processInstance 流程实例
      */
     ProcessInstance save(ProcessInstance processInstance);
 
     /**
      * 加载流程实例
+     *
      * @param processInstanceId 流程实例ID
      * @return 实例
      */
@@ -26,10 +25,9 @@ public interface ProcessInstanceStorage {
 
     /**
      * 删除流程实例
+     *
      * @param processInstanceId 流程实例ID
      */
     void remove(String processInstanceId);
-
-
 
 }

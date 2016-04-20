@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.provider;
+package com.alibaba.smart.framework.engine.provider.factory;
 
 /**
  * Provider工厂

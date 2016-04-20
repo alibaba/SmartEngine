@@ -1,8 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.base.provider;
 
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartSequenceFlow;
-import com.alibaba.smart.framework.engine.provider.SequenceFlowProvider;
-import com.alibaba.smart.framework.engine.provider.SequenceFlowProviderFactory;
+import com.alibaba.smart.framework.engine.provider.factory.SequenceFlowProviderFactory;
 import com.alibaba.smart.framework.engine.runtime.RuntimeSequenceFlow;
 
 /**
