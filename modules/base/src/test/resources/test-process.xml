@@ -4,7 +4,7 @@
 	version="1.0.0" name="Test Smart Process">
 
 	<process>
-		<activity id="startOrder" />
+		<activity id="startOrder" start="true"/>
 		<sequenceFlow id="doStart" sourceRef="startOrder"
 			targetRef="payment" />
 

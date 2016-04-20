@@ -26,6 +26,7 @@ public class SmartActivityProcessor extends AbstractStAXArtifactProcessor implem
             throws ProcessorReadException, XMLStreamException {
         SmartActivity smartActivity=new SmartActivity();
         smartActivity.setId(this.getString(reader, "id"));
+        smartActivity.setStartActivity(this.getBoolean(reader, "start"));
 
         this.skipToEndElement(reader);
         return smartActivity;

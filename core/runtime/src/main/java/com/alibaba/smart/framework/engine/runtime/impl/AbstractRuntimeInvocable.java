@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.runtime.impl;
 
 import com.alibaba.smart.framework.engine.assembly.Invocable;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DoNothingInvoker;
@@ -22,6 +23,7 @@ public abstract class AbstractRuntimeInvocable<M extends Invocable> implements R
     private M                 model;
     private InvocableProvider provider;
     private Map<String, Invoker> invokers = new ConcurrentHashMap<>();
+    private ExtensionPointRegistry extensionPointRegistry;
 
     @Override
     public String getId() {
@@ -67,8 +69,12 @@ public abstract class AbstractRuntimeInvocable<M extends Invocable> implements R
         if (null != invoker) {
             this.invokers.put(event, invoker);
         } else {
-            invoker = DoNothingInvoker.instance;
+            invoker = this.createDefaultInvoker(event);
         }
         return invoker;
+    }
+
+    protected Invoker createDefaultInvoker(String event){
+        return DoNothingInvoker.instance;
     }
 }

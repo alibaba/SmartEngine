@@ -1,7 +1,9 @@
 package com.alibaba.smart.framework.engine.modules.base.provider;
 
+import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartSequenceFlow;
+import com.alibaba.smart.framework.engine.modules.base.invocation.SmartInvoker;
 import com.alibaba.smart.framework.engine.provider.SequenceFlowProvider;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.RuntimeSequenceFlow;
@@ -19,6 +21,9 @@ public class SmartSequenceFlowProvider implements SequenceFlowProvider<SmartSequ
 
     @Override
     public Invoker createInvoker(String event) {
+        if(AtomicOperationEvent.TRANSITION_EXECUTE.name().equals(event)){
+            return new SmartInvoker("Execute sequence flow "+sequenceFlow.getId());
+        }
         return null;
     }
 

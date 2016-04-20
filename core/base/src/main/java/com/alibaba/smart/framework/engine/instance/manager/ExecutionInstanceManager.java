@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.manager;
 
+import com.alibaba.smart.framework.engine.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 
 import java.util.List;
@@ -9,14 +10,14 @@ import java.util.List;
  */
 public interface ExecutionInstanceManager {
 
-    ExecutionInstance create(String processInstanceId, List<ExecutionInstance> execution);
+    ExecutionInstance create(ExecutionInstance execution);
 
-    ExecutionInstance create(String processInstanceId, String parentId,List<ExecutionInstance> execution);
+    void updateActivity(String processInstanceId,String executionInstanceId,ActivityInstance activityInstance);
+
+    void suspend(String processInstanceId,String executionInstanceId,String step);
 
     void complete(String processInstanceId,String executionInstanceId);
 
-    List<ExecutionInstance> queryAllExecution(String processInstanceId);
-
-    List<ExecutionInstance> queryRunningExecution(String processInstanceId);
+    List<ExecutionInstance> findExecutions(String processInstanceId);
 
 }

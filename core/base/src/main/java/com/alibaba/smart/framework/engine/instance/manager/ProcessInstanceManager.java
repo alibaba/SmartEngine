@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.instance.ProcessInstance;
  */
 public interface ProcessInstanceManager {
 
-    ProcessInstance start(String processId, String version, EventContext startEvent);
+    ProcessInstance create(ProcessInstance processInstance);
 
     void abort(String instanceId);
 

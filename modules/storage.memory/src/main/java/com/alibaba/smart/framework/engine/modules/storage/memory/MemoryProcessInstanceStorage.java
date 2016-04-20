@@ -17,8 +17,8 @@ public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
 
     @Override
     public ProcessInstance save(ProcessInstance instance) {
-        instance.setId(UUID.randomUUID().toString());
-        this.instances.put(instance.getId(), instance);
+        instance.setInstanceId(UUID.randomUUID().toString());
+        this.instances.put(instance.getInstanceId(), instance);
         return instance;
     }
 

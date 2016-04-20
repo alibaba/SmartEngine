@@ -6,5 +6,6 @@ import com.alibaba.smart.framework.engine.instance.TaskInstance;
  * Created by ettear on 16-4-18.
  */
 public interface TaskInstanceManager {
-    TaskInstance create(TaskInstance task);
+    TaskInstance create(TaskInstance taskInstance);
+    TaskInstance complete(String processInstanceId,String taskInstanceId);
 }

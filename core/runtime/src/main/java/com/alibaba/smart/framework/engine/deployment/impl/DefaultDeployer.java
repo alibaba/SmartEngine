@@ -21,6 +21,7 @@ import com.alibaba.smart.framework.engine.provider.SequenceFlowProvider;
 import com.alibaba.smart.framework.engine.provider.SequenceFlowProviderFactory;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
+import com.alibaba.smart.framework.engine.runtime.RuntimeSequenceFlow;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcessComponent;
@@ -169,10 +170,11 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
 
         //Build runtime model;
         DefaultRuntimeProcess runtimeProcess = new DefaultRuntimeProcess();
+        runtimeProcess.setExtensionPointRegistry(this.extensionPointRegistry);
         runtimeProcess.setClassLoader(classLoader);
         runtimeProcess.setModel(process);
 
-        List<DefaultRuntimeSequenceFlow> runtimeSequenceFlows = new ArrayList<>();
+        Map<String,RuntimeSequenceFlow> runtimeSequenceFlows = new HashMap<>();
         Map<String, RuntimeActivity> runtimeActivities = new HashMap<>();
         for (Base element : elements) {
             if (element instanceof Process) {
@@ -180,14 +182,17 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
                 runtimeActivities.put(runtimeNode.getId(), runtimeNode);
             } else if (element instanceof SequenceFlow) {
                 DefaultRuntimeSequenceFlow runtimeSequenceFlow = new DefaultRuntimeSequenceFlow();
+                runtimeSequenceFlow.setExtensionPointRegistry(this.extensionPointRegistry);
 
                 SequenceFlow sequenceFlow = (SequenceFlow) element;
                 runtimeSequenceFlow.setModel(sequenceFlow);
 
-                runtimeSequenceFlows.add(runtimeSequenceFlow);
+                runtimeSequenceFlows.put(runtimeSequenceFlow.getId(),runtimeSequenceFlow);
 
             } else if (element instanceof Activity) {
                 DefaultRuntimeActivity runtimeActivity = new DefaultRuntimeActivity();
+                runtimeActivity.setExtensionPointRegistry(this.extensionPointRegistry);
+
                 Activity activity = (Activity) element;
                 runtimeActivity.setModel(activity);
 
@@ -196,7 +201,8 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
         }
 
         //Process Sequence Flow
-        for (DefaultRuntimeSequenceFlow runtimeSequenceFlow : runtimeSequenceFlows) {
+        for (Map.Entry<String,RuntimeSequenceFlow> runtimeSequenceFlowEntry : runtimeSequenceFlows.entrySet()) {
+            DefaultRuntimeSequenceFlow runtimeSequenceFlow=(DefaultRuntimeSequenceFlow)runtimeSequenceFlowEntry.getValue();
             String sourceRef = runtimeSequenceFlow.getModel().getSourceRef();
             String targetRef = runtimeSequenceFlow.getModel().getTargetRef();
             DefaultRuntimeActivity source = (DefaultRuntimeActivity) runtimeActivities.get(sourceRef);
@@ -209,7 +215,8 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
         }
 
         //Create Invoker for Sequence Flow
-        for (DefaultRuntimeSequenceFlow runtimeSequenceFlow : runtimeSequenceFlows) {
+        for (Map.Entry<String,RuntimeSequenceFlow> runtimeSequenceFlowEntry : runtimeSequenceFlows.entrySet()) {
+            DefaultRuntimeSequenceFlow runtimeSequenceFlow=(DefaultRuntimeSequenceFlow)runtimeSequenceFlowEntry.getValue();
             SequenceFlowProviderFactory providerFactory = (SequenceFlowProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(
                     runtimeSequenceFlow.getModelType());
             SequenceFlowProvider sequenceFlowProvider = providerFactory.createSequenceFlowProvider(runtimeSequenceFlow);
@@ -217,15 +224,20 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
         }
 
         //Create Invoker for Activity
-        for (RuntimeActivity runtimeActivity : runtimeActivities.values()) {
+        for (Map.Entry<String,RuntimeActivity> runtimeActivityEntry : runtimeActivities.entrySet()) {
+            RuntimeActivity runtimeActivity=runtimeActivityEntry.getValue();
             ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(
                     runtimeActivity.getModelType());
             ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeActivity);
             ((DefaultRuntimeActivity) runtimeActivity).setProvider(activityProvider);
+            if(runtimeActivity.isStartActivity()){
+                runtimeProcess.setStartActivity(runtimeActivity);
+
+            }
         }
 
         runtimeProcess.setActivities(runtimeActivities);
-
+        runtimeProcess.setSequenceFlows(runtimeSequenceFlows);
         return runtimeProcess;
     }
 }

@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.runtime;
 
 import com.alibaba.smart.framework.engine.assembly.Process;
+import com.alibaba.smart.framework.engine.context.InstanceContext;
 
 import java.util.Map;
 
