@@ -4,22 +4,22 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
-import com.alibaba.smart.framework.engine.assembly.processor.StAXArtifactProcessor;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorResolveException;
-import com.alibaba.smart.framework.engine.assembly.processor.impl.AbstractStAXArtifactProcessor;
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
+import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.event.EndEvent;
 
-public class EndEventParser extends AbstractStAXArtifactProcessor implements StAXArtifactProcessor<EndEvent> {
+public class EndEventParser extends AbstractStAXArtifactParser<EndEvent> implements StAXArtifactParser<EndEvent> {
 
     public EndEventParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public void resolve(EndEvent model, ProcessorContext context) throws ProcessorResolveException {
+    public void resolve(EndEvent model, ParseContext context) throws ResolveException {
         model.setUnresolved(false);
     }
 
@@ -34,7 +34,7 @@ public class EndEventParser extends AbstractStAXArtifactProcessor implements StA
     }
 
     @Override
-    public EndEvent read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
+    public EndEvent parse(XMLStreamReader reader, ParseContext context) throws ParseException,
                                                                           XMLStreamException {
         EndEvent endEvent = new EndEvent();
         endEvent.setId(this.getString(reader, "id"));

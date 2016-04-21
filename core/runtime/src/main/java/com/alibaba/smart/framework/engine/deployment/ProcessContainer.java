@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.deployment;
 
+import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
 
 /**
@@ -9,11 +10,11 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
 public interface ProcessContainer {
 
     /**
-     * 添加流程
+     * 安装流程
      *
      * @param processComponent 流程
      */
-    void add(RuntimeProcessComponent processComponent);
+    void install(RuntimeProcessComponent processComponent);
 
     /**
      * 获取流程
@@ -22,5 +23,13 @@ public interface ProcessContainer {
      * @param version   版本
      * @return 流程
      */
-    RuntimeProcessComponent get(String processId, String version);
+    RuntimeProcess get(String processId, String version);
+
+    /**
+     * 获取流程
+     *
+     * @param uri 流程URI
+     * @return 流程
+     */
+    RuntimeProcess get(String uri);
 }

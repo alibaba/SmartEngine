@@ -11,4 +11,6 @@ public interface Invocable extends Base {
      * @return 元素ID
      */
     String getId();
+
+    void setId(String id);
 }

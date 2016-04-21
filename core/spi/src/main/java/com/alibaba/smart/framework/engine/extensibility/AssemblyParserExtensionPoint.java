@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.extensibility;
 
-import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorResolveException;
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 
 import javax.xml.namespace.QName;
@@ -13,7 +13,7 @@ import javax.xml.stream.XMLStreamReader;
  * XML处理器扩展点
  * Created by ettear on 16-4-12.
  */
-public interface AssemblyProcessorExtensionPoint extends ClassLoaderExtensionPoint,LifeCycleListener {
+public interface AssemblyParserExtensionPoint extends ClassLoaderExtensionPoint,LifeCycleListener {
 
     /**
      * Reads a model from an XMLStreamReader.
@@ -22,7 +22,7 @@ public interface AssemblyProcessorExtensionPoint extends ClassLoaderExtensionPoi
      * @param context The context
      * @return A model representation of the input.
      */
-    Object read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException, XMLStreamException;
+    Object parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException;
 
     /**
      * Reads a model from an XMLStreamReader.
@@ -31,9 +31,9 @@ public interface AssemblyProcessorExtensionPoint extends ClassLoaderExtensionPoi
      * @param context The context
      * @return A model representation of the input.
      */
-    Object readAttribute(QName attributeName, XMLStreamReader reader, ProcessorContext context)
-            throws ProcessorReadException,
+    Object readAttribute(QName attributeName, XMLStreamReader reader, ParseContext context)
+            throws ParseException,
                    XMLStreamException;
 
-    void resolve(Object model, ProcessorContext context) throws ProcessorResolveException;
+    void resolve(Object model, ParseContext context) throws ResolveException;
 }

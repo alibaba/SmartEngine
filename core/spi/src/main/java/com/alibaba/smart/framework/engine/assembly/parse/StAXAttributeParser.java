@@ -1,16 +1,16 @@
-package com.alibaba.smart.framework.engine.assembly.processor;
+package com.alibaba.smart.framework.engine.assembly.parse;
 
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * An artifact processor that can read attributes from a StAX XMLStreamReader.
+ * An artifact parser that can parse attributes from a StAX XMLStreamReader.
  * Created by ettear on 16-4-12.
  */
-public interface StAXAttributeProcessor<M> extends ArtifactProcessor<M> {
+public interface StAXAttributeParser<M> extends ArtifactParser<M> {
 
     /**
      * Reads a model from an XMLStreamReader.
@@ -19,6 +19,6 @@ public interface StAXAttributeProcessor<M> extends ArtifactProcessor<M> {
      * @param context The context
      * @return A model representation of the input.
      */
-    M read(QName attributeName, XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
+    M parse(QName attributeName, XMLStreamReader reader, ParseContext context) throws ParseException,
                                                                                          XMLStreamException;
 }

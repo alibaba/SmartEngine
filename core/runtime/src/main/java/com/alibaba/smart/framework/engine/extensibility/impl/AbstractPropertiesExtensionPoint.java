@@ -67,20 +67,20 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
 
     protected void initExtension(ClassLoader classLoader, String type, String className)
             throws ExtensionPointLoadException {
-        Class<?> artifactProcessorClass;
+        Class<?> artifactParserClass;
         try {
-            artifactProcessorClass = classLoader.loadClass(className);
+            artifactParserClass = classLoader.loadClass(className);
 
         } catch (ClassNotFoundException e) {
             throw new ExtensionPointLoadException("Scan config file " + getExtensionName() + " failure!", e);
         }
         Object object;
         try {
-            Constructor constructor = artifactProcessorClass.getConstructor(ExtensionPointRegistry.class);
+            Constructor constructor = artifactParserClass.getConstructor(ExtensionPointRegistry.class);
             object = constructor.newInstance(this.extensionPointRegistry);
         } catch (Exception e) {
             try {
-                Constructor constructor = artifactProcessorClass.getConstructor();
+                Constructor constructor = artifactParserClass.getConstructor();
                 object = constructor.newInstance();
             } catch (Exception ex) {
                 throw new ExtensionPointLoadException("Instance constructor for class " + className + " !", ex);

@@ -6,11 +6,13 @@ import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
+import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
+ * Base Smart Engine Test
  * Created by ettear on 16-4-14.
  */
 public class BaseSmartEngineTest {
@@ -25,8 +27,8 @@ public class BaseSmartEngineTest {
 
         Deployer deployer = smartEngine.getDeployer();
         deployer.deploy(null, "test-process.xml");
-        RuntimeProcessComponent component = processContainer.get("testSmartProcess", "1.0.0");
-        Assert.assertNotNull(component);
+        RuntimeProcess process = processContainer.get("testSmartProcess", "1.0.0");
+        Assert.assertNotNull(process);
 
         ProcessManager processManager = smartEngine.getProcessManager();
 

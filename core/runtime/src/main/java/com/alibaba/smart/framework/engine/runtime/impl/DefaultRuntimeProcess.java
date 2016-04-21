@@ -20,7 +20,7 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
+import lombok.EqualsAndHashCode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +31,10 @@ import java.util.Map;
  * Created by ettear on 16-4-12.
  */
 @Data
-public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> implements RuntimeProcess {
+@EqualsAndHashCode(callSuper = true)
+public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> implements RuntimeProcess {
+
+    private String uri;
 
     private ClassLoader classLoader;
 
@@ -40,6 +43,11 @@ public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> imple
     private Map<String, RuntimeTransition> transitions;
 
     private RuntimeActivity startActivity;
+
+    @Override
+    public Process getModel() {
+        return (Process) super.getModel();
+    }
 
     @Override
     public Message run(InstanceContext context) {
@@ -73,24 +81,25 @@ public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> imple
 
     @Override
     public Message resume(InstanceContext context) {
-        ProcessInstance processInstance=context.getProcessInstance();
-        ExecutionInstance currentExecutionInstance=context.getCurrentExecution();
+        ProcessInstance processInstance = context.getProcessInstance();
+        ExecutionInstance currentExecutionInstance = context.getCurrentExecution();
         ActivityInstance activityInstance = currentExecutionInstance.getActivity();
         String activityId = activityInstance.getActivityId();
-        RuntimeActivity runtimeActivity=this.getActivities().get(activityId);
+        RuntimeActivity runtimeActivity = this.getActivities().get(activityId);
 
-        Message processMessage =  this.runProcess(runtimeActivity, context);
-        if(!processMessage.isSuspend()){
-            ExecutionManager executionManager=this.getExtensionPointRegistry().getExtensionPoint(ExecutionManager.class);
+        Message processMessage = this.runProcess(runtimeActivity, context);
+        if (!processMessage.isSuspend()) {
+            ExecutionManager executionManager = this.getExtensionPointRegistry().getExtensionPoint(
+                    ExecutionManager.class);
 
-            Map<String,Object> variables=new HashMap<>();
+            Map<String, Object> variables = new HashMap<>();
             //TODO 执行结果放入
-            ProcessInstance parentProcessInstance=executionManager.signal(
+            ProcessInstance parentProcessInstance = executionManager.signal(
                     processInstance.getParentInstanceId(), processInstance.getParentExecutionInstanceId(),
-                                                         variables);
-            if(null!=parentProcessInstance && null!=parentProcessInstance.getExecutions()){
+                    variables);
+            if (null != parentProcessInstance && null != parentProcessInstance.getExecutions()) {
                 for (Map.Entry<String, ExecutionInstance> executionInstanceEntry : parentProcessInstance.getExecutions().entrySet()) {
-                    if(executionInstanceEntry.getValue().isSuspend()){
+                    if (executionInstanceEntry.getValue().isSuspend()) {
                         processMessage.setSuspend(true);
                         break;
                     }
@@ -103,7 +112,7 @@ public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> imple
     @Override
     public Message execute(InstanceContext context) {
         //TODO ettear resume
-        ExecutionInstance currentExecutionInstance=context.getCurrentExecution();
+        ExecutionInstance currentExecutionInstance = context.getCurrentExecution();
         currentExecutionInstance.setSuspend(true);
 
         //创建子流程上下文
@@ -113,26 +122,26 @@ public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> imple
                 ProcessInstanceFactory.class);
 
         InstanceContext subInstanceContext = instanceContextFactory.create();
-        ProcessInstance processInstance=processInstanceFactory.create();
-        processInstance.setProcessId(this.getId());
-        //processInstance.getProcessVersion(this.get); TODO ettear add version;
+        ProcessInstance processInstance = processInstanceFactory.create();
+        processInstance.setProcessUri(this.getUri());
         processInstance.setParentInstanceId(currentExecutionInstance.getProcessInstanceId());
         processInstance.setParentExecutionInstanceId(currentExecutionInstance.getInstanceId());
         subInstanceContext.setProcessInstance(processInstance);
         //运行子流程
-        Message processMessage=this.run(subInstanceContext);
-        if(!processMessage.isSuspend()){
+        Message processMessage = this.run(subInstanceContext);
+        if (!processMessage.isSuspend()) {
             //如果子流程结束，当前流程继续执行
             currentExecutionInstance.setSuspend(false);
         }
         return processMessage;
     }
 
-    private Message runProcess(RuntimeActivity startActivity, InstanceContext context){
+    private Message runProcess(RuntimeActivity startActivity, InstanceContext context) {
         Message processMessage = this.executeActivity(startActivity, context);
         //存储
-        this.getExtensionPointRegistry().getExtensionPoint(ProcessInstanceStorage.class).save(context.getProcessInstance());
-        if(!processMessage.isSuspend()) {
+        this.getExtensionPointRegistry().getExtensionPoint(ProcessInstanceStorage.class).save(
+                context.getProcessInstance());
+        if (!processMessage.isSuspend()) {
             this.invoke(AtomicOperationEvent.PROCESS_END.name(),
                         context);
         }
@@ -143,7 +152,7 @@ public class DefaultRuntimeProcess extends DefaultRuntimeActivity<Process> imple
         //执行当前节点
         Message activityExecuteMessage = runtimeActivity.execute(context);
 
-        Message processMessage=new DefaultMessage();
+        Message processMessage = new DefaultMessage();
         if (activityExecuteMessage.isSuspend()) {
             processMessage.setSuspend(true);
             return processMessage;

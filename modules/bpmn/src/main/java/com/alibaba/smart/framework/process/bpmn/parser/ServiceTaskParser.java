@@ -4,25 +4,20 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
-import com.alibaba.smart.framework.engine.assembly.processor.StAXArtifactProcessor;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorResolveException;
-import com.alibaba.smart.framework.engine.assembly.processor.impl.AbstractStAXArtifactProcessor;
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
+import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.task.ServiceTask;
 
-public class ServiceTaskParser extends AbstractStAXArtifactProcessor implements StAXArtifactProcessor<ServiceTask> {
+public class ServiceTaskParser extends AbstractStAXArtifactParser<ServiceTask> implements StAXArtifactParser<ServiceTask> {
 
     public ServiceTaskParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
-    @Override
-    public void resolve(ServiceTask model, ProcessorContext context) throws ProcessorResolveException {
-        // TODO Auto-generated method stub
-        
-    }
 
     @Override
     public QName getArtifactType() {
@@ -37,7 +32,7 @@ public class ServiceTaskParser extends AbstractStAXArtifactProcessor implements 
     }
 
     @Override
-    public ServiceTask read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
+    public ServiceTask parse(XMLStreamReader reader, ParseContext context) throws ParseException,
                                                                              XMLStreamException {
         // TODO Auto-generated method stub
         return null;

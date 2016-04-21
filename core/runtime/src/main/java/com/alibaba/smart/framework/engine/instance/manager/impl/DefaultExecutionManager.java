@@ -45,8 +45,7 @@ public class DefaultExecutionManager implements ExecutionManager,LifeCycleListen
     public ProcessInstance signal(String processInstanceId, String executionInstanceId, Map<String, Object> variables) {
         ProcessInstance processInstance=this.processInstanceStorage.load(processInstanceId);
         if(null!=processInstance){
-            RuntimeProcessComponent processComponent = this.processContainer.get(processInstance.getProcessId(), processInstance.getProcessVersion());
-            RuntimeProcess runtimeProcess = processComponent.getProcess();
+            RuntimeProcess runtimeProcess = this.processContainer.get(processInstance.getProcessUri());
             InstanceContext instanceContext = this.instanceContextFactory.create();
             instanceContext.setProcessInstance(processInstance);
             ExecutionInstance currentExecutionInstance=null;

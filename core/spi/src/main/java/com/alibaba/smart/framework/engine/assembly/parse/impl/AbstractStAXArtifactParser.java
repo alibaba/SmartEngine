@@ -1,10 +1,12 @@
-package com.alibaba.smart.framework.engine.assembly.processor.impl;
+package com.alibaba.smart.framework.engine.assembly.parse.impl;
 
-import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorResolveException;
+import com.alibaba.smart.framework.engine.assembly.Base;
+import com.alibaba.smart.framework.engine.assembly.parse.ArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
-import com.alibaba.smart.framework.engine.extensibility.AssemblyProcessorExtensionPoint;
+import com.alibaba.smart.framework.engine.extensibility.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 
 import javax.xml.namespace.QName;
@@ -15,25 +17,25 @@ import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 /**
- * Abstract StAXArtifactProcessor
+ * Abstract StAXArtifactParser
  * Created by ettear on 16-4-14.
  */
-public abstract class AbstractStAXArtifactProcessor implements LifeCycleListener {
+public abstract class AbstractStAXArtifactParser<M extends Base> implements LifeCycleListener,ArtifactParser<M> {
 
     /**
      * 扩展点注册器
      */
-    private ExtensionPointRegistry          extensionPointRegistry;
-    private AssemblyProcessorExtensionPoint assemblyProcessorExtensionPoint;
+    private ExtensionPointRegistry       extensionPointRegistry;
+    private AssemblyParserExtensionPoint assemblyParserExtensionPoint;
 
-    public AbstractStAXArtifactProcessor(ExtensionPointRegistry extensionPointRegistry) {
+    public AbstractStAXArtifactParser(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 
     @Override
     public void start() {
-        this.assemblyProcessorExtensionPoint = this.extensionPointRegistry.getExtensionPoint(
-                AssemblyProcessorExtensionPoint.class);
+        this.assemblyParserExtensionPoint = this.extensionPointRegistry.getExtensionPoint(
+                AssemblyParserExtensionPoint.class);
     }
 
     @Override
@@ -41,13 +43,18 @@ public abstract class AbstractStAXArtifactProcessor implements LifeCycleListener
 
     }
 
+    @Override
+    public void resolve(M model, ParseContext context) throws ResolveException {
+        model.setUnresolved(false);
+    }
+
     protected String getString(XMLStreamReader reader, String name) {
         return reader.getAttributeValue((String) null, name);
     }
 
     protected boolean getBoolean(XMLStreamReader reader, String name) {
-        String value = reader.getAttributeValue((String)null, name);
-        Boolean attr = value== null?null:Boolean.valueOf(value);
+        String value = reader.getAttributeValue((String) null, name);
+        Boolean attr = value == null ? null : Boolean.valueOf(value);
         if (attr == null) {
             return false;
         } else {
@@ -56,7 +63,7 @@ public abstract class AbstractStAXArtifactProcessor implements LifeCycleListener
     }
 
     public static QName getValueAsQName(XMLStreamReader reader, String value) {
-        if(value != null) {
+        if (value != null) {
             int index = value.indexOf(58);
             String prefix = index == -1?"":value.substring(0, index);
             String localName = index == -1?value:value.substring(index + 1);
@@ -106,13 +113,13 @@ public abstract class AbstractStAXArtifactProcessor implements LifeCycleListener
         }
     }
 
-    protected Object readElement(XMLStreamReader reader, ProcessorContext context)
-            throws ProcessorReadException, XMLStreamException {
-        return this.getAssemblyProcessorExtensionPoint().read(reader,context);
+    protected Object readElement(XMLStreamReader reader, ParseContext context)
+            throws ParseException, XMLStreamException {
+        return this.getAssemblyParserExtensionPoint().parse(reader, context);
     }
-    protected void resolveElement(Object model, ProcessorContext context)
-            throws ProcessorResolveException {
-        this.getAssemblyProcessorExtensionPoint().resolve(model,context);
+    protected void resolveElement(Object model, ParseContext context)
+            throws ResolveException {
+        this.getAssemblyParserExtensionPoint().resolve(model,context);
     }
 
     // GETTER & SETTER
@@ -121,7 +128,7 @@ public abstract class AbstractStAXArtifactProcessor implements LifeCycleListener
         return extensionPointRegistry;
     }
 
-    protected AssemblyProcessorExtensionPoint getAssemblyProcessorExtensionPoint() {
-        return assemblyProcessorExtensionPoint;
+    protected AssemblyParserExtensionPoint getAssemblyParserExtensionPoint() {
+        return assemblyParserExtensionPoint;
     }
 }

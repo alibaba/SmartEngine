@@ -1,14 +1,13 @@
-package com.alibaba.smart.framework.engine.modules.base.assembly.processor;
+package com.alibaba.smart.framework.engine.modules.base.assembly.parser;
 
 import com.alibaba.smart.framework.engine.assembly.Base;
-import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
-import com.alibaba.smart.framework.engine.assembly.processor.StAXArtifactProcessor;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorResolveException;
-import com.alibaba.smart.framework.engine.assembly.processor.impl.AbstractStAXArtifactProcessor;
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
+import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartProcess;
-import com.alibaba.smart.framework.engine.modules.base.assembly.SmartSequenceFlow;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -17,19 +16,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * SmartProcessParser
  * Created by ettear on 16-4-14.
  */
-public class SmartProcessProcessor extends AbstractStAXArtifactProcessor
-        implements StAXArtifactProcessor<SmartProcess> {
+public class SmartProcessParser extends AbstractStAXArtifactParser<SmartProcess>
+        implements StAXArtifactParser<SmartProcess> {
 
-    public SmartProcessProcessor(
+    public SmartProcessParser(
             ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public SmartProcess read(XMLStreamReader reader, ProcessorContext context)
-            throws ProcessorReadException, XMLStreamException {
+    public SmartProcess parse(XMLStreamReader reader, ParseContext context)
+            throws ParseException, XMLStreamException {
         SmartProcess smartProcess = new SmartProcess();
         smartProcess.setId(this.getString(reader, "id"));
 
@@ -45,7 +45,7 @@ public class SmartProcessProcessor extends AbstractStAXArtifactProcessor
     }
 
     @Override
-    public void resolve(SmartProcess model, ProcessorContext context) throws ProcessorResolveException{
+    public void resolve(SmartProcess model, ParseContext context) throws ResolveException {
         if(null!=model.getElements()){
             for(Base element:model.getElements()){
                 this.resolveElement(element,context);

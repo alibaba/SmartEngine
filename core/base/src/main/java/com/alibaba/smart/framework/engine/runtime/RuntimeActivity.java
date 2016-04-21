@@ -7,10 +7,10 @@ import com.alibaba.smart.framework.engine.invocation.Message;
 import java.util.Map;
 
 /**
+ * RuntimeActivity
  * Created by ettear on 16-4-11.
  */
-public interface RuntimeActivity<M extends Activity> extends RuntimeInvocable<M> {
-
+public interface RuntimeActivity extends RuntimeInvocable<Activity> {
     Map<String, RuntimeTransition> getIncomeTransitions();
 
     Map<String, RuntimeTransition> getOutcomeTransitions();

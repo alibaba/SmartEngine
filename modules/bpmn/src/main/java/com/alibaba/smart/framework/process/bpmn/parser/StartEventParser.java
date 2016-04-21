@@ -4,26 +4,18 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
-import com.alibaba.smart.framework.engine.assembly.processor.StAXArtifactProcessor;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorResolveException;
-import com.alibaba.smart.framework.engine.assembly.processor.impl.AbstractStAXArtifactProcessor;
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
+import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.event.StartEvent;
 
-public class StartEventParser extends AbstractStAXArtifactProcessor implements StAXArtifactProcessor<StartEvent> {
+public class StartEventParser extends AbstractStAXArtifactParser<StartEvent> implements StAXArtifactParser<StartEvent> {
 
     public StartEventParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
-    }
-
-    @Override
-    public void resolve(StartEvent model, ProcessorContext context) throws ProcessorResolveException {
-        //TODO 何时设置true?
-        
-        model.setUnresolved(false);
-
     }
 
     @Override
@@ -38,7 +30,7 @@ public class StartEventParser extends AbstractStAXArtifactProcessor implements S
     }
 
     @Override
-    public StartEvent read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
+    public StartEvent parse(XMLStreamReader reader, ParseContext context) throws ParseException,
                                                                             XMLStreamException {
         
         StartEvent startEvent = new StartEvent();

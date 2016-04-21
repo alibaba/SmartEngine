@@ -10,9 +10,14 @@ import java.util.Map;
  * RuntimeProcess
  * Created by ettear on 16-4-12.
  */
-public interface RuntimeProcess extends RuntimeActivity<Process> {
+public interface RuntimeProcess extends RuntimeActivity{
 
-    Map<String, RuntimeActivity> getActivities();
+    String getUri();
+
+    void setUri(String uri);
+
+    @Override
+    Process getModel();
 
     /**
      * 运行流程

@@ -48,12 +48,10 @@ public class DefaultProcessManager implements ProcessManager, LifeCycleListener 
 
     @Override
     public ProcessInstance start(String processId, String version, Map<String, Object> variables) {
-        RuntimeProcessComponent processComponent = this.processContainer.get(processId, version);
-        RuntimeProcess runtimeProcess = processComponent.getProcess();
+        RuntimeProcess runtimeProcess = this.processContainer.get(processId, version);
         InstanceContext instanceContext = this.instanceContextFactory.create();
         ProcessInstance processInstance = processInstanceFactory.create();
-        processInstance.setProcessId(processId);
-        processInstance.setProcessVersion(processId);
+        processInstance.setProcessUri(runtimeProcess.getUri());
         instanceContext.setProcessInstance(processInstance);
         runtimeProcess.run(instanceContext);
         return processInstance;

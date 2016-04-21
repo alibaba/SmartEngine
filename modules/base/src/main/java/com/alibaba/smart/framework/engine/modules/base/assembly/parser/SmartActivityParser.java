@@ -1,9 +1,9 @@
-package com.alibaba.smart.framework.engine.modules.base.assembly.processor;
+package com.alibaba.smart.framework.engine.modules.base.assembly.parser;
 
-import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
-import com.alibaba.smart.framework.engine.assembly.processor.StAXArtifactProcessor;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
-import com.alibaba.smart.framework.engine.assembly.processor.impl.AbstractStAXArtifactProcessor;
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartActivity;
 
@@ -12,18 +12,19 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
+ * SmartActivityParser
  * Created by ettear on 16-4-14.
  */
-public class SmartActivityProcessor extends AbstractStAXArtifactProcessor implements StAXArtifactProcessor<SmartActivity>{
+public class SmartActivityParser extends AbstractStAXArtifactParser<SmartActivity> implements StAXArtifactParser<SmartActivity> {
 
-    public SmartActivityProcessor(
+    public SmartActivityParser(
             ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public SmartActivity read(XMLStreamReader reader, ProcessorContext context)
-            throws ProcessorReadException, XMLStreamException {
+    public SmartActivity parse(XMLStreamReader reader, ParseContext context)
+            throws ParseException, XMLStreamException {
         SmartActivity smartActivity=new SmartActivity();
         smartActivity.setId(this.getString(reader, "id"));
         smartActivity.setStartActivity(this.getBoolean(reader, "start"));
@@ -33,7 +34,7 @@ public class SmartActivityProcessor extends AbstractStAXArtifactProcessor implem
     }
 
     @Override
-    public void resolve(SmartActivity model, ProcessorContext context) {
+    public void resolve(SmartActivity model, ParseContext context) {
         model.setUnresolved(false);
 
     }

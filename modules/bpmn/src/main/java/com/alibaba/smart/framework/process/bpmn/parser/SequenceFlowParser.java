@@ -4,26 +4,20 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
-import com.alibaba.smart.framework.engine.assembly.processor.StAXArtifactProcessor;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorResolveException;
-import com.alibaba.smart.framework.engine.assembly.processor.impl.AbstractStAXArtifactProcessor;
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
+import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.SequenceFlow;
 
 
-public class SequenceFlowParser extends AbstractStAXArtifactProcessor implements StAXArtifactProcessor<SequenceFlow>{
+public class SequenceFlowParser extends AbstractStAXArtifactParser<SequenceFlow> implements StAXArtifactParser<SequenceFlow>{
 
     public SequenceFlowParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
         // TODO Auto-generated constructor stub
-    }
-
-    @Override
-    public void resolve(SequenceFlow model, ProcessorContext context) throws ProcessorResolveException {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -39,7 +33,7 @@ public class SequenceFlowParser extends AbstractStAXArtifactProcessor implements
     }
 
     @Override
-    public SequenceFlow read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
+    public SequenceFlow parse(XMLStreamReader reader, ParseContext context) throws ParseException,
                                                                               XMLStreamException {
         // TODO Auto-generated method stub
         return null;

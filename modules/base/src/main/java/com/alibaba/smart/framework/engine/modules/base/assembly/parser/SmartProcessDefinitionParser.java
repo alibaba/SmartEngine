@@ -1,10 +1,9 @@
-package com.alibaba.smart.framework.engine.modules.base.assembly.processor;
+package com.alibaba.smart.framework.engine.modules.base.assembly.parser;
 
-import com.alibaba.smart.framework.engine.assembly.*;
-import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
-import com.alibaba.smart.framework.engine.assembly.processor.StAXArtifactProcessor;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
-import com.alibaba.smart.framework.engine.assembly.processor.impl.AbstractStAXArtifactProcessor;
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartProcessDefinition;
 
@@ -13,19 +12,20 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
+ * SmartProcessDefinitionParser
  * Created by ettear on 16-4-14.
  */
-public class SmartProcessDefinitionProcessor extends AbstractStAXArtifactProcessor
-        implements StAXArtifactProcessor<SmartProcessDefinition> {
+public class SmartProcessDefinitionParser extends AbstractStAXArtifactParser<SmartProcessDefinition>
+        implements StAXArtifactParser<SmartProcessDefinition> {
 
-    public SmartProcessDefinitionProcessor(
+    public SmartProcessDefinitionParser(
             ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public SmartProcessDefinition read(XMLStreamReader reader, ProcessorContext context)
-            throws ProcessorReadException, XMLStreamException {
+    public SmartProcessDefinition parse(XMLStreamReader reader, ParseContext context)
+            throws ParseException, XMLStreamException {
         SmartProcessDefinition smartProcessDefinition = new SmartProcessDefinition();
         smartProcessDefinition.setId(this.getString(reader, "id"));
         smartProcessDefinition.setVersion(this.getString(reader, "version"));
@@ -41,7 +41,7 @@ public class SmartProcessDefinitionProcessor extends AbstractStAXArtifactProcess
     }
 
     @Override
-    public void resolve(SmartProcessDefinition model, ProcessorContext context) {
+    public void resolve(SmartProcessDefinition model, ParseContext context) {
 
     }
 

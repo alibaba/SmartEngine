@@ -4,27 +4,21 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
-import com.alibaba.smart.framework.engine.assembly.processor.StAXArtifactProcessor;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorResolveException;
-import com.alibaba.smart.framework.engine.assembly.processor.impl.AbstractStAXArtifactProcessor;
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
+import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.Process;
 
 
-public class ProcessParser extends AbstractStAXArtifactProcessor implements StAXArtifactProcessor<Process>{
+public class ProcessParser extends AbstractStAXArtifactParser<Process> implements StAXArtifactParser<Process>{
 
     public ProcessParser(ExtensionPointRegistry extensionPointRegistry) {
         
         super(extensionPointRegistry);
         // TODO Auto-generated constructor stub
-    }
-
-    @Override
-    public void resolve(Process model, ProcessorContext context) throws ProcessorResolveException {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -40,7 +34,7 @@ public class ProcessParser extends AbstractStAXArtifactProcessor implements StAX
     }
 
     @Override
-    public Process read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
+    public Process parse(XMLStreamReader reader, ParseContext context) throws ParseException,
                                                                          XMLStreamException {
         // TODO Auto-generated method stub
         return null;

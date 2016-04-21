@@ -8,13 +8,10 @@ import java.util.Map;
  * Created by ettear on 16-4-12.
  */
 public interface ProcessInstance extends Instance {
-    String getProcessId();
 
-    void setProcessId(String processId);
+    String getProcessUri();
 
-    String getProcessVersion();
-
-    void setProcessVersion(String processVersion);
+    void setProcessUri(String processUri);
 
     String getParentInstanceId();
 

@@ -1,10 +1,9 @@
-package com.alibaba.smart.framework.engine.modules.base.assembly.processor;
+package com.alibaba.smart.framework.engine.modules.base.assembly.parser;
 
-import com.alibaba.smart.framework.engine.assembly.processor.ProcessorContext;
-import com.alibaba.smart.framework.engine.assembly.processor.StAXArtifactProcessor;
-import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorReadException;
-import com.alibaba.smart.framework.engine.assembly.processor.impl.AbstractStAXArtifactProcessor;
-import com.alibaba.smart.framework.engine.extensibility.AssemblyProcessorExtensionPoint;
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartSequenceFlow;
 
@@ -13,19 +12,20 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
+ * SmartSequenceFlowParser
  * Created by ettear on 16-4-14.
  */
-public class SmartSequenceFlowProcessor extends AbstractStAXArtifactProcessor
-        implements StAXArtifactProcessor<SmartSequenceFlow> {
+public class SmartSequenceFlowParser extends AbstractStAXArtifactParser<SmartSequenceFlow>
+        implements StAXArtifactParser<SmartSequenceFlow> {
 
-    public SmartSequenceFlowProcessor(
+    public SmartSequenceFlowParser(
             ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public SmartSequenceFlow read(XMLStreamReader reader, ProcessorContext context)
-            throws ProcessorReadException, XMLStreamException {
+    public SmartSequenceFlow parse(XMLStreamReader reader, ParseContext context)
+            throws ParseException, XMLStreamException {
         SmartSequenceFlow smartSequenceFlow = new SmartSequenceFlow();
         smartSequenceFlow.setId(this.getString(reader, "id"));
         smartSequenceFlow.setSourceRef(this.getString(reader, "sourceRef"));
@@ -36,7 +36,7 @@ public class SmartSequenceFlowProcessor extends AbstractStAXArtifactProcessor
     }
 
     @Override
-    public void resolve(SmartSequenceFlow model, ProcessorContext context) {
+    public void resolve(SmartSequenceFlow model, ParseContext context) {
         model.setUnresolved(false);
     }
 
