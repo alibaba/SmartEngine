@@ -1,9 +1,13 @@
 package com.alibaba.smart.framework.process.bpmn.parser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.assembly.Base;
 import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
@@ -16,25 +20,33 @@ public class ProcessParser extends AbstractStAXArtifactParser<Process> implement
     public ProcessParser(ExtensionPointRegistry extensionPointRegistry) {
 
         super(extensionPointRegistry);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public QName getArtifactType() {
-        // TODO Auto-generated method stub
-        return null;
+        return Process.type;
     }
 
     @Override
     public Class<Process> getModelType() {
-        // TODO Auto-generated method stub
-        return null;
+        return Process.class;
     }
 
     @Override
     public Process parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
-        // TODO Auto-generated method stub
-        return null;
+        
+        Process process = new Process();
+        process.setId(this.getString(reader, "id"));
+
+        List<Base> elements=new ArrayList<>();
+        while (this.nextChildElement(reader)) {
+            Object element=this.readElement(reader,context);
+            if(element instanceof Base){
+                elements.add((Base)element);
+            }
+        }
+        process.setElements(elements);
+        return process;
     }
 
 }

@@ -64,7 +64,8 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
             throws ExtensionPointLoadException {
         if (artifactParseObject instanceof StAXArtifactParser) {
             StAXArtifactParser artifactParser = (StAXArtifactParser) artifactParseObject;
-            this.artifactParsers.put(artifactParser.getArtifactType(), artifactParser);
+            QName artifactType = artifactParser.getArtifactType();
+            this.artifactParsers.put(artifactType, artifactParser);
             this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
         } else if (artifactParseObject instanceof StAXAttributeParser) {
             StAXAttributeParser artifactParser = (StAXAttributeParser) artifactParseObject;

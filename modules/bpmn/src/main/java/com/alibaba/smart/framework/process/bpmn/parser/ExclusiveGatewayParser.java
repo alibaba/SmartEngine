@@ -7,7 +7,6 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
 import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.gateway.ExclusiveGateway;
@@ -18,29 +17,28 @@ public class ExclusiveGatewayParser extends AbstractStAXArtifactParser<Exclusive
         super(extensionPointRegistry);
     }
 
-    @Override
-    public void resolve(ExclusiveGateway model, ParseContext context) throws ResolveException {
-        // TODO Auto-generated method stub
 
-    }
 
     @Override
     public QName getArtifactType() {
-        // TODO Auto-generated method stub
-        return null;
+        return ExclusiveGateway.type;
     }
 
     @Override
     public Class<ExclusiveGateway> getModelType() {
-        // TODO Auto-generated method stub
-        return null;
+        return ExclusiveGateway.class;
     }
 
     @Override
     public ExclusiveGateway parse(XMLStreamReader reader, ParseContext context) throws ParseException,
                                                                                XMLStreamException {
-        // TODO Auto-generated method stub
-        return null;
+        ExclusiveGateway exclusiveGateway = new ExclusiveGateway();
+        exclusiveGateway.setId(this.getString(reader, "id"));
+        exclusiveGateway.setId(this.getString(reader, "name"));
+
+
+        this.skipToEndElement(reader);
+        return exclusiveGateway;
     }
 
 }

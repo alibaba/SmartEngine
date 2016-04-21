@@ -15,26 +15,34 @@ public class ProcessDefinitionParser extends AbstractStAXArtifactParser<ProcessD
 
     public ProcessDefinitionParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public QName getArtifactType() {
-        // TODO Auto-generated method stub
-        return null;
+        return ProcessDefinition.type;
     }
 
     @Override
     public Class<ProcessDefinition> getModelType() {
-        // TODO Auto-generated method stub
-        return null;
+        return ProcessDefinition.class;
     }
 
     @Override
     public ProcessDefinition parse(XMLStreamReader reader, ParseContext context) throws ParseException,
                                                                                 XMLStreamException {
-        // TODO Auto-generated method stub
-        return null;
+        
+        ProcessDefinition processDefinition = new ProcessDefinition();
+        processDefinition.setId(this.getString(reader, "id"));
+        processDefinition.setVersion(this.getString(reader, "version"));
+        processDefinition.setName(this.getString(reader, "name"));
+
+        while (this.nextChildElement(reader)) {
+            Object element = this.readElement(reader, context);
+            if (element instanceof com.alibaba.smart.framework.process.model.bpmn.assembly.Process) {
+                processDefinition.setProcess((com.alibaba.smart.framework.process.model.bpmn.assembly.Process)element);
+            }
+        }
+        return processDefinition; 
     }
 
 }

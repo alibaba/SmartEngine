@@ -1,59 +1,33 @@
 package com.xx.test;
 
+import org.junit.Assert;
 import org.junit.Test;
 
+import com.alibaba.smart.framework.engine.DefaultSmartEngine;
+import com.alibaba.smart.framework.engine.deployment.Deployer;
+import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
+import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 
+/**
+ * Base Smart Engine Test Created by ettear on 16-4-14.
+ */
 public class ExclusiveProcessTest {
-//    private ProcessDefinition processDefinition;
-//    
-//    @Before
-//    public void before(){
-//        processDefinition = new ProcessDefinition();
-//        processDefinition.setName("secure_payment");
-//        StartEvent startEvent = new StartEvent();
-//
-//        ProcessSequenceFlow startToValidationSequenceFlow = new ProcessSequenceFlow();
-//
-//        ServiceTask validationServiceTask = new ServiceTask();
-//        validationServiceTask.setImplementationType("java");
-//        validationServiceTask.setImplementation("basicValidation");
-//
-//        startEvent.getOutcomingFlowList().add(startToValidationSequenceFlow);
-//        startToValidationSequenceFlow.setSourceActivity(startEvent);
-//        startToValidationSequenceFlow.setTargetActivity(validationServiceTask);
-//        validationServiceTask.getIncomingFlowList().add(startToValidationSequenceFlow);
-//
-//        ProcessSequenceFlow validationToAdapterSequenceFlow = new ProcessSequenceFlow();
-//
-//        ServiceTask adapterServiceTask = new ServiceTask();
-//        adapterServiceTask.setImplementationType("java");
-//        adapterServiceTask.setImplementation("adpaterMhtOrder");
-//
-//        adapterServiceTask.getIncomingFlowList().add(validationToAdapterSequenceFlow);
-//        validationToAdapterSequenceFlow.setSourceActivity(validationServiceTask);
-//        validationToAdapterSequenceFlow.setTargetActivity(adapterServiceTask);
-//
-//        ProcessSequenceFlow adapterToEndSequenceFlow = new ProcessSequenceFlow();
-//        EndEvent endEvent = new EndEvent();
-//
-//        endEvent.getIncomingFlowList().add(adapterToEndSequenceFlow);
-//        adapterToEndSequenceFlow.setSourceActivity(adapterServiceTask);
-//        adapterToEndSequenceFlow.setTargetActivity(endEvent);
-//
-//        processDefinition.getNodeList().add(startEvent);
-//        processDefinition.getNodeList().add(validationServiceTask);
-//        processDefinition.getNodeList().add(adapterServiceTask);
-//        processDefinition.getNodeList().add(endEvent);
-//
-//    }
-    
+
     @Test
-    public void test(){
-        
-        
-         
+    public void test() throws Exception {
+        DefaultSmartEngine smartEngine = new DefaultSmartEngine();
+        smartEngine.start();
+
+        ExtensionPointRegistry extensionPointRegistry = smartEngine.getExtensionPointRegistry();
+        ProcessContainer processContainer = extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
+
+        Deployer deployer = smartEngine.getDeployer();
+        deployer.deploy(null, "test-exclusive.bpmn20.xml");
+        RuntimeProcess process = processContainer.get("test-exclusive-my", "1.0.0");
+        Assert.assertNotNull(process);
+
+       
+
     }
-    
-    
-    
 }

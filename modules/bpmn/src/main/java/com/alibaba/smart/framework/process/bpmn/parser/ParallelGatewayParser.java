@@ -19,20 +19,25 @@ public class ParallelGatewayParser extends AbstractStAXArtifactParser<ParallelGa
 
     @Override
     public QName getArtifactType() {
-        // TODO Auto-generated method stub
-        return null;
+        return ParallelGateway.type;
     }
 
     @Override
     public Class<ParallelGateway> getModelType() {
-        // TODO Auto-generated method stub
-        return null;
+        return ParallelGateway.class;
     }
 
     @Override
     public ParallelGateway parse(XMLStreamReader reader, ParseContext context) throws ParseException,
                                                                               XMLStreamException {
-        // TODO Auto-generated method stub
+        
+        ParallelGateway parallelGateway = new ParallelGateway();
+        parallelGateway.setId(this.getString(reader, "id"));
+        parallelGateway.setId(this.getString(reader, "name"));
+
+
+        this.skipToEndElement(reader);
+        
         return null;
     }
 

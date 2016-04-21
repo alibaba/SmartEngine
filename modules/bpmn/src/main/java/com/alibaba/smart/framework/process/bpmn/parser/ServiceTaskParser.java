@@ -29,8 +29,11 @@ public class ServiceTaskParser extends AbstractStAXArtifactParser<ServiceTask> i
 
     @Override
     public ServiceTask parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
-        // TODO Auto-generated method stub
-        return null;
+        ServiceTask serviceTask = new ServiceTask();
+        serviceTask.setId(this.getString(reader, "id"));
+
+        this.skipToEndElement(reader);
+        return serviceTask;
     }
 
 }

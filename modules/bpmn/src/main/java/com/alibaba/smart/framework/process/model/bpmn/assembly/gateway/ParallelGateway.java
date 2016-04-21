@@ -1,5 +1,8 @@
 package com.alibaba.smart.framework.process.model.bpmn.assembly.gateway;
 
+import javax.xml.namespace.QName;
+
+import com.alibaba.smart.framework.process.model.bpmn.NameSpaceConstant;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.ProcessActivity;
 
 /**
@@ -8,9 +11,10 @@ import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.ProcessA
  */
 public class ParallelGateway extends ProcessActivity {
 
-    /**
-     * 
-     */
+     
     private static final long serialVersionUID = 4234776128556310813L;
+    
+    public final static QName type = new QName(NameSpaceConstant.NAME_SPACE,"parallelGateway");
+
 
 }
