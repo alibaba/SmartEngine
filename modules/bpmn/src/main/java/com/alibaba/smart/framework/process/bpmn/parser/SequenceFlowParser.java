@@ -10,30 +10,41 @@ import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseExceptio
 import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.SequenceFlow;
+import com.alibaba.smart.framework.process.model.bpmn.assembly.gateway.ConditionExpression;
 
 public class SequenceFlowParser extends AbstractStAXArtifactParser<SequenceFlow> implements StAXArtifactParser<SequenceFlow> {
 
     public SequenceFlowParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public QName getArtifactType() {
-        // TODO Auto-generated method stub
-        return null;
+        return SequenceFlow.type;
     }
 
     @Override
     public Class<SequenceFlow> getModelType() {
-        // TODO Auto-generated method stub
-        return null;
+        return SequenceFlow.class;
     }
 
     @Override
     public SequenceFlow parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
-        // TODO Auto-generated method stub
-        return null;
+        SequenceFlow sequenceFlow = new SequenceFlow();
+        sequenceFlow.setId(this.getString(reader, "id"));
+        sequenceFlow.setSourceRef(this.getString(reader, "sourceRef"));
+        sequenceFlow.setTargetRef(this.getString(reader, "targetRef"));
+
+        while (this.nextChildElement(reader)) {
+            Object element = this.readElement(reader, context);
+            //TODO 当条件为空时,设置默认的条件
+            if (element instanceof ConditionExpression) {
+                ConditionExpression conditionExpression = (ConditionExpression) element;
+                sequenceFlow.setConditionExpression(conditionExpression);
+            }
+        }
+
+        return sequenceFlow;
     }
 
 }

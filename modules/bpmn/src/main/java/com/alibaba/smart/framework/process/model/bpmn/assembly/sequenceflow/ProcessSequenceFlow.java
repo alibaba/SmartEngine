@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.process.model.bpmn.assembly.sequenceflow;
 
 import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.BaseProcessNode;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.ProcessActivity;
-import com.alibaba.smart.framework.process.model.bpmn.assembly.gateway.RestrictionExpression;
+import com.alibaba.smart.framework.process.model.bpmn.assembly.gateway.ConditionExpression;
 
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
@@ -11,7 +11,7 @@ public class ProcessSequenceFlow extends BaseProcessNode {
 
     private ProcessActivity       sourceActivity;
     private ProcessActivity       targetActivity;
-    private RestrictionExpression conditionExpression;
+    private ConditionExpression conditionExpression;
 
     public ProcessActivity getSourceActivity() {
         return sourceActivity;
@@ -29,11 +29,11 @@ public class ProcessSequenceFlow extends BaseProcessNode {
         this.targetActivity = targetActivity;
     }
 
-    public RestrictionExpression getConditionExpression() {
+    public ConditionExpression getConditionExpression() {
         return conditionExpression;
     }
 
-    public void setConditionExpression(RestrictionExpression conditionExpression) {
+    public void setConditionExpression(ConditionExpression conditionExpression) {
         this.conditionExpression = conditionExpression;
     }
 

@@ -19,14 +19,12 @@ public class ServiceTaskParser extends AbstractStAXArtifactParser<ServiceTask> i
 
     @Override
     public QName getArtifactType() {
-        // TODO Auto-generated method stub
-        return null;
+        return ServiceTask.type;
     }
 
     @Override
     public Class<ServiceTask> getModelType() {
-        // TODO Auto-generated method stub
-        return null;
+        return ServiceTask.class;
     }
 
     @Override
