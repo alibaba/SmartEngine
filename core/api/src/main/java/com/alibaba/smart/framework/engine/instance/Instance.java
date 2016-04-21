@@ -20,16 +20,4 @@ public interface Instance extends Serializable {
      * @param id 实例ID
      */
     void setInstanceId(String id);
-
-    String getStatus();
-
-    void setStatus(String status);
-
-    Date getStartDate();
-
-    void setStartDate(Date startDate);
-
-    Date getCompleteDate();
-
-    void setCompleteDate(Date completeDate);
 }

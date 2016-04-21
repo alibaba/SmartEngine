@@ -16,17 +16,4 @@ public abstract class AbstractInstance implements Instance {
      * 实例Id
      */
     private String instanceId;
-    /**
-     * 状态
-     */
-    private String status;
-    /**
-     * 开始时间
-     */
-    private Date   startDate;
-    /**
-     * 结束时间
-     */
-    private Date   completeDate;
-
 }

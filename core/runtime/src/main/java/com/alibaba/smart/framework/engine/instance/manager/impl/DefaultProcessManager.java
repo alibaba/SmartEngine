@@ -5,14 +5,11 @@ import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
 import com.alibaba.smart.framework.engine.instance.store.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
 
 import java.util.Map;
 
@@ -64,6 +61,6 @@ public class DefaultProcessManager implements ProcessManager, LifeCycleListener 
 
     @Override
     public ProcessInstance find(String processInstanceId) {
-        return this.processInstanceStorage.load(processInstanceId);
+        return this.processInstanceStorage.find(processInstanceId);
     }
 }

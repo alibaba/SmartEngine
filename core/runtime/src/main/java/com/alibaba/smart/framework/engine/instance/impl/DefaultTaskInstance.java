@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DefaultTaskInstance extends AbstractInstance implements TaskInstance {
+public class DefaultTaskInstance extends AbstractLifeCycleInstance implements TaskInstance {
     private String name;
     private String processInstanceId;
     private String executionInstanceId;

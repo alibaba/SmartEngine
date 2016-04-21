@@ -14,10 +14,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DefaultProcessInstance extends AbstractInstance implements ProcessInstance {
+public class DefaultProcessInstance extends AbstractLifeCycleInstance implements ProcessInstance {
     private String processUri;
     private String parentInstanceId;
     private String parentExecutionInstanceId;
+    private String parentActivityInstanceId;
     /**
      * Running executions
      */

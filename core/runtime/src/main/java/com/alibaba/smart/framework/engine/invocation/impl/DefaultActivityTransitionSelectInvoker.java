@@ -4,6 +4,7 @@ import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
@@ -33,6 +34,7 @@ public class DefaultActivityTransitionSelectInvoker implements Invoker {
         ExecutionInstance executionInstance = context.getCurrentExecution();
         ActivityInstance currentActivityInstance = executionInstance.getActivity();
         Map<String, RuntimeTransition> outcomeTransitions = this.runtimeActivity.getOutcomeTransitions();
+        Message message = new DefaultMessage();
         if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
             for (Map.Entry<String, RuntimeTransition> transitionEntry : outcomeTransitions.entrySet()) {
                 RuntimeTransition runtimeTransition = transitionEntry.getValue();
@@ -61,15 +63,13 @@ public class DefaultActivityTransitionSelectInvoker implements Invoker {
             }
             List<ExecutionInstance> executions = new ArrayList<>();
             executions.add(executionInstance);
-            Message message = new DefaultMessage();
             message.setBody(executions);
-
-            return message;
+        }else {//没有后续节点，结束执行实例
+            executionInstance.setStatus(InstanceStatus.completed);
+            executionInstance.setCompleteDate(new Date());
+            //this.executionInstanceManager.complete(processInstance.getInstanceId(), executionInstance.getInstanceId());
         }
-        executionInstance.setStatus("completed");//TODO ettear
-        executionInstance.setCompleteDate(new Date());
-        //this.executionInstanceManager.complete(processInstance.getInstanceId(), executionInstance.getInstanceId());
-        return null;
+        return message;
     }
 
     public RuntimeActivity getRuntimeActivity() {

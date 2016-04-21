@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * 默认关联实例
  * Created by ettear on 16-4-19.
  */
 @Data

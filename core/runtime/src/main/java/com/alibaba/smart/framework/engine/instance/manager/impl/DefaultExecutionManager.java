@@ -43,7 +43,7 @@ public class DefaultExecutionManager implements ExecutionManager,LifeCycleListen
 
     @Override
     public ProcessInstance signal(String processInstanceId, String executionInstanceId, Map<String, Object> variables) {
-        ProcessInstance processInstance=this.processInstanceStorage.load(processInstanceId);
+        ProcessInstance processInstance=this.processInstanceStorage.find(processInstanceId);
         if(null!=processInstance){
             RuntimeProcess runtimeProcess = this.processContainer.get(processInstance.getProcessUri());
             InstanceContext instanceContext = this.instanceContextFactory.create();

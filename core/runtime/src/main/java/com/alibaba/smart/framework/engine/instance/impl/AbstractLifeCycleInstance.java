@@ -1,0 +1,36 @@
+package com.alibaba.smart.framework.engine.instance.impl;
+
+import com.alibaba.smart.framework.engine.instance.InstanceStatus;
+import com.alibaba.smart.framework.engine.instance.LifeCycleInstance;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.Date;
+
+/**
+ * 抽象实例
+ * Created by ettear on 16-4-19.
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+public abstract class AbstractLifeCycleInstance extends AbstractInstance implements LifeCycleInstance {
+
+    /**
+     * 状态
+     */
+    private InstanceStatus status = InstanceStatus.running;
+    /**
+     * 开始时间
+     */
+    private Date    startDate;
+    /**
+     * 结束时间
+     */
+    private Date    completeDate;
+    //private boolean suspend;
+
+    @Override
+    public boolean isSuspend() {
+        return InstanceStatus.suspended==this.status;
+    }
+}

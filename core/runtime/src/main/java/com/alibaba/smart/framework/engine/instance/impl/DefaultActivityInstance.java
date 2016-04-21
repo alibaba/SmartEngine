@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DefaultActivityInstance extends AbstractInstance implements ActivityInstance {
+public class DefaultActivityInstance extends AbstractLifeCycleInstance implements ActivityInstance {
 
     private String activityId;
     private String processInstanceId;

@@ -13,18 +13,26 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
 
-    private Map<String, ProcessInstance> instances = new ConcurrentHashMap<>();
+    private Map<String, ProcessInstance> instances           = new ConcurrentHashMap<>();
+    private Map<String, ProcessInstance> subProcessInstances = new ConcurrentHashMap<>();
 
     @Override
     public ProcessInstance save(ProcessInstance instance) {
-        instance.setInstanceId(UUID.randomUUID().toString());
         this.instances.put(instance.getInstanceId(), instance);
+        if(null!=instance.getParentActivityInstanceId()){
+            this.subProcessInstances.put(instance.getParentActivityInstanceId(),instance);
+        }
         return instance;
     }
 
     @Override
-    public ProcessInstance load(String instanceId) {
+    public ProcessInstance find(String instanceId) {
         return this.instances.get(instanceId);
+    }
+
+    @Override
+    public ProcessInstance findSubProcess(String activityInstanceId) {
+        return this.subProcessInstances.get(activityInstanceId);
     }
 
     @Override

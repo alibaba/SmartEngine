@@ -11,10 +11,9 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DefaultExecutionInstance extends AbstractInstance implements ExecutionInstance {
+public class DefaultExecutionInstance extends AbstractLifeCycleInstance implements ExecutionInstance {
 
-    private String           processInstanceId;
+    private String            processInstanceId;
     private ActivityInstance activity;
-    private boolean          suspend;
-    private boolean          fault;
+    private boolean fault;
 }
