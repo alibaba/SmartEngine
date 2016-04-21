@@ -1,9 +1,9 @@
-package com.alibaba.smart.framework.process.model.bpmn;
+package com.alibaba.smart.framework.process.model.bpmn.assembly;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.smart.framework.process.model.bpmn.activity.ProcessActivity;
+import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.ProcessActivity;
 
 import lombok.Data;
 

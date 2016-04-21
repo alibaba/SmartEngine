@@ -6,7 +6,7 @@ import com.alibaba.smart.framework.process.model.runtime.instance.ProcessInstanc
 import com.alibaba.smart.framework.process.service.RuntimeService;
 
 
-public class RuntimeServiceImpl implements  RuntimeService{
+public class DefaultRuntimeService implements  RuntimeService{
 
     @Override
     public <T> ProcessInstance start(ProcessInstanceStartCommand<T> commond) {

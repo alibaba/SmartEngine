@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.process.model.bpmn.task;
+package com.alibaba.smart.framework.process.model.bpmn.assembly.task;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

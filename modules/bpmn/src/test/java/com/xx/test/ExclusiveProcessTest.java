@@ -3,11 +3,11 @@ package com.xx.test;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.alibaba.smart.framework.process.model.bpmn.ProcessDefinition;
-import com.alibaba.smart.framework.process.model.bpmn.event.EndEvent;
-import com.alibaba.smart.framework.process.model.bpmn.event.StartEvent;
-import com.alibaba.smart.framework.process.model.bpmn.sequenceflow.ProcessSequenceFlow;
-import com.alibaba.smart.framework.process.model.bpmn.task.ServiceTask;
+import com.alibaba.smart.framework.process.model.bpmn.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.process.model.bpmn.assembly.event.EndEvent;
+import com.alibaba.smart.framework.process.model.bpmn.assembly.event.StartEvent;
+import com.alibaba.smart.framework.process.model.bpmn.assembly.sequenceflow.ProcessSequenceFlow;
+import com.alibaba.smart.framework.process.model.bpmn.assembly.task.ServiceTask;
 
 
 public class ExclusiveProcessTest {

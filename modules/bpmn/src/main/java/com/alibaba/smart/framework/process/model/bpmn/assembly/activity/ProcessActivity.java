@@ -1,9 +1,9 @@
-package com.alibaba.smart.framework.process.model.bpmn.activity;
+package com.alibaba.smart.framework.process.model.bpmn.assembly.activity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.smart.framework.process.model.bpmn.sequenceflow.ProcessSequenceFlow;
+import com.alibaba.smart.framework.process.model.bpmn.assembly.sequenceflow.ProcessSequenceFlow;
 
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM

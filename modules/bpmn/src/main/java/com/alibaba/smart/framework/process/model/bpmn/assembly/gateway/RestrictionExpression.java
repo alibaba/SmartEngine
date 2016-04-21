@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.process.model.bpmn.gateway;
+package com.alibaba.smart.framework.process.model.bpmn.assembly.gateway;
 
 import lombok.Data;
 
