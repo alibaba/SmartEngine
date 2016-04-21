@@ -12,5 +12,9 @@ import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.ProcessA
 @Data
 public class Task extends ProcessActivity {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5042056118774610434L;
     private boolean isAsync;
 }

@@ -10,19 +10,19 @@ import com.alibaba.smart.framework.engine.assembly.processor.exception.Processor
 import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorResolveException;
 import com.alibaba.smart.framework.engine.assembly.processor.impl.AbstractStAXArtifactProcessor;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.process.model.bpmn.assembly.event.StartEvent;
+import com.alibaba.smart.framework.process.model.bpmn.assembly.gateway.ParallelGateway;
 
 
-public class ParallelGatewayParser  extends AbstractStAXArtifactProcessor implements StAXArtifactProcessor<StartEvent> {
+public class ParallelGatewayParser  extends AbstractStAXArtifactProcessor implements StAXArtifactProcessor<ParallelGateway> {
 
     public ParallelGatewayParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public void resolve(StartEvent model, ProcessorContext context) throws ProcessorResolveException {
+    public void resolve(ParallelGateway model, ProcessorContext context) throws ProcessorResolveException {
         // TODO Auto-generated method stub
-
+        
     }
 
     @Override
@@ -32,17 +32,18 @@ public class ParallelGatewayParser  extends AbstractStAXArtifactProcessor implem
     }
 
     @Override
-    public Class<StartEvent> getModelType() {
+    public Class<ParallelGateway> getModelType() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public StartEvent read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
-                                                                            XMLStreamException {
+    public ParallelGateway read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
+                                                                                 XMLStreamException {
         // TODO Auto-generated method stub
         return null;
     }
 
+  
 }
 

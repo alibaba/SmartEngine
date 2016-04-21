@@ -7,5 +7,9 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 public class UserTask extends Task {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4866209767005731207L;
 
 }

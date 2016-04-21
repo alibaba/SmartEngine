@@ -20,20 +20,21 @@ public class StartEventParser extends AbstractStAXArtifactProcessor implements S
 
     @Override
     public void resolve(StartEvent model, ProcessorContext context) throws ProcessorResolveException {
-        // TODO Auto-generated method stub
+        //TODO 何时设置true?
+        
+        model.setUnresolved(false);
 
     }
 
     @Override
     public QName getArtifactType() {
-        // TODO Auto-generated method stub
-        return null;
+        return StartEvent.type;
     }
 
     @Override
     public Class<StartEvent> getModelType() {
-        // TODO Auto-generated method stub
-        return null;
+        //TODO 可否通过获取泛型,避免覆写这个方法
+        return StartEvent.class;
     }
 
     @Override

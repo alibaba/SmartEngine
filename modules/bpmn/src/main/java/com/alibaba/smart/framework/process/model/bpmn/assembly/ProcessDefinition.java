@@ -1,21 +1,18 @@
 package com.alibaba.smart.framework.process.model.bpmn.assembly;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.ProcessActivity;
-
-import lombok.Data;
+import com.alibaba.smart.framework.engine.assembly.impl.AbstractProcessDefinition;
+import com.alibaba.smart.framework.process.model.bpmn.NameSpaceConstant;
 
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
  */
-@Data
-public class ProcessDefinition {
+public class ProcessDefinition extends AbstractProcessDefinition {
+    public final static QName type = new QName(NameSpaceConstant.NAME_SPACE,"definitions");
 
-    private Long                  id;
-    private String                name;
-    private Integer               version;
+     
+    private static final long serialVersionUID = -7973338663278156625L;
 
-    private List<ProcessActivity> nodeList = new ArrayList<ProcessActivity>();
+  
 }

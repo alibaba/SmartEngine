@@ -7,4 +7,9 @@ import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.ProcessA
  */
 public class ProcessEvent extends ProcessActivity {
 
+    /**
+     * TODO 考虑删除
+     */
+    private static final long serialVersionUID = -5497588187835740818L;
+
 }

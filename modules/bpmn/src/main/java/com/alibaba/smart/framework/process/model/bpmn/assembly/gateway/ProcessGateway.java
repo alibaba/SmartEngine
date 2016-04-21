@@ -7,4 +7,9 @@ import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.ProcessA
  */
 public class ProcessGateway extends ProcessActivity {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5634582169760102558L;
+
 }

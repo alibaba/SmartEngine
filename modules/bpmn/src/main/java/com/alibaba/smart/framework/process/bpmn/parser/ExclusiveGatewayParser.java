@@ -10,19 +10,19 @@ import com.alibaba.smart.framework.engine.assembly.processor.exception.Processor
 import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorResolveException;
 import com.alibaba.smart.framework.engine.assembly.processor.impl.AbstractStAXArtifactProcessor;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.process.model.bpmn.assembly.event.StartEvent;
+import com.alibaba.smart.framework.process.model.bpmn.assembly.gateway.ExclusiveGateway;
 
 
-public class ExclusiveGatewayParser  extends AbstractStAXArtifactProcessor implements StAXArtifactProcessor<StartEvent> {
+public class ExclusiveGatewayParser  extends AbstractStAXArtifactProcessor implements StAXArtifactProcessor<ExclusiveGateway> {
 
     public ExclusiveGatewayParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public void resolve(StartEvent model, ProcessorContext context) throws ProcessorResolveException {
+    public void resolve(ExclusiveGateway model, ProcessorContext context) throws ProcessorResolveException {
         // TODO Auto-generated method stub
-
+        
     }
 
     @Override
@@ -32,17 +32,18 @@ public class ExclusiveGatewayParser  extends AbstractStAXArtifactProcessor imple
     }
 
     @Override
-    public Class<StartEvent> getModelType() {
+    public Class<ExclusiveGateway> getModelType() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public StartEvent read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
-                                                                            XMLStreamException {
+    public ExclusiveGateway read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
+                                                                                  XMLStreamException {
         // TODO Auto-generated method stub
         return null;
     }
 
+ 
 }
 

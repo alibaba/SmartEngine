@@ -10,16 +10,18 @@ import com.alibaba.smart.framework.engine.assembly.processor.exception.Processor
 import com.alibaba.smart.framework.engine.assembly.processor.exception.ProcessorResolveException;
 import com.alibaba.smart.framework.engine.assembly.processor.impl.AbstractStAXArtifactProcessor;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.process.model.bpmn.assembly.task.ServiceTask;
+import com.alibaba.smart.framework.process.model.bpmn.assembly.ProcessDefinition;
 
-public class ServiceTaskParser extends AbstractStAXArtifactProcessor implements StAXArtifactProcessor<ServiceTask> {
 
-    public ServiceTaskParser(ExtensionPointRegistry extensionPointRegistry) {
+public class ProcessDefinitionParser   extends AbstractStAXArtifactProcessor implements StAXArtifactProcessor<ProcessDefinition>{
+
+    public ProcessDefinitionParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
+        // TODO Auto-generated constructor stub
     }
 
     @Override
-    public void resolve(ServiceTask model, ProcessorContext context) throws ProcessorResolveException {
+    public void resolve(ProcessDefinition model, ProcessorContext context) throws ProcessorResolveException {
         // TODO Auto-generated method stub
         
     }
@@ -31,17 +33,16 @@ public class ServiceTaskParser extends AbstractStAXArtifactProcessor implements 
     }
 
     @Override
-    public Class<ServiceTask> getModelType() {
+    public Class<ProcessDefinition> getModelType() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public ServiceTask read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
-                                                                             XMLStreamException {
+    public ProcessDefinition read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
+                                                                                   XMLStreamException {
         // TODO Auto-generated method stub
         return null;
     }
- 
 
 }
