@@ -34,15 +34,12 @@ public class EndEventParser extends AbstractStAXArtifactParser<EndEvent> impleme
     }
 
     @Override
-    public EndEvent parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                          XMLStreamException {
+    public EndEvent parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         EndEvent endEvent = new EndEvent();
         endEvent.setId(this.getString(reader, "id"));
 
         this.skipToEndElement(reader);
         return endEvent;
     }
-
-    
 
 }

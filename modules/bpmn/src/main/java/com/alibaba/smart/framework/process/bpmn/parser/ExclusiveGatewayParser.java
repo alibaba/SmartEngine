@@ -12,7 +12,6 @@ import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifa
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.gateway.ExclusiveGateway;
 
-
 public class ExclusiveGatewayParser extends AbstractStAXArtifactParser<ExclusiveGateway> implements StAXArtifactParser<ExclusiveGateway> {
 
     public ExclusiveGatewayParser(ExtensionPointRegistry extensionPointRegistry) {
@@ -22,7 +21,7 @@ public class ExclusiveGatewayParser extends AbstractStAXArtifactParser<Exclusive
     @Override
     public void resolve(ExclusiveGateway model, ParseContext context) throws ResolveException {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -39,11 +38,9 @@ public class ExclusiveGatewayParser extends AbstractStAXArtifactParser<Exclusive
 
     @Override
     public ExclusiveGateway parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                                  XMLStreamException {
+                                                                               XMLStreamException {
         // TODO Auto-generated method stub
         return null;
     }
 
- 
 }
-

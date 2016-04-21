@@ -7,13 +7,11 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
 import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.gateway.ParallelGateway;
 
-
-public class ParallelGatewayParser  extends AbstractStAXArtifactParser<ParallelGateway> implements StAXArtifactParser<ParallelGateway> {
+public class ParallelGatewayParser extends AbstractStAXArtifactParser<ParallelGateway> implements StAXArtifactParser<ParallelGateway> {
 
     public ParallelGatewayParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -33,11 +31,9 @@ public class ParallelGatewayParser  extends AbstractStAXArtifactParser<ParallelG
 
     @Override
     public ParallelGateway parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                                 XMLStreamException {
+                                                                              XMLStreamException {
         // TODO Auto-generated method stub
         return null;
     }
 
-  
 }
-

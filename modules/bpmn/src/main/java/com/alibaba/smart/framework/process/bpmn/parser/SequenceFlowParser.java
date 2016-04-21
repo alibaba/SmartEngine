@@ -7,13 +7,11 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
 import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.SequenceFlow;
 
-
-public class SequenceFlowParser extends AbstractStAXArtifactParser<SequenceFlow> implements StAXArtifactParser<SequenceFlow>{
+public class SequenceFlowParser extends AbstractStAXArtifactParser<SequenceFlow> implements StAXArtifactParser<SequenceFlow> {
 
     public SequenceFlowParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -33,11 +31,9 @@ public class SequenceFlowParser extends AbstractStAXArtifactParser<SequenceFlow>
     }
 
     @Override
-    public SequenceFlow parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                              XMLStreamException {
+    public SequenceFlow parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         // TODO Auto-generated method stub
         return null;
     }
-    
 
 }

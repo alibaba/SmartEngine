@@ -7,15 +7,12 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
 import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.ProcessActivity;
 
-
 /**
- * @author 高海军 帝奇 Apr 21, 2016 2:33:45 PM
- * TODO 估计不需要
+ * @author 高海军 帝奇 Apr 21, 2016 2:33:45 PM TODO 估计不需要
  */
 public class ProcessActivityParser extends AbstractStAXArtifactParser<ProcessActivity> implements StAXArtifactParser<ProcessActivity> {
 
@@ -38,11 +35,9 @@ public class ProcessActivityParser extends AbstractStAXArtifactParser<ProcessAct
 
     @Override
     public ProcessActivity parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                                 XMLStreamException {
+                                                                              XMLStreamException {
         // TODO Auto-generated method stub
         return null;
     }
-
-  
 
 }

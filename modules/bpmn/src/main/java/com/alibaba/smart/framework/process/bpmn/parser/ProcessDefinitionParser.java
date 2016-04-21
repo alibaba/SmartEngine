@@ -7,13 +7,11 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
 import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.process.model.bpmn.assembly.ProcessDefinition;
 
-
-public class ProcessDefinitionParser   extends AbstractStAXArtifactParser<ProcessDefinition> implements StAXArtifactParser<ProcessDefinition>{
+public class ProcessDefinitionParser extends AbstractStAXArtifactParser<ProcessDefinition> implements StAXArtifactParser<ProcessDefinition> {
 
     public ProcessDefinitionParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -34,7 +32,7 @@ public class ProcessDefinitionParser   extends AbstractStAXArtifactParser<Proces
 
     @Override
     public ProcessDefinition parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                                   XMLStreamException {
+                                                                                XMLStreamException {
         // TODO Auto-generated method stub
         return null;
     }
