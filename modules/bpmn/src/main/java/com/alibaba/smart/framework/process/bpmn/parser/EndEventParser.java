@@ -16,32 +16,31 @@ public class EndEventParser extends AbstractStAXArtifactProcessor implements StA
 
     public EndEventParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public void resolve(EndEvent model, ProcessorContext context) throws ProcessorResolveException {
-        // TODO Auto-generated method stub
-        
+        model.setUnresolved(false);
     }
 
     @Override
     public QName getArtifactType() {
-        // TODO Auto-generated method stub
-        return null;
+        return EndEvent.type;
     }
 
     @Override
     public Class<EndEvent> getModelType() {
-        // TODO Auto-generated method stub
-        return null;
+        return EndEvent.class;
     }
 
     @Override
     public EndEvent read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
                                                                           XMLStreamException {
-        // TODO Auto-generated method stub
-        return null;
+        EndEvent endEvent = new EndEvent();
+        endEvent.setId(this.getString(reader, "id"));
+
+        this.skipToEndElement(reader);
+        return endEvent;
     }
 
     

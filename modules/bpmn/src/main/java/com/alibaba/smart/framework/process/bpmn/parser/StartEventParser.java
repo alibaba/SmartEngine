@@ -40,8 +40,13 @@ public class StartEventParser extends AbstractStAXArtifactProcessor implements S
     @Override
     public StartEvent read(XMLStreamReader reader, ProcessorContext context) throws ProcessorReadException,
                                                                             XMLStreamException {
-        // TODO Auto-generated method stub
-        return null;
+        
+        StartEvent startEvent = new StartEvent();
+        startEvent.setId(this.getString(reader, "id"));
+
+        this.skipToEndElement(reader);
+        return startEvent;
+        
     }
 
 }
