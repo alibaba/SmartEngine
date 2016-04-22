@@ -34,7 +34,7 @@ public class ExclusiveGatewayParser extends AbstractStAXArtifactParser<Exclusive
                                                                                XMLStreamException {
         ExclusiveGateway exclusiveGateway = new ExclusiveGateway();
         exclusiveGateway.setId(this.getString(reader, "id"));
-        exclusiveGateway.setId(this.getString(reader, "name"));
+        exclusiveGateway.setName(this.getString(reader, "name"));
 
 
         this.skipToEndElement(reader);

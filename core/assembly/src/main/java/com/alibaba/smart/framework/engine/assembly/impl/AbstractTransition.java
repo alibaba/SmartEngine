@@ -9,7 +9,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class AbstractTransition extends AbstractInvocable implements Transition {
+public abstract class AbstractTransition extends AbstractActivity implements Transition {
+    //FIXME AbstractTransition 这个借口有点怪,但是
     private String sourceRef;
     private String targetRef;
 }

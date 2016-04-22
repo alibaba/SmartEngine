@@ -11,7 +11,7 @@
     
     <sequenceFlow id="flow1" sourceRef="theStart" targetRef="exclusiveGw" />
     
-    <exclusiveGateway id="exclusiveGw" name="Exclusive Gateway" />
+    <exclusiveGateway id="exclusiveGw" name="exclusiveGw Name" />
     
     <sequenceFlow id="flow2" sourceRef="exclusiveGw" targetRef="theTask1">
       <conditionExpression xsi:type="tFormalExpression">${input == 1}</conditionExpression>

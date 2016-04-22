@@ -28,11 +28,13 @@ import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcessComponent;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeTransition;
+
 import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -253,6 +255,12 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
                 if (runtimeTransition instanceof ProviderRuntimeInvocable) {
                     TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(
                             runtimeTransition.getModelType());
+                    
+                    if(null == providerFactory){
+                        //TODO XX
+                        throw new RuntimeException("No factory found for "+runtimeTransition.getModelType());
+                    }
+                    
                     TransitionProvider transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
                     ((ProviderRuntimeInvocable) runtimeTransition).setProvider(transitionProvider);
                 }
@@ -264,6 +272,13 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
                 if (runtimeActivity instanceof ProviderRuntimeInvocable) {
                     ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(
                             runtimeActivity.getModelType());
+                    
+                    if(null == providerFactory){
+                        //TODO XX
+                        throw new RuntimeException("No factory found for "+runtimeActivity.getModelType());
+                    }
+                    
+                    
                     ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeActivity);
                     ((ProviderRuntimeInvocable) runtimeActivity).setProvider(activityProvider);
                 }

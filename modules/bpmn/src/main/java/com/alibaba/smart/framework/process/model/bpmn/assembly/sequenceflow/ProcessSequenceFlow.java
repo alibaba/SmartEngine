@@ -1,51 +1,51 @@
-package com.alibaba.smart.framework.process.model.bpmn.assembly.sequenceflow;
-
-import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.BaseProcessNode;
-import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.ProcessActivity;
-import com.alibaba.smart.framework.process.model.bpmn.assembly.gateway.ConditionExpression;
-
-/**
- * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
- */
-public class ProcessSequenceFlow extends BaseProcessNode {
-
-    private ProcessActivity       sourceActivity;
-    private ProcessActivity       targetActivity;
-    private ConditionExpression conditionExpression;
-
-    public ProcessActivity getSourceActivity() {
-        return sourceActivity;
-    }
-
-    public void setSourceActivity(ProcessActivity sourceActivity) {
-        this.sourceActivity = sourceActivity;
-    }
-
-    public ProcessActivity getTargetActivity() {
-        return targetActivity;
-    }
-
-    public void setTargetActivity(ProcessActivity targetActivity) {
-        this.targetActivity = targetActivity;
-    }
-
-    public ConditionExpression getConditionExpression() {
-        return conditionExpression;
-    }
-
-    public void setConditionExpression(ConditionExpression conditionExpression) {
-        this.conditionExpression = conditionExpression;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-}
+//package com.alibaba.smart.framework.process.model.bpmn.assembly.sequenceflow;
+//
+//import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.BaseProcessNode;
+//import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.ProcessActivity;
+//import com.alibaba.smart.framework.process.model.bpmn.assembly.gateway.ConditionExpression;
+//
+///**
+// * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM TODO 待删除
+// */
+//public class ProcessSequenceFlow extends BaseProcessNode {
+//
+//    private ProcessActivity       sourceActivity;
+//    private ProcessActivity       targetActivity;
+//    private ConditionExpression conditionExpression;
+//
+//    public ProcessActivity getSourceActivity() {
+//        return sourceActivity;
+//    }
+//
+//    public void setSourceActivity(ProcessActivity sourceActivity) {
+//        this.sourceActivity = sourceActivity;
+//    }
+//
+//    public ProcessActivity getTargetActivity() {
+//        return targetActivity;
+//    }
+//
+//    public void setTargetActivity(ProcessActivity targetActivity) {
+//        this.targetActivity = targetActivity;
+//    }
+//
+//    public ConditionExpression getConditionExpression() {
+//        return conditionExpression;
+//    }
+//
+//    public void setConditionExpression(ConditionExpression conditionExpression) {
+//        this.conditionExpression = conditionExpression;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        return result;
+//    }
+//
+//    @Override
+//    public boolean equals(Object obj) {
+//        return super.equals(obj);
+//    }
+//
+//}

@@ -1,3 +1,4 @@
+
 package com.alibaba.smart.framework.process.bpmn.parser;
 
 import java.util.ArrayList;
@@ -43,6 +44,9 @@ public class ProcessParser extends AbstractStAXArtifactParser<Process> implement
             Object element=this.readElement(reader,context);
             if(element instanceof Base){
                 elements.add((Base)element);
+            }else{
+                //TODO XX
+                throw new RuntimeException("TODOXX");
             }
         }
         process.setElements(elements);

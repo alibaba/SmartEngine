@@ -9,11 +9,13 @@ import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveExcept
 import com.alibaba.smart.framework.engine.extensibility.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
+
 import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -87,7 +89,8 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         if (null != artifactParser) {
             return artifactParser.parse(reader, context);
         } else {
-            return null;
+            //TODO XXX
+            throw new RuntimeException("TODO");
         }
     }
 

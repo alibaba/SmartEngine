@@ -27,6 +27,7 @@ public class ExclusiveProcessTest {
         RuntimeProcess process = processContainer.get("test-exclusive-my", "1.0.0");
         Assert.assertNotNull(process);
 
+        //TODO 校验每个元素都是ok
        
 
     }
