@@ -16,9 +16,12 @@ public class ExclusiveProcessTest {
 
     @Test
     public void test() throws Exception {
+        
         DefaultSmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.start();
 
+        
+        //TODO 接口没有该方法getExtensionPointRegistry
         ExtensionPointRegistry extensionPointRegistry = smartEngine.getExtensionPointRegistry();
         ProcessContainer processContainer = extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
 
@@ -27,8 +30,7 @@ public class ExclusiveProcessTest {
         RuntimeProcess process = processContainer.get("test-exclusive-my", "1.0.0");
         Assert.assertNotNull(process);
 
-        //TODO 校验每个元素都是ok
-       
+        // TODO 校验每个元素都是ok
 
     }
 }

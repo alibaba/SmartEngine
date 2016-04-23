@@ -95,6 +95,8 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
         //Read xml file
         XMLInputFactory factory = XMLInputFactory.newInstance();
         InputStream in = classLoader.getResourceAsStream(uri);
+        
+        //FIXME close stream, diqi
         XMLStreamReader reader;
         try {
             reader = factory.createXMLStreamReader(in);
