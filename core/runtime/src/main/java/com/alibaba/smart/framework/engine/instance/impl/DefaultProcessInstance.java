@@ -17,6 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultProcessInstance extends AbstractLifeCycleInstance implements ProcessInstance {
     private String processUri;
     private String parentInstanceId;
+    
+    private String processDefinitionId;
+    private String processDefinitionVersion;
+
     private String parentExecutionInstanceId;
     private String parentActivityInstanceId;
     /**

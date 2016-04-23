@@ -7,4 +7,7 @@ import com.alibaba.smart.framework.engine.deployment.exception.DeployException;
  */
 public interface Deployer {
     void deploy(String moduleName, String uri) throws DeployException;
+    
+    void deploy( String uri) throws DeployException;
+
 }

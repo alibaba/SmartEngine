@@ -13,6 +13,10 @@ public interface RuntimeProcess extends RuntimeActivity{
     String getUri();
 
     void setUri(String uri);
+    
+    RuntimeActivity getStartActivity();
+
+    
 
     @Override
     Process getModel();

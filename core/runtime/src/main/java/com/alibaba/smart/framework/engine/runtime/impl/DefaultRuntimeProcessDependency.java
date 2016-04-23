@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.runtime.impl;
 
 import com.alibaba.smart.framework.engine.assembly.Process;
-import com.alibaba.smart.framework.engine.assembly.impl.AbstractProcess;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
@@ -108,5 +107,10 @@ public class DefaultRuntimeProcessDependency implements RuntimeProcess{
     @Override
     public void stop() {
 
+    }
+
+    @Override
+    public RuntimeActivity getStartActivity() {
+        return processProxy.getStartActivity();
     }
 }

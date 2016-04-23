@@ -61,6 +61,11 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
     public DefaultDeployer(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
+    
+    @Override
+    public void deploy(String uri) throws DeployException {
+        this.deploy(null,uri);
+    }
 
     @Override
     public void deploy(String moduleName, String uri) throws DeployException {

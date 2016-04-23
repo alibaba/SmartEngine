@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.process.service;
 
-import com.alibaba.smart.framework.process.model.runtime.command.TaskInstanceCommonActionCommand;
-import com.alibaba.smart.framework.process.model.runtime.command.TaskInstanceCreateCommand;
+import com.alibaba.smart.framework.process.model.runtime.command.impl.TaskInstanceCommonActionCommand;
+import com.alibaba.smart.framework.process.model.runtime.command.impl.TaskInstanceCreateCommand;
 
 public interface TaskService {
 
