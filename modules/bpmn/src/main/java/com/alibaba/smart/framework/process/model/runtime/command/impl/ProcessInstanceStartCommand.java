@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.process.model.runtime.command.impl;
 
-import com.alibaba.smart.framework.process.model.runtime.command.Command;
-
 import lombok.Data;
+
+import com.alibaba.smart.framework.process.model.runtime.command.Command;
 
 @Data
 public class ProcessInstanceStartCommand<T> implements Command {
@@ -13,7 +13,5 @@ public class ProcessInstanceStartCommand<T> implements Command {
     private T      request;
 
     @Override
-    public void execute() {
-
-    }
+    public void execute() {}
 }

@@ -1,21 +1,23 @@
 package com.alibaba.smart.framework.process.session.util;
 
+import com.alibaba.smart.framework.process.session.ExecutionSession;
+
 /**
  * @author 高海军 帝奇 Apr 19, 2015 11:43:33 AM
  */
 public abstract class ThreadLocalExecutionSessionUtil {
-    //TODO 添加泛型约束?
-    private static final ThreadLocal<Object> holder = new ThreadLocal<Object>();
+    
+    private static final ThreadLocal<ExecutionSession> holder = new ThreadLocal<ExecutionSession>();
 
-    public static void set(Object value) {
+    public static void set(ExecutionSession value) {
         holder.set(value);
     }
 
-    public static void remove(Object value) {
+    public static void remove(ExecutionSession value) {
         holder.remove();
     }
 
-    public static Object get() {
+    public static ExecutionSession get() {
         return holder.get();
     }
 

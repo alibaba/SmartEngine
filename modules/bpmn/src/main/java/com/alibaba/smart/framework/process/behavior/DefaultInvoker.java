@@ -13,6 +13,7 @@ public class DefaultInvoker implements Invoker {
 
     @Override
     public Message invoke(InstanceContext context) {
+        //TODO DELETE
         System.out.println(message);
         return null;
     }

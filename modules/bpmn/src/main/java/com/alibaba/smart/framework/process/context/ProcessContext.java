@@ -4,6 +4,7 @@ import lombok.Data;
 
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
+import com.alibaba.smart.framework.process.engine.ProcessEngine;
 
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM 
@@ -12,6 +13,8 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 
 @Data
 public class ProcessContext {
+    
+    private ProcessEngine processEngine;
 
     private ProcessContainer processContainer;
 
