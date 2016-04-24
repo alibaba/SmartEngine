@@ -32,4 +32,7 @@ public interface ProcessInstance extends LifeCycleInstance {
     void addExecution(ExecutionInstance executionInstance);
 
     void removeExecution(String executionInstanceId);
+    
+    void addActivityInstance(ActivityInstance activityInstance);
+
 }

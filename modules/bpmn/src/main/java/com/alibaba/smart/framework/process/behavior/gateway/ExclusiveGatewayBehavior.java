@@ -26,13 +26,17 @@ public class ExclusiveGatewayBehavior  extends AbstractActivityBehavior{
         
         ActivityInstance activityInstance = activityInstanceFactory.create();
         
-        //TODO 对数据库索引的友好
+        //TODO 对数据库索引的友好,增加activityInstance,execution 不变
         activityInstance.setInstanceId(InstanceIdUtils.uuid());
         
         ProcessInstance processInstance =  executionSession.getProcessInstance();
+        
+        //TODO 考虑删除,在持久层最终完成赋值,因为之间已经有关联关系了
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
         
         activityInstance.setActivityId(executionSession.getCurrentRuntimeActivity().getId());
+        
+        processInstance.addActivityInstance(activityInstance);
         
         //FIXME excution 与activiy 的关系, 感觉没有必然联系,因为到落库时,只有一个活跃的userTask.  之前的execution 没啥含义.
 //        processInstance.get

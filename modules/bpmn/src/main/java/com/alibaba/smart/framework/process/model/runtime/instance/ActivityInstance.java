@@ -1,6 +1,6 @@
-package com.alibaba.smart.framework.process.model.runtime.instance;
-
-
-public class ActivityInstance {
-
-}
+//package com.alibaba.smart.framework.process.model.runtime.instance;
+//
+//
+//public class ActivityInstance {
+//
+//}

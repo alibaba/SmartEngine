@@ -21,5 +21,12 @@ public class StartEvent extends AbstractActivity {
     public final static QName type = new QName(NameSpaceConstant.NAME_SPACE,"startEvent");
 
     private static final long serialVersionUID = 8769494440379002970L;
+    
+    @Override
+    public boolean isStartActivity() {
+        return true;
+    }
+    
+    
 
 }

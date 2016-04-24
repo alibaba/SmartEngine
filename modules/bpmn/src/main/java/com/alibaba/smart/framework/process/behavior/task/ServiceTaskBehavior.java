@@ -9,14 +9,14 @@ public class ServiceTaskBehavior   extends AbstractActivityBehavior {
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
+      //创建 ai
         
     }
 
     @Override
     public void signal() {
-        // TODO Auto-generated method stub
-        
+        //TODO add custom exception
+        throw new RuntimeException("this activity doesn't accept signals");    
     }
 
 }

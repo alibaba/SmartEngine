@@ -50,6 +50,8 @@ public class StartEventBehavior extends AbstractActivityBehavior{
         
         ExecutionSession executionSession = ThreadLocalExecutionSessionUtil.get();
         activityInstance.setActivityId(executionSession.getCurrentRuntimeActivity().getId());
+        processInstance.addActivityInstance(activityInstance);
+        
         executionSession.setProcessInstance(processInstance);
 
       

@@ -236,6 +236,8 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
                     runtimeActivity.setModel(activity);
 
                     runtimeActivities.put(runtimeActivity.getId(), runtimeActivity);
+                    
+                    //TODO 可能需要调整
                     if (runtimeActivity.isStartActivity()) {
                         runtimeProcess.setStartActivity(runtimeActivity);
                     }

@@ -1,12 +1,16 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
-import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.instance.ProcessInstance;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import com.alibaba.smart.framework.engine.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 
 /**
  * Default Process Instance
@@ -27,7 +31,12 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
      * Running executions
      */
     private Map<String, ExecutionInstance> executions = new ConcurrentHashMap<>();
-
+    
+    /**
+     * 需要顺序,并且不需要根据key来获取数据,所以是list数据结构
+     */
+    private List< ActivityInstance> activityInstances = new ArrayList<>();
+    
     @Override
     public void addExecution(ExecutionInstance executionInstance) {
         this.executions.put(executionInstance.getInstanceId(),executionInstance);
@@ -36,5 +45,10 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     @Override
     public void removeExecution(String executionInstanceId) {
         this.executions.remove(executionInstanceId);
+    }
+
+    @Override
+    public void addActivityInstance(ActivityInstance activityInstance) {
+        this.activityInstances.add(activityInstance) ;       
     }
 }
