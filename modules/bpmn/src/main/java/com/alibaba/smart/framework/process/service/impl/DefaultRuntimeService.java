@@ -45,11 +45,13 @@ public class DefaultRuntimeService implements RuntimeService {
 
         ProcessInstance processInstance =  ThreadLocalExecutionSessionUtil.get().getProcessInstance();
         
+        
+        //FIXME 整体的clear session finally 
         return processInstance;
     }
 
     @Override
-    public <T> void signal(ExecutionInstanceSignalCommand<T> command) {
+    public  void signal(ExecutionInstanceSignalCommand<?> command) {
 
     }
 

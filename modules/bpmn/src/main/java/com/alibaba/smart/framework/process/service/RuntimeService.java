@@ -8,6 +8,6 @@ public interface RuntimeService {
 
     public   ProcessInstance start(ProcessInstanceStartCommand<?> command);
     
-    public <T> void signal(ExecutionInstanceSignalCommand<T> command);
+    public   void signal(ExecutionInstanceSignalCommand<?> command);
 
 }
