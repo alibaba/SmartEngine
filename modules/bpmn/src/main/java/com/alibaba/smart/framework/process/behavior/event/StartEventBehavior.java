@@ -6,7 +6,6 @@ import com.alibaba.smart.framework.engine.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
 import com.alibaba.smart.framework.process.behavior.AbstractActivityBehavior;
 import com.alibaba.smart.framework.process.context.ProcessContext;
 import com.alibaba.smart.framework.process.context.ProcessContextHolder;
@@ -45,7 +44,6 @@ public class StartEventBehavior extends AbstractActivityBehavior{
         
         //构建活动实例: 指向开始节点
         ActivityInstance activityInstance = activityInstanceFactory.create();
-        activityInstance.setInstanceId(InstanceIdUtils.uuid());
         activityInstance.setProcessInstanceId(processInstanceId);
         
         ExecutionSession executionSession = ThreadLocalExecutionSessionUtil.get();

@@ -195,6 +195,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
             if (null != transitionSelectBody && transitionSelectBody instanceof List) {
                 List<?> executionObjects = (List<?>) transitionSelectBody;
                 if (!executionObjects.isEmpty()) {
+                    //TODO ettear 多线程
                     for (Object executionObject : executionObjects) {
                         //执行所有实例
                         if (executionObject instanceof ExecutionInstance) {

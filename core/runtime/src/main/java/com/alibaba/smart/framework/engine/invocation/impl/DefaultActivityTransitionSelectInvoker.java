@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TransitionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
+import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
@@ -36,10 +37,19 @@ public class DefaultActivityTransitionSelectInvoker implements Invoker {
         Map<String, RuntimeTransition> outcomeTransitions = this.runtimeActivity.getOutcomeTransitions();
         Message message = new DefaultMessage();
         if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
+            boolean hit=false;
             for (Map.Entry<String, RuntimeTransition> transitionEntry : outcomeTransitions.entrySet()) {
                 RuntimeTransition runtimeTransition = transitionEntry.getValue();
-                runtimeTransition.getSource();
-                runtimeTransition.getTarget();
+                //执行命中判断逻辑
+                Message result=runtimeTransition.invoke(AtomicOperationEvent.TRANSITION_HIT.name(),context);
+                if(null==result){
+                    continue;
+                }
+                Object resultBody=result.getBody();
+                if(null==resultBody || !(resultBody instanceof Boolean) || !((Boolean)resultBody)){
+                    //没有命中
+                    continue;
+                }
 
                 TransitionInstanceFactory transitionInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
                         TransitionInstanceFactory.class);
@@ -59,11 +69,19 @@ public class DefaultActivityTransitionSelectInvoker implements Invoker {
                 //this.executionInstanceManager.updateActivity(processInstance.getInstanceId(), executionInstance.getInstanceId(),
                 //                                             activityInstance);
                 executionInstance.setActivity(activityInstance);
-
+                hit=true;
+                break;
             }
-            List<ExecutionInstance> executions = new ArrayList<>();
-            executions.add(executionInstance);
-            message.setBody(executions);
+            if(hit) {
+                List<ExecutionInstance> executions = new ArrayList<>();
+                executions.add(executionInstance);
+                message.setBody(executions);
+            }else{
+                executionInstance.setStatus(InstanceStatus.suspended);
+                //TODO ettear Exception
+                //message.setBody();
+                message.setFault(true);
+            }
         }else {//没有后续节点，结束执行实例
             executionInstance.setStatus(InstanceStatus.completed);
             executionInstance.setCompleteDate(new Date());

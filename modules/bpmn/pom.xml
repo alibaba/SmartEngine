@@ -21,7 +21,9 @@
 			<groupId>${pom.groupId}</groupId>
 			<artifactId>engine.core.runtime</artifactId>
 			<version>${pom.version}</version>
+			<!-- TODO ettear
 			<scope>test</scope>
+			-->
 		</dependency>
 	</dependencies>
 </project>

@@ -17,6 +17,8 @@ public class SmartActivityProvider extends AbstractActivityProvider<SmartActivit
         super(runtimeActivity);
     }
 
+
+
     @Override
     protected Invoker createExecuteInvoker() {
         return new SmartInvoker("Execute activity " + this.getRuntimeActivity().getId());
