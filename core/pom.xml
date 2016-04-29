@@ -16,7 +16,8 @@
 		<module>api</module>
 		<module>assembly</module>
 		<module>base</module>
-		<module>spi</module>
+		<module>spi.assembly</module>
+		<module>spi.handler</module>
 		<module>runtime</module>
 	</modules>
 </project>

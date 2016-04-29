@@ -19,6 +19,33 @@
 
 		<dependency>
 			<groupId>${pom.groupId}</groupId>
+			<artifactId>engine.modules.common</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>engine.modules.mvel</artifactId>
+			<version>${pom.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>engine.modules.groovy</artifactId>
+			<version>${pom.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>engine.modules.storage.memory</artifactId>
+			<version>${pom.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
 			<artifactId>engine.core.runtime</artifactId>
 			<version>${pom.version}</version>
 			<!-- TODO ettear

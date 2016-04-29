@@ -1,0 +1,44 @@
+package com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.parser;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parser.impl.AbstractStAXArtifactParser;
+import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ParallelGateway;
+
+public class ParallelGatewayParser extends AbstractStAXArtifactParser<ParallelGateway> implements StAXArtifactParser<ParallelGateway> {
+
+    public ParallelGatewayParser(ExtensionPointRegistry extensionPointRegistry) {
+        super(extensionPointRegistry);
+    }
+
+    @Override
+    public QName getArtifactType() {
+        return ParallelGateway.type;
+    }
+
+    @Override
+    public Class<ParallelGateway> getModelType() {
+        return ParallelGateway.class;
+    }
+
+    @Override
+    public ParallelGateway parse(XMLStreamReader reader, ParseContext context) throws ParseException,
+                                                                              XMLStreamException {
+        
+        ParallelGateway parallelGateway = new ParallelGateway();
+        parallelGateway.setId(this.getString(reader, "id"));
+        parallelGateway.setId(this.getString(reader, "name"));
+
+
+        this.skipToEndElement(reader);
+        
+        return null;
+    }
+
+}

@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.base.assembly;
 
 import com.alibaba.smart.framework.engine.assembly.impl.AbstractProcess;
+import com.alibaba.smart.framework.engine.modules.common.assembly.SmartBase;
 
 import javax.xml.namespace.QName;
 

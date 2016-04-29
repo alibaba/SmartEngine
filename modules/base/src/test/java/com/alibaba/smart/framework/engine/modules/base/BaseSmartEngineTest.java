@@ -7,7 +7,6 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -31,7 +30,6 @@ public class BaseSmartEngineTest {
         Assert.assertNotNull(process);
 
         ProcessManager processManager = smartEngine.getProcessManager();
-
         ProcessInstance instance = processManager.start("testSmartProcess", "1.0.0", null);
 
     }

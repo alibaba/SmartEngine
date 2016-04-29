@@ -17,6 +17,11 @@
 			<artifactId>engine.core.spi</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>engine.modules.common</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>${pom.groupId}</groupId>

@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.extensibility.impl;
 
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensibility.ProviderFactoryExtensionPoint;
+import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
 

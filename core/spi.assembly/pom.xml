@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.alibaba.smart.framework</groupId>
+		<artifactId>engine.core</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>engine.core.spi.assembly</artifactId>
+	<name>Smart Engine Core - Assembly SPI</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>engine.core.base</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!--
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.0-beta-4</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<buildNumberPropertyName>sources.version</buildNumberPropertyName>
+					<timestampPropertyName>build.timestamp</timestampPropertyName>
+					<doCheck>false</doCheck>
+					<doUpdate>true</doUpdate>
+					<revisionOnScmFailure>00000</revisionOnScmFailure>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>process-resources</id>
+						<phase>process-resources</phase>
+						<configuration>
+							<target>
+								<filter token="version" value="${project.version}"/>
+								<filter token="timestamp" value="${build.timestamp}"/>
+								<copy toDir="${basedir}/target/classes/com/alibaba/smart/framework/engine/runtime"
+								      overwrite="true"
+								      filtering="on"
+								      file="${basedir}/src/main/resources/com/alibaba/smart/framework/engine/runtime/revision.properties"/>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			-->
+		</plugins>
+	</build>
+
+</project>

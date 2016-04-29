@@ -1,12 +1,12 @@
 package com.alibaba.smart.framework.engine.extensibility.impl;
 
-import com.alibaba.smart.framework.engine.assembly.parse.ArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parser.ArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
-import com.alibaba.smart.framework.engine.assembly.parse.StAXAttributeParser;
+import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parser.StAXAttributeParser;
 import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
 import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
-import com.alibaba.smart.framework.engine.extensibility.AssemblyParserExtensionPoint;
+import com.alibaba.smart.framework.engine.assembly.parse.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 

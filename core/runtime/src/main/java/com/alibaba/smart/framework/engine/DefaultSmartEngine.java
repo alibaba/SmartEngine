@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine;
 
 import com.alibaba.smart.framework.engine.deployment.Deployer;
+import com.alibaba.smart.framework.engine.extensibility.ClassLoaderExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 import com.alibaba.smart.framework.engine.extensibility.impl.DefaultExtensionPointRegistry;
@@ -44,8 +45,8 @@ public class DefaultSmartEngine implements SmartEngine {
                     }
                 }
                 this.classLoaders.put(moduleName, classLoader);
-                if (!loaded) {
-                    this.extensionPointRegistry.load(moduleName, classLoader);
+                if (!loaded && this.extensionPointRegistry instanceof ClassLoaderExtensionPoint) {
+                    ((ClassLoaderExtensionPoint)this.extensionPointRegistry).load(moduleName, classLoader);
                 }
             } catch (ExtensionPointLoadException loadException) {
                 throw new EngineException("Init engine failure!", loadException);

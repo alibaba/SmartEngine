@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 默认扩展注册器实现
  * Created by ettear on 16-4-12.
  */
-public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPoint implements ExtensionPointRegistry {
+public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPoint implements ClassLoaderExtensionPoint,ExtensionPointRegistry {
 
     private Map<Class<?>, Object> extensionPoints = new ConcurrentHashMap<>();
 

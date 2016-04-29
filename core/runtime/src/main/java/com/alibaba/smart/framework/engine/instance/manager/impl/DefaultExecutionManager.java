@@ -10,7 +10,6 @@ import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.manager.ExecutionManager;
 import com.alibaba.smart.framework.engine.instance.store.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;

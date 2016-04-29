@@ -42,14 +42,13 @@ public class DefaultActivityTransitionSelectInvoker implements Invoker {
                 RuntimeTransition runtimeTransition = transitionEntry.getValue();
                 //执行命中判断逻辑
                 Message result=runtimeTransition.invoke(AtomicOperationEvent.TRANSITION_HIT.name(),context);
-                if(null==result){
-                    continue;
-                }
-                Object resultBody=result.getBody();
-                if(null==resultBody || !(resultBody instanceof Boolean) || !((Boolean)resultBody)){
-                    //没有命中
-                    continue;
-                }
+                if(null!=result){
+                    Object resultBody=result.getBody();
+                    if(null==resultBody || !(resultBody instanceof Boolean) || !((Boolean)resultBody)){
+                        //没有命中
+                        continue;
+                    }
+                }//无执行结果为命中
 
                 TransitionInstanceFactory transitionInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
                         TransitionInstanceFactory.class);

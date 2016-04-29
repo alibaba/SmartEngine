@@ -10,8 +10,8 @@ import com.alibaba.smart.framework.engine.assembly.Transition;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 import com.alibaba.smart.framework.process.behavior.ActivityBehavior;
-import com.alibaba.smart.framework.process.model.bpmn.assembly.activity.SequenceFlow;
-import com.alibaba.smart.framework.process.model.bpmn.assembly.gateway.ConditionExpression;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.process.session.ExecutionSession;
 import com.alibaba.smart.framework.process.session.util.ThreadLocalExecutionSessionUtil;
 
@@ -43,8 +43,8 @@ public class ActivityBehaviorUtil {
                 // TODO 支持通过隐式的的transitionId来判断
                 toBeChoosenRuntimeTransition.add(runtimeTransition);
             } else {
-                String expressionType = conditionExpression.getExpressionType();
-                String expressionContent = conditionExpression.getExpressionContent();
+                String expressionType = null; //conditionExpression.getHandler();
+                String expressionContent = null;// conditionExpression.getExpressionContent();
 
                 ConditionExpressionEvaluater conditionExpressionEvaluater = ConditionExpressionEvaluaterFactory.createConditionExpression(expressionType);
                 boolean conditionPassed = conditionExpressionEvaluater.evaluate(expressionContent);
