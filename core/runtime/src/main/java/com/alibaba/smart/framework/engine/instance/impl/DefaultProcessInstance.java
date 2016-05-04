@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.alibaba.smart.framework.engine.instance.InstanceFact;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -27,6 +28,8 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
 
     private String parentExecutionInstanceId;
     private String parentActivityInstanceId;
+
+    private InstanceFact fact;
     /**
      * Running executions
      */

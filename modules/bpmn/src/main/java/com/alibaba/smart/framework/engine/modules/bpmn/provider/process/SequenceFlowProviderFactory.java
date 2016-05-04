@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 
 public class SequenceFlowProviderFactory implements TransitionProviderFactory<SequenceFlow> {
     private ExtensionPointRegistry extensionPointRegistry;
+
     public SequenceFlowProviderFactory(ExtensionPointRegistry extensionPointRegistry){
         this.extensionPointRegistry=extensionPointRegistry;
     }

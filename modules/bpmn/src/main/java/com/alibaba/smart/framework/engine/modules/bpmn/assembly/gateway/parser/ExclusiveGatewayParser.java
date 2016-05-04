@@ -1,23 +1,22 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.parser;
 
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parser.impl.AbstractStAXArtifactParser;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
-
-public class ExclusiveGatewayParser extends AbstractStAXArtifactParser<ExclusiveGateway> implements StAXArtifactParser<ExclusiveGateway> {
+public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<ExclusiveGateway>
+        implements StAXArtifactParser<ExclusiveGateway> {
 
     public ExclusiveGatewayParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
-
-
 
     @Override
     public QName getArtifactType() {
@@ -31,11 +30,11 @@ public class ExclusiveGatewayParser extends AbstractStAXArtifactParser<Exclusive
 
     @Override
     public ExclusiveGateway parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                               XMLStreamException {
+                                                                                       XMLStreamException {
         ExclusiveGateway exclusiveGateway = new ExclusiveGateway();
         exclusiveGateway.setId(this.getString(reader, "id"));
 
-        this.skipToEndElement(reader);
+        this.parseChildren(exclusiveGateway, reader, context);
         return exclusiveGateway;
     }
 

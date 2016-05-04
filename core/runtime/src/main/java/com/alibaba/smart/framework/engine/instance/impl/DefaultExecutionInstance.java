@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.instance.impl;
 
 import com.alibaba.smart.framework.engine.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.instance.InstanceFact;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,7 +14,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class DefaultExecutionInstance extends AbstractLifeCycleInstance implements ExecutionInstance {
 
-    private String            processInstanceId;
+    private String           processInstanceId;
+    private InstanceFact     fact;
     private ActivityInstance activity;
-    private boolean fault;
+    private boolean          fault;
 }

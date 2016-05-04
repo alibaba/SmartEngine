@@ -85,10 +85,7 @@ public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity>
     @Override
     protected Invoker createDefaultInvoker(String event) {
         if (AtomicOperationEvent.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
-            DefaultActivityTransitionSelectInvoker invoker = new DefaultActivityTransitionSelectInvoker();
-            invoker.setRuntimeActivity(this);
-            invoker.setExtensionPointRegistry(this.getExtensionPointRegistry());
-            return invoker;
+            return new DefaultActivityTransitionSelectInvoker(this.getExtensionPointRegistry(),this);
         } else {
             return super.createDefaultInvoker(event);
         }

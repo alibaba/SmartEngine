@@ -21,9 +21,8 @@ import java.util.Map;
  */
 public class BpmnProcessTest {
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Test
-    public void test() throws Exception {
+    public void testExclusive() throws Exception {
         DefaultSmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.start();
 
@@ -33,12 +32,31 @@ public class BpmnProcessTest {
         Deployer deployer = smartEngine.getDeployer();
         deployer.deploy("test-exclusive.bpmn20.xml");
 
-        RuntimeProcess process = processContainer.get("test-exclusive-my", "1.0.0");
+        RuntimeProcess process = processContainer.get("test-exclusive", "1.0.0");
         Assert.assertNotNull(process);
 
         ProcessManager processManager = smartEngine.getProcessManager();
         Map<String,Object> variables=new HashMap<>();
-        variables.put("input",1);
-        ProcessInstance instance = processManager.start("test-exclusive-my", "1.0.0", variables);
+        variables.put("input",2);
+        ProcessInstance instance = processManager.start("test-exclusive", "1.0.0", variables);
+    }
+
+    @Test
+    public void testParallel() throws Exception {
+        DefaultSmartEngine smartEngine = new DefaultSmartEngine();
+        smartEngine.start();
+
+        ExtensionPointRegistry extensionPointRegistry = smartEngine.getExtensionPointRegistry();
+        ProcessContainer processContainer = extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
+
+        Deployer deployer = smartEngine.getDeployer();
+        deployer.deploy("test-parallel.bpmn20.xml");
+
+        RuntimeProcess process = processContainer.get("test-parallel", "1.0.0");
+        Assert.assertNotNull(process);
+
+        ProcessManager processManager = smartEngine.getProcessManager();
+        Map<String,Object> variables=new HashMap<>();
+        ProcessInstance instance = processManager.start("test-parallel", "1.0.0", variables);
     }
 }

@@ -35,4 +35,8 @@ public class AbstractBpmnActivityProvider<M extends AbstractBpmnActivity> extend
             return null;
         }
     }
+
+    protected ExtensionPointRegistry getExtensionPointRegistry() {
+        return extensionPointRegistry;
+    }
 }

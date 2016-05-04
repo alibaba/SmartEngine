@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.mvel;
 
 import com.alibaba.smart.framework.engine.assembly.Script;
-import com.alibaba.smart.framework.engine.context.Fact;
+import com.alibaba.smart.framework.engine.instance.InstanceFact;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
@@ -29,8 +29,8 @@ public class MvelInvoker implements Invoker {
     public Message invoke(InstanceContext context) {
         Message message = new DefaultMessage();
         Map<String, Object> mvelContext = new HashMap<>();
-        Fact current=context.getExecutionFact();
-        mvelContext.put("fact",context.getProcessFact());
+        InstanceFact current=context.getCurrentExecution().getFact();
+        mvelContext.put("fact",context.getProcessInstance().getFact());
         mvelContext.put("current",current);
         mvelContext.putAll(current);
         try {

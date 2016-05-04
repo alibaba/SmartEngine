@@ -9,14 +9,6 @@ import com.alibaba.smart.framework.engine.instance.ProcessInstance;
  */
 public interface InstanceContext {
 
-    Fact getProcessFact();
-
-    void setProcessFact(Fact fact);
-
-    Fact getExecutionFact();
-
-    void setExecutionFact(Fact fact);
-
     ProcessInstance getProcessInstance();
 
     void setProcessInstance(ProcessInstance processInstance);

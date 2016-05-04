@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.context.factory.impl;
 
-import com.alibaba.smart.framework.engine.context.Fact;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.context.impl.DefaultInstanceContext;

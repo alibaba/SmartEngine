@@ -1,10 +1,7 @@
 package com.alibaba.smart.framework.engine.instance.manager.impl;
 
-import com.alibaba.smart.framework.engine.context.Fact;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
-import com.alibaba.smart.framework.engine.context.factory.FactFactory;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
-import com.alibaba.smart.framework.engine.context.storage.FactStorage;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
@@ -25,9 +22,7 @@ public class DefaultExecutionManager implements ExecutionManager, LifeCycleListe
     private ExtensionPointRegistry extensionPointRegistry;
     private ProcessContainer       processContainer;
     private ProcessInstanceStorage processInstanceStorage;
-    private FactStorage            factStorage;
     private InstanceContextFactory instanceContextFactory;
-    private FactFactory            factFactory;
 
     public DefaultExecutionManager(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -37,9 +32,7 @@ public class DefaultExecutionManager implements ExecutionManager, LifeCycleListe
     public void start() {
         this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
         this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
-        this.factStorage=this.extensionPointRegistry.getExtensionPoint(FactStorage.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
-        this.factFactory=this.extensionPointRegistry.getExtensionPoint(FactFactory.class);
     }
 
     @Override
@@ -63,22 +56,6 @@ public class DefaultExecutionManager implements ExecutionManager, LifeCycleListe
                 }
             }
             instanceContext.setCurrentExecution(currentExecutionInstance);
-
-            Fact processFact=this.factStorage.findProcessFact(processInstanceId);
-            if(null==processFact){
-                processFact=this.factFactory.create();
-            }
-            instanceContext.setProcessFact(processFact);
-
-            Fact executionFact=this.factStorage.findActivityFact(processInstanceId,currentExecutionInstance.getInstanceId());
-            if(null==executionFact){
-                executionFact=this.factFactory.create();
-            }
-            if(null!=variables && !variables.isEmpty()){
-                executionFact.putAll(variables);
-            }
-            instanceContext.setExecutionFact(executionFact);
-
             runtimeProcess.resume(instanceContext);
         }
         return processInstance;

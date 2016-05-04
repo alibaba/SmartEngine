@@ -1,17 +1,18 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.parser;
 
+import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ParallelGateway;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parser.impl.AbstractStAXArtifactParser;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ParallelGateway;
-
-public class ParallelGatewayParser extends AbstractStAXArtifactParser<ParallelGateway> implements StAXArtifactParser<ParallelGateway> {
+public class ParallelGatewayParser extends AbstractBpmnActivityParser<ParallelGateway>
+        implements StAXArtifactParser<ParallelGateway> {
 
     public ParallelGatewayParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -29,16 +30,13 @@ public class ParallelGatewayParser extends AbstractStAXArtifactParser<ParallelGa
 
     @Override
     public ParallelGateway parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                              XMLStreamException {
-        
+                                                                                      XMLStreamException {
+
         ParallelGateway parallelGateway = new ParallelGateway();
         parallelGateway.setId(this.getString(reader, "id"));
-        parallelGateway.setId(this.getString(reader, "name"));
 
-
-        this.skipToEndElement(reader);
-        
-        return null;
+        this.parseChildren(parallelGateway, reader, context);
+        return parallelGateway;
     }
 
 }

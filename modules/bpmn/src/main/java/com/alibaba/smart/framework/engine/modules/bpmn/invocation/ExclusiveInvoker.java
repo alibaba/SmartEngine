@@ -1,9 +1,10 @@
-package com.alibaba.smart.framework.engine.invocation.impl;
+package com.alibaba.smart.framework.engine.modules.bpmn.invocation;
 
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.invocation.impl.AbstractTransitionSelectInvoker;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 
@@ -11,12 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DefaultActivityTransitionSelectInvoker
- * Created by ettear on 16-4-19.
+ * ExclusiveInvoker
+ * Created by ettear on 16-5-4.
  */
-public class DefaultActivityTransitionSelectInvoker extends AbstractTransitionSelectInvoker {
+public class ExclusiveInvoker extends AbstractTransitionSelectInvoker {
 
-    public DefaultActivityTransitionSelectInvoker(ExtensionPointRegistry extensionPointRegistry,RuntimeActivity runtimeActivity) {
+    public ExclusiveInvoker(
+            ExtensionPointRegistry extensionPointRegistry,RuntimeActivity runtimeActivity) {
         super(extensionPointRegistry,runtimeActivity);
     }
 
