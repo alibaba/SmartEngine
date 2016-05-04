@@ -11,38 +11,79 @@
 			<smart:script type="groovy">start();</smart:script>
 		</startEvent>
 
-		<sequenceFlow id="flow1" sourceRef="theStart" targetRef="exclusiveGw">
-			<smart:script type="groovy">stop(theStart);start(exclusiveGw);</smart:script>
+		<sequenceFlow id="flow1" sourceRef="theStart" targetRef="exclusiveGw1"/>
+
+		<exclusiveGateway id="exclusiveGw1" name="Exclusive Gateway 1"/>
+
+		<sequenceFlow id="flow2" sourceRef="exclusiveGw1" targetRef="theTask1">
+			<conditionExpression type="mvel">input == 1</conditionExpression>
+			<smart:script type="groovy">runSequenceFlow(flow2);</smart:script>
 		</sequenceFlow>
 
-		<exclusiveGateway id="exclusiveGw" name="exclusiveGw Name"/>
-
-		<sequenceFlow id="flow2" sourceRef="exclusiveGw" targetRef="theTask1">
-			<conditionExpression xsi:type="mvel">${input == 1}</conditionExpression>
-			<smart:script type="groovy">stop(exclusiveGw);start(theTask1);</smart:script>
+		<sequenceFlow id="flow3" sourceRef="exclusiveGw1" targetRef="theTask2">
+			<conditionExpression type="mvel">input == 2</conditionExpression>
 		</sequenceFlow>
 
-		<sequenceFlow id="flow3" sourceRef="exclusiveGw" targetRef="theTask2">
-			<conditionExpression xsi:type="mvel">${input == 2}</conditionExpression>
+		<sequenceFlow id="flow4" sourceRef="exclusiveGw1" targetRef="theTask3">
+			<conditionExpression type="mvel">input == 3</conditionExpression>
 		</sequenceFlow>
 
-		<sequenceFlow id="flow4" sourceRef="exclusiveGw" targetRef="theTask3">
-			<conditionExpression xsi:type="mvel">${input == 3}</conditionExpression>
-		</sequenceFlow>
-
-		<serviceTask id="theTask1" name="Send e-mail for more information">
+		<serviceTask id="theTask1" name="Task 1">
 			<smart:script type="groovy">run(theTask1);</smart:script>
 		</serviceTask>
 
-		<sequenceFlow id="flow5" sourceRef="theTask1" targetRef="theEnd"/>
+		<sequenceFlow id="flow5" sourceRef="theTask1" targetRef="selectTask"/>
 
-		<serviceTask id="theTask2" name="Check account balance"/>
+		<serviceTask id="theTask2" name="Task 2">
+		<smart:script type="groovy">run(theTask2);</smart:script>
+		</serviceTask>
 
-		<sequenceFlow id="flow6" sourceRef="theTask2" targetRef="theEnd"/>
+		<sequenceFlow id="flow6" sourceRef="theTask2" targetRef="selectTask"/>
 
-		<serviceTask id="theTask3" name="Call customer"/>
+		<serviceTask id="theTask3" name="Task 3">
+			<smart:script type="groovy">run(theTask3);</smart:script>
+		</serviceTask>
 
-		<sequenceFlow id="flow7" sourceRef="theTask3" targetRef="theEnd"/>
+		<sequenceFlow id="flow7" sourceRef="theTask3" targetRef="selectTask"/>
+
+		<serviceTask id="selectTask" name="Select Task">
+			<smart:script type="mvel" resultVariable="select">input+3</smart:script>
+		</serviceTask>
+
+		<sequenceFlow id="flow8" sourceRef="selectTask" targetRef="exclusiveGw2"/>
+
+		<exclusiveGateway id="exclusiveGw2" name="Exclusive Gateway 2"/>
+
+		<sequenceFlow id="flow9" sourceRef="exclusiveGw2" targetRef="theTask4">
+			<conditionExpression type="mvel">select == 4</conditionExpression>
+			<smart:script type="groovy">runSequenceFlow(flow2);</smart:script>
+		</sequenceFlow>
+
+		<sequenceFlow id="flow10" sourceRef="exclusiveGw2" targetRef="theTask5">
+			<conditionExpression type="mvel">select == 5</conditionExpression>
+		</sequenceFlow>
+
+		<sequenceFlow id="flow11" sourceRef="exclusiveGw2" targetRef="theTask6">
+			<conditionExpression type="mvel">select == 6</conditionExpression>
+		</sequenceFlow>
+
+		<serviceTask id="theTask4" name="Task 4">
+			<smart:script type="groovy">run(theTask4);</smart:script>
+		</serviceTask>
+
+		<sequenceFlow id="flow12" sourceRef="theTask4" targetRef="theEnd"/>
+
+		<serviceTask id="theTask5" name="Task 5">
+			<smart:script type="groovy">run(theTask5);</smart:script>
+		</serviceTask>
+
+		<sequenceFlow id="flow13" sourceRef="theTask5" targetRef="theEnd"/>
+
+		<serviceTask id="theTask6" name="Task 6">
+			<smart:script type="groovy">run(theTask6);</smart:script>
+		</serviceTask>
+
+		<sequenceFlow id="flow14" sourceRef="theTask6" targetRef="theEnd"/>
 
 		<endEvent id="theEnd"/>
 

@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.runtime.impl;
 
 import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.factory.FactFactory;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
@@ -12,7 +13,7 @@ import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFacto
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.manager.ExecutionManager;
-import com.alibaba.smart.framework.engine.instance.store.ProcessInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Message;
@@ -107,7 +108,9 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
                     ExecutionManager.class);
 
             Map<String, Object> variables = new HashMap<>();
-            //TODO 执行结果放入
+            //TODO ettear 或者用子流程事实做为主流程活动事实?
+            variables.putAll(context.getProcessFact());
+            variables.putAll(context.getExecutionFact());
             ProcessInstance parentProcessInstance = executionManager.signal(
                     processInstance.getParentInstanceId(), processInstance.getParentExecutionInstanceId(),
                     variables);
@@ -148,6 +151,8 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
                 InstanceContextFactory.class);
         ProcessInstanceFactory processInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(
                 ProcessInstanceFactory.class);
+        FactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(
+                FactFactory.class);
 
         InstanceContext subInstanceContext = instanceContextFactory.create();
         ProcessInstance processInstance = processInstanceFactory.create();
@@ -156,6 +161,9 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         processInstance.setParentExecutionInstanceId(currentExecutionInstance.getInstanceId());
         processInstance.setParentActivityInstanceId(currentExecutionInstance.getActivity().getInstanceId());
         subInstanceContext.setProcessInstance(processInstance);
+        //TODO ettear 或者用主流程活动事实做为子流程事实?
+        subInstanceContext.setProcessFact(factFactory.create());
+        subInstanceContext.setExecutionFact(context.getExecutionFact());
         //运行子流程
         return this.run(subInstanceContext);
     }
@@ -201,6 +209,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
                         if (executionObject instanceof ExecutionInstance) {
                             ExecutionInstance executionInstance = (ExecutionInstance) executionObject;
                             context.setCurrentExecution(executionInstance);
+
                             TransitionInstance transitionInstance = executionInstance.getActivity().getIncomeTransitions().get(
                                     0);
                             RuntimeTransition runtimeTransition = this.transitions.get(

@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.context.factory;
 
-import com.alibaba.smart.framework.engine.context.Context;
+import com.alibaba.smart.framework.engine.context.Fact;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 
 /**
@@ -9,5 +9,4 @@ import com.alibaba.smart.framework.engine.context.InstanceContext;
  */
 public interface InstanceContextFactory {
     InstanceContext create();
-    InstanceContext create(Context context);
 }

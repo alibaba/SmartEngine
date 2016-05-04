@@ -1,10 +1,9 @@
 package com.alibaba.smart.framework.engine.modules.storage.memory;
 
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.instance.store.ProcessInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**

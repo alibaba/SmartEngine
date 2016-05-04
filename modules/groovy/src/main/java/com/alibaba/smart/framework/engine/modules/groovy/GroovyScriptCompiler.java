@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.groovy;
 
+import com.alibaba.smart.framework.engine.assembly.Script;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.script.ScriptCompiler;
 
@@ -14,7 +15,7 @@ public class GroovyScriptCompiler implements ScriptCompiler {
     }
 
     @Override
-    public Invoker compile(String script) {
+    public Invoker compile(Script script) {
         return new GroovyInvoker(script);
     }
 }

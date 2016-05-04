@@ -14,4 +14,5 @@ import lombok.EqualsAndHashCode;
 public class Script extends AbstractBase implements Handler {
     private String type;
     private String content;
+    private String resultVariable;
 }

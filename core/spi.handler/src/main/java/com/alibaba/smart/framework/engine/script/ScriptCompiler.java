@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.script;
 
+import com.alibaba.smart.framework.engine.assembly.Script;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 
 /**
@@ -7,5 +8,5 @@ import com.alibaba.smart.framework.engine.invocation.Invoker;
  */
 public interface ScriptCompiler {
     String getType();
-    Invoker compile(String script);
+    Invoker compile(Script script);
 }

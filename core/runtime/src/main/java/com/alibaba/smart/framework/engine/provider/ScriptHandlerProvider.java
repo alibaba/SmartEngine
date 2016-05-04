@@ -22,7 +22,7 @@ public class ScriptHandlerProvider implements HandlerProvider<Script> {
     }
 
     @Override
-    public Invoker createInvoker(Script handler) {
-        return this.extensionPointRegistry.getExtensionPoint(ScriptCompilerExtensionPoint.class).compile(handler.getType(),handler.getContent());
+    public Invoker createInvoker(Script script) {
+        return this.extensionPointRegistry.getExtensionPoint(ScriptCompilerExtensionPoint.class).compile(script);
     }
 }

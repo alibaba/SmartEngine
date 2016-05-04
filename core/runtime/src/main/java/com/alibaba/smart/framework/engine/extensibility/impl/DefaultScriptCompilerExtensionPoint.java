@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.extensibility.impl;
 
+import com.alibaba.smart.framework.engine.assembly.Script;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
@@ -19,8 +20,8 @@ public class DefaultScriptCompilerExtensionPoint extends AbstractPropertiesExten
     private Map<String, ScriptCompiler> scriptCompilers = new ConcurrentHashMap<>();
 
     @Override
-    public Invoker compile(String scriptType, String script) {
-        ScriptCompiler scriptCompiler = this.scriptCompilers.get(scriptType);
+    public Invoker compile(Script script) {
+        ScriptCompiler scriptCompiler = this.scriptCompilers.get(script.getType());
         if (null != scriptCompiler) {
             return scriptCompiler.compile(script);
         }

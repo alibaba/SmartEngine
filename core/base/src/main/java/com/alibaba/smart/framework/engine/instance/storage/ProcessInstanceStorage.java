@@ -1,8 +1,6 @@
-package com.alibaba.smart.framework.engine.instance.store;
+package com.alibaba.smart.framework.engine.instance.storage;
 
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-
-import java.util.List;
 
 /**
  * 流程实例存储

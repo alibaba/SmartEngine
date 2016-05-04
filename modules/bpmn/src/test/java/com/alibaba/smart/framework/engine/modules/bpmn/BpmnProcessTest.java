@@ -6,9 +6,14 @@ import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Process;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
+import com.alibaba.smart.framework.process.context.ProcessContext;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * BPMN Test
@@ -32,6 +37,8 @@ public class BpmnProcessTest {
         Assert.assertNotNull(process);
 
         ProcessManager processManager = smartEngine.getProcessManager();
-        ProcessInstance instance = processManager.start("test-exclusive-my", "1.0.0", null);
+        Map<String,Object> variables=new HashMap<>();
+        variables.put("input",1);
+        ProcessInstance instance = processManager.start("test-exclusive-my", "1.0.0", variables);
     }
 }

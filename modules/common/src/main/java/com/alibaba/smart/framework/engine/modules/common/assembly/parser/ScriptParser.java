@@ -35,6 +35,7 @@ public class ScriptParser extends AbstractStAXArtifactParser<Script> implements 
                                                                              XMLStreamException {
         Script script = new Script();
         script.setType(getString(reader, "type"));
+        script.setResultVariable(getString(reader,"resultVariable"));
         script.setContent(reader.getElementText());
         return script;
 

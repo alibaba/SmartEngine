@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.groovy;
 
+import com.alibaba.smart.framework.engine.assembly.Script;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
@@ -9,13 +10,13 @@ import com.alibaba.smart.framework.engine.invocation.Message;
  */
 public class GroovyInvoker implements Invoker {
 
-    private String script;
-    public GroovyInvoker(String script){
+    private Script script;
+    public GroovyInvoker(Script script){
         this.script=script;
     }
     @Override
     public Message invoke(InstanceContext context) {
-        System.out.println("Invoke groovy '"+ script+"'");
+        System.out.println("Invoke groovy '"+ script.getContent()+"'");
         return null;
     }
 }
