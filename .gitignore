@@ -1,11 +1,11 @@
-/target/
+target
 *.class
 *.classpath
 *.project
 *.iml
 *.idea
-.idea/
-bin/
+.idea
+bin
 .settings/
 test-output/
 src/generated/*
