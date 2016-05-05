@@ -13,7 +13,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${pom.groupId}</groupId>
-			<artifactId>engine.core.spi</artifactId>
+			<artifactId>engine.core.spi.assembly</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
 

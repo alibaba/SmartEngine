@@ -1,10 +1,10 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.parser;
 
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parse.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ResolveException;
-import com.alibaba.smart.framework.engine.assembly.parse.impl.AbstractStAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parser.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.common.assembly.Extension;
