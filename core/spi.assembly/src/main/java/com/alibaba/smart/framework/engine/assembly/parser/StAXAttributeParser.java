@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.assembly.parser;
 
-import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;

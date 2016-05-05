@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.parser;
 
-import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;

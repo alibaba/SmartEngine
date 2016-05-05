@@ -1,7 +1,7 @@
-package com.alibaba.smart.framework.engine.assembly.parse;
+package com.alibaba.smart.framework.engine.assembly.parser;
 
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
+import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parser.exception.ResolveException;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 
 import javax.xml.namespace.QName;

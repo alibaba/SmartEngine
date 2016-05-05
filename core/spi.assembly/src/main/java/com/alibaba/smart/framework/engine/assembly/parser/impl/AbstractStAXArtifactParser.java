@@ -2,11 +2,11 @@ package com.alibaba.smart.framework.engine.assembly.parser.impl;
 
 import com.alibaba.smart.framework.engine.assembly.Base;
 import com.alibaba.smart.framework.engine.assembly.parser.ArtifactParser;
-import com.alibaba.smart.framework.engine.assembly.parse.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parse.exception.ResolveException;
+import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parser.exception.ResolveException;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
-import com.alibaba.smart.framework.engine.assembly.parse.AssemblyParserExtensionPoint;
+import com.alibaba.smart.framework.engine.assembly.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 
 import javax.xml.namespace.QName;
