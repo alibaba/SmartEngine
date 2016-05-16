@@ -1,5 +1,10 @@
 package com.alibaba.smart.framework.engine;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.alibaba.smart.framework.engine.deployment.Deployer;
 import com.alibaba.smart.framework.engine.extensibility.ClassLoaderExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
@@ -8,10 +13,6 @@ import com.alibaba.smart.framework.engine.extensibility.impl.DefaultExtensionPoi
 import com.alibaba.smart.framework.engine.instance.manager.ExecutionManager;
 import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
 import com.alibaba.smart.framework.engine.instance.manager.TaskManager;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Default Smart Engine

@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.instance;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 实例

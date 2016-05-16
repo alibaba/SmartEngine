@@ -1,11 +1,12 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension;
 
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
-import com.alibaba.smart.framework.engine.modules.common.assembly.Extensions;
+import javax.xml.namespace.QName;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.xml.namespace.QName;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
+import com.alibaba.smart.framework.engine.modules.common.assembly.Extensions;
 
 /**
  * Created by ettear on 16-4-29.

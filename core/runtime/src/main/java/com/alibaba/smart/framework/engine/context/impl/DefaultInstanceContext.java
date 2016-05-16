@@ -1,9 +1,10 @@
 package com.alibaba.smart.framework.engine.context.impl;
 
+import lombok.Data;
+
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-import lombok.Data;
 
 /**
  * DefaultInstanceContext

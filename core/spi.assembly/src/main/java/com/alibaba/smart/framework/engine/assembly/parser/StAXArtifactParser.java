@@ -1,9 +1,9 @@
 package com.alibaba.smart.framework.engine.assembly.parser;
 
-import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
+import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
 
 /**
  * Created by ettear on 16-4-12.

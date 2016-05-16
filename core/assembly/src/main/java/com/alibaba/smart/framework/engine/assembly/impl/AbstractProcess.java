@@ -1,11 +1,12 @@
 package com.alibaba.smart.framework.engine.assembly.impl;
 
-import com.alibaba.smart.framework.engine.assembly.Base;
-import com.alibaba.smart.framework.engine.assembly.Process;
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.List;
+import com.alibaba.smart.framework.engine.assembly.Base;
+import com.alibaba.smart.framework.engine.assembly.Process;
 
 /**
  * Created by ettear on 16-4-13.

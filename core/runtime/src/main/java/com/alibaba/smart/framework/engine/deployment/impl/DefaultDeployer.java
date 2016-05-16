@@ -1,21 +1,35 @@
 package com.alibaba.smart.framework.engine.deployment.impl;
 
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.assembly.Activity;
 import com.alibaba.smart.framework.engine.assembly.Base;
 import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.assembly.Transition;
+import com.alibaba.smart.framework.engine.assembly.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.deployment.Deployer;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.deployment.exception.DeployException;
-import com.alibaba.smart.framework.engine.assembly.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
+import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
@@ -28,20 +42,6 @@ import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcessComponent;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeTransition;
-
-import org.apache.commons.lang3.StringUtils;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
-import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 /**
  * 默认部署器

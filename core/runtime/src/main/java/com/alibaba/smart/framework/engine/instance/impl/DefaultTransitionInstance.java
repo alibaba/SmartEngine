@@ -1,8 +1,9 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
-import com.alibaba.smart.framework.engine.instance.TransitionInstance;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import com.alibaba.smart.framework.engine.instance.TransitionInstance;
 
 /**
  * 默认关联实例

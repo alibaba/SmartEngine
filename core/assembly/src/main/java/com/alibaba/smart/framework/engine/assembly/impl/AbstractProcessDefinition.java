@@ -1,8 +1,9 @@
 package com.alibaba.smart.framework.engine.assembly.impl;
 
+import lombok.Data;
+
 import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.assembly.ProcessDefinition;
-import lombok.Data;
 
 /**
  * Created by ettear on 16-4-13.

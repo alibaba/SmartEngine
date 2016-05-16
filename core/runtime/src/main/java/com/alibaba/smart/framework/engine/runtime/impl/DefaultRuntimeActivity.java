@@ -1,5 +1,14 @@
 package com.alibaba.smart.framework.engine.runtime.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.alibaba.smart.framework.engine.assembly.Activity;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.instance.ActivityInstance;
@@ -12,13 +21,6 @@ import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultActivityTransitionSelectInvoker;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * DefaultRuntimeActivity

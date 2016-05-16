@@ -1,9 +1,9 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process;
 
+import javax.xml.namespace.QName;
+
 import com.alibaba.smart.framework.engine.assembly.impl.AbstractProcess;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
-
-import javax.xml.namespace.QName;
 
 /**
  * @author 高海军 帝奇 Apr 21, 2016 1:37:18 PM

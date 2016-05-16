@@ -1,14 +1,14 @@
 package com.alibaba.smart.framework.engine.extensibility.impl;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.alibaba.smart.framework.engine.assembly.Script;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.script.ScriptCompiler;
 import com.alibaba.smart.framework.engine.script.ScriptCompilerExtensionPoint;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * DefaultScriptCompilerExtensionPoint

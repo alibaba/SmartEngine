@@ -1,10 +1,11 @@
 package com.alibaba.smart.framework.engine.modules.common.assembly;
 
-import com.alibaba.smart.framework.engine.assembly.impl.AbstractBase;
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.List;
+import com.alibaba.smart.framework.engine.assembly.impl.AbstractBase;
 
 /**
  * Created by ettear on 16-4-12.

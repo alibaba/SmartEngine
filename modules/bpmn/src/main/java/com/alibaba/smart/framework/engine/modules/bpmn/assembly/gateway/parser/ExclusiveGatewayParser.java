@@ -1,15 +1,15 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.parser;
 
-import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
+import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 
 public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<ExclusiveGateway>
         implements StAXArtifactParser<ExclusiveGateway> {

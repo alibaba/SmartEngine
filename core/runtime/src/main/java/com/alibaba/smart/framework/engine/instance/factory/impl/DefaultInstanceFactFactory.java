@@ -1,10 +1,10 @@
 package com.alibaba.smart.framework.engine.instance.factory.impl;
 
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.instance.InstanceFact;
 import com.alibaba.smart.framework.engine.instance.factory.InstanceFactFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultInstanceFact;
-
-import java.util.Map;
 
 /**
  * Created by ettear on 16-5-4.

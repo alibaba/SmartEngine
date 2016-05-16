@@ -1,5 +1,9 @@
 package com.alibaba.smart.framework.engine.instance.manager.impl;
 
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
@@ -10,9 +14,6 @@ import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.manager.ExecutionManager;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Map;
 
 /**
  * Created by ettear on 16-4-19.

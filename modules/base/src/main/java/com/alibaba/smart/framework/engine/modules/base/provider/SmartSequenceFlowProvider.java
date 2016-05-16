@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.modules.base.provider;
 
-import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartSequenceFlow;
 import com.alibaba.smart.framework.engine.modules.base.invocation.SmartInvoker;

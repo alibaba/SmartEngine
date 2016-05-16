@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.assembly.impl;
 
 import com.alibaba.smart.framework.engine.assembly.Invocable;
-import lombok.Data;
 
 /**
  * Abstract Executor

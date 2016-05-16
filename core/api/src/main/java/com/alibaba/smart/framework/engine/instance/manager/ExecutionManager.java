@@ -1,10 +1,8 @@
 package com.alibaba.smart.framework.engine.instance.manager;
 
-import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-
-import java.util.List;
 import java.util.Map;
+
+import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 
 /**
  * Created by ettear on 16-4-19.

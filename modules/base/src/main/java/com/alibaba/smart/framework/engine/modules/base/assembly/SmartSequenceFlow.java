@@ -1,9 +1,9 @@
 package com.alibaba.smart.framework.engine.modules.base.assembly;
 
+import javax.xml.namespace.QName;
+
 import com.alibaba.smart.framework.engine.assembly.impl.AbstractTransition;
 import com.alibaba.smart.framework.engine.modules.common.assembly.SmartBase;
-
-import javax.xml.namespace.QName;
 
 /**
  * Smart Sequence Flow

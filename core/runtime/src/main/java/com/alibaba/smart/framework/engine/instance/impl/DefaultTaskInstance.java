@@ -1,8 +1,9 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
-import com.alibaba.smart.framework.engine.instance.TaskInstance;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import com.alibaba.smart.framework.engine.instance.TaskInstance;
 
 /**
  * 默认任务实例

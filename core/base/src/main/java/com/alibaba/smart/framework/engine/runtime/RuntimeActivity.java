@@ -1,10 +1,10 @@
 package com.alibaba.smart.framework.engine.runtime;
 
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.assembly.Activity;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.invocation.Message;
-
-import java.util.Map;
 
 /**
  * RuntimeActivity

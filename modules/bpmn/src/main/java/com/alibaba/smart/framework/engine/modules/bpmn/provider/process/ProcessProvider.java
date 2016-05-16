@@ -1,11 +1,9 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.process;
 
-import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Process;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityProvider;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.process.behavior.DefaultInvoker;
 
 /**
  * @author 高海军 帝奇 Apr 21, 2016 8:28:49 PM

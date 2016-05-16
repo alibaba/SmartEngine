@@ -1,5 +1,8 @@
 package com.alibaba.smart.framework.engine.extensibility.impl;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.alibaba.smart.framework.engine.assembly.Handler;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
@@ -7,9 +10,6 @@ import com.alibaba.smart.framework.engine.extensibility.HandlerProviderExtension
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.provider.HandlerProvider;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * DefaultHandlerProviderExtensionPoint

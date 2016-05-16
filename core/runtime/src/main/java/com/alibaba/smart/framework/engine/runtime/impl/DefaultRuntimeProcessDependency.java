@@ -1,5 +1,12 @@
 package com.alibaba.smart.framework.engine.runtime.impl;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import lombok.Data;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
@@ -8,11 +15,6 @@ import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
-import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * DefaultRuntimeProcessDependency

@@ -1,5 +1,10 @@
 package com.alibaba.smart.framework.engine.runtime.impl;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import lombok.Data;
+
 import com.alibaba.smart.framework.engine.assembly.Invocable;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
@@ -9,10 +14,6 @@ import com.alibaba.smart.framework.engine.invocation.impl.DoNothingInvoker;
 import com.alibaba.smart.framework.engine.provider.InvocableProvider;
 import com.alibaba.smart.framework.engine.runtime.ProviderRuntimeInvocable;
 import com.alibaba.smart.framework.engine.runtime.RuntimeInvocable;
-import lombok.Data;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * DefaultRuntimeInvocable

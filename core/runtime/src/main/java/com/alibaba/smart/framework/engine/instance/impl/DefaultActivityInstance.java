@@ -1,13 +1,14 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
-import com.alibaba.smart.framework.engine.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.instance.TransitionInstance;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.alibaba.smart.framework.engine.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.instance.TransitionInstance;
 
 /**
  * 默认活动实例

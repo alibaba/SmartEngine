@@ -1,11 +1,12 @@
 package com.alibaba.smart.framework.engine.runtime.impl;
 
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import lombok.Data;
+
+import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
+import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
 
 /**
  * Created by ettear on 16-4-13.

@@ -1,5 +1,8 @@
 package com.alibaba.smart.framework.engine.modules.base;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.alibaba.smart.framework.engine.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.deployment.Deployer;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
@@ -7,8 +10,6 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
-import org.junit.Assert;
-import org.junit.Test;
 
 /**
  * Base Smart Engine Test

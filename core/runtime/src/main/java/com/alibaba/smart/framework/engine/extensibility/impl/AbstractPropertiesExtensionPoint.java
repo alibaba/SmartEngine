@@ -1,15 +1,15 @@
 package com.alibaba.smart.framework.engine.extensibility.impl;
 
-import com.alibaba.smart.framework.engine.extensibility.ClassLoaderExtensionPoint;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
-
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
+
+import com.alibaba.smart.framework.engine.extensibility.ClassLoaderExtensionPoint;
+import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 
 /**
  * 配置文件扩展点

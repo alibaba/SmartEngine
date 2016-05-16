@@ -1,18 +1,14 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.process;
 
+import com.alibaba.smart.framework.engine.assembly.Handler;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.HandlerProviderExtensionPoint;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.AbstractBpmnActivity;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
-import com.alibaba.smart.framework.engine.assembly.Handler;
-import com.alibaba.smart.framework.engine.assembly.Script;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractTransitionProvider;
 import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
-import com.alibaba.smart.framework.engine.script.ScriptCompilerExtensionPoint;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
-import com.alibaba.smart.framework.process.behavior.DefaultInvoker;
 
 public class SequenceFlowProvider extends AbstractTransitionProvider<SequenceFlow> implements TransitionProvider<SequenceFlow> {
 

@@ -1,9 +1,9 @@
 package com.alibaba.smart.framework.engine.assembly.parser;
 
+import javax.xml.namespace.QName;
+
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ResolveException;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
-
-import javax.xml.namespace.QName;
 
 /**
  * Base interface for artifact parsers.

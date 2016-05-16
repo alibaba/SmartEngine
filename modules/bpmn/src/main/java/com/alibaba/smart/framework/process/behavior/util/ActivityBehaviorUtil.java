@@ -7,20 +7,20 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.alibaba.smart.framework.engine.assembly.Transition;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 import com.alibaba.smart.framework.process.behavior.ActivityBehavior;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.process.session.ExecutionSession;
 import com.alibaba.smart.framework.process.session.util.ThreadLocalExecutionSessionUtil;
 
+/**
+ * @author 高海军 帝奇 
+ */
 public class ActivityBehaviorUtil {
 
-    /**
-     * 是否需要针对普通activi 和 网关的 activity 做出不同的方法? TODO
-     * 添加debug日志,添加event和interceptor
-     */
+  
     public void leaveCurrentActivity() {
 
         ExecutionSession executionSession = ThreadLocalExecutionSessionUtil.get();
@@ -33,18 +33,16 @@ public class ActivityBehaviorUtil {
 
         for (Entry<String, RuntimeTransition> entry : transitionEntries) {
             RuntimeTransition runtimeTransition = entry.getValue();
-            // 和Model的关系 ,定义域参与运行域?
+            
             Transition transition = runtimeTransition.getModel();
 
-            // TODO 顶层模型支持sequenceFlow,避免强转
             SequenceFlow sequenceFlow = (SequenceFlow) transition;
             ConditionExpression conditionExpression = sequenceFlow.getConditionExpression();
             if (null == conditionExpression) {
-                // TODO 支持通过隐式的的transitionId来判断
                 toBeChoosenRuntimeTransition.add(runtimeTransition);
             } else {
-                String expressionType = null; //conditionExpression.getHandler();
-                String expressionContent = null;// conditionExpression.getExpressionContent();
+                String expressionType = conditionExpression.getExpressionType(); 
+                String expressionContent = conditionExpression.getExpressionContent(); 
 
                 ConditionExpressionEvaluater conditionExpressionEvaluater = ConditionExpressionEvaluaterFactory.createConditionExpression(expressionType);
                 boolean conditionPassed = conditionExpressionEvaluater.evaluate(expressionContent);
@@ -52,14 +50,12 @@ public class ActivityBehaviorUtil {
                     toBeChoosenRuntimeTransition.add(runtimeTransition);
                 }
             }
-
         }
         
         if(toBeChoosenRuntimeTransition.size() ==1){
             RuntimeTransition outgoingRuntimeTransition =   toBeChoosenRuntimeTransition.get(0);
             RuntimeActivity targetRuntimeActivity=  outgoingRuntimeTransition.getTarget();
             
-            //TODO 有点tricky
             ThreadLocalExecutionSessionUtil.get().setCurrentRuntimeActivity(targetRuntimeActivity);
            
             String activityClassName = targetRuntimeActivity.getModel().getClass().getName();

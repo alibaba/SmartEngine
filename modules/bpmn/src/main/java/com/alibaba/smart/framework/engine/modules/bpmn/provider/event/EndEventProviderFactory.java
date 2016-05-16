@@ -1,9 +1,9 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.event;
 
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
 
 
 public class EndEventProviderFactory implements ActivityProviderFactory<EndEvent> {

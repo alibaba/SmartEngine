@@ -1,20 +1,20 @@
 package com.alibaba.smart.framework.engine.assembly.parser.impl;
 
-import com.alibaba.smart.framework.engine.assembly.Base;
-import com.alibaba.smart.framework.engine.assembly.parser.ArtifactParser;
-import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parser.exception.ResolveException;
-import com.alibaba.smart.framework.engine.core.LifeCycleListener;
-import com.alibaba.smart.framework.engine.assembly.parser.AssemblyParserExtensionPoint;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
-import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+import com.alibaba.smart.framework.engine.assembly.Base;
+import com.alibaba.smart.framework.engine.assembly.parser.ArtifactParser;
+import com.alibaba.smart.framework.engine.assembly.parser.AssemblyParserExtensionPoint;
+import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
+import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.assembly.parser.exception.ResolveException;
+import com.alibaba.smart.framework.engine.core.LifeCycleListener;
+import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 
 /**
  * Abstract StAXArtifactParser
