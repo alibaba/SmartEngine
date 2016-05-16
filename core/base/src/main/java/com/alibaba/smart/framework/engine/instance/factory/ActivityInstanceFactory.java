@@ -5,6 +5,7 @@ import com.alibaba.smart.framework.engine.instance.ActivityInstance;
 /**
  * 活动实例工厂
  * Created by ettear on 16-4-20.
+ * TODO 实现类是否重复?
  */
 public interface ActivityInstanceFactory {
 

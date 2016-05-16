@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 /**
  * XML处理器扩展点
  * Created by ettear on 16-4-12.
+ * TODO 将xml,扩展点 独立于引擎 ? base 职责略混乱. parse 和 readAttribute 啥区别? 
  */
 public interface AssemblyParserExtensionPoint extends LifeCycleListener {
 
