@@ -19,5 +19,6 @@
 		<module>mvel</module>
 		<module>groovy</module>
 		<module>storage.memory</module>
+		<module>storage.database</module>
 	</modules>
 </project>
