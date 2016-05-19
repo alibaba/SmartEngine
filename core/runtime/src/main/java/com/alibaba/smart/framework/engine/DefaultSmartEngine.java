@@ -17,7 +17,6 @@ import com.alibaba.smart.framework.engine.instance.manager.TaskManager;
 /**
  * Default Smart Engine
  * Created by ettear on 16-4-12.
- * TODO 都是base的实现? 模型有Runtime,这个工程也是runtime?
  */
 public class DefaultSmartEngine implements SmartEngine {
 
@@ -27,7 +26,6 @@ public class DefaultSmartEngine implements SmartEngine {
     private Map<String, ClassLoader> classLoaders = new ConcurrentHashMap<>();
 
     public DefaultSmartEngine() throws EngineException {
-        //TODO 捕获异常后作何处理?
         this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
         ClassLoader classLoader = DefaultSmartEngine.class.getClassLoader();
         this.install(DEFAULT_MODULE, classLoader);
@@ -54,7 +52,6 @@ public class DefaultSmartEngine implements SmartEngine {
             } catch (ExtensionPointLoadException loadException) {
                 throw new EngineException("Init engine failure!", loadException);
             }
-
         }
     }
 

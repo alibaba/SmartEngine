@@ -8,7 +8,6 @@ import com.alibaba.smart.framework.engine.instance.impl.DefaultInstanceFact;
 
 /**
  * Created by ettear on 16-5-4.
- * TODO  作用是啥? 区别?
  */
 public class DefaultInstanceFactFactory implements InstanceFactFactory {
 

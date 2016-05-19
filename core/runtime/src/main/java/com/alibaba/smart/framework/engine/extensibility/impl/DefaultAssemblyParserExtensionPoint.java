@@ -81,7 +81,6 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         return "assembly-parser";
     }
 
-    //TODO 扩展点主要是元数据信息,干嘛要实现该接口?
     @Override
     public Object parse(XMLStreamReader reader, ParseContext context)
             throws ParseException, XMLStreamException {

@@ -13,7 +13,7 @@ public interface RuntimeInvocable<M extends Invocable> extends LifeCycleListener
 
     String getId();
 
-    //FIXME 获取assembly 类型?
+    //源自java services规范
     Class<?> getModelType();
 
     M getModel();
