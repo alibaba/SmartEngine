@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.smart.framework.engine.modules.storage.dao.ExecutionInstanceDAO">
+     
+    <sql id="baseColumn">
+        id, gmt_create, gmt_modified, 	process_instance_id,process_definition_id,process_definition_activity_id,activity_instance_id,active
+    </sql>
+
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.modules.storage.entity.ExecutionInstanceEntity">
+       insert into execution_instance(<include refid="baseColumn"/>)
+       values (#{id},  now(), now(), #{processInstanceId}, #{processDefinitionId},
+        #{processDefinitionActivityId}, #{activityInstanceId},#{active})
+   </insert>
+
+    <delete id="delete" parameterType="long">
+        delete from execution_instance where id=#{id}
+    </delete>
+
+    <update id="update" parameterType="com.alibaba.smart.framework.engine.modules.storage.entity.ActivityInstanceEntity">
+        update execution_instance
+        <set>
+            gmt_modified=now()
+            <if test="active != null"> ,active = #{active}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="findOne" resultType="com.alibaba.smart.framework.engine.modules.storage.entity.ExecutionInstanceEntity">
+        select <include refid="baseColumn"/>  
+        from execution_instance where id=#{id}
+    </select>
+
+  	
+
+
+</mapper>

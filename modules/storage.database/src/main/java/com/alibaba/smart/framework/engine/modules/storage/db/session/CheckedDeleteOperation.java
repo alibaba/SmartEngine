@@ -11,7 +11,7 @@ package com.alibaba.smart.framework.engine.modules.storage.db.session;
       }
       
       @Override
-      public boolean sameIdentity(PersistentObject other) {
+      public boolean isSameIdentityWith(PersistentObject other) {
         return persistentObject.getClass().equals(other.getClass())
             && persistentObject.getId().equals(other.getId());
       }

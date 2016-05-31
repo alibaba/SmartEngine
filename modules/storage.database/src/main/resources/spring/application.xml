@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mybatis="http://www.foo.com/schema/data/mybatis"
+       xmlns:sofia="http://www.springframework.org/schema/sofia"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.foo.com/schema/data/mybatis http://www.foo.com/schema/data/mybatis/spring-mybatis.xsd
+        http://www.springframework.org/schema/sofia http://www.sofiaframework.org/schema/sca/spring-sofia.xsd">
+
+    <import resource="sequence.xml"/>
+
+    <sofia:resource id="dataSource"/>
+
+    <context:component-scan base-package="com.alibaba.smart.framework.engine.modules.storage"/>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:configLocation="classpath:mybatis/mybatis-config.xml"
+          p:mapperLocations="classpath:mybatis/sqlmap/*.xml"/>
+
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+
+
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+          p:basePackage="com.alibaba.smart.framework.engine.modules.storage.dao"
+          p:markerInterface="com.alibaba.spring.data.mybatis.repository.MybatisRepository"
+          p:sqlSessionFactoryBeanName="sqlSessionFactory"
+          p:sqlSessionTemplateBeanName="sqlSession"/>
+
+   <!-- TODO 配置需要精简下 -->
+
+    <mybatis:repositories base-package="com.alibaba.smart.framework.engine.modules.storage.dao"
+                          sql-session-ref="sqlSession"
+                          sequence-dao-ref="sequenceDao" />
+
+	
+</beans>

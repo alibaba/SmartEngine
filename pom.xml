@@ -50,6 +50,14 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -185,6 +193,23 @@
 				<artifactId>guava</artifactId>
 				<version>18.0</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>com.alibaba.intl.sourcing.shared</groupId>  
+  				<artifactId>spring-data-mybatis</artifactId>  
+  				<version>1.0.3</version>  
+			</dependency>
+			
+			<dependency>
+            	<groupId>com.taobao.tddl</groupId>
+            	<artifactId>tddl-sequence</artifactId>
+            	<version>5.1.17</version> 
+        	</dependency>
+        	<dependency>
+            	<groupId>com.taobao.tddl</groupId>
+            	<artifactId>tddl-client</artifactId>
+            	<version>5.1.17</version> 
+        	</dependency>
 
 		</dependencies>
 	</dependencyManagement>

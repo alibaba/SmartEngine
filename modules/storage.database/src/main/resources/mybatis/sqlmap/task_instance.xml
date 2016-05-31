@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.smart.framework.engine.modules.storage.dao.TaskInstanceDAO">
+     
+    <sql id="baseColumn">
+        id, gmt_create, gmt_modified,process_instance_id, process_definition_id,
+        activity_instance_id, execution_instance_id,assignee_id,priority,claim_time,end_time
+    </sql>
+
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.modules.storage.entity.TaskInstanceEntity">
+       insert into task_instance(<include refid="baseColumn"/>)
+       values (#{id},  now(), now(), #{processInstanceId}, #{processDefinitionId},
+        #{activityInstanceId}, #{executionInstanceId},#{assigneeId},#{priority},#{claimTime},#{endTime})
+   </insert>
+
+    <delete id="delete" parameterType="long">
+        delete from task_instance where id=#{id}
+    </delete>
+
+    <update id="update" parameterType="com.alibaba.smart.framework.engine.modules.storage.entity.TaskInstanceEntity">
+        update task_instance
+        <set>
+            gmt_modified=now()
+            <if test="assigneeId != null"> ,assignee_id = #{assigneeId}</if>
+            <if test="priority != null"> ,priority = #{priority}</if>
+            <if test="claimTime != null"> ,claim_time = #{claimTime}</if>
+            <if test="endTime != null"> ,end_time = #{endTime}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="findOne" resultType="com.alibaba.smart.framework.engine.modules.storage.entity.TaskInstanceEntity">
+        select <include refid="baseColumn"/>
+        from task_instance where id=#{id}
+    </select>
+
+
+</mapper>

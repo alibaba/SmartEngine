@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" default-lazy-init="true"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<util:properties id="datasourceProperties" location="classpath:datasource.properties"/>
+
+	<bean id="abstractSequenceDao" class="com.taobao.tddl.client.sequence.impl.GroupSequenceDao" init-method="init"
+	      abstract="true"
+	      lazy-init="default">
+		<property name="retryTimes" value="2"/>
+		<property name="nameColumnName" value="seq_name"/>
+		<property name="valueColumnName" value="seq_value"/>
+		<property name="gmtModifiedColumnName" value="gmt_modified"/>
+		<property name="adjust" value="false"/>
+	</bean>
+
+
+	<bean id="sequenceDao" parent="abstractSequenceDao">
+		<property name="appName" value="#{datasourceProperties.tddlApp}"/>
+		<property name="tableName" value="sequence"/>
+		<property name="dscount" value="1"/>
+		<property name="dbGroupKeys">
+			<list>
+				<value>#{datasourceProperties.tddlGroup}</value>
+			</list>
+		</property>
+		<property name="innerStep" value="1000"/>
+	</bean>
+
+</beans>

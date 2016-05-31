@@ -8,19 +8,19 @@ import java.util.Map;
 
 import lombok.Getter;
 
-public class PersistentObjectCacheService {
+ class PersistentObjectCacheService {
 
     @Getter
     protected Map<Class<?>, Map<String, CachedObject>> cachedObjects = new HashMap<Class<?>, Map<String, CachedObject>>();
 
-    protected CachedObject cachePut(PersistentObject persistentObject, boolean storeState) {
-        Map<String, CachedObject> classCache = cachedObjects.get(persistentObject.getClass());
-        if (classCache == null) {
-            classCache = new HashMap<String, CachedObject>();
-            cachedObjects.put(persistentObject.getClass(), classCache);
+    protected CachedObject put(PersistentObject persistentObject, boolean storeState) {
+        Map<String, CachedObject> classCacheMap = cachedObjects.get(persistentObject.getClass());
+        if (classCacheMap == null) {
+            classCacheMap = new HashMap<String, CachedObject>();
+            cachedObjects.put(persistentObject.getClass(), classCacheMap);
         }
         CachedObject cachedObject = new CachedObject(persistentObject, storeState);
-        classCache.put(persistentObject.getId(), cachedObject);
+        classCacheMap.put(persistentObject.getId(), cachedObject);
         return cachedObject;
     }
 
@@ -33,7 +33,7 @@ public class PersistentObjectCacheService {
         if (cachedPersistentObject != null) {
             return cachedPersistentObject;
         }
-        cachePut(persistentObject, true);
+        put(persistentObject, true);
         return persistentObject;
     }
 

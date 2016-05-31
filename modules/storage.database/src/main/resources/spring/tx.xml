@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:sofia="http://www.springframework.org/schema/sofia"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/sofia http://www.sofiaframework.org/schema/sca/spring-sofia.xsd">
+
+
+    <sofia:resource id="dataSource"/>
+
+    <!-- 事务管理器 -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
+
+    <!-- 事物传播特性 -->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="create*" propagation="REQUIRED"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="modify*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="alter*" propagation="REQUIRED"/>
+            <tx:method name="reset*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="batchDelete*" propagation="REQUIRED"/>
+            <tx:method name="batchInsert*" propagation="REQUIRED"/>
+            <tx:method name="batchUpdate*" propagation="REQUIRED"/>
+            <tx:method name="assign*" propagation="REQUIRED"/>
+            <tx:method name="generate*" propagation="REQUIRED"/>
+            <tx:method name="clear*" propagation="REQUIRED"/>
+
+            <tx:method name="*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+
+</beans>

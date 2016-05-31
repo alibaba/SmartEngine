@@ -17,5 +17,25 @@
 			<artifactId>engine.core.base</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.alibaba.intl.sourcing.shared</groupId>  
+  			<artifactId>spring-data-mybatis</artifactId>  
+		</dependency>
+		<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+            <groupId>com.taobao.tddl</groupId>
+            <artifactId>tddl-sequence</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.taobao.tddl</groupId>
+            <artifactId>tddl-client</artifactId>
+        </dependency>
 	</dependencies>
 </project>
