@@ -7,7 +7,7 @@
         id, gmt_create, gmt_modified, 	process_instance_id,process_definition_id,process_definition_activity_id,execution_instance_id,task_instance_id
     </sql>
 
-    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.modules.storage.entity.ActivityInstanceEntity">
+    <insert id="insert" parameterType="ActivityInstanceEntity">
        insert into activity_instance(<include refid="baseColumn"/>)
        values (#{id},  now(), now(), #{processInstanceId}, #{processDefinitionId},
         #{processDefinitionActivityId}, #{executionInstanceId},#{taskInstanceId})
@@ -27,7 +27,7 @@
         where id=#{id}
     </update> -->
 
-    <select id="findOne" resultType="com.alibaba.smart.framework.engine.modules.storage.entity.ActivityInstanceEntity">
+    <select id="findOne" resultType="ActivityInstanceEntity">
         select <include refid="baseColumn"/>
         from activity_instance where id=#{id}
     </select>

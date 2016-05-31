@@ -8,7 +8,7 @@
         status, parent_process_instance_id
     </sql>
 
-    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.modules.storage.entity.ProcessInstanceEntity">
+    <insert id="insert" parameterType="ProcessInstanceEntity">
        insert into process_instance(<include refid="baseColumn"/>)
        values (#{id},  now(), now(), #{processDefinitionId},
         #{status}, #{parentProcessInstanceId})
@@ -18,7 +18,7 @@
         delete from process_instance where id=#{id}
     </delete>
 
-    <update id="update" parameterType="com.alibaba.smart.framework.engine.modules.storage.entity.ProcessInstanceEntity">
+    <update id="update" parameterType="ProcessInstanceEntity">
         update process_instance
         <set>
             gmt_modified=now()
@@ -28,7 +28,7 @@
         where id=#{id}
     </update>
 
-    <select id="findOne" resultType="com.alibaba.smart.framework.engine.modules.storage.entity.ProcessInstanceEntity">
+    <select id="findOne" resultType="ProcessInstanceEntity">
         select <include refid="baseColumn"/>
         from process_instance where id=#{id}
     </select>

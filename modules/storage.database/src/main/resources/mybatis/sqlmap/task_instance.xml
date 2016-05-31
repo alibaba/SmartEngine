@@ -8,7 +8,7 @@
         activity_instance_id, execution_instance_id,assignee_id,priority,claim_time,end_time
     </sql>
 
-    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.modules.storage.entity.TaskInstanceEntity">
+    <insert id="insert" parameterType="TaskInstanceEntity">
        insert into task_instance(<include refid="baseColumn"/>)
        values (#{id},  now(), now(), #{processInstanceId}, #{processDefinitionId},
         #{activityInstanceId}, #{executionInstanceId},#{assigneeId},#{priority},#{claimTime},#{endTime})
@@ -18,7 +18,7 @@
         delete from task_instance where id=#{id}
     </delete>
 
-    <update id="update" parameterType="com.alibaba.smart.framework.engine.modules.storage.entity.TaskInstanceEntity">
+    <update id="update" parameterType="TaskInstanceEntity">
         update task_instance
         <set>
             gmt_modified=now()
@@ -30,7 +30,7 @@
         where id=#{id}
     </update>
 
-    <select id="findOne" resultType="com.alibaba.smart.framework.engine.modules.storage.entity.TaskInstanceEntity">
+    <select id="findOne" resultType="TaskInstanceEntity">
         select <include refid="baseColumn"/>
         from task_instance where id=#{id}
     </select>
