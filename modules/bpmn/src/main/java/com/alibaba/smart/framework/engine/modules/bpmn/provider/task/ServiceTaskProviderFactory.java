@@ -8,13 +8,14 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 public class ServiceTaskProviderFactory implements ActivityProviderFactory<ServiceTask> {
 
     private ExtensionPointRegistry extensionPointRegistry;
-    public ServiceTaskProviderFactory(ExtensionPointRegistry extensionPointRegistry){
-        this.extensionPointRegistry=extensionPointRegistry;
+
+    public ServiceTaskProviderFactory(ExtensionPointRegistry extensionPointRegistry) {
+        this.extensionPointRegistry = extensionPointRegistry;
     }
 
     @Override
     public ServiceTaskProvider createActivityProvider(RuntimeActivity activity) {
-        return new ServiceTaskProvider(this.extensionPointRegistry,activity);
+        return new ServiceTaskProvider(this.extensionPointRegistry, activity);
     }
 
     @Override

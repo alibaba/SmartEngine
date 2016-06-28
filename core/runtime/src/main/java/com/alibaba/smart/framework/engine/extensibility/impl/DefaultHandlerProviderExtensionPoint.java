@@ -12,11 +12,9 @@ import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.provider.HandlerProvider;
 
 /**
- * DefaultHandlerProviderExtensionPoint
- * Created by ettear on 16-4-29.
+ * DefaultHandlerProviderExtensionPoint Created by ettear on 16-4-29.
  */
-public class DefaultHandlerProviderExtensionPoint extends AbstractPropertiesExtensionPoint
-        implements HandlerProviderExtensionPoint {
+public class DefaultHandlerProviderExtensionPoint extends AbstractPropertiesExtensionPoint implements HandlerProviderExtensionPoint {
 
     private Map<Class, HandlerProvider> providers = new ConcurrentHashMap<>();
 
@@ -35,7 +33,7 @@ public class DefaultHandlerProviderExtensionPoint extends AbstractPropertiesExte
 
     @Override
     protected void initExtension(ClassLoader classLoader, String type, Object handlerProviderObject)
-            throws ExtensionPointLoadException {
+                                                                                                    throws ExtensionPointLoadException {
         if (handlerProviderObject instanceof HandlerProvider) {
             HandlerProvider handlerProvider = (HandlerProvider) handlerProviderObject;
             this.providers.put(handlerProvider.getType(), handlerProvider);

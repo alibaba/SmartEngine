@@ -15,12 +15,14 @@ public interface TaskService {
 
     /**
      * 将任务委托给别人处理,与{@link #reAssigne(TaskInstanceCommonActionCommand)} 语义不一样,作用相同.
+     * 
      * @param command
      */
     void delegate(TaskInstanceCommonActionCommand<?> command);
 
     /**
      * 更新任务的处理者
+     * 
      * @param command
      */
     void reAssigne(TaskInstanceCommonActionCommand<?> command);

@@ -14,5 +14,6 @@ import com.alibaba.smart.framework.engine.assembly.Process;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public abstract class AbstractProcess extends AbstractActivity implements Process {
+
     private List<Base> elements;
 }

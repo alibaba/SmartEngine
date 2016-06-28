@@ -10,11 +10,9 @@ import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint
 import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
 
 /**
- * 默认Provider工厂扩展点
- * Created by ettear on 16-4-12.
+ * 默认Provider工厂扩展点 Created by ettear on 16-4-12.
  */
-public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExtensionPoint
-        implements ProviderFactoryExtensionPoint {
+public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExtensionPoint implements ProviderFactoryExtensionPoint {
 
     /**
      * Artifact处理器
@@ -28,8 +26,8 @@ public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExte
     @Override
     public void start() {
         for (ProviderFactory providerFactory : providerFactories.values()) {
-            if(providerFactory instanceof LifeCycleListener){
-                ((LifeCycleListener)providerFactory).start();
+            if (providerFactory instanceof LifeCycleListener) {
+                ((LifeCycleListener) providerFactory).start();
             }
         }
     }
@@ -37,15 +35,15 @@ public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExte
     @Override
     public void stop() {
         for (ProviderFactory providerFactory : providerFactories.values()) {
-            if(providerFactory instanceof LifeCycleListener){
-                ((LifeCycleListener)providerFactory).stop();
+            if (providerFactory instanceof LifeCycleListener) {
+                ((LifeCycleListener) providerFactory).stop();
             }
         }
     }
 
     @Override
     protected void initExtension(ClassLoader classLoader, String type, Object providerFactoryObject)
-            throws ExtensionPointLoadException {
+                                                                                                    throws ExtensionPointLoadException {
         if (providerFactoryObject instanceof ProviderFactory) {
             ProviderFactory providerFactory = (ProviderFactory) providerFactoryObject;
             this.providerFactories.put(providerFactory.getModelType(), providerFactory);
@@ -59,7 +57,7 @@ public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExte
 
     @Override
     @SuppressWarnings("unchecked")
-    public  ProviderFactory getProviderFactory(Class<?> modelType) {
+    public ProviderFactory getProviderFactory(Class<?> modelType) {
         return this.providerFactories.get(modelType);
     }
 }

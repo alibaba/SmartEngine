@@ -13,8 +13,9 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
  */
 @Data
 public class DefaultRuntimeTransition extends AbstractRuntimeInvocable<Transition> implements RuntimeTransition {
-    private RuntimeActivity      source;
-    private RuntimeActivity      target;
+
+    private RuntimeActivity source;
+    private RuntimeActivity target;
 
     @Override
     public void execute(InstanceContext context) {

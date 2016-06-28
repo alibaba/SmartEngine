@@ -14,35 +14,35 @@ import com.alibaba.smart.framework.engine.instance.InstanceFact;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 
 /**
- * Default Process Instance
- * Created by ettear on 16-4-12.
+ * Default Process Instance Created by ettear on 16-4-12.
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class DefaultProcessInstance extends AbstractLifeCycleInstance implements ProcessInstance {
-    private String processUri;
-    private String parentInstanceId;
-    
-    private String processDefinitionId;
-    private String processDefinitionVersion;
 
-    private String parentExecutionInstanceId;
-    private String parentActivityInstanceId;
+    private String                         processUri;
+    private String                         parentInstanceId;
 
-    private InstanceFact fact;
+    private String                         processDefinitionId;
+    private String                         processDefinitionVersion;
+
+    private String                         parentExecutionInstanceId;
+    private String                         parentActivityInstanceId;
+
+    private InstanceFact                   fact;
     /**
      * Running executions
      */
-    private Map<String, ExecutionInstance> executions = new ConcurrentHashMap<>();
-    
+    private Map<String, ExecutionInstance> executions        = new ConcurrentHashMap<>();
+
     /**
      * 需要顺序,并且不需要根据key来获取数据,所以是list数据结构
      */
-    private List< ActivityInstance> activityInstances = new ArrayList<>();
-    
+    private List<ActivityInstance>         activityInstances = new ArrayList<>();
+
     @Override
     public void addExecution(ExecutionInstance executionInstance) {
-        this.executions.put(executionInstance.getInstanceId(),executionInstance);
+        this.executions.put(executionInstance.getInstanceId(), executionInstance);
     }
 
     @Override
@@ -52,6 +52,6 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
 
     @Override
     public void addActivityInstance(ActivityInstance activityInstance) {
-        this.activityInstances.add(activityInstance) ;       
+        this.activityInstances.add(activityInstance);
     }
 }

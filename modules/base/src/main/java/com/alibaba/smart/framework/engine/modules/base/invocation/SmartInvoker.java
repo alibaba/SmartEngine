@@ -8,9 +8,11 @@ import com.alibaba.smart.framework.engine.invocation.Message;
  * Created by ettear on 16-4-19.
  */
 public class SmartInvoker implements Invoker {
+
     private String message;
-    public SmartInvoker(String message){
-        this.message=message;
+
+    public SmartInvoker(String message) {
+        this.message = message;
     }
 
     @Override

@@ -12,20 +12,17 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartProcessDefinition;
 
 /**
- * SmartProcessDefinitionParser
- * Created by ettear on 16-4-14.
+ * SmartProcessDefinitionParser Created by ettear on 16-4-14.
  */
-public class SmartProcessDefinitionParser extends AbstractStAXArtifactParser<SmartProcessDefinition>
-        implements StAXArtifactParser<SmartProcessDefinition> {
+public class SmartProcessDefinitionParser extends AbstractStAXArtifactParser<SmartProcessDefinition> implements StAXArtifactParser<SmartProcessDefinition> {
 
-    public SmartProcessDefinitionParser(
-            ExtensionPointRegistry extensionPointRegistry) {
+    public SmartProcessDefinitionParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public SmartProcessDefinition parse(XMLStreamReader reader, ParseContext context)
-            throws ParseException, XMLStreamException {
+    public SmartProcessDefinition parse(XMLStreamReader reader, ParseContext context) throws ParseException,
+                                                                                     XMLStreamException {
         SmartProcessDefinition smartProcessDefinition = new SmartProcessDefinition();
         smartProcessDefinition.setId(this.getString(reader, "id"));
         smartProcessDefinition.setVersion(this.getString(reader, "version"));
@@ -34,7 +31,7 @@ public class SmartProcessDefinitionParser extends AbstractStAXArtifactParser<Sma
         while (this.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
             if (element instanceof com.alibaba.smart.framework.engine.assembly.Process) {
-                smartProcessDefinition.setProcess((com.alibaba.smart.framework.engine.assembly.Process)element);
+                smartProcessDefinition.setProcess((com.alibaba.smart.framework.engine.assembly.Process) element);
             }
         }
         return smartProcessDefinition;

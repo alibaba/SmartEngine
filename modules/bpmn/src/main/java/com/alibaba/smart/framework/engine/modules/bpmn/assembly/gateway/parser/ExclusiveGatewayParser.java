@@ -11,8 +11,7 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 
-public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<ExclusiveGateway>
-        implements StAXArtifactParser<ExclusiveGateway> {
+public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<ExclusiveGateway> implements StAXArtifactParser<ExclusiveGateway> {
 
     public ExclusiveGatewayParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -30,7 +29,7 @@ public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<Exclusive
 
     @Override
     public ExclusiveGateway parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                                       XMLStreamException {
+                                                                               XMLStreamException {
         ExclusiveGateway exclusiveGateway = new ExclusiveGateway();
         exclusiveGateway.setId(this.getString(reader, "id"));
 

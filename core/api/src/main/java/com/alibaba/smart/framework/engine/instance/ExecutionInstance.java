@@ -1,8 +1,7 @@
 package com.alibaba.smart.framework.engine.instance;
 
 /**
- * 执行实例
- * Created by ettear on 16-4-18.
+ * 执行实例 Created by ettear on 16-4-18.
  */
 public interface ExecutionInstance extends LifeCycleInstance {
 

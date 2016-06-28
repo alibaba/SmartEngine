@@ -15,15 +15,14 @@ import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
 import com.alibaba.smart.framework.engine.instance.manager.TaskManager;
 
 /**
- * Default Smart Engine
- * Created by ettear on 16-4-12.
+ * Default Smart Engine Created by ettear on 16-4-12.
  */
 public class DefaultSmartEngine implements SmartEngine {
 
-    private final static String DEFAULT_MODULE = "framework";
+    private final static String      DEFAULT_MODULE = "framework";
 
-    private ExtensionPointRegistry extensionPointRegistry;
-    private Map<String, ClassLoader> classLoaders = new ConcurrentHashMap<>();
+    private ExtensionPointRegistry   extensionPointRegistry;
+    private Map<String, ClassLoader> classLoaders   = new ConcurrentHashMap<>();
 
     public DefaultSmartEngine() throws EngineException {
         this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
@@ -47,7 +46,7 @@ public class DefaultSmartEngine implements SmartEngine {
                 }
                 this.classLoaders.put(moduleName, classLoader);
                 if (!loaded && this.extensionPointRegistry instanceof ClassLoaderExtensionPoint) {
-                    ((ClassLoaderExtensionPoint)this.extensionPointRegistry).load(moduleName, classLoader);
+                    ((ClassLoaderExtensionPoint) this.extensionPointRegistry).load(moduleName, classLoader);
                 }
             } catch (ExtensionPointLoadException loadException) {
                 throw new EngineException("Init engine failure!", loadException);

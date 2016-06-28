@@ -13,9 +13,9 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-
 public class ExclusiveGateway extends AbstractGateway {
-    public final static QName type = new QName(BpmnBase.NAME_SPACE, "exclusiveGateway");
+
+    public final static QName type             = new QName(BpmnBase.NAME_SPACE, "exclusiveGateway");
     /**
      * 
      */

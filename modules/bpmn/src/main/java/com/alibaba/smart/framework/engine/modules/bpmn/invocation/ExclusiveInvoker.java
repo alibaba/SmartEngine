@@ -12,14 +12,12 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 
 /**
- * ExclusiveInvoker
- * Created by ettear on 16-5-4.
+ * ExclusiveInvoker Created by ettear on 16-5-4.
  */
 public class ExclusiveInvoker extends AbstractTransitionSelectInvoker {
 
-    public ExclusiveInvoker(
-            ExtensionPointRegistry extensionPointRegistry,RuntimeActivity runtimeActivity) {
-        super(extensionPointRegistry,runtimeActivity);
+    public ExclusiveInvoker(ExtensionPointRegistry extensionPointRegistry, RuntimeActivity runtimeActivity) {
+        super(extensionPointRegistry, runtimeActivity);
     }
 
     @Override

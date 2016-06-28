@@ -7,9 +7,7 @@ import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 
 /**
- * 抽象Activity Provider实现
- * Created by ettear on 16-4-20.
- * TODO 职责略不清晰
+ * 抽象Activity Provider实现 Created by ettear on 16-4-20. TODO 职责略不清晰
  */
 public class AbstractActivityProvider<T extends Activity> implements ActivityProvider<T> {
 

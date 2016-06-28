@@ -6,12 +6,9 @@ import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.Abstract
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 
-public class ServiceTaskProvider extends AbstractBpmnActivityProvider<ServiceTask>
-        implements ActivityProvider<ServiceTask> {
+public class ServiceTaskProvider extends AbstractBpmnActivityProvider<ServiceTask> implements ActivityProvider<ServiceTask> {
 
-    public ServiceTaskProvider(
-            ExtensionPointRegistry extensionPointRegistry,
-            RuntimeActivity runtimeActivity) {
+    public ServiceTaskProvider(ExtensionPointRegistry extensionPointRegistry, RuntimeActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 }

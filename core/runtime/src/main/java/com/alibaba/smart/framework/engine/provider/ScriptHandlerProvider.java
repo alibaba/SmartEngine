@@ -12,8 +12,8 @@ public class ScriptHandlerProvider implements HandlerProvider<Script> {
 
     private ExtensionPointRegistry extensionPointRegistry;
 
-    public ScriptHandlerProvider(ExtensionPointRegistry extensionPointRegistry){
-        this.extensionPointRegistry=extensionPointRegistry;
+    public ScriptHandlerProvider(ExtensionPointRegistry extensionPointRegistry) {
+        this.extensionPointRegistry = extensionPointRegistry;
     }
 
     @Override

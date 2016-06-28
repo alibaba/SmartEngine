@@ -11,13 +11,13 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 
 /**
- * DefaultActivityTransitionSelectInvoker
- * Created by ettear on 16-4-19.
+ * DefaultActivityTransitionSelectInvoker Created by ettear on 16-4-19.
  */
 public class DefaultActivityTransitionSelectInvoker extends AbstractTransitionSelectInvoker {
 
-    public DefaultActivityTransitionSelectInvoker(ExtensionPointRegistry extensionPointRegistry,RuntimeActivity runtimeActivity) {
-        super(extensionPointRegistry,runtimeActivity);
+    public DefaultActivityTransitionSelectInvoker(ExtensionPointRegistry extensionPointRegistry,
+                                                  RuntimeActivity runtimeActivity) {
+        super(extensionPointRegistry, runtimeActivity);
     }
 
     @Override

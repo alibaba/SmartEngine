@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 public class SmartSequenceFlowProvider extends AbstractTransitionProvider<SmartSequenceFlow> implements TransitionProvider<SmartSequenceFlow> {
 
     public SmartSequenceFlowProvider(RuntimeTransition runtimeTransition) {
-       super(runtimeTransition);
+        super(runtimeTransition);
     }
 
     @Override

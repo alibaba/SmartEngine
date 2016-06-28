@@ -13,6 +13,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.Extens
 @Data
 @EqualsAndHashCode(callSuper = true)
 public abstract class AbstractBpmnActivity extends AbstractActivity {
+
     private Handler           handler;
     private ExtensionElements extensions;
 }

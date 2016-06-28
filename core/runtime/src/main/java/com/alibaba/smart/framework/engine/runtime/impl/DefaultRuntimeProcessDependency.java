@@ -17,28 +17,27 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 
 /**
- * DefaultRuntimeProcessDependency
- * Created by ettear on 16-4-21.
+ * DefaultRuntimeProcessDependency Created by ettear on 16-4-21.
  */
 @Data
-public class DefaultRuntimeProcessDependency implements RuntimeProcess{
+public class DefaultRuntimeProcessDependency implements RuntimeProcess {
 
-    private RuntimeProcess processProxy;
-    private String         uri;
-    private String refUri;
-    private String refProcessId;
-    private String refProcessVersion;
+    private RuntimeProcess                 processProxy;
+    private String                         uri;
+    private String                         refUri;
+    private String                         refProcessId;
+    private String                         refProcessVersion;
     private Map<String, RuntimeTransition> incomeTransitions  = new ConcurrentHashMap<>();
     private Map<String, RuntimeTransition> outcomeTransitions = new ConcurrentHashMap<>();
-    private ExtensionPointRegistry extensionPointRegistry;
+    private ExtensionPointRegistry         extensionPointRegistry;
 
     public DefaultRuntimeProcessDependency(String refUri) {
-        this.refUri=refUri;
+        this.refUri = refUri;
     }
 
-    public DefaultRuntimeProcessDependency(String refProcessId,String refProcessVersion) {
-        this.refProcessId=refProcessId;
-        this.refProcessVersion=refProcessVersion;
+    public DefaultRuntimeProcessDependency(String refProcessId, String refProcessVersion) {
+        this.refProcessId = refProcessId;
+        this.refProcessVersion = refProcessVersion;
     }
 
     @Override
@@ -88,21 +87,21 @@ public class DefaultRuntimeProcessDependency implements RuntimeProcess{
 
     @Override
     public Message invoke(String event, InstanceContext context) {
-        return this.processProxy.invoke(event,context);
+        return this.processProxy.invoke(event, context);
     }
 
     @Override
     public Message invokeAsync(String event, InstanceContext context) {
-        return this.processProxy.invokeAsync(event,context);
+        return this.processProxy.invokeAsync(event, context);
     }
 
     @Override
     public void start() {
-        ProcessContainer processContainer=this.extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
-        if(StringUtils.isNotBlank(this.refUri)) {
+        ProcessContainer processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
+        if (StringUtils.isNotBlank(this.refUri)) {
             this.processProxy = processContainer.get(this.refUri);
-        }else if(StringUtils.isNotBlank(this.refProcessId)){
-            this.processProxy = processContainer.get(this.refProcessId,this.refProcessVersion);
+        } else if (StringUtils.isNotBlank(this.refProcessId)) {
+            this.processProxy = processContainer.get(this.refProcessId, this.refProcessVersion);
         }
     }
 

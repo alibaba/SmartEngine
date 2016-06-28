@@ -8,5 +8,6 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
  * Created by ettear on 16-4-11.
  */
 public interface ActivityProviderFactory<M extends Activity> extends ProviderFactory<M> {
+
     ActivityProvider<M> createActivityProvider(RuntimeActivity activity);
 }

@@ -6,8 +6,7 @@ import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
 import com.alibaba.smart.framework.engine.instance.manager.TaskManager;
 
 /**
- * Smart Engine
- * Created by ettear on 16-4-12.
+ * Smart Engine Created by ettear on 16-4-12.
  */
 public interface SmartEngine {
 

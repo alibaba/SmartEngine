@@ -17,63 +17,57 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 
 /**
- *
  * Created by ettear on 16-4-21.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class AbstractRuntimeActivity<M extends Activity> extends AbstractRuntimeInvocable<Activity>
-        implements RuntimeActivity {
-
+public abstract class AbstractRuntimeActivity<M extends Activity> extends AbstractRuntimeInvocable<Activity> implements RuntimeActivity {
 
     private Map<String, RuntimeTransition> incomeTransitions  = new ConcurrentHashMap<>();
     private Map<String, RuntimeTransition> outcomeTransitions = new ConcurrentHashMap<>();
-
 
     @Override
     public Message execute(InstanceContext context) {
         ExecutionInstance executionInstance = context.getCurrentExecution();
         ActivityInstance activityInstance = executionInstance.getActivity();
 
-        if (InstanceStatus.completed == executionInstance.getStatus()) {//执行实例已完成，返回
+        if (InstanceStatus.completed == executionInstance.getStatus()) {// 执行实例已完成，返回
             activityInstance.setStatus(InstanceStatus.completed);
             executionInstance.setStatus(InstanceStatus.running);
             return new DefaultMessage();
         }
 
-
-        //重置状态
+        // 重置状态
         executionInstance.setStatus(InstanceStatus.running);
         executionInstance.setFault(false);
 
-
-        Message activityExecuteMessage=this.doExecute(context);
-        //执行失败
+        Message activityExecuteMessage = this.doExecute(context);
+        // 执行失败
         if (activityExecuteMessage.isFault()) {
             executionInstance.setFault(true);
         }
 
         if (activityExecuteMessage.isSuspend()) {
-            //执行暂停
+            // 执行暂停
             activityInstance.setStatus(InstanceStatus.suspended);
             executionInstance.setStatus(InstanceStatus.suspended);
         } else {
-            //正常执行完成
+            // 正常执行完成
             activityInstance.setStatus(InstanceStatus.completed);
             executionInstance.setStatus(InstanceStatus.running);
         }
         return activityExecuteMessage;
 
     }
+
     protected abstract Message doExecute(InstanceContext context);
 
-        @Override
+    @Override
     public boolean isStartActivity() {
         return this.getModel().isStartActivity();
     }
 
-
-    //Getter & Setter
+    // Getter & Setter
     public void addIncomeTransition(String transitionId, RuntimeTransition income) {
         this.incomeTransitions.put(transitionId, income);
     }

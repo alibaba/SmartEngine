@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
 @Data
 public class EndEvent extends AbstractEvent {
 
-    public final static QName type = new QName(BpmnBase.NAME_SPACE, "endEvent");
+    public final static QName type             = new QName(BpmnBase.NAME_SPACE, "endEvent");
 
     private static final long serialVersionUID = 3529827842581828898L;
 

@@ -7,14 +7,13 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 import com.alibaba.smart.framework.process.engine.ProcessEngine;
 
 /**
- * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM 
- * TODO 和底层的关系,抽象出接口?
+ * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM TODO 和底层的关系,抽象出接口?
  */
 
 @Data
 public class ProcessContext {
-    
-    private ProcessEngine processEngine;
+
+    private ProcessEngine    processEngine;
 
     private ProcessContainer processContainer;
 

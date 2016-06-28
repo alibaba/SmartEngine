@@ -11,7 +11,8 @@ import com.alibaba.smart.framework.engine.assembly.impl.AbstractBase;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Condition extends AbstractBase{
+public class Condition extends AbstractBase {
+
     private Handler handler;
 
 }

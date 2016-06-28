@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.instance.InstanceFact;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
+
 /**
  * Created by ettear on 16-4-29.
  */
@@ -21,25 +22,25 @@ public class MvelInvoker implements Invoker {
     private Script              script;
 
     public MvelInvoker(Script script) {
-        //TODO ettear 预编译
+        // TODO ettear 预编译
         this.script = script;
-        //stmt = MVEL.compileExpression(script);
+        // stmt = MVEL.compileExpression(script);
     }
 
     @Override
     public Message invoke(InstanceContext context) {
         Message message = new DefaultMessage();
         Map<String, Object> mvelContext = new HashMap<>();
-        InstanceFact current=context.getCurrentExecution().getFact();
-        mvelContext.put("fact",context.getProcessInstance().getFact());
-        mvelContext.put("current",current);
+        InstanceFact current = context.getCurrentExecution().getFact();
+        mvelContext.put("fact", context.getProcessInstance().getFact());
+        mvelContext.put("current", current);
         mvelContext.putAll(current);
         try {
             Object result = MVEL.eval(this.script.getContent(), mvelContext);
             message.setBody(result);
-            String resultVariable=this.script.getResultVariable();
-            if(null!=resultVariable && !"".equals(resultVariable)){
-                current.put(resultVariable,result);
+            String resultVariable = this.script.getResultVariable();
+            if (null != resultVariable && !"".equals(resultVariable)) {
+                current.put(resultVariable, result);
             }
         } catch (Exception e) {
             message.setFault(true);

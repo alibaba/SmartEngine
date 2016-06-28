@@ -3,10 +3,10 @@ package com.alibaba.smart.framework.engine.assembly.impl;
 import com.alibaba.smart.framework.engine.assembly.Invocable;
 
 /**
- * Abstract Executor
- * Created by ettear on 16-4-13.
+ * Abstract Executor Created by ettear on 16-4-13.
  */
 public abstract class AbstractInvocable extends AbstractBase implements Invocable {
+
     private String id;
 
     @Override

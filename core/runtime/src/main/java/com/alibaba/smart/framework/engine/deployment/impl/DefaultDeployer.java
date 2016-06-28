@@ -44,8 +44,7 @@ import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcessComp
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeTransition;
 
 /**
- * 默认部署器
- * Created by ettear on 16-4-13.
+ * 默认部署器 Created by ettear on 16-4-13.
  */
 public class DefaultDeployer implements Deployer, LifeCycleListener {
 
@@ -61,15 +60,15 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
     public DefaultDeployer(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
-    
+
     @Override
     public void deploy(String uri) throws DeployException {
-        this.deploy(null,uri);
+        this.deploy(null, uri);
     }
 
     @Override
     public void deploy(String moduleName, String uri) throws DeployException {
-        ClassLoader classLoader = this.smartEngine.getClassLoader(moduleName);//Find class loader
+        ClassLoader classLoader = this.smartEngine.getClassLoader(moduleName);// Find class loader
         if (null == classLoader) {
             throw new DeployException("Module[" + moduleName + "] not found!");
         }
@@ -84,10 +83,8 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
     @Override
     public void start() {
         this.smartEngine = this.extensionPointRegistry.getExtensionPoint(SmartEngine.class);
-        this.assemblyParserExtensionPoint = this.extensionPointRegistry.getExtensionPoint(
-                AssemblyParserExtensionPoint.class);
-        this.providerFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(
-                ProviderFactoryExtensionPoint.class);
+        this.assemblyParserExtensionPoint = this.extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
+        this.providerFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
         this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
     }
 
@@ -97,11 +94,11 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
     }
 
     private ProcessDefinition load(ClassLoader classLoader, String uri) throws DeployException {
-        //Read xml file
+        // Read xml file
         XMLInputFactory factory = XMLInputFactory.newInstance();
         InputStream in = classLoader.getResourceAsStream(uri);
-        
-        //FIXME close stream, diqi
+
+        // FIXME close stream, diqi
         XMLStreamReader reader;
         try {
             reader = factory.createXMLStreamReader(in);
@@ -109,7 +106,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
             throw new DeployException("Load process config file[" + uri + "] failure!", e);
         }
 
-        //Assembly: process xml file
+        // Assembly: process xml file
         ParseContext context = new ParseContext();
         try {
             boolean findStart = false;
@@ -134,7 +131,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
     }
 
     private RuntimeProcessComponent install(ClassLoader classLoader, ProcessDefinition definition) {
-        //Check
+        // Check
         if (null == definition) {
             return null;
         }
@@ -143,27 +140,26 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
         String version = definition.getVersion();
 
         if (StringUtils.isBlank(processId) || StringUtils.isBlank(version)) {
-            //TODO ettear exception
+            // TODO ettear exception
             return null;
         }
 
-        //Build runtime model;
+        // Build runtime model;
         DefaultRuntimeProcessComponent processComponent = new DefaultRuntimeProcessComponent();
         processComponent.setId(processId);
         processComponent.setVersion(version);
         processComponent.setClassLoader(classLoader);
 
         Process process = definition.getProcess();
-        if(null!=process) {
+        if (null != process) {
             if (StringUtils.isBlank(process.getId())) {
                 process.setId("default");
             }
-            RuntimeProcess runtimeProcess = this.buildRuntimeProcess(process, processComponent,true);
+            RuntimeProcess runtimeProcess = this.buildRuntimeProcess(process, processComponent, true);
             if (null != runtimeProcess && runtimeProcess instanceof ProviderRuntimeInvocable) {
-                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(
-                        process.getClass());
+                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
                 ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeProcess);
-                ((ProviderRuntimeInvocable)runtimeProcess).setProvider(activityProvider);
+                ((ProviderRuntimeInvocable) runtimeProcess).setProvider(activityProvider);
                 processComponent.setProcess(runtimeProcess);
             } else {
                 return null;
@@ -175,19 +171,19 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
     }
 
     private RuntimeProcess buildRuntimeProcess(Process process, DefaultRuntimeProcessComponent component, boolean sub) {
-        String idPrefix="";
+        String idPrefix = "";
         if (sub) {
-            idPrefix=process.getId()+"_";
+            idPrefix = process.getId() + "_";
         }
 
-        int index=0;
+        int index = 0;
 
-        //Build runtime model;
+        // Build runtime model;
         DefaultRuntimeProcess runtimeProcess = new DefaultRuntimeProcess();
         runtimeProcess.setExtensionPointRegistry(this.extensionPointRegistry);
         runtimeProcess.setClassLoader(component.getClassLoader());
         runtimeProcess.setModel(process);
-        component.addProcess(runtimeProcess.getId(),runtimeProcess);
+        component.addProcess(runtimeProcess.getId(), runtimeProcess);
 
         List<Base> elements = process.getElements();
         if (null != elements && !elements.isEmpty()) {
@@ -196,14 +192,14 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
             Map<String, RuntimeActivity> runtimeActivities = new HashMap<>();
             for (Base element : elements) {
                 if (element instanceof Process) {
-                    Process subProcess=(Process) element;
+                    Process subProcess = (Process) element;
 
                     if (StringUtils.isBlank(subProcess.getId())) {
-                        subProcess.setId(idPrefix+"process" + index);
+                        subProcess.setId(idPrefix + "process" + index);
                     }
                     index++;
 
-                    RuntimeProcess runtimeSubProcess = this.buildRuntimeProcess(subProcess, component,true);
+                    RuntimeProcess runtimeSubProcess = this.buildRuntimeProcess(subProcess, component, true);
                     runtimeActivities.put(runtimeSubProcess.getId(), runtimeSubProcess);
 
                     if (runtimeSubProcess.isStartActivity()) {
@@ -213,7 +209,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
                     Transition transition = (Transition) element;
 
                     if (StringUtils.isBlank(transition.getId())) {
-                        transition.setId(idPrefix+"transition" + index);
+                        transition.setId(idPrefix + "transition" + index);
                     }
                     index++;
 
@@ -227,7 +223,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
                     Activity activity = (Activity) element;
 
                     if (StringUtils.isBlank(activity.getId())) {
-                        activity.setId(idPrefix+"activity" + index);
+                        activity.setId(idPrefix + "activity" + index);
                     }
                     index++;
 
@@ -236,14 +232,14 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
                     runtimeActivity.setModel(activity);
 
                     runtimeActivities.put(runtimeActivity.getId(), runtimeActivity);
-                    
+
                     if (runtimeActivity.isStartActivity()) {
                         runtimeProcess.setStartActivity(runtimeActivity);
                     }
                 }
             }
 
-            //Process Transition Flow
+            // Process Transition Flow
             for (Map.Entry<String, RuntimeTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
                 DefaultRuntimeTransition runtimeTransition = (DefaultRuntimeTransition) runtimeTransitionEntry.getValue();
                 String sourceRef = runtimeTransition.getModel().getSourceRef();
@@ -257,36 +253,33 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
                 target.addIncomeTransition(runtimeTransition.getId(), runtimeTransition);
             }
 
-            //Create Invoker for Transition Flow
+            // Create Invoker for Transition Flow
             for (Map.Entry<String, RuntimeTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
                 RuntimeTransition runtimeTransition = runtimeTransitionEntry.getValue();
                 if (runtimeTransition instanceof ProviderRuntimeInvocable) {
-                    TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(
-                            runtimeTransition.getModelType());
-                    
-                    if(null == providerFactory){
-                        //TODO XX
-                        throw new RuntimeException("No factory found for "+runtimeTransition.getModelType());
+                    TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModelType());
+
+                    if (null == providerFactory) {
+                        // TODO XX
+                        throw new RuntimeException("No factory found for " + runtimeTransition.getModelType());
                     }
-                    
+
                     TransitionProvider transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
                     ((ProviderRuntimeInvocable) runtimeTransition).setProvider(transitionProvider);
                 }
             }
 
-            //Create Invoker for Activity
+            // Create Invoker for Activity
             for (Map.Entry<String, RuntimeActivity> runtimeActivityEntry : runtimeActivities.entrySet()) {
                 RuntimeActivity runtimeActivity = runtimeActivityEntry.getValue();
                 if (runtimeActivity instanceof ProviderRuntimeInvocable) {
-                    ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(
-                            runtimeActivity.getModelType());
-                    
-                    if(null == providerFactory){
-                        //TODO XX
-                        throw new RuntimeException("No factory found for "+runtimeActivity.getModelType());
+                    ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModelType());
+
+                    if (null == providerFactory) {
+                        // TODO XX
+                        throw new RuntimeException("No factory found for " + runtimeActivity.getModelType());
                     }
-                    
-                    
+
                     ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeActivity);
                     ((ProviderRuntimeInvocable) runtimeActivity).setProvider(activityProvider);
                 }

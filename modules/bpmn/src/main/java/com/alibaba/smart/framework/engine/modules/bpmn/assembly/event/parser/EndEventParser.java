@@ -37,7 +37,7 @@ public class EndEventParser extends AbstractBpmnActivityParser<EndEvent> impleme
     public EndEvent parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         EndEvent endEvent = new EndEvent();
         endEvent.setId(this.getString(reader, "id"));
-        this.parseChildren(endEvent,reader,context);
+        this.parseChildren(endEvent, reader, context);
         return endEvent;
     }
 

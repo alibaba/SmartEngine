@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
  */
 public class ProcessDefinition extends AbstractProcessDefinition {
 
-    public final static QName type = new QName(BpmnBase.NAME_SPACE, "definitions");
+    public final static QName type             = new QName(BpmnBase.NAME_SPACE, "definitions");
 
     private static final long serialVersionUID = -7973338663278156625L;
 

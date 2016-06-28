@@ -6,5 +6,6 @@ import java.util.Map;
  * Created by ettear on 16-4-19.
  */
 public interface MessageManager {
-    void signal(String processInstanceId,String executionId, Map<String, Object> variables);
+
+    void signal(String processInstanceId, String executionId, Map<String, Object> variables);
 }

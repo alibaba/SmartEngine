@@ -12,8 +12,7 @@ import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 
 /**
- * Base Smart Engine Test
- * Created by ettear on 16-4-14.
+ * Base Smart Engine Test Created by ettear on 16-4-14.
  */
 public class BaseSmartEngineTest {
 

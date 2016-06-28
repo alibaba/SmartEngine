@@ -8,7 +8,7 @@ import java.util.Map;
 
 import lombok.Getter;
 
- class PersistentObjectCacheService {
+class PersistentObjectCacheService {
 
     @Getter
     protected Map<Class<?>, Map<String, CachedObject>> cachedObjects = new HashMap<Class<?>, Map<String, CachedObject>>();

@@ -5,18 +5,18 @@ import com.alibaba.smart.framework.process.behavior.AbstractActivityBehavior;
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
  */
-public class ServiceTaskBehavior   extends AbstractActivityBehavior {
+public class ServiceTaskBehavior extends AbstractActivityBehavior {
 
     @Override
     public void execute() {
-      //创建 ai
-        
+        // 创建 ai
+
     }
 
     @Override
     public void signal() {
-        //TODO add custom exception
-        throw new RuntimeException("this activity doesn't accept signals");    
+        // TODO add custom exception
+        throw new RuntimeException("this activity doesn't accept signals");
     }
 
 }

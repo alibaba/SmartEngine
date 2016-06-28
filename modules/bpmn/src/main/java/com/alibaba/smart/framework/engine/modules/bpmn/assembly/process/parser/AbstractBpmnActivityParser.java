@@ -11,23 +11,22 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Abstract
  */
 public abstract class AbstractBpmnActivityParser<M extends AbstractBpmnActivity> extends AbstractBpmnParser<M> {
 
-    public AbstractBpmnActivityParser(
-            ExtensionPointRegistry extensionPointRegistry) {
+    public AbstractBpmnActivityParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
     protected void parseChild(M model, Base child) {
-        if(child instanceof Handler) {
-            model.setHandler((Handler)child);
-        }else if(child instanceof ExtensionElements){
-            model.setExtensions((ExtensionElements)child);
-        }else{
-            this.parseModelChild(model,child);
+        if (child instanceof Handler) {
+            model.setHandler((Handler) child);
+        } else if (child instanceof ExtensionElements) {
+            model.setExtensions((ExtensionElements) child);
+        } else {
+            this.parseModelChild(model, child);
         }
     }
 
-    protected void parseModelChild(M model, Base child){
+    protected void parseModelChild(M model, Base child) {
 
     }
 

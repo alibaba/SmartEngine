@@ -7,15 +7,13 @@ import lombok.Data;
 @Data
 public class BaseProcessEntity {
 
+    protected Date   gmtCreate;
 
-    protected Date gmtCreate;
-
-    protected Date gmtModified;
+    protected Date   gmtModified;
 
     /**
      * 唯一主键,包含了 processDefinitionName和version
      */
     protected String processDefinitionId;
-    
 
 }

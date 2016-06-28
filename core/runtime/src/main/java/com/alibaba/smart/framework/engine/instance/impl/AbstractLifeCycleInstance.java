@@ -9,8 +9,7 @@ import com.alibaba.smart.framework.engine.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.instance.LifeCycleInstance;
 
 /**
- * 抽象实例
- * Created by ettear on 16-4-19.
+ * 抽象实例 Created by ettear on 16-4-19.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -23,15 +22,16 @@ public abstract class AbstractLifeCycleInstance extends AbstractInstance impleme
     /**
      * 开始时间
      */
-    private Date    startDate;
+    private Date           startDate;
     /**
      * 结束时间
      */
-    private Date    completeDate;
-    //private boolean suspend;
+    private Date           completeDate;
+
+    // private boolean suspend;
 
     @Override
     public boolean isSuspend() {
-        return InstanceStatus.suspended==this.status;
+        return InstanceStatus.suspended == this.status;
     }
 }

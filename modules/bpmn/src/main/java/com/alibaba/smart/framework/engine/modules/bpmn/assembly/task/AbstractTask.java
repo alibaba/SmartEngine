@@ -16,5 +16,5 @@ public abstract class AbstractTask extends AbstractBpmnActivity {
      * 
      */
     private static final long serialVersionUID = 5042056118774610434L;
-    private boolean isAsync;
+    private boolean           isAsync;
 }

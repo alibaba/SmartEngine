@@ -20,22 +20,20 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 
 /**
- * 默认处理器扩展点
- * Created by ettear on 16-4-12.
+ * 默认处理器扩展点 Created by ettear on 16-4-12.
  */
-public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPoint
-        implements AssemblyParserExtensionPoint {
+public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPoint implements AssemblyParserExtensionPoint {
 
     /**
      * Artifact处理器
      */
-    private Map<QName, StAXArtifactParser>  artifactParsers  = new ConcurrentHashMap<>();
+    private Map<QName, StAXArtifactParser>  artifactParsers        = new ConcurrentHashMap<>();
     /**
      * Artifact处理器
      */
-    private Map<QName, StAXAttributeParser> attributeParsers = new ConcurrentHashMap<>();
+    private Map<QName, StAXAttributeParser> attributeParsers       = new ConcurrentHashMap<>();
 
-    private Map<Class, ArtifactParser> resolveArtifactParsers = new ConcurrentHashMap<>();
+    private Map<Class, ArtifactParser>      resolveArtifactParsers = new ConcurrentHashMap<>();
 
     public DefaultAssemblyParserExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -63,7 +61,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
 
     @Override
     protected void initExtension(ClassLoader classLoader, String type, Object artifactParseObject)
-            throws ExtensionPointLoadException {
+                                                                                                  throws ExtensionPointLoadException {
         if (artifactParseObject instanceof StAXArtifactParser) {
             StAXArtifactParser artifactParser = (StAXArtifactParser) artifactParseObject;
             QName artifactType = artifactParser.getArtifactType();
@@ -82,21 +80,21 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
     }
 
     @Override
-    public Object parse(XMLStreamReader reader, ParseContext context)
-            throws ParseException, XMLStreamException {
+    public Object parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         QName type = reader.getName();
         StAXArtifactParser artifactParser = this.artifactParsers.get(type);
         if (null != artifactParser) {
             return artifactParser.parse(reader, context);
         } else {
-            //TODO XXX
+            // TODO XXX
             throw new RuntimeException("TODO");
         }
     }
 
     @Override
     public Object readAttribute(QName attributeName, XMLStreamReader reader, ParseContext context)
-            throws ParseException, XMLStreamException {
+                                                                                                  throws ParseException,
+                                                                                                  XMLStreamException {
         if (null == attributeName) {
             return null;
         }

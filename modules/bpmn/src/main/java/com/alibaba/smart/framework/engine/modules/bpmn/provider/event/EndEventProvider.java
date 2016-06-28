@@ -6,11 +6,9 @@ import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.Abstract
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 
-public class EndEventProvider extends AbstractBpmnActivityProvider<EndEvent>
-        implements ActivityProvider<EndEvent> {
+public class EndEventProvider extends AbstractBpmnActivityProvider<EndEvent> implements ActivityProvider<EndEvent> {
 
-    public EndEventProvider(ExtensionPointRegistry extensionPointRegistry,
-                            RuntimeActivity runtimeActivity) {
+    public EndEventProvider(ExtensionPointRegistry extensionPointRegistry, RuntimeActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 }

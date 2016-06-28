@@ -15,33 +15,32 @@ public class SequenceFlowProvider extends AbstractTransitionProvider<SequenceFlo
     private ExtensionPointRegistry        extensionPointRegistry;
     private HandlerProviderExtensionPoint handlerProviderExtensionPoint;
 
-
-    public SequenceFlowProvider(ExtensionPointRegistry extensionPointRegistry,RuntimeTransition runtimeTransition) {
-       super(runtimeTransition);
-        this.extensionPointRegistry=extensionPointRegistry;
-        this.handlerProviderExtensionPoint=this.extensionPointRegistry.getExtensionPoint(HandlerProviderExtensionPoint.class);
+    public SequenceFlowProvider(ExtensionPointRegistry extensionPointRegistry, RuntimeTransition runtimeTransition) {
+        super(runtimeTransition);
+        this.extensionPointRegistry = extensionPointRegistry;
+        this.handlerProviderExtensionPoint = this.extensionPointRegistry.getExtensionPoint(HandlerProviderExtensionPoint.class);
     }
 
     @Override
     protected Invoker createHitInvoker() {
-        SequenceFlow sequenceFlow=(SequenceFlow)this.getRuntimeTransition().getModel();
-        ConditionExpression conditionExpression=sequenceFlow.getConditionExpression();
-        if(null!=conditionExpression && null!=conditionExpression.getHandler()) {
+        SequenceFlow sequenceFlow = (SequenceFlow) this.getRuntimeTransition().getModel();
+        ConditionExpression conditionExpression = sequenceFlow.getConditionExpression();
+        if (null != conditionExpression && null != conditionExpression.getHandler()) {
             return this.handlerProviderExtensionPoint.createInvoker(conditionExpression.getHandler());
-        }else{
-            //不存在条件表达式
+        } else {
+            // 不存在条件表达式
             return null;
         }
     }
 
     @Override
     protected Invoker createExecuteInvoker() {
-        SequenceFlow sequenceFlow=(SequenceFlow)this.getRuntimeTransition().getModel();
-        Handler handler=sequenceFlow.getHandler();
-        if(null!=handler) {
+        SequenceFlow sequenceFlow = (SequenceFlow) this.getRuntimeTransition().getModel();
+        Handler handler = sequenceFlow.getHandler();
+        if (null != handler) {
             return this.handlerProviderExtensionPoint.createInvoker(handler);
-        }else{
-            //不存在条件表达式
+        } else {
+            // 不存在条件表达式
             return null;
         }
     }

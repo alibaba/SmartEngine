@@ -10,14 +10,11 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 /**
  * Created by ettear on 16-4-14.
  */
-public class SmartActivityProvider extends AbstractActivityProvider<SmartActivity>
-        implements ActivityProvider<SmartActivity> {
+public class SmartActivityProvider extends AbstractActivityProvider<SmartActivity> implements ActivityProvider<SmartActivity> {
 
     public SmartActivityProvider(RuntimeActivity runtimeActivity) {
         super(runtimeActivity);
     }
-
-
 
     @Override
     protected Invoker createExecuteInvoker() {

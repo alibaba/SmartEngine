@@ -14,14 +14,14 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
 @Data
 public class DefaultRuntimeProcessComponent implements RuntimeProcessComponent {
 
-    private String         id;
-    private String         version;
-    private ClassLoader    classLoader;
-    private RuntimeProcess process;
+    private String                      id;
+    private String                      version;
+    private ClassLoader                 classLoader;
+    private RuntimeProcess              process;
     private Map<String, RuntimeProcess> processes = new HashMap<>();
 
     @Override
     public void addProcess(String id, RuntimeProcess process) {
-        this.processes.put(id,process);
+        this.processes.put(id, process);
     }
 }

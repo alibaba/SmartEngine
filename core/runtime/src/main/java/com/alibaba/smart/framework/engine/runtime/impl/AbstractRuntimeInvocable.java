@@ -16,15 +16,14 @@ import com.alibaba.smart.framework.engine.runtime.ProviderRuntimeInvocable;
 import com.alibaba.smart.framework.engine.runtime.RuntimeInvocable;
 
 /**
- * DefaultRuntimeInvocable
- * Created by ettear on 16-4-14.
+ * DefaultRuntimeInvocable Created by ettear on 16-4-14.
  */
 @Data
-public abstract class AbstractRuntimeInvocable<M extends Invocable> implements RuntimeInvocable<M>,ProviderRuntimeInvocable {
+public abstract class AbstractRuntimeInvocable<M extends Invocable> implements RuntimeInvocable<M>, ProviderRuntimeInvocable {
 
-    private M                 model;
-    private InvocableProvider provider;
-    private Map<String, Invoker> invokers = new ConcurrentHashMap<>();
+    private M                      model;
+    private InvocableProvider      provider;
+    private Map<String, Invoker>   invokers = new ConcurrentHashMap<>();
     private ExtensionPointRegistry extensionPointRegistry;
 
     @Override
@@ -76,7 +75,7 @@ public abstract class AbstractRuntimeInvocable<M extends Invocable> implements R
         return invoker;
     }
 
-    protected Invoker createDefaultInvoker(String event){
+    protected Invoker createDefaultInvoker(String event) {
         return DoNothingInvoker.instance;
     }
 }

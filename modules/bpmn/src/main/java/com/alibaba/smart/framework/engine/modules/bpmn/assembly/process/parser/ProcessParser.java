@@ -1,4 +1,3 @@
-
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 
 import java.util.ArrayList;
@@ -35,15 +34,15 @@ public class ProcessParser extends AbstractStAXArtifactParser<Process> implement
 
     @Override
     public Process parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
-        
+
         Process process = new Process();
         process.setId(this.getString(reader, "id"));
 
-        List<Base> elements=new ArrayList<>();
+        List<Base> elements = new ArrayList<>();
         while (this.nextChildElement(reader)) {
-            Object element=this.readElement(reader,context);
-            if(element instanceof Base){
-                elements.add((Base)element);
+            Object element = this.readElement(reader, context);
+            if (element instanceof Base) {
+                elements.add((Base) element);
             }
         }
         process.setElements(elements);

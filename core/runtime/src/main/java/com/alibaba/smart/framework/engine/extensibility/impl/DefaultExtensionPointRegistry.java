@@ -10,8 +10,7 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 
 /**
- * 默认扩展注册器实现
- * Created by ettear on 16-4-12.
+ * 默认扩展注册器实现 Created by ettear on 16-4-12.
  */
 public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPoint implements ExtensionPointRegistry {
 
@@ -61,7 +60,7 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
 
     @Override
     protected void initExtension(ClassLoader classLoader, String type, Object object)
-            throws ExtensionPointLoadException {
+                                                                                     throws ExtensionPointLoadException {
         Class interfaze;
         try {
             interfaze = classLoader.loadClass(type);

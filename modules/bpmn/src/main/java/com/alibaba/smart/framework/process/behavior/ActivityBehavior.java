@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.process.behavior;
 
-
 /**
  * @author 高海军 帝奇
  */

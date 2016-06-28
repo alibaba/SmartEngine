@@ -15,7 +15,7 @@ public class ExclusiveGatewayProviderFactory implements ActivityProviderFactory<
 
     @Override
     public ExclusiveGatewayProvider createActivityProvider(RuntimeActivity activity) {
-        return new ExclusiveGatewayProvider(this.extensionPointRegistry,activity);
+        return new ExclusiveGatewayProvider(this.extensionPointRegistry, activity);
     }
 
     @Override

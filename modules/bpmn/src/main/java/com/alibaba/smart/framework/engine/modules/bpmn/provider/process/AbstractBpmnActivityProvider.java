@@ -16,12 +16,10 @@ public class AbstractBpmnActivityProvider<M extends AbstractBpmnActivity> extend
     private ExtensionPointRegistry        extensionPointRegistry;
     private HandlerProviderExtensionPoint handlerProviderExtensionPoint;
 
-    public AbstractBpmnActivityProvider(ExtensionPointRegistry extensionPointRegistry,
-                                        RuntimeActivity runtimeActivity) {
+    public AbstractBpmnActivityProvider(ExtensionPointRegistry extensionPointRegistry, RuntimeActivity runtimeActivity) {
         super(runtimeActivity);
         this.extensionPointRegistry = extensionPointRegistry;
-        this.handlerProviderExtensionPoint = this.extensionPointRegistry.getExtensionPoint(
-                HandlerProviderExtensionPoint.class);
+        this.handlerProviderExtensionPoint = this.extensionPointRegistry.getExtensionPoint(HandlerProviderExtensionPoint.class);
     }
 
     @Override
@@ -31,7 +29,7 @@ public class AbstractBpmnActivityProvider<M extends AbstractBpmnActivity> extend
         if (null != handler) {
             return this.handlerProviderExtensionPoint.createInvoker(handler);
         } else {
-            //不存在条件表达式
+            // 不存在条件表达式
             return null;
         }
     }

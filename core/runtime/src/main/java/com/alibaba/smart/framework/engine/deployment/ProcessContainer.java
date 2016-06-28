@@ -4,8 +4,7 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
 
 /**
- * 流程容器
- * Created by ettear on 16-4-19.
+ * 流程容器 Created by ettear on 16-4-19.
  */
 public interface ProcessContainer {
 
@@ -20,7 +19,7 @@ public interface ProcessContainer {
      * 获取流程
      *
      * @param processId 流程ID
-     * @param version   版本
+     * @param version 版本
      * @return 流程
      */
     RuntimeProcess get(String processId, String version);

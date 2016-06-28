@@ -12,20 +12,17 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartSequenceFlow;
 
 /**
- * SmartSequenceFlowParser
- * Created by ettear on 16-4-14.
+ * SmartSequenceFlowParser Created by ettear on 16-4-14.
  */
-public class SmartSequenceFlowParser extends AbstractStAXArtifactParser<SmartSequenceFlow>
-        implements StAXArtifactParser<SmartSequenceFlow> {
+public class SmartSequenceFlowParser extends AbstractStAXArtifactParser<SmartSequenceFlow> implements StAXArtifactParser<SmartSequenceFlow> {
 
-    public SmartSequenceFlowParser(
-            ExtensionPointRegistry extensionPointRegistry) {
+    public SmartSequenceFlowParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public SmartSequenceFlow parse(XMLStreamReader reader, ParseContext context)
-            throws ParseException, XMLStreamException {
+    public SmartSequenceFlow parse(XMLStreamReader reader, ParseContext context) throws ParseException,
+                                                                                XMLStreamException {
         SmartSequenceFlow smartSequenceFlow = new SmartSequenceFlow();
         smartSequenceFlow.setId(this.getString(reader, "id"));
         smartSequenceFlow.setSourceRef(this.getString(reader, "sourceRef"));

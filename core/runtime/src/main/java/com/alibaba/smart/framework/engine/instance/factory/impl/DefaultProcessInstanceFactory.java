@@ -6,8 +6,7 @@ import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
 
 /**
- * 默认流程实例工厂实现
- * Created by ettear on 16-4-20.
+ * 默认流程实例工厂实现 Created by ettear on 16-4-20.
  */
 public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 

@@ -12,7 +12,6 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
  */
 public class SmartProcessProvider extends AbstractProcessProvider<SmartProcess> implements ActivityProvider<SmartProcess> {
 
-
     public SmartProcessProvider(RuntimeProcess runtimeProcess) {
         super(runtimeProcess);
     }

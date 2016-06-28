@@ -7,8 +7,7 @@ import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 
 /**
- * DefaultInstanceContext
- * Created by ettear on 16-4-19.
+ * DefaultInstanceContext Created by ettear on 16-4-19.
  */
 @Data
 public class DefaultInstanceContext implements InstanceContext {

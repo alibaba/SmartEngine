@@ -17,8 +17,7 @@ import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorag
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 
 /**
- * DefaultProcessManager
- * Created by ettear on 16-4-19.
+ * DefaultProcessManager Created by ettear on 16-4-19.
  */
 public class DefaultProcessManager implements ProcessManager, LifeCycleListener {
 
@@ -27,8 +26,8 @@ public class DefaultProcessManager implements ProcessManager, LifeCycleListener 
     private ProcessInstanceStorage processInstanceStorage;
     private InstanceContextFactory instanceContextFactory;
     private ProcessInstanceFactory processInstanceFactory;
-    ExecutionInstanceFactory executionInstanceFactory;
-    private InstanceFactFactory factFactory;
+    ExecutionInstanceFactory       executionInstanceFactory;
+    private InstanceFactFactory    factFactory;
 
     public DefaultProcessManager(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -39,11 +38,9 @@ public class DefaultProcessManager implements ProcessManager, LifeCycleListener 
         this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
         this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
-        this.processInstanceFactory = this.extensionPointRegistry.getExtensionPoint(
-                ProcessInstanceFactory.class);
-        this.executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(
-                ExecutionInstanceFactory.class);
-        this.factFactory=this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
+        this.processInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
+        this.executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
+        this.factFactory = this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
 
     }
 
@@ -62,11 +59,11 @@ public class DefaultProcessManager implements ProcessManager, LifeCycleListener 
         executionInstance.setFact(factFactory.create(variables));
 
         processInstance.setProcessUri(runtimeProcess.getUri());
-        processInstance.addExecution(executionInstance);//执行实例添加到流程实例
+        processInstance.addExecution(executionInstance);// 执行实例添加到流程实例
 
         InstanceContext instanceContext = this.instanceContextFactory.create();
         instanceContext.setProcessInstance(processInstance);
-        instanceContext.setCurrentExecution(executionInstance);//执行实例添加到当前上下文中
+        instanceContext.setCurrentExecution(executionInstance);// 执行实例添加到当前上下文中
 
         runtimeProcess.run(instanceContext);
         return processInstance;

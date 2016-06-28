@@ -20,7 +20,7 @@ public class DbSqlSession implements Session {
     private static final Logger          log              = LoggerFactory.getLogger(DbSqlSession.class);
 
     /**
-     *brings the given persistenObject to the top if it already exists
+     * brings the given persistenObject to the top if it already exists
      */
     public void touch(PersistentObject persistentObject) {
         if (persistentObject.getId() == null) {
@@ -33,11 +33,10 @@ public class DbSqlSession implements Session {
         }
     }
 
-
     public void insert(PersistentObject persistentObject) {
         if (persistentObject.getId() == null) {
-//            String id = dbSqlSessionFactory.getIdGenerator().getNextId();
-            //FIXME
+            // String id = dbSqlSessionFactory.getIdGenerator().getNextId();
+            // FIXME
             persistentObject.setId(null);
         }
         insertedObjects.add(persistentObject);
@@ -133,7 +132,6 @@ public class DbSqlSession implements Session {
         return removedDeleteOperations;
     }
 
-  
     private List<PersistentObject> getUpdatedObjects() {
         List<PersistentObject> updatedObjects = new ArrayList<PersistentObject>();
         Map<Class<?>, Map<String, CachedObject>> cachedObjects = cacheService.getCachedObjects();
@@ -247,7 +245,7 @@ public class DbSqlSession implements Session {
 
         }
     }
-    
+
     /**
      * Optimizes the given delete operations: for example, if there are two deletes for two different variables, merges
      * this into one bulk delete which improves performance
@@ -317,7 +315,6 @@ public class DbSqlSession implements Session {
         }
         return optimizedDeleteOperations;
     }
-
 
     @Override
     public void close() {

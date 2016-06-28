@@ -13,5 +13,6 @@ public class ProcessInstanceStartCommand<T> implements Command {
     private T      request;
 
     @Override
-    public void execute() {}
+    public void execute() {
+    }
 }

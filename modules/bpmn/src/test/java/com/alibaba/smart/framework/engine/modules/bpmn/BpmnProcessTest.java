@@ -15,8 +15,7 @@ import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 
 /**
- * BPMN Test
- * Created by ettear on 16-4-29.
+ * BPMN Test Created by ettear on 16-4-29.
  */
 public class BpmnProcessTest {
 
@@ -35,8 +34,8 @@ public class BpmnProcessTest {
         Assert.assertNotNull(process);
 
         ProcessManager processManager = smartEngine.getProcessManager();
-        Map<String,Object> variables=new HashMap<>();
-        variables.put("input",2);
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("input", 2);
         ProcessInstance instance = processManager.start("test-exclusive", "1.0.0", variables);
     }
 
@@ -55,7 +54,7 @@ public class BpmnProcessTest {
         Assert.assertNotNull(process);
 
         ProcessManager processManager = smartEngine.getProcessManager();
-        Map<String,Object> variables=new HashMap<>();
+        Map<String, Object> variables = new HashMap<>();
         ProcessInstance instance = processManager.start("test-parallel", "1.0.0", variables);
     }
 }

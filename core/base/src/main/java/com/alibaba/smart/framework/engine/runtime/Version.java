@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
  * Created by ettear on 16-4-11.
  */
 public class Version {
+
     public static final String VERSION;
     public static final String TIMESTAMP;
     static {

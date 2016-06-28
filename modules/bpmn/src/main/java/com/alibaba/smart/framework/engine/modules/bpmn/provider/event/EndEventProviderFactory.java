@@ -5,16 +5,17 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 
-
 public class EndEventProviderFactory implements ActivityProviderFactory<EndEvent> {
+
     private ExtensionPointRegistry extensionPointRegistry;
-    public EndEventProviderFactory(ExtensionPointRegistry extensionPointRegistry){
-        this.extensionPointRegistry=extensionPointRegistry;
+
+    public EndEventProviderFactory(ExtensionPointRegistry extensionPointRegistry) {
+        this.extensionPointRegistry = extensionPointRegistry;
     }
 
     @Override
     public EndEventProvider createActivityProvider(RuntimeActivity activity) {
-        return new EndEventProvider(this.extensionPointRegistry,activity);
+        return new EndEventProvider(this.extensionPointRegistry, activity);
     }
 
     @Override

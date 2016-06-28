@@ -6,14 +6,13 @@ import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.invocation.Message;
 
 /**
- * 运行时Invocable
- * Created by ettear on 16-4-14.
+ * 运行时Invocable Created by ettear on 16-4-14.
  */
 public interface RuntimeInvocable<M extends Invocable> extends LifeCycleListener {
 
     String getId();
 
-    //源自java services规范
+    // 源自java services规范
     Class<?> getModelType();
 
     M getModel();

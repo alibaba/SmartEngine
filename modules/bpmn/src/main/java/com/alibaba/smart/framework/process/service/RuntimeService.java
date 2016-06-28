@@ -6,8 +6,8 @@ import com.alibaba.smart.framework.process.model.runtime.command.impl.ProcessIns
 
 public interface RuntimeService {
 
-    public   ProcessInstance start(ProcessInstanceStartCommand<?> command);
-    
-    public   void signal(ExecutionInstanceSignalCommand<?> command);
+    public ProcessInstance start(ProcessInstanceStartCommand<?> command);
+
+    public void signal(ExecutionInstanceSignalCommand<?> command);
 
 }

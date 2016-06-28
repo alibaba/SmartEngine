@@ -12,7 +12,7 @@ public class SmartProcessProviderFactory implements ActivityProviderFactory<Smar
 
     @Override
     public SmartProcessProvider createActivityProvider(RuntimeActivity activity) {
-        return new SmartProcessProvider((RuntimeProcess)activity);
+        return new SmartProcessProvider((RuntimeProcess) activity);
     }
 
     @Override

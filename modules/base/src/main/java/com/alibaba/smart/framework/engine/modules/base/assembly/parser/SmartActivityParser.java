@@ -12,20 +12,17 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartActivity;
 
 /**
- * SmartActivityParser
- * Created by ettear on 16-4-14.
+ * SmartActivityParser Created by ettear on 16-4-14.
  */
 public class SmartActivityParser extends AbstractStAXArtifactParser<SmartActivity> implements StAXArtifactParser<SmartActivity> {
 
-    public SmartActivityParser(
-            ExtensionPointRegistry extensionPointRegistry) {
+    public SmartActivityParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public SmartActivity parse(XMLStreamReader reader, ParseContext context)
-            throws ParseException, XMLStreamException {
-        SmartActivity smartActivity=new SmartActivity();
+    public SmartActivity parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+        SmartActivity smartActivity = new SmartActivity();
         smartActivity.setId(this.getString(reader, "id"));
         smartActivity.setStartActivity(this.getBoolean(reader, "start"));
 

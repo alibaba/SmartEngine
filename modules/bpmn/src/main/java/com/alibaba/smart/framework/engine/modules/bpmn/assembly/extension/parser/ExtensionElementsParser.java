@@ -14,20 +14,17 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.Extens
 import com.alibaba.smart.framework.engine.modules.common.assembly.Extension;
 
 /**
- * Extension Elements Parser
- * Created by ettear on 16-4-14.
+ * Extension Elements Parser Created by ettear on 16-4-14.
  */
-public class ExtensionElementsParser extends AbstractStAXArtifactParser<ExtensionElements>
-        implements StAXArtifactParser<ExtensionElements> {
+public class ExtensionElementsParser extends AbstractStAXArtifactParser<ExtensionElements> implements StAXArtifactParser<ExtensionElements> {
 
-    public ExtensionElementsParser(
-            ExtensionPointRegistry extensionPointRegistry) {
+    public ExtensionElementsParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public ExtensionElements parse(XMLStreamReader reader, ParseContext context)
-            throws ParseException, XMLStreamException {
+    public ExtensionElements parse(XMLStreamReader reader, ParseContext context) throws ParseException,
+                                                                                XMLStreamException {
         ExtensionElements extensionElements = new ExtensionElements();
 
         while (this.nextChildElement(reader)) {

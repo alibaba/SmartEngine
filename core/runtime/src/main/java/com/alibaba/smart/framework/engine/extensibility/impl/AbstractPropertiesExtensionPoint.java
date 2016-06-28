@@ -12,8 +12,7 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 
 /**
- * 配置文件扩展点
- * Created by ettear on 16-4-12.
+ * 配置文件扩展点 Created by ettear on 16-4-12.
  */
 public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExtensionPoint {
 
@@ -36,11 +35,10 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
      * @throws ExtensionPointLoadException
      */
     @Override
-    public void load(String moduleName,ClassLoader classLoader) throws ExtensionPointLoadException {
+    public void load(String moduleName, ClassLoader classLoader) throws ExtensionPointLoadException {
         Enumeration<URL> extensionConfigFiles;
         try {
-            extensionConfigFiles = classLoader.getResources(
-                    "smart/" + getExtensionName() + ".properties");
+            extensionConfigFiles = classLoader.getResources("smart/" + getExtensionName() + ".properties");
         } catch (IOException e) {
             throw new ExtensionPointLoadException("Scan config file " + getExtensionName() + " failure!", e);
         }
@@ -51,8 +49,8 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
                 try {
                     properties.load(extensionConfigFile.openStream());
                 } catch (IOException e) {
-                    throw new ExtensionPointLoadException(
-                            "Load config file " + extensionConfigFile.toString() + " failure!", e);
+                    throw new ExtensionPointLoadException("Load config file " + extensionConfigFile.toString()
+                                                          + " failure!", e);
                 }
                 if (!properties.isEmpty()) {
                     for (Map.Entry<Object, Object> propertyEntry : properties.entrySet()) {
@@ -66,7 +64,7 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
     }
 
     protected void initExtension(ClassLoader classLoader, String type, String className)
-            throws ExtensionPointLoadException {
+                                                                                        throws ExtensionPointLoadException {
         Class<?> artifactParserClass;
         try {
             artifactParserClass = classLoader.loadClass(className);
@@ -92,12 +90,12 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
     /**
      * 初始化扩展点
      *
-     * @param type   Type
+     * @param type Type
      * @param object Object
      * @throws ExtensionPointLoadException
      */
     protected abstract void initExtension(ClassLoader classLoader, String type, Object object)
-            throws ExtensionPointLoadException;
+                                                                                              throws ExtensionPointLoadException;
 
     /**
      * 扩展点名称
@@ -106,8 +104,7 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
      */
     protected abstract String getExtensionName();
 
-    public void setExtensionPointRegistry(
-            ExtensionPointRegistry extensionPointRegistry) {
+    public void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 }

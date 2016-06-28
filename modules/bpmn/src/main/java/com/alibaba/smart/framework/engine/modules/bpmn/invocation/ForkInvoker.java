@@ -21,9 +21,8 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
  */
 public class ForkInvoker extends AbstractTransitionSelectInvoker {
 
-    public ForkInvoker(ExtensionPointRegistry extensionPointRegistry,
-            RuntimeActivity runtimeActivity) {
-        super(extensionPointRegistry,runtimeActivity);
+    public ForkInvoker(ExtensionPointRegistry extensionPointRegistry, RuntimeActivity runtimeActivity) {
+        super(extensionPointRegistry, runtimeActivity);
     }
 
     @Override
@@ -31,8 +30,8 @@ public class ForkInvoker extends AbstractTransitionSelectInvoker {
                                                        ProcessInstance processInstance,
                                                        ExecutionInstance currentExecutionInstance,
                                                        ActivityInstance currentActivityInstance) {
-        ExecutionInstanceFactory executionInstanceFactory=this.getExtensionPointRegistry().getExtensionPoint(ExecutionInstanceFactory.class);
-        InstanceFactFactory factFactory=this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
+        ExecutionInstanceFactory executionInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(ExecutionInstanceFactory.class);
+        InstanceFactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
 
         currentExecutionInstance.setStatus(InstanceStatus.completed);
         currentExecutionInstance.setCompleteDate(new Date());
@@ -40,12 +39,11 @@ public class ForkInvoker extends AbstractTransitionSelectInvoker {
 
         List<ExecutionInstance> executions = new ArrayList<>();
         for (RuntimeTransition transition : transitions) {
-            ExecutionInstance executionInstance=executionInstanceFactory.create();
+            ExecutionInstance executionInstance = executionInstanceFactory.create();
             executionInstance.setInstanceId(InstanceIdUtils.uuid());
             executionInstance.setProcessInstanceId(processInstance.getInstanceId());
             executionInstance.setFact(factFactory.create());
-            this.buildExecutionInstance(transition, processInstance, executionInstance,
-                                        currentActivityInstance);
+            this.buildExecutionInstance(transition, processInstance, executionInstance, currentActivityInstance);
             processInstance.addExecution(executionInstance);
             executions.add(executionInstance);
         }

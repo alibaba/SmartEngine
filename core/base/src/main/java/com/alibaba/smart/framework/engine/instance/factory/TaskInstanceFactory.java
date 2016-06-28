@@ -3,10 +3,10 @@ package com.alibaba.smart.framework.engine.instance.factory;
 import com.alibaba.smart.framework.engine.instance.TaskInstance;
 
 /**
- * 任务实例工厂
- * Created by ettear on 16-4-20.
+ * 任务实例工厂 Created by ettear on 16-4-20.
  */
 public interface TaskInstanceFactory {
+
     /**
      * 创建任务实例
      *

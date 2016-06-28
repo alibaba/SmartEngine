@@ -17,28 +17,24 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.base.assembly.SmartProcess;
 
 /**
- * SmartProcessParser
- * Created by ettear on 16-4-14.
+ * SmartProcessParser Created by ettear on 16-4-14.
  */
-public class SmartProcessParser extends AbstractStAXArtifactParser<SmartProcess>
-        implements StAXArtifactParser<SmartProcess> {
+public class SmartProcessParser extends AbstractStAXArtifactParser<SmartProcess> implements StAXArtifactParser<SmartProcess> {
 
-    public SmartProcessParser(
-            ExtensionPointRegistry extensionPointRegistry) {
+    public SmartProcessParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public SmartProcess parse(XMLStreamReader reader, ParseContext context)
-            throws ParseException, XMLStreamException {
+    public SmartProcess parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         SmartProcess smartProcess = new SmartProcess();
         smartProcess.setId(this.getString(reader, "id"));
 
-        List<Base> elements=new ArrayList<>();
+        List<Base> elements = new ArrayList<>();
         while (this.nextChildElement(reader)) {
-            Object element=this.readElement(reader,context);
-            if(element instanceof Base){
-                elements.add((Base)element);
+            Object element = this.readElement(reader, context);
+            if (element instanceof Base) {
+                elements.add((Base) element);
             }
         }
         smartProcess.setElements(elements);
@@ -47,9 +43,9 @@ public class SmartProcessParser extends AbstractStAXArtifactParser<SmartProcess>
 
     @Override
     public void resolve(SmartProcess model, ParseContext context) throws ResolveException {
-        if(null!=model.getElements()){
-            for(Base element:model.getElements()){
-                this.resolveElement(element,context);
+        if (null != model.getElements()) {
+            for (Base element : model.getElements()) {
+                this.resolveElement(element, context);
             }
         }
         model.setUnresolved(false);

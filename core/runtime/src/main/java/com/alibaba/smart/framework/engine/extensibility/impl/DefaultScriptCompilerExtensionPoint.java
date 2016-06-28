@@ -11,11 +11,9 @@ import com.alibaba.smart.framework.engine.script.ScriptCompiler;
 import com.alibaba.smart.framework.engine.script.ScriptCompilerExtensionPoint;
 
 /**
- * DefaultScriptCompilerExtensionPoint
- * Created by ettear on 16-4-29.
+ * DefaultScriptCompilerExtensionPoint Created by ettear on 16-4-29.
  */
-public class DefaultScriptCompilerExtensionPoint extends AbstractPropertiesExtensionPoint
-        implements ScriptCompilerExtensionPoint, LifeCycleListener {
+public class DefaultScriptCompilerExtensionPoint extends AbstractPropertiesExtensionPoint implements ScriptCompilerExtensionPoint, LifeCycleListener {
 
     private Map<String, ScriptCompiler> scriptCompilers = new ConcurrentHashMap<>();
 
@@ -30,7 +28,7 @@ public class DefaultScriptCompilerExtensionPoint extends AbstractPropertiesExten
 
     @Override
     protected void initExtension(ClassLoader classLoader, String type, Object scriptCompilerObject)
-            throws ExtensionPointLoadException {
+                                                                                                   throws ExtensionPointLoadException {
         if (scriptCompilerObject instanceof ScriptCompiler) {
             ScriptCompiler scriptCompiler = (ScriptCompiler) scriptCompilerObject;
             this.scriptCompilers.put(scriptCompiler.getType(), scriptCompiler);

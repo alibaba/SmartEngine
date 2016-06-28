@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.assembly.Transition;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public abstract class AbstractTransition extends AbstractInvocable implements Transition {
+
     private String sourceRef;
     private String targetRef;
 }

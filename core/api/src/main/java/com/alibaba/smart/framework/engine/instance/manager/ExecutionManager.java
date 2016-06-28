@@ -9,9 +9,9 @@ import com.alibaba.smart.framework.engine.instance.ProcessInstance;
  */
 public interface ExecutionManager {
 
-    //ExecutionInstance find(String processInstanceId,String executionId);
+    // ExecutionInstance find(String processInstanceId,String executionId);
 
-    //List<ExecutionInstance> findByProcess(String processInstanceId);
+    // List<ExecutionInstance> findByProcess(String processInstanceId);
 
-    ProcessInstance signal(String processInstanceId,String executionInstanceId, Map<String, Object> variables);
+    ProcessInstance signal(String processInstanceId, String executionInstanceId, Map<String, Object> variables);
 }

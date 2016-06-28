@@ -31,11 +31,10 @@ public class ScriptParser extends AbstractStAXArtifactParser<Script> implements 
     }
 
     @Override
-    public Script parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                             XMLStreamException {
+    public Script parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         Script script = new Script();
         script.setType(getString(reader, "type"));
-        script.setResultVariable(getString(reader,"resultVariable"));
+        script.setResultVariable(getString(reader, "resultVariable"));
         script.setContent(reader.getElementText());
         return script;
 

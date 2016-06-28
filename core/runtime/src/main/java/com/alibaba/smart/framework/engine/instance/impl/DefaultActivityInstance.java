@@ -11,18 +11,17 @@ import com.alibaba.smart.framework.engine.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.instance.TransitionInstance;
 
 /**
- * 默认活动实例
- * Created by ettear on 16-4-19.
+ * 默认活动实例 Created by ettear on 16-4-19.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class DefaultActivityInstance extends AbstractLifeCycleInstance implements ActivityInstance {
 
-    private String activityId;
-    private String processInstanceId;
+    private String                   activityId;
+    private String                   processInstanceId;
     private List<TransitionInstance> incomeTransitions = new ArrayList<>();
-    private String       currentStep;
-    private TaskInstance task;
+    private String                   currentStep;
+    private TaskInstance             task;
 
     @Override
     public void addIncomeTransition(TransitionInstance transitionInstance) {

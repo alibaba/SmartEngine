@@ -5,8 +5,7 @@ import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFacto
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 
 /**
- * The factory of smart activity
- * Created by ettear on 16-4-14.
+ * The factory of smart activity Created by ettear on 16-4-14.
  */
 public class SmartActivityProviderFactory implements ActivityProviderFactory<SmartActivity> {
 

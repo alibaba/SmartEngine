@@ -10,11 +10,12 @@ import com.alibaba.smart.framework.engine.assembly.ProcessDefinition;
  */
 @Data
 public abstract class AbstractProcessDefinition extends AbstractBase implements ProcessDefinition {
-    private String id;
 
-    private String name;
+    private String  id;
 
-    private String version;
+    private String  name;
+
+    private String  version;
 
     private Process process;
 }

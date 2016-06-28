@@ -7,7 +7,7 @@ import com.alibaba.smart.framework.engine.invocation.Message;
 /**
  * Created by ettear on 16-4-19.
  */
-public class DefaultTransitionHitInvoker implements Invoker{
+public class DefaultTransitionHitInvoker implements Invoker {
 
     public final static DefaultTransitionHitInvoker instance = new DefaultTransitionHitInvoker();
 
@@ -16,7 +16,7 @@ public class DefaultTransitionHitInvoker implements Invoker{
 
     @Override
     public Message invoke(InstanceContext context) {
-        Message message=new DefaultMessage();
+        Message message = new DefaultMessage();
         message.setBody(true);
         return message;
     }

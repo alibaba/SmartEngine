@@ -3,10 +3,10 @@ package com.alibaba.smart.framework.engine.instance;
 import java.util.Date;
 
 /**
- * 生命周期实例
- * Created by ettear on 16-4-21.
+ * 生命周期实例 Created by ettear on 16-4-21.
  */
 public interface LifeCycleInstance extends Instance {
+
     InstanceStatus getStatus();
 
     void setStatus(InstanceStatus status);
@@ -21,7 +21,6 @@ public interface LifeCycleInstance extends Instance {
 
     boolean isSuspend();
 
-    //void setSuspend(boolean suspend);
-
+    // void setSuspend(boolean suspend);
 
 }

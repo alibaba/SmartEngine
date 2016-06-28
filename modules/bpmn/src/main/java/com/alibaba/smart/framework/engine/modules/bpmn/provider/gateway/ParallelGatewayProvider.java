@@ -11,17 +11,17 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 
 public class ParallelGatewayProvider extends AbstractBpmnActivityProvider<ParallelGateway> implements ActivityProvider<ParallelGateway> {
 
-    public ParallelGatewayProvider(ExtensionPointRegistry extensionPointRegistry,RuntimeActivity runtimeActivity) {
-        super(extensionPointRegistry,runtimeActivity);
+    public ParallelGatewayProvider(ExtensionPointRegistry extensionPointRegistry, RuntimeActivity runtimeActivity) {
+        super(extensionPointRegistry, runtimeActivity);
     }
 
     @Override
     protected Invoker createStartInvoker() {
-        return new JoinInvoker(this.getExtensionPointRegistry(),this.getRuntimeActivity());
+        return new JoinInvoker(this.getExtensionPointRegistry(), this.getRuntimeActivity());
     }
 
     @Override
     protected Invoker createTransitionSelectInvoker() {
-        return new ForkInvoker(this.getExtensionPointRegistry(),this.getRuntimeActivity());
+        return new ForkInvoker(this.getExtensionPointRegistry(), this.getRuntimeActivity());
     }
 }

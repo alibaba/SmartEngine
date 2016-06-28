@@ -23,13 +23,11 @@ import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
 import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 
 /**
- * DefaultRuntimeActivity
- * Created by ettear on 16-4-13.
+ * DefaultRuntimeActivity Created by ettear on 16-4-13.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity>
-        implements RuntimeActivity {
+public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity> implements RuntimeActivity {
 
     private final static List<String> EXECUTE_EVENTS = new ArrayList<>();
 
@@ -45,19 +43,19 @@ public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity>
         ActivityInstance activityInstance = executionInstance.getActivity();
         TaskInstance taskInstance = activityInstance.getTask();
 
-        if (null != taskInstance && InstanceStatus.completed != taskInstance.getStatus()) {//任务未完成，直接暂停
+        if (null != taskInstance && InstanceStatus.completed != taskInstance.getStatus()) {// 任务未完成，直接暂停
             activityInstance.setStatus(InstanceStatus.suspended);
             Message message = new DefaultMessage();
             message.setSuspend(true);
             return message;
         }
 
-        //重置状态
+        // 重置状态
         executionInstance.setStatus(InstanceStatus.running);
 
         Message activityExecuteMessage = new DefaultMessage();
 
-        //恢复上次暂停时的执行器
+        // 恢复上次暂停时的执行器
         String currentStep = activityInstance.getCurrentStep();
         Iterator<String> executeEventIterator = EXECUTE_EVENTS.iterator();
         if (StringUtils.isNotBlank(currentStep)) {
@@ -68,7 +66,7 @@ public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity>
                 }
             }
         }
-        //从上次暂停点开始执行
+        // 从上次暂停点开始执行
         while (executeEventIterator.hasNext()) {
             String event = executeEventIterator.next();
             Message invokerMessage = this.invokeActivity(event, context);
@@ -87,7 +85,7 @@ public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity>
     @Override
     protected Invoker createDefaultInvoker(String event) {
         if (AtomicOperationEvent.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
-            return new DefaultActivityTransitionSelectInvoker(this.getExtensionPointRegistry(),this);
+            return new DefaultActivityTransitionSelectInvoker(this.getExtensionPointRegistry(), this);
         } else {
             return super.createDefaultInvoker(event);
         }

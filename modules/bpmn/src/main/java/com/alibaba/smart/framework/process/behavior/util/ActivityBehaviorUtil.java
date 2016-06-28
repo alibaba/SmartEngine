@@ -16,11 +16,10 @@ import com.alibaba.smart.framework.process.session.ExecutionSession;
 import com.alibaba.smart.framework.process.session.util.ThreadLocalExecutionSessionUtil;
 
 /**
- * @author 高海军 帝奇 
+ * @author 高海军 帝奇
  */
 public class ActivityBehaviorUtil {
 
-  
     public void leaveCurrentActivity() {
 
         ExecutionSession executionSession = ThreadLocalExecutionSessionUtil.get();
@@ -33,7 +32,7 @@ public class ActivityBehaviorUtil {
 
         for (Entry<String, RuntimeTransition> entry : transitionEntries) {
             RuntimeTransition runtimeTransition = entry.getValue();
-            
+
             Transition transition = runtimeTransition.getModel();
 
             SequenceFlow sequenceFlow = (SequenceFlow) transition;
@@ -41,8 +40,8 @@ public class ActivityBehaviorUtil {
             if (null == conditionExpression) {
                 toBeChoosenRuntimeTransition.add(runtimeTransition);
             } else {
-                String expressionType = conditionExpression.getExpressionType(); 
-                String expressionContent = conditionExpression.getExpressionContent(); 
+                String expressionType = conditionExpression.getExpressionType();
+                String expressionContent = conditionExpression.getExpressionContent();
 
                 ConditionExpressionEvaluater conditionExpressionEvaluater = ConditionExpressionEvaluaterFactory.createConditionExpression(expressionType);
                 boolean conditionPassed = conditionExpressionEvaluater.evaluate(expressionContent);
@@ -51,37 +50,34 @@ public class ActivityBehaviorUtil {
                 }
             }
         }
-        
-        if(toBeChoosenRuntimeTransition.size() ==1){
-            RuntimeTransition outgoingRuntimeTransition =   toBeChoosenRuntimeTransition.get(0);
-            RuntimeActivity targetRuntimeActivity=  outgoingRuntimeTransition.getTarget();
-            
+
+        if (toBeChoosenRuntimeTransition.size() == 1) {
+            RuntimeTransition outgoingRuntimeTransition = toBeChoosenRuntimeTransition.get(0);
+            RuntimeActivity targetRuntimeActivity = outgoingRuntimeTransition.getTarget();
+
             ThreadLocalExecutionSessionUtil.get().setCurrentRuntimeActivity(targetRuntimeActivity);
-           
+
             String activityClassName = targetRuntimeActivity.getModel().getClass().getName();
-            ActivityBehavior activityBehavior =  ActivityBehaviorRegister.getActivityBehavior(activityClassName);
+            ActivityBehavior activityBehavior = ActivityBehaviorRegister.getActivityBehavior(activityClassName);
             activityBehavior.execute();
-            
-            
-        } else if (toBeChoosenRuntimeTransition.size() >1){
-            //FIXME 需要支持并行网关
-            RuntimeTransition outgoingRuntimeTransition =   toBeChoosenRuntimeTransition.get(0);
-            RuntimeActivity targetRuntimeActivity=  outgoingRuntimeTransition.getTarget();
-            
+
+        } else if (toBeChoosenRuntimeTransition.size() > 1) {
+            // FIXME 需要支持并行网关
+            RuntimeTransition outgoingRuntimeTransition = toBeChoosenRuntimeTransition.get(0);
+            RuntimeActivity targetRuntimeActivity = outgoingRuntimeTransition.getTarget();
+
             ThreadLocalExecutionSessionUtil.get().setCurrentRuntimeActivity(targetRuntimeActivity);
-            
+
             String activityClassName = targetRuntimeActivity.getModel().getClass().getName();
-            ActivityBehavior activityBehavior =  ActivityBehaviorRegister.getActivityBehavior(activityClassName);
+            ActivityBehavior activityBehavior = ActivityBehaviorRegister.getActivityBehavior(activityClassName);
             activityBehavior.execute();
-            
-        }else{
-            
-            //TODO 把日志和当前请求参数打印好. 
-            throw new RuntimeException("No outgoing transitions found for "+currentRuntimeActivity+executionSession);
-            
+
+        } else {
+
+            // TODO 把日志和当前请求参数打印好.
+            throw new RuntimeException("No outgoing transitions found for " + currentRuntimeActivity + executionSession);
+
         }
-        
-        
 
     }
 }

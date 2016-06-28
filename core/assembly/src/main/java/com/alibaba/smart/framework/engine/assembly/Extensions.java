@@ -5,6 +5,7 @@ import java.util.List;
 /**
  * Created by ettear on 16-4-12.
  */
-public interface Extensions extends Base{
+public interface Extensions extends Base {
+
     List<Extension> getExtensions();
 }

@@ -28,7 +28,8 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
     private ExtensionPointRegistry extensionPointRegistry;
     private RuntimeActivity        runtimeActivity;
 
-    public AbstractTransitionSelectInvoker(ExtensionPointRegistry extensionPointRegistry,RuntimeActivity runtimeActivity) {
+    public AbstractTransitionSelectInvoker(ExtensionPointRegistry extensionPointRegistry,
+                                           RuntimeActivity runtimeActivity) {
         this.extensionPointRegistry = extensionPointRegistry;
         this.runtimeActivity = runtimeActivity;
     }
@@ -42,46 +43,47 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
             List<RuntimeTransition> hitTransitions = new ArrayList<>();
             for (Map.Entry<String, RuntimeTransition> transitionEntry : outcomeTransitions.entrySet()) {
                 RuntimeTransition runtimeTransition = transitionEntry.getValue();
-                //执行命中判断逻辑
+                // 执行命中判断逻辑
                 Message result = runtimeTransition.invoke(AtomicOperationEvent.TRANSITION_HIT.name(), context);
                 if (null != result) {
                     Object resultBody = result.getBody();
                     if (null == resultBody || !(resultBody instanceof Boolean) || !((Boolean) resultBody)) {
-                        //没有命中
+                        // 没有命中
                         continue;
                     }
-                }//无执行结果为命中
+                }// 无执行结果为命中
                 hitTransitions.add(runtimeTransition);
             }
 
             if (hitTransitions.isEmpty()) {
                 executionInstance.setStatus(InstanceStatus.suspended);
-                //TODO ettear Exception
-                //message.setBody();
+                // TODO ettear Exception
+                // message.setBody();
                 message.setFault(true);
             } else {
                 List<ExecutionInstance> executions = new ArrayList<>();
                 executions.add(executionInstance);
-                message.setBody(this.processExecution(hitTransitions,context.getProcessInstance(),executionInstance,executionInstance.getActivity()));
+                message.setBody(this.processExecution(hitTransitions, context.getProcessInstance(), executionInstance,
+                                                      executionInstance.getActivity()));
             }
-        } else {//没有后续节点，结束执行实例
+        } else {// 没有后续节点，结束执行实例
             executionInstance.setStatus(InstanceStatus.completed);
             executionInstance.setCompleteDate(new Date());
-            //this.executionInstanceManager.complete(processInstance.getInstanceId(), executionInstance.getInstanceId());
+            // this.executionInstanceManager.complete(processInstance.getInstanceId(),
+            // executionInstance.getInstanceId());
         }
         return message;
     }
 
-    protected abstract List<ExecutionInstance> processExecution(List<RuntimeTransition> transitions,ProcessInstance processInstance,ExecutionInstance currentExecutionInstance,
+    protected abstract List<ExecutionInstance> processExecution(List<RuntimeTransition> transitions,
+                                                                ProcessInstance processInstance,
+                                                                ExecutionInstance currentExecutionInstance,
                                                                 ActivityInstance currentActivityInstance);
 
-    protected void buildExecutionInstance(RuntimeTransition runtimeTransition,ProcessInstance processInstance,ExecutionInstance executionInstance,
-                                          ActivityInstance currentActivityInstance
-                                          ) {
-        TransitionInstanceFactory transitionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(
-                TransitionInstanceFactory.class);
-        ActivityInstanceFactory activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(
-                ActivityInstanceFactory.class);
+    protected void buildExecutionInstance(RuntimeTransition runtimeTransition, ProcessInstance processInstance,
+                                          ExecutionInstance executionInstance, ActivityInstance currentActivityInstance) {
+        TransitionInstanceFactory transitionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(TransitionInstanceFactory.class);
+        ActivityInstanceFactory activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
         TransitionInstance transitionInstance = transitionInstanceFactory.create();
         transitionInstance.setTransitionId(runtimeTransition.getId());
@@ -92,8 +94,9 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
         activityInstance.addIncomeTransition(transitionInstance);
 
-        //this.executionInstanceManager.updateActivity(processInstance.getInstanceId(), executionInstance.getInstanceId(),
-        //                                             activityInstance);
+        // this.executionInstanceManager.updateActivity(processInstance.getInstanceId(),
+        // executionInstance.getInstanceId(),
+        // activityInstance);
         executionInstance.setActivity(activityInstance);
     }
 

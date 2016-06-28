@@ -7,8 +7,7 @@ import com.alibaba.smart.framework.engine.provider.TransitionProvider;
 import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 
 /**
- * 抽象Transition Provider实现
- * Created by ettear on 16-4-20.
+ * 抽象Transition Provider实现 Created by ettear on 16-4-20.
  */
 public abstract class AbstractTransitionProvider<T extends Transition> implements TransitionProvider<T> {
 

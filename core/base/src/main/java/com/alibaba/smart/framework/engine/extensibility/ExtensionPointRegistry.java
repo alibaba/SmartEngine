@@ -3,8 +3,7 @@ package com.alibaba.smart.framework.engine.extensibility;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 
 /**
- * 扩展点注册器
- * Created by ettear on 16-4-12.
+ * 扩展点注册器 Created by ettear on 16-4-12.
  */
 public interface ExtensionPointRegistry extends LifeCycleListener {
 

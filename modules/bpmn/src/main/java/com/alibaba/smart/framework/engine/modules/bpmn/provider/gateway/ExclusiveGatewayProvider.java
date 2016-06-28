@@ -10,12 +10,12 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
 
 public class ExclusiveGatewayProvider extends AbstractBpmnActivityProvider<ExclusiveGateway> implements ActivityProvider<ExclusiveGateway> {
 
-    public ExclusiveGatewayProvider(ExtensionPointRegistry extensionPointRegistry,RuntimeActivity runtimeActivity) {
-        super(extensionPointRegistry,runtimeActivity);
+    public ExclusiveGatewayProvider(ExtensionPointRegistry extensionPointRegistry, RuntimeActivity runtimeActivity) {
+        super(extensionPointRegistry, runtimeActivity);
     }
 
     @Override
     protected Invoker createTransitionSelectInvoker() {
-        return new ExclusiveInvoker(this.getExtensionPointRegistry(),this.getRuntimeActivity());
+        return new ExclusiveInvoker(this.getExtensionPointRegistry(), this.getRuntimeActivity());
     }
 }

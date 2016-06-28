@@ -37,18 +37,18 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> impleme
         sequenceFlow.setSourceRef(this.getString(reader, "sourceRef"));
         sequenceFlow.setTargetRef(this.getString(reader, "targetRef"));
 
-        this.parseChildren(sequenceFlow,reader,context);
+        this.parseChildren(sequenceFlow, reader, context);
         return sequenceFlow;
     }
 
     @Override
     protected void parseChild(SequenceFlow model, Base child) {
-        if(child instanceof ConditionExpression) {
-            model.setConditionExpression((ConditionExpression)child);
-        }else if(child instanceof Handler) {
-            model.setHandler((Handler)child);
-        }else if(child instanceof ExtensionElements){
-            model.setExtensions((ExtensionElements)child);
+        if (child instanceof ConditionExpression) {
+            model.setConditionExpression((ConditionExpression) child);
+        } else if (child instanceof Handler) {
+            model.setHandler((Handler) child);
+        } else if (child instanceof ExtensionElements) {
+            model.setExtensions((ExtensionElements) child);
         }
     }
 }

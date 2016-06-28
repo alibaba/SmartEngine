@@ -29,60 +29,58 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 public class JoinInvoker implements Invoker {
 
     private ExtensionPointRegistry extensionPointRegistry;
-    private RuntimeActivity runtimeActivity;
+    private RuntimeActivity        runtimeActivity;
 
-
-    public JoinInvoker(ExtensionPointRegistry extensionPointRegistry,RuntimeActivity runtimeActivity){
-        this.extensionPointRegistry=extensionPointRegistry;
-        this.runtimeActivity=runtimeActivity;
+    public JoinInvoker(ExtensionPointRegistry extensionPointRegistry, RuntimeActivity runtimeActivity) {
+        this.extensionPointRegistry = extensionPointRegistry;
+        this.runtimeActivity = runtimeActivity;
     }
 
-    //TODO ettear 考虑并发Join问题
+    // TODO ettear 考虑并发Join问题
     @Override
     public Message invoke(InstanceContext context) {
 
-        if(this.runtimeActivity.getIncomeTransitions().size()==1){
+        if (this.runtimeActivity.getIncomeTransitions().size() == 1) {
             return new DefaultMessage();
         }
 
-        ProcessInstance processInstance=context.getProcessInstance();
-        Map<String,ExecutionInstance> executionInstances=processInstance.getExecutions();
+        ProcessInstance processInstance = context.getProcessInstance();
+        Map<String, ExecutionInstance> executionInstances = processInstance.getExecutions();
 
-        //Found execution instance on this activity
-        Map<String,ExecutionInstance> joinExecutionInstance=new HashMap<>();
+        // Found execution instance on this activity
+        Map<String, ExecutionInstance> joinExecutionInstance = new HashMap<>();
         for (Map.Entry<String, ExecutionInstance> executionInstanceEntry : executionInstances.entrySet()) {
-            ExecutionInstance executionInstance=executionInstanceEntry.getValue();
-            String activityId=executionInstance.getActivity().getActivityId();
-            if(StringUtils.equals(this.runtimeActivity.getId(),activityId)){
-                //TODO ettear 并发Join同时处理运行状态
-                TransitionInstance transitionInstance=executionInstance.getActivity().getIncomeTransitions().get(0);
-                joinExecutionInstance.put(transitionInstance.getTransitionId(),executionInstance);
+            ExecutionInstance executionInstance = executionInstanceEntry.getValue();
+            String activityId = executionInstance.getActivity().getActivityId();
+            if (StringUtils.equals(this.runtimeActivity.getId(), activityId)) {
+                // TODO ettear 并发Join同时处理运行状态
+                TransitionInstance transitionInstance = executionInstance.getActivity().getIncomeTransitions().get(0);
+                joinExecutionInstance.put(transitionInstance.getTransitionId(), executionInstance);
             }
         }
-        ActivityInstanceFactory activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(
-                ActivityInstanceFactory.class);
+        ActivityInstanceFactory activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
-        ActivityInstance activityInstance=activityInstanceFactory.create();
+        ActivityInstance activityInstance = activityInstanceFactory.create();
         activityInstance.setActivityId(this.runtimeActivity.getId());
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
 
-        boolean completed=true;
-        for (Map.Entry<String,RuntimeTransition> runtimeTransitionEntry : runtimeActivity.getIncomeTransitions().entrySet()) {
-            String transitionId=runtimeTransitionEntry.getKey();
-            ExecutionInstance executionInstance=joinExecutionInstance.get(transitionId);
-            if(null!=executionInstance){
-                TransitionInstance transitionInstance=executionInstance.getActivity().getIncomeTransitions().get(0);
+        boolean completed = true;
+        for (Map.Entry<String, RuntimeTransition> runtimeTransitionEntry : runtimeActivity.getIncomeTransitions().entrySet()) {
+            String transitionId = runtimeTransitionEntry.getKey();
+            ExecutionInstance executionInstance = joinExecutionInstance.get(transitionId);
+            if (null != executionInstance) {
+                TransitionInstance transitionInstance = executionInstance.getActivity().getIncomeTransitions().get(0);
                 activityInstance.addIncomeTransition(transitionInstance);
-            }else{
-                completed=false;
+            } else {
+                completed = false;
                 break;
             }
         }
-        if(completed){
-            ExecutionInstanceFactory executionInstanceFactory=this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
-            InstanceFactFactory factFactory=this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
+        if (completed) {
+            ExecutionInstanceFactory executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
+            InstanceFactFactory factFactory = this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
 
-            ExecutionInstance newExecutionInstance=executionInstanceFactory.create();
+            ExecutionInstance newExecutionInstance = executionInstanceFactory.create();
             newExecutionInstance.setInstanceId(InstanceIdUtils.uuid());
             newExecutionInstance.setProcessInstanceId(processInstance.getInstanceId());
             newExecutionInstance.setFact(factFactory.create());
@@ -92,13 +90,13 @@ public class JoinInvoker implements Invoker {
             context.setCurrentExecution(newExecutionInstance);
 
             for (Map.Entry<String, ExecutionInstance> executionInstanceEntry : joinExecutionInstance.entrySet()) {
-                ExecutionInstance executionInstance=executionInstanceEntry.getValue();
+                ExecutionInstance executionInstance = executionInstanceEntry.getValue();
                 executionInstance.setCompleteDate(new Date());
                 executionInstance.setStatus(InstanceStatus.completed);
                 processInstance.removeExecution(executionInstance.getInstanceId());
             }
             return new DefaultMessage();
-        }else {
+        } else {
             Message message = new DefaultMessage();
             message.setSuspend(true);
             return message;

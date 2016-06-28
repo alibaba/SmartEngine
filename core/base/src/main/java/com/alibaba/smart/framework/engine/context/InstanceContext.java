@@ -4,8 +4,7 @@ import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 
 /**
- * 实例上下文
- * Created by ettear on 16-4-11.
+ * 实例上下文 Created by ettear on 16-4-11.
  */
 public interface InstanceContext {
 

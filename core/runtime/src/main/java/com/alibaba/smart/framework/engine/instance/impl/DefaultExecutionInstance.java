@@ -8,8 +8,7 @@ import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.InstanceFact;
 
 /**
- * DefaultExecutionInstance
- * Created by ettear on 16-4-19.
+ * DefaultExecutionInstance Created by ettear on 16-4-19.
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

@@ -7,8 +7,7 @@ import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 
 /**
- * 内存实例存储
- * Created by ettear on 16-4-13.
+ * 内存实例存储 Created by ettear on 16-4-13.
  */
 public class PersiterProcessInstanceStorage implements ProcessInstanceStorage {
 
@@ -18,8 +17,8 @@ public class PersiterProcessInstanceStorage implements ProcessInstanceStorage {
     @Override
     public ProcessInstance save(ProcessInstance instance) {
         this.instances.put(instance.getInstanceId(), instance);
-        if(null!=instance.getParentActivityInstanceId()){
-            this.subProcessInstances.put(instance.getParentActivityInstanceId(),instance);
+        if (null != instance.getParentActivityInstanceId()) {
+            this.subProcessInstances.put(instance.getParentActivityInstanceId(), instance);
         }
         return instance;
     }

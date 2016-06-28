@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.assembly.parser.impl.AbstractStAXArtif
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 
-public class ConditionExpressionParser extends AbstractStAXArtifactParser<ConditionExpression> implements StAXArtifactParser<ConditionExpression>{
+public class ConditionExpressionParser extends AbstractStAXArtifactParser<ConditionExpression> implements StAXArtifactParser<ConditionExpression> {
 
     public ConditionExpressionParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -32,15 +32,13 @@ public class ConditionExpressionParser extends AbstractStAXArtifactParser<Condit
     public ConditionExpression parse(XMLStreamReader reader, ParseContext context) throws ParseException,
                                                                                   XMLStreamException {
         ConditionExpression conditionExpression = new ConditionExpression();
-        Script script=new Script();
-        script.setType(getString(reader,"type"));
+        Script script = new Script();
+        script.setType(getString(reader, "type"));
         script.setContent(reader.getElementText());
         conditionExpression.setHandler(script);
-        //this.skipToEndElement(reader);
+        // this.skipToEndElement(reader);
         return conditionExpression;
 
     }
-
-  
 
 }

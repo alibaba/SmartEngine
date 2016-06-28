@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.context.impl.DefaultInstanceContext;
  * Created by ettear on 16-4-20.
  */
 public class DefaultInstanceContextFactory implements InstanceContextFactory {
+
     @Override
     public InstanceContext create() {
         return new DefaultInstanceContext();

@@ -7,8 +7,7 @@ import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
 
 /**
- * 抽象Process Provider实现
- * Created by ettear on 16-4-20.
+ * 抽象Process Provider实现 Created by ettear on 16-4-20.
  */
 public class AbstractProcessProvider<T extends Process> implements ActivityProvider<T> {
 

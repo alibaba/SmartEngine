@@ -7,7 +7,7 @@ public class ProcessContextHolder {
 
     private static ProcessContext processContext;
 
-    public  static void set(ProcessContext processContext) {
+    public static void set(ProcessContext processContext) {
         ProcessContextHolder.processContext = processContext;
     }
 
