@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.instance.TaskInstance;
 @Data
 public class DefaultTaskInstance extends AbstractLifeCycleInstance implements TaskInstance {
 
+    private static final long serialVersionUID = -3920292154786127202L;
     private String name;
     private String processInstanceId;
     private String executionInstanceId;

@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.assembly.Base;
  */
 public abstract class AbstractBase implements Base {
 
+    private static final long serialVersionUID = -8729383608303781741L;
     private boolean unresolved = true;
 
     @Override

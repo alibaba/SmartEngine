@@ -130,6 +130,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     private RuntimeProcessComponent install(ClassLoader classLoader, ProcessDefinition definition) {
         // Check
         if (null == definition) {
@@ -170,6 +171,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
         return processComponent;
     }
 
+    @SuppressWarnings("rawtypes")
     private RuntimeProcess buildRuntimeProcess(Process process, DefaultRuntimeProcessComponent component, boolean sub) {
         String idPrefix = "";
         if (sub) {

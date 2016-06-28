@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.assembly.Activity;
  */
 public abstract class AbstractActivity extends AbstractInvocable implements Activity {
 
+    private static final long serialVersionUID = 3558917263151685441L;
     private boolean startActivity;
 
     @Override

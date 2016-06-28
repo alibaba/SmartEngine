@@ -15,6 +15,7 @@ import com.alibaba.smart.framework.engine.instance.LifeCycleInstance;
 @EqualsAndHashCode(callSuper = true)
 public abstract class AbstractLifeCycleInstance extends AbstractInstance implements LifeCycleInstance {
 
+    private static final long serialVersionUID = -170898515347885220L;
     /**
      * 状态
      */

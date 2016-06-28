@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.instance.TransitionInstance;
 @EqualsAndHashCode(callSuper = true)
 public class DefaultTransitionInstance extends AbstractInstance implements TransitionInstance {
 
+    private static final long serialVersionUID = 8888812970442968263L;
     private String transitionId;
     private String sourceActivityInstanceId;
     private String targetActivityInstanceId;

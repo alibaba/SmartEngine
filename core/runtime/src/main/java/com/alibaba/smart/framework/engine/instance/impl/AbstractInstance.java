@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.instance.Instance;
 @Data
 public abstract class AbstractInstance implements Instance {
 
+    private static final long serialVersionUID = -973475989101269263L;
     /**
      * 实例Id
      */

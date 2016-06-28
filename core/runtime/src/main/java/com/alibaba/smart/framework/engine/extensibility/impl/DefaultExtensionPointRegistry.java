@@ -58,6 +58,7 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     protected void initExtension(ClassLoader classLoader, String type, Object object)
                                                                                      throws ExtensionPointLoadException {

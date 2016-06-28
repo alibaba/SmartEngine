@@ -5,6 +5,8 @@ package com.alibaba.smart.framework.engine.extensibility.exception;
  */
 public class ExtensionPointException extends Exception {
 
+    private static final long serialVersionUID = 5691035403298522015L;
+
     public ExtensionPointException(String message) {
         super(message);
     }

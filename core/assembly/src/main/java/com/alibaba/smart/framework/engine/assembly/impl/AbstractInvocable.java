@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.assembly.Invocable;
  */
 public abstract class AbstractInvocable extends AbstractBase implements Invocable {
 
+    private static final long serialVersionUID = -994693481561308817L;
     private String id;
 
     @Override

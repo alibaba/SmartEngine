@@ -5,4 +5,6 @@ package com.alibaba.smart.framework.engine.assembly.parser.exception;
  */
 public class AbstractParseException extends Exception {
 
+    private static final long serialVersionUID = -89696724511328256L;
+
 }

@@ -15,5 +15,6 @@ import com.alibaba.smart.framework.engine.assembly.Process;
 @EqualsAndHashCode(callSuper = true)
 public abstract class AbstractProcess extends AbstractActivity implements Process {
 
+    private static final long serialVersionUID = -1139915200717778375L;
     private List<Base> elements;
 }

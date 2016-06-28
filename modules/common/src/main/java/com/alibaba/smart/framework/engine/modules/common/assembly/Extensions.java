@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.assembly.impl.AbstractBase;
 @EqualsAndHashCode(callSuper = true)
 public class Extensions extends AbstractBase {
 
+    private static final long serialVersionUID = -9017389195653634752L;
     private List<Extension> extensions;
 
     public void addExtension(Extension extension) {

@@ -11,6 +11,8 @@ import com.alibaba.smart.framework.engine.assembly.ProcessDefinition;
 @Data
 public abstract class AbstractProcessDefinition extends AbstractBase implements ProcessDefinition {
 
+    private static final long serialVersionUID = -1765647192018309663L;
+
     private String  id;
 
     private String  name;

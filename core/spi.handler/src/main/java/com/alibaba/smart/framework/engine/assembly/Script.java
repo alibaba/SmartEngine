@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.assembly.impl.AbstractBase;
 @EqualsAndHashCode(callSuper = true)
 public class Script extends AbstractBase implements Handler {
 
+    private static final long serialVersionUID = -5323003411376547684L;
     private String type;
     private String content;
     private String resultVariable;

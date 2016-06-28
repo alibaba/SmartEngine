@@ -22,6 +22,8 @@ import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPoint
 /**
  * 默认处理器扩展点 Created by ettear on 16-4-12.
  */
+@SuppressWarnings("rawtypes")
+
 public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPoint implements AssemblyParserExtensionPoint {
 
     /**
@@ -112,6 +114,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void resolve(Object model, ParseContext context) throws ResolveException {
         ArtifactParser artifactParser = this.resolveArtifactParsers.get(model.getClass());

@@ -9,4 +9,6 @@ import com.alibaba.smart.framework.engine.instance.InstanceFact;
  */
 public class DefaultInstanceFact extends HashMap<String, Object> implements InstanceFact {
 
+    private static final long serialVersionUID = 5369101417734771566L;
+
 }

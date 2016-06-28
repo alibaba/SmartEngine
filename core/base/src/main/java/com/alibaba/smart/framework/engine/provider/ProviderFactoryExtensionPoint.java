@@ -8,5 +8,5 @@ import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
  */
 public interface ProviderFactoryExtensionPoint extends LifeCycleListener {
 
-    ProviderFactory getProviderFactory(Class<?> modelType);
+    ProviderFactory<?> getProviderFactory(Class<?> modelType);
 }

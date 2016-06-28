@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.mvel2.MVEL;
-import org.mvel2.compiler.ExecutableStatement;
 
 import com.alibaba.smart.framework.engine.assembly.Script;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
@@ -18,7 +17,7 @@ import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
  */
 public class MvelInvoker implements Invoker {
 
-    private ExecutableStatement stmt;
+//    private ExecutableStatement stmt;
     private Script              script;
 
     public MvelInvoker(Script script) {

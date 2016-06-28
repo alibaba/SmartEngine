@@ -63,6 +63,7 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
         }
     }
 
+    @SuppressWarnings("rawtypes")
     protected void initExtension(ClassLoader classLoader, String type, String className)
                                                                                         throws ExtensionPointLoadException {
         Class<?> artifactParserClass;
