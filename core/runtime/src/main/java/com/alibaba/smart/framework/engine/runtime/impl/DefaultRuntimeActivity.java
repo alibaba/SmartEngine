@@ -20,14 +20,14 @@ import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultActivityTransitionSelectInvoker;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**
  * DefaultRuntimeActivity Created by ettear on 16-4-13.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity> implements RuntimeActivity {
+public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity> implements PvmActivity {
 
     private final static List<String> EXECUTE_EVENTS = new ArrayList<>();
 

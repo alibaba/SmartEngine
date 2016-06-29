@@ -6,11 +6,11 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.Exclusiv
 import com.alibaba.smart.framework.engine.modules.bpmn.invocation.ExclusiveInvoker;
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityProvider;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 public class ExclusiveGatewayProvider extends AbstractBpmnActivityProvider<ExclusiveGateway> implements ActivityProvider<ExclusiveGateway> {
 
-    public ExclusiveGatewayProvider(ExtensionPointRegistry extensionPointRegistry, RuntimeActivity runtimeActivity) {
+    public ExclusiveGatewayProvider(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 

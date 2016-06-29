@@ -7,12 +7,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.alibaba.smart.framework.engine.DefaultSmartEngine;
-import com.alibaba.smart.framework.engine.deployment.Deployer;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.service.ProcessService;
+import com.alibaba.smart.framework.engine.service.RepositoryService;
 
 /**
  * BPMN Test Created by ettear on 16-4-29.
@@ -27,13 +27,13 @@ public class BpmnProcessTest {
         ExtensionPointRegistry extensionPointRegistry = smartEngine.getExtensionPointRegistry();
         ProcessContainer processContainer = extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
 
-        Deployer deployer = smartEngine.getDeployer();
+        RepositoryService deployer = smartEngine.getRepositoryService();
         deployer.deploy("test-exclusive.bpmn20.xml");
 
-        RuntimeProcess process = processContainer.get("test-exclusive", "1.0.0");
+        PvmProcess process = processContainer.get("test-exclusive", "1.0.0");
         Assert.assertNotNull(process);
 
-        ProcessManager processManager = smartEngine.getProcessManager();
+        ProcessService processManager = smartEngine.getProcessManager();
         Map<String, Object> variables = new HashMap<>();
         variables.put("input", 2);
         ProcessInstance instance = processManager.start("test-exclusive", "1.0.0", variables);
@@ -47,13 +47,13 @@ public class BpmnProcessTest {
         ExtensionPointRegistry extensionPointRegistry = smartEngine.getExtensionPointRegistry();
         ProcessContainer processContainer = extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
 
-        Deployer deployer = smartEngine.getDeployer();
+        RepositoryService deployer = smartEngine.getRepositoryService();
         deployer.deploy("test-parallel.bpmn20.xml");
 
-        RuntimeProcess process = processContainer.get("test-parallel", "1.0.0");
+        PvmProcess process = processContainer.get("test-parallel", "1.0.0");
         Assert.assertNotNull(process);
 
-        ProcessManager processManager = smartEngine.getProcessManager();
+        ProcessService processManager = smartEngine.getProcessManager();
         Map<String, Object> variables = new HashMap<>();
         ProcessInstance instance = processManager.start("test-parallel", "1.0.0", variables);
     }

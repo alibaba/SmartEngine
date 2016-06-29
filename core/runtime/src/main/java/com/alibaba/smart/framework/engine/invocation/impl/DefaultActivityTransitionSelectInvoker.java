@@ -7,8 +7,8 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 /**
  * DefaultActivityTransitionSelectInvoker Created by ettear on 16-4-19.
@@ -16,16 +16,16 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 public class DefaultActivityTransitionSelectInvoker extends AbstractTransitionSelectInvoker {
 
     public DefaultActivityTransitionSelectInvoker(ExtensionPointRegistry extensionPointRegistry,
-                                                  RuntimeActivity runtimeActivity) {
+                                                  PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 
     @Override
-    protected List<ExecutionInstance> processExecution(List<RuntimeTransition> transitions,
+    protected List<ExecutionInstance> processExecution(List<PvmTransition> transitions,
                                                        ProcessInstance processInstance,
                                                        ExecutionInstance currentExecutionInstance,
                                                        ActivityInstance currentActivityInstance) {
-        RuntimeTransition runtimeTransition = transitions.get(0);
+        PvmTransition runtimeTransition = transitions.get(0);
         this.buildExecutionInstance(runtimeTransition, processInstance, currentExecutionInstance,
                                     currentActivityInstance);
         List<ExecutionInstance> executions = new ArrayList<>();

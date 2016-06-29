@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.runtime;
+package com.alibaba.smart.framework.engine.pvm;
 
 import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
@@ -7,13 +7,13 @@ import com.alibaba.smart.framework.engine.invocation.Message;
 /**
  * RuntimeProcess Created by ettear on 16-4-12.
  */
-public interface RuntimeProcess extends RuntimeActivity {
+public interface PvmProcess extends PvmActivity {
 
     String getUri();
 
     void setUri(String uri);
 
-    RuntimeActivity getStartActivity();
+    PvmActivity getStartActivity();
 
     @Override
     Process getModel();

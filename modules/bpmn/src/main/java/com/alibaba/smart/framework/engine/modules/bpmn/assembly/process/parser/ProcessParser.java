@@ -7,7 +7,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.Base;
+import com.alibaba.smart.framework.engine.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
@@ -38,11 +38,11 @@ public class ProcessParser extends AbstractStAXArtifactParser<Process> implement
         Process process = new Process();
         process.setId(this.getString(reader, "id"));
 
-        List<Base> elements = new ArrayList<>();
+        List<BaseElement> elements = new ArrayList<>();
         while (this.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
-            if (element instanceof Base) {
-                elements.add((Base) element);
+            if (element instanceof BaseElement) {
+                elements.add((BaseElement) element);
             }
         }
         process.setElements(elements);

@@ -4,7 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.Base;
+import com.alibaba.smart.framework.engine.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.assembly.Handler;
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
@@ -42,7 +42,7 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> impleme
     }
 
     @Override
-    protected void parseChild(SequenceFlow model, Base child) {
+    protected void parseChild(SequenceFlow model, BaseElement child) {
         if (child instanceof ConditionExpression) {
             model.setConditionExpression((ConditionExpression) child);
         } else if (child instanceof Handler) {

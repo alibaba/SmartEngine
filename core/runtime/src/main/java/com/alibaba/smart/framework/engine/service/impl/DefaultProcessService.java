@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.instance.manager.impl;
+package com.alibaba.smart.framework.engine.service.impl;
 
 import java.util.Map;
 
@@ -10,16 +10,15 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.factory.InstanceFactFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.service.ProcessService;
 
 /**
  * DefaultProcessManager Created by ettear on 16-4-19.
  */
-public class DefaultProcessManager implements ProcessManager, LifeCycleListener {
+public class DefaultProcessService implements ProcessService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
     private ProcessContainer       processContainer;
@@ -27,9 +26,9 @@ public class DefaultProcessManager implements ProcessManager, LifeCycleListener 
     private InstanceContextFactory instanceContextFactory;
     private ProcessInstanceFactory processInstanceFactory;
     ExecutionInstanceFactory       executionInstanceFactory;
-    private InstanceFactFactory    factFactory;
+//    private InstanceFactFactory    factFactory;
 
-    public DefaultProcessManager(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultProcessService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 
@@ -40,7 +39,7 @@ public class DefaultProcessManager implements ProcessManager, LifeCycleListener 
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
         this.processInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
         this.executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
-        this.factFactory = this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
+//        this.factFactory = this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
 
     }
 
@@ -51,12 +50,12 @@ public class DefaultProcessManager implements ProcessManager, LifeCycleListener 
 
     @Override
     public ProcessInstance start(String processId, String version, Map<String, Object> variables) {
-        RuntimeProcess runtimeProcess = this.processContainer.get(processId, version);
+        PvmProcess runtimeProcess = this.processContainer.get(processId, version);
         ProcessInstance processInstance = this.processInstanceFactory.create();
 
         ExecutionInstance executionInstance = this.executionInstanceFactory.create();
         executionInstance.setProcessInstanceId(processInstance.getInstanceId());
-        executionInstance.setFact(factFactory.create(variables));
+//        executionInstance.setFact(factFactory.create(variables));
 
         processInstance.setProcessUri(runtimeProcess.getUri());
         processInstance.addExecution(executionInstance);// 执行实例添加到流程实例

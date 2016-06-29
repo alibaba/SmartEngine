@@ -5,14 +5,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.alibaba.smart.framework.engine.deployment.Deployer;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensibility.ClassLoaderExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 import com.alibaba.smart.framework.engine.extensibility.impl.DefaultExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.manager.ExecutionManager;
-import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
-import com.alibaba.smart.framework.engine.instance.manager.TaskManager;
+import com.alibaba.smart.framework.engine.service.ExecutionService;
+import com.alibaba.smart.framework.engine.service.ProcessService;
+import com.alibaba.smart.framework.engine.service.RepositoryService;
+import com.alibaba.smart.framework.engine.service.TaskService;
 
 /**
  * Default Smart Engine Created by ettear on 16-4-12.
@@ -30,6 +31,12 @@ public class DefaultSmartEngine implements SmartEngine {
         this.install(DEFAULT_MODULE, classLoader);
     }
 
+    @Override
+    public void install() {
+        install(DEFAULT_MODULE,DefaultSmartEngine.class.getClassLoader());
+    }
+    
+    
     @Override
     public void install(String moduleName, ClassLoader classLoader) throws EngineException {
         if (StringUtils.isBlank(moduleName)) {
@@ -73,26 +80,28 @@ public class DefaultSmartEngine implements SmartEngine {
     }
 
     @Override
-    public Deployer getDeployer() {
-        return this.extensionPointRegistry.getExtensionPoint(Deployer.class);
+    public RepositoryService getRepositoryService() {
+        return this.extensionPointRegistry.getExtensionPoint(RepositoryService.class);
     }
 
     @Override
-    public ProcessManager getProcessManager() {
-        return this.extensionPointRegistry.getExtensionPoint(ProcessManager.class);
+    public ProcessService getProcessManager() {
+        return this.extensionPointRegistry.getExtensionPoint(ProcessService.class);
     }
 
     @Override
-    public ExecutionManager getExecutionManager() {
-        return this.extensionPointRegistry.getExtensionPoint(ExecutionManager.class);
+    public ExecutionService getExecutionManager() {
+        return this.extensionPointRegistry.getExtensionPoint(ExecutionService.class);
     }
 
     @Override
-    public TaskManager getTaskManager() {
-        return this.extensionPointRegistry.getExtensionPoint(TaskManager.class);
+    public TaskService getTaskManager() {
+        return this.extensionPointRegistry.getExtensionPoint(TaskService.class);
     }
 
     public ExtensionPointRegistry getExtensionPointRegistry() {
         return extensionPointRegistry;
     }
+
+
 }

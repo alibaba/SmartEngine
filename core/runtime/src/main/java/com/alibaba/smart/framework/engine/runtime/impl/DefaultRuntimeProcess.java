@@ -17,33 +17,32 @@ import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.factory.InstanceFactFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.manager.ExecutionManager;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.service.ExecutionService;
 
 /**
  * DefaultRuntimeProcess Created by ettear on 16-4-12.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> implements RuntimeProcess {
+public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> implements PvmProcess {
 
     private String                         uri;
 
     private ClassLoader                    classLoader;
 
-    private Map<String, RuntimeActivity>   activities;
+    private Map<String, PvmActivity>   activities;
 
-    private Map<String, RuntimeTransition> transitions;
+    private Map<String, PvmTransition> transitions;
 
-    private RuntimeActivity                startActivity;
+    private PvmActivity                startActivity;
 
     @Override
     public Process getModel() {
@@ -55,7 +54,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         // 从扩展注册机获取实例工厂
         ExecutionInstanceFactory executionInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(ExecutionInstanceFactory.class);
         ActivityInstanceFactory activityInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(ActivityInstanceFactory.class);
-        InstanceFactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
+//        InstanceFactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
 
         // 流程实例ID
         ProcessInstance processInstance = context.getProcessInstance();
@@ -69,7 +68,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         if (null == executionInstance) {
             executionInstance = executionInstanceFactory.create();
             executionInstance.setProcessInstanceId(processInstanceId);
-            processInstance.setFact(factFactory.create());
+//            processInstance.setFact(factFactory.create());
             processInstance.addExecution(executionInstance);// 执行实例添加到流程实例
             context.setCurrentExecution(executionInstance);// 执行实例添加到当前上下文中
         }
@@ -96,19 +95,19 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         ActivityInstance activityInstance = currentExecutionInstance.getActivity();
 
         String activityId = activityInstance.getActivityId();
-        RuntimeActivity runtimeActivity = this.getActivities().get(activityId);
+        PvmActivity runtimeActivity = this.getActivities().get(activityId);
 
         // 状态
         processInstance.setStatus(InstanceStatus.running);
 
         Message processMessage = this.runProcess(runtimeActivity, context);
         if (!processMessage.isSuspend()) {
-            ExecutionManager executionManager = this.getExtensionPointRegistry().getExtensionPoint(ExecutionManager.class);
+            ExecutionService executionManager = this.getExtensionPointRegistry().getExtensionPoint(ExecutionService.class);
 
             Map<String, Object> variables = new HashMap<>();
             // TODO ettear 或者用子流程事实做为主流程活动事实?
-            variables.putAll(context.getProcessInstance().getFact());
-            variables.putAll(context.getCurrentExecution().getFact());
+//            variables.putAll(context.getProcessInstance().getFact());
+//            variables.putAll(context.getCurrentExecution().getFact());
             ProcessInstance parentProcessInstance = executionManager.signal(processInstance.getParentInstanceId(),
                                                                             processInstance.getParentExecutionInstanceId(),
                                                                             variables);
@@ -146,7 +145,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         // 创建子流程上下文
         InstanceContextFactory instanceContextFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceContextFactory.class);
         ProcessInstanceFactory processInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(ProcessInstanceFactory.class);
-        InstanceFactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
+//        InstanceFactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
 
         InstanceContext subInstanceContext = instanceContextFactory.create();
         ProcessInstance processInstance = processInstanceFactory.create();
@@ -154,7 +153,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         processInstance.setParentInstanceId(currentExecutionInstance.getProcessInstanceId());
         processInstance.setParentExecutionInstanceId(currentExecutionInstance.getInstanceId());
         processInstance.setParentActivityInstanceId(currentExecutionInstance.getActivity().getInstanceId());
-        processInstance.setFact(factFactory.create());
+//        processInstance.setFact(factFactory.create());
         subInstanceContext.setProcessInstance(processInstance);
         // TODO ettear 或者用主流程活动事实做为子流程事实?
         // subInstanceContext.setExecutionFact(context.getExecutionFact());
@@ -162,7 +161,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         return this.run(subInstanceContext);
     }
 
-    private Message runProcess(RuntimeActivity startActivity, InstanceContext context) {
+    private Message runProcess(PvmActivity startActivity, InstanceContext context) {
         Message processMessage = this.executeActivity(startActivity, context);
         ProcessInstance processInstance = context.getProcessInstance();
         if (!processMessage.isSuspend()) {
@@ -177,7 +176,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         return processMessage;
     }
 
-    private Message executeActivity(RuntimeActivity runtimeActivity, InstanceContext context) {
+    private Message executeActivity(PvmActivity runtimeActivity, InstanceContext context) {
         // 执行当前节点
         Message activityExecuteMessage = runtimeActivity.execute(context);
 
@@ -203,10 +202,10 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
                             context.setCurrentExecution(executionInstance);
 
                             TransitionInstance transitionInstance = executionInstance.getActivity().getIncomeTransitions().get(0);
-                            RuntimeTransition runtimeTransition = this.transitions.get(transitionInstance.getTransitionId());
+                            PvmTransition runtimeTransition = this.transitions.get(transitionInstance.getTransitionId());
                             // 执行Transition
                             runtimeTransition.execute(context);
-                            RuntimeActivity target = runtimeTransition.getTarget();
+                            PvmActivity target = runtimeTransition.getTarget();
                             // 执行Activity
                             this.executeActivity(target, context);
                         }

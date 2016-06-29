@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 基础装配模型 Created by ettear on 16-4-11.
  */
-public interface Base extends Serializable {
+public interface BaseElement extends Serializable {
 
     /**
      * @return

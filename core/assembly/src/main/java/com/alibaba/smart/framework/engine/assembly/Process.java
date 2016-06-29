@@ -7,5 +7,5 @@ import java.util.List;
  */
 public interface Process extends Activity {
 
-    List<Base> getElements();
+    List<BaseElement> getElements();
 }

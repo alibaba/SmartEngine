@@ -5,14 +5,14 @@ import com.alibaba.smart.framework.engine.modules.base.assembly.SmartProcess;
 import com.alibaba.smart.framework.engine.modules.base.invocation.SmartInvoker;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractProcessProvider;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 
 /**
  * Created by ettear on 16-4-14.
  */
 public class SmartProcessProvider extends AbstractProcessProvider<SmartProcess> implements ActivityProvider<SmartProcess> {
 
-    public SmartProcessProvider(RuntimeProcess runtimeProcess) {
+    public SmartProcessProvider(PvmProcess runtimeProcess) {
         super(runtimeProcess);
     }
 

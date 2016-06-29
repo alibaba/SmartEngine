@@ -7,7 +7,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.Base;
+import com.alibaba.smart.framework.engine.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
@@ -30,11 +30,11 @@ public class SmartProcessParser extends AbstractStAXArtifactParser<SmartProcess>
         SmartProcess smartProcess = new SmartProcess();
         smartProcess.setId(this.getString(reader, "id"));
 
-        List<Base> elements = new ArrayList<>();
+        List<BaseElement> elements = new ArrayList<>();
         while (this.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
-            if (element instanceof Base) {
-                elements.add((Base) element);
+            if (element instanceof BaseElement) {
+                elements.add((BaseElement) element);
             }
         }
         smartProcess.setElements(elements);
@@ -44,7 +44,7 @@ public class SmartProcessParser extends AbstractStAXArtifactParser<SmartProcess>
     @Override
     public void resolve(SmartProcess model, ParseContext context) throws ResolveException {
         if (null != model.getElements()) {
-            for (Base element : model.getElements()) {
+            for (BaseElement element : model.getElements()) {
                 this.resolveElement(element, context);
             }
         }

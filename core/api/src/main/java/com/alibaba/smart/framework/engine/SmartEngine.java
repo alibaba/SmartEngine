@@ -1,16 +1,19 @@
 package com.alibaba.smart.framework.engine;
 
-import com.alibaba.smart.framework.engine.deployment.Deployer;
-import com.alibaba.smart.framework.engine.instance.manager.ExecutionManager;
-import com.alibaba.smart.framework.engine.instance.manager.ProcessManager;
-import com.alibaba.smart.framework.engine.instance.manager.TaskManager;
+import com.alibaba.smart.framework.engine.service.ExecutionService;
+import com.alibaba.smart.framework.engine.service.ProcessService;
+import com.alibaba.smart.framework.engine.service.RepositoryService;
+import com.alibaba.smart.framework.engine.service.TaskService;
 
 /**
  * Smart Engine Created by ettear on 16-4-12.
  */
 public interface SmartEngine {
 
-    void install(String moduleName, ClassLoader classLoader) throws EngineException;
+    void install()  ;
+
+    
+    void install(String moduleName, ClassLoader classLoader)  ;
 
     /**
      * This method will be invoked when started.
@@ -24,11 +27,11 @@ public interface SmartEngine {
 
     ClassLoader getClassLoader(String moduleName);
 
-    Deployer getDeployer();
+    RepositoryService getRepositoryService();
 
-    ProcessManager getProcessManager();
+    ProcessService getProcessManager();
 
-    ExecutionManager getExecutionManager();
+    ExecutionService getExecutionManager();
 
-    TaskManager getTaskManager();
+    TaskService getTaskManager();
 }

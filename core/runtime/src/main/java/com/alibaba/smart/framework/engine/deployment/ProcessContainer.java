@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.deployment;
 
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
+import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
 
 /**
  * 流程容器 Created by ettear on 16-4-19.
@@ -13,7 +13,7 @@ public interface ProcessContainer {
      *
      * @param processComponent 流程
      */
-    void install(RuntimeProcessComponent processComponent);
+    void install(PvmProcessComponent processComponent);
 
     /**
      * 获取流程
@@ -22,7 +22,7 @@ public interface ProcessContainer {
      * @param version 版本
      * @return 流程
      */
-    RuntimeProcess get(String processId, String version);
+    PvmProcess get(String processId, String version);
 
     /**
      * 获取流程
@@ -30,5 +30,5 @@ public interface ProcessContainer {
      * @param uri 流程URI
      * @return 流程
      */
-    RuntimeProcess get(String uri);
+    PvmProcess get(String uri);
 }

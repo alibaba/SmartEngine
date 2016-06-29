@@ -23,9 +23,9 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     void setParentActivityInstanceId(String parentActivityInstanceId);
 
-    InstanceFact getFact();
-
-    void setFact(InstanceFact fact);
+//    InstanceFact getFact();
+//
+//    void setFact(InstanceFact fact);
 
     /**
      * 获取流程的执行实例

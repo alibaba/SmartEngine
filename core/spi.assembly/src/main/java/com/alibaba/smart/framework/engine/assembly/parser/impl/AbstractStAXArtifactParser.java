@@ -7,7 +7,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.Base;
+import com.alibaba.smart.framework.engine.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.assembly.parser.ArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
@@ -19,7 +19,7 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 /**
  * Abstract StAXArtifactParser Created by ettear on 16-4-14.
  */
-public abstract class AbstractStAXArtifactParser<M extends Base> implements LifeCycleListener, ArtifactParser<M> {
+public abstract class AbstractStAXArtifactParser<M extends BaseElement> implements LifeCycleListener, ArtifactParser<M> {
 
     /**
      * 扩展点注册器

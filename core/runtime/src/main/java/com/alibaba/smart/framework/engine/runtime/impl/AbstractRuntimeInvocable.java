@@ -5,21 +5,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import lombok.Data;
 
-import com.alibaba.smart.framework.engine.assembly.Invocable;
+import com.alibaba.smart.framework.engine.assembly.Indentity;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DoNothingInvoker;
 import com.alibaba.smart.framework.engine.provider.InvocableProvider;
+import com.alibaba.smart.framework.engine.pvm.PvmInvocable;
 import com.alibaba.smart.framework.engine.runtime.ProviderRuntimeInvocable;
-import com.alibaba.smart.framework.engine.runtime.RuntimeInvocable;
 
 /**
  * DefaultRuntimeInvocable Created by ettear on 16-4-14.
  */
 @Data
-public abstract class AbstractRuntimeInvocable<M extends Invocable> implements RuntimeInvocable<M>, ProviderRuntimeInvocable {
+public abstract class AbstractRuntimeInvocable<M extends Indentity> implements PvmInvocable<M>, ProviderRuntimeInvocable {
 
     private M                      model;
     private InvocableProvider      provider;

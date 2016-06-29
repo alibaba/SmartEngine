@@ -5,17 +5,17 @@ import lombok.Data;
 import com.alibaba.smart.framework.engine.assembly.Transition;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 /**
  * Created by ettear on 16-4-13.
  */
 @Data
-public class DefaultRuntimeTransition extends AbstractRuntimeInvocable<Transition> implements RuntimeTransition {
+public class DefaultRuntimeTransition extends AbstractRuntimeInvocable<Transition> implements PvmTransition {
 
-    private RuntimeActivity source;
-    private RuntimeActivity target;
+    private PvmActivity source;
+    private PvmActivity target;
 
     @Override
     public void execute(InstanceContext context) {

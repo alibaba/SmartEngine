@@ -8,14 +8,14 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.Condi
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractTransitionProvider;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 public class SequenceFlowProvider extends AbstractTransitionProvider<SequenceFlow> implements TransitionProvider<SequenceFlow> {
 
     private ExtensionPointRegistry        extensionPointRegistry;
     private HandlerProviderExtensionPoint handlerProviderExtensionPoint;
 
-    public SequenceFlowProvider(ExtensionPointRegistry extensionPointRegistry, RuntimeTransition runtimeTransition) {
+    public SequenceFlowProvider(ExtensionPointRegistry extensionPointRegistry, PvmTransition runtimeTransition) {
         super(runtimeTransition);
         this.extensionPointRegistry = extensionPointRegistry;
         this.handlerProviderExtensionPoint = this.extensionPointRegistry.getExtensionPoint(HandlerProviderExtensionPoint.class);

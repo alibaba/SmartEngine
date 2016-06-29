@@ -1,9 +1,9 @@
-package com.alibaba.smart.framework.engine;
+package com.alibaba.smart.framework.engine.exception;
 
 /**
  * 引擎异常 Created by ettear on 16-4-12.
  */
-public class EngineException extends Exception {
+public class EngineException extends RuntimeException {
 
     private static final long serialVersionUID = -4066455487370828006L;
 

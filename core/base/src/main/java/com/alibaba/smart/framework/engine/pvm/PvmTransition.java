@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.runtime;
+package com.alibaba.smart.framework.engine.pvm;
 
 import com.alibaba.smart.framework.engine.assembly.Transition;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
@@ -6,11 +6,11 @@ import com.alibaba.smart.framework.engine.context.InstanceContext;
 /**
  * Created by ettear on 16-4-13.
  */
-public interface RuntimeTransition extends RuntimeInvocable<Transition> {
+public interface PvmTransition extends PvmInvocable<Transition> {
 
-    RuntimeActivity getSource();
+    PvmActivity getSource();
 
-    RuntimeActivity getTarget();
+    PvmActivity getTarget();
 
     void execute(InstanceContext context);
 

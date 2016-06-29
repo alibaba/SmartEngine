@@ -7,7 +7,6 @@ import org.mvel2.MVEL;
 
 import com.alibaba.smart.framework.engine.assembly.Script;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
-import com.alibaba.smart.framework.engine.instance.InstanceFact;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
@@ -30,16 +29,16 @@ public class MvelInvoker implements Invoker {
     public Message invoke(InstanceContext context) {
         Message message = new DefaultMessage();
         Map<String, Object> mvelContext = new HashMap<>();
-        InstanceFact current = context.getCurrentExecution().getFact();
-        mvelContext.put("fact", context.getProcessInstance().getFact());
-        mvelContext.put("current", current);
-        mvelContext.putAll(current);
+//        InstanceFact current = context.getCurrentExecution().getFact();
+//        mvelContext.put("fact", context.getProcessInstance().getFact());
+//        mvelContext.put("current", current);
+//        mvelContext.putAll(current);
         try {
             Object result = MVEL.eval(this.script.getContent(), mvelContext);
             message.setBody(result);
             String resultVariable = this.script.getResultVariable();
             if (null != resultVariable && !"".equals(resultVariable)) {
-                current.put(resultVariable, result);
+//                current.put(resultVariable, result);
             }
         } catch (Exception e) {
             message.setFault(true);

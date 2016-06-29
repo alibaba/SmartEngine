@@ -4,16 +4,16 @@ import com.alibaba.smart.framework.engine.assembly.Transition;
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 /**
  * 抽象Transition Provider实现 Created by ettear on 16-4-20.
  */
 public abstract class AbstractTransitionProvider<T extends Transition> implements TransitionProvider<T> {
 
-    private RuntimeTransition runtimeTransition;
+    private PvmTransition runtimeTransition;
 
-    public AbstractTransitionProvider(RuntimeTransition runtimeTransition) {
+    public AbstractTransitionProvider(PvmTransition runtimeTransition) {
         this.runtimeTransition = runtimeTransition;
     }
 
@@ -62,7 +62,7 @@ public abstract class AbstractTransitionProvider<T extends Transition> implement
         return null;
     }
 
-    protected RuntimeTransition getRuntimeTransition() {
+    protected PvmTransition getRuntimeTransition() {
         return runtimeTransition;
     }
 }

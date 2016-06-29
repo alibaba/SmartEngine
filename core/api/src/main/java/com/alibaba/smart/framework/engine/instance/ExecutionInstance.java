@@ -9,9 +9,9 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     void setProcessInstanceId(String processInstanceId);
 
-    InstanceFact getFact();
-
-    void setFact(InstanceFact fact);
+//    InstanceFact getFact();
+//
+//    void setFact(InstanceFact fact);
 
     ActivityInstance getActivity();
 

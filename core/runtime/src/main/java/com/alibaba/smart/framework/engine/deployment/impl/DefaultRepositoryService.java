@@ -16,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.assembly.Activity;
-import com.alibaba.smart.framework.engine.assembly.Base;
+import com.alibaba.smart.framework.engine.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.assembly.Transition;
@@ -24,29 +24,29 @@ import com.alibaba.smart.framework.engine.assembly.parser.AssemblyParserExtensio
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
-import com.alibaba.smart.framework.engine.deployment.Deployer;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
-import com.alibaba.smart.framework.engine.deployment.exception.DeployException;
+import com.alibaba.smart.framework.engine.exception.DeployException;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.runtime.ProviderRuntimeInvocable;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcessComponent;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeActivity;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcessComponent;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeTransition;
+import com.alibaba.smart.framework.engine.service.RepositoryService;
 
 /**
  * 默认部署器 Created by ettear on 16-4-13.
  */
-public class DefaultDeployer implements Deployer, LifeCycleListener {
+public class DefaultRepositoryService implements RepositoryService, LifeCycleListener {
 
     /**
      * 扩展点注册器
@@ -57,7 +57,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
     private ProviderFactoryExtensionPoint providerFactoryExtensionPoint;
     private ProcessContainer              processContainer;
 
-    public DefaultDeployer(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultRepositoryService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 
@@ -74,7 +74,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
         }
 
         ProcessDefinition definition = this.load(classLoader, uri);
-        RuntimeProcessComponent runtimeProcessComponent = install(classLoader, definition);
+        PvmProcessComponent runtimeProcessComponent = install(classLoader, definition);
         if (null == runtimeProcessComponent) {
             throw new DeployException("Deploy " + uri + " failure!");
         }
@@ -131,7 +131,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
     }
 
     @SuppressWarnings("rawtypes")
-    private RuntimeProcessComponent install(ClassLoader classLoader, ProcessDefinition definition) {
+    private PvmProcessComponent install(ClassLoader classLoader, ProcessDefinition definition) {
         // Check
         if (null == definition) {
             return null;
@@ -156,7 +156,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
             if (StringUtils.isBlank(process.getId())) {
                 process.setId("default");
             }
-            RuntimeProcess runtimeProcess = this.buildRuntimeProcess(process, processComponent, true);
+            PvmProcess runtimeProcess = this.buildRuntimeProcess(process, processComponent, true);
             if (null != runtimeProcess && runtimeProcess instanceof ProviderRuntimeInvocable) {
                 ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
                 ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeProcess);
@@ -172,7 +172,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
     }
 
     @SuppressWarnings("rawtypes")
-    private RuntimeProcess buildRuntimeProcess(Process process, DefaultRuntimeProcessComponent component, boolean sub) {
+    private PvmProcess buildRuntimeProcess(Process process, DefaultRuntimeProcessComponent component, boolean sub) {
         String idPrefix = "";
         if (sub) {
             idPrefix = process.getId() + "_";
@@ -187,12 +187,12 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
         runtimeProcess.setModel(process);
         component.addProcess(runtimeProcess.getId(), runtimeProcess);
 
-        List<Base> elements = process.getElements();
+        List<BaseElement> elements = process.getElements();
         if (null != elements && !elements.isEmpty()) {
 
-            Map<String, RuntimeTransition> runtimeTransitions = new HashMap<>();
-            Map<String, RuntimeActivity> runtimeActivities = new HashMap<>();
-            for (Base element : elements) {
+            Map<String, PvmTransition> runtimeTransitions = new HashMap<>();
+            Map<String, PvmActivity> runtimeActivities = new HashMap<>();
+            for (BaseElement element : elements) {
                 if (element instanceof Process) {
                     Process subProcess = (Process) element;
 
@@ -201,7 +201,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
                     }
                     index++;
 
-                    RuntimeProcess runtimeSubProcess = this.buildRuntimeProcess(subProcess, component, true);
+                    PvmProcess runtimeSubProcess = this.buildRuntimeProcess(subProcess, component, true);
                     runtimeActivities.put(runtimeSubProcess.getId(), runtimeSubProcess);
 
                     if (runtimeSubProcess.isStartActivity()) {
@@ -242,7 +242,7 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
             }
 
             // Process Transition Flow
-            for (Map.Entry<String, RuntimeTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
+            for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
                 DefaultRuntimeTransition runtimeTransition = (DefaultRuntimeTransition) runtimeTransitionEntry.getValue();
                 String sourceRef = runtimeTransition.getModel().getSourceRef();
                 String targetRef = runtimeTransition.getModel().getTargetRef();
@@ -256,8 +256,8 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
             }
 
             // Create Invoker for Transition Flow
-            for (Map.Entry<String, RuntimeTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
-                RuntimeTransition runtimeTransition = runtimeTransitionEntry.getValue();
+            for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
+                PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
                 if (runtimeTransition instanceof ProviderRuntimeInvocable) {
                     TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModelType());
 
@@ -272,8 +272,8 @@ public class DefaultDeployer implements Deployer, LifeCycleListener {
             }
 
             // Create Invoker for Activity
-            for (Map.Entry<String, RuntimeActivity> runtimeActivityEntry : runtimeActivities.entrySet()) {
-                RuntimeActivity runtimeActivity = runtimeActivityEntry.getValue();
+            for (Map.Entry<String, PvmActivity> runtimeActivityEntry : runtimeActivities.entrySet()) {
+                PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
                 if (runtimeActivity instanceof ProviderRuntimeInvocable) {
                     ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModelType());
 

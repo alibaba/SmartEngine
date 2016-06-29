@@ -17,8 +17,8 @@ import com.alibaba.smart.framework.engine.instance.factory.TransitionInstanceFac
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 /**
  * Created by ettear on 16-5-4.
@@ -26,10 +26,10 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 public abstract class AbstractTransitionSelectInvoker implements Invoker {
 
     private ExtensionPointRegistry extensionPointRegistry;
-    private RuntimeActivity        runtimeActivity;
+    private PvmActivity        runtimeActivity;
 
     public AbstractTransitionSelectInvoker(ExtensionPointRegistry extensionPointRegistry,
-                                           RuntimeActivity runtimeActivity) {
+                                           PvmActivity runtimeActivity) {
         this.extensionPointRegistry = extensionPointRegistry;
         this.runtimeActivity = runtimeActivity;
     }
@@ -37,12 +37,12 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
     @Override
     public Message invoke(InstanceContext context) {
         ExecutionInstance executionInstance = context.getCurrentExecution();
-        Map<String, RuntimeTransition> outcomeTransitions = this.runtimeActivity.getOutcomeTransitions();
+        Map<String, PvmTransition> outcomeTransitions = this.runtimeActivity.getOutcomeTransitions();
         Message message = new DefaultMessage();
         if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
-            List<RuntimeTransition> hitTransitions = new ArrayList<>();
-            for (Map.Entry<String, RuntimeTransition> transitionEntry : outcomeTransitions.entrySet()) {
-                RuntimeTransition runtimeTransition = transitionEntry.getValue();
+            List<PvmTransition> hitTransitions = new ArrayList<>();
+            for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
+                PvmTransition runtimeTransition = transitionEntry.getValue();
                 // 执行命中判断逻辑
                 Message result = runtimeTransition.invoke(AtomicOperationEvent.TRANSITION_HIT.name(), context);
                 if (null != result) {
@@ -75,12 +75,12 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
         return message;
     }
 
-    protected abstract List<ExecutionInstance> processExecution(List<RuntimeTransition> transitions,
+    protected abstract List<ExecutionInstance> processExecution(List<PvmTransition> transitions,
                                                                 ProcessInstance processInstance,
                                                                 ExecutionInstance currentExecutionInstance,
                                                                 ActivityInstance currentActivityInstance);
 
-    protected void buildExecutionInstance(RuntimeTransition runtimeTransition, ProcessInstance processInstance,
+    protected void buildExecutionInstance(PvmTransition runtimeTransition, ProcessInstance processInstance,
                                           ExecutionInstance executionInstance, ActivityInstance currentActivityInstance) {
         TransitionInstanceFactory transitionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(TransitionInstanceFactory.class);
         ActivityInstanceFactory activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
@@ -100,7 +100,7 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
         executionInstance.setActivity(activityInstance);
     }
 
-    protected RuntimeActivity getRuntimeActivity() {
+    protected PvmActivity getRuntimeActivity() {
         return runtimeActivity;
     }
 

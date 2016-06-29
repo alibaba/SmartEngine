@@ -15,13 +15,12 @@ import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.factory.InstanceFactFactory;
 import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 /**
  * Created by ettear on 16-5-4.
@@ -29,9 +28,9 @@ import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
 public class JoinInvoker implements Invoker {
 
     private ExtensionPointRegistry extensionPointRegistry;
-    private RuntimeActivity        runtimeActivity;
+    private PvmActivity        runtimeActivity;
 
-    public JoinInvoker(ExtensionPointRegistry extensionPointRegistry, RuntimeActivity runtimeActivity) {
+    public JoinInvoker(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         this.extensionPointRegistry = extensionPointRegistry;
         this.runtimeActivity = runtimeActivity;
     }
@@ -65,7 +64,7 @@ public class JoinInvoker implements Invoker {
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
 
         boolean completed = true;
-        for (Map.Entry<String, RuntimeTransition> runtimeTransitionEntry : runtimeActivity.getIncomeTransitions().entrySet()) {
+        for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeActivity.getIncomeTransitions().entrySet()) {
             String transitionId = runtimeTransitionEntry.getKey();
             ExecutionInstance executionInstance = joinExecutionInstance.get(transitionId);
             if (null != executionInstance) {
@@ -78,12 +77,12 @@ public class JoinInvoker implements Invoker {
         }
         if (completed) {
             ExecutionInstanceFactory executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
-            InstanceFactFactory factFactory = this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
+//            InstanceFactFactory factFactory = this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
 
             ExecutionInstance newExecutionInstance = executionInstanceFactory.create();
             newExecutionInstance.setInstanceId(InstanceIdUtils.uuid());
             newExecutionInstance.setProcessInstanceId(processInstance.getInstanceId());
-            newExecutionInstance.setFact(factFactory.create());
+//            newExecutionInstance.setFact(factFactory.create());
             newExecutionInstance.setActivity(activityInstance);
 
             processInstance.addExecution(newExecutionInstance);

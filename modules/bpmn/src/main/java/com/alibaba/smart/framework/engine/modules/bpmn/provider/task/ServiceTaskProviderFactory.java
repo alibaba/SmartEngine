@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 public class ServiceTaskProviderFactory implements ActivityProviderFactory<ServiceTask> {
 
@@ -14,7 +14,7 @@ public class ServiceTaskProviderFactory implements ActivityProviderFactory<Servi
     }
 
     @Override
-    public ServiceTaskProvider createActivityProvider(RuntimeActivity activity) {
+    public ServiceTaskProvider createActivityProvider(PvmActivity activity) {
         return new ServiceTaskProvider(this.extensionPointRegistry, activity);
     }
 

@@ -9,8 +9,8 @@ import java.util.Set;
 import com.alibaba.smart.framework.engine.assembly.Transition;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.process.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.process.session.ExecutionSession;
 import com.alibaba.smart.framework.process.session.util.ThreadLocalExecutionSessionUtil;
@@ -23,15 +23,15 @@ public class ActivityBehaviorUtil {
     public void leaveCurrentActivity() {
 
         ExecutionSession executionSession = ThreadLocalExecutionSessionUtil.get();
-        RuntimeActivity currentRuntimeActivity = executionSession.getCurrentRuntimeActivity();
-        Map<String, RuntimeTransition> outcomeTransitions = currentRuntimeActivity.getOutcomeTransitions();
+        PvmActivity currentRuntimeActivity = executionSession.getCurrentRuntimeActivity();
+        Map<String, PvmTransition> outcomeTransitions = currentRuntimeActivity.getOutcomeTransitions();
 
-        List<RuntimeTransition> toBeChoosenRuntimeTransition = new ArrayList<>();
+        List<PvmTransition> toBeChoosenRuntimeTransition = new ArrayList<>();
 
-        Set<Entry<String, RuntimeTransition>> transitionEntries = outcomeTransitions.entrySet();
+        Set<Entry<String, PvmTransition>> transitionEntries = outcomeTransitions.entrySet();
 
-        for (Entry<String, RuntimeTransition> entry : transitionEntries) {
-            RuntimeTransition runtimeTransition = entry.getValue();
+        for (Entry<String, PvmTransition> entry : transitionEntries) {
+            PvmTransition runtimeTransition = entry.getValue();
 
             Transition transition = runtimeTransition.getModel();
 
@@ -52,8 +52,8 @@ public class ActivityBehaviorUtil {
         }
 
         if (toBeChoosenRuntimeTransition.size() == 1) {
-            RuntimeTransition outgoingRuntimeTransition = toBeChoosenRuntimeTransition.get(0);
-            RuntimeActivity targetRuntimeActivity = outgoingRuntimeTransition.getTarget();
+            PvmTransition outgoingRuntimeTransition = toBeChoosenRuntimeTransition.get(0);
+            PvmActivity targetRuntimeActivity = outgoingRuntimeTransition.getTarget();
 
             ThreadLocalExecutionSessionUtil.get().setCurrentRuntimeActivity(targetRuntimeActivity);
 
@@ -63,8 +63,8 @@ public class ActivityBehaviorUtil {
 
         } else if (toBeChoosenRuntimeTransition.size() > 1) {
             // FIXME 需要支持并行网关
-            RuntimeTransition outgoingRuntimeTransition = toBeChoosenRuntimeTransition.get(0);
-            RuntimeActivity targetRuntimeActivity = outgoingRuntimeTransition.getTarget();
+            PvmTransition outgoingRuntimeTransition = toBeChoosenRuntimeTransition.get(0);
+            PvmActivity targetRuntimeActivity = outgoingRuntimeTransition.getTarget();
 
             ThreadLocalExecutionSessionUtil.get().setCurrentRuntimeActivity(targetRuntimeActivity);
 

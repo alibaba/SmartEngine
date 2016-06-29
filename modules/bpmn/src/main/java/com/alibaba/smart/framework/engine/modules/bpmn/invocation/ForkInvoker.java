@@ -10,39 +10,38 @@ import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.factory.InstanceFactFactory;
 import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
 import com.alibaba.smart.framework.engine.invocation.impl.AbstractTransitionSelectInvoker;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 /**
  * Created by ettear on 16-5-4.
  */
 public class ForkInvoker extends AbstractTransitionSelectInvoker {
 
-    public ForkInvoker(ExtensionPointRegistry extensionPointRegistry, RuntimeActivity runtimeActivity) {
+    public ForkInvoker(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 
     @Override
-    protected List<ExecutionInstance> processExecution(List<RuntimeTransition> transitions,
+    protected List<ExecutionInstance> processExecution(List<PvmTransition> transitions,
                                                        ProcessInstance processInstance,
                                                        ExecutionInstance currentExecutionInstance,
                                                        ActivityInstance currentActivityInstance) {
         ExecutionInstanceFactory executionInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(ExecutionInstanceFactory.class);
-        InstanceFactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
+//        InstanceFactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
 
         currentExecutionInstance.setStatus(InstanceStatus.completed);
         currentExecutionInstance.setCompleteDate(new Date());
         processInstance.removeExecution(currentExecutionInstance.getInstanceId());
 
         List<ExecutionInstance> executions = new ArrayList<>();
-        for (RuntimeTransition transition : transitions) {
+        for (PvmTransition transition : transitions) {
             ExecutionInstance executionInstance = executionInstanceFactory.create();
             executionInstance.setInstanceId(InstanceIdUtils.uuid());
             executionInstance.setProcessInstanceId(processInstance.getInstanceId());
-            executionInstance.setFact(factFactory.create());
+//            executionInstance.setFact(factFactory.create());
             this.buildExecutionInstance(transition, processInstance, executionInstance, currentActivityInstance);
             processInstance.addExecution(executionInstance);
             executions.add(executionInstance);

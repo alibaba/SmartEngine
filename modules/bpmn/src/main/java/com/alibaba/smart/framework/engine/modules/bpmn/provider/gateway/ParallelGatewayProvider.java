@@ -7,11 +7,11 @@ import com.alibaba.smart.framework.engine.modules.bpmn.invocation.ForkInvoker;
 import com.alibaba.smart.framework.engine.modules.bpmn.invocation.JoinInvoker;
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityProvider;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 public class ParallelGatewayProvider extends AbstractBpmnActivityProvider<ParallelGateway> implements ActivityProvider<ParallelGateway> {
 
-    public ParallelGatewayProvider(ExtensionPointRegistry extensionPointRegistry, RuntimeActivity runtimeActivity) {
+    public ParallelGatewayProvider(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 

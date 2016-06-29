@@ -12,23 +12,23 @@ import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Message;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 /**
  * DefaultRuntimeProcessDependency Created by ettear on 16-4-21.
  */
 @Data
-public class DefaultRuntimeProcessDependency implements RuntimeProcess {
+public class DefaultRuntimeProcessDependency implements PvmProcess {
 
-    private RuntimeProcess                 processProxy;
+    private PvmProcess                 processProxy;
     private String                         uri;
     private String                         refUri;
     private String                         refProcessId;
     private String                         refProcessVersion;
-    private Map<String, RuntimeTransition> incomeTransitions  = new ConcurrentHashMap<>();
-    private Map<String, RuntimeTransition> outcomeTransitions = new ConcurrentHashMap<>();
+    private Map<String, PvmTransition> incomeTransitions  = new ConcurrentHashMap<>();
+    private Map<String, PvmTransition> outcomeTransitions = new ConcurrentHashMap<>();
     private ExtensionPointRegistry         extensionPointRegistry;
 
     public DefaultRuntimeProcessDependency(String refUri) {
@@ -56,12 +56,12 @@ public class DefaultRuntimeProcessDependency implements RuntimeProcess {
     }
 
     @Override
-    public Map<String, RuntimeTransition> getIncomeTransitions() {
+    public Map<String, PvmTransition> getIncomeTransitions() {
         return this.incomeTransitions;
     }
 
     @Override
-    public Map<String, RuntimeTransition> getOutcomeTransitions() {
+    public Map<String, PvmTransition> getOutcomeTransitions() {
         return this.outcomeTransitions;
     }
 
@@ -111,7 +111,7 @@ public class DefaultRuntimeProcessDependency implements RuntimeProcess {
     }
 
     @Override
-    public RuntimeActivity getStartActivity() {
+    public PvmActivity getStartActivity() {
         return processProxy.getStartActivity();
     }
 }

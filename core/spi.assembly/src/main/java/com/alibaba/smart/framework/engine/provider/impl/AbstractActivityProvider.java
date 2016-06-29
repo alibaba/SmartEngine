@@ -4,16 +4,16 @@ import com.alibaba.smart.framework.engine.assembly.Activity;
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**
  * 抽象Activity Provider实现 Created by ettear on 16-4-20. TODO 职责略不清晰
  */
 public class AbstractActivityProvider<T extends Activity> implements ActivityProvider<T> {
 
-    private RuntimeActivity runtimeActivity;
+    private PvmActivity runtimeActivity;
 
-    public AbstractActivityProvider(RuntimeActivity runtimeActivity) {
+    public AbstractActivityProvider(PvmActivity runtimeActivity) {
         this.runtimeActivity = runtimeActivity;
     }
 
@@ -62,7 +62,7 @@ public class AbstractActivityProvider<T extends Activity> implements ActivityPro
         return null;
     }
 
-    protected RuntimeActivity getRuntimeActivity() {
+    protected PvmActivity getRuntimeActivity() {
         return runtimeActivity;
     }
 }

@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.runtime;
+package com.alibaba.smart.framework.engine.pvm;
 
 import java.util.Map;
 
@@ -9,11 +9,11 @@ import com.alibaba.smart.framework.engine.invocation.Message;
 /**
  * RuntimeActivity Created by ettear on 16-4-11.
  */
-public interface RuntimeActivity extends RuntimeInvocable<Activity> {
+public interface PvmActivity extends PvmInvocable<Activity> {
 
-    Map<String, RuntimeTransition> getIncomeTransitions();
+    Map<String, PvmTransition> getIncomeTransitions();
 
-    Map<String, RuntimeTransition> getOutcomeTransitions();
+    Map<String, PvmTransition> getOutcomeTransitions();
 
     Message execute(InstanceContext context);
 

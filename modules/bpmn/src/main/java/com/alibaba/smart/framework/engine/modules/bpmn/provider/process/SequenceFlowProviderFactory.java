@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.process;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 public class SequenceFlowProviderFactory implements TransitionProviderFactory<SequenceFlow> {
 
@@ -14,7 +14,7 @@ public class SequenceFlowProviderFactory implements TransitionProviderFactory<Se
     }
 
     @Override
-    public SequenceFlowProvider createTransitionProvider(RuntimeTransition runtimeTransition) {
+    public SequenceFlowProvider createTransitionProvider(PvmTransition runtimeTransition) {
         return new SequenceFlowProvider(this.extensionPointRegistry, runtimeTransition);
     }
 

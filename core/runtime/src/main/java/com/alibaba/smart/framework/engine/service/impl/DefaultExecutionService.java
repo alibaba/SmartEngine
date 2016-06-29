@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.instance.manager.impl;
+package com.alibaba.smart.framework.engine.service.impl;
 
 import java.util.Map;
 
@@ -11,21 +11,21 @@ import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.instance.manager.ExecutionManager;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.service.ExecutionService;
 
 /**
  * Created by ettear on 16-4-19.
  */
-public class DefaultExecutionManager implements ExecutionManager, LifeCycleListener {
+public class DefaultExecutionService implements ExecutionService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
     private ProcessContainer       processContainer;
     private ProcessInstanceStorage processInstanceStorage;
     private InstanceContextFactory instanceContextFactory;
 
-    public DefaultExecutionManager(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultExecutionService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 
@@ -45,7 +45,7 @@ public class DefaultExecutionManager implements ExecutionManager, LifeCycleListe
     public ProcessInstance signal(String processInstanceId, String executionInstanceId, Map<String, Object> variables) {
         ProcessInstance processInstance = this.processInstanceStorage.find(processInstanceId);
         if (null != processInstance) {
-            RuntimeProcess runtimeProcess = this.processContainer.get(processInstance.getProcessUri());
+            PvmProcess runtimeProcess = this.processContainer.get(processInstance.getProcessUri());
             InstanceContext instanceContext = this.instanceContextFactory.create();
             instanceContext.setProcessInstance(processInstance);
             ExecutionInstance currentExecutionInstance = null;

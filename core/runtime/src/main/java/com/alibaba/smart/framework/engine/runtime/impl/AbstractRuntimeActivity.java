@@ -13,18 +13,18 @@ import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
-import com.alibaba.smart.framework.engine.runtime.RuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.RuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 /**
  * Created by ettear on 16-4-21.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class AbstractRuntimeActivity<M extends Activity> extends AbstractRuntimeInvocable<Activity> implements RuntimeActivity {
+public abstract class AbstractRuntimeActivity<M extends Activity> extends AbstractRuntimeInvocable<Activity> implements PvmActivity {
 
-    private Map<String, RuntimeTransition> incomeTransitions  = new ConcurrentHashMap<>();
-    private Map<String, RuntimeTransition> outcomeTransitions = new ConcurrentHashMap<>();
+    private Map<String, PvmTransition> incomeTransitions  = new ConcurrentHashMap<>();
+    private Map<String, PvmTransition> outcomeTransitions = new ConcurrentHashMap<>();
 
     @Override
     public Message execute(InstanceContext context) {
@@ -68,11 +68,11 @@ public abstract class AbstractRuntimeActivity<M extends Activity> extends Abstra
     }
 
     // Getter & Setter
-    public void addIncomeTransition(String transitionId, RuntimeTransition income) {
+    public void addIncomeTransition(String transitionId, PvmTransition income) {
         this.incomeTransitions.put(transitionId, income);
     }
 
-    public void addOutcomeTransition(String transitionId, RuntimeTransition outcome) {
+    public void addOutcomeTransition(String transitionId, PvmTransition outcome) {
         this.outcomeTransitions.put(transitionId, outcome);
     }
 }

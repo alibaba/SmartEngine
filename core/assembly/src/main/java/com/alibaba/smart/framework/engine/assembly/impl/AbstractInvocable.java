@@ -1,11 +1,11 @@
 package com.alibaba.smart.framework.engine.assembly.impl;
 
-import com.alibaba.smart.framework.engine.assembly.Invocable;
+import com.alibaba.smart.framework.engine.assembly.Indentity;
 
 /**
  * Abstract Executor Created by ettear on 16-4-13.
  */
-public abstract class AbstractInvocable extends AbstractBase implements Invocable {
+public abstract class AbstractInvocable extends AbstractBase implements Indentity {
 
     private static final long serialVersionUID = -994693481561308817L;
     private String id;

@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.Base;
+import com.alibaba.smart.framework.engine.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.assembly.parser.impl.AbstractStAXArtifactParser;
@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 /**
  * Created by ettear on 16-4-29.
  */
-public abstract class AbstractBpmnParser<M extends Base> extends AbstractStAXArtifactParser<M> {
+public abstract class AbstractBpmnParser<M extends BaseElement> extends AbstractStAXArtifactParser<M> {
 
     public AbstractBpmnParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -22,11 +22,11 @@ public abstract class AbstractBpmnParser<M extends Base> extends AbstractStAXArt
                                                                                        XMLStreamException {
         while (this.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
-            if (element instanceof Base) {
-                this.parseChild(model, (Base) element);
+            if (element instanceof BaseElement) {
+                this.parseChild(model, (BaseElement) element);
             }
         }
     }
 
-    protected abstract void parseChild(M model, Base child);
+    protected abstract void parseChild(M model, BaseElement child);
 }

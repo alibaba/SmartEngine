@@ -4,16 +4,16 @@ import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
-import com.alibaba.smart.framework.engine.runtime.RuntimeProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 
 /**
  * 抽象Process Provider实现 Created by ettear on 16-4-20.
  */
 public class AbstractProcessProvider<T extends Process> implements ActivityProvider<T> {
 
-    private RuntimeProcess runtimeProcess;
+    private PvmProcess runtimeProcess;
 
-    public AbstractProcessProvider(RuntimeProcess runtimeProcess) {
+    public AbstractProcessProvider(PvmProcess runtimeProcess) {
         this.runtimeProcess = runtimeProcess;
     }
 
@@ -50,7 +50,7 @@ public class AbstractProcessProvider<T extends Process> implements ActivityProvi
         return null;
     }
 
-    protected RuntimeProcess getRuntimeProcess() {
+    protected PvmProcess getRuntimeProcess() {
         return runtimeProcess;
     }
 }
