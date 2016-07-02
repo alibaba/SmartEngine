@@ -1,12 +1,12 @@
 package com.alibaba.smart.framework.process.behavior.task;
 
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
+import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
+import com.alibaba.smart.framework.engine.model.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.ProcessInstance;
 import com.alibaba.smart.framework.process.behavior.AbstractActivityBehavior;
 import com.alibaba.smart.framework.process.context.ProcessContext;
 import com.alibaba.smart.framework.process.context.ProcessContextHolder;
@@ -33,14 +33,14 @@ public class UserTaskBehavior extends AbstractActivityBehavior {
         ExecutionInstanceFactory executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
 
         ExecutionInstance executionInstance = executionInstanceFactory.create();
-        executionInstance.setInstanceId(InstanceIdUtils.uuid());
+        executionInstance.setInstanceId(InstanceIdUtil.uuid());
         executionInstance.setProcessInstanceId(processInstance.getInstanceId());
         processInstance.addExecution(executionInstance);// 执行实例添加到流程实例
 
         ActivityInstance activityInstance = activityInstanceFactory.create();
 
         // TODO 对数据库索引的友好,增加activityInstance,execution 不变
-        activityInstance.setInstanceId(InstanceIdUtils.uuid());
+        activityInstance.setInstanceId(InstanceIdUtil.uuid());
 
         // TODO 考虑删除,在持久层最终完成赋值,因为之间已经有关联关系了
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());

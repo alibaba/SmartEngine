@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.instance.utils;
+package com.alibaba.smart.framework.engine.instance.util;
 
 import java.io.Closeable;
 import java.io.IOException;

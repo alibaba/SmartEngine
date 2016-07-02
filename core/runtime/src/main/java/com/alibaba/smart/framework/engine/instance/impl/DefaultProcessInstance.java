@@ -8,9 +8,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.ProcessInstance;
 
 /**
  * Default Process Instance Created by ettear on 16-4-12.

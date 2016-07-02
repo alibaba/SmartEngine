@@ -11,15 +11,15 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.assembly.Activity;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
-import com.alibaba.smart.framework.engine.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.instance.InstanceStatus;
-import com.alibaba.smart.framework.engine.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultActivityTransitionSelectInvoker;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
+import com.alibaba.smart.framework.engine.model.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.InstanceStatus;
+import com.alibaba.smart.framework.engine.model.TaskInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**

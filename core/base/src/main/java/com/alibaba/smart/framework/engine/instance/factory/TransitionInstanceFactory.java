@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.factory;
 
-import com.alibaba.smart.framework.engine.instance.TransitionInstance;
+import com.alibaba.smart.framework.engine.model.TransitionInstance;
 
 /**
  * 关联实例工 Created by ettear on 16-4-20.

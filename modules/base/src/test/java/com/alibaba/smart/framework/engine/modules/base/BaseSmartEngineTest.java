@@ -6,7 +6,7 @@ import org.junit.Test;
 import com.alibaba.smart.framework.engine.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
@@ -19,7 +19,7 @@ public class BaseSmartEngineTest {
     @Test
     public void test() throws Exception {
         DefaultSmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.start();
+        smartEngine.init();
 
         ExtensionPointRegistry extensionPointRegistry = smartEngine.getExtensionPointRegistry();
         ProcessContainer processContainer = extensionPointRegistry.getExtensionPoint(ProcessContainer.class);

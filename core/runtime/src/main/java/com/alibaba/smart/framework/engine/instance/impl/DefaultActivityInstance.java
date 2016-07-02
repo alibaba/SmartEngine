@@ -6,9 +6,9 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.instance.TransitionInstance;
+import com.alibaba.smart.framework.engine.model.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.TaskInstance;
+import com.alibaba.smart.framework.engine.model.TransitionInstance;
 
 /**
  * 默认活动实例 Created by ettear on 16-4-19.

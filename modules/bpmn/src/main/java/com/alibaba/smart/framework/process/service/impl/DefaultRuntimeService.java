@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.process.service.impl;
 
-import com.alibaba.smart.framework.engine.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 import com.alibaba.smart.framework.process.behavior.ActivityBehavior;

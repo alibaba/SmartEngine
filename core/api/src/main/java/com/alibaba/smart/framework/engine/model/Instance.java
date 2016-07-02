@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.instance;
+package com.alibaba.smart.framework.engine.model;
 
 import java.io.Serializable;
 

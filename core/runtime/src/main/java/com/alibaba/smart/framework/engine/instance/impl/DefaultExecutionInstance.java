@@ -3,8 +3,8 @@ package com.alibaba.smart.framework.engine.instance.impl;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.ExecutionInstance;
 
 /**
  * DefaultExecutionInstance Created by ettear on 16-4-19.

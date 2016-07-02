@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.storage;
 
-import com.alibaba.smart.framework.engine.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.ProcessInstance;
 
 /**
  * 流程实例存储 Created by ettear on 16-4-13.

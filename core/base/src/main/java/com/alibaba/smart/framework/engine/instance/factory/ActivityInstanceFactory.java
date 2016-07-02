@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.factory;
 
-import com.alibaba.smart.framework.engine.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.ActivityInstance;
 
 /**
  * 活动实例工厂 Created by ettear on 16-4-20.

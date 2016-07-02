@@ -2,11 +2,8 @@ package com.alibaba.smart.framework.engine.service;
 
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-
-/**
- * Created by ettear on 16-4-19.
- */
+import com.alibaba.smart.framework.engine.model.ProcessInstance;
+ 
 public interface ExecutionService {
 
 

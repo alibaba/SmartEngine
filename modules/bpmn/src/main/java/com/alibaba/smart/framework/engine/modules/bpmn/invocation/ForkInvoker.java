@@ -5,13 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.instance.InstanceStatus;
-import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
+import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
 import com.alibaba.smart.framework.engine.invocation.impl.AbstractTransitionSelectInvoker;
+import com.alibaba.smart.framework.engine.model.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.InstanceStatus;
+import com.alibaba.smart.framework.engine.model.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
@@ -39,7 +39,7 @@ public class ForkInvoker extends AbstractTransitionSelectInvoker {
         List<ExecutionInstance> executions = new ArrayList<>();
         for (PvmTransition transition : transitions) {
             ExecutionInstance executionInstance = executionInstanceFactory.create();
-            executionInstance.setInstanceId(InstanceIdUtils.uuid());
+            executionInstance.setInstanceId(InstanceIdUtil.uuid());
             executionInstance.setProcessInstanceId(processInstance.getInstanceId());
 //            executionInstance.setFact(factFactory.create());
             this.buildExecutionInstance(transition, processInstance, executionInstance, currentActivityInstance);

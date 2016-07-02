@@ -1,3 +1,4 @@
+package com.alibaba.smart.framework.engine.model;
 //package com.alibaba.smart.framework.engine.instance;
 //
 //import java.util.Map;

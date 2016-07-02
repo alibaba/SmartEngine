@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.factory;
 
-import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.ExecutionInstance;
 
 /**
  * 执行实例工厂 Created by ettear on 16-4-20.

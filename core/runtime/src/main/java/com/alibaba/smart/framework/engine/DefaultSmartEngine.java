@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.extensibility.ClassLoaderExtensionPoin
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
 import com.alibaba.smart.framework.engine.extensibility.impl.DefaultExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.service.ExecutionService;
 import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
@@ -25,20 +26,8 @@ public class DefaultSmartEngine implements SmartEngine {
     private ExtensionPointRegistry   extensionPointRegistry;
     private Map<String, ClassLoader> classLoaders   = new ConcurrentHashMap<>();
 
-    public DefaultSmartEngine() throws EngineException {
-        this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
-        ClassLoader classLoader = DefaultSmartEngine.class.getClassLoader();
-        this.install(DEFAULT_MODULE, classLoader);
-    }
-
-    @Override
-    public void install() {
-        install(DEFAULT_MODULE,DefaultSmartEngine.class.getClassLoader());
-    }
     
-    
-    @Override
-    public void install(String moduleName, ClassLoader classLoader) throws EngineException {
+    private void install(String moduleName, ClassLoader classLoader) throws EngineException {
         if (StringUtils.isBlank(moduleName)) {
             moduleName = DEFAULT_MODULE;
         }
@@ -62,12 +51,15 @@ public class DefaultSmartEngine implements SmartEngine {
     }
 
     @Override
-    public void start() {
+    public void init() {
+        this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
+        ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
+        this.install(DEFAULT_MODULE, classLoader);
         this.extensionPointRegistry.start();
     }
 
     @Override
-    public void stop() {
+    public void destory() {
         this.extensionPointRegistry.stop();
     }
 

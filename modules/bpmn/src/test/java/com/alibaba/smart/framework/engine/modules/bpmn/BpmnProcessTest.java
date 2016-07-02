@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.alibaba.smart.framework.engine.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
@@ -22,7 +22,7 @@ public class BpmnProcessTest {
     @Test
     public void testExclusive() throws Exception {
         DefaultSmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.start();
+        smartEngine.init();
 
         ExtensionPointRegistry extensionPointRegistry = smartEngine.getExtensionPointRegistry();
         ProcessContainer processContainer = extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
@@ -36,13 +36,14 @@ public class BpmnProcessTest {
         ProcessService processManager = smartEngine.getProcessManager();
         Map<String, Object> variables = new HashMap<>();
         variables.put("input", 2);
-        ProcessInstance instance = processManager.start("test-exclusive", "1.0.0", variables);
+        ProcessInstance processInstance = processManager.start("test-exclusive", "1.0.0", variables);
+        Assert.assertNotNull(processInstance);
     }
 
     @Test
     public void testParallel() throws Exception {
         DefaultSmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.start();
+        smartEngine.init();
 
         ExtensionPointRegistry extensionPointRegistry = smartEngine.getExtensionPointRegistry();
         ProcessContainer processContainer = extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
@@ -55,6 +56,8 @@ public class BpmnProcessTest {
 
         ProcessService processManager = smartEngine.getProcessManager();
         Map<String, Object> variables = new HashMap<>();
-        ProcessInstance instance = processManager.start("test-parallel", "1.0.0", variables);
+        ProcessInstance processInstance = processManager.start("test-parallel", "1.0.0", variables);
+        Assert.assertNotNull(processInstance);
+
     }
 }

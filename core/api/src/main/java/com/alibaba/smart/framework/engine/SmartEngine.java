@@ -5,27 +5,11 @@ import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
 import com.alibaba.smart.framework.engine.service.TaskService;
 
+
 /**
- * Smart Engine Created by ettear on 16-4-12.
+ * @author 高海军 帝奇 
  */
 public interface SmartEngine {
-
-    void install()  ;
-
-    
-    void install(String moduleName, ClassLoader classLoader)  ;
-
-    /**
-     * This method will be invoked when started.
-     */
-    void start();
-
-    /**
-     * This method will be invoked when stopped
-     */
-    void stop();
-
-    ClassLoader getClassLoader(String moduleName);
 
     RepositoryService getRepositoryService();
 
@@ -34,4 +18,10 @@ public interface SmartEngine {
     ExecutionService getExecutionManager();
 
     TaskService getTaskManager();
+ 
+    void init();
+
+    void destory();
+
+    ClassLoader getClassLoader(String moduleName);
 }

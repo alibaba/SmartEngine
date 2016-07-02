@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.smart.framework.engine.extensibility.ClassLoaderExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
-import com.alibaba.smart.framework.engine.instance.utils.IOUtil;
+import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 
 /**
  * 配置文件扩展点 Created by ettear on 16-4-12.

@@ -1,10 +1,10 @@
 package com.alibaba.smart.framework.process.behavior.gateway;
 
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
+import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
+import com.alibaba.smart.framework.engine.model.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.ProcessInstance;
 import com.alibaba.smart.framework.process.behavior.AbstractActivityBehavior;
 import com.alibaba.smart.framework.process.context.ProcessContext;
 import com.alibaba.smart.framework.process.context.ProcessContextHolder;
@@ -25,7 +25,7 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior {
         ActivityInstance activityInstance = activityInstanceFactory.create();
 
         // TODO 对数据库索引的友好,增加activityInstance,execution 不变
-        activityInstance.setInstanceId(InstanceIdUtils.uuid());
+        activityInstance.setInstanceId(InstanceIdUtil.uuid());
 
         ProcessInstance processInstance = executionSession.getProcessInstance();
 

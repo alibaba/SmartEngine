@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.instance;
+package com.alibaba.smart.framework.engine.model;
 
 /**
  * 执行实例 Created by ettear on 16-4-18.

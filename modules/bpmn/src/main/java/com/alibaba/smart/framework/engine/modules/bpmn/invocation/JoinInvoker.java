@@ -8,17 +8,17 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.instance.InstanceStatus;
-import com.alibaba.smart.framework.engine.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.utils.InstanceIdUtils;
+import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
+import com.alibaba.smart.framework.engine.model.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.InstanceStatus;
+import com.alibaba.smart.framework.engine.model.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.TransitionInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
@@ -80,7 +80,7 @@ public class JoinInvoker implements Invoker {
 //            InstanceFactFactory factFactory = this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
 
             ExecutionInstance newExecutionInstance = executionInstanceFactory.create();
-            newExecutionInstance.setInstanceId(InstanceIdUtils.uuid());
+            newExecutionInstance.setInstanceId(InstanceIdUtil.uuid());
             newExecutionInstance.setProcessInstanceId(processInstance.getInstanceId());
 //            newExecutionInstance.setFact(factFactory.create());
             newExecutionInstance.setActivity(activityInstance);
