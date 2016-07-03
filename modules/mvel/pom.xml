@@ -8,7 +8,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>engine.modules.mvel</artifactId>
+	<artifactId>engine.modules.script.mvel</artifactId>
 	<name>Smart Engine Modules - MVEL</name>
 	<dependencies>
 		<dependency>

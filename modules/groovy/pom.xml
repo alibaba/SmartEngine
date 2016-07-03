@@ -8,7 +8,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>engine.modules.groovy</artifactId>
+	<artifactId>engine.modules.script.groovy</artifactId>
 	<name>Smart Engine Modules - Groovy</name>
 	<dependencies>
 		<dependency>

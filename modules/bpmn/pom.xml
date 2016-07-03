@@ -25,14 +25,14 @@
 
 		<dependency>
 			<groupId>${pom.groupId}</groupId>
-			<artifactId>engine.modules.mvel</artifactId>
+			<artifactId>engine.modules.script.mvel</artifactId>
 			<version>${pom.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>${pom.groupId}</groupId>
-			<artifactId>engine.modules.groovy</artifactId>
+			<artifactId>engine.modules.script.groovy</artifactId>
 			<version>${pom.version}</version>
 			<scope>test</scope>
 		</dependency>

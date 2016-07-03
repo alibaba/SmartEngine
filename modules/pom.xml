@@ -15,8 +15,8 @@
 	<modules>
 		<module>common</module>
 		<module>bpmn</module>
-		<module>mvel</module>
-		<module>groovy</module>
+		<module>script.mvel</module>
+		<module>script.groovy</module>
 		<module>storage.memory</module>
 		<module>storage.database</module>
 	</modules>

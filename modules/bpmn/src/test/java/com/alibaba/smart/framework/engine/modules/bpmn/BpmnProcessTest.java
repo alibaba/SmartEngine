@@ -19,18 +19,10 @@ public class BpmnProcessTest {
 		DefaultSmartEngine smartEngine = new DefaultSmartEngine();
 		smartEngine.init();
 
-		// ExtensionPointRegistry extensionPointRegistry =
-		// smartEngine.getExtensionPointRegistry();
-		// ProcessContainer processContainer =
-		// extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
-
 		RepositoryService repositoryService = smartEngine
 				.getRepositoryService();
 		ProcessDefinition processDefinition = repositoryService
 				.deploy("test-exclusive.bpmn20.xml");
-
-		// PvmProcess process = processContainer.get("test-exclusive", "1.0.0");
-		// Assert.assertNotNull(process);
 
 		ProcessService processService = smartEngine.getProcessService();
 		Map<String, Object> variables = new HashMap<>();
@@ -51,9 +43,9 @@ public class BpmnProcessTest {
 		ProcessDefinition processDefinition = repositoryService
 				.deploy("test-parallel.bpmn20.xml");
 
-		ProcessService processManager = smartEngine.getProcessService();
+		ProcessService processService = smartEngine.getProcessService();
 		Map<String, Object> variables = new HashMap<>();
-		ProcessInstance processInstance = processManager.start(
+		ProcessInstance processInstance = processService.start(
 				processDefinition.getId(), processDefinition.getVersion(),
 				variables);
 		Assert.assertNotNull(processInstance);

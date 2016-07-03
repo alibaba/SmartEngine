@@ -1,9 +1,7 @@
 package com.alibaba.smart.framework.engine.model.artifact;
 
-/**
- * 可执行元素 Created by ettear on 16-4-11.
- */
-public interface Indentity extends BaseElement {
+
+public interface IndentityElement extends BaseElement {
 
     /**
      * 获取元素ID

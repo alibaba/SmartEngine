@@ -3,12 +3,12 @@ package com.alibaba.smart.framework.engine.pvm;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.invocation.Message;
-import com.alibaba.smart.framework.engine.model.artifact.Indentity;
+import com.alibaba.smart.framework.engine.model.artifact.IndentityElement;
 
 /**
  * 运行时Invocable Created by ettear on 16-4-14.
  */
-public interface PvmInvocable<M extends Indentity> extends LifeCycleListener {
+public interface PvmInvocable<M extends IndentityElement> extends LifeCycleListener {
 
     String getId();
 
