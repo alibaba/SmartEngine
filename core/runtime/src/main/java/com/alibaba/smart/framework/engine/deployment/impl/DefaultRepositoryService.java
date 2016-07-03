@@ -32,15 +32,15 @@ import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
+import com.alibaba.smart.framework.engine.pvm.ProviderRuntimeInvocable;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.runtime.ProviderRuntimeInvocable;
-import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeActivity;
-import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcess;
-import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcessComponent;
-import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeActivity;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcess;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcessComponent;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeTransition;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
 /**
  * 默认部署器 Created by ettear on 16-4-13.
