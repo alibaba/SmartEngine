@@ -1,10 +1,10 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
-import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.model.artifact.Process;
 
 /**
  * 抽象Process Provider实现 Created by ettear on 16-4-20.

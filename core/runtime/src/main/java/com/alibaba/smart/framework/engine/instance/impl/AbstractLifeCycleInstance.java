@@ -5,8 +5,8 @@ import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.model.InstanceStatus;
-import com.alibaba.smart.framework.engine.model.LifeCycleInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
+import com.alibaba.smart.framework.engine.model.instance.LifeCycleInstance;
 
 /**
  * 抽象实例 Created by ettear on 16-4-19.

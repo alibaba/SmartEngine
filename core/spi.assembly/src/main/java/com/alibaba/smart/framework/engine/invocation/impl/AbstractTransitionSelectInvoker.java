@@ -12,11 +12,11 @@ import com.alibaba.smart.framework.engine.instance.factory.TransitionInstanceFac
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
-import com.alibaba.smart.framework.engine.model.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.InstanceStatus;
-import com.alibaba.smart.framework.engine.model.ProcessInstance;
-import com.alibaba.smart.framework.engine.model.TransitionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 

@@ -12,6 +12,8 @@ import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
 /**
  * 默认Provider工厂扩展点 Created by ettear on 16-4-12.
  */
+@SuppressWarnings("rawtypes")
+
 public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExtensionPoint implements ProviderFactoryExtensionPoint {
 
     /**

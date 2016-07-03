@@ -14,7 +14,6 @@
 
 	<modules>
 		<module>common</module>
-		<module>base</module>
 		<module>bpmn</module>
 		<module>mvel</module>
 		<module>groovy</module>

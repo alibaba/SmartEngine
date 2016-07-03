@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.provider;
 
-import com.alibaba.smart.framework.engine.assembly.Transition;
+import com.alibaba.smart.framework.engine.model.artifact.Transition;
 
 /**
  * Created by ettear on 16-4-11.

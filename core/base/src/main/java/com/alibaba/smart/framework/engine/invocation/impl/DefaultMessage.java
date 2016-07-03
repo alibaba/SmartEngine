@@ -13,4 +13,5 @@ public class DefaultMessage implements Message {
     private Object  body;
     private boolean fault;
     private boolean suspend;
+    
 }

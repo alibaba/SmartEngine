@@ -11,4 +11,11 @@
 	<artifactId>engine.core.assembly</artifactId>
 	<name>Smart Engine Core - Assembly</name>
 
+	<dependencies>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>engine.core.api</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+	</dependencies>
 </project>

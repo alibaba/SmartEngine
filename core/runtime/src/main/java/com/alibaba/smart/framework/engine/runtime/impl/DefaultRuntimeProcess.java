@@ -7,7 +7,6 @@ import java.util.Map;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
@@ -17,11 +16,12 @@ import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorag
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
-import com.alibaba.smart.framework.engine.model.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.InstanceStatus;
-import com.alibaba.smart.framework.engine.model.ProcessInstance;
-import com.alibaba.smart.framework.engine.model.TransitionInstance;
+import com.alibaba.smart.framework.engine.model.artifact.Process;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;

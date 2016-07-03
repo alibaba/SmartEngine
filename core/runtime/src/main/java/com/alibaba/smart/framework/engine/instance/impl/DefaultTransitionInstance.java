@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.instance.impl;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.model.TransitionInstance;
+import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 
 /**
  * 默认关联实例 Created by ettear on 16-4-19.

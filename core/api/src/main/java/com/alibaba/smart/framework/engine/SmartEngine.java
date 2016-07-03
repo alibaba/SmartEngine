@@ -13,11 +13,11 @@ public interface SmartEngine {
 
     RepositoryService getRepositoryService();
 
-    ProcessService getProcessManager();
+    ProcessService getProcessService();
 
-    ExecutionService getExecutionManager();
+    ExecutionService getExecutionService();
 
-    TaskService getTaskManager();
+    TaskService getTaskService();
  
     void init();
 

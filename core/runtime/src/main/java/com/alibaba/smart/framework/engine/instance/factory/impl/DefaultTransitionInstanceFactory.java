@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.instance.factory.impl;
 import com.alibaba.smart.framework.engine.instance.factory.TransitionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTransitionInstance;
 import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
-import com.alibaba.smart.framework.engine.model.TransitionInstance;
+import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 
 /**
  * 默认关联实例工厂实现 Created by ettear on 16-4-20.

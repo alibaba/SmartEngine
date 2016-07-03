@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.instance.factory.impl;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
 import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
-import com.alibaba.smart.framework.engine.model.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 
 /**
  * 默认活动实例工厂实现 Created by ettear on 16-4-20.

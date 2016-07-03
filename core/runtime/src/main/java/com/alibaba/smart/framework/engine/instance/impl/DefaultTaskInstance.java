@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.instance.impl;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.model.TaskInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 
 /**
  * 默认任务实例 Created by ettear on 16-4-20.

@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.assembly;
 
+import com.alibaba.smart.framework.engine.model.artifact.BaseElement;
+
 /**
  * Handler Created by ettear on 16-4-29.
  */

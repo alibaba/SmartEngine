@@ -6,13 +6,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.assembly.Activity;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
-import com.alibaba.smart.framework.engine.model.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.InstanceStatus;
+import com.alibaba.smart.framework.engine.model.artifact.Activity;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 

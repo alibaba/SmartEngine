@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.alibaba.smart.framework.engine.assembly.Handler;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.HandlerProviderExtensionPoint;
 import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
@@ -14,6 +15,8 @@ import com.alibaba.smart.framework.engine.provider.HandlerProvider;
 /**
  * DefaultHandlerProviderExtensionPoint Created by ettear on 16-4-29.
  */
+@SuppressWarnings("rawtypes")
+
 public class DefaultHandlerProviderExtensionPoint extends AbstractPropertiesExtensionPoint implements HandlerProviderExtensionPoint {
 
     private Map<Class, HandlerProvider> providers = new ConcurrentHashMap<>();
@@ -22,12 +25,13 @@ public class DefaultHandlerProviderExtensionPoint extends AbstractPropertiesExte
         super(extensionPointRegistry);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Invoker createInvoker(Handler handler) {
         if (null != this.providers.get(handler.getClass())) {
             return this.providers.get(handler.getClass()).createInvoker(handler);
         } else {
-            return null;
+            throw new EngineException("No invoker found for "+handler.getClass());
         }
     }
 

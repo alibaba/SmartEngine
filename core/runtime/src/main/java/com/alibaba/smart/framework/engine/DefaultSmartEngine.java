@@ -77,17 +77,17 @@ public class DefaultSmartEngine implements SmartEngine {
     }
 
     @Override
-    public ProcessService getProcessManager() {
+    public ProcessService getProcessService() {
         return this.extensionPointRegistry.getExtensionPoint(ProcessService.class);
     }
 
     @Override
-    public ExecutionService getExecutionManager() {
+    public ExecutionService getExecutionService() {
         return this.extensionPointRegistry.getExtensionPoint(ExecutionService.class);
     }
 
     @Override
-    public TaskService getTaskManager() {
+    public TaskService getTaskService() {
         return this.extensionPointRegistry.getExtensionPoint(TaskService.class);
     }
 

@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.provider.factory;
 
-import com.alibaba.smart.framework.engine.assembly.Transition;
+import com.alibaba.smart.framework.engine.model.artifact.Transition;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 

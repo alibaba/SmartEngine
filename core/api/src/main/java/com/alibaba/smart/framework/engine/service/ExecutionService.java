@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.service;
 
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.model.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
  
 public interface ExecutionService {
 

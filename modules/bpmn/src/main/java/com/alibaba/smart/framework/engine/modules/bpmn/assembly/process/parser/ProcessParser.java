@@ -7,12 +7,12 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.assembly.parser.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.artifact.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Process;
 
 public class ProcessParser extends AbstractStAXArtifactParser<Process> implements StAXArtifactParser<Process> {

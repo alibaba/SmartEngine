@@ -15,11 +15,6 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.assembly.Activity;
-import com.alibaba.smart.framework.engine.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.assembly.Process;
-import com.alibaba.smart.framework.engine.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.assembly.Transition;
 import com.alibaba.smart.framework.engine.assembly.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
@@ -27,6 +22,11 @@ import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.artifact.Activity;
+import com.alibaba.smart.framework.engine.model.artifact.BaseElement;
+import com.alibaba.smart.framework.engine.model.artifact.Process;
+import com.alibaba.smart.framework.engine.model.artifact.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.artifact.Transition;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
@@ -42,7 +42,6 @@ import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcess;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeProcessComponent;
 import com.alibaba.smart.framework.engine.runtime.impl.DefaultRuntimeTransition;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
-
 /**
  * 默认部署器 Created by ettear on 16-4-13.
  */
@@ -62,12 +61,12 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
     }
 
     @Override
-    public void deploy(String uri) throws DeployException {
-        this.deploy(null, uri);
+    public ProcessDefinition deploy(String uri) throws DeployException {
+     return   this.deploy(null, uri);
     }
 
     @Override
-    public void deploy(String moduleName, String uri) throws DeployException {
+    public ProcessDefinition deploy(String moduleName, String uri) throws DeployException {
         ClassLoader classLoader = this.smartEngine.getClassLoader(moduleName);// Find class loader
         if (null == classLoader) {
             throw new DeployException("Module[" + moduleName + "] not found!");
@@ -78,6 +77,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
         if (null == runtimeProcessComponent) {
             throw new DeployException("Deploy " + uri + " failure!");
         }
+        return definition;
     }
 
     @Override

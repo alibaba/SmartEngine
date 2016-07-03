@@ -5,12 +5,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import lombok.Data;
 
-import com.alibaba.smart.framework.engine.assembly.Indentity;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DoNothingInvoker;
+import com.alibaba.smart.framework.engine.model.artifact.Indentity;
 import com.alibaba.smart.framework.engine.provider.InvocableProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmInvocable;
 import com.alibaba.smart.framework.engine.runtime.ProviderRuntimeInvocable;

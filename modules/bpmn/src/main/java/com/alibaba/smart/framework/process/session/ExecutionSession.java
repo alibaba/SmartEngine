@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import lombok.Data;
 
-import com.alibaba.smart.framework.engine.model.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.process.model.runtime.command.Command;
 

@@ -7,7 +7,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.assembly.parser.ArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
@@ -15,6 +14,7 @@ import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseExcepti
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ResolveException;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.artifact.BaseElement;
 
 /**
  * Abstract StAXArtifactParser Created by ettear on 16-4-14.

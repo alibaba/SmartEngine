@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.common.assembly;
 
-import com.alibaba.smart.framework.engine.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.artifact.BaseElement;
 
 /**
  * Created by ettear on 16-4-12.

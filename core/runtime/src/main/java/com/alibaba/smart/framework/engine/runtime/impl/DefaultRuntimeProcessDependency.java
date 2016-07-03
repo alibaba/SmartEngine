@@ -7,7 +7,6 @@ import lombok.Data;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.alibaba.smart.framework.engine.assembly.Process;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
@@ -15,6 +14,7 @@ import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.model.artifact.Process;
 
 /**
  * DefaultRuntimeProcessDependency Created by ettear on 16-4-21.
