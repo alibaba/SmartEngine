@@ -14,6 +14,10 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.Extens
 @EqualsAndHashCode(callSuper = true)
 public abstract class AbstractBpmnActivity extends AbstractActivity {
 
-    private Handler           handler;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7534945759362054449L;
+	private Handler           handler;
     private ExtensionElements extensions;
 }

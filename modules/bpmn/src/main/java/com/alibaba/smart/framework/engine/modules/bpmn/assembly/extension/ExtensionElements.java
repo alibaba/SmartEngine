@@ -15,6 +15,10 @@ import com.alibaba.smart.framework.engine.modules.common.assembly.Extensions;
 @Data
 public class ExtensionElements extends Extensions {
 
-    public final static QName type = new QName(BpmnBase.NAME_SPACE, "extensionElements");
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5080932640599337544L;
+	public final static QName type = new QName(BpmnBase.NAME_SPACE, "extensionElements");
 
 }

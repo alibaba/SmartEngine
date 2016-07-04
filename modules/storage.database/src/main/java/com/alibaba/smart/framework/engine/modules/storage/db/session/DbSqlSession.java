@@ -58,7 +58,8 @@ public class DbSqlSession implements Session {
         deleteOperations.add(new CheckedDeleteOperation(persistentObject));
     }
 
-    public <T extends PersistentObject> T selectById(Class<T> entityClass, String id) {
+    @SuppressWarnings("unused")
+	public <T extends PersistentObject> T selectById(Class<T> entityClass, String id) {
         T persistentObject = cacheService.cacheGet(entityClass, id);
         if (persistentObject != null) {
             return persistentObject;
@@ -179,7 +180,7 @@ public class DbSqlSession implements Session {
         }
         return prunedList;
     }
-
+    @SuppressWarnings("unused")
     private void flushInserts() {
         for (PersistentObject insertedObject : insertedObjects) {
             // String insertStatement = dbSqlSessionFactory.getInsertStatement(insertedObject);
@@ -200,6 +201,7 @@ public class DbSqlSession implements Session {
         }
         insertedObjects.clear();
     }
+    @SuppressWarnings("unused")
 
     private void flushUpdates(List<PersistentObject> updatedObjects) {
         for (PersistentObject updatedObject : updatedObjects) {

@@ -8,13 +8,13 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>engine.modules.script.mvel</artifactId>
+	<artifactId>engine.modules.mvel</artifactId>
 	<name>Smart Engine Modules - MVEL</name>
 	<dependencies>
 		<dependency>
-			<groupId>${pom.groupId}</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>engine.core.spi.handler</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mvel</groupId>

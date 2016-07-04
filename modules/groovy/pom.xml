@@ -8,13 +8,13 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>engine.modules.script.groovy</artifactId>
+	<artifactId>engine.modules.groovy</artifactId>
 	<name>Smart Engine Modules - Groovy</name>
 	<dependencies>
 		<dependency>
-			<groupId>${pom.groupId}</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>engine.core.spi.handler</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>
