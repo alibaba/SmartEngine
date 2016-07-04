@@ -21,7 +21,9 @@ import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseExcepti
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.artifact.Activity;
 import com.alibaba.smart.framework.engine.model.artifact.BaseElement;
 import com.alibaba.smart.framework.engine.model.artifact.Process;
@@ -42,254 +44,293 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcess;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcessComponent;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeTransition;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
+
 /**
  * 默认部署器 Created by ettear on 16-4-13.
  */
-public class DefaultRepositoryService implements RepositoryService, LifeCycleListener {
+public class DefaultRepositoryService implements RepositoryService,
+		LifeCycleListener {
 
-    /**
-     * 扩展点注册器
-     */
-    private ExtensionPointRegistry        extensionPointRegistry;
-    private SmartEngine                   smartEngine;
-    private AssemblyParserExtensionPoint  assemblyParserExtensionPoint;
-    private ProviderFactoryExtensionPoint providerFactoryExtensionPoint;
-    private ProcessContainer              processContainer;
+	/**
+	 * 扩展点注册器
+	 */
+	private ExtensionPointRegistry extensionPointRegistry;
+	private SmartEngine smartEngine;
+	private AssemblyParserExtensionPoint assemblyParserExtensionPoint;
+	private ProviderFactoryExtensionPoint providerFactoryExtensionPoint;
+	private ProcessContainer processContainer;
 
-    public DefaultRepositoryService(ExtensionPointRegistry extensionPointRegistry) {
-        this.extensionPointRegistry = extensionPointRegistry;
-    }
+	public DefaultRepositoryService(
+			ExtensionPointRegistry extensionPointRegistry) {
+		this.extensionPointRegistry = extensionPointRegistry;
+	}
 
-    @Override
-    public ProcessDefinition deploy(String uri) throws DeployException {
-     return   this.deploy(null, uri);
-    }
+	@Override
+	public ProcessDefinition deploy(String uri) throws DeployException {
+		return this.deploy(null, uri);
+	}
 
-    @Override
-    public ProcessDefinition deploy(String moduleName, String uri) throws DeployException {
-        ClassLoader classLoader = this.smartEngine.getClassLoader(moduleName);// Find class loader
-        if (null == classLoader) {
-            throw new DeployException("Module[" + moduleName + "] not found!");
-        }
+	@Override
+	public ProcessDefinition deploy(String moduleName, String uri)
+			throws DeployException {
+		ClassLoader classLoader = this.smartEngine.getClassLoader(moduleName);// Find
+																				// class
+																				// loader
+		if (null == classLoader) {
+			throw new DeployException("Module[" + moduleName + "] not found!");
+		}
 
-        ProcessDefinition definition = this.load(classLoader, uri);
-        PvmProcessComponent runtimeProcessComponent = install(classLoader, definition);
-        if (null == runtimeProcessComponent) {
-            throw new DeployException("Deploy " + uri + " failure!");
-        }
-        return definition;
-    }
+		ProcessDefinition definition = this.parse(classLoader, uri);
+		PvmProcessComponent runtimeProcessComponent = install(classLoader,
+				definition);
+		if (null == runtimeProcessComponent) {
+			throw new DeployException("Deploy " + uri + " failure!");
+		}
+		return definition;
+	}
 
-    @Override
-    public void start() {
-        this.smartEngine = this.extensionPointRegistry.getExtensionPoint(SmartEngine.class);
-        this.assemblyParserExtensionPoint = this.extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
-        this.providerFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
-        this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
-    }
+	@Override
+	public void start() {
+		this.smartEngine = this.extensionPointRegistry
+				.getExtensionPoint(SmartEngine.class);
+		this.assemblyParserExtensionPoint = this.extensionPointRegistry
+				.getExtensionPoint(AssemblyParserExtensionPoint.class);
+		this.providerFactoryExtensionPoint = this.extensionPointRegistry
+				.getExtensionPoint(ProviderFactoryExtensionPoint.class);
+		this.processContainer = this.extensionPointRegistry
+				.getExtensionPoint(ProcessContainer.class);
+	}
 
-    @Override
-    public void stop() {
+	@Override
+	public void stop() {
 
-    }
+	}
 
-    private ProcessDefinition load(ClassLoader classLoader, String uri) throws DeployException {
-        // Read xml file
-        XMLInputFactory factory = XMLInputFactory.newInstance();
-        InputStream in = classLoader.getResourceAsStream(uri);
+	private ProcessDefinition parse(ClassLoader classLoader, String uri)
+			throws DeployException {
 
-        // FIXME close stream, diqi
-        XMLStreamReader reader;
-        try {
-            reader = factory.createXMLStreamReader(in);
-        } catch (XMLStreamException e) {
-            throw new DeployException("Load process config file[" + uri + "] failure!", e);
-        }
+		InputStream in = null;
+		try {
+			XMLInputFactory factory = XMLInputFactory.newInstance();
+			in = classLoader.getResourceAsStream(uri);
 
-        // Assembly: process xml file
-        ParseContext context = new ParseContext();
-        try {
-            boolean findStart = false;
-            do {
-                int event = reader.next();
-                if (event == END_ELEMENT) {
-                    break;
-                }
-                if (event == START_ELEMENT) {
-                    findStart = true;
-                    break;
-                }
-            } while (reader.hasNext());
-            if (findStart) {
-                return (ProcessDefinition) this.assemblyParserExtensionPoint.parse(reader, context);
-            } else {
-                throw new DeployException("Read process config file[" + uri + "] failure! Not found start element!");
-            }
-        } catch (ParseException | XMLStreamException e) {
-            throw new DeployException("Read process config file[" + uri + "] failure!", e);
-        }
-    }
+			XMLStreamReader reader = factory.createXMLStreamReader(in);
 
-    @SuppressWarnings("rawtypes")
-    private PvmProcessComponent install(ClassLoader classLoader, ProcessDefinition definition) {
-        // Check
-        if (null == definition) {
-            return null;
-        }
+			ParseContext context = new ParseContext();
 
-        String processId = definition.getId();
-        String version = definition.getVersion();
+			boolean findStart = false;
+			do {
+				int event = reader.next();
+				if (event == END_ELEMENT) {
+					break;
+				}
+				if (event == START_ELEMENT) {
+					findStart = true;
+					break;
+				}
+			} while (reader.hasNext());
+			if (findStart) {
+				return (ProcessDefinition) this.assemblyParserExtensionPoint
+						.parse(reader, context);
+			} else {
+				throw new DeployException("Read process config file[" + uri
+						+ "] failure! Not found start element!");
+			}
+		} catch (ParseException | XMLStreamException e) {
+			throw new DeployException("Read process config file[" + uri
+					+ "] failure!", e);
+		} finally {
+			IOUtil.closeQuietly(in);
+		}
+	}
 
-        if (StringUtils.isBlank(processId) || StringUtils.isBlank(version)) {
-            // TODO ettear exception
-            return null;
-        }
+	@SuppressWarnings("rawtypes")
+	private PvmProcessComponent install(ClassLoader classLoader,
+			ProcessDefinition definition) {
 
-        // Build runtime model;
-        DefaultRuntimeProcessComponent processComponent = new DefaultRuntimeProcessComponent();
-        processComponent.setId(processId);
-        processComponent.setVersion(version);
-        processComponent.setClassLoader(classLoader);
+		if (null == definition) {
+			throw new EngineException("null definition found");
+		}
 
-        Process process = definition.getProcess();
-        if (null != process) {
-            if (StringUtils.isBlank(process.getId())) {
-                process.setId("default");
-            }
-            PvmProcess runtimeProcess = this.buildRuntimeProcess(process, processComponent, true);
-            if (null != runtimeProcess && runtimeProcess instanceof ProviderRuntimeInvocable) {
-                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
-                ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeProcess);
-                ((ProviderRuntimeInvocable) runtimeProcess).setProvider(activityProvider);
-                processComponent.setProcess(runtimeProcess);
-            } else {
-                return null;
-            }
-        }
+		String processId = definition.getId();
+		String version = definition.getVersion();
 
-        this.processContainer.install(processComponent);
-        return processComponent;
-    }
+		if (StringUtils.isBlank(processId) || StringUtils.isBlank(version)) {
+			throw new EngineException("empty processId or version");
+		}
 
-    @SuppressWarnings("rawtypes")
-    private PvmProcess buildRuntimeProcess(Process process, DefaultRuntimeProcessComponent component, boolean sub) {
-        String idPrefix = "";
-        if (sub) {
-            idPrefix = process.getId() + "_";
-        }
+		// Build runtime model;
+		DefaultRuntimeProcessComponent processComponent = new DefaultRuntimeProcessComponent();
+		processComponent.setId(processId);
+		processComponent.setVersion(version);
+		processComponent.setClassLoader(classLoader);
 
-        int index = 0;
+		Process process = definition.getProcess();
+		if (null != process) {
+			if (StringUtils.isBlank(process.getId())) {
+				process.setId("default");
+			}
+			PvmProcess runtimeProcess = this.buildRuntimeProcess(process,
+					processComponent, true);
+			if (null != runtimeProcess
+					&& runtimeProcess instanceof ProviderRuntimeInvocable) {
+				ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint
+						.getProviderFactory(process.getClass());
+				ActivityProvider activityProvider = providerFactory
+						.createActivityProvider(runtimeProcess);
+				((ProviderRuntimeInvocable) runtimeProcess)
+						.setProvider(activityProvider);
+				processComponent.setProcess(runtimeProcess);
+			} else {
+				return null;
+			}
+		}
 
-        // Build runtime model;
-        DefaultRuntimeProcess runtimeProcess = new DefaultRuntimeProcess();
-        runtimeProcess.setExtensionPointRegistry(this.extensionPointRegistry);
-        runtimeProcess.setClassLoader(component.getClassLoader());
-        runtimeProcess.setModel(process);
-        component.addProcess(runtimeProcess.getId(), runtimeProcess);
+		this.processContainer.install(processComponent);
+		return processComponent;
+	}
 
-        List<BaseElement> elements = process.getElements();
-        if (null != elements && !elements.isEmpty()) {
+	@SuppressWarnings("rawtypes")
+	private PvmProcess buildRuntimeProcess(Process process,
+			DefaultRuntimeProcessComponent component, boolean sub) {
+		String idPrefix = "";
+		if (sub) {
+			idPrefix = process.getId() + "_";
+		}
 
-            Map<String, PvmTransition> runtimeTransitions = new HashMap<>();
-            Map<String, PvmActivity> runtimeActivities = new HashMap<>();
-            for (BaseElement element : elements) {
-                if (element instanceof Process) {
-                    Process subProcess = (Process) element;
+		int index = 0;
 
-                    if (StringUtils.isBlank(subProcess.getId())) {
-                        subProcess.setId(idPrefix + "process" + index);
-                    }
-                    index++;
+		// Build runtime model;
+		DefaultRuntimeProcess runtimeProcess = new DefaultRuntimeProcess();
+		runtimeProcess.setExtensionPointRegistry(this.extensionPointRegistry);
+		runtimeProcess.setClassLoader(component.getClassLoader());
+		runtimeProcess.setModel(process);
+		component.addProcess(runtimeProcess.getId(), runtimeProcess);
 
-                    PvmProcess runtimeSubProcess = this.buildRuntimeProcess(subProcess, component, true);
-                    runtimeActivities.put(runtimeSubProcess.getId(), runtimeSubProcess);
+		List<BaseElement> elements = process.getElements();
+		if (null != elements && !elements.isEmpty()) {
 
-                    if (runtimeSubProcess.isStartActivity()) {
-                        runtimeProcess.setStartActivity(runtimeSubProcess);
-                    }
-                } else if (element instanceof Transition) {
-                    Transition transition = (Transition) element;
+			Map<String, PvmTransition> runtimeTransitions = new HashMap<>();
+			Map<String, PvmActivity> runtimeActivities = new HashMap<>();
+			for (BaseElement element : elements) {
+				if (element instanceof Process) {
+					Process subProcess = (Process) element;
 
-                    if (StringUtils.isBlank(transition.getId())) {
-                        transition.setId(idPrefix + "transition" + index);
-                    }
-                    index++;
+					if (StringUtils.isBlank(subProcess.getId())) {
+						subProcess.setId(idPrefix + "process" + index);
+					}
+					index++;
 
-                    DefaultRuntimeTransition runtimeTransition = new DefaultRuntimeTransition();
-                    runtimeTransition.setExtensionPointRegistry(this.extensionPointRegistry);
-                    runtimeTransition.setModel(transition);
+					PvmProcess runtimeSubProcess = this.buildRuntimeProcess(
+							subProcess, component, true);
+					runtimeActivities.put(runtimeSubProcess.getId(),
+							runtimeSubProcess);
 
-                    runtimeTransitions.put(runtimeTransition.getId(), runtimeTransition);
+					if (runtimeSubProcess.isStartActivity()) {
+						runtimeProcess.setStartActivity(runtimeSubProcess);
+					}
+				} else if (element instanceof Transition) {
+					Transition transition = (Transition) element;
 
-                } else if (element instanceof Activity) {
-                    Activity activity = (Activity) element;
+					if (StringUtils.isBlank(transition.getId())) {
+						transition.setId(idPrefix + "transition" + index);
+					}
+					index++;
 
-                    if (StringUtils.isBlank(activity.getId())) {
-                        activity.setId(idPrefix + "activity" + index);
-                    }
-                    index++;
+					DefaultRuntimeTransition runtimeTransition = new DefaultRuntimeTransition();
+					runtimeTransition
+							.setExtensionPointRegistry(this.extensionPointRegistry);
+					runtimeTransition.setModel(transition);
 
-                    DefaultRuntimeActivity runtimeActivity = new DefaultRuntimeActivity();
-                    runtimeActivity.setExtensionPointRegistry(this.extensionPointRegistry);
-                    runtimeActivity.setModel(activity);
+					runtimeTransitions.put(runtimeTransition.getId(),
+							runtimeTransition);
 
-                    runtimeActivities.put(runtimeActivity.getId(), runtimeActivity);
+				} else if (element instanceof Activity) {
+					Activity activity = (Activity) element;
 
-                    if (runtimeActivity.isStartActivity()) {
-                        runtimeProcess.setStartActivity(runtimeActivity);
-                    }
-                }
-            }
+					if (StringUtils.isBlank(activity.getId())) {
+						activity.setId(idPrefix + "activity" + index);
+					}
+					index++;
 
-            // Process Transition Flow
-            for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
-                DefaultRuntimeTransition runtimeTransition = (DefaultRuntimeTransition) runtimeTransitionEntry.getValue();
-                String sourceRef = runtimeTransition.getModel().getSourceRef();
-                String targetRef = runtimeTransition.getModel().getTargetRef();
-                DefaultRuntimeActivity source = (DefaultRuntimeActivity) runtimeActivities.get(sourceRef);
-                DefaultRuntimeActivity target = (DefaultRuntimeActivity) runtimeActivities.get(targetRef);
+					DefaultRuntimeActivity runtimeActivity = new DefaultRuntimeActivity();
+					runtimeActivity
+							.setExtensionPointRegistry(this.extensionPointRegistry);
+					runtimeActivity.setModel(activity);
 
-                runtimeTransition.setSource(source);
-                runtimeTransition.setTarget(target);
-                source.addOutcomeTransition(runtimeTransition.getId(), runtimeTransition);
-                target.addIncomeTransition(runtimeTransition.getId(), runtimeTransition);
-            }
+					runtimeActivities.put(runtimeActivity.getId(),
+							runtimeActivity);
 
-            // Create Invoker for Transition Flow
-            for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
-                PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
-                if (runtimeTransition instanceof ProviderRuntimeInvocable) {
-                    TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModelType());
+					if (runtimeActivity.isStartActivity()) {
+						runtimeProcess.setStartActivity(runtimeActivity);
+					}
+				}
+			}
 
-                    if (null == providerFactory) {
-                        // TODO XX
-                        throw new RuntimeException("No factory found for " + runtimeTransition.getModelType());
-                    }
+			// Process Transition Flow
+			for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions
+					.entrySet()) {
+				DefaultRuntimeTransition runtimeTransition = (DefaultRuntimeTransition) runtimeTransitionEntry
+						.getValue();
+				String sourceRef = runtimeTransition.getModel().getSourceRef();
+				String targetRef = runtimeTransition.getModel().getTargetRef();
+				DefaultRuntimeActivity source = (DefaultRuntimeActivity) runtimeActivities
+						.get(sourceRef);
+				DefaultRuntimeActivity target = (DefaultRuntimeActivity) runtimeActivities
+						.get(targetRef);
 
-                    TransitionProvider transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
-                    ((ProviderRuntimeInvocable) runtimeTransition).setProvider(transitionProvider);
-                }
-            }
+				runtimeTransition.setSource(source);
+				runtimeTransition.setTarget(target);
+				source.addOutcomeTransition(runtimeTransition.getId(),
+						runtimeTransition);
+				target.addIncomeTransition(runtimeTransition.getId(),
+						runtimeTransition);
+			}
 
-            // Create Invoker for Activity
-            for (Map.Entry<String, PvmActivity> runtimeActivityEntry : runtimeActivities.entrySet()) {
-                PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
-                if (runtimeActivity instanceof ProviderRuntimeInvocable) {
-                    ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModelType());
+			// Create Invoker for Transition Flow
+			for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions
+					.entrySet()) {
+				PvmTransition runtimeTransition = runtimeTransitionEntry
+						.getValue();
+				if (runtimeTransition instanceof ProviderRuntimeInvocable) {
+					TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint
+							.getProviderFactory(runtimeTransition.getModelType());
 
-                    if (null == providerFactory) {
-                        // TODO XX
-                        throw new RuntimeException("No factory found for " + runtimeActivity.getModelType());
-                    }
+					if (null == providerFactory) {
+						throw new RuntimeException("No factory found for "
+								+ runtimeTransition.getModelType());
+					}
 
-                    ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeActivity);
-                    ((ProviderRuntimeInvocable) runtimeActivity).setProvider(activityProvider);
-                }
-            }
+					TransitionProvider transitionProvider = providerFactory
+							.createTransitionProvider(runtimeTransition);
+					((ProviderRuntimeInvocable) runtimeTransition)
+							.setProvider(transitionProvider);
+				}
+			}
 
-            runtimeProcess.setActivities(runtimeActivities);
-            runtimeProcess.setTransitions(runtimeTransitions);
-        }
-        return runtimeProcess;
-    }
+			// Create Invoker for Activity
+			for (Map.Entry<String, PvmActivity> runtimeActivityEntry : runtimeActivities
+					.entrySet()) {
+				PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
+				if (runtimeActivity instanceof ProviderRuntimeInvocable) {
+					ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint
+							.getProviderFactory(runtimeActivity.getModelType());
+
+					if (null == providerFactory) {
+						throw new RuntimeException("No factory found for "
+								+ runtimeActivity.getModelType());
+					}
+
+					ActivityProvider activityProvider = providerFactory
+							.createActivityProvider(runtimeActivity);
+					((ProviderRuntimeInvocable) runtimeActivity)
+							.setProvider(activityProvider);
+				}
+			}
+
+			runtimeProcess.setActivities(runtimeActivities);
+			runtimeProcess.setTransitions(runtimeTransitions);
+		}
+		return runtimeProcess;
+	}
 }

@@ -25,23 +25,26 @@ public class SequenceFlowProvider extends AbstractTransitionProvider<SequenceFlo
     protected Invoker createHitInvoker() {
         SequenceFlow sequenceFlow = (SequenceFlow) this.getRuntimeTransition().getModel();
         ConditionExpression conditionExpression = sequenceFlow.getConditionExpression();
-        if (null != conditionExpression && null != conditionExpression.getHandler()) {
-            return this.handlerProviderExtensionPoint.createInvoker(conditionExpression.getHandler());
-        } else {
-            // 不存在条件表达式
-            return null;
-        }
+        return null;
+        //FIXME
+//        if (null != conditionExpression && null != conditionExpression.getHandler()) {
+//            return this.handlerProviderExtensionPoint.createInvoker(conditionExpression.getHandler());
+//        } else {
+//            // 不存在条件表达式
+//            return null;
+//        }
     }
 
     @Override
     protected Invoker createExecuteInvoker() {
         SequenceFlow sequenceFlow = (SequenceFlow) this.getRuntimeTransition().getModel();
-        Handler handler = sequenceFlow.getHandler();
-        if (null != handler) {
-            return this.handlerProviderExtensionPoint.createInvoker(handler);
-        } else {
-            // 不存在条件表达式
-            return null;
-        }
+        return null;
+//        Handler handler = sequenceFlow.getHandler();
+//        if (null != handler) {
+//            return this.handlerProviderExtensionPoint.createInvoker(handler);
+//        } else {
+//            // 不存在条件表达式
+//            return null;
+//        }
     }
 }

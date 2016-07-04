@@ -3,6 +3,9 @@ package com.alibaba.smart.framework.engine.extensibility.impl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.extensibility.ClassLoaderExtensionPoint;
@@ -13,6 +16,9 @@ import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPoint
  * 默认扩展注册器实现 Created by ettear on 16-4-12.
  */
 public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPoint implements ExtensionPointRegistry {
+	
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultExtensionPointRegistry.class);
+
 
     private Map<Class<?>, Object> extensionPoints = new ConcurrentHashMap<>();
 
@@ -28,6 +34,8 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
             if (extensionPoint instanceof ClassLoaderExtensionPoint) {
                 ClassLoaderExtensionPoint classLoaderExtensionPoint = (ClassLoaderExtensionPoint) extensionPoint;
                 classLoaderExtensionPoint.load(moduleName, classLoader);
+            }else{
+            	LOGGER.debug(extensionPoint.getClass()+" is not a ClassLoaderExtensionPoint,so igonred");
             }
         }
     }
@@ -62,13 +70,13 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
     @Override
     protected void initExtension(ClassLoader classLoader, String type, Object object)
                                                                                      throws ExtensionPointLoadException {
-        Class interfaze;
+        Class interfaceClazz;
         try {
-            interfaze = classLoader.loadClass(type);
+            interfaceClazz = classLoader.loadClass(type);
         } catch (ClassNotFoundException e) {
             throw new ExtensionPointLoadException("Class[" + type + "] not found!", e);
         }
-        this.extensionPoints.put(interfaze, object);
+        this.extensionPoints.put(interfaceClazz, object);
     }
 
     @Override

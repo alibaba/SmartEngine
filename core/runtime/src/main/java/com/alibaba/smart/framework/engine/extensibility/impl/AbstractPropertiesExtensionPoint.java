@@ -69,9 +69,9 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
                 if (!properties.isEmpty()) {
                     
                     for (Map.Entry<Object, Object> propertyEntry : properties.entrySet()) {
-                        String type = (String) propertyEntry.getKey();
-                        String className = (String) propertyEntry.getValue();
-                        this.initExtension(classLoader, type, className);
+                        String entensionEntryKey = (String) propertyEntry.getKey();
+                        String entensionEntryValue = (String) propertyEntry.getValue();
+                        this.initExtension(classLoader, entensionEntryKey, entensionEntryValue);
                     }
                 }
             }
@@ -79,28 +79,28 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
     }
 
     @SuppressWarnings("rawtypes")
-    protected void initExtension(ClassLoader classLoader, String type, String className)
+    protected void initExtension(ClassLoader classLoader, String entensionEntryKey, String entensionEntryValue)
                                                                                         throws ExtensionPointLoadException {
-        Class<?> artifactParserClass;
+        Class<?> extensionValueClass;
         try {
-            artifactParserClass = classLoader.loadClass(className);
+            extensionValueClass = classLoader.loadClass(entensionEntryValue);
 
         } catch (ClassNotFoundException e) {
             throw new ExtensionPointLoadException("Scan config file " + getExtensionName() + " failure!", e);
         }
-        Object object;
+        Object extensionValueObject;
         try {
-            Constructor constructor = artifactParserClass.getConstructor(ExtensionPointRegistry.class);
-            object = constructor.newInstance(this.extensionPointRegistry);
+            Constructor constructor = extensionValueClass.getConstructor(ExtensionPointRegistry.class);
+            extensionValueObject = constructor.newInstance(this.extensionPointRegistry);
         } catch (Exception e) {
             try {
-                Constructor constructor = artifactParserClass.getConstructor();
-                object = constructor.newInstance();
+                Constructor constructor = extensionValueClass.getConstructor();
+                extensionValueObject = constructor.newInstance();
             } catch (Exception ex) {
-                throw new ExtensionPointLoadException("Instance constructor for class " + className + " !", ex);
+                throw new ExtensionPointLoadException("Instance constructor for class " + entensionEntryValue + " !", ex);
             }
         }
-        this.initExtension(classLoader, type, object);
+        this.initExtension(classLoader, entensionEntryKey, extensionValueObject);
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
      * @param object Object
      * @throws ExtensionPointLoadException
      */
-    protected abstract void initExtension(ClassLoader classLoader, String type, Object object)
+    protected abstract void initExtension(ClassLoader classLoader, String entensionEntryKey, Object object)
                                                                                               throws ExtensionPointLoadException;
 
     /**

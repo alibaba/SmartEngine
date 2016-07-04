@@ -23,16 +23,10 @@ import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPoint
  * 默认处理器扩展点 Created by ettear on 16-4-12.
  */
 @SuppressWarnings("rawtypes")
-
 public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPoint implements AssemblyParserExtensionPoint {
-
-    /**
-     * Artifact处理器
-     */
+ 
     private Map<QName, StAXArtifactParser>  artifactParsers        = new ConcurrentHashMap<>();
-    /**
-     * Artifact处理器
-     */
+    
     private Map<QName, StAXAttributeParser> attributeParsers       = new ConcurrentHashMap<>();
 
     private Map<Class, ArtifactParser>      resolveArtifactParsers = new ConcurrentHashMap<>();
@@ -62,7 +56,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
     }
 
     @Override
-    protected void initExtension(ClassLoader classLoader, String type, Object artifactParseObject)
+    protected void initExtension(ClassLoader classLoader, String entensionEntryKey, Object artifactParseObject)
                                                                                                   throws ExtensionPointLoadException {
         if (artifactParseObject instanceof StAXArtifactParser) {
             StAXArtifactParser artifactParser = (StAXArtifactParser) artifactParseObject;
@@ -88,8 +82,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         if (null != artifactParser) {
             return artifactParser.parse(reader, context);
         } else {
-            // TODO XXX
-            throw new RuntimeException("TODO");
+            throw new RuntimeException("No StAXArtifactParser found for QName: "+type);
         }
     }
 
@@ -110,7 +103,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         } else if (StringUtils.equals(type.getNamespaceURI(), attributeName.getNamespaceURI())) {
             return reader.getAttributeValue(attributeName.getNamespaceURI(), attributeName.getLocalPart());
         } else {
-            return null;
+            throw new RuntimeException("No artifactParser found for QName: "+type);
         }
     }
 

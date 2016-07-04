@@ -26,12 +26,14 @@ public class AbstractBpmnActivityProvider<M extends AbstractBpmnActivity> extend
     protected Invoker createExecuteInvoker() {
         AbstractBpmnActivity bpmnActivity = (AbstractBpmnActivity) this.getRuntimeActivity().getModel();
         Handler handler = bpmnActivity.getHandler();
-        if (null != handler) {
-            return this.handlerProviderExtensionPoint.createInvoker(handler);
-        } else {
-            // 不存在条件表达式
-            return null;
-        }
+        return null;
+        //		FIXME
+//        if (null != handler) {
+//            return this.handlerProviderExtensionPoint.createInvoker(handler);
+//        } else {
+//            // 不存在条件表达式
+//            return null;
+//        }
     }
 
     protected ExtensionPointRegistry getExtensionPointRegistry() {

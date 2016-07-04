@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.alibaba.smart.framework.engine.DefaultSmartEngine;
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.model.artifact.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.service.ProcessService;
@@ -16,7 +17,7 @@ public class BpmnProcessTest {
 
 	@Test
 	public void testExclusive() throws Exception {
-		DefaultSmartEngine smartEngine = new DefaultSmartEngine();
+		SmartEngine smartEngine = new DefaultSmartEngine();
 		smartEngine.init();
 
 		RepositoryService repositoryService = smartEngine
