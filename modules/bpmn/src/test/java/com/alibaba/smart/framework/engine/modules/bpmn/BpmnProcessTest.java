@@ -24,6 +24,7 @@ public class BpmnProcessTest {
 				.getRepositoryService();
 		ProcessDefinition processDefinition = repositoryService
 				.deploy("test-exclusive.bpmn20.xml");
+        Assert.assertEquals(25, processDefinition.getProcess().getElements().size());
 
 		ProcessService processService = smartEngine.getProcessService();
 		Map<String, Object> variables = new HashMap<>();
@@ -31,25 +32,26 @@ public class BpmnProcessTest {
 		ProcessInstance processInstance = processService.start(
 				processDefinition.getId(), processDefinition.getVersion(),
 				variables);
+
 		Assert.assertNotNull(processInstance);
 	}
 
-	@Test
-	public void testParallel() throws Exception {
-		DefaultSmartEngine smartEngine = new DefaultSmartEngine();
-		smartEngine.init();
-
-		RepositoryService repositoryService = smartEngine
-				.getRepositoryService();
-		ProcessDefinition processDefinition = repositoryService
-				.deploy("test-parallel.bpmn20.xml");
-
-		ProcessService processService = smartEngine.getProcessService();
-		Map<String, Object> variables = new HashMap<>();
-		ProcessInstance processInstance = processService.start(
-				processDefinition.getId(), processDefinition.getVersion(),
-				variables);
-		Assert.assertNotNull(processInstance);
-
-	}
+    // @Test
+    // public void testParallel() throws Exception {
+    // DefaultSmartEngine smartEngine = new DefaultSmartEngine();
+    // smartEngine.init();
+    //
+    // RepositoryService repositoryService = smartEngine
+    // .getRepositoryService();
+    // ProcessDefinition processDefinition = repositoryService
+    // .deploy("test-parallel.bpmn20.xml");
+    //
+    // ProcessService processService = smartEngine.getProcessService();
+    // Map<String, Object> variables = new HashMap<>();
+    // ProcessInstance processInstance = processService.start(
+    // processDefinition.getId(), processDefinition.getVersion(),
+    // variables);
+    // Assert.assertNotNull(processInstance);
+    //
+    // }
 }

@@ -13,9 +13,9 @@ import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFacto
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
-import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
-import com.alibaba.smart.framework.engine.invocation.Message;
-import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
+import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstant;
+import com.alibaba.smart.framework.engine.invocation.message.Message;
+import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
 import com.alibaba.smart.framework.engine.model.artifact.Process;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -78,7 +78,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         processInstance.setStatus(InstanceStatus.running);
 
         // 执行流程启动事件
-        this.invoke(AtomicOperationEvent.PROCESS_START.name(), context);
+        this.invoke(AtomicOperationEventConstant.PROCESS_START.name(), context);
         // 从开始节点开始执行
         return this.runProcess(this.startActivity, context);
     }
@@ -166,7 +166,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         ProcessInstance processInstance = context.getProcessInstance();
         if (!processMessage.isSuspend()) {
             // 流程结束
-            this.invoke(AtomicOperationEvent.PROCESS_END.name(), context);
+            this.invoke(AtomicOperationEventConstant.PROCESS_END.name(), context);
             processInstance.setStatus(InstanceStatus.completed);
         } else {
             processInstance.setStatus(InstanceStatus.suspended);
@@ -187,7 +187,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         }
 
         // 执行后续节点选择
-        Message transitionSelectMessage = runtimeActivity.invoke(AtomicOperationEvent.ACTIVITY_TRANSITION_SELECT.name(),
+        Message transitionSelectMessage = runtimeActivity.invoke(AtomicOperationEventConstant.ACTIVITY_TRANSITION_SELECT.name(),
                                                                  context);
         if (null != transitionSelectMessage) {
             Object transitionSelectBody = transitionSelectMessage.getBody();

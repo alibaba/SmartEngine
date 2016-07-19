@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
-import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
+import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstant;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.model.artifact.Activity;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
@@ -29,13 +29,13 @@ public class AbstractActivityProvider<T extends Activity> implements ActivityPro
 
     @Override
     public Invoker createInvoker(String event) {
-        if (AtomicOperationEvent.ACTIVITY_START.name().equals(event)) {
+        if (AtomicOperationEventConstant.ACTIVITY_START.name().equals(event)) {
             return this.createStartInvoker();
-        } else if (AtomicOperationEvent.ACTIVITY_EXECUTE.name().equals(event)) {
+        } else if (AtomicOperationEventConstant.ACTIVITY_EXECUTE.name().equals(event)) {
             return this.createExecuteInvoker();
-        } else if (AtomicOperationEvent.ACTIVITY_END.name().equals(event)) {
+        } else if (AtomicOperationEventConstant.ACTIVITY_END.name().equals(event)) {
             return this.createEndInvoker();
-        } else if (AtomicOperationEvent.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
+        } else if (AtomicOperationEventConstant.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
             return this.createTransitionSelectInvoker();
         } else {
             return this.createEventInvoker(event);

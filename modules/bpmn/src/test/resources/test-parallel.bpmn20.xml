@@ -15,27 +15,22 @@
 		<parallelGateway id="forkGw" name="Fork Gateway"/>
 
 		<sequenceFlow id="flow2" sourceRef="forkGw" targetRef="theTask1">
-			<smart:script type="groovy">runSequenceFlow(flow2);</smart:script>
 		</sequenceFlow>
 
 		<sequenceFlow id="flow3" sourceRef="forkGw" targetRef="theTask2">
-			<smart:script type="groovy">runSequenceFlow(flow3);</smart:script>
 		</sequenceFlow>
 
 		<serviceTask id="theTask1" name="Task 1">
-			<smart:script type="groovy">run(theTask1);</smart:script>
 		</serviceTask>
 
 		<sequenceFlow id="flow4" sourceRef="theTask1" targetRef="theTask3"/>
 
 		<serviceTask id="theTask2" name="Task 2">
-			<smart:script type="groovy">run(theTask2);</smart:script>
 		</serviceTask>
 
 		<sequenceFlow id="flow5" sourceRef="theTask2" targetRef="theTask4"/>
 
 		<serviceTask id="theTask3" name="Task 3">
-			<smart:script type="groovy">run(theTask3);</smart:script>
 		</serviceTask>
 
 		<sequenceFlow id="flow6" sourceRef="theTask3" targetRef="joinGw">

@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
-import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
+import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstant;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;
@@ -29,9 +29,9 @@ public class AbstractProcessProvider<T extends Process> implements ActivityProvi
 
     @Override
     public Invoker createInvoker(String event) {
-        if (AtomicOperationEvent.PROCESS_START.name().equals(event)) {
+        if (AtomicOperationEventConstant.PROCESS_START.name().equals(event)) {
             return this.createStartInvoker();
-        } else if (AtomicOperationEvent.PROCESS_END.name().equals(event)) {
+        } else if (AtomicOperationEventConstant.PROCESS_END.name().equals(event)) {
             return this.createEndInvoker();
         } else {
             return this.createEventInvoker(event);

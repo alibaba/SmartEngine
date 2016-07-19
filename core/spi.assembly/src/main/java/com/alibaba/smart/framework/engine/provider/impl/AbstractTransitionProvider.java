@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
-import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
+import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstant;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.model.artifact.Transition;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
@@ -29,13 +29,13 @@ public abstract class AbstractTransitionProvider<T extends Transition> implement
 
     @Override
     public Invoker createInvoker(String event) {
-        if (AtomicOperationEvent.TRANSITION_HIT.name().equals(event)) {
+        if (AtomicOperationEventConstant.TRANSITION_HIT.name().equals(event)) {
             return this.createHitInvoker();
-        } else if (AtomicOperationEvent.TRANSITION_START.name().equals(event)) {
+        } else if (AtomicOperationEventConstant.TRANSITION_START.name().equals(event)) {
             return this.createStartInvoker();
-        } else if (AtomicOperationEvent.TRANSITION_EXECUTE.name().equals(event)) {
+        } else if (AtomicOperationEventConstant.TRANSITION_EXECUTE.name().equals(event)) {
             return this.createExecuteInvoker();
-        } else if (AtomicOperationEvent.TRANSITION_END.name().equals(event)) {
+        } else if (AtomicOperationEventConstant.TRANSITION_END.name().equals(event)) {
             return this.createEndInvoker();
         } else {
             return this.createEventInvoker(event);

@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.modules.bpmn.invocation;
+package com.alibaba.smart.framework.engine.pvm.invocation;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -12,8 +12,8 @@ import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFacto
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
-import com.alibaba.smart.framework.engine.invocation.Message;
-import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
+import com.alibaba.smart.framework.engine.invocation.message.Message;
+import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;

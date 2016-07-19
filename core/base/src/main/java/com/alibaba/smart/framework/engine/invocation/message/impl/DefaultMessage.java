@@ -1,8 +1,8 @@
-package com.alibaba.smart.framework.engine.invocation.impl;
+package com.alibaba.smart.framework.engine.invocation.message.impl;
 
 import lombok.Data;
 
-import com.alibaba.smart.framework.engine.invocation.Message;
+import com.alibaba.smart.framework.engine.invocation.message.Message;
 
 /**
  * Created by ettear on 16-4-19.

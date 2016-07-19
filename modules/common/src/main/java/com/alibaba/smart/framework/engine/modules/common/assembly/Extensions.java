@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.common.assembly;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -15,7 +16,7 @@ import com.alibaba.smart.framework.engine.assembly.impl.AbstractBase;
 public class Extensions extends AbstractBase {
 
     private static final long serialVersionUID = -9017389195653634752L;
-    private List<Extension> extensions;
+    private List<Extension>   extensions       = new ArrayList<Extension>(5);
 
     public void addExtension(Extension extension) {
         this.extensions.add(extension);

@@ -10,11 +10,11 @@ import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.context.InstanceContext;
-import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
+import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstant;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
-import com.alibaba.smart.framework.engine.invocation.Message;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultActivityTransitionSelectInvoker;
-import com.alibaba.smart.framework.engine.invocation.impl.DefaultMessage;
+import com.alibaba.smart.framework.engine.invocation.message.Message;
+import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
 import com.alibaba.smart.framework.engine.model.artifact.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -32,9 +32,9 @@ public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity> im
     private final static List<String> EXECUTE_EVENTS = new ArrayList<>();
 
     static {
-        EXECUTE_EVENTS.add(AtomicOperationEvent.ACTIVITY_START.name());
-        EXECUTE_EVENTS.add(AtomicOperationEvent.ACTIVITY_EXECUTE.name());
-        EXECUTE_EVENTS.add(AtomicOperationEvent.ACTIVITY_END.name());
+        EXECUTE_EVENTS.add(AtomicOperationEventConstant.ACTIVITY_START.name());
+        EXECUTE_EVENTS.add(AtomicOperationEventConstant.ACTIVITY_EXECUTE.name());
+        EXECUTE_EVENTS.add(AtomicOperationEventConstant.ACTIVITY_END.name());
     }
 
     @Override
@@ -84,7 +84,7 @@ public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity> im
 
     @Override
     protected Invoker createDefaultInvoker(String event) {
-        if (AtomicOperationEvent.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
+        if (AtomicOperationEventConstant.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
             return new DefaultActivityTransitionSelectInvoker(this.getExtensionPointRegistry(), this);
         } else {
             return super.createDefaultInvoker(event);
@@ -98,4 +98,11 @@ public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity> im
         }
         return message;
     }
+
+    @Override
+    public String toString() {
+        return super.getModel() + ",id is " + super.getId();
+    }
+
+
 }

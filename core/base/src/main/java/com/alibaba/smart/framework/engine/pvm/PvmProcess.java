@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.pvm;
 
 import com.alibaba.smart.framework.engine.context.InstanceContext;
-import com.alibaba.smart.framework.engine.invocation.Message;
+import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.model.artifact.Process;
 
 /**

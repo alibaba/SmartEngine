@@ -7,6 +7,9 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.smart.framework.engine.assembly.parser.ArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
@@ -20,6 +23,9 @@ import com.alibaba.smart.framework.engine.model.artifact.BaseElement;
  * Abstract StAXArtifactParser Created by ettear on 16-4-14.
  */
 public abstract class AbstractStAXArtifactParser<M extends BaseElement> implements LifeCycleListener, ArtifactParser<M> {
+
+    private static final Logger          LOGGER = LoggerFactory.getLogger(AbstractStAXArtifactParser.class);
+
 
     /**
      * 扩展点注册器
@@ -79,6 +85,10 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
     protected boolean nextChildElement(XMLStreamReader reader) throws XMLStreamException {
         while (reader.hasNext()) {
             int event = reader.next();
+
+
+            // LOGGER.debug(event + reader.getEventType() + "");
+
             if (event == END_ELEMENT) {
                 return false;
             }
@@ -100,9 +110,9 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
 
         while (reader.hasNext()) {
             int event = reader.next();
-            if (event == 1) {
+            if (event == START_ELEMENT) {
                 ++depth;
-            } else if (event == 2) {
+            } else if (event == END_ELEMENT) {
                 if (depth == 0) {
                     return;
                 }

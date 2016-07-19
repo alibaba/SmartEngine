@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.invocation;
+package com.alibaba.smart.framework.engine.invocation.message;
 
 /**
  * Message Created by ettear on 16-4-11.

@@ -7,7 +7,6 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parser.exception.ResolveException;
 import com.alibaba.smart.framework.engine.assembly.parser.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.ExtensionElements;
@@ -36,15 +35,15 @@ public class ExtensionElementsParser extends AbstractStAXArtifactParser<Extensio
         return extensionElements;
     }
 
-    @Override
-    public void resolve(ExtensionElements model, ParseContext context) throws ResolveException {
-        if (null != model.getExtensions()) {
-            for (Extension element : model.getExtensions()) {
-                this.resolveElement(element, context);
-            }
-        }
-        model.setUnresolved(false);
-    }
+    // @Override
+    // public void resolve(ExtensionElements model, ParseContext context) throws ResolveException {
+    // if (null != model.getExtensions()) {
+    // for (Extension element : model.getExtensions()) {
+    // this.resolveElement(element, context);
+    // }
+    // }
+    // model.setUnresolved(false);
+    // }
 
     @Override
     public QName getArtifactType() {

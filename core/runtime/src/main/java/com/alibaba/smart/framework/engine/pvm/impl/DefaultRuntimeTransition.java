@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import com.alibaba.smart.framework.engine.context.InstanceContext;
-import com.alibaba.smart.framework.engine.invocation.AtomicOperationEvent;
+import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstant;
 import com.alibaba.smart.framework.engine.model.artifact.Transition;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
@@ -21,8 +21,8 @@ public class DefaultRuntimeTransition extends AbstractRuntimeInvocable<Transitio
 
     @Override
     public void execute(InstanceContext context) {
-        this.invoke(AtomicOperationEvent.TRANSITION_START.name(), context);
-        this.invoke(AtomicOperationEvent.TRANSITION_EXECUTE.name(), context);
-        this.invoke(AtomicOperationEvent.TRANSITION_END.name(), context);
+        this.invoke(AtomicOperationEventConstant.TRANSITION_START.name(), context);
+        this.invoke(AtomicOperationEventConstant.TRANSITION_EXECUTE.name(), context);
+        this.invoke(AtomicOperationEventConstant.TRANSITION_END.name(), context);
     }
 }
