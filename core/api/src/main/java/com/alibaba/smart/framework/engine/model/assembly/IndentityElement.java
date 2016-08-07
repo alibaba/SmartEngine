@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.model.artifact;
+package com.alibaba.smart.framework.engine.model.assembly;
 
 
 public interface IndentityElement extends BaseElement {

@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.provider.impl;
 
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstant;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
-import com.alibaba.smart.framework.engine.model.artifact.Transition;
+import com.alibaba.smart.framework.engine.model.assembly.Transition;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 

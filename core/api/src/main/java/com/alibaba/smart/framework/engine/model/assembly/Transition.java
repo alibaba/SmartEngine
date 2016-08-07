@@ -1,6 +1,6 @@
-package com.alibaba.smart.framework.engine.model.artifact;
+package com.alibaba.smart.framework.engine.model.assembly;
 
-import com.alibaba.smart.framework.engine.model.artifact.IndentityElement;
+import com.alibaba.smart.framework.engine.model.assembly.IndentityElement;
 
 /**
  * Created by ettear on 16-4-11.

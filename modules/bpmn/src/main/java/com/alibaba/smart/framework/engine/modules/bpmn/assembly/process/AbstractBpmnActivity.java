@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import com.alibaba.smart.framework.engine.assembly.Handler;
-import com.alibaba.smart.framework.engine.assembly.impl.AbstractActivity;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.ExtensionElements;
 
 /**

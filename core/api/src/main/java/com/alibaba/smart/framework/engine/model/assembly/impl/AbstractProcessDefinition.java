@@ -1,9 +1,9 @@
-package com.alibaba.smart.framework.engine.assembly.impl;
+package com.alibaba.smart.framework.engine.model.assembly.impl;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.model.artifact.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 
 /**
  * Created by ettear on 16-4-13.
@@ -15,9 +15,11 @@ public abstract class AbstractProcessDefinition extends AbstractBase implements 
 
     private static final long serialVersionUID = -1765647192018309663L;
 
+    private String  id;
+
     private String  name;
 
     private String  version;
 
-    private com.alibaba.smart.framework.engine.model.artifact.Process process;
+    private com.alibaba.smart.framework.engine.model.assembly.Process process;
 }

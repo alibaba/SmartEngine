@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.model.artifact.Process;
+import com.alibaba.smart.framework.engine.model.assembly.Process;
 
 /**
  * DefaultRuntimeProcessDependency Created by ettear on 16-4-21.

@@ -17,7 +17,7 @@ import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseExcepti
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ResolveException;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.model.artifact.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 
 /**
  * Abstract StAXArtifactParser Created by ettear on 16-4-14.

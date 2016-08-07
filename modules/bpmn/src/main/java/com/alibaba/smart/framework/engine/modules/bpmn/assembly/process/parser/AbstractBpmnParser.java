@@ -7,7 +7,7 @@ import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
 import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.assembly.parser.impl.AbstractStAXArtifactParser;
 import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.model.artifact.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 
 /**
  * Created by ettear on 16-4-29.

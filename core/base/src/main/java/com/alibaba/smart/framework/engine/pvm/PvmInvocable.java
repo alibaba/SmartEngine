@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.pvm;
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
-import com.alibaba.smart.framework.engine.model.artifact.IndentityElement;
+import com.alibaba.smart.framework.engine.model.assembly.IndentityElement;
 
 /**
  * 运行时Invocable Created by ettear on 16-4-14.

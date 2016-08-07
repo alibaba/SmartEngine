@@ -4,7 +4,7 @@ import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstan
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;
-import com.alibaba.smart.framework.engine.model.artifact.Process;
+import com.alibaba.smart.framework.engine.model.assembly.Process;
 
 /**
  * 抽象Process Provider实现 Created by ettear on 16-4-20.

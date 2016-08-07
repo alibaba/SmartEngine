@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
-import com.alibaba.smart.framework.engine.model.artifact.Activity;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
 
 /**
  * RuntimeActivity Created by ettear on 16-4-11.

@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.impl.DoNothingInvoker;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
-import com.alibaba.smart.framework.engine.model.artifact.IndentityElement;
+import com.alibaba.smart.framework.engine.model.assembly.IndentityElement;
 import com.alibaba.smart.framework.engine.provider.InvocableProvider;
 import com.alibaba.smart.framework.engine.pvm.ProviderRuntimeInvocable;
 import com.alibaba.smart.framework.engine.pvm.PvmInvocable;

@@ -1,9 +1,9 @@
-package com.alibaba.smart.framework.engine.assembly.impl;
+package com.alibaba.smart.framework.engine.model.assembly.impl;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.model.artifact.Transition;
+import com.alibaba.smart.framework.engine.model.assembly.Transition;
 
 /**
  * Created by ettear on 16-4-13.

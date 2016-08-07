@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.assembly.impl.AbstractProcessDefinition;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractProcessDefinition;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
 
 /**

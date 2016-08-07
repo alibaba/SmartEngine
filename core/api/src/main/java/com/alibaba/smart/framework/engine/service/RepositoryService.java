@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.service;
 
 import com.alibaba.smart.framework.engine.exception.DeployException;
-import com.alibaba.smart.framework.engine.model.artifact.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 
  
 public interface RepositoryService {

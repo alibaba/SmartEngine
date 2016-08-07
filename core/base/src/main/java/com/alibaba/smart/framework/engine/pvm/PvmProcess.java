@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.pvm;
 
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
-import com.alibaba.smart.framework.engine.model.artifact.Process;
+import com.alibaba.smart.framework.engine.model.assembly.Process;
 
 /**
  * RuntimeProcess Created by ettear on 16-4-12.

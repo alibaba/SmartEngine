@@ -1,6 +1,6 @@
-package com.alibaba.smart.framework.engine.assembly.impl;
+package com.alibaba.smart.framework.engine.model.assembly.impl;
 
-import com.alibaba.smart.framework.engine.model.artifact.Activity;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
 
 /**
  * Created by ettear on 16-4-13.

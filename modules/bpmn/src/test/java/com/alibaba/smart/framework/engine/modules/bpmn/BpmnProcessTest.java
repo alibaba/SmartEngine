@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.alibaba.smart.framework.engine.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.model.artifact.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;

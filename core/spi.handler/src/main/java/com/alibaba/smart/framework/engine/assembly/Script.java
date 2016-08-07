@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.assembly;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.assembly.impl.AbstractBase;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBase;
 
 /**
  * Script Created by ettear on 16-4-29.

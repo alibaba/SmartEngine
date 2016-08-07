@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.modules.common.assembly;
+package com.alibaba.smart.framework.engine.model.assembly;
 
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 

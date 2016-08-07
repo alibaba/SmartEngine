@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.model.artifact;
+package com.alibaba.smart.framework.engine.model.assembly;
 
 /**
  * Created by ettear on 16-4-11.

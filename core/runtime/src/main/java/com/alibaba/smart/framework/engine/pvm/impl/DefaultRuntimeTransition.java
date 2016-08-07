@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstant;
-import com.alibaba.smart.framework.engine.model.artifact.Transition;
+import com.alibaba.smart.framework.engine.model.assembly.Transition;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 

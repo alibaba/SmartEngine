@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.model.artifact;
+package com.alibaba.smart.framework.engine.model.assembly;
 //package com.alibaba.smart.framework.engine.assembly;
 //
 //import java.util.List;

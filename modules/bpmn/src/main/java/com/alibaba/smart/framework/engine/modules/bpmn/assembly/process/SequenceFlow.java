@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import com.alibaba.smart.framework.engine.assembly.Handler;
-import com.alibaba.smart.framework.engine.assembly.impl.AbstractTransition;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTransition;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.ExtensionElements;
