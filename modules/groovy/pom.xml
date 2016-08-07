@@ -13,7 +13,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>engine.core.spi.handler</artifactId>
+			<artifactId>engine.core.runtime</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

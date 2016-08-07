@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.process.behavior.task;
 
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;

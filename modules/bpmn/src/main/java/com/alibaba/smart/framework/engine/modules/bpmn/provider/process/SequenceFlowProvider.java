@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.process;
 
 import com.alibaba.smart.framework.engine.assembly.Handler;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensibility.HandlerProviderExtensionPoint;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;

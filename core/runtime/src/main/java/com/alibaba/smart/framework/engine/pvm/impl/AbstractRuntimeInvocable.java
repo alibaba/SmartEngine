@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.Data;
 
 import com.alibaba.smart.framework.engine.context.InstanceContext;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.impl.DoNothingInvoker;
 import com.alibaba.smart.framework.engine.invocation.message.Message;

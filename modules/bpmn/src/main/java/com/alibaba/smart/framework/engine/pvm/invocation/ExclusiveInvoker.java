@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.pvm.invocation;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.impl.AbstractTransitionSelectInvoker;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;

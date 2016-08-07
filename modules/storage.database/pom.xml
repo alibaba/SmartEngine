@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>engine.core.base</artifactId>
+			<artifactId>engine.core.runtime</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

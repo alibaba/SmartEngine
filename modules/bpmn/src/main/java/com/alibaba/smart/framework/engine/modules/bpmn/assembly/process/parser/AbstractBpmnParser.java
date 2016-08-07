@@ -3,11 +3,11 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parser.impl.AbstractStAXArtifactParser;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
 
 /**
  * Created by ettear on 16-4-29.

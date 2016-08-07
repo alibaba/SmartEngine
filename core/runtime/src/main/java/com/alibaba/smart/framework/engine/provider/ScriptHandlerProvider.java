@@ -1,7 +1,7 @@
 //package com.alibaba.smart.framework.engine.provider;
 //
 //import com.alibaba.smart.framework.engine.assembly.Script;
-//import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+//import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 //import com.alibaba.smart.framework.engine.invocation.Invoker;
 //import com.alibaba.smart.framework.engine.script.ScriptCompilerExtensionPoint;
 //

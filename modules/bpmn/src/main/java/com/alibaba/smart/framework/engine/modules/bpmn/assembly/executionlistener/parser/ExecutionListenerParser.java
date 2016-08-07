@@ -4,13 +4,13 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
-import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.assembly.parser.impl.AbstractStAXArtifactParser;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.executionlistener.ExecutionListener;
 import com.alibaba.smart.framework.engine.modules.common.assembly.SmartBase;
+import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
 
 public class ExecutionListenerParser extends AbstractStAXArtifactParser<ExecutionListener> implements StAXArtifactParser<ExecutionListener> {
 

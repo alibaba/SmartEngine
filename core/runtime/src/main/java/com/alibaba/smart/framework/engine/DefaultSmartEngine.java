@@ -6,10 +6,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.extensibility.ClassLoaderExtensionPoint;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensibility.exception.ExtensionPointLoadException;
-import com.alibaba.smart.framework.engine.extensibility.impl.DefaultExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ClassLoaderExtensionPoint;
+import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointLoadException;
 import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.service.ExecutionService;
 import com.alibaba.smart.framework.engine.service.ProcessService;

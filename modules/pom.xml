@@ -13,7 +13,6 @@
 	<name>Smart Engine Modules</name>
 
 	<modules>
-		<module>common</module>
 		<module>bpmn</module>
 		<module>mvel</module>
 		<module>groovy</module>

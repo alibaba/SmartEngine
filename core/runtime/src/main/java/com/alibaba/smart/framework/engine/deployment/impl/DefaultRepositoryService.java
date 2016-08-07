@@ -15,14 +15,11 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.assembly.parser.AssemblyParserExtensionPoint;
-import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
@@ -44,6 +41,9 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcess;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcessComponent;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeTransition;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
+import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
+import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
 /**
  * 默认部署器 Created by ettear on 16-4-13.

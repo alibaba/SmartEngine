@@ -6,7 +6,7 @@ import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;

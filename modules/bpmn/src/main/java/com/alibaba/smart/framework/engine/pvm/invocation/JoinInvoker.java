@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.context.InstanceContext;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;

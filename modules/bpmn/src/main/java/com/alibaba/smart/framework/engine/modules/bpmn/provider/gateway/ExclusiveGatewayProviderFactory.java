@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.gateway;
 
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;

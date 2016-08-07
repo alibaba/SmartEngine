@@ -8,7 +8,7 @@
 //import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 //import com.alibaba.smart.framework.engine.exception.DeployException;
 //import com.alibaba.smart.framework.engine.exception.EngineException;
-//import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+//import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 //import com.alibaba.smart.framework.process.configuration.ProcessEngineConfiguration;
 //import com.alibaba.smart.framework.process.context.ProcessContext;
 //import com.alibaba.smart.framework.process.context.ProcessContextHolder;

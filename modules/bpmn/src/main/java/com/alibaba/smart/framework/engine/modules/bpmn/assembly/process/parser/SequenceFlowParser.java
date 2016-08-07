@@ -5,14 +5,14 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.assembly.Handler;
-import com.alibaba.smart.framework.engine.assembly.parser.ParseContext;
-import com.alibaba.smart.framework.engine.assembly.parser.StAXArtifactParser;
-import com.alibaba.smart.framework.engine.assembly.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
+import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
 public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> implements StAXArtifactParser<SequenceFlow> {
 

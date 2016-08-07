@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;

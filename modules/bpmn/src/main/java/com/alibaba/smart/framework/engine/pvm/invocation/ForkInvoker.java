@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.extensibility.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
 import com.alibaba.smart.framework.engine.invocation.impl.AbstractTransitionSelectInvoker;
