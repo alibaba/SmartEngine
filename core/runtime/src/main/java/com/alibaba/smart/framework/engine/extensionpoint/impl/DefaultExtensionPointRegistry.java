@@ -23,7 +23,7 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
     private Map<Class<?>, Object> extensionPoints = new ConcurrentHashMap<>();
 
     public DefaultExtensionPointRegistry(SmartEngine engine) {
-        this.setExtensionPointRegistry(this);
+        super.setExtensionPointRegistry(this);
         this.extensionPoints.put(SmartEngine.class, engine);
     }
 

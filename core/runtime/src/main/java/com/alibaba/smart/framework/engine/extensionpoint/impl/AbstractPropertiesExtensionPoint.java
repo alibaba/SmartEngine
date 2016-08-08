@@ -42,10 +42,11 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
     @Override
     public void load(String moduleName, ClassLoader classLoader) throws ExtensionPointLoadException {
         Enumeration<URL> extensionConfigFiles;
+        String extensionName = getExtensionName();
         try {
-            extensionConfigFiles = classLoader.getResources("smart/" + getExtensionName() + ".properties");
+            extensionConfigFiles = classLoader.getResources("smart/" + extensionName + ".properties");
         } catch (IOException e) {
-            throw new ExtensionPointLoadException("Scan config file " + getExtensionName() + " failure!", e);
+            throw new ExtensionPointLoadException("Scan config file " + extensionName + " failure!", e);
         }
         if (null != extensionConfigFiles) {
             while (extensionConfigFiles.hasMoreElements()) {

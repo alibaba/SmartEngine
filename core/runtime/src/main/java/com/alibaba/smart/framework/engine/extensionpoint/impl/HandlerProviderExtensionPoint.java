@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.extensibility;
+package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
 import com.alibaba.smart.framework.engine.assembly.Handler;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
@@ -11,3 +11,5 @@ public interface HandlerProviderExtensionPoint extends LifeCycleListener {
 
     Invoker createInvoker(Handler handler);
 }
+
+ 
