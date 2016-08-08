@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.mvel;
 
-import com.alibaba.smart.framework.engine.assembly.Script;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
+import com.alibaba.smart.framework.engine.model.assembly.Script;
 import com.alibaba.smart.framework.engine.script.ScriptCompiler;
 
 /**

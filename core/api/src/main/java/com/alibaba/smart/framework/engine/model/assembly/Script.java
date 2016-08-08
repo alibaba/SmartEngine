@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.assembly;
+package com.alibaba.smart.framework.engine.model.assembly;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

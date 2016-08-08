@@ -5,8 +5,8 @@ import javax.xml.namespace.QName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import com.alibaba.smart.framework.engine.model.assembly.Extensions;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
-import com.alibaba.smart.framework.engine.modules.common.assembly.Extensions;
 
 /**
  * Created by ettear on 16-4-29.

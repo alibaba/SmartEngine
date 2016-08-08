@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
-import com.alibaba.smart.framework.engine.assembly.Handler;
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
+import com.alibaba.smart.framework.engine.model.assembly.Handler;
 
 /**
  * HandlerProviderExtensionPoint Created by ettear on 16-4-29.

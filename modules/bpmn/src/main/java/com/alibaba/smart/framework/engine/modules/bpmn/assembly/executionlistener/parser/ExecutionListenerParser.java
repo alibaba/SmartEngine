@@ -5,8 +5,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.assembly.SmartBase;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.executionlistener.ExecutionListener;
-import com.alibaba.smart.framework.engine.modules.common.assembly.SmartBase;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
