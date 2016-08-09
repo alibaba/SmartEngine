@@ -14,12 +14,12 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
  */
 public class DefaultProcessContainer implements ProcessContainer {
 
-    private final static String         DEFAULT_VERSION   = "1.0.0";
-    private final static String         DEFAULT_NAMESPACE = "smart";
+    private final static String     DEFAULT_VERSION   = "1.0.0";
+    private final static String     DEFAULT_NAMESPACE = "smart";
 
     // private Map<String, Map<String, RuntimeProcessComponent>> processes = new ConcurrentHashMap<>();
     private Map<String, PvmProcess> processes         = new ConcurrentHashMap<>();
-    private String                      namespace         = DEFAULT_NAMESPACE;
+    private String                  namespace         = DEFAULT_NAMESPACE;
 
     @Override
     public void install(PvmProcessComponent processComponent) {

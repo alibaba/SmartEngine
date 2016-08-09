@@ -14,53 +14,49 @@ import com.alibaba.smart.framework.engine.script.ScriptCompilerExtensionPoint;
 /**
  * DefaultScriptCompilerExtensionPoint Created by ettear on 16-4-29.
  */
-public class DefaultScriptCompilerExtensionPoint extends
-		AbstractPropertiesExtensionPoint implements
-		ScriptCompilerExtensionPoint, LifeCycleListener {
+public class DefaultScriptCompilerExtensionPoint extends AbstractPropertiesExtensionPoint implements ScriptCompilerExtensionPoint, LifeCycleListener {
 
-	private Map<String, ScriptCompiler> scriptCompilers = new ConcurrentHashMap<>();
+    private Map<String, ScriptCompiler> scriptCompilers = new ConcurrentHashMap<>();
 
-	@Override
-	public Invoker compile(Script script) {
-		ScriptCompiler scriptCompiler = this.scriptCompilers.get(script
-				.getType());
-		if (null != scriptCompiler) {
-			return scriptCompiler.compile(script);
-		} else {
-			throw new EngineException("No scriptCompiler found for "
-					+ script.getType());
-		}
-	}
+    @Override
+    public Invoker compile(Script script) {
+        ScriptCompiler scriptCompiler = this.scriptCompilers.get(script.getType());
+        if (null != scriptCompiler) {
+            return scriptCompiler.compile(script);
+        } else {
+            throw new EngineException("No scriptCompiler found for " + script.getType());
+        }
+    }
 
-	@Override
-	protected void initExtension(ClassLoader classLoader, String type,
-			Object scriptCompilerObject) throws ExtensionPointLoadException {
-		if (scriptCompilerObject instanceof ScriptCompiler) {
-			ScriptCompiler scriptCompiler = (ScriptCompiler) scriptCompilerObject;
-			this.scriptCompilers.put(scriptCompiler.getType(), scriptCompiler);
-		}
-	}
+    @Override
+    protected void initExtension(ClassLoader classLoader, String type, Object scriptCompilerObject)
+                                                                                                   throws ExtensionPointLoadException {
+        if (scriptCompilerObject instanceof ScriptCompiler) {
+            ScriptCompiler scriptCompiler = (ScriptCompiler) scriptCompilerObject;
+            this.scriptCompilers.put(scriptCompiler.getType(), scriptCompiler);
+        }
+    }
 
-	@Override
-	public void start() {
-		for (ScriptCompiler scriptCompiler : scriptCompilers.values()) {
-			if (scriptCompiler instanceof LifeCycleListener) {
-				((LifeCycleListener) scriptCompiler).start();
-			}
-		}
-	}
+    @Override
+    public void start() {
+        for (ScriptCompiler scriptCompiler : scriptCompilers.values()) {
+            if (scriptCompiler instanceof LifeCycleListener) {
+                ((LifeCycleListener) scriptCompiler).start();
+            }
+        }
+    }
 
-	@Override
-	public void stop() {
-		for (ScriptCompiler scriptCompiler : scriptCompilers.values()) {
-			if (scriptCompiler instanceof LifeCycleListener) {
-				((LifeCycleListener) scriptCompiler).stop();
-			}
-		}
-	}
+    @Override
+    public void stop() {
+        for (ScriptCompiler scriptCompiler : scriptCompilers.values()) {
+            if (scriptCompiler instanceof LifeCycleListener) {
+                ((LifeCycleListener) scriptCompiler).stop();
+            }
+        }
+    }
 
-	@Override
-	protected String getExtensionName() {
-		return "script-compiler";
-	}
+    @Override
+    protected String getExtensionName() {
+        return "script-compiler";
+    }
 }

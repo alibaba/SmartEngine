@@ -11,7 +11,6 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.smart.framework.engine.extensionpoint.ClassLoaderExtensionPoint;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointLoadException;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
@@ -19,8 +18,9 @@ import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 /**
  * 配置文件扩展点 Created by ettear on 16-4-12.
  */
-public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExtensionPoint {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPropertiesExtensionPoint.class);
+public abstract class AbstractPropertiesExtensionPoint implements ExtensionPointRegistry {
+
+    private static final Logger    LOGGER = LoggerFactory.getLogger(AbstractPropertiesExtensionPoint.class);
     /**
      * 扩展点注册器
      */
@@ -51,8 +51,8 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
         if (null != extensionConfigFiles) {
             while (extensionConfigFiles.hasMoreElements()) {
                 URL extensionConfigFile = extensionConfigFiles.nextElement();
-                LOGGER.debug("Load properties from the resource: "+extensionConfigFile);
-                
+                LOGGER.debug("Load properties from the resource: " + extensionConfigFile);
+
                 Properties properties = new Properties();
                 InputStream openStream = null;
                 try {
@@ -61,14 +61,14 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
                 } catch (IOException e) {
                     throw new ExtensionPointLoadException("Load config file " + extensionConfigFile.toString()
                                                           + " failure!", e);
-                }finally{
+                } finally {
                     IOUtil.closeQuietly(openStream);
                 }
-                
-                LOGGER.debug("The properties content is: "+properties);
-                
+
+                LOGGER.debug("The properties content is: " + properties);
+
                 if (!properties.isEmpty()) {
-                    
+
                     for (Map.Entry<Object, Object> propertyEntry : properties.entrySet()) {
                         String entensionEntryKey = (String) propertyEntry.getKey();
                         String entensionEntryValue = (String) propertyEntry.getValue();
@@ -81,7 +81,7 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
 
     @SuppressWarnings("rawtypes")
     protected void initExtension(ClassLoader classLoader, String entensionEntryKey, String entensionEntryValue)
-                                                                                        throws ExtensionPointLoadException {
+                                                                                                               throws ExtensionPointLoadException {
         Class<?> extensionValueClass;
         try {
             extensionValueClass = classLoader.loadClass(entensionEntryValue);
@@ -98,7 +98,8 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
                 Constructor constructor = extensionValueClass.getConstructor();
                 extensionValueObject = constructor.newInstance();
             } catch (Exception ex) {
-                throw new ExtensionPointLoadException("Instance constructor for class " + entensionEntryValue + " !", ex);
+                throw new ExtensionPointLoadException("Instance constructor for class " + entensionEntryValue + " !",
+                                                      ex);
             }
         }
         this.initExtension(classLoader, entensionEntryKey, extensionValueObject);
@@ -112,7 +113,7 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
      * @throws ExtensionPointLoadException
      */
     protected abstract void initExtension(ClassLoader classLoader, String entensionEntryKey, Object object)
-                                                                                              throws ExtensionPointLoadException;
+                                                                                                           throws ExtensionPointLoadException;
 
     /**
      * 扩展点名称
@@ -123,5 +124,10 @@ public abstract class AbstractPropertiesExtensionPoint implements ClassLoaderExt
 
     public void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
+    }
+    
+    @Override
+    public <T> T getExtensionPoint(Class<T> extensionPointType) {
+        throw new RuntimeException("not implemented");
     }
 }

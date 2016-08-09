@@ -34,9 +34,9 @@ import com.alibaba.smart.framework.engine.service.ExecutionService;
 @EqualsAndHashCode(callSuper = true)
 public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> implements PvmProcess {
 
-    private String                         uri;
+    private String                     uri;
 
-    private ClassLoader                    classLoader;
+    private ClassLoader                classLoader;
 
     private Map<String, PvmActivity>   activities;
 
@@ -54,7 +54,8 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         // 从扩展注册机获取实例工厂
         ExecutionInstanceFactory executionInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(ExecutionInstanceFactory.class);
         ActivityInstanceFactory activityInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(ActivityInstanceFactory.class);
-//        InstanceFactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
+        // InstanceFactFactory factFactory =
+        // this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
 
         // 流程实例ID
         ProcessInstance processInstance = context.getProcessInstance();
@@ -68,7 +69,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         if (null == executionInstance) {
             executionInstance = executionInstanceFactory.create();
             executionInstance.setProcessInstanceId(processInstanceId);
-//            processInstance.setFact(factFactory.create());
+            // processInstance.setFact(factFactory.create());
             processInstance.addExecution(executionInstance);// 执行实例添加到流程实例
             context.setCurrentExecution(executionInstance);// 执行实例添加到当前上下文中
         }
@@ -106,8 +107,8 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
 
             Map<String, Object> variables = new HashMap<>();
             // TODO ettear 或者用子流程事实做为主流程活动事实?
-//            variables.putAll(context.getProcessInstance().getFact());
-//            variables.putAll(context.getCurrentExecution().getFact());
+            // variables.putAll(context.getProcessInstance().getFact());
+            // variables.putAll(context.getCurrentExecution().getFact());
             ProcessInstance parentProcessInstance = executionManager.signal(processInstance.getParentInstanceId(),
                                                                             processInstance.getParentExecutionInstanceId(),
                                                                             variables);
@@ -145,7 +146,8 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         // 创建子流程上下文
         InstanceContextFactory instanceContextFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceContextFactory.class);
         ProcessInstanceFactory processInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(ProcessInstanceFactory.class);
-//        InstanceFactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
+        // InstanceFactFactory factFactory =
+        // this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
 
         InstanceContext subInstanceContext = instanceContextFactory.create();
         ProcessInstance processInstance = processInstanceFactory.create();
@@ -153,7 +155,7 @@ public class DefaultRuntimeProcess extends AbstractRuntimeActivity<Process> impl
         processInstance.setParentInstanceId(currentExecutionInstance.getProcessInstanceId());
         processInstance.setParentExecutionInstanceId(currentExecutionInstance.getInstanceId());
         processInstance.setParentActivityInstanceId(currentExecutionInstance.getActivity().getInstanceId());
-//        processInstance.setFact(factFactory.create());
+        // processInstance.setFact(factFactory.create());
         subInstanceContext.setProcessInstance(processInstance);
         // TODO ettear 或者用主流程活动事实做为子流程事实?
         // subInstanceContext.setExecutionFact(context.getExecutionFact());

@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.extensionpoint.ClassLoaderExtensionPoint;
 import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointLoadException;
@@ -21,28 +20,34 @@ import com.alibaba.smart.framework.engine.service.TaskService;
  */
 public class DefaultSmartEngine implements SmartEngine {
 
-    private final static String      DEFAULT_MODULE = "framework";
+    private final static String      DEFAULT_MODULE    = "framework";
 
     private ExtensionPointRegistry   extensionPointRegistry;
-    private Map<String, ClassLoader> classLoaders   = new ConcurrentHashMap<>();
+    private Map<String, ClassLoader> classLoaderHolder = new ConcurrentHashMap<>();
 
-    
     private void install(String moduleName, ClassLoader classLoader) throws EngineException {
         if (StringUtils.isBlank(moduleName)) {
             moduleName = DEFAULT_MODULE;
         }
-        if (!this.classLoaders.containsKey(moduleName)) {
+        if (!this.classLoaderHolder.containsKey(moduleName)) {
             try {
                 boolean loaded = false;
-                for (ClassLoader loader : classLoaders.values()) {
+                for (ClassLoader loader : classLoaderHolder.values()) {
                     if (loader == classLoader) {
                         loaded = true;
                         break;
                     }
                 }
-                this.classLoaders.put(moduleName, classLoader);
-                if (!loaded && this.extensionPointRegistry instanceof ClassLoaderExtensionPoint) {
-                    ((ClassLoaderExtensionPoint) this.extensionPointRegistry).load(moduleName, classLoader);
+                this.classLoaderHolder.put(moduleName, classLoader);
+                if (!loaded) {
+                    if (this.extensionPointRegistry instanceof ExtensionPointRegistry) {
+                        ((ExtensionPointRegistry) this.extensionPointRegistry).load(moduleName, classLoader);
+
+                    } else {
+
+                    }
+                } else {
+
                 }
             } catch (ExtensionPointLoadException loadException) {
                 throw new EngineException("Init engine failure!", loadException);
@@ -68,7 +73,7 @@ public class DefaultSmartEngine implements SmartEngine {
         if (StringUtils.isBlank(moduleName)) {
             moduleName = DEFAULT_MODULE;
         }
-        return this.classLoaders.get(moduleName);
+        return this.classLoaderHolder.get(moduleName);
     }
 
     @Override
@@ -94,6 +99,5 @@ public class DefaultSmartEngine implements SmartEngine {
     public ExtensionPointRegistry getExtensionPointRegistry() {
         return extensionPointRegistry;
     }
-
 
 }

@@ -1,12 +1,15 @@
 package com.alibaba.smart.framework.engine.extensionpoint.registry;
 
 import com.alibaba.smart.framework.engine.core.LifeCycleListener;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointLoadException;
 
 /**
- * 扩展点注册器 Created by ettear on 16-4-12.
+ * Class Loader Extension Point Created by ettear on 16-4-12.
  */
-public interface ExtensionPointRegistry extends LifeCycleListener {
+public interface ExtensionPointRegistry  extends LifeCycleListener {
 
+    void load(String moduleName, ClassLoader classLoader) throws ExtensionPointLoadException;
+    
     /**
      * 获取扩展点
      *
@@ -14,4 +17,5 @@ public interface ExtensionPointRegistry extends LifeCycleListener {
      * @return 扩展点
      */
     <T> T getExtensionPoint(Class<T> extensionPointType);
+
 }

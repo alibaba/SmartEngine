@@ -14,8 +14,8 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 public class DefaultExecutionInstance extends AbstractLifeCycleInstance implements ExecutionInstance {
 
     private static final long serialVersionUID = 2323809298485587299L;
-    private String           processInstanceId;
-//    private InstanceFact     fact;
-    private ActivityInstance activity;
-    private boolean          fault;
+    private String            processInstanceId;
+    // private InstanceFact fact;
+    private ActivityInstance  activity;
+    private boolean           fault;
 }

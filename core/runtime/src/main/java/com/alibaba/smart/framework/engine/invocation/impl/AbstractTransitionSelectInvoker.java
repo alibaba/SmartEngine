@@ -27,10 +27,9 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 public abstract class AbstractTransitionSelectInvoker implements Invoker {
 
     private ExtensionPointRegistry extensionPointRegistry;
-    private PvmActivity        runtimeActivity;
+    private PvmActivity            runtimeActivity;
 
-    public AbstractTransitionSelectInvoker(ExtensionPointRegistry extensionPointRegistry,
-                                           PvmActivity runtimeActivity) {
+    public AbstractTransitionSelectInvoker(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         this.extensionPointRegistry = extensionPointRegistry;
         this.runtimeActivity = runtimeActivity;
     }

@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.process;
 import com.alibaba.smart.framework.engine.extensionpoint.impl.HandlerProviderExtensionPoint;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
-import com.alibaba.smart.framework.engine.model.assembly.Handler;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;

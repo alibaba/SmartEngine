@@ -19,7 +19,7 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 @Data
 public class DefaultProcessInstance extends AbstractLifeCycleInstance implements ProcessInstance {
 
-    private static final long serialVersionUID = -201885591457164713L;
+    private static final long              serialVersionUID  = -201885591457164713L;
     private String                         processUri;
     private String                         parentInstanceId;
 
@@ -29,7 +29,7 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     private String                         parentExecutionInstanceId;
     private String                         parentActivityInstanceId;
 
-//    private InstanceFact                   fact;
+    // private InstanceFact fact;
     /**
      * Running executions
      */

@@ -11,10 +11,10 @@ import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
+import com.alibaba.smart.framework.engine.model.assembly.Process;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.model.assembly.Process;
 
 /**
  * DefaultRuntimeProcessDependency Created by ettear on 16-4-21.
@@ -23,13 +23,13 @@ import com.alibaba.smart.framework.engine.model.assembly.Process;
 public class DefaultRuntimeProcessDependency implements PvmProcess {
 
     private PvmProcess                 processProxy;
-    private String                         uri;
-    private String                         refUri;
-    private String                         refProcessId;
-    private String                         refProcessVersion;
+    private String                     uri;
+    private String                     refUri;
+    private String                     refProcessId;
+    private String                     refProcessVersion;
     private Map<String, PvmTransition> incomeTransitions  = new ConcurrentHashMap<>();
     private Map<String, PvmTransition> outcomeTransitions = new ConcurrentHashMap<>();
-    private ExtensionPointRegistry         extensionPointRegistry;
+    private ExtensionPointRegistry     extensionPointRegistry;
 
     public DefaultRuntimeProcessDependency(String refUri) {
         this.refUri = refUri;

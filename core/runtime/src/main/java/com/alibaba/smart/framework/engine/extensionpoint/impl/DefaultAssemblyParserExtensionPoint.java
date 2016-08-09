@@ -24,9 +24,9 @@ import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
  */
 @SuppressWarnings("rawtypes")
 public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPoint implements AssemblyParserExtensionPoint {
- 
+
     private Map<QName, StAXArtifactParser>  artifactParsers        = new ConcurrentHashMap<>();
-    
+
     private Map<QName, StAXAttributeParser> attributeParsers       = new ConcurrentHashMap<>();
 
     private Map<Class, ArtifactParser>      resolveArtifactParsers = new ConcurrentHashMap<>();
@@ -57,7 +57,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
 
     @Override
     protected void initExtension(ClassLoader classLoader, String entensionEntryKey, Object artifactParseObject)
-                                                                                                  throws ExtensionPointLoadException {
+                                                                                                               throws ExtensionPointLoadException {
         if (artifactParseObject instanceof StAXArtifactParser) {
             StAXArtifactParser artifactParser = (StAXArtifactParser) artifactParseObject;
             QName artifactType = artifactParser.getArtifactType();
@@ -82,7 +82,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         if (null != artifactParser) {
             return artifactParser.parse(reader, context);
         } else {
-            throw new RuntimeException("No StAXArtifactParser found for QName: "+type);
+            throw new RuntimeException("No StAXArtifactParser found for QName: " + type);
         }
     }
 
@@ -103,7 +103,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         } else if (StringUtils.equals(type.getNamespaceURI(), attributeName.getNamespaceURI())) {
             return reader.getAttributeValue(attributeName.getNamespaceURI(), attributeName.getLocalPart());
         } else {
-            throw new RuntimeException("No artifactParser found for QName: "+type);
+            throw new RuntimeException("No artifactParser found for QName: " + type);
         }
     }
 
@@ -115,4 +115,6 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
             artifactParser.resolve(model, context);
         }
     }
+
+
 }

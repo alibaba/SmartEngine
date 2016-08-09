@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
  * Created by ettear on 16-4-13.
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class DefaultRuntimeTransition extends AbstractRuntimeInvocable<Transition> implements PvmTransition {
 
     private PvmActivity source;

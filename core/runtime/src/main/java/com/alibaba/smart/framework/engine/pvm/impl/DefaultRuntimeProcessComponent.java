@@ -14,9 +14,9 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
 @Data
 public class DefaultRuntimeProcessComponent implements PvmProcessComponent {
 
-    private String                      id;
-    private String                      version;
-    private ClassLoader                 classLoader;
+    private String                  id;
+    private String                  version;
+    private ClassLoader             classLoader;
     private PvmProcess              process;
     private Map<String, PvmProcess> processes = new HashMap<>();
 

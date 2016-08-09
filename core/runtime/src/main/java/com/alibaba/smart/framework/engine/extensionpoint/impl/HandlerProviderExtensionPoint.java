@@ -11,5 +11,3 @@ public interface HandlerProviderExtensionPoint extends LifeCycleListener {
 
     Invoker createInvoker(Handler handler);
 }
-
- 

@@ -26,7 +26,8 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
     private InstanceContextFactory instanceContextFactory;
     private ProcessInstanceFactory processInstanceFactory;
     ExecutionInstanceFactory       executionInstanceFactory;
-//    private InstanceFactFactory    factFactory;
+
+    // private InstanceFactFactory factFactory;
 
     public DefaultProcessService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -39,7 +40,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
         this.processInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
         this.executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
-//        this.factFactory = this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
+        // this.factFactory = this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
 
     }
 
@@ -55,7 +56,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
 
         ExecutionInstance executionInstance = this.executionInstanceFactory.create();
         executionInstance.setProcessInstanceId(processInstance.getInstanceId());
-//        executionInstance.setFact(factFactory.create(variables));
+        // executionInstance.setFact(factFactory.create(variables));
 
         processInstance.setProcessUri(runtimeProcess.getUri());
         processInstance.addExecution(executionInstance);// 执行实例添加到流程实例

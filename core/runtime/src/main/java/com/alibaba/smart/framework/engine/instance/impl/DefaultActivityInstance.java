@@ -17,7 +17,7 @@ import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 @EqualsAndHashCode(callSuper = true)
 public class DefaultActivityInstance extends AbstractLifeCycleInstance implements ActivityInstance {
 
-    private static final long serialVersionUID = -3395004618384899752L;
+    private static final long        serialVersionUID  = -3395004618384899752L;
     private String                   activityId;
     private String                   processInstanceId;
     private List<TransitionInstance> incomeTransitions = new ArrayList<>();

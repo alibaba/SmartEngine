@@ -104,5 +104,4 @@ public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity> im
         return super.getModel() + ",id is " + super.getId();
     }
 
-
 }
