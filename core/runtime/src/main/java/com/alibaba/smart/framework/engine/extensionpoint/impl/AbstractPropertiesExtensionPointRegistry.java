@@ -12,24 +12,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointLoadException;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointRegistryException;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 
 /**
  * 配置文件扩展点 Created by ettear on 16-4-12.
  */
-public abstract class AbstractPropertiesExtensionPoint implements ExtensionPointRegistry {
+public abstract class AbstractPropertiesExtensionPointRegistry implements ExtensionPointRegistry {
 
-    private static final Logger    LOGGER = LoggerFactory.getLogger(AbstractPropertiesExtensionPoint.class);
+    private static final Logger    LOGGER = LoggerFactory.getLogger(AbstractPropertiesExtensionPointRegistry.class);
     /**
      * 扩展点注册器
      */
     private ExtensionPointRegistry extensionPointRegistry;
 
-    public AbstractPropertiesExtensionPoint() {
+    public AbstractPropertiesExtensionPointRegistry() {
     }
 
-    public AbstractPropertiesExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
+    public AbstractPropertiesExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 
@@ -37,16 +37,16 @@ public abstract class AbstractPropertiesExtensionPoint implements ExtensionPoint
      * 扫描和加载class loader内扩展点配置
      *
      * @param classLoader ClassLoader
-     * @throws ExtensionPointLoadException
+     * @throws ExtensionPointRegistryException
      */
     @Override
-    public void load(String moduleName, ClassLoader classLoader) throws ExtensionPointLoadException {
+    public void register(String moduleName, ClassLoader classLoader) throws ExtensionPointRegistryException {
         Enumeration<URL> extensionConfigFiles;
         String extensionName = getExtensionName();
         try {
             extensionConfigFiles = classLoader.getResources("smart/" + extensionName + ".properties");
         } catch (IOException e) {
-            throw new ExtensionPointLoadException("Scan config file " + extensionName + " failure!", e);
+            throw new ExtensionPointRegistryException("Scan config file " + extensionName + " failure!", e);
         }
         if (null != extensionConfigFiles) {
             while (extensionConfigFiles.hasMoreElements()) {
@@ -59,7 +59,7 @@ public abstract class AbstractPropertiesExtensionPoint implements ExtensionPoint
                     openStream = extensionConfigFile.openStream();
                     properties.load(openStream);
                 } catch (IOException e) {
-                    throw new ExtensionPointLoadException("Load config file " + extensionConfigFile.toString()
+                    throw new ExtensionPointRegistryException("Load config file " + extensionConfigFile.toString()
                                                           + " failure!", e);
                 } finally {
                     IOUtil.closeQuietly(openStream);
@@ -72,7 +72,7 @@ public abstract class AbstractPropertiesExtensionPoint implements ExtensionPoint
                     for (Map.Entry<Object, Object> propertyEntry : properties.entrySet()) {
                         String entensionEntryKey = (String) propertyEntry.getKey();
                         String entensionEntryValue = (String) propertyEntry.getValue();
-                        this.initExtension(classLoader, entensionEntryKey, entensionEntryValue);
+                        this.instantiateAndInitExtension(classLoader, entensionEntryKey, entensionEntryValue);
                     }
                 }
             }
@@ -80,14 +80,14 @@ public abstract class AbstractPropertiesExtensionPoint implements ExtensionPoint
     }
 
     @SuppressWarnings("rawtypes")
-    protected void initExtension(ClassLoader classLoader, String entensionEntryKey, String entensionEntryValue)
-                                                                                                               throws ExtensionPointLoadException {
+    private void instantiateAndInitExtension(ClassLoader classLoader, String entensionEntryKey, String entensionEntryValue)
+                                                                                                               throws ExtensionPointRegistryException {
         Class<?> extensionValueClass;
         try {
             extensionValueClass = classLoader.loadClass(entensionEntryValue);
 
         } catch (ClassNotFoundException e) {
-            throw new ExtensionPointLoadException("Scan config file " + getExtensionName() + " failure!", e);
+            throw new ExtensionPointRegistryException("Scan config file " + getExtensionName() + " failure!", e);
         }
         Object extensionValueObject;
         try {
@@ -98,7 +98,7 @@ public abstract class AbstractPropertiesExtensionPoint implements ExtensionPoint
                 Constructor constructor = extensionValueClass.getConstructor();
                 extensionValueObject = constructor.newInstance();
             } catch (Exception ex) {
-                throw new ExtensionPointLoadException("Instance constructor for class " + entensionEntryValue + " !",
+                throw new ExtensionPointRegistryException("Instance constructor for class " + entensionEntryValue + " !",
                                                       ex);
             }
         }
@@ -110,10 +110,10 @@ public abstract class AbstractPropertiesExtensionPoint implements ExtensionPoint
      *
      * @param type Type
      * @param object Object
-     * @throws ExtensionPointLoadException
+     * @throws ExtensionPointRegistryException
      */
     protected abstract void initExtension(ClassLoader classLoader, String entensionEntryKey, Object object)
-                                                                                                           throws ExtensionPointLoadException;
+                                                                                                           throws ExtensionPointRegistryException;
 
     /**
      * 扩展点名称

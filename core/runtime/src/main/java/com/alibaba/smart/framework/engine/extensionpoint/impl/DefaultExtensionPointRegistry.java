@@ -7,14 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointLoadException;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointRegistryException;
+import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 
 /**
  * 默认扩展注册器实现 Created by ettear on 16-4-12.
  */
-public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPoint {
+public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPointRegistry {
 
     private static final Logger   LOGGER          = LoggerFactory.getLogger(DefaultExtensionPointRegistry.class);
 
@@ -26,14 +26,19 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
     }
 
     @Override
-    public void load(String moduleName, ClassLoader classLoader) throws ExtensionPointLoadException {
-        super.load(moduleName, classLoader);
+    public void register(String moduleName, ClassLoader classLoader) throws ExtensionPointRegistryException {
+        //一层加载:将extensions properties全部加载进来,加载一层扩展点
+        //TODO extensionPoints 这个里面的东西还是比较杂,还可以细化. 太多的instanceof 是有点懒政的.
+        super.register(moduleName, classLoader);
         for (Object extensionPoint : extensionPoints.values()) {
             if (extensionPoint instanceof ExtensionPointRegistry) {
+                LOGGER.debug(extensionPoint.getClass() + " is a ExtensionPointRegistry,so deep into.");
+
+                //两层加载:找到扩展点的扩展点,然后继续加载 
                 ExtensionPointRegistry extensionPointRegistry = (ExtensionPointRegistry) extensionPoint;
-                extensionPointRegistry.load(moduleName, classLoader);
+                extensionPointRegistry.register(moduleName, classLoader);
             } else {
-                LOGGER.debug(extensionPoint.getClass() + " is not a ExtensionPointRegistry,so igonred");
+                LOGGER.debug(extensionPoint.getClass() + " is not a ExtensionPointRegistry,so igonred.");
             }
         }
     }
@@ -48,8 +53,13 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
     public void start() {
         for (Object extensionPoint : extensionPoints.values()) {
             if (extensionPoint instanceof LifeCycleListener) {
+                LOGGER.debug(extensionPoint.getClass() + " is a LifeCycleListener,so deep into.");
+
                 LifeCycleListener lifeCycleListener = (LifeCycleListener) extensionPoint;
                 lifeCycleListener.start();
+            }else{
+                LOGGER.debug(extensionPoint.getClass() + " is not a LifeCycleListener,so ignored.");
+
             }
         }
     }
@@ -67,12 +77,12 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
     @SuppressWarnings("rawtypes")
     @Override
     protected void initExtension(ClassLoader classLoader, String type, Object object)
-                                                                                     throws ExtensionPointLoadException {
+                                                                                     throws ExtensionPointRegistryException {
         Class interfaceClazz;
         try {
             interfaceClazz = classLoader.loadClass(type);
         } catch (ClassNotFoundException e) {
-            throw new ExtensionPointLoadException("Class[" + type + "] not found!", e);
+            throw new ExtensionPointRegistryException("Class[" + type + "] not found!", e);
         }
         this.extensionPoints.put(interfaceClazz, object);
     }

@@ -15,7 +15,6 @@ public abstract class AbstractProcessDefinition extends AbstractBase implements 
 
     private static final long serialVersionUID = -1765647192018309663L;
 
-    private String  id;
 
     private String  name;
 

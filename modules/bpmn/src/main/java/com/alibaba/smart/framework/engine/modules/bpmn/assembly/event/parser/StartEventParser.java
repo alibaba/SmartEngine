@@ -32,6 +32,7 @@ public class StartEventParser extends AbstractBpmnActivityParser<StartEvent> imp
     public StartEvent parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         StartEvent startEvent = new StartEvent();
         startEvent.setId(this.getString(reader, "id"));
+        startEvent.setStartActivity(true);
 
 
         while (this.nextChildElement(reader)) {

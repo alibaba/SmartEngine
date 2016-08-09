@@ -15,12 +15,12 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
+import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
@@ -70,6 +70,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
 
     @Override
     public ProcessDefinition deploy(String moduleName, String uri) throws DeployException {
+        
         ClassLoader classLoader = this.smartEngine.getClassLoader(moduleName);// Find
                                                                               // class
                                                                               // loader

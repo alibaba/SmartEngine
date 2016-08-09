@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.extensionpoint.registry.exception;
 
 /**
- * ExtensionPointLoadException Created by ettear on 16-4-12.
+ * ExtensionPointRegistryException Created by ettear on 16-4-12.
  */
 public class ExtensionPointException extends Exception {
 

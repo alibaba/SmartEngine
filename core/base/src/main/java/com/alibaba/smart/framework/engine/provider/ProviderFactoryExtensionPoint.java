@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.provider;
 
-import com.alibaba.smart.framework.engine.core.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
 
 /**

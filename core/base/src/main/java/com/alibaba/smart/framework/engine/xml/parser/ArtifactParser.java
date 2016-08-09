@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.xml.parser;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.core.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
 
 /**

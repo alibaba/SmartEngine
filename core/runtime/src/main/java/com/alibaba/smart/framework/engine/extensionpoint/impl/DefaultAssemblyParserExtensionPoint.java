@@ -10,7 +10,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointLoadException;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointRegistryException;
 import com.alibaba.smart.framework.engine.xml.parser.ArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -23,7 +23,7 @@ import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
  * 默认处理器扩展点 Created by ettear on 16-4-12.
  */
 @SuppressWarnings("rawtypes")
-public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPoint implements AssemblyParserExtensionPoint {
+public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements AssemblyParserExtensionPoint {
 
     private Map<QName, StAXArtifactParser>  artifactParsers        = new ConcurrentHashMap<>();
 
@@ -57,7 +57,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
 
     @Override
     protected void initExtension(ClassLoader classLoader, String entensionEntryKey, Object artifactParseObject)
-                                                                                                               throws ExtensionPointLoadException {
+                                                                                                               throws ExtensionPointRegistryException {
         if (artifactParseObject instanceof StAXArtifactParser) {
             StAXArtifactParser artifactParser = (StAXArtifactParser) artifactParseObject;
             QName artifactType = artifactParser.getArtifactType();

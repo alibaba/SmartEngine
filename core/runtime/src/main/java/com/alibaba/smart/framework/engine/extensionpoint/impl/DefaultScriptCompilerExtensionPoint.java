@@ -3,10 +3,10 @@ package com.alibaba.smart.framework.engine.extensionpoint.impl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointLoadException;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointRegistryException;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
+import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.Script;
 import com.alibaba.smart.framework.engine.script.ScriptCompiler;
 import com.alibaba.smart.framework.engine.script.ScriptCompilerExtensionPoint;
@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.script.ScriptCompilerExtensionPoint;
 /**
  * DefaultScriptCompilerExtensionPoint Created by ettear on 16-4-29.
  */
-public class DefaultScriptCompilerExtensionPoint extends AbstractPropertiesExtensionPoint implements ScriptCompilerExtensionPoint, LifeCycleListener {
+public class DefaultScriptCompilerExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements ScriptCompilerExtensionPoint, LifeCycleListener {
 
     private Map<String, ScriptCompiler> scriptCompilers = new ConcurrentHashMap<>();
 
@@ -30,7 +30,7 @@ public class DefaultScriptCompilerExtensionPoint extends AbstractPropertiesExten
 
     @Override
     protected void initExtension(ClassLoader classLoader, String type, Object scriptCompilerObject)
-                                                                                                   throws ExtensionPointLoadException {
+                                                                                                   throws ExtensionPointRegistryException {
         if (scriptCompilerObject instanceof ScriptCompiler) {
             ScriptCompiler scriptCompiler = (ScriptCompiler) scriptCompilerObject;
             this.scriptCompilers.put(scriptCompiler.getType(), scriptCompiler);

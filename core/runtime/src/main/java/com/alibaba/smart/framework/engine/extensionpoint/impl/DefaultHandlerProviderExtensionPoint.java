@@ -6,11 +6,11 @@ package com.alibaba.smart.framework.engine.extensionpoint.impl;
 // import java.util.concurrent.ConcurrentHashMap;
 //
 // import com.alibaba.smart.framework.engine.assembly.Handler;
-// import com.alibaba.smart.framework.engine.core.LifeCycleListener;
+// import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 // import com.alibaba.smart.framework.engine.exception.EngineException;
 // import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 // import com.alibaba.smart.framework.engine.extensionpoint.registry.HandlerProviderExtensionPoint;
-// import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointLoadException;
+// import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointRegistryException;
 // import com.alibaba.smart.framework.engine.invocation.Invoker;
 // import com.alibaba.smart.framework.engine.provider.HandlerProvider;
 //
@@ -19,7 +19,7 @@ package com.alibaba.smart.framework.engine.extensionpoint.impl;
 // */
 // @SuppressWarnings("rawtypes")
 //
-// public class DefaultHandlerProviderExtensionPoint extends AbstractPropertiesExtensionPoint implements
+// public class DefaultHandlerProviderExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements
 // HandlerProviderExtensionPoint {
 //
 // private Map<Class, HandlerProvider> providers = new ConcurrentHashMap<>();
@@ -40,7 +40,7 @@ package com.alibaba.smart.framework.engine.extensionpoint.impl;
 //
 // @Override
 // protected void initExtension(ClassLoader classLoader, String type, Object handlerProviderObject)
-// throws ExtensionPointLoadException {
+// throws ExtensionPointRegistryException {
 // if (handlerProviderObject instanceof HandlerProvider) {
 // HandlerProvider handlerProvider = (HandlerProvider) handlerProviderObject;
 // this.providers.put(handlerProvider.getType(), handlerProvider);

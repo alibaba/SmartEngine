@@ -3,9 +3,9 @@ package com.alibaba.smart.framework.engine.extensionpoint.impl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.alibaba.smart.framework.engine.core.LifeCycleListener;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointLoadException;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointRegistryException;
+import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
 
@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
  * 默认Provider工厂扩展点 Created by ettear on 16-4-12.
  */
 @SuppressWarnings("rawtypes")
-public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExtensionPoint implements ProviderFactoryExtensionPoint {
+public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements ProviderFactoryExtensionPoint {
 
     /**
      * Artifact处理器
@@ -44,7 +44,7 @@ public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExte
 
     @Override
     protected void initExtension(ClassLoader classLoader, String type, Object providerFactoryObject)
-                                                                                                    throws ExtensionPointLoadException {
+                                                                                                    throws ExtensionPointRegistryException {
         if (providerFactoryObject instanceof ProviderFactory) {
             ProviderFactory providerFactory = (ProviderFactory) providerFactoryObject;
             this.providerFactories.put(providerFactory.getModelType(), providerFactory);
