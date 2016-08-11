@@ -1,10 +1,10 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
-import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstant;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 /**
  * 抽象Activity Provider实现 Created by ettear on 16-4-20. TODO 职责略不清晰
@@ -29,13 +29,13 @@ public class AbstractActivityProvider<T extends Activity> implements ActivityPro
 
     @Override
     public Invoker createInvoker(String event) {
-        if (AtomicOperationEventConstant.ACTIVITY_START.name().equals(event)) {
+        if (PvmEventConstant.ACTIVITY_START.name().equals(event)) {
             return this.createStartInvoker();
-        } else if (AtomicOperationEventConstant.ACTIVITY_EXECUTE.name().equals(event)) {
+        } else if (PvmEventConstant.ACTIVITY_EXECUTE.name().equals(event)) {
             return this.createExecuteInvoker();
-        } else if (AtomicOperationEventConstant.ACTIVITY_END.name().equals(event)) {
+        } else if (PvmEventConstant.ACTIVITY_END.name().equals(event)) {
             return this.createEndInvoker();
-        } else if (AtomicOperationEventConstant.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
+        } else if (PvmEventConstant.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
             return this.createTransitionSelectInvoker();
         } else {
             return this.createEventInvoker(event);

@@ -9,7 +9,6 @@ import com.alibaba.smart.framework.engine.context.InstanceContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TransitionInstanceFactory;
-import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstant;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
@@ -20,6 +19,7 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 /**
  * Created by ettear on 16-5-4.
@@ -44,7 +44,7 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
             for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
                 PvmTransition runtimeTransition = transitionEntry.getValue();
                 // 执行命中判断逻辑
-                Message result = runtimeTransition.invoke(AtomicOperationEventConstant.TRANSITION_HIT.name(), context);
+                Message result = runtimeTransition.invoke(PvmEventConstant.TRANSITION_HIT.name(), context);
                 if (null != result) {
                     Object resultBody = result.getBody();
                     if (null == resultBody || !(resultBody instanceof Boolean) || !((Boolean) resultBody)) {

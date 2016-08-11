@@ -19,7 +19,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmInvocable;
  * DefaultRuntimeInvocable Created by ettear on 16-4-14.
  */
 @Data
-public abstract class AbstractRuntimeInvocable<M extends IndentityElement> implements PvmInvocable<M>, ProviderRuntimeInvocable {
+public abstract class AbstractPvmInvocable<M extends IndentityElement> implements PvmInvocable<M>, ProviderRuntimeInvocable {
 
     private M                      model;
     private InvocableProvider      provider;

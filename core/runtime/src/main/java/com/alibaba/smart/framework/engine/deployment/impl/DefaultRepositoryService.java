@@ -36,10 +36,10 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeActivity;
-import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcess;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmActivity;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcess;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcessComponent;
-import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeTransition;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -79,10 +79,10 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
         }
 
         ProcessDefinition definition = this.parse(classLoader, uri);
-        PvmProcessComponent runtimeProcessComponent = install(classLoader, definition);
-        if (null == runtimeProcessComponent) {
-            throw new DeployException("Deploy " + uri + " failure!");
-        }
+//        PvmProcessComponent runtimeProcessComponent = install(classLoader, definition);
+//        if (null == runtimeProcessComponent) {
+//            throw new DeployException("Deploy " + uri + " failure!");
+//        }
         return definition;
     }
 
@@ -183,7 +183,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
         int index = 0;
 
         // Build runtime model;
-        DefaultRuntimeProcess runtimeProcess = new DefaultRuntimeProcess();
+        DefaultPvmProcess runtimeProcess = new DefaultPvmProcess();
         runtimeProcess.setExtensionPointRegistry(this.extensionPointRegistry);
         runtimeProcess.setClassLoader(component.getClassLoader());
         runtimeProcess.setModel(process);
@@ -217,7 +217,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     }
                     index++;
 
-                    DefaultRuntimeTransition runtimeTransition = new DefaultRuntimeTransition();
+                    DefaultPvmTransition runtimeTransition = new DefaultPvmTransition();
                     runtimeTransition.setExtensionPointRegistry(this.extensionPointRegistry);
                     runtimeTransition.setModel(transition);
 
@@ -231,7 +231,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     }
                     index++;
 
-                    DefaultRuntimeActivity runtimeActivity = new DefaultRuntimeActivity();
+                    DefaultPvmActivity runtimeActivity = new DefaultPvmActivity();
                     runtimeActivity.setExtensionPointRegistry(this.extensionPointRegistry);
                     runtimeActivity.setModel(activity);
 
@@ -245,11 +245,11 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
 
             // Process Transition Flow
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
-                DefaultRuntimeTransition runtimeTransition = (DefaultRuntimeTransition) runtimeTransitionEntry.getValue();
+                DefaultPvmTransition runtimeTransition = (DefaultPvmTransition) runtimeTransitionEntry.getValue();
                 String sourceRef = runtimeTransition.getModel().getSourceRef();
                 String targetRef = runtimeTransition.getModel().getTargetRef();
-                DefaultRuntimeActivity source = (DefaultRuntimeActivity) runtimeActivities.get(sourceRef);
-                DefaultRuntimeActivity target = (DefaultRuntimeActivity) runtimeActivities.get(targetRef);
+                DefaultPvmActivity source = (DefaultPvmActivity) runtimeActivities.get(sourceRef);
+                DefaultPvmActivity target = (DefaultPvmActivity) runtimeActivities.get(targetRef);
 
                 runtimeTransition.setSource(source);
                 runtimeTransition.setTarget(target);

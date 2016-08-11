@@ -21,7 +21,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class AbstractRuntimeActivity<M extends Activity> extends AbstractRuntimeInvocable<Activity> implements PvmActivity {
+public abstract class AbstractPvmActivity<M extends Activity> extends AbstractPvmInvocable<Activity> implements PvmActivity {
 
     private Map<String, PvmTransition> incomeTransitions  = new ConcurrentHashMap<>();
     private Map<String, PvmTransition> outcomeTransitions = new ConcurrentHashMap<>();
@@ -41,7 +41,7 @@ public abstract class AbstractRuntimeActivity<M extends Activity> extends Abstra
         executionInstance.setStatus(InstanceStatus.running);
         executionInstance.setFault(false);
 
-        Message activityExecuteMessage = this.doExecute(context);
+        Message activityExecuteMessage = this.doInternalExecute(context);
         // 执行失败
         if (activityExecuteMessage.isFault()) {
             executionInstance.setFault(true);
@@ -60,7 +60,7 @@ public abstract class AbstractRuntimeActivity<M extends Activity> extends Abstra
 
     }
 
-    protected abstract Message doExecute(InstanceContext context);
+    protected abstract Message doInternalExecute(InstanceContext context);
 
     @Override
     public boolean isStartActivity() {

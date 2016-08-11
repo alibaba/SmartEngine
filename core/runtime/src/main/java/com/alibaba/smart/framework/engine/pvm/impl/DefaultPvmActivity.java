@@ -10,7 +10,6 @@ import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.context.InstanceContext;
-import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstant;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultActivityTransitionSelectInvoker;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
@@ -21,24 +20,25 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 /**
  * DefaultRuntimeActivity Created by ettear on 16-4-13.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity> implements PvmActivity {
+public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements PvmActivity {
 
     private final static List<String> EXECUTE_EVENTS = new ArrayList<>();
 
     static {
-        EXECUTE_EVENTS.add(AtomicOperationEventConstant.ACTIVITY_START.name());
-        EXECUTE_EVENTS.add(AtomicOperationEventConstant.ACTIVITY_EXECUTE.name());
-        EXECUTE_EVENTS.add(AtomicOperationEventConstant.ACTIVITY_END.name());
+        EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_START.name());
+        EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_EXECUTE.name());
+        EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_END.name());
     }
 
     @Override
-    protected Message doExecute(InstanceContext context) {
+    protected Message doInternalExecute(InstanceContext context) {
         ExecutionInstance executionInstance = context.getCurrentExecution();
         ActivityInstance activityInstance = executionInstance.getActivity();
         TaskInstance taskInstance = activityInstance.getTask();
@@ -84,7 +84,7 @@ public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity> im
 
     @Override
     protected Invoker createDefaultInvoker(String event) {
-        if (AtomicOperationEventConstant.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
+        if (PvmEventConstant.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
             return new DefaultActivityTransitionSelectInvoker(this.getExtensionPointRegistry(), this);
         } else {
             return super.createDefaultInvoker(event);
