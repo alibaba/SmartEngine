@@ -79,10 +79,10 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
         }
 
         ProcessDefinition definition = this.parse(classLoader, uri);
-//        PvmProcessComponent runtimeProcessComponent = install(classLoader, definition);
-//        if (null == runtimeProcessComponent) {
-//            throw new DeployException("Deploy " + uri + " failure!");
-//        }
+        PvmProcessComponent runtimeProcessComponent = install(classLoader, definition);
+        if (null == runtimeProcessComponent) {
+            throw new DeployException("Deploy " + uri + " failure!");
+        }
         return definition;
     }
 
