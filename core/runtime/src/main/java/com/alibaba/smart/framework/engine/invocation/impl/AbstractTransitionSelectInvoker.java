@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TransitionInstanceFactory;
@@ -20,22 +20,21 @@ import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 /**
  * Created by ettear on 16-5-4.
  */
 public abstract class AbstractTransitionSelectInvoker implements Invoker {
 
-    private ExtensionPointRegistry extensionPointRegistry;
     private PvmActivity            runtimeActivity;
 
-    public AbstractTransitionSelectInvoker(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-        this.extensionPointRegistry = extensionPointRegistry;
+    public AbstractTransitionSelectInvoker( PvmActivity runtimeActivity) {
         this.runtimeActivity = runtimeActivity;
     }
 
     @Override
-    public Message invoke(InstanceContext context) {
+    public Message invoke(ExecutionContext context) {
         ExecutionInstance executionInstance = context.getCurrentExecution();
         Map<String, PvmTransition> outcomeTransitions = this.runtimeActivity.getOutcomeTransitions();
         Message message = new DefaultMessage();
@@ -44,7 +43,7 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
             for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
                 PvmTransition runtimeTransition = transitionEntry.getValue();
                 // 执行命中判断逻辑
-                Message result = runtimeTransition.invoke(PvmEventConstant.TRANSITION_HIT.name(), context);
+                Message result = runtimeTransition.fireEvent(PvmEventConstant.TRANSITION_HIT.name(), context);
                 if (null != result) {
                     Object resultBody = result.getBody();
                     if (null == resultBody || !(resultBody instanceof Boolean) || !((Boolean) resultBody)) {
@@ -63,8 +62,9 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
             } else {
                 List<ExecutionInstance> executions = new ArrayList<>();
                 executions.add(executionInstance);
-                message.setBody(this.processExecution(hitTransitions, context.getProcessInstance(), executionInstance,
-                                                      executionInstance.getActivity()));
+                List<ExecutionInstance> processExecution = this.processExecution(hitTransitions, context.getProcessInstance(), executionInstance,
+                                                      executionInstance.getActivity());
+                message.setBody(processExecution);
             }
         } else {// 没有后续节点，结束执行实例
             executionInstance.setStatus(InstanceStatus.completed);
@@ -82,8 +82,9 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
 
     protected void buildExecutionInstance(PvmTransition runtimeTransition, ProcessInstance processInstance,
                                           ExecutionInstance executionInstance, ActivityInstance currentActivityInstance) {
-        TransitionInstanceFactory transitionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(TransitionInstanceFactory.class);
-        ActivityInstanceFactory activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
+        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
+        TransitionInstanceFactory transitionInstanceFactory = extensionPointRegistry.getExtensionPoint(TransitionInstanceFactory.class);
+        ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
         TransitionInstance transitionInstance = transitionInstanceFactory.create();
         transitionInstance.setTransitionId(runtimeTransition.getId());
@@ -103,8 +104,5 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
     protected PvmActivity getRuntimeActivity() {
         return runtimeActivity;
     }
-
-    protected ExtensionPointRegistry getExtensionPointRegistry() {
-        return extensionPointRegistry;
-    }
+ 
 }

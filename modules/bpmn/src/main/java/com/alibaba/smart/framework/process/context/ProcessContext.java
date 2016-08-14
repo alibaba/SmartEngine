@@ -2,8 +2,8 @@ package com.alibaba.smart.framework.process.context;
 
 import lombok.Data;
 
-import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
-import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.process.engine.ProcessEngine;
 
 /**
@@ -15,9 +15,9 @@ public class ProcessContext {
 
     private ProcessEngine    processEngine;
 
-    private ProcessContainer processContainer;
+    private ProcessDefinitionContainer processContainer;
 
-    public PvmProcess get(String processDefinitionId, String version) {
+    public PvmProcessDefinition get(String processDefinitionId, String version) {
         return this.processContainer.get(processDefinitionId, version);
     }
 

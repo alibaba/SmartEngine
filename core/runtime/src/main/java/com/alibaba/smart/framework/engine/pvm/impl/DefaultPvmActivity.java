@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultActivityTransitionSelectInvoker;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
@@ -38,7 +38,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
     }
 
     @Override
-    protected Message doInternalExecute(InstanceContext context) {
+    protected Message doInternalExecute(ExecutionContext context) {
         ExecutionInstance executionInstance = context.getCurrentExecution();
         ActivityInstance activityInstance = executionInstance.getActivity();
         TaskInstance taskInstance = activityInstance.getTask();
@@ -85,14 +85,14 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
     @Override
     protected Invoker createDefaultInvoker(String event) {
         if (PvmEventConstant.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
-            return new DefaultActivityTransitionSelectInvoker(this.getExtensionPointRegistry(), this);
+            return new DefaultActivityTransitionSelectInvoker( this);
         } else {
             return super.createDefaultInvoker(event);
         }
     }
 
-    private Message invokeActivity(String event, InstanceContext context) {
-        Message message = this.invoke(event, context);
+    private Message invokeActivity(String event, ExecutionContext context) {
+        Message message = this.fireEvent(event, context);
         if (null == message) {
             message = new DefaultMessage();
         }

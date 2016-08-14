@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointRegistryException;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 
 /**
@@ -26,7 +26,7 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
     }
 
     @Override
-    public void register(String moduleName, ClassLoader classLoader) throws ExtensionPointRegistryException {
+    public void register(String moduleName, ClassLoader classLoader)   {
         //一层加载:将extensions properties全部加载进来,加载一层扩展点
         //TODO extensionPoints 这个里面的东西还是比较杂,还可以细化. 太多的instanceof 是有点懒政的.
         super.register(moduleName, classLoader);
@@ -76,13 +76,12 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
 
     @SuppressWarnings("rawtypes")
     @Override
-    protected void initExtension(ClassLoader classLoader, String type, Object object)
-                                                                                     throws ExtensionPointRegistryException {
+    protected void initExtension(ClassLoader classLoader, String type, Object object) {
         Class interfaceClazz;
         try {
             interfaceClazz = classLoader.loadClass(type);
         } catch (ClassNotFoundException e) {
-            throw new ExtensionPointRegistryException("Class[" + type + "] not found!", e);
+            throw new EngineException("Class[" + type + "] not found!", e);
         }
         this.extensionPoints.put(interfaceClazz, object);
     }

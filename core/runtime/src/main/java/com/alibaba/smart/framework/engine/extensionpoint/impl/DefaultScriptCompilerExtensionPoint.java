@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointRegistryException;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.Script;
@@ -29,8 +28,7 @@ public class DefaultScriptCompilerExtensionPoint extends AbstractPropertiesExten
     }
 
     @Override
-    protected void initExtension(ClassLoader classLoader, String type, Object scriptCompilerObject)
-                                                                                                   throws ExtensionPointRegistryException {
+    protected void initExtension(ClassLoader classLoader, String type, Object scriptCompilerObject)  {
         if (scriptCompilerObject instanceof ScriptCompiler) {
             ScriptCompiler scriptCompiler = (ScriptCompiler) scriptCompilerObject;
             this.scriptCompilers.put(scriptCompiler.getType(), scriptCompiler);

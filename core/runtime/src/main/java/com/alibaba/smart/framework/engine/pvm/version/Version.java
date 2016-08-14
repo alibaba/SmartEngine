@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.pvm;
+package com.alibaba.smart.framework.engine.pvm.version;
 
 import java.util.ResourceBundle;
 

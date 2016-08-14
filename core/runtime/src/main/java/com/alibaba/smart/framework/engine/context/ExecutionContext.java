@@ -2,11 +2,12 @@ package com.alibaba.smart.framework.engine.context;
 
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 
 /**
  * 实例上下文 Created by ettear on 16-4-11.
  */
-public interface InstanceContext {
+public interface ExecutionContext {
 
     ProcessInstance getProcessInstance();
 
@@ -15,4 +16,8 @@ public interface InstanceContext {
     ExecutionInstance getCurrentExecution();
 
     void setCurrentExecution(ExecutionInstance executionInstance);
+
+    PvmProcessDefinition getPvmProcessDefinition();
+
+    void setPvmProcessDefinition(PvmProcessDefinition pvmProcessDefinition);
 }

@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 /**
  * Created by ettear on 16-5-4.
@@ -21,7 +22,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 public class ForkInvoker extends AbstractTransitionSelectInvoker {
 
     public ForkInvoker(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-        super(extensionPointRegistry, runtimeActivity);
+        super( runtimeActivity);
     }
 
     @Override
@@ -29,7 +30,9 @@ public class ForkInvoker extends AbstractTransitionSelectInvoker {
                                                        ProcessInstance processInstance,
                                                        ExecutionInstance currentExecutionInstance,
                                                        ActivityInstance currentActivityInstance) {
-        ExecutionInstanceFactory executionInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(ExecutionInstanceFactory.class);
+        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
+
+        ExecutionInstanceFactory executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
 //        InstanceFactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
 
         currentExecutionInstance.setStatus(InstanceStatus.completed);

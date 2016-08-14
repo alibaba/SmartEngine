@@ -15,7 +15,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
+import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -33,14 +33,15 @@ import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFacto
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
 import com.alibaba.smart.framework.engine.pvm.ProviderRuntimeInvocable;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmActivity;
-import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcess;
-import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcessComponent;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcessComponent;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
+import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
@@ -53,15 +54,12 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
     /**
      * 扩展点注册器
      */
-    private ExtensionPointRegistry        extensionPointRegistry;
     private SmartEngine                   smartEngine;
     private AssemblyParserExtensionPoint  assemblyParserExtensionPoint;
     private ProviderFactoryExtensionPoint providerFactoryExtensionPoint;
-    private ProcessContainer              processContainer;
+    private ProcessDefinitionContainer              processContainer;
 
-    public DefaultRepositoryService(ExtensionPointRegistry extensionPointRegistry) {
-        this.extensionPointRegistry = extensionPointRegistry;
-    }
+ 
 
     @Override
     public ProcessDefinition deploy(String uri) throws DeployException {
@@ -71,9 +69,8 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
     @Override
     public ProcessDefinition deploy(String moduleName, String uri) throws DeployException {
         
-        ClassLoader classLoader = this.smartEngine.getClassLoader(moduleName);// Find
-                                                                              // class
-                                                                              // loader
+        ClassLoader classLoader = this.smartEngine.getClassLoader(moduleName); 
+        
         if (null == classLoader) {
             throw new DeployException("Module[" + moduleName + "] not found!");
         }
@@ -88,10 +85,12 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
 
     @Override
     public void start() {
-        this.smartEngine = this.extensionPointRegistry.getExtensionPoint(SmartEngine.class);
-        this.assemblyParserExtensionPoint = this.extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
-        this.providerFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
-        this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
+        
+        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
+        this.smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
+        this.assemblyParserExtensionPoint = extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
+        this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
+        this.processContainer = extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
     }
 
     @Override
@@ -158,7 +157,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             if (StringUtils.isBlank(process.getId())) {
                 process.setId("default");
             }
-            PvmProcess runtimeProcess = this.buildRuntimeProcess(process, processComponent, true);
+            PvmProcessDefinition runtimeProcess = this.buildPvmProcessDefinition(process, processComponent, true);
             if (null != runtimeProcess && runtimeProcess instanceof ProviderRuntimeInvocable) {
                 ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
                 ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeProcess);
@@ -174,7 +173,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
     }
 
     @SuppressWarnings("rawtypes")
-    private PvmProcess buildRuntimeProcess(Process process, DefaultRuntimeProcessComponent component, boolean sub) {
+    private PvmProcessDefinition buildPvmProcessDefinition(Process process, DefaultRuntimeProcessComponent component, boolean sub) {
         String idPrefix = "";
         if (sub) {
             idPrefix = process.getId() + "_";
@@ -183,11 +182,10 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
         int index = 0;
 
         // Build runtime model;
-        DefaultPvmProcess runtimeProcess = new DefaultPvmProcess();
-        runtimeProcess.setExtensionPointRegistry(this.extensionPointRegistry);
-        runtimeProcess.setClassLoader(component.getClassLoader());
-        runtimeProcess.setModel(process);
-        component.addProcess(runtimeProcess.getId(), runtimeProcess);
+        DefaultPvmProcessDefinition pvmProcessDefinition = new DefaultPvmProcessDefinition();
+        pvmProcessDefinition.setClassLoader(component.getClassLoader());
+        pvmProcessDefinition.setModel(process);
+        component.addProcess(pvmProcessDefinition.getId(), pvmProcessDefinition);
 
         List<BaseElement> elements = process.getElements();
         if (null != elements && !elements.isEmpty()) {
@@ -203,11 +201,11 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     }
                     index++;
 
-                    PvmProcess runtimeSubProcess = this.buildRuntimeProcess(subProcess, component, true);
+                    PvmProcessDefinition runtimeSubProcess = this.buildPvmProcessDefinition(subProcess, component, true);
                     runtimeActivities.put(runtimeSubProcess.getId(), runtimeSubProcess);
 
                     if (runtimeSubProcess.isStartActivity()) {
-                        runtimeProcess.setStartActivity(runtimeSubProcess);
+                        pvmProcessDefinition.setStartActivity(runtimeSubProcess);
                     }
                 } else if (element instanceof Transition) {
                     Transition transition = (Transition) element;
@@ -218,7 +216,6 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     index++;
 
                     DefaultPvmTransition runtimeTransition = new DefaultPvmTransition();
-                    runtimeTransition.setExtensionPointRegistry(this.extensionPointRegistry);
                     runtimeTransition.setModel(transition);
 
                     runtimeTransitions.put(runtimeTransition.getId(), runtimeTransition);
@@ -232,13 +229,12 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     index++;
 
                     DefaultPvmActivity runtimeActivity = new DefaultPvmActivity();
-                    runtimeActivity.setExtensionPointRegistry(this.extensionPointRegistry);
                     runtimeActivity.setModel(activity);
 
                     runtimeActivities.put(runtimeActivity.getId(), runtimeActivity);
 
                     if (runtimeActivity.isStartActivity()) {
-                        runtimeProcess.setStartActivity(runtimeActivity);
+                        pvmProcessDefinition.setStartActivity(runtimeActivity);
                     }
                 }
             }
@@ -287,9 +283,9 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                 }
             }
 
-            runtimeProcess.setActivities(runtimeActivities);
-            runtimeProcess.setTransitions(runtimeTransitions);
+            pvmProcessDefinition.setActivities(runtimeActivities);
+            pvmProcessDefinition.setTransitions(runtimeTransitions);
         }
-        return runtimeProcess;
+        return pvmProcessDefinition;
     }
 }

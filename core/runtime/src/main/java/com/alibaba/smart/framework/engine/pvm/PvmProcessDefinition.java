@@ -1,13 +1,13 @@
 package com.alibaba.smart.framework.engine.pvm;
 
-import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
 
 /**
  * RuntimeProcess Created by ettear on 16-4-12.
  */
-public interface PvmProcess extends PvmActivity {
+public interface PvmProcessDefinition extends PvmActivity {
 
     String getUri();
 
@@ -24,7 +24,7 @@ public interface PvmProcess extends PvmActivity {
      * @param context 实例上下文
      * @return 是否暂停
      */
-    Message run(InstanceContext context);
+    Message run(ExecutionContext context);
 
     /**
      * 继续执行流程
@@ -32,6 +32,6 @@ public interface PvmProcess extends PvmActivity {
      * @param context 实例上下文
      * @return 是否暂停
      */
-    Message resume(InstanceContext context);
+    Message resume(ExecutionContext context);
 
 }

@@ -6,8 +6,10 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.alibaba.smart.framework.engine.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.service.ProcessService;
@@ -17,8 +19,10 @@ public class BpmnProcessTest {
 
 	@Test
 	public void testExclusive() throws Exception {
+	    ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration(); 
+	    
 		SmartEngine smartEngine = new DefaultSmartEngine();
-		smartEngine.init();
+		smartEngine.init(processEngineConfiguration);
 
 		RepositoryService repositoryService = smartEngine
 				.getRepositoryService();

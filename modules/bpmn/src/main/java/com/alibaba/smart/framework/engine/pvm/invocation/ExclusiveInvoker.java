@@ -17,7 +17,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 public class ExclusiveInvoker extends AbstractTransitionSelectInvoker {
 
     public ExclusiveInvoker(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-        super(extensionPointRegistry, runtimeActivity);
+        super( runtimeActivity);
     }
 
     @Override

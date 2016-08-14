@@ -7,8 +7,9 @@ import java.util.Map;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
@@ -22,17 +23,18 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.service.ExecutionService;
+import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 /**
  * DefaultRuntimeProcess Created by ettear on 16-4-12.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DefaultPvmProcess extends AbstractPvmActivity<Process> implements PvmProcess {
+public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> implements PvmProcessDefinition {
 
     private String                     uri;
 
@@ -50,12 +52,14 @@ public class DefaultPvmProcess extends AbstractPvmActivity<Process> implements P
     }
 
     @Override
-    public Message run(InstanceContext context) {
+    public Message run(ExecutionContext context) {
         // 从扩展注册机获取实例工厂
-        ExecutionInstanceFactory executionInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(ExecutionInstanceFactory.class);
-        ActivityInstanceFactory activityInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(ActivityInstanceFactory.class);
+        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
+
+        ExecutionInstanceFactory executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
+        ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
         // InstanceFactFactory factFactory =
-        // this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
+        // extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
 
         // 流程实例ID
         ProcessInstance processInstance = context.getProcessInstance();
@@ -79,13 +83,16 @@ public class DefaultPvmProcess extends AbstractPvmActivity<Process> implements P
         processInstance.setStatus(InstanceStatus.running);
 
         // 执行流程启动事件
-        this.invoke(PvmEventConstant.PROCESS_START.name(), context);
+        this.fireEvent(PvmEventConstant.PROCESS_START.name(), context);
         // 从开始节点开始执行
         return this.runProcess(this.startActivity, context);
     }
 
     @Override
-    public Message resume(InstanceContext context) {
+    public Message resume(ExecutionContext context) {
+        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
+
+        
         ProcessInstance processInstance = context.getProcessInstance();
 
         if (InstanceStatus.completed == processInstance.getStatus()) {
@@ -103,7 +110,7 @@ public class DefaultPvmProcess extends AbstractPvmActivity<Process> implements P
 
         Message processMessage = this.runProcess(runtimeActivity, context);
         if (!processMessage.isSuspend()) {
-            ExecutionService executionManager = this.getExtensionPointRegistry().getExtensionPoint(ExecutionService.class);
+            ExecutionService executionManager = extensionPointRegistry.getExtensionPoint(ExecutionService.class);
 
             Map<String, Object> variables = new HashMap<>();
             // TODO ettear 或者用子流程事实做为主流程活动事实?
@@ -125,12 +132,15 @@ public class DefaultPvmProcess extends AbstractPvmActivity<Process> implements P
     }
 
     @Override
-    protected Message doInternalExecute(InstanceContext context) {
+    protected Message doInternalExecute(ExecutionContext context) {
+        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
+
+        
         ExecutionInstance currentExecutionInstance = context.getCurrentExecution();
         ActivityInstance activityInstance = currentExecutionInstance.getActivity();
 
         // 查询子流程
-        ProcessInstanceStorage processInstanceStorage = this.getExtensionPointRegistry().getExtensionPoint(ProcessInstanceStorage.class);
+        ProcessInstanceStorage processInstanceStorage =extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
         ProcessInstance subProcessInstance = processInstanceStorage.findSubProcess(activityInstance.getInstanceId());
         // 子流程没有结束
         if (InstanceStatus.completed != subProcessInstance.getStatus()) {
@@ -144,12 +154,12 @@ public class DefaultPvmProcess extends AbstractPvmActivity<Process> implements P
         currentExecutionInstance.setStatus(InstanceStatus.suspended);
 
         // 创建子流程上下文
-        InstanceContextFactory instanceContextFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceContextFactory.class);
-        ProcessInstanceFactory processInstanceFactory = this.getExtensionPointRegistry().getExtensionPoint(ProcessInstanceFactory.class);
+        InstanceContextFactory instanceContextFactory = extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
+        ProcessInstanceFactory processInstanceFactory = extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
         // InstanceFactFactory factFactory =
-        // this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
+        // extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
 
-        InstanceContext subInstanceContext = instanceContextFactory.create();
+        ExecutionContext subInstanceContext = instanceContextFactory.create();
         ProcessInstance processInstance = processInstanceFactory.create();
         processInstance.setProcessUri(this.getUri());
         processInstance.setParentInstanceId(currentExecutionInstance.getProcessInstanceId());
@@ -163,22 +173,25 @@ public class DefaultPvmProcess extends AbstractPvmActivity<Process> implements P
         return this.run(subInstanceContext);
     }
 
-    private Message runProcess(PvmActivity startActivity, InstanceContext context) {
+    private Message runProcess(PvmActivity startActivity, ExecutionContext context) {
+        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
+
+        
         Message processMessage = this.executeActivity(startActivity, context);
         ProcessInstance processInstance = context.getProcessInstance();
         if (!processMessage.isSuspend()) {
             // 流程结束
-            this.invoke(PvmEventConstant.PROCESS_END.name(), context);
+            this.fireEvent(PvmEventConstant.PROCESS_END.name(), context);
             processInstance.setStatus(InstanceStatus.completed);
         } else {
             processInstance.setStatus(InstanceStatus.suspended);
         }
         // 存储流程实例
-        this.getExtensionPointRegistry().getExtensionPoint(ProcessInstanceStorage.class).save(context.getProcessInstance());
+        extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class).save(context.getProcessInstance());
         return processMessage;
     }
 
-    private Message executeActivity(PvmActivity runtimeActivity, InstanceContext context) {
+    private Message executeActivity(PvmActivity runtimeActivity, ExecutionContext context) {
         // 执行当前节点
         Message activityExecuteMessage = runtimeActivity.execute(context);
 
@@ -189,7 +202,7 @@ public class DefaultPvmProcess extends AbstractPvmActivity<Process> implements P
         }
 
         // 执行后续节点选择
-        Message transitionSelectMessage = runtimeActivity.invoke(PvmEventConstant.ACTIVITY_TRANSITION_SELECT.name(),
+        Message transitionSelectMessage = runtimeActivity.fireEvent(PvmEventConstant.ACTIVITY_TRANSITION_SELECT.name(),
                                                                  context);
         if (null != transitionSelectMessage) {
             Object transitionSelectBody = transitionSelectMessage.getBody();

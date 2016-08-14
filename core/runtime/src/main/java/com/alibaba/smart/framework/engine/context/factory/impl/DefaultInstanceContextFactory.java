@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.context.factory.impl;
 
-import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.context.impl.DefaultInstanceContext;
 
@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.context.impl.DefaultInstanceContext;
 public class DefaultInstanceContextFactory implements InstanceContextFactory {
 
     @Override
-    public InstanceContext create() {
+    public ExecutionContext create() {
         return new DefaultInstanceContext();
     }
 }

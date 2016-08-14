@@ -6,11 +6,11 @@ import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactor
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 import com.alibaba.smart.framework.process.behavior.AbstractActivityBehavior;
 import com.alibaba.smart.framework.process.context.ProcessContext;
 import com.alibaba.smart.framework.process.context.ProcessContextHolder;
 import com.alibaba.smart.framework.process.session.ExecutionSession;
-import com.alibaba.smart.framework.process.session.util.ThreadLocalExecutionSessionUtil;
 
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
@@ -43,11 +43,11 @@ public class StartEventBehavior extends AbstractActivityBehavior {
         ActivityInstance activityInstance = activityInstanceFactory.create();
         activityInstance.setProcessInstanceId(processInstanceId);
 
-        ExecutionSession executionSession = ThreadLocalExecutionSessionUtil.get();
-        activityInstance.setActivityId(executionSession.getCurrentRuntimeActivity().getId());
-        processInstance.addActivityInstance(activityInstance);
-
-        executionSession.setProcessInstance(processInstance);
+//        ExecutionSession executionSession = ThreadLocalUtil.get();
+//        activityInstance.setActivityId(executionSession.getCurrentRuntimeActivity().getId());
+//        processInstance.addActivityInstance(activityInstance);
+//
+//        executionSession.setProcessInstance(processInstance);
 
         // TODO 这段逻辑要结合store 一起看下
 

@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.provider.impl;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
-import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 /**
@@ -11,9 +11,9 @@ import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
  */
 public class AbstractProcessProvider<T extends Process> implements ActivityProvider<T> {
 
-    private PvmProcess runtimeProcess;
+    private PvmProcessDefinition runtimeProcess;
 
-    public AbstractProcessProvider(PvmProcess runtimeProcess) {
+    public AbstractProcessProvider(PvmProcessDefinition runtimeProcess) {
         this.runtimeProcess = runtimeProcess;
     }
 
@@ -50,7 +50,7 @@ public class AbstractProcessProvider<T extends Process> implements ActivityProvi
         return null;
     }
 
-    protected PvmProcess getRuntimeProcess() {
+    protected PvmProcessDefinition getRuntimeProcess() {
         return runtimeProcess;
     }
 }

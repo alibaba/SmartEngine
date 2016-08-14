@@ -1,12 +1,12 @@
 package com.alibaba.smart.framework.engine.deployment;
 
-import com.alibaba.smart.framework.engine.pvm.PvmProcess;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 
 /**
  * 流程容器 Created by ettear on 16-4-19.
  */
-public interface ProcessContainer {
+public interface ProcessDefinitionContainer {
 
     /**
      * 安装流程
@@ -22,7 +22,7 @@ public interface ProcessContainer {
      * @param version 版本
      * @return 流程
      */
-    PvmProcess get(String processId, String version);
+    PvmProcessDefinition get(String processId, String version);
 
     /**
      * 获取流程
@@ -30,5 +30,5 @@ public interface ProcessContainer {
      * @param uri 流程URI
      * @return 流程
      */
-    PvmProcess get(String uri);
+    PvmProcessDefinition get(String uri);
 }

@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
@@ -27,7 +27,7 @@ public abstract class AbstractPvmActivity<M extends Activity> extends AbstractPv
     private Map<String, PvmTransition> outcomeTransitions = new ConcurrentHashMap<>();
 
     @Override
-    public Message execute(InstanceContext context) {
+    public Message execute(ExecutionContext context) {
         ExecutionInstance executionInstance = context.getCurrentExecution();
         ActivityInstance activityInstance = executionInstance.getActivity();
 
@@ -60,7 +60,7 @@ public abstract class AbstractPvmActivity<M extends Activity> extends AbstractPv
 
     }
 
-    protected abstract Message doInternalExecute(InstanceContext context);
+    protected abstract Message doInternalExecute(ExecutionContext context);
 
     @Override
     public boolean isStartActivity() {

@@ -5,8 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import lombok.Data;
 
-import com.alibaba.smart.framework.engine.context.InstanceContext;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.impl.DoNothingInvoker;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
@@ -24,7 +23,6 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
     private M                      model;
     private InvocableProvider      provider;
     private Map<String, Invoker>   invokers = new ConcurrentHashMap<>();
-    private ExtensionPointRegistry extensionPointRegistry;
 
     @Override
     public String getId() {
@@ -52,12 +50,12 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
     }
 
     @Override
-    public Message invoke(String event, InstanceContext context) {
+    public Message fireEvent(String event, ExecutionContext context) {
         return this.getInvoker(event).invoke(context);
     }
 
     @Override
-    public Message invokeAsync(String event, InstanceContext context) {
+    public Message invokeAsync(String event, ExecutionContext context) {
         return this.getInvoker(event).invoke(context);
     }
 

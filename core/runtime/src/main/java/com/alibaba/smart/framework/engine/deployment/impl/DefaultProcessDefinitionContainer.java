@@ -5,34 +5,34 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
-import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 
 /**
  * Default Process Container Created by ettear on 16-4-19.
  */
-public class DefaultProcessContainer implements ProcessContainer {
+public class DefaultProcessDefinitionContainer implements ProcessDefinitionContainer {
 
     private final static String     DEFAULT_VERSION   = "1.0.0";
     private final static String     DEFAULT_NAMESPACE = "smart";
 
     // private Map<String, Map<String, RuntimeProcessComponent>> processes = new ConcurrentHashMap<>();
-    private Map<String, PvmProcess> processes         = new ConcurrentHashMap<>();
+    private Map<String, PvmProcessDefinition> processes         = new ConcurrentHashMap<>();
     private String                  namespace         = DEFAULT_NAMESPACE;
 
     @Override
     public void install(PvmProcessComponent processComponent) {
-        String processId = processComponent.getId();
+        String processDefinitionId = processComponent.getId();
         String version = processComponent.getVersion();
-        String uri = this.buildComponentUri(processId, version);
+        String uri = this.buildComponentUri(processDefinitionId, version);
         // Add to process store
         if (null != processComponent.getProcess()) {
             this.install(uri, processComponent.getProcess());
         }
         if (null != processComponent.getProcesses() && !processComponent.getProcesses().isEmpty()) {
-            for (Map.Entry<String, PvmProcess> processEntry : processComponent.getProcesses().entrySet()) {
-                PvmProcess subProcess = processEntry.getValue();
+            for (Map.Entry<String, PvmProcessDefinition> processEntry : processComponent.getProcesses().entrySet()) {
+                PvmProcessDefinition subProcess = processEntry.getValue();
                 String subUri = uri + "/" + subProcess.getId();
                 this.install(subUri, subProcess);
             }
@@ -40,13 +40,13 @@ public class DefaultProcessContainer implements ProcessContainer {
     }
 
     @Override
-    public PvmProcess get(String processId, String version) {
-        String uri = this.buildComponentUri(processId, version);
+    public PvmProcessDefinition get(String processDefinitionId, String version) {
+        String uri = this.buildComponentUri(processDefinitionId, version);
         return this.get(uri);
     }
 
     @Override
-    public PvmProcess get(String uri) {
+    public PvmProcessDefinition get(String uri) {
         return this.processes.get(uri);
     }
 
@@ -56,14 +56,14 @@ public class DefaultProcessContainer implements ProcessContainer {
      * @param uri Process URI
      * @param runtimeProcess Process
      */
-    private void install(String uri, PvmProcess runtimeProcess) {
+    private void install(String uri, PvmProcessDefinition runtimeProcess) {
         runtimeProcess.setUri(uri);
         this.processes.put(uri, runtimeProcess);
     }
 
-    private String buildComponentUri(String processId, String version) {
+    private String buildComponentUri(String processDefinitionId, String version) {
         StringBuilder uriBuilder = new StringBuilder("smart://").append(this.getNamespace()).append("/process/");
-        uriBuilder.append(processId);
+        uriBuilder.append(processDefinitionId);
         if (StringUtils.isBlank(version)) {
             uriBuilder.append("/").append(DEFAULT_VERSION);
         } else {

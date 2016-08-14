@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.pvm;
 
-import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.IndentityElement;
@@ -23,13 +23,13 @@ public interface PvmInvocable<M extends IndentityElement> extends LifeCycleListe
      * @param context The request message
      * @return The response message
      */
-    Message invoke(String event, InstanceContext context);
+    Message fireEvent(String event, ExecutionContext context);
 
     /**
      * Asynchronously invoke an operation with a context message
      *
      * @param context The request message
      */
-    Message invokeAsync(String event, InstanceContext context);
+    Message invokeAsync(String event, ExecutionContext context);
 
 }

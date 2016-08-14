@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.mvel2.MVEL;
 
-import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
@@ -26,7 +26,7 @@ public class MvelInvoker implements Invoker {
     }
 
     @Override
-    public Message invoke(InstanceContext context) {
+    public Message invoke(ExecutionContext context) {
         Message message = new DefaultMessage();
         Map<String, Object> mvelContext = new HashMap<>();
 //        InstanceFact current = context.getCurrentExecution().getFact();
