@@ -200,18 +200,6 @@ public class BpmnProcessTest {
     }
 
 
-    public static void main(String[] args) {
-        String test = "535467e4a879402fb507859dd14736ba|theTask3|;849ebeaa069c4aaba89ecdd3e76247fb|theTask2|;";
-
-        List<String> all = Lists.newArrayList();
-        String[] groups = test.split(EngineConstant.REG_SEP_G);
-        for (String group : groups) {
-            String[] items = group.split(EngineConstant.REG_SEP_S);
-            all.addAll(Lists.newArrayList(items));
-        }
-
-
-        all.stream().forEach(System.out::println);
-    }
+   
 
 }
