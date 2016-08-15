@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.context;
 
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -20,4 +22,8 @@ public interface ExecutionContext {
     PvmProcessDefinition getPvmProcessDefinition();
 
     void setPvmProcessDefinition(PvmProcessDefinition pvmProcessDefinition);
+    
+    Map<String,Object > getRequest();
+    
+    void setRequest(Map<String,Object > request);
 }

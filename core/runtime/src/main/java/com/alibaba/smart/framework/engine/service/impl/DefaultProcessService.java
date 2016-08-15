@@ -52,7 +52,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
     }
 
     @Override
-    public ProcessInstance start(String processId, String version, Map<String, Object> variables) {
+    public ProcessInstance start(String processId, String version, Map<String, Object> request) {
         PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processId, version);
         
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
@@ -70,6 +70,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         executionContext.setProcessInstance(processInstance);
         executionContext.setCurrentExecution(executionInstance);// 执行实例添加到当前上下文中
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
+        executionContext.setRequest(request);
 
         pvmProcessInstance.start(executionContext);
         return processInstance;

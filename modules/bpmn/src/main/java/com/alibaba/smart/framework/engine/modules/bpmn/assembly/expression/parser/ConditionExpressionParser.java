@@ -5,7 +5,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.model.assembly.Script;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
@@ -32,10 +31,19 @@ public class ConditionExpressionParser extends AbstractStAXArtifactParser<Condit
     public ConditionExpression parse(XMLStreamReader reader, ParseContext context) throws ParseException,
                                                                                   XMLStreamException {
         ConditionExpression conditionExpression = new ConditionExpression();
-        Script script = new Script();
-        script.setType(getString(reader, "type"));
-        script.setContent(reader.getElementText());
-        conditionExpression.setHandler(script);
+        
+        String type = getString(reader, "type");
+        String content = reader.getElementText();
+        
+        conditionExpression.setExpressionContent(content);
+        conditionExpression.setExpressionType(type);
+        
+
+        
+//        Script script = new Script();
+//        script.setType(type);
+//        script.setContent(content);
+//        conditionExpression.setHandler(script);
         // this.skipToEndElement(reader);
         return conditionExpression;
 

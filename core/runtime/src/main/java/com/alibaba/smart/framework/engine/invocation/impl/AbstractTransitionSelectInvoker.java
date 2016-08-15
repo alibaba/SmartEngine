@@ -41,9 +41,9 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
         if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
             List<PvmTransition> hitTransitions = new ArrayList<>();
             for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
-                PvmTransition runtimeTransition = transitionEntry.getValue();
+                PvmTransition pvmTransition = transitionEntry.getValue();
                 // 执行命中判断逻辑
-                Message result = runtimeTransition.fireEvent(PvmEventConstant.TRANSITION_HIT.name(), context);
+                Message result = pvmTransition.fireEvent(PvmEventConstant.TRANSITION_HIT.name(), context);
                 if (null != result) {
                     Object resultBody = result.getBody();
                     if (null == resultBody || !(resultBody instanceof Boolean) || !((Boolean) resultBody)) {
@@ -51,7 +51,7 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
                         continue;
                     }
                 }// 无执行结果为命中
-                hitTransitions.add(runtimeTransition);
+                hitTransitions.add(pvmTransition);
             }
 
             if (hitTransitions.isEmpty()) {
