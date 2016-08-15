@@ -29,12 +29,12 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 @EqualsAndHashCode(callSuper = true)
 public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity> implements PvmActivity {
 
-    private final static List<String> EXECUTE_EVENTS = new ArrayList<>();
+    private final static List<Integer>  EXECUTE_EVENTS = new ArrayList<>();
 
     static {
-        EXECUTE_EVENTS.add(AtomicOperationEventConstant.ACTIVITY_START.name());
-        EXECUTE_EVENTS.add(AtomicOperationEventConstant.ACTIVITY_EXECUTE.name());
-        EXECUTE_EVENTS.add(AtomicOperationEventConstant.ACTIVITY_END.name());
+        EXECUTE_EVENTS.add(AtomicOperationEventConstant.ACTIVITY_START.getCode());
+        EXECUTE_EVENTS.add(AtomicOperationEventConstant.ACTIVITY_EXECUTE.getCode());
+        EXECUTE_EVENTS.add(AtomicOperationEventConstant.ACTIVITY_END.getCode());
     }
 
     @Override
@@ -57,19 +57,20 @@ public class DefaultRuntimeActivity extends AbstractRuntimeActivity<Activity> im
 
         // 恢复上次暂停时的执行器
         String currentStep = activityInstance.getCurrentStep();
-        Iterator<String> executeEventIterator = EXECUTE_EVENTS.iterator();
+        Iterator<Integer> executeEventIterator = EXECUTE_EVENTS.iterator();
         if (StringUtils.isNotBlank(currentStep)) {
             while (executeEventIterator.hasNext()) {
-                String event = executeEventIterator.next();
-                if (StringUtils.equals(event, currentStep)) {
+                int  event = executeEventIterator.next();
+                if (event == Integer.valueOf(currentStep)) {
                     break;
                 }
             }
         }
         // 从上次暂停点开始执行
         while (executeEventIterator.hasNext()) {
-            String event = executeEventIterator.next();
-            Message invokerMessage = this.invokeActivity(event, context);
+            int event = executeEventIterator.next();
+            String eventName = AtomicOperationEventConstant.getName(event);
+            Message invokerMessage = this.invokeActivity(eventName, context);
             if (invokerMessage.isFault()) {
                 invokerMessage.setSuspend(true);
                 activityExecuteMessage.setFault(true);

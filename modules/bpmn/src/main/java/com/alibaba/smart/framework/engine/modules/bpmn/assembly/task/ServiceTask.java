@@ -20,4 +20,6 @@ public class ServiceTask extends AbstractTask {
      * 
      */
     private static final long serialVersionUID = 2900871220232200586L;
+
+    private boolean auto;
 }

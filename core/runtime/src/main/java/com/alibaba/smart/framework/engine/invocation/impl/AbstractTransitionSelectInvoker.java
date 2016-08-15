@@ -69,8 +69,8 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
         } else {// 没有后续节点，结束执行实例
             executionInstance.setStatus(InstanceStatus.completed);
             executionInstance.setCompleteDate(new Date());
-            // this.executionInstanceManager.complete(processInstance.getInstanceId(),
-            // executionInstance.getInstanceId());
+            // this.executionInstanceManager.complete(processInstance.getProcessId(),
+            // executionInstance.getProcessId());
         }
         return message;
     }
@@ -94,8 +94,8 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
         activityInstance.addIncomeTransition(transitionInstance);
 
-        // this.executionInstanceManager.updateActivity(processInstance.getInstanceId(),
-        // executionInstance.getInstanceId(),
+        // this.executionInstanceManager.updateActivity(processInstance.getProcessId(),
+        // executionInstance.getProcessId(),
         // activityInstance);
         executionInstance.setActivity(activityInstance);
     }

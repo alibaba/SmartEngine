@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.alibaba.smart.framework.engine.model.instance.DatabaseMod;
+import com.alibaba.smart.framework.engine.param.ProcessParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,15 +19,16 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DefaultProcessInstance extends AbstractLifeCycleInstance implements ProcessInstance {
+public class DefaultProcessInstance extends AbstractLifeCycleInstance implements ProcessInstance,DatabaseMod<DefaultProcessInstance,ProcessParam> {
 
     private static final long              serialVersionUID  = -201885591457164713L;
-    private String                         processUri;
-    private String                         parentInstanceId;
 
+
+    private String                         processUri;
     private String                         processDefinitionId;
     private String                         processDefinitionVersion;
 
+    private String                         parentInstanceId;
     private String                         parentExecutionInstanceId;
     private String                         parentActivityInstanceId;
 
@@ -53,5 +56,19 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     @Override
     public void addActivityInstance(ActivityInstance activityInstance) {
         this.activityInstances.add(activityInstance);
+    }
+
+    @Override
+    public String toDatabase() {
+
+        return getInstanceId();
+
+    }
+
+    @Override
+    public DefaultProcessInstance getModle(ProcessParam param) {
+        this.setInstanceId(param.getProcessId());
+        return this;
+
     }
 }

@@ -20,4 +20,6 @@ public interface ExecutionInstance extends LifeCycleInstance {
     boolean isFault();
 
     void setFault(boolean fault);
+
+
 }

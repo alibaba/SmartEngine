@@ -158,7 +158,8 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             if (StringUtils.isBlank(process.getId())) {
                 process.setId("default");
             }
-            PvmProcess runtimeProcess = this.buildRuntimeProcess(process, processComponent, true);
+            //这里应该是FALSE吧?
+            PvmProcess runtimeProcess = this.buildRuntimeProcess(process, processComponent, false);
             if (null != runtimeProcess && runtimeProcess instanceof ProviderRuntimeInvocable) {
                 ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
                 ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeProcess);
