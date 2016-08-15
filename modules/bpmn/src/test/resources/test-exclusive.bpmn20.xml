@@ -49,7 +49,7 @@
 
 		<sequenceFlow id="flow7" sourceRef="theTask3" targetRef="selectTask" />
 
-		<serviceTask id="selectTask" name="Select Task">
+		<serviceTask id="selectTask" name="Select Task" smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ServiceTaskDelegation">
 		</serviceTask>
 
 		<sequenceFlow id="flow8" sourceRef="selectTask"
@@ -71,7 +71,7 @@
 
 		<sequenceFlow id="flow11" sourceRef="exclusiveGw2"
 			targetRef="theTask6">
-			<conditionExpression type="mvel">input == 6
+			<conditionExpression type="mvel">input == 2
 			</conditionExpression>
 		</sequenceFlow>
 

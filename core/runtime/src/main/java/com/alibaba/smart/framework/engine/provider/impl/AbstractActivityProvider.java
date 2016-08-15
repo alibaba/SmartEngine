@@ -37,9 +37,17 @@ public class AbstractActivityProvider<T extends Activity> implements ActivityPro
             return this.createEndInvoker();
         } else if (PvmEventConstant.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
             return this.createTransitionSelectInvoker();
-        } else {
+        }else if (null == event){
+            //TODO 太恶心了.
+            return this.createCustomInvoker(runtimeActivity);
+        }
+        else {
             return this.createEventInvoker(event);
         }
+    }
+    
+    public Invoker createCustomInvoker(PvmActivity runtimeActivity) {
+        return null;
     }
 
     protected Invoker createTransitionSelectInvoker() {

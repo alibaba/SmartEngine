@@ -31,11 +31,11 @@ public class BpmnProcessTest {
         Assert.assertEquals(25, processDefinition.getProcess().getElements().size());
 
 		ProcessService processService = smartEngine.getProcessService();
-		Map<String, Object> variables = new HashMap<>();
-		variables.put("input", 2);
+		Map<String, Object> request = new HashMap<>();
+		request.put("input", 2);
 		ProcessInstance processInstance = processService.start(
 				processDefinition.getId(), processDefinition.getVersion(),
-				variables);
+				request);
 
 		Assert.assertNotNull(processInstance);
 	}
