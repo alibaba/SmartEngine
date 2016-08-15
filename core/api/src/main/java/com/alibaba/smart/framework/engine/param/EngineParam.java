@@ -32,7 +32,7 @@ public class EngineParam {
     Map<String,Object> processContext;
 
 
-    public static EngineParam of(String processId,String executionString) {
+    public static EngineParam of(String processId,String defationId,String version,String executionString) {
 
         EngineParam param = new EngineParam();
         ExecutionParam execution = new ExecutionParam();
@@ -42,6 +42,12 @@ public class EngineParam {
         process.setProcessId(processId);
         execution.setProcessId(processId);
         activity.setProceessId(processId);
+
+        process.setProcessDefationId(defationId);
+        if (version != null) {
+            process.setProcessDefationVersion(version);
+
+        }
 
         String[] executionParams = executionString.split(EngineConstant.REG_SEP_S);
         if (executionParams.length < 2) {

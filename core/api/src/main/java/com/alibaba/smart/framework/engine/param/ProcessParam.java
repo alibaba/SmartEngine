@@ -9,12 +9,26 @@ import lombok.Setter;
  */
 public class ProcessParam extends Param {
 
+    private static String DEFAULT_VERSION = "1.0";
+
 
     @Setter
     private String processId;
 
     @Getter
     private String parentProcessId;
+
+
+    @Getter
+    @Setter
+    private String processDefationId;
+
+
+    @Getter
+    @Setter
+    private String processDefationVersion = DEFAULT_VERSION;
+
+
 
 
 

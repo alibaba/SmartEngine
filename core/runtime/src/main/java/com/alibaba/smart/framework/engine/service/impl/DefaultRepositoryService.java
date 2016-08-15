@@ -157,12 +157,8 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             if (StringUtils.isBlank(process.getId())) {
                 process.setId("default");
             }
-<<<<<<< HEAD:core/runtime/src/main/java/com/alibaba/smart/framework/engine/deployment/impl/DefaultRepositoryService.java
             //这里应该是FALSE吧?
-            PvmProcess runtimeProcess = this.buildRuntimeProcess(process, processComponent, false);
-=======
             PvmProcessDefinition runtimeProcess = this.buildPvmProcessDefinition(process, processComponent, true);
->>>>>>> 9829f579d1800fc1a52009829d734bb047473ec6:core/runtime/src/main/java/com/alibaba/smart/framework/engine/service/impl/DefaultRepositoryService.java
             if (null != runtimeProcess && runtimeProcess instanceof ProviderRuntimeInvocable) {
                 ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
                 ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeProcess);

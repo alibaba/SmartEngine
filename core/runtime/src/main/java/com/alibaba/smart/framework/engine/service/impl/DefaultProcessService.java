@@ -114,10 +114,19 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
             throw new EngineException("recovery instance is not right!");
 
         }
+        PvmProcessDefinition processDefinition = this.processDefinitionContainer.get(
+                engineParam.getProcessParam().getProcessDefationId(),
+                engineParam.getProcessParam().getProcessDefationVersion());
+
+        if (null == processDefinition) {
+            throw new EngineException("can not find process defiation");
+        }
+
         if (null != processInstanceStorage.find(processInstance.getInstanceId())) {
             processInstance = processInstanceStorage.find(processInstance.getInstanceId());
         }
         executionInstance.setActivity(activityInstance);
+        processInstance.setProcessUri(processDefinition.getUri());
         processInstance.addExecution(executionInstance);
         processInstanceStorage.save(processInstance);
 

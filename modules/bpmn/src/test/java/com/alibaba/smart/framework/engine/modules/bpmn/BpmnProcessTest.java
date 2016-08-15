@@ -187,7 +187,7 @@ public class BpmnProcessTest {
         Assert.assertNull(processService.find(start.getInstanceId()));
 
 
-        EngineParam param  = EngineParam.of(start.getInstanceId(),result);
+        EngineParam param  = EngineParam.of(start.getInstanceId(),processDefinition.getId(),processDefinition.getVersion(),result);
 
         processService.recovery(param);
 
@@ -200,6 +200,6 @@ public class BpmnProcessTest {
     }
 
 
-   
+
 
 }

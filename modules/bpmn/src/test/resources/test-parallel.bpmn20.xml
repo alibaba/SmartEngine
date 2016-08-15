@@ -4,7 +4,7 @@
              xmlns:smart="http://smart.alibaba-inc.com/schema/process"
              targetNamespace="Examples">
 
-	<process id="parallelTest">
+	<process id="2001">
 
 		<startEvent id="theStart">
 
