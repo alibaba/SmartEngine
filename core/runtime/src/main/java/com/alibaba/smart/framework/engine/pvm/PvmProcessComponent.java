@@ -14,9 +14,9 @@ public interface PvmProcessComponent {
 
     ClassLoader getClassLoader();
 
-    PvmProcess getProcess();
+    PvmProcessDefinition getProcess();
 
-    Map<String, PvmProcess> getProcesses();
+    Map<String, PvmProcessDefinition> getProcesses();
 
-    void addProcess(String id, PvmProcess process);
+    void addProcess(String id, PvmProcessDefinition process);
 }

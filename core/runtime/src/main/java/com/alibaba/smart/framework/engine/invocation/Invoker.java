@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.invocation;
 
-import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 
 /**
@@ -8,5 +8,5 @@ import com.alibaba.smart.framework.engine.invocation.message.Message;
  */
 public interface Invoker {
 
-    Message invoke(InstanceContext context);
+    Message invoke(ExecutionContext context);
 }

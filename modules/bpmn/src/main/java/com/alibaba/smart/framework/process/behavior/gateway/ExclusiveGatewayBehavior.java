@@ -5,18 +5,18 @@ import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFacto
 import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 import com.alibaba.smart.framework.process.behavior.AbstractActivityBehavior;
 import com.alibaba.smart.framework.process.context.ProcessContext;
 import com.alibaba.smart.framework.process.context.ProcessContextHolder;
 import com.alibaba.smart.framework.process.session.ExecutionSession;
-import com.alibaba.smart.framework.process.session.util.ThreadLocalExecutionSessionUtil;
 
 public class ExclusiveGatewayBehavior extends AbstractActivityBehavior {
 
     @Override
     public void execute() {
         ProcessContext processContext = ProcessContextHolder.get();
-        ExecutionSession executionSession = ThreadLocalExecutionSessionUtil.get();
+        ExecutionSession executionSession = null;// ThreadLocalUtil.get();
 
         ExtensionPointRegistry extensionPointRegistry = processContext.getProcessEngine().getExtensionPointRegistry();
 

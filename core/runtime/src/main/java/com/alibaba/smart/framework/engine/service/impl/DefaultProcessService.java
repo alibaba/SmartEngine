@@ -1,16 +1,13 @@
 package com.alibaba.smart.framework.engine.service.impl;
 
-import java.util.Map;
-
-import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
-import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
+import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
@@ -18,11 +15,16 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.param.EngineParam;
-import com.alibaba.smart.framework.engine.param.ProcessParam;
-import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.result.EngineResult;
 import com.alibaba.smart.framework.engine.service.ProcessService;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
+
+
 
 /**
  * DefaultProcessManager Created by ettear on 16-4-19.
@@ -30,7 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 public class DefaultProcessService implements ProcessService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
-    private ProcessContainer       processContainer;
+    private ProcessDefinitionContainer       processDefinitionContainer;
     private ProcessInstanceStorage processInstanceStorage;
     private InstanceContextFactory instanceContextFactory;
     private ProcessInstanceFactory processInstanceFactory;
@@ -47,7 +49,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
 
     @Override
     public void start() {
-        this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
+        this.processDefinitionContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
         this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
         this.processInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
@@ -63,22 +65,27 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
     }
 
     @Override
-    public ProcessInstance start(String processId, String version, Map<String, Object> variables) {
-        PvmProcess pvmProcess = this.processContainer.get(processId, version);
+    public ProcessInstance start(String processId, String version, Map<String, Object> request) {
+        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processId, version);
+        
+        PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
+        
         ProcessInstance processInstance = this.processInstanceFactory.create();
 
         ExecutionInstance executionInstance = this.executionInstanceFactory.create();
         executionInstance.setProcessInstanceId(processInstance.getInstanceId());
         // executionInstance.setFact(factFactory.create(variables));
 
-        processInstance.setProcessUri(pvmProcess.getUri());
+        processInstance.setProcessUri(pvmProcessDefinition.getUri());
         processInstance.addExecution(executionInstance);// 执行实例添加到流程实例
 
-        InstanceContext instanceContext = this.instanceContextFactory.create();
-        instanceContext.setProcessInstance(processInstance);
-        instanceContext.setCurrentExecution(executionInstance);// 执行实例添加到当前上下文中
+        ExecutionContext executionContext = this.instanceContextFactory.create();
+        executionContext.setProcessInstance(processInstance);
+        executionContext.setCurrentExecution(executionInstance);// 执行实例添加到当前上下文中
+        executionContext.setPvmProcessDefinition(pvmProcessDefinition);
+        executionContext.setRequest(request);
 
-        pvmProcess.run(instanceContext);
+        pvmProcessInstance.start(executionContext);
         return processInstance;
     }
 
@@ -122,7 +129,8 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
 
 
         ProcessInstance processInstance = getProcessInstance(processId,sub);
-        PvmProcess pvmProcess = this.processContainer.get(definition.getId(),definition.getVersion());
+        PvmProcessInstance pvmProcess = new DefaultPvmProcessInstance();
+
         ExecutionInstance chosenExecution  = null;
         for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
             if (StringUtils.equalsIgnoreCase(executionInstance.getActivity().getActivityId(),activityId)) {
@@ -134,11 +142,11 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         if (chosenExecution == null) {
             throw new EngineException("not find activiy,check process defintion");
         }
-        InstanceContext instanceContext = this.instanceContextFactory.create();
+        ExecutionContext instanceContext = this.instanceContextFactory.create();
         instanceContext.setProcessInstance(processInstance);
         instanceContext.setCurrentExecution(chosenExecution);// 执行实例添加到当前上下文中
 
-        pvmProcess.resume(instanceContext);
+        pvmProcess.start(instanceContext);
         return processInstance;
 
     }

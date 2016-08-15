@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointRegistryException;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
@@ -43,8 +42,7 @@ public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExte
     }
 
     @Override
-    protected void initExtension(ClassLoader classLoader, String type, Object providerFactoryObject)
-                                                                                                    throws ExtensionPointRegistryException {
+    protected void initExtension(ClassLoader classLoader, String type, Object providerFactoryObject)  {
         if (providerFactoryObject instanceof ProviderFactory) {
             ProviderFactory providerFactory = (ProviderFactory) providerFactoryObject;
             this.providerFactories.put(providerFactory.getModelType(), providerFactory);

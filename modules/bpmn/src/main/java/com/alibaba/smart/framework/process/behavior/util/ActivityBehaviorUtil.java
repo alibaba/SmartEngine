@@ -11,9 +11,9 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.Condi
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 import com.alibaba.smart.framework.process.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.process.session.ExecutionSession;
-import com.alibaba.smart.framework.process.session.util.ThreadLocalExecutionSessionUtil;
 
 /**
  * @author 高海军 帝奇
@@ -22,7 +22,7 @@ public class ActivityBehaviorUtil {
 
     public void leaveCurrentActivity() {
 
-        ExecutionSession executionSession = ThreadLocalExecutionSessionUtil.get();
+        ExecutionSession executionSession = null;// ThreadLocalUtil.get();
         PvmActivity currentRuntimeActivity = executionSession.getCurrentRuntimeActivity();
         Map<String, PvmTransition> outcomeTransitions = currentRuntimeActivity.getOutcomeTransitions();
 
@@ -55,7 +55,7 @@ public class ActivityBehaviorUtil {
             PvmTransition outgoingRuntimeTransition = toBeChoosenRuntimeTransition.get(0);
             PvmActivity targetRuntimeActivity = outgoingRuntimeTransition.getTarget();
 
-            ThreadLocalExecutionSessionUtil.get().setCurrentRuntimeActivity(targetRuntimeActivity);
+//            ThreadLocalUtil.get().setCurrentRuntimeActivity(targetRuntimeActivity);
 
             String activityClassName = targetRuntimeActivity.getModel().getClass().getName();
             ActivityBehavior activityBehavior = ActivityBehaviorRegister.getActivityBehavior(activityClassName);
@@ -66,7 +66,7 @@ public class ActivityBehaviorUtil {
             PvmTransition outgoingRuntimeTransition = toBeChoosenRuntimeTransition.get(0);
             PvmActivity targetRuntimeActivity = outgoingRuntimeTransition.getTarget();
 
-            ThreadLocalExecutionSessionUtil.get().setCurrentRuntimeActivity(targetRuntimeActivity);
+//            ThreadLocalUtil.get().setCurrentRuntimeActivity(targetRuntimeActivity);
 
             String activityClassName = targetRuntimeActivity.getModel().getClass().getName();
             ActivityBehavior activityBehavior = ActivityBehaviorRegister.getActivityBehavior(activityClassName);

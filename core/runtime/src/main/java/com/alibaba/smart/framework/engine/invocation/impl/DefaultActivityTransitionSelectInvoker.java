@@ -15,9 +15,8 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
  */
 public class DefaultActivityTransitionSelectInvoker extends AbstractTransitionSelectInvoker {
 
-    public DefaultActivityTransitionSelectInvoker(ExtensionPointRegistry extensionPointRegistry,
-                                                  PvmActivity runtimeActivity) {
-        super(extensionPointRegistry, runtimeActivity);
+    public DefaultActivityTransitionSelectInvoker(PvmActivity runtimeActivity) {
+        super( runtimeActivity);
     }
 
     @Override

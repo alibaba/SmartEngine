@@ -1,7 +1,15 @@
 package com.alibaba.smart.framework.engine.modules.bpmn;
 
-import com.alibaba.smart.framework.engine.DefaultSmartEngine;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
@@ -28,8 +36,10 @@ public class BpmnProcessTest {
 
 	@Test
 	public void testExclusive() throws Exception {
+	    ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration(); 
+	    
 		SmartEngine smartEngine = new DefaultSmartEngine();
-		smartEngine.init();
+		smartEngine.init(processEngineConfiguration);
 
 		RepositoryService repositoryService = smartEngine
 				.getRepositoryService();
@@ -38,19 +48,20 @@ public class BpmnProcessTest {
         Assert.assertEquals(25, processDefinition.getProcess().getElements().size());
 
 		ProcessService processService = smartEngine.getProcessService();
-		Map<String, Object> variables = new HashMap<>();
-		variables.put("input", 2);
+		Map<String, Object> request = new HashMap<>();
+		request.put("input", 2);
 		ProcessInstance processInstance = processService.start(
 				processDefinition.getId(), processDefinition.getVersion(),
-				variables);
+				request);
 
 		Assert.assertNotNull(processInstance);
 	}
 
     @Test
     public void testParallel() throws Exception {
+        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
         DefaultSmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init();
+        smartEngine.init(processEngineConfiguration);
 
         RepositoryService repositoryService = smartEngine
                 .getRepositoryService();
@@ -74,8 +85,10 @@ public class BpmnProcessTest {
 
     @Test
     public void testSelectRun() {
+        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
+
         DefaultSmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init();
+        smartEngine.init(processEngineConfiguration);
         RepositoryService repositoryService = smartEngine
                 .getRepositoryService();
         ProcessDefinition processDefinition = repositoryService
@@ -104,9 +117,10 @@ public class BpmnProcessTest {
     @Test
     public void testToDataBase() {
 
+        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
 
         DefaultSmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init();
+        smartEngine.init(processEngineConfiguration);
         RepositoryService repositoryService = smartEngine
                 .getRepositoryService();
         ProcessDefinition processDefinition = repositoryService
@@ -140,8 +154,9 @@ public class BpmnProcessTest {
     public void testToModle() {
 
 
+        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
         DefaultSmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init();
+        smartEngine.init(processEngineConfiguration);
         RepositoryService repositoryService = smartEngine
                 .getRepositoryService();
         ProcessDefinition processDefinition = repositoryService

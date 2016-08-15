@@ -1,19 +1,19 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
-import com.alibaba.smart.framework.engine.invocation.AtomicOperationEventConstant;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
-import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
+import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 /**
  * 抽象Process Provider实现 Created by ettear on 16-4-20.
  */
 public class AbstractProcessProvider<T extends Process> implements ActivityProvider<T> {
 
-    private PvmProcess runtimeProcess;
+    private PvmProcessDefinition runtimeProcess;
 
-    public AbstractProcessProvider(PvmProcess runtimeProcess) {
+    public AbstractProcessProvider(PvmProcessDefinition runtimeProcess) {
         this.runtimeProcess = runtimeProcess;
     }
 
@@ -29,9 +29,9 @@ public class AbstractProcessProvider<T extends Process> implements ActivityProvi
 
     @Override
     public Invoker createInvoker(String event) {
-        if (AtomicOperationEventConstant.PROCESS_START.name().equals(event)) {
+        if (PvmEventConstant.PROCESS_START.name().equals(event)) {
             return this.createStartInvoker();
-        } else if (AtomicOperationEventConstant.PROCESS_END.name().equals(event)) {
+        } else if (PvmEventConstant.PROCESS_END.name().equals(event)) {
             return this.createEndInvoker();
         } else {
             return this.createEventInvoker(event);
@@ -50,7 +50,7 @@ public class AbstractProcessProvider<T extends Process> implements ActivityProvi
         return null;
     }
 
-    protected PvmProcess getRuntimeProcess() {
+    protected PvmProcessDefinition getRuntimeProcess() {
         return runtimeProcess;
     }
 }

@@ -11,8 +11,8 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.exception.ExtensionPointRegistryException;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 
 /**
@@ -40,13 +40,13 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
      * @throws ExtensionPointRegistryException
      */
     @Override
-    public void register(String moduleName, ClassLoader classLoader) throws ExtensionPointRegistryException {
+    public void register(String moduleName, ClassLoader classLoader)   {
         Enumeration<URL> extensionConfigFiles;
         String extensionName = getExtensionName();
         try {
             extensionConfigFiles = classLoader.getResources("smart/" + extensionName + ".properties");
         } catch (IOException e) {
-            throw new ExtensionPointRegistryException("Scan config file " + extensionName + " failure!", e);
+            throw new EngineException("Scan config file " + extensionName + " failure!", e);
         }
         if (null != extensionConfigFiles) {
             while (extensionConfigFiles.hasMoreElements()) {
@@ -59,7 +59,7 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
                     openStream = extensionConfigFile.openStream();
                     properties.load(openStream);
                 } catch (IOException e) {
-                    throw new ExtensionPointRegistryException("Load config file " + extensionConfigFile.toString()
+                    throw new EngineException("Load config file " + extensionConfigFile.toString()
                                                           + " failure!", e);
                 } finally {
                     IOUtil.closeQuietly(openStream);
@@ -81,13 +81,13 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
 
     @SuppressWarnings("rawtypes")
     private void instantiateAndInitExtension(ClassLoader classLoader, String entensionEntryKey, String entensionEntryValue)
-                                                                                                               throws ExtensionPointRegistryException {
+                                                                                                                 {
         Class<?> extensionValueClass;
         try {
             extensionValueClass = classLoader.loadClass(entensionEntryValue);
 
         } catch (ClassNotFoundException e) {
-            throw new ExtensionPointRegistryException("Scan config file " + getExtensionName() + " failure!", e);
+            throw new EngineException("Scan config file " + getExtensionName() + " failure!", e);
         }
         Object extensionValueObject;
         try {
@@ -98,7 +98,7 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
                 Constructor constructor = extensionValueClass.getConstructor();
                 extensionValueObject = constructor.newInstance();
             } catch (Exception ex) {
-                throw new ExtensionPointRegistryException("Instance constructor for class " + entensionEntryValue + " !",
+                throw new EngineException("Instance constructor for class " + entensionEntryValue + " !",
                                                       ex);
             }
         }
@@ -112,8 +112,7 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
      * @param object Object
      * @throws ExtensionPointRegistryException
      */
-    protected abstract void initExtension(ClassLoader classLoader, String entensionEntryKey, Object object)
-                                                                                                           throws ExtensionPointRegistryException;
+    protected abstract void initExtension(ClassLoader classLoader, String entensionEntryKey, Object object);
 
     /**
      * 扩展点名称

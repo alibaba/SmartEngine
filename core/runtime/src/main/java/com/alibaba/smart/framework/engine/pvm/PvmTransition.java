@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.pvm;
 
-import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
 
 /**
@@ -12,6 +12,6 @@ public interface PvmTransition extends PvmInvocable<Transition> {
 
     PvmActivity getTarget();
 
-    void execute(InstanceContext context);
+    void execute(ExecutionContext context);
 
 }

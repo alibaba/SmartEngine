@@ -4,15 +4,15 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.alibaba.smart.framework.engine.context.InstanceContext;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
-import com.alibaba.smart.framework.engine.deployment.ProcessContainer;
+import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.pvm.PvmProcess;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.service.ExecutionService;
 
 /**
@@ -21,7 +21,7 @@ import com.alibaba.smart.framework.engine.service.ExecutionService;
 public class DefaultExecutionService implements ExecutionService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
-    private ProcessContainer       processContainer;
+    private ProcessDefinitionContainer       processContainer;
     private ProcessInstanceStorage processInstanceStorage;
     private InstanceContextFactory instanceContextFactory;
 
@@ -31,7 +31,7 @@ public class DefaultExecutionService implements ExecutionService, LifeCycleListe
 
     @Override
     public void start() {
-        this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
+        this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
         this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
     }
@@ -45,8 +45,8 @@ public class DefaultExecutionService implements ExecutionService, LifeCycleListe
     public ProcessInstance signal(String processInstanceId, String executionInstanceId, Map<String, Object> variables) {
         ProcessInstance processInstance = this.processInstanceStorage.find(processInstanceId);
         if (null != processInstance) {
-            PvmProcess runtimeProcess = this.processContainer.get(processInstance.getProcessUri());
-            InstanceContext instanceContext = this.instanceContextFactory.create();
+            PvmProcessDefinition runtimeProcess = this.processContainer.get(processInstance.getProcessUri());
+            ExecutionContext instanceContext = this.instanceContextFactory.create();
             instanceContext.setProcessInstance(processInstance);
             ExecutionInstance currentExecutionInstance = null;
             for (Map.Entry<String, ExecutionInstance> executionInstanceEntry : processInstance.getExecutions().entrySet()) {
