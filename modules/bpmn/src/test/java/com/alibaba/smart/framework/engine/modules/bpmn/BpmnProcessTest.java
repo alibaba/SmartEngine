@@ -17,45 +17,41 @@ import com.alibaba.smart.framework.engine.service.RepositoryService;
 
 public class BpmnProcessTest {
 
-	@Test
-	public void testExclusive() throws Exception {
-	    ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration(); 
-	    
-		SmartEngine smartEngine = new DefaultSmartEngine();
-		smartEngine.init(processEngineConfiguration);
+    @Test
+    public void testServiceExclusive() throws Exception {
+        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
-		RepositoryService repositoryService = smartEngine
-				.getRepositoryService();
-		ProcessDefinition processDefinition = repositoryService
-				.deploy("test-exclusive.bpmn20.xml");
+        SmartEngine smartEngine = new DefaultSmartEngine();
+        smartEngine.init(processEngineConfiguration);
+
+        RepositoryService repositoryService = smartEngine.getRepositoryService();
+        ProcessDefinition processDefinition = repositoryService.deploy("test-servicetask-exclusive.bpmn20.xml");
         Assert.assertEquals(25, processDefinition.getProcess().getElements().size());
 
-		ProcessService processService = smartEngine.getProcessService();
-		Map<String, Object> request = new HashMap<>();
-		request.put("input", 2);
-		ProcessInstance processInstance = processService.start(
-				processDefinition.getId(), processDefinition.getVersion(),
-				request);
+        ProcessService processService = smartEngine.getProcessService();
+        Map<String, Object> request = new HashMap<>();
+        request.put("input", 2);
+        ProcessInstance processInstance = processService.start(processDefinition.getId(),
+                                                               processDefinition.getVersion(), request);
 
-		Assert.assertNotNull(processInstance);
-	}
+        Assert.assertNotNull(processInstance);
+    }
 
-    // @Test
-    // public void testParallel() throws Exception {
-    // DefaultSmartEngine smartEngine = new DefaultSmartEngine();
-    // smartEngine.init();
-    //
-    // RepositoryService repositoryService = smartEngine
-    // .getRepositoryService();
-    // ProcessDefinition processDefinition = repositoryService
-    // .deploy("test-parallel.bpmn20.xml");
-    //
-    // ProcessService processService = smartEngine.getProcessService();
-    // Map<String, Object> variables = new HashMap<>();
-    // ProcessInstance processInstance = processService.start(
-    // processDefinition.getId(), processDefinition.getVersion(),
-    // variables);
-    // Assert.assertNotNull(processInstance);
-    //
-    // }
+//    @Test
+//    public void testParallel() throws Exception {
+//        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
+//
+//        SmartEngine smartEngine = new DefaultSmartEngine();
+//        smartEngine.init(processEngineConfiguration);
+//
+//        RepositoryService repositoryService = smartEngine.getRepositoryService();
+//        ProcessDefinition processDefinition = repositoryService.deploy("test-parallel.bpmn20.xml");
+//
+//        ProcessService processService = smartEngine.getProcessService();
+//        Map<String, Object> variables = new HashMap<>();
+//        ProcessInstance processInstance = processService.start(processDefinition.getId(),
+//                                                               processDefinition.getVersion(), variables);
+//        Assert.assertNotNull(processInstance);
+//
+//    }
 }
