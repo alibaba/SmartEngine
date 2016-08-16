@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.instance.factory;
 
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.param.ExecutionParam;
 
 /**
  * 执行实例工厂 Created by ettear on 16-4-20.
@@ -13,4 +14,9 @@ public interface ExecutionInstanceFactory {
      * @return 执行实例
      */
     ExecutionInstance create();
+
+
+    ExecutionInstance recovery(ExecutionParam executionParam);
+
+    String toDatabase(ExecutionInstance executionInstance);
 }

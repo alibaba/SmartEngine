@@ -1,14 +1,5 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultActivityTransitionSelectInvoker;
@@ -19,10 +10,16 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.provider.InvocableProvider;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * DefaultRuntimeActivity Created by ettear on 16-4-13.
@@ -31,12 +28,13 @@ import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 @EqualsAndHashCode(callSuper = true)
 public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements PvmActivity {
 
-    private final static List<String> EXECUTE_EVENTS = new ArrayList<>();
+    private final static List<Integer>  EXECUTE_EVENTS = new ArrayList<>();
 
     static {
-        EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_START.name());
-        EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_EXECUTE.name());
-        EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_END.name());
+
+        EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_START.getCode());
+        EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_EXECUTE.getCode());
+        EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_END.getCode());
     }
 
     @Override
@@ -69,19 +67,20 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
 
         // 恢复上次暂停时的执行器
         String currentStep = activityInstance.getCurrentStep();
-        Iterator<String> executeEventIterator = EXECUTE_EVENTS.iterator();
+        Iterator<Integer> executeEventIterator = EXECUTE_EVENTS.iterator();
         if (StringUtils.isNotBlank(currentStep)) {
             while (executeEventIterator.hasNext()) {
-                String event = executeEventIterator.next();
-                if (StringUtils.equals(event, currentStep)) {
+                int  event = executeEventIterator.next();
+                if (event == Integer.valueOf(currentStep)) {
                     break;
                 }
             }
         }
         // 从上次暂停点开始执行
         while (executeEventIterator.hasNext()) {
-            String event = executeEventIterator.next();
-            Message invokerMessage = this.invokeActivity(event, context);
+            int event = executeEventIterator.next();
+            String eventName = PvmEventConstant.getName(event);
+            Message invokerMessage = this.invokeActivity(eventName, context);
             if (invokerMessage.isFault()) {
                 invokerMessage.setSuspend(true);
                 activityExecuteMessage.setFault(true);

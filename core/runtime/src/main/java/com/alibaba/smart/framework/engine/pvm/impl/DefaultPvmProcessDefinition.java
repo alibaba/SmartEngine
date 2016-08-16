@@ -113,9 +113,6 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
             ExecutionService executionManager = extensionPointRegistry.getExtensionPoint(ExecutionService.class);
 
             Map<String, Object> variables = new HashMap<>();
-            // TODO ettear 或者用子流程事实做为主流程活动事实?
-            // variables.putAll(context.getProcessInstance().getFact());
-            // variables.putAll(context.getCurrentExecution().getFact());
             ProcessInstance parentProcessInstance = executionManager.signal(processInstance.getParentInstanceId(),
                                                                             processInstance.getParentExecutionInstanceId(),
                                                                             variables);

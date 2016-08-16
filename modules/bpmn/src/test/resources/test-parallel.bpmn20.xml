@@ -4,10 +4,10 @@
              xmlns:smart="http://smart.alibaba-inc.com/schema/process"
              targetNamespace="Examples">
 
-	<process id="parallelTest">
+	<process id="2001">
 
 		<startEvent id="theStart">
-			<smart:script type="groovy">start();</smart:script>
+
 		</startEvent>
 
 		<sequenceFlow id="flow1" sourceRef="theStart" targetRef="forkGw"/>
@@ -20,7 +20,7 @@
 		<sequenceFlow id="flow3" sourceRef="forkGw" targetRef="theTask2">
 		</sequenceFlow>
 
-		<serviceTask id="theTask1" name="Task 1">
+		<serviceTask id="theTask1" name="Task 1" auto="true">
 		</serviceTask>
 
 		<sequenceFlow id="flow4" sourceRef="theTask1" targetRef="theTask3"/>
@@ -34,27 +34,27 @@
 		</serviceTask>
 
 		<sequenceFlow id="flow6" sourceRef="theTask3" targetRef="joinGw">
-			<smart:script type="groovy">runSequenceFlow(flow6);</smart:script>
+
 		</sequenceFlow>
 
 		<serviceTask id="theTask4" name="Task 4">
-			<smart:script type="groovy">run(theTask4);</smart:script>
+
 		</serviceTask>
 
 		<sequenceFlow id="flow7" sourceRef="theTask4" targetRef="joinGw">
-			<smart:script type="groovy">runSequenceFlow(flow7);</smart:script>
+
 		</sequenceFlow>
 
 		<parallelGateway id="joinGw" name="Join Gateway">
-			<smart:script type="groovy">join();</smart:script>
+
 		</parallelGateway>
 
 		<sequenceFlow id="flow8" sourceRef="joinGw" targetRef="theTask5">
-			<smart:script type="groovy">runSequenceFlow(flow8);</smart:script>
+
 		</sequenceFlow>
 
 		<serviceTask id="theTask5" name="Task 5">
-			<smart:script type="groovy">run(theTask5);</smart:script>
+
 		</serviceTask>
 
 		<sequenceFlow id="flow9" sourceRef="theTask5" targetRef="theEnd"/>
