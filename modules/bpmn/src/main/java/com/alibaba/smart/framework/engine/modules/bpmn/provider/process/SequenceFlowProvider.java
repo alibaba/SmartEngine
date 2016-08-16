@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.process;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.extensionpoint.impl.HandlerProviderExtensionPoint;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
@@ -13,12 +12,12 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 public class SequenceFlowProvider extends AbstractTransitionProvider<SequenceFlow> implements TransitionProvider<SequenceFlow> {
 
-    private ExtensionPointRegistry        extensionPointRegistry;
+//    private ExtensionPointRegistry        extensionPointRegistry;
 //    private HandlerProviderExtensionPoint handlerProviderExtensionPoint;
 
     public SequenceFlowProvider(ExtensionPointRegistry extensionPointRegistry, PvmTransition runtimeTransition) {
         super(runtimeTransition);
-        this.extensionPointRegistry = extensionPointRegistry;
+//        this.extensionPointRegistry = extensionPointRegistry;
 //        this.handlerProviderExtensionPoint = this.extensionPointRegistry.getExtensionPoint(HandlerProviderExtensionPoint.class);
     }
 
