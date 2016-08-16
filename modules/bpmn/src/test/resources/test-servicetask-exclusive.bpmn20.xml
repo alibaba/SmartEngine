@@ -18,38 +18,23 @@
 
 		<sequenceFlow id="flow2" sourceRef="exclusiveGw1"
 			targetRef="theTask1">
-<<<<<<< HEAD
-
-=======
 			<conditionExpression xsi:type="mvel">input == 2
 			</conditionExpression>
->>>>>>> 9829f579d1800fc1a52009829d734bb047473ec6
 		</sequenceFlow>
 
 		<sequenceFlow id="flow3" sourceRef="exclusiveGw1"
 			targetRef="theTask2">
-<<<<<<< HEAD
-
-=======
 			<conditionExpression xsi:type="mvel">input == 3
 			</conditionExpression>
->>>>>>> 9829f579d1800fc1a52009829d734bb047473ec6
 		</sequenceFlow>
 
 		<sequenceFlow id="flow4" sourceRef="exclusiveGw1"
 			targetRef="theTask3">
-<<<<<<< HEAD
-
-		</sequenceFlow>
-
-		<serviceTask id="theTask1" name="Task 1" auto="true">
-=======
 			<conditionExpression xsi:type="mvel">input == 4
 			</conditionExpression>
 		</sequenceFlow>
 
 		<serviceTask id="theTask1" name="Task 1" smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ServiceTaskDelegation">
->>>>>>> 9829f579d1800fc1a52009829d734bb047473ec6
 		</serviceTask>
 
 		<sequenceFlow id="flow5" sourceRef="theTask1" targetRef="selectTask" />
