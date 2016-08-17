@@ -65,6 +65,12 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
 
         Message activityExecuteMessage = new DefaultMessage();
 
+        dealStep(context, activityInstance, activityExecuteMessage);
+        
+        return activityExecuteMessage;
+    }
+
+    private void dealStep(ExecutionContext context, ActivityInstance activityInstance, Message activityExecuteMessage) {
         // 恢复上次暂停时的执行器
         String currentStep = activityInstance.getCurrentStep();
         Iterator<Integer> executeEventIterator = EXECUTE_EVENTS.iterator();
@@ -90,7 +96,6 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
                 break;
             }
         }
-        return activityExecuteMessage;
     }
 
     @Override

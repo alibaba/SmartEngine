@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.param;
 
-import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.util.EngineConstant;
 import lombok.Getter;
 import lombok.Setter;
 

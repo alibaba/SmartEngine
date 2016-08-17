@@ -7,7 +7,6 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
@@ -65,6 +64,8 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
 
         
         Message processMessage = this.executeActivity(startActivity, context);
+        
+        
         ProcessInstance processInstance = context.getProcessInstance();
         if (!processMessage.isSuspend()) {
           //TODO 触发流程启动事件
@@ -108,9 +109,9 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
                             PvmTransition pvmTransition = pvmActivity.getOutcomeTransitions().get(transitionInstance.getTransitionId());
                             // 执行Transition,目前仅是fireEvent,没做其他逻辑 
                             pvmTransition.execute(context);
-                            PvmActivity target = pvmTransition.getTarget();
+                            PvmActivity targetPvmActivity = pvmTransition.getTarget();
                             // 执行Activity
-                            this.executeActivity(target, context);
+                            this.executeActivity(targetPvmActivity, context);
                         }else{
                             throw new EngineException("unpported class type:ExecutionInstance");
                         }
