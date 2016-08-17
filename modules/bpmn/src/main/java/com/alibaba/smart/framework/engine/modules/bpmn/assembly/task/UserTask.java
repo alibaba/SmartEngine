@@ -1,5 +1,9 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task;
 
+import javax.xml.namespace.QName;
+
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,10 +13,14 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class UserTask extends AbstractTask {
+    
+    private static final long serialVersionUID = 2241766485621486315L;
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -4866209767005731207L;
+
+    public final static QName type             = new QName(BpmnBase.NAME_SPACE, "userTask");
+
+
+    private String name;
+
 
 }

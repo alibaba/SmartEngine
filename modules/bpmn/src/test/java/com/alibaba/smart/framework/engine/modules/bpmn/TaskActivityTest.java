@@ -56,7 +56,7 @@ public class TaskActivityTest {
         RepositoryService repositoryService = smartEngine
                 .getRepositoryService();
         ProcessDefinition processDefinition = repositoryService
-                .deploy("test-humantask-exclusive.bpmn20.xml");
+                .deploy("test-usertask-exclusive.bpmn20.xml");
         Assert.assertEquals(25, processDefinition.getProcess().getElements().size());
 
         ProcessService processService = smartEngine.getProcessService();
