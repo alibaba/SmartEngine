@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.service.TaskService;
 public class DefaultTaskService implements TaskService {
 
     @Override
-    public void complete(String processInstanceId, String taskId, Map<String, Object> variables) {
+    public void complete(  String taskId, Map<String, Object> variables) {
 
     }
 

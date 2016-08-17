@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -11,9 +12,12 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
+import com.alibaba.smart.framework.engine.service.TaskService;
 
 public class TaskActivityTest {
 
@@ -43,7 +47,7 @@ public class TaskActivityTest {
 //	
 	
 	@Test
-    public void testHumantaskExclusive() throws Exception {
+    public void testUserTaskExclusive() throws Exception {
         ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration(); 
         
         SmartEngine smartEngine = new DefaultSmartEngine();
@@ -62,9 +66,45 @@ public class TaskActivityTest {
                 processDefinition.getId(), processDefinition.getVersion(),
                 request);
         
-        
-
         Assert.assertNotNull(processInstance);
+
+        
+        //1st: create 1st task
+        TaskService  taskService =    smartEngine.getTaskService();
+        String processInstanceId = processInstance.getInstanceId();
+        List<TaskInstance>  taskInstanceList =     taskService.find(processInstanceId);
+        
+        Assert.assertNotNull(taskInstanceList);
+        Assert.assertEquals(1,taskInstanceList.size());
+        
+        TaskInstance taskInstance = taskInstanceList.get(0);
+        Assert.assertEquals("theTask1", taskInstance.getName());
+        
+        request.put("input", 4);
+        
+        //2nd. create service task ,and then create task
+        taskService.complete(taskInstance.getInstanceId(), request);
+        
+      
+        
+        taskInstanceList =     taskService.find(processInstanceId);
+        
+        Assert.assertNotNull(taskInstanceList);
+        Assert.assertEquals(1,taskInstanceList.size());
+        
+          taskInstance = taskInstanceList.get(0);
+        Assert.assertEquals("theTask4", taskInstance.getName());
+        
+        
+        taskService.complete(taskInstance.getInstanceId(), request);
+
+        
+        //
+        
+        processInstance =    processService.find(processInstanceId);
+        Assert.assertEquals(InstanceStatus.completed, processInstance.getStatus());
+
+        
     }
  
 

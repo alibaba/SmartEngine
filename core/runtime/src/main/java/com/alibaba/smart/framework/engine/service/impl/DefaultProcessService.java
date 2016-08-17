@@ -39,7 +39,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
     ExecutionInstanceFactory       executionInstanceFactory;
     private ActivityInstanceFactory activityInstanceFactory;
 
-    private static String DEFAULT_VERSION= "1";
+//    private static String DEFAULT_VERSION= "1";
 
     // private InstanceFactFactory factFactory;
 

@@ -9,7 +9,7 @@ public interface TaskService {
 
     // TaskInstance find(String processInstanceId,String taskId);
     // List<TaskInstance> findByExecution(String processInstanceId,String executionId);
-    void complete(String processInstanceId, String taskId, Map<String, Object> variables);
+    void complete(String taskId, Map<String, Object> variables);
     
     List<TaskInstance> find(String processInstanceId);
 
