@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.alibaba.smart.framework.engine.model.instance.DatabaseMod;
-import com.alibaba.smart.framework.engine.param.ProcessParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.DatabaseMod;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.param.ProcessParam;
 
 /**
  * Default Process Instance Created by ettear on 16-4-12.

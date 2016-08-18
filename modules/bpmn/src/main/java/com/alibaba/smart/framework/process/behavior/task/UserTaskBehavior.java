@@ -7,7 +7,6 @@ import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 import com.alibaba.smart.framework.process.behavior.AbstractActivityBehavior;
 import com.alibaba.smart.framework.process.context.ProcessContext;
 import com.alibaba.smart.framework.process.context.ProcessContextHolder;

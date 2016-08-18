@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.process.service.impl;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
-import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 import com.alibaba.smart.framework.process.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.process.behavior.util.ActivityBehaviorRegister;
 import com.alibaba.smart.framework.process.context.ProcessContext;

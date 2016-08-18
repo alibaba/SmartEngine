@@ -21,11 +21,6 @@ public interface PvmInvocable<M extends IndentityElement> extends LifeCycleListe
      */
     Message fireEvent(String event, ExecutionContext context);
 
-    /**
-     * Asynchronously invoke an operation with a context message
-     *
-     * @param context The request message
-     */
-    Message invokeAsync(String event, ExecutionContext context);
+   
 
 }

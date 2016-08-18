@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
 import com.alibaba.smart.framework.engine.param.Param;
-import com.alibaba.smart.framework.engine.param.ProcessParam;
 
 /**
  * 持久化及序列化接口

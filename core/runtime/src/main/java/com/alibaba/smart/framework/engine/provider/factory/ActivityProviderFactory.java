@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.provider.factory;
 
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
-import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**

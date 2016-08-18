@@ -70,12 +70,7 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
     public Message fireEvent(String event, ExecutionContext context) {
         return this.getInvoker(event).invoke(context);
     }
-
-    @Override
-    public Message invokeAsync(String event, ExecutionContext context) {
-        return this.getInvoker(event).invoke(context);
-    }
-
+ 
     private Invoker getInvoker(String event) {
         Invoker invoker = this.invokers.get(event);
         if (null != invoker) {

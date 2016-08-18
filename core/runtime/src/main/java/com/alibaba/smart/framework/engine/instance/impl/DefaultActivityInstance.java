@@ -3,14 +3,14 @@ package com.alibaba.smart.framework.engine.instance.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.model.instance.DatabaseMod;
-import com.alibaba.smart.framework.engine.param.ActivityParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.DatabaseMod;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
+import com.alibaba.smart.framework.engine.param.ActivityParam;
 
 /**
  * 默认活动实例 Created by ettear on 16-4-19.

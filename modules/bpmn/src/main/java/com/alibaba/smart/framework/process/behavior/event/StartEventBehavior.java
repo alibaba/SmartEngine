@@ -6,11 +6,9 @@ import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactor
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 import com.alibaba.smart.framework.process.behavior.AbstractActivityBehavior;
 import com.alibaba.smart.framework.process.context.ProcessContext;
 import com.alibaba.smart.framework.process.context.ProcessContextHolder;
-import com.alibaba.smart.framework.process.session.ExecutionSession;
 
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM

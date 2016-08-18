@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.util;
 
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
 

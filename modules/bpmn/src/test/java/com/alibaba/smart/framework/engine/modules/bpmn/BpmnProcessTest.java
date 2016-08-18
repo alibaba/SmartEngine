@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -11,25 +12,12 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.param.ActivityParam;
 import com.alibaba.smart.framework.engine.param.EngineParam;
-import com.alibaba.smart.framework.engine.param.ExecutionParam;
-import com.alibaba.smart.framework.engine.param.ProcessParam;
 import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
 import com.alibaba.smart.framework.engine.util.EngineConstant;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.lang.reflect.Array;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class BpmnProcessTest {
 
