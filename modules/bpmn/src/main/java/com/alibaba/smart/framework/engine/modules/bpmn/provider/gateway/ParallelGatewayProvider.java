@@ -6,8 +6,8 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.Parallel
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityProvider;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.pvm.invocation.ForkInvoker;
-import com.alibaba.smart.framework.engine.pvm.invocation.JoinInvoker;
+import com.alibaba.smart.framework.engine.pvm.invocation.impl.ForkGatewayInvoker;
+import com.alibaba.smart.framework.engine.pvm.invocation.impl.JoinGatewayInvoker;
 
 public class ParallelGatewayProvider extends AbstractBpmnActivityProvider<ParallelGateway> implements ActivityProvider<ParallelGateway> {
 
@@ -17,11 +17,11 @@ public class ParallelGatewayProvider extends AbstractBpmnActivityProvider<Parall
 
     @Override
     protected Invoker createStartInvoker() {
-        return new JoinInvoker(this.getExtensionPointRegistry(), this.getRuntimeActivity());
+        return new JoinGatewayInvoker(this.getExtensionPointRegistry(), this.getRuntimeActivity());
     }
 
     @Override
     protected Invoker createTransitionSelectInvoker() {
-        return new ForkInvoker(this.getExtensionPointRegistry(), this.getRuntimeActivity());
+        return new ForkGatewayInvoker(this.getExtensionPointRegistry(), this.getRuntimeActivity());
     }
 }

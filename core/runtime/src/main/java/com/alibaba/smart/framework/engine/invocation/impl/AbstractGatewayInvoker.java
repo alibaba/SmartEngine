@@ -25,11 +25,11 @@ import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 /**
  * Created by ettear on 16-5-4.
  */
-public abstract class AbstractTransitionSelectInvoker implements Invoker {
+public abstract class AbstractGatewayInvoker implements Invoker {
 
     private PvmActivity            runtimeActivity;
 
-    public AbstractTransitionSelectInvoker( PvmActivity runtimeActivity) {
+    public AbstractGatewayInvoker( PvmActivity runtimeActivity) {
         this.runtimeActivity = runtimeActivity;
     }
 

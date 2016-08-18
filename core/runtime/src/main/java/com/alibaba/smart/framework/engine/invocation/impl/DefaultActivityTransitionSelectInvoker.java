@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 /**
  * DefaultActivityTransitionSelectInvoker Created by ettear on 16-4-19.
  */
-public class DefaultActivityTransitionSelectInvoker extends AbstractTransitionSelectInvoker {
+public class DefaultActivityTransitionSelectInvoker extends AbstractGatewayInvoker {
 
     public DefaultActivityTransitionSelectInvoker(PvmActivity runtimeActivity) {
         super( runtimeActivity);

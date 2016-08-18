@@ -157,7 +157,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             if (StringUtils.isBlank(process.getId())) {
                 process.setId("default");
             }
-            //这里应该是FALSE吧?
+            //TODO 这里应该是FALSE吧?
             PvmProcessDefinition runtimeProcess = this.buildPvmProcessDefinition(process, processComponent, true);
             if (null != runtimeProcess && runtimeProcess instanceof ProviderRegister) {
                 ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
@@ -258,31 +258,27 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             // Create Invoker for Transition Flow
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
                 PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
-                if (runtimeTransition instanceof ProviderRegister) {
-                    TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModel().getClass());
+                TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModel().getClass());
 
-                    if (null == providerFactory) {
-                        throw new RuntimeException("No factory found for " + runtimeTransition.getModel().getClass());
-                    }
-
-                    TransitionProvider transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
-                    ((ProviderRegister) runtimeTransition).registerProvider(transitionProvider);
+                if (null == providerFactory) {
+                    throw new RuntimeException("No factory found for " + runtimeTransition.getModel().getClass());
                 }
+
+                TransitionProvider transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
+                runtimeTransition.registerProvider(transitionProvider);
             }
 
             // Create Invoker for Activity
             for (Map.Entry<String, PvmActivity> runtimeActivityEntry : runtimeActivities.entrySet()) {
                 PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
-                if (runtimeActivity instanceof ProviderRegister) {
-                    ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModel().getClass());
+                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModel().getClass());
 
-                    if (null == providerFactory) {
-                        throw new RuntimeException("No factory found for " + runtimeActivity.getModel().getClass());
-                    }
-
-                    ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeActivity);
-                    ((ProviderRegister) runtimeActivity).registerProvider(activityProvider);
+                if (null == providerFactory) {
+                    throw new RuntimeException("No factory found for " + runtimeActivity.getModel().getClass());
                 }
+
+                ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeActivity);
+                runtimeActivity.registerProvider(activityProvider);
             }
 
             pvmProcessDefinition.setActivities(runtimeActivities);

@@ -6,7 +6,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.Exclusiv
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityProvider;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.pvm.invocation.ExclusiveInvoker;
+import com.alibaba.smart.framework.engine.pvm.invocation.impl.ExclusiveGatewayInvoker;
 
 public class ExclusiveGatewayProvider extends AbstractBpmnActivityProvider<ExclusiveGateway> implements ActivityProvider<ExclusiveGateway> {
 
@@ -16,6 +16,6 @@ public class ExclusiveGatewayProvider extends AbstractBpmnActivityProvider<Exclu
 
     @Override
     protected Invoker createTransitionSelectInvoker() {
-        return new ExclusiveInvoker(this.getExtensionPointRegistry(), this.getRuntimeActivity());
+        return new ExclusiveGatewayInvoker(this.getExtensionPointRegistry(), this.getRuntimeActivity());
     }
 }

@@ -3,9 +3,11 @@ package com.alibaba.smart.framework.engine.pvm.impl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
-import com.alibaba.smart.framework.engine.invocation.impl.DoNothingInvoker;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.model.assembly.IndentityElement;
 import com.alibaba.smart.framework.engine.provider.InvokerProvider;
@@ -18,6 +20,10 @@ import com.alibaba.smart.framework.engine.pvm.PvmInvocable;
 public abstract class AbstractPvmInvocable<M extends IndentityElement> implements PvmInvocable<M> ,ProviderRegister
 {
 
+    private static final Logger   LOGGER          = LoggerFactory.getLogger(AbstractPvmInvocable.class);
+
+    
+    
     private M                      model;
     
 
@@ -26,34 +32,9 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
 
     private Map<String, Invoker>   invokers = new ConcurrentHashMap<>();
 
-//    @Override
-//    public String getId() {
-//        return this.model.getId();
-//    }
-//
-//    @Override
-//    public Class<?> getModelType() {
-//        return this.model.getClass();
-//    }
-    
-    @Override
-    public InvokerProvider getProvider() {
-        return provider;
-    }
-    
-    @Override
-    public void registerProvider(InvokerProvider invocableProvider) {
-            this.provider =        invocableProvider;
-    }
 
-    @Override
-    public M getModel() {
-        return this.model;
-    }
+    
 
-    public void setModel(M model) {
-        this.model = model;
-    }
 
     
     @Override
@@ -68,7 +49,15 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
 
     @Override
     public Message fireEvent(String event, ExecutionContext context) {
-        return this.getInvoker(event).invoke(context);
+        Invoker invoker = this.getInvoker(event);
+        if(null == invoker){
+            LOGGER.debug("invoker is null for event:"+event+",so now return.");
+            return null;
+        }
+        else{
+            return invoker.invoke(context);
+
+        }
     }
  
     private Invoker getInvoker(String event) {
@@ -86,12 +75,33 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
     }
 
     protected Invoker createDefaultInvoker(String event) {
-        return DoNothingInvoker.instance;
+        return null;
     }
 
     @Override
     public String toString() {
         return " [getId()=" + getModel().getId() + ", getModelType()=" + getModel().getClass() + "]";
+    }
+
+    
+
+    @Override
+    public M getModel() {
+        return this.model;
+    }
+
+    public void setModel(M model) {
+        this.model = model;
+    }
+    
+    @Override
+    public InvokerProvider getProvider() {
+        return provider;
+    }
+    
+    @Override
+    public void registerProvider(InvokerProvider invocableProvider) {
+            this.provider =        invocableProvider;
     }
 
 }

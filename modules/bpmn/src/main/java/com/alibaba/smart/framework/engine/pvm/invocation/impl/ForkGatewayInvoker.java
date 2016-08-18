@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.pvm.invocation;
+package com.alibaba.smart.framework.engine.pvm.invocation.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,7 +7,7 @@ import java.util.List;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
-import com.alibaba.smart.framework.engine.invocation.impl.AbstractTransitionSelectInvoker;
+import com.alibaba.smart.framework.engine.invocation.impl.AbstractGatewayInvoker;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -19,9 +19,9 @@ import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 /**
  * Created by ettear on 16-5-4.
  */
-public class ForkInvoker extends AbstractTransitionSelectInvoker {
+public class ForkGatewayInvoker extends AbstractGatewayInvoker {
 
-    public ForkInvoker(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    public ForkGatewayInvoker(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super( runtimeActivity);
     }
 

@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.pvm.invocation;
+package com.alibaba.smart.framework.engine.pvm.invocation.impl;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -25,12 +25,12 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 /**
  * Created by ettear on 16-5-4.
  */
-public class JoinInvoker implements Invoker {
+public class JoinGatewayInvoker implements Invoker {
 
     private ExtensionPointRegistry extensionPointRegistry;
     private PvmActivity        runtimeActivity;
 
-    public JoinInvoker(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    public JoinGatewayInvoker(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         this.extensionPointRegistry = extensionPointRegistry;
         this.runtimeActivity = runtimeActivity;
     }
