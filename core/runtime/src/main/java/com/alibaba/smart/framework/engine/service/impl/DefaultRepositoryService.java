@@ -186,7 +186,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
         DefaultPvmProcessDefinition pvmProcessDefinition = new DefaultPvmProcessDefinition();
         pvmProcessDefinition.setClassLoader(component.getClassLoader());
         pvmProcessDefinition.setModel(process);
-        component.addProcess(pvmProcessDefinition.getId(), pvmProcessDefinition);
+        component.addProcess(pvmProcessDefinition.getModel().getId(), pvmProcessDefinition);
 
         List<BaseElement> elements = process.getElements();
         if (null != elements && !elements.isEmpty()) {
@@ -204,7 +204,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     index++;
 
                     PvmProcessDefinition runtimeSubProcess = this.buildPvmProcessDefinition(subProcess, component, true);
-                    runtimeActivities.put(runtimeSubProcess.getId(), runtimeSubProcess);
+                    runtimeActivities.put(runtimeSubProcess.getModel().getId(), runtimeSubProcess);
 
                     if (runtimeSubProcess.getModel().isStartActivity()) {
                         pvmProcessDefinition.setStartActivity(runtimeSubProcess);
@@ -220,7 +220,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     DefaultPvmTransition runtimeTransition = new DefaultPvmTransition();
                     runtimeTransition.setModel(transition);
 
-                    runtimeTransitions.put(runtimeTransition.getId(), runtimeTransition);
+                    runtimeTransitions.put(runtimeTransition.getModel().getId(), runtimeTransition);
 
                 } else if (element instanceof Activity) {
                     Activity activity = (Activity) element;
@@ -233,7 +233,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     DefaultPvmActivity runtimeActivity = new DefaultPvmActivity();
                     runtimeActivity.setModel(activity);
 
-                    runtimeActivities.put(runtimeActivity.getId(), runtimeActivity);
+                    runtimeActivities.put(runtimeActivity.getModel().getId(), runtimeActivity);
 
                     if (runtimeActivity.getModel().isStartActivity()) {
                         pvmProcessDefinition.setStartActivity(runtimeActivity);
@@ -251,18 +251,18 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
 
                 runtimeTransition.setSource(source);
                 runtimeTransition.setTarget(target);
-                source.addOutcomeTransition(runtimeTransition.getId(), runtimeTransition);
-                target.addIncomeTransition(runtimeTransition.getId(), runtimeTransition);
+                source.addOutcomeTransition(runtimeTransition.getModel().getId(), runtimeTransition);
+                target.addIncomeTransition(runtimeTransition.getModel().getId(), runtimeTransition);
             }
 
             // Create Invoker for Transition Flow
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
                 PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
                 if (runtimeTransition instanceof ProviderRegister) {
-                    TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModelType());
+                    TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModel().getClass());
 
                     if (null == providerFactory) {
-                        throw new RuntimeException("No factory found for " + runtimeTransition.getModelType());
+                        throw new RuntimeException("No factory found for " + runtimeTransition.getModel().getClass());
                     }
 
                     TransitionProvider transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
@@ -274,10 +274,10 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             for (Map.Entry<String, PvmActivity> runtimeActivityEntry : runtimeActivities.entrySet()) {
                 PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
                 if (runtimeActivity instanceof ProviderRegister) {
-                    ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModelType());
+                    ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModel().getClass());
 
                     if (null == providerFactory) {
-                        throw new RuntimeException("No factory found for " + runtimeActivity.getModelType());
+                        throw new RuntimeException("No factory found for " + runtimeActivity.getModel().getClass());
                     }
 
                     ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeActivity);

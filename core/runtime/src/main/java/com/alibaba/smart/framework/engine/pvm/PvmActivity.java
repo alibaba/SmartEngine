@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.provider.ProviderRegister;
 /**
  * RuntimeActivity Created by ettear on 16-4-11.
  */
-public interface PvmActivity extends PvmInvocable<Activity> {
+public interface PvmActivity extends PvmInvocable<Activity>,ProviderRegister {
 
     Map<String, PvmTransition> getIncomeTransitions();
 

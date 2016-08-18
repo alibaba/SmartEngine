@@ -1,5 +1,14 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.impl.DefaultActivityTransitionSelectInvoker;
@@ -10,19 +19,9 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.provider.InvokerProvider;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * DefaultRuntimeActivity Created by ettear on 16-4-13.
@@ -120,7 +119,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
 
     @Override
     public String toString() {
-        return super.getModel() + ",id is " + super.getId();
+        return super.toString();
     }
 
 }

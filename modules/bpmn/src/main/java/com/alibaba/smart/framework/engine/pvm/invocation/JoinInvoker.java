@@ -51,7 +51,7 @@ public class JoinInvoker implements Invoker {
         for (Map.Entry<String, ExecutionInstance> executionInstanceEntry : executionInstances.entrySet()) {
             ExecutionInstance executionInstance = executionInstanceEntry.getValue();
             String activityId = executionInstance.getActivity().getActivityId();
-            if (StringUtils.equals(this.runtimeActivity.getId(), activityId)) {
+            if (StringUtils.equals(this.runtimeActivity.getModel().getId(), activityId)) {
                 // TODO ettear 并发Join同时处理运行状态
                 TransitionInstance transitionInstance = executionInstance.getActivity().getIncomeTransitions().get(0);
                 joinExecutionInstance.put(transitionInstance.getTransitionId(), executionInstance);
@@ -60,7 +60,7 @@ public class JoinInvoker implements Invoker {
         ActivityInstanceFactory activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
         ActivityInstance activityInstance = activityInstanceFactory.create();
-        activityInstance.setActivityId(this.runtimeActivity.getId());
+        activityInstance.setActivityId(this.runtimeActivity.getModel().getId());
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
 
         boolean completed = true;

@@ -3,8 +3,6 @@ package com.alibaba.smart.framework.engine.pvm.impl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import lombok.Data;
-
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.impl.DoNothingInvoker;
@@ -28,15 +26,15 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
 
     private Map<String, Invoker>   invokers = new ConcurrentHashMap<>();
 
-    @Override
-    public String getId() {
-        return this.model.getId();
-    }
-
-    @Override
-    public Class<?> getModelType() {
-        return this.model.getClass();
-    }
+//    @Override
+//    public String getId() {
+//        return this.model.getId();
+//    }
+//
+//    @Override
+//    public Class<?> getModelType() {
+//        return this.model.getClass();
+//    }
     
     @Override
     public InvokerProvider getProvider() {
@@ -98,7 +96,7 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
 
     @Override
     public String toString() {
-        return " [getId()=" + getId() + ", getModelType()=" + getModelType() + "]";
+        return " [getId()=" + getModel().getId() + ", getModelType()=" + getModel().getClass() + "]";
     }
 
 }

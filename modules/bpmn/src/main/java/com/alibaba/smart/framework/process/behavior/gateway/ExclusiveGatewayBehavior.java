@@ -32,7 +32,7 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior {
         // TODO 考虑删除,在持久层最终完成赋值,因为之间已经有关联关系了
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
 
-        activityInstance.setActivityId(executionSession.getCurrentRuntimeActivity().getId());
+        activityInstance.setActivityId(executionSession.getCurrentRuntimeActivity().getModel().getId());
 
         processInstance.addActivityInstance(activityInstance);
 

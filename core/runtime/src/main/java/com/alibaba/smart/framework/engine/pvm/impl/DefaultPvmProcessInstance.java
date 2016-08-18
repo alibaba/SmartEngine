@@ -42,7 +42,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
         ActivityInstance activityInstance = activityInstanceFactory.create();
         activityInstance.setProcessInstanceId(processInstanceId);
         PvmActivity startActivity = pvmProcessDefinition.getStartActivity();
-        String startActivityId = startActivity.getId();
+        String startActivityId = startActivity.getModel().getId();
         
         activityInstance.setActivityId(startActivityId);
         // 构建执行实例

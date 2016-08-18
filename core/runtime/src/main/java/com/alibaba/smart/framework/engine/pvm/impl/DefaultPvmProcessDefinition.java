@@ -67,7 +67,7 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
         // 构建活动实例: 指向开始节点
         ActivityInstance activityInstance = activityInstanceFactory.create();
         activityInstance.setProcessInstanceId(processInstanceId);
-        activityInstance.setActivityId(this.startActivity.getId());
+        activityInstance.setActivityId(this.startActivity.getModel().getId());
         // 构建执行实例
         ExecutionInstance executionInstance = context.getCurrentExecution();
         if (null == executionInstance) {

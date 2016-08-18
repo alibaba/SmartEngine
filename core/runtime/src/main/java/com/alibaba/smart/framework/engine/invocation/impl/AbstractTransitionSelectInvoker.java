@@ -87,11 +87,11 @@ public abstract class AbstractTransitionSelectInvoker implements Invoker {
         ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
         TransitionInstance transitionInstance = transitionInstanceFactory.create();
-        transitionInstance.setTransitionId(runtimeTransition.getId());
+        transitionInstance.setTransitionId(runtimeTransition.getModel().getId());
         transitionInstance.setSourceActivityInstanceId(currentActivityInstance.getInstanceId());
 
         ActivityInstance activityInstance = activityInstanceFactory.create();
-        activityInstance.setActivityId(runtimeTransition.getTarget().getId());
+        activityInstance.setActivityId(runtimeTransition.getTarget().getModel().getId());
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
         activityInstance.addIncomeTransition(transitionInstance);
 
