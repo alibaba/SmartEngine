@@ -28,10 +28,10 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
+import com.alibaba.smart.framework.engine.provider.ProviderRegister;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
-import com.alibaba.smart.framework.engine.pvm.ProviderRuntimeInvocable;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -159,10 +159,10 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             }
             //这里应该是FALSE吧?
             PvmProcessDefinition runtimeProcess = this.buildPvmProcessDefinition(process, processComponent, true);
-            if (null != runtimeProcess && runtimeProcess instanceof ProviderRuntimeInvocable) {
+            if (null != runtimeProcess && runtimeProcess instanceof ProviderRegister) {
                 ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
                 ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeProcess);
-                ((ProviderRuntimeInvocable) runtimeProcess).setProvider(activityProvider);
+                ((ProviderRegister) runtimeProcess).registerProvider(activityProvider);
                 processComponent.setProcess(runtimeProcess);
             } else {
                 return null;
@@ -191,6 +191,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
         List<BaseElement> elements = process.getElements();
         if (null != elements && !elements.isEmpty()) {
 
+            //TODO ocp 
             Map<String, PvmTransition> runtimeTransitions = new HashMap<>();
             Map<String, PvmActivity> runtimeActivities = new HashMap<>();
             for (BaseElement element : elements) {
@@ -205,7 +206,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     PvmProcessDefinition runtimeSubProcess = this.buildPvmProcessDefinition(subProcess, component, true);
                     runtimeActivities.put(runtimeSubProcess.getId(), runtimeSubProcess);
 
-                    if (runtimeSubProcess.isStartActivity()) {
+                    if (runtimeSubProcess.getModel().isStartActivity()) {
                         pvmProcessDefinition.setStartActivity(runtimeSubProcess);
                     }
                 } else if (element instanceof Transition) {
@@ -234,7 +235,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
 
                     runtimeActivities.put(runtimeActivity.getId(), runtimeActivity);
 
-                    if (runtimeActivity.isStartActivity()) {
+                    if (runtimeActivity.getModel().isStartActivity()) {
                         pvmProcessDefinition.setStartActivity(runtimeActivity);
                     }
                 }
@@ -257,7 +258,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             // Create Invoker for Transition Flow
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
                 PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
-                if (runtimeTransition instanceof ProviderRuntimeInvocable) {
+                if (runtimeTransition instanceof ProviderRegister) {
                     TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModelType());
 
                     if (null == providerFactory) {
@@ -265,14 +266,14 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     }
 
                     TransitionProvider transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
-                    ((ProviderRuntimeInvocable) runtimeTransition).setProvider(transitionProvider);
+                    ((ProviderRegister) runtimeTransition).registerProvider(transitionProvider);
                 }
             }
 
             // Create Invoker for Activity
             for (Map.Entry<String, PvmActivity> runtimeActivityEntry : runtimeActivities.entrySet()) {
                 PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
-                if (runtimeActivity instanceof ProviderRuntimeInvocable) {
+                if (runtimeActivity instanceof ProviderRegister) {
                     ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModelType());
 
                     if (null == providerFactory) {
@@ -280,7 +281,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     }
 
                     ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeActivity);
-                    ((ProviderRuntimeInvocable) runtimeActivity).setProvider(activityProvider);
+                    ((ProviderRegister) runtimeActivity).registerProvider(activityProvider);
                 }
             }
 

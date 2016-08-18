@@ -6,9 +6,11 @@ package com.alibaba.smart.framework.engine.pvm.event;
 public enum PvmEventConstant {
     PROCESS_START(1),
     PROCESS_END(2),
+    
     ACTIVITY_START(3),
     ACTIVITY_EXECUTE(4),
     ACTIVITY_END(5),
+    
     ACTIVITY_TRANSITION_SELECT(6),
     TRANSITION_HIT(7),
     TRANSITION_START(8),

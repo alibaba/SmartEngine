@@ -86,6 +86,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         executionContext.setRequest(request);
 
         pvmProcessInstance.start(executionContext);
+        
         return processInstance;
     }
 

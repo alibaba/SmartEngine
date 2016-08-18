@@ -59,13 +59,15 @@ public abstract class AbstractPvmActivity<M extends Activity> extends AbstractPv
         return activityExecuteMessage;
 
     }
+    
+    
+    @Override
+    public Message signal(ExecutionContext context) {
+        return null;
+    }
 
     protected abstract Message doInternalExecute(ExecutionContext context);
 
-    @Override
-    public boolean isStartActivity() {
-        return this.getModel().isStartActivity();
-    }
 
     // Getter & Setter
     public void addIncomeTransition(String transitionId, PvmTransition income) {
