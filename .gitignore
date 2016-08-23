@@ -5,6 +5,7 @@ target
 *.iml
 *.idea
 .idea
+*.swp
 bin
 .settings/
 test-output/
