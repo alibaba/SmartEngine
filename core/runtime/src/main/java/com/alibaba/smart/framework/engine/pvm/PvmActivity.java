@@ -16,8 +16,16 @@ public interface PvmActivity extends PvmInvocable<Activity>,ProviderRegister {
 
     Map<String, PvmTransition> getOutcomeTransitions();
 
+    /**
+     * 流程实例启动,节点进入 会调用此方法.
+     * @param context
+     */
     Message execute(ExecutionContext context);
     
+    /**
+     * 暂停型节点恢复执行时,会调用此方法.
+     * @param context
+     */
     Message signal(ExecutionContext context);
 
 

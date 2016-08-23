@@ -17,26 +17,16 @@ import com.alibaba.smart.framework.engine.pvm.PvmInvocable;
 /**
  * DefaultRuntimeInvocable Created by ettear on 16-4-14.
  */
-public abstract class AbstractPvmInvocable<M extends IndentityElement> implements PvmInvocable<M> ,ProviderRegister
-{
+public abstract class AbstractPvmInvocable<M extends IndentityElement> implements PvmInvocable<M>, ProviderRegister {
 
-    private static final Logger   LOGGER          = LoggerFactory.getLogger(AbstractPvmInvocable.class);
+    private static final Logger  LOGGER   = LoggerFactory.getLogger(AbstractPvmInvocable.class);
 
-    
-    
-    private M                      model;
-    
+    private M                    model;
 
-    private InvokerProvider        provider;
-    
+    private InvokerProvider      provider;
 
-    private Map<String, Invoker>   invokers = new ConcurrentHashMap<>();
+    private Map<String, Invoker> invokers = new ConcurrentHashMap<>();
 
-
-    
-
-
-    
     @Override
     public void start() {
         this.provider.start();
@@ -50,16 +40,15 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
     @Override
     public Message fireEvent(String event, ExecutionContext context) {
         Invoker invoker = this.getInvoker(event);
-        if(null == invoker){
-            LOGGER.debug("invoker is null for event:"+event+",so now return.");
+        if (null == invoker) {
+            LOGGER.debug("invoker is null for event:" + event + ",so now return.");
             return null;
-        }
-        else{
+        } else {
             return invoker.invoke(context);
 
         }
     }
- 
+
     private Invoker getInvoker(String event) {
         Invoker invoker = this.invokers.get(event);
         if (null != invoker) {
@@ -78,12 +67,6 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
         return null;
     }
 
-    @Override
-    public String toString() {
-        return " [getId()=" + getModel().getId() + ", getModelType()=" + getModel().getClass() + "]";
-    }
-
-    
 
     @Override
     public M getModel() {
@@ -93,15 +76,21 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
     public void setModel(M model) {
         this.model = model;
     }
-    
+
     @Override
     public InvokerProvider getProvider() {
         return provider;
     }
-    
+
     @Override
     public void registerProvider(InvokerProvider invocableProvider) {
-            this.provider =        invocableProvider;
+        this.provider = invocableProvider;
     }
+    
+    @Override
+    public String toString() {
+        return " [getId()=" + getModel().getId() + ", getModelType()=" + getModel().getClass() + "]";
+    }
+
 
 }

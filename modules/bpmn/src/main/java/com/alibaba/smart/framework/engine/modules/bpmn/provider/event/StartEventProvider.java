@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.event;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.StartEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityProvider;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
@@ -10,5 +11,11 @@ public class StartEventProvider extends AbstractBpmnActivityProvider<StartEvent>
 
     public StartEventProvider(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
+    }
+    
+    @Override
+    public Invoker createInvoker(String event) {
+        // TODO Auto-generated method stub
+        return super.createInvoker(event);
     }
 }
