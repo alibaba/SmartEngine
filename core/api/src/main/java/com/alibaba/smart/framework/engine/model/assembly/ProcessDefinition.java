@@ -5,6 +5,9 @@ package com.alibaba.smart.framework.engine.model.assembly;
  */
 public interface ProcessDefinition extends BaseElement {
 
+    public static final String DEFAULT_VERSION = "1.0";
+
+
     String getId();
 
     String getName();

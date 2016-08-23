@@ -19,6 +19,8 @@ public interface ProcessService {
      */
     ProcessInstance start(String processId, String version, Map<String, Object> variables);
 
+    ProcessInstance start(String processId);
+
     /**
      * 终止
      * @param processInstanceId
@@ -53,6 +55,7 @@ public interface ProcessService {
 
 
     EngineResult toDatabase(String processId);
+
 
 
 

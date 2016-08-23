@@ -90,6 +90,11 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
     }
 
     @Override
+    public ProcessInstance start(String processId) {
+        return this.start(processId,ProcessDefinition.DEFAULT_VERSION,null);
+    }
+
+    @Override
     public void abort(String processInstanceId) {
 
     }
@@ -204,6 +209,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
 
 
     }
+
 
 
 }
