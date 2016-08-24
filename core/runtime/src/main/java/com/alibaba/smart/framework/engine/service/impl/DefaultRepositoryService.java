@@ -77,7 +77,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             throw new DeployException("Module[" + moduleName + "] not found!");
         }
 
-        //TODO 支持从不同地方加载 
+        //TODO 支持从不同地方加载 优先级高
         ProcessDefinition definition = this.parse(classLoader, uri);
         PvmProcessComponent runtimeProcessComponent = install(classLoader, definition);
         if (null == runtimeProcessComponent) {

@@ -44,7 +44,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
         ExecutionInstance executionInstance = context.getCurrentExecution();
         ActivityInstance activityInstance = executionInstance.getActivity();
         
-        //TODO 不同节点,应该有不同的行为, 每个节点还是需要自己的行为. 不能解决差异性问题.  
+        //TODO 不同节点,应该有不同的行为, 每个节点还是需要自己的行为. 不能解决差异性问题.  优先级:高
         TaskInstance taskInstance = activityInstance.getTask();
         
         
