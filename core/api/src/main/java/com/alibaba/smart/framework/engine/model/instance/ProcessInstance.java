@@ -7,6 +7,7 @@ import java.util.Map;
  */
 public interface ProcessInstance extends LifeCycleInstance {
 
+    //TODO 干掉?
     String getProcessUri();
 
     void setProcessUri(String processUri);

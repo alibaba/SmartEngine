@@ -44,6 +44,8 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
             LOGGER.debug("invoker is null for event:" + event + ",so now return.");
             return null;
         } else {
+            LOGGER.debug("invoker is ok for event:" + event + ",so deep into.");
+
             return invoker.invoke(context);
 
         }

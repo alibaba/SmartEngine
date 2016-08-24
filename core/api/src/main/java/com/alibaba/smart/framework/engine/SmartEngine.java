@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.service.TaskService;
  */
 public interface SmartEngine {
 
+    
     ExtensionPointRegistry getExtensionPointRegistry();
 
     RepositoryService getRepositoryService();
@@ -26,5 +27,6 @@ public interface SmartEngine {
 
     void destory();
 
+    //TODO 干掉 
     ClassLoader getClassLoader(String moduleName);
 }

@@ -48,6 +48,8 @@ import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
 /**
  * 默认部署器 Created by ettear on 16-4-13.
+ * 
+ *TODO deploy 完成后,需要被获取流程定义 .
  */
 public class DefaultRepositoryService implements RepositoryService, LifeCycleListener {
 
@@ -75,6 +77,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             throw new DeployException("Module[" + moduleName + "] not found!");
         }
 
+        //TODO 支持从不同地方加载 
         ProcessDefinition definition = this.parse(classLoader, uri);
         PvmProcessComponent runtimeProcessComponent = install(classLoader, definition);
         if (null == runtimeProcessComponent) {

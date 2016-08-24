@@ -19,6 +19,7 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
     private static final long serialVersionUID = 2323809298485587299L;
     private String            processInstanceId;
     // private InstanceFact fact;
+    //TODO 去掉对象关联
     private ActivityInstance  activity;
     private boolean           fault;
 
