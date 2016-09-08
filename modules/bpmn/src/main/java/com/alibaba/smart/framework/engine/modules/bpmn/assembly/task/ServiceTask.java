@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task;
 
 import javax.xml.namespace.QName;
 
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.Action;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,5 +24,6 @@ public class ServiceTask extends AbstractTask {
 
     private boolean auto;
 
-    private String className;
+
+    private Action action;
 }

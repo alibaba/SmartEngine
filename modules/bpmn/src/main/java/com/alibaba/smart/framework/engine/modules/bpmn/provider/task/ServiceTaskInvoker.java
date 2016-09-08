@@ -22,10 +22,12 @@ public class ServiceTaskInvoker implements Invoker {
     public Message invoke(ExecutionContext executionContext) {
 
         ServiceTask xx = (ServiceTask) pvmActivity.getModel();
-        String className = xx.getClassName();
+        String className = null;
         
         if(null == className){
-            throw new IllegalArgumentException("className should not be null");
+
+            DefaultMessage defaultMessage = new DefaultMessage();
+            return defaultMessage;
         }
 
         // TODO need cache,rename

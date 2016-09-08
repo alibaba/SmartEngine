@@ -1,7 +1,10 @@
 package com.alibaba.smart.framework.engine.instance.util;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.*;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 
@@ -112,6 +115,85 @@ public final class ClassLoaderUtil {
         }
 
         return clazz;
+    }
+
+
+
+    public static URL[] getResources(String resourceName) {
+        LinkedList urls  = new LinkedList();
+        boolean found = false;
+
+        // 首先试着从当前线程的ClassLoader中查找。
+        found = getResources(urls, resourceName, getContextClassLoader(), false);
+
+        // 如果没找到，试着从装入自己的ClassLoader中查找。
+        if (!found) {
+            getResources(urls, resourceName, ClassLoaderUtil.class.getClassLoader(), false);
+        }
+
+        // 最后的尝试: 在系统ClassLoader中查找(JDK1.2以上)，
+        // 或者在JDK的内部ClassLoader中查找(JDK1.2以下)。
+        if (!found) {
+            getResources(urls, resourceName, null, true);
+        }
+
+        // 返回不重复的列表。
+        return getDistinctURLs(urls);
+    }
+
+
+    public static ClassLoader getContextClassLoader() {
+        return Thread.currentThread().getContextClassLoader();
+    }
+
+
+    private static URL[] getDistinctURLs(LinkedList urls) {
+        if ((urls == null) || (urls.size() == 0)) {
+            return new URL[0];
+        }
+
+        Set urlSet = new HashSet(urls.size());
+
+        for (Iterator i = urls.iterator(); i.hasNext();) {
+            URL url = (URL) i.next();
+
+            if (urlSet.contains(url)) {
+                i.remove();
+            } else {
+                urlSet.add(url);
+            }
+        }
+
+        return (URL[]) urls.toArray(new URL[urls.size()]);
+    }
+
+
+    private static boolean getResources(List urlSet, String resourceName, ClassLoader classLoader,
+                                        boolean sysClassLoader) {
+        if (resourceName == null) {
+            return false;
+        }
+
+        Enumeration i = null;
+
+        try {
+            if (classLoader != null) {
+                i = classLoader.getResources(resourceName);
+            } else if (sysClassLoader) {
+                i = ClassLoader.getSystemResources(resourceName);
+            }
+        } catch (IOException e) {
+        }
+
+        if ((i != null) && i.hasMoreElements()) {
+            while (i.hasMoreElements()) {
+                urlSet.add(i.nextElement());
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
 }

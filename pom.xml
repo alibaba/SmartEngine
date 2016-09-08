@@ -10,6 +10,11 @@
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 	-->
+    <parent>
+        <groupId>com.taobao</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.3</version>
+    </parent>
 	<groupId>com.alibaba.smart.framework</groupId>
 	<artifactId>engine</artifactId>
 	<version>1.0.0-SNAPSHOT</version>

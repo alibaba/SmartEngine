@@ -1,15 +1,17 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.parser;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.Action;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 public class ServiceTaskParser extends AbstractBpmnActivityParser<ServiceTask> implements StAXArtifactParser<ServiceTask> {
 
@@ -32,13 +34,18 @@ public class ServiceTaskParser extends AbstractBpmnActivityParser<ServiceTask> i
         ServiceTask serviceTask = new ServiceTask();
         serviceTask.setId(this.getString(reader, "id"));
         serviceTask.setAuto(this.getBoolean(reader,"auto"));
-        String className = this.getString(reader, "smart:class");
-        className= reader.getAttributeValue(2);
-        serviceTask.setClassName( className);
-         
-
-
         this.parseChildren(serviceTask, reader, context);
         return serviceTask;
     }
+
+    @Override
+    protected void parseModelChild(ServiceTask model, BaseElement child) {
+        if (child instanceof Action) {
+            model.setAction((Action) child);
+        }
+
+    }
+
+
+
 }

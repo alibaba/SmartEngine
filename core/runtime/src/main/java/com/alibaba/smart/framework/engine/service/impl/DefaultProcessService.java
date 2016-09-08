@@ -136,10 +136,10 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
     }
 
     @Override
-    public ProcessInstance run(ProcessDefinition definition,String processId, String activityId, boolean sub) {
+    public ProcessInstance run(ProcessDefinition definition,String instanceId, String activityId, boolean sub) {
 
 
-        ProcessInstance processInstance = getProcessInstance(processId,sub);
+        ProcessInstance processInstance = getProcessInstance(instanceId,sub);
         PvmProcessInstance pvmProcess = new DefaultPvmProcessInstance();
 
         ExecutionInstance chosenExecution  = null;
