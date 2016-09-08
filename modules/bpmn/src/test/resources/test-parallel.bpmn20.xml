@@ -21,7 +21,7 @@
 		</sequenceFlow>
 
 		<serviceTask id="theTask1" name="Task 1" auto="true">
-            <action type="spring" id="createBizOrder" method="create" />
+            <action type="spring" id="createOrder" method="create" />
 		</serviceTask>
 
 		<sequenceFlow id="flow4" sourceRef="theTask1" targetRef="theTask3"/>

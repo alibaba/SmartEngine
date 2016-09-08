@@ -15,24 +15,11 @@ public class ServiceTaskProvider extends AbstractBpmnActivityProvider<ServiceTas
 
 
 
-//    @Override
-//    protected Invoker createExecuteInvoker() {
-//
-//        ServiceTask serviceTask = (ServiceTask) this.getRuntimeActivity().getModel();
-//        if (serviceTask.isAuto()) {
-//            return DoNothingInvoker.instance;
-//        } else {
-//            return context -> {
-//                DefaultMessage message = new DefaultMessage();
-//                if (serviceTask.getId().equals("theTask2")) {
-//
-//                }
-//                message.setFault(true);
-//                message.setSuspend(true);
-//                return message;
-//            };
-//        }
-//    }
+    @Override
+    protected Invoker createExecuteInvoker() {
+
+        return new ServiceTaskInvoker(getRuntimeActivity());
+    }
 
 
 
