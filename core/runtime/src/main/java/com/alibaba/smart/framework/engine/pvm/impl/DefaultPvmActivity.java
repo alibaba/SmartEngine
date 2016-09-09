@@ -110,9 +110,6 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
         return message;
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
+
 
 }
