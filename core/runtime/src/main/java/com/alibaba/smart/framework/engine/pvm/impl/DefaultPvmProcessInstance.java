@@ -20,6 +20,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import com.alibaba.smart.framework.engine.util.ParamChecker;
 import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 
@@ -58,7 +59,29 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
         // 从开始节点开始执行
           this.runProcess(startActivity, executionContext);
     }
-    
+
+    @Override
+    public void run(ExecutionContext context) {
+        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
+        ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
+        ProcessInstance processInstance = context.getProcessInstance();
+        String processInstanceId = processInstance.getInstanceId();
+        ActivityInstance activityInstance = activityInstanceFactory.create();
+        activityInstance.setProcessInstanceId(processInstanceId);
+        processInstance.setStatus(InstanceStatus.running);
+        activityInstance.setCurrentStep(String.valueOf(PvmEventConstant.ACTIVITY_START.getCode()));
+        activityInstance.setActivityId(context.getCurrentExecution().getActivity().getActivityId());
+        context.getCurrentExecution().setActivity(activityInstance);
+        PvmProcessDefinition pvmProcessDefinition=     context.getPvmProcessDefinition();
+        Map<String,PvmActivity> activityMap = pvmProcessDefinition.getActivities();
+        if (activityMap.isEmpty() || !activityMap.containsKey(context.getCurrentExecution().getActivity().getActivityId())) {
+            throw new EngineException("not have this activity!");
+        }
+        this.runProcess(activityMap.get(context.getCurrentExecution().getActivity().getActivityId()),context);
+
+
+    }
+
     private Message runProcess(PvmActivity startActivity, ExecutionContext context) {
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
 

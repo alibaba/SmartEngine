@@ -1,9 +1,8 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.action;
 
-import com.alibaba.smart.framework.engine.model.assembly.Script;
-import com.alibaba.smart.framework.engine.model.assembly.SmartBase;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBase;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.AbstractBpmnActivity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,7 +14,7 @@ import javax.xml.namespace.QName;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class Action extends AbstractBase {
+public class Action extends AbstractBpmnActivity {
 
 
     public final static QName NameType             = new QName(BpmnBase.NAME_SPACE, "action");

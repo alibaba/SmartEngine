@@ -136,7 +136,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
     }
 
     @Override
-    public ProcessInstance run(ProcessDefinition definition,String instanceId, String activityId, boolean sub) {
+    public ProcessInstance run(ProcessDefinition definition,String instanceId, String activityId, boolean sub,Map<String,Object> request) {
 
 
         ProcessInstance processInstance = getProcessInstance(instanceId,sub);
@@ -156,11 +156,15 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         ExecutionContext instanceContext = this.instanceContextFactory.create();
         instanceContext.setProcessInstance(processInstance);
         instanceContext.setCurrentExecution(chosenExecution);// 执行实例添加到当前上下文中
+        instanceContext.setRequest(request);
+        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(definition.getId(), definition.getVersion());
+        instanceContext.setPvmProcessDefinition(pvmProcessDefinition);
 
-        pvmProcess.start(instanceContext);
+        pvmProcess.run(instanceContext);
         return processInstance;
 
     }
+
 
     private ProcessInstance getProcessInstance(String processId, boolean sub) {
         ProcessInstance processInstance ;
@@ -186,26 +190,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         processInstanceStorage.remove(processId);
     }
 
-    @Override
-    public EngineResult toDatabase(String processId) {
-        ProcessInstance processInstance = this.processInstanceStorage.find(processId);
-        if (processInstance == null) {
-            throw new EngineException("can not find process instance");
-        }
 
-        EngineResult result = new EngineResult();
-
-        StringBuilder exResult = new StringBuilder();
-        for (ExecutionInstance executionInstance: processInstance.getExecutions().values()) {
-            exResult.append(this.executionInstanceFactory.toDatabase(executionInstance));
-            exResult.append(";");
-        }
-
-        result.setExecutionsData(exResult.toString());
-        return result;
-
-
-    }
 
 
 }

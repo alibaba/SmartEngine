@@ -47,12 +47,11 @@ public interface ProcessService {
      * @param activityId
      * @return
      */
-    ProcessInstance run(ProcessDefinition definition,String processId, String activityId, boolean sub);
+    ProcessInstance run(ProcessDefinition definition,String processId, String activityId, boolean sub,Map<String,Object> request);
+
 
     void clear(String processId);
 
-
-    EngineResult toDatabase(String processId);
 
 
 

@@ -61,7 +61,13 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     @Override
     public String toDatabase() {
 
-        return getInstanceId();
+        StringBuilder data = new StringBuilder();
+        for (ExecutionInstance executionInstance:this.getExecutions().values()) {
+            data.append(executionInstance.toDatabase());
+            data.append("|");
+        }
+
+        return data.toString();
 
     }
 
@@ -71,4 +77,11 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
         return this;
 
     }
+
+
+    public String toString() {
+        return this.toDatabase();
+
+    }
+
 }

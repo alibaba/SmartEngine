@@ -3,7 +3,9 @@ package com.alibaba.smart.framework.engine.pvm.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import com.alibaba.smart.framework.engine.util.ParamChecker;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -41,9 +43,16 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
 
     @Override
     protected Message doInternalExecute(ExecutionContext context) {
+        Message activityExecuteMessage = new DefaultMessage();
         ExecutionInstance executionInstance = context.getCurrentExecution();
         ActivityInstance activityInstance = executionInstance.getActivity();
-        
+        Map<String,Object> request = context.getRequest();
+        if (request.containsKey("event")) {
+            dealEvent(context,activityInstance,activityExecuteMessage);
+            return activityExecuteMessage;
+        }
+
+
         //TODO 不同节点,应该有不同的行为, 每个节点还是需要自己的行为. 不能解决差异性问题.  优先级:高
         TaskInstance taskInstance = activityInstance.getTask();
 
@@ -58,11 +67,27 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
         // 重置状态
         executionInstance.setStatus(InstanceStatus.running);
 
-        Message activityExecuteMessage = new DefaultMessage();
+
 
         dealStep(context, activityInstance, activityExecuteMessage);
-        
+
         return activityExecuteMessage;
+    }
+
+    private void dealEvent(ExecutionContext context, ActivityInstance activityInstance, Message activityExecuteMessage) {
+        Map<String,Object> request = context.getRequest();
+        String event = (String) request.get("event");
+        ParamChecker.notNull(event,"assignEvent is null !");
+        Message invokerMessage = this.invokeActivity(event,context);
+
+        if (invokerMessage.isFault()) {
+            invokerMessage.setSuspend(true);
+            activityExecuteMessage.setFault(true);
+        }
+        if (invokerMessage.isSuspend()) {
+            activityExecuteMessage.setSuspend(true);
+        }
+
     }
 
     private void dealStep(ExecutionContext context, ActivityInstance activityInstance, Message activityExecuteMessage) {

@@ -3,6 +3,8 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.parser;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.Action;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvent;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvents;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -42,6 +44,9 @@ public class ServiceTaskParser extends AbstractBpmnActivityParser<ServiceTask> i
     protected void parseModelChild(ServiceTask model, BaseElement child) {
         if (child instanceof Action) {
             model.setAction((Action) child);
+        }
+        if (child instanceof ProcessEvents) {
+            model.setEvents((ProcessEvents) child);
         }
 
     }
