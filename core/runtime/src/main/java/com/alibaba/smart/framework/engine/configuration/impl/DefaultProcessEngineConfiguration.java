@@ -19,7 +19,7 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
 
 
-    public static Object getBean(String bean) {
+    public  Object getBean(String bean) {
         return applicationContext.getBean(bean);
     }
 

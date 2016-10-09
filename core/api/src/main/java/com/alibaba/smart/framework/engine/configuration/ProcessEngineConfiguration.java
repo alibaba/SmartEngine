@@ -7,4 +7,6 @@ public interface ProcessEngineConfiguration {
     ExtensionPointRegistry getExtensionPointRegistry();
 
     void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
+
+    public Object getBean(String bean) ;
 }
