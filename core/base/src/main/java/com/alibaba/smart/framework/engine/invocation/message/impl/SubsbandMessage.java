@@ -7,6 +7,7 @@ package com.alibaba.smart.framework.engine.invocation.message.impl;
 public class SubsbandMessage extends DefaultMessage {
 
     public SubsbandMessage() {
-        this.setSuspend(true);
+        //FIXME 如何去暂停流程
+//        this.setSuspend(true);
     }
 }

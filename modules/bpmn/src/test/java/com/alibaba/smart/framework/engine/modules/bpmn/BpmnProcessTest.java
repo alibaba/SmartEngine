@@ -174,7 +174,7 @@ public class BpmnProcessTest {
     }
 
     @Test
-    public void testToModle() {
+    public void testToModule() {
 
 
         ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();

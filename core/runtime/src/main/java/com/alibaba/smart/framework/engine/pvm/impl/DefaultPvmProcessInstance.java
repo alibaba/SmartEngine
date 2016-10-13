@@ -113,7 +113,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
             return processMessage;
         }
 
-        // 执行后续节点选择
+        // 执行后续节点选择,实际上会调用此类 DefaultActivityTransitionSelectInvoker
         Message transitionSelectMessage = pvmActivity.fireEvent(PvmEventConstant.ACTIVITY_TRANSITION_SELECT.name(),
                                                                  context);
         if (null != transitionSelectMessage) {
@@ -136,7 +136,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
                             // 执行Activity
                             this.executeActivity(targetPvmActivity, context);
                         }else{
-                            throw new EngineException("unpported class type:ExecutionInstance");
+                            throw new EngineException("unspported class type:ExecutionInstance");
                         }
                     }
                     Map<String, ExecutionInstance> executionInstances = context.getProcessInstance().getExecutions();

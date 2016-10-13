@@ -37,5 +37,7 @@ public class ServiceTask extends AbstractTask {
      */
     private ProcessEvents events;
 
+    private String className;
+
 
 }

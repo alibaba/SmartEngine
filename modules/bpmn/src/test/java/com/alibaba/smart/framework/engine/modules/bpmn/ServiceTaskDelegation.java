@@ -15,7 +15,7 @@ public class ServiceTaskDelegation  implements TccDelegation<Object>{
     @Override
     public TccResult<Object> tryExecute(ExecutionContext executionContext) {
 //         LOGGER.info(executionContext.getRequest().toString());
-         LOGGER.info(executionContext.getCurrentExecution().toString());
+         LOGGER.info("TCC executing: "+executionContext.getCurrentExecution().toString());
           
          return null;
     }

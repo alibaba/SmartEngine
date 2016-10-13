@@ -25,22 +25,42 @@ public class ServiceTaskInvoker implements Invoker {
     public Message invoke(ExecutionContext executionContext) {
 
         ServiceTask serviceTask = (ServiceTask) pvmActivity.getModel();
-        Action action = serviceTask.getAction();
-        if (action == null) {
-            DefaultMessage defaultMessage = new DefaultMessage();
-            return defaultMessage;
-        }
-        
-        if (action.getType().equals("spring")) {
-            SpringAction springAction = new SpringAction(action.getId(),action.getMethod(),executionContext.getRequest());
-            try {
-                return springAction.execute();
-            } catch (Throwable e) {
-                //这里好像抓不到异常了已经
+        String className = serviceTask.getClassName();
+
+        //TODO
+        if(null == className){
+
+            Action action = serviceTask.getAction();
+            if (action == null) {
+                DefaultMessage defaultMessage = new DefaultMessage();
+                return defaultMessage;
             }
 
+            if (action.getType().equals("spring")) {
+                SpringAction springAction = new SpringAction(action.getId(),action.getMethod(),executionContext.getRequest());
+                try {
+                    return springAction.execute();
+                } catch (Throwable e) {
+                    //这里好像抓不到异常了已经
+                }
 
+
+            }
+        }else{
+            // TODO need cache,rename
+            Object ss = ClassLoaderUtil.createNewInstance(className);
+            if (ss instanceof TccDelegation<?>) {
+                TccDelegation<?> tccDelegation = (TccDelegation<?>) ss;
+                TccResult<?> xx11 = tccDelegation.tryExecute(executionContext);
+                DefaultMessage defaultMessage = new DefaultMessage();
+                defaultMessage.setBody(xx11);
+                return defaultMessage;
+            }
         }
+
+
+
+
 
         return null;
     }

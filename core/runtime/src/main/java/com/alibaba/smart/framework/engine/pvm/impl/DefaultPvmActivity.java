@@ -57,6 +57,15 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
         TaskInstance taskInstance = activityInstance.getTask();
 
 
+        //TODO
+        AbstractActivityProvider<?> activityProvider =   (AbstractActivityProvider<?>) this.getProvider();
+        Invoker  customInvoker =     activityProvider.createCustomInvoker(this);
+        if(null !=customInvoker){
+             customInvoker.invoke(context);
+         }
+
+
+
         if (null != taskInstance && InstanceStatus.completed != taskInstance.getStatus()) {// 任务未完成，直接暂停
             activityInstance.setStatus(InstanceStatus.suspended);
             Message message = new DefaultMessage();
