@@ -103,7 +103,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
     }
     
     private Message executeCurrentActivityAndLookupNextTransitionRecursively(PvmActivity pvmActivity, ExecutionContext context) {
-        // 执行当前节点
+        // 执行当前节点,会触发当前节点的行为执行
         Message activityExecuteMessage = pvmActivity.execute(context);
 
         Message processMessage = new DefaultMessage();
@@ -132,7 +132,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
                             // 执行Transition,目前仅是fireEvent,没做其他逻辑 
                             pvmTransition.execute(context);
                             PvmActivity targetPvmActivity = pvmTransition.getTarget();
-                            // 执行Activity
+                            //递归调用 执行Activity
                             this.executeCurrentActivityAndLookupNextTransitionRecursively(targetPvmActivity, context);
                         }else{
                             throw new EngineException("unsupported class type:ExecutionInstance");

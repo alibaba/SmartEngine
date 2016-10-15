@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 /**
  * Created by ettear on 16-4-29.
  */
-public class AbstractBpmnActivityBehaviorProvider<M extends AbstractBpmnActivity> extends AbstractActivityBehaviorProvider<M> {
+public   class AbstractBpmnActivityBehaviorProvider<M extends AbstractBpmnActivity> extends AbstractActivityBehaviorProvider<M> {
 
     private ExtensionPointRegistry        extensionPointRegistry;
 //    private HandlerProviderExtensionPoint handlerProviderExtensionPoint;

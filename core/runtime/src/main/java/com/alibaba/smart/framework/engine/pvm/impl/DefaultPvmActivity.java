@@ -17,7 +17,6 @@ import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehaviorProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
@@ -55,14 +54,14 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
 
 
         //TODO
-        AbstractActivityBehaviorProvider<?> activityProvider =   (AbstractActivityBehaviorProvider<?>) this.getProvider();
-        Invoker  customInvoker =     activityProvider.createCustomInvoker(this);
-        if(null !=customInvoker){
-             customInvoker.invoke(context);
-         }
+        AbstractActivityBehaviorProvider<?> activityBehaviorProvider =   (AbstractActivityBehaviorProvider<?>) this.getProvider();
+          activityBehaviorProvider.execute(this,context);
+//        if(null !=customInvoker){
+//             customInvoker.invoke(context);
+//         }
 
         //TODO 不同节点,应该有不同的行为, 每个节点还是需要自己的行为. 不能解决差异性问题.  优先级:高
-        TaskInstance taskInstance = activityInstance.getTask();
+//        TaskInstance taskInstance = activityInstance.getTask();
 
 
 //        if (null != taskInstance && InstanceStatus.completed != taskInstance.getStatus()) {// 任务未完成，直接暂停
@@ -143,7 +142,10 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
 //        }
 //    }
 
-
+    @Override
+    public String toString() {
+        return " [id=" + getModel().getId() + "]";
+    }
 
 
 
