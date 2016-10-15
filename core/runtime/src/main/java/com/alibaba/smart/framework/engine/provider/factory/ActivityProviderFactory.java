@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.provider.factory;
 
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.provider.ActivityProvider;
+import com.alibaba.smart.framework.engine.provider.ActivityBehaviorProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**
@@ -9,5 +9,5 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
  */
 public interface ActivityProviderFactory<M extends Activity> extends ProviderFactory<M> {
 
-    ActivityProvider<M> createActivityProvider(PvmActivity activity);
+    ActivityBehaviorProvider<M> createActivityProvider(PvmActivity activity);
 }

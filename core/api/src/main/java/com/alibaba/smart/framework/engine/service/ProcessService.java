@@ -40,14 +40,14 @@ public interface ProcessService {
     void recovery(EngineParam processParam);
 
 
-    /**
-     * 指定activityId来运行流程
-     *
-     * @param processId
-     * @param activityId
-     * @return
-     */
-    ProcessInstance run(ProcessDefinition definition,String processId, String activityId, boolean sub,Map<String,Object> request);
+//    /**
+//     * 指定activityId来运行流程
+//     *
+//     * @param processId
+//     * @param activityId
+//     * @return
+//     */
+//    ProcessInstance run(ProcessDefinition definition,String processId, String activityId, boolean sub,Map<String,Object> request);
 
 
     void clear(String processId);

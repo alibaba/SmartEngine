@@ -37,7 +37,6 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
      * 扫描和加载class loader内扩展点配置
      *
      * @param classLoader ClassLoader
-     * @throws ExtensionPointRegistryException
      */
     @Override
     public void register(String moduleName, ClassLoader classLoader)   {

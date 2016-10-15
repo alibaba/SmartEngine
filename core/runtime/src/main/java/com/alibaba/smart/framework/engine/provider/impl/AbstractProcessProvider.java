@@ -2,14 +2,14 @@ package com.alibaba.smart.framework.engine.provider.impl;
 
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
-import com.alibaba.smart.framework.engine.provider.ActivityProvider;
+import com.alibaba.smart.framework.engine.provider.ActivityBehaviorProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 /**
  * 抽象Process Provider实现 Created by ettear on 16-4-20.
  */
-public class AbstractProcessProvider<T extends Process> implements ActivityProvider<T> {
+public class AbstractProcessProvider<T extends Process> implements ActivityBehaviorProvider<T> {
 
     private PvmProcessDefinition runtimeProcess;
 

@@ -5,6 +5,6 @@ import com.alibaba.smart.framework.engine.model.assembly.Activity;
 /**
  * Created by ettear on 16-4-11.
  */
-public interface ActivityProvider<M extends Activity> extends InvokerProvider {
+public interface ActivityBehaviorProvider<M extends Activity> extends InvokerProvider {
 
 }

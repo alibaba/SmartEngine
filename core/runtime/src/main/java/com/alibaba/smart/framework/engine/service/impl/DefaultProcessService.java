@@ -121,7 +121,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
                 engineParam.getProcessParam().getProcessDefationVersion());
 
         if (null == processDefinition) {
-            throw new EngineException("can not find process defiation");
+            throw new EngineException("can not find process definition");
         }
 
         if (null != processInstanceStorage.find(processInstance.getInstanceId())) {
@@ -135,35 +135,35 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
 
     }
 
-    @Override
-    public ProcessInstance run(ProcessDefinition definition,String instanceId, String activityId, boolean sub,Map<String,Object> request) {
-
-
-        ProcessInstance processInstance = getProcessInstance(instanceId,sub);
-        PvmProcessInstance pvmProcess = new DefaultPvmProcessInstance();
-
-        ExecutionInstance chosenExecution  = null;
-        for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
-            if (StringUtils.equalsIgnoreCase(executionInstance.getActivity().getActivityId(),activityId)) {
-                chosenExecution = executionInstance;
-                break;
-            }
-
-        }
-        if (chosenExecution == null) {
-            throw new EngineException("not find activiy,check process defintion");
-        }
-        ExecutionContext instanceContext = this.instanceContextFactory.create();
-        instanceContext.setProcessInstance(processInstance);
-        instanceContext.setCurrentExecution(chosenExecution);// 执行实例添加到当前上下文中
-        instanceContext.setRequest(request);
-        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(definition.getId(), definition.getVersion());
-        instanceContext.setPvmProcessDefinition(pvmProcessDefinition);
-
-        pvmProcess.run(instanceContext);
-        return processInstance;
-
-    }
+//    @Override
+//    public ProcessInstance run(ProcessDefinition definition,String instanceId, String activityId, boolean sub,Map<String,Object> request) {
+//
+//
+//        ProcessInstance processInstance = getProcessInstance(instanceId,sub);
+//        PvmProcessInstance pvmProcess = new DefaultPvmProcessInstance();
+//
+//        ExecutionInstance chosenExecution  = null;
+//        for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
+//            if (StringUtils.equalsIgnoreCase(executionInstance.getActivity().getActivityId(),activityId)) {
+//                chosenExecution = executionInstance;
+//                break;
+//            }
+//
+//        }
+//        if (chosenExecution == null) {
+//            throw new EngineException("not find acitivity,check process definition");
+//        }
+//        ExecutionContext instanceContext = this.instanceContextFactory.create();
+//        instanceContext.setProcessInstance(processInstance);
+//        instanceContext.setCurrentExecution(chosenExecution);// 执行实例添加到当前上下文中
+//        instanceContext.setRequest(request);
+//        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(definition.getId(), definition.getVersion());
+//        instanceContext.setPvmProcessDefinition(pvmProcessDefinition);
+//
+//        pvmProcess.run(instanceContext);
+//        return processInstance;
+//
+//    }
 
 
     private ProcessInstance getProcessInstance(String processId, boolean sub) {

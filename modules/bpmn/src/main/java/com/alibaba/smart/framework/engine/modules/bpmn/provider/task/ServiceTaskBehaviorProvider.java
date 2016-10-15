@@ -2,16 +2,16 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
-import com.alibaba.smart.framework.engine.invocation.message.impl.SubsbandMessage;
+import com.alibaba.smart.framework.engine.invocation.message.impl.SuspendMessage;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.event.ProcessEventInvoker;
-import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityProvider;
-import com.alibaba.smart.framework.engine.provider.ActivityProvider;
+import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityBehaviorProvider;
+import com.alibaba.smart.framework.engine.provider.ActivityBehaviorProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
-public class ServiceTaskProvider extends AbstractBpmnActivityProvider<ServiceTask> implements ActivityProvider<ServiceTask> {
+public class ServiceTaskBehaviorProvider extends AbstractBpmnActivityBehaviorProvider<ServiceTask> implements ActivityBehaviorProvider<ServiceTask> {
 
-    public ServiceTaskProvider(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    public ServiceTaskBehaviorProvider(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 
@@ -37,6 +37,7 @@ public class ServiceTaskProvider extends AbstractBpmnActivityProvider<ServiceTas
 
     @Override
     protected Invoker createStartInvoker() {
-        return context -> new SubsbandMessage();
+        //FIXME
+        return context -> new SuspendMessage();
     }
 }

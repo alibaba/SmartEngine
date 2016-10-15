@@ -51,9 +51,9 @@ public class ServiceTaskInvoker implements Invoker {
             Object ss = ClassLoaderUtil.createNewInstance(className);
             if (ss instanceof TccDelegation<?>) {
                 TccDelegation<?> tccDelegation = (TccDelegation<?>) ss;
-                TccResult<?> xx11 = tccDelegation.tryExecute(executionContext);
+                TccResult<?> tccResult = tccDelegation.tryExecute(executionContext);
                 DefaultMessage defaultMessage = new DefaultMessage();
-                defaultMessage.setBody(xx11);
+                defaultMessage.setBody(tccResult);
                 return defaultMessage;
             }
         }

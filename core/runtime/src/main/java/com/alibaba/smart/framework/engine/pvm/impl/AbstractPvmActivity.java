@@ -23,50 +23,31 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 @EqualsAndHashCode(callSuper = true)
 public abstract class AbstractPvmActivity<M extends Activity> extends AbstractPvmInvocable<Activity> implements PvmActivity {
 
+
+    //TODO 这个类现在看价值不大了,看看把各个 instance 赋值逻辑给统一起来。
     private Map<String, PvmTransition> incomeTransitions  = new ConcurrentHashMap<>();
     private Map<String, PvmTransition> outcomeTransitions = new ConcurrentHashMap<>();
 
-    @Override
-    public Message execute(ExecutionContext context) {
-        ExecutionInstance executionInstance = context.getCurrentExecution();
-        ActivityInstance activityInstance = executionInstance.getActivity();
-
-        if (InstanceStatus.completed == executionInstance.getStatus()) {// 执行实例已完成，返回
-            activityInstance.setStatus(InstanceStatus.completed);
-            executionInstance.setStatus(InstanceStatus.running);
-            return new DefaultMessage();
-        }
-
-        // 重置状态
-        executionInstance.setStatus(InstanceStatus.running);
-        executionInstance.setFault(false);
-
-        Message activityExecuteMessage = this.doInternalExecute(context);
-        // 执行失败
-        if (activityExecuteMessage.isFault()) {
-            executionInstance.setFault(true);
-        }
-
-        if (activityExecuteMessage.isSuspend()) {
-            // 执行暂停
-            activityInstance.setStatus(InstanceStatus.suspended);
-            executionInstance.setStatus(InstanceStatus.suspended);
-        } else {
-            // 正常执行完成
-            activityInstance.setStatus(InstanceStatus.completed);
-            executionInstance.setStatus(InstanceStatus.running);
-        }
-        return activityExecuteMessage;
-
-    }
-    
+//    @Override
+//    public Message execute(ExecutionContext context) {
+//        ExecutionInstance executionInstance = context.getCurrentExecution();
+//
+//        // 重置状态
+//        executionInstance.setStatus(InstanceStatus.running);
+//
+//        Message activityExecuteMessage = this.doInternalExecute(context);
+//
+//        return activityExecuteMessage;
+//
+//    }
+//
     
     @Override
     public Message signal(ExecutionContext context) {
         return null;
     }
 
-    protected abstract Message doInternalExecute(ExecutionContext context);
+//    protected abstract Message doInternalExecute(ExecutionContext context);
 
 
     // Getter & Setter

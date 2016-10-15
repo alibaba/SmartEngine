@@ -4,6 +4,8 @@ import lombok.Data;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -12,8 +14,13 @@ import org.springframework.context.ApplicationContextAware;
 @Data
 public class DefaultProcessEngineConfiguration implements ProcessEngineConfiguration,InitializingBean,ApplicationContextAware {
 
+    private static final Logger LOGGER          = LoggerFactory.getLogger(DefaultProcessEngineConfiguration.class);
+
+
     private ExtensionPointRegistry   extensionPointRegistry;
 
+
+    //TODO 核心引擎不依赖 Spring
     private static ApplicationContext applicationContext;
 
 
@@ -28,7 +35,7 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
     @Override
     public void afterPropertiesSet() throws Exception {
 
-        System.out.printf("spring init");
+        LOGGER.debug("spring init");
 
     }
 

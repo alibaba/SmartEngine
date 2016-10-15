@@ -2,18 +2,18 @@ package com.alibaba.smart.framework.engine.provider.impl;
 
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.provider.ActivityProvider;
+import com.alibaba.smart.framework.engine.provider.ActivityBehaviorProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 /**
  * 抽象Activity Provider实现 Created by ettear on 16-4-20. TODO 职责略不清晰
  */
-public class AbstractActivityProvider<T extends Activity> implements ActivityProvider<T> {
+public class AbstractActivityBehaviorProvider<T extends Activity> implements ActivityBehaviorProvider<T> {
 
     private PvmActivity runtimeActivity;
 
-    public AbstractActivityProvider(PvmActivity runtimeActivity) {
+    public AbstractActivityBehaviorProvider(PvmActivity runtimeActivity) {
         this.runtimeActivity = runtimeActivity;
     }
 

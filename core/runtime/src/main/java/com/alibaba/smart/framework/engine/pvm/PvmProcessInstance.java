@@ -6,5 +6,5 @@ public interface PvmProcessInstance {
 
     void start(ExecutionContext executionContext);
 
-    void run(ExecutionContext context);
+//    void run(ExecutionContext context);
 }

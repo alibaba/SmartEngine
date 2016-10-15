@@ -17,9 +17,10 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     void setActivity(ActivityInstance activityInstance);
 
-    boolean isFault();
-
-    void setFault(boolean fault);
+    //通过异常来返回异常状态,fault 不应该侵入ExecutionInstance
+//    boolean isFault();
+//
+//    void setFault(boolean fault);
 
     String toDatabase();
 

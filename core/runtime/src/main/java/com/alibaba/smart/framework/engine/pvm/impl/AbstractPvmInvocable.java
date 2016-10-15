@@ -52,6 +52,8 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
     }
 
     private Invoker getInvoker(String event) {
+
+        //FIXME
         Invoker invoker = this.invokers.get(event);
         if (null != invoker) {
             return invoker;

@@ -26,7 +26,7 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
-import com.alibaba.smart.framework.engine.provider.ActivityProvider;
+import com.alibaba.smart.framework.engine.provider.ActivityBehaviorProvider;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.ProviderRegister;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
@@ -163,8 +163,8 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             PvmProcessDefinition runtimeProcess = this.buildPvmProcessDefinition(process, processComponent, false);
             if (null != runtimeProcess && runtimeProcess instanceof ProviderRegister) {
                 ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
-                ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeProcess);
-                ((ProviderRegister) runtimeProcess).registerProvider(activityProvider);
+                ActivityBehaviorProvider activityBehaviorProvider = providerFactory.createActivityProvider(runtimeProcess);
+                ((ProviderRegister) runtimeProcess).registerProvider(activityBehaviorProvider);
                 processComponent.setProcess(runtimeProcess);
             } else {
                 return null;
@@ -279,8 +279,8 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     throw new RuntimeException("No factory found for " + runtimeActivity.getModel().getClass());
                 }
 
-                ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeActivity);
-                runtimeActivity.registerProvider(activityProvider);
+                ActivityBehaviorProvider activityBehaviorProvider = providerFactory.createActivityProvider(runtimeActivity);
+                runtimeActivity.registerProvider(activityBehaviorProvider);
             }
 
             pvmProcessDefinition.setActivities(runtimeActivities);

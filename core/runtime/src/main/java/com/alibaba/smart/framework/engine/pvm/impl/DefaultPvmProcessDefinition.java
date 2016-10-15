@@ -129,7 +129,7 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
     }
 
     @Override
-    protected Message doInternalExecute(ExecutionContext context) {
+    public Message execute(ExecutionContext context) {
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
 
         

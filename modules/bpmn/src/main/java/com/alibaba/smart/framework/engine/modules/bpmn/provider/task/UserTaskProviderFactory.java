@@ -14,8 +14,8 @@ public class UserTaskProviderFactory implements ActivityProviderFactory<UserTask
     }
 
     @Override
-    public UserTaskProvider createActivityProvider(PvmActivity activity) {
-        return new UserTaskProvider(this.extensionPointRegistry, activity);
+    public UserTaskBehaviorProvider createActivityProvider(PvmActivity activity) {
+        return new UserTaskBehaviorProvider(this.extensionPointRegistry, activity);
     }
 
     @Override

@@ -4,9 +4,7 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
-import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
-import com.alibaba.smart.framework.engine.invocation.message.impl.SubsbandMessage;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.Action;
+import com.alibaba.smart.framework.engine.invocation.message.impl.SuspendMessage;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvents;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
@@ -49,6 +47,6 @@ public class ProcessEventInvoker implements Invoker {
             }
         }
 
-        return new SubsbandMessage();
+        return new SuspendMessage();
     }
 }

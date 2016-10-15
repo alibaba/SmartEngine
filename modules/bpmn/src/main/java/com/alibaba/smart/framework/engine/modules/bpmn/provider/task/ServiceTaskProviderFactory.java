@@ -14,8 +14,8 @@ public class ServiceTaskProviderFactory implements ActivityProviderFactory<Servi
     }
 
     @Override
-    public ServiceTaskProvider createActivityProvider(PvmActivity activity) {
-        return new ServiceTaskProvider(this.extensionPointRegistry, activity);
+    public ServiceTaskBehaviorProvider createActivityProvider(PvmActivity activity) {
+        return new ServiceTaskBehaviorProvider(this.extensionPointRegistry, activity);
     }
 
     @Override

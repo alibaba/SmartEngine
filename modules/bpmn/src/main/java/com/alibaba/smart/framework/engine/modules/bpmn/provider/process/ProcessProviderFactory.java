@@ -7,8 +7,8 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 public class ProcessProviderFactory implements ActivityProviderFactory<Process> {
 
     @Override
-    public ProcessProvider createActivityProvider(PvmActivity activity) {
-        return new ProcessProvider(activity);
+    public ProcessBehaviorProvider createActivityProvider(PvmActivity activity) {
+        return new ProcessBehaviorProvider(activity);
     }
 
     @Override

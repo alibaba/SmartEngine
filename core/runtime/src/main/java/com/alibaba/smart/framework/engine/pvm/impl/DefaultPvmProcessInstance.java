@@ -20,7 +20,6 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
-import com.alibaba.smart.framework.engine.util.ParamChecker;
 import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 
@@ -30,7 +29,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
     public void start(ExecutionContext executionContext) {
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
 
-        
+        // TODO 实例的值赋值可否在固定的地方去完成组装?
         // 从扩展注册机获取实例工厂
         ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
         // InstanceFactFactory factFactory =
@@ -42,8 +41,8 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
         // 构建活动实例: 指向开始节点
         ActivityInstance activityInstance = activityInstanceFactory.create();
         activityInstance.setProcessInstanceId(processInstanceId);
-        PvmActivity startActivity = pvmProcessDefinition.getStartActivity();
-        String startActivityId = startActivity.getModel().getId();
+        PvmActivity pvmStartActivity = pvmProcessDefinition.getStartActivity();
+        String startActivityId = pvmStartActivity.getModel().getId();
         
         activityInstance.setActivityId(startActivityId);
         // 构建执行实例
@@ -57,53 +56,53 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
         //TODO 触发流程启动事件
 //        this.fireEvent(PvmEventConstant.PROCESS_START.name(), executionContext);
         // 从开始节点开始执行
-          this.runProcess(startActivity, executionContext);
+          this.startProcessInstance(pvmStartActivity, executionContext);
     }
 
-    @Override
-    public void run(ExecutionContext context) {
+//    @Override
+//    public void run(ExecutionContext context) {
+//        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
+//        ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
+//        ProcessInstance processInstance = context.getProcessInstance();
+//        String processInstanceId = processInstance.getInstanceId();
+//        ActivityInstance activityInstance = activityInstanceFactory.create();
+//        activityInstance.setProcessInstanceId(processInstanceId);
+//        processInstance.setStatus(InstanceStatus.running);
+//        activityInstance.setCurrentStep(String.valueOf(PvmEventConstant.ACTIVITY_START.getCode()));
+//        activityInstance.setActivityId(context.getCurrentExecution().getActivity().getActivityId());
+//        context.getCurrentExecution().setActivity(activityInstance);
+//        PvmProcessDefinition pvmProcessDefinition=     context.getPvmProcessDefinition();
+//        Map<String,PvmActivity> activityMap = pvmProcessDefinition.getActivities();
+//        if (activityMap.isEmpty() || !activityMap.containsKey(context.getCurrentExecution().getActivity().getActivityId())) {
+//            throw new EngineException("not have this activity!");
+//        }
+//        this.startProcessInstance(activityMap.get(context.getCurrentExecution().getActivity().getActivityId()),context);
+//
+//
+//    }
+
+    private Message startProcessInstance(PvmActivity startActivity, ExecutionContext context) {
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
-        ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
-        ProcessInstance processInstance = context.getProcessInstance();
-        String processInstanceId = processInstance.getInstanceId();
-        ActivityInstance activityInstance = activityInstanceFactory.create();
-        activityInstance.setProcessInstanceId(processInstanceId);
-        processInstance.setStatus(InstanceStatus.running);
-        activityInstance.setCurrentStep(String.valueOf(PvmEventConstant.ACTIVITY_START.getCode()));
-        activityInstance.setActivityId(context.getCurrentExecution().getActivity().getActivityId());
-        context.getCurrentExecution().setActivity(activityInstance);
-        PvmProcessDefinition pvmProcessDefinition=     context.getPvmProcessDefinition();
-        Map<String,PvmActivity> activityMap = pvmProcessDefinition.getActivities();
-        if (activityMap.isEmpty() || !activityMap.containsKey(context.getCurrentExecution().getActivity().getActivityId())) {
-            throw new EngineException("not have this activity!");
-        }
-        this.runProcess(activityMap.get(context.getCurrentExecution().getActivity().getActivityId()),context);
-
-
-    }
-
-    private Message runProcess(PvmActivity startActivity, ExecutionContext context) {
-        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
 
         
-        Message processMessage = this.executeActivity(startActivity, context);
+        Message processMessage = this.executeCurrentActivityAndLookupNextTransitionRecursively(startActivity, context);
         
         
-        ProcessInstance processInstance = context.getProcessInstance();
-        if (!processMessage.isSuspend()) {
-          //TODO 触发流程启动事件
-//            this.fireEvent(PvmEventConstant.PROCESS_END.name(), context);
-            processInstance.setStatus(InstanceStatus.completed);
-        } else {
-            processInstance.setStatus(InstanceStatus.suspended);
-        }
+//        ProcessInstance processInstance = context.getProcessInstance();
+//        if (!processMessage.isSuspend()) {
+//          //TODO 触发流程启动事件
+////            this.fireEvent(PvmEventConstant.PROCESS_END.name(), context);
+//            processInstance.setStatus(InstanceStatus.completed);
+//        } else {
+//            processInstance.setStatus(InstanceStatus.suspended);
+//        }
         //TODO 这边怎么突然来了一个存储 存储流程实例
         ProcessInstanceStorage processInstanceStorage = extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
         processInstanceStorage.save(context.getProcessInstance());
         return processMessage;
     }
     
-    private Message executeActivity(PvmActivity pvmActivity, ExecutionContext context) {
+    private Message executeCurrentActivityAndLookupNextTransitionRecursively(PvmActivity pvmActivity, ExecutionContext context) {
         // 执行当前节点
         Message activityExecuteMessage = pvmActivity.execute(context);
 
@@ -121,7 +120,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
             if (null != transitionSelectBody && transitionSelectBody instanceof List) {
                 List<?> executionObjects = (List<?>) transitionSelectBody;
                 if (!executionObjects.isEmpty()) {
-                    // TODO ettear 多线程
+
                     for (Object executionObject : executionObjects) {
                         // 执行所有实例
                         if (executionObject instanceof ExecutionInstance) {
@@ -134,9 +133,9 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
                             pvmTransition.execute(context);
                             PvmActivity targetPvmActivity = pvmTransition.getTarget();
                             // 执行Activity
-                            this.executeActivity(targetPvmActivity, context);
+                            this.executeCurrentActivityAndLookupNextTransitionRecursively(targetPvmActivity, context);
                         }else{
-                            throw new EngineException("unspported class type:ExecutionInstance");
+                            throw new EngineException("unsupported class type:ExecutionInstance");
                         }
                     }
                     Map<String, ExecutionInstance> executionInstances = context.getProcessInstance().getExecutions();
