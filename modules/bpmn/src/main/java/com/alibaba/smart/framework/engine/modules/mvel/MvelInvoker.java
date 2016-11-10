@@ -21,7 +21,7 @@ public class MvelInvoker implements Invoker {
     private ConditionExpression              script;
 
     public MvelInvoker(ConditionExpression script) {
-        // TODO ettear 预编译
+        // TODO  预编译
         this.script = script;
         // stmt = MVEL.compileExpression(script);
     }
