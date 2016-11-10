@@ -25,7 +25,7 @@ public interface SmartEngine {
 
     void init(ProcessEngineConfiguration processEngineConfiguration);
 
-    void destory();
+    void destroy();
 
     //TODO 干掉 
     ClassLoader getClassLoader(String moduleName);

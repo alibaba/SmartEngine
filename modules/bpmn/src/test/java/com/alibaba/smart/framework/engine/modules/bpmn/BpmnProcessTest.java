@@ -58,6 +58,8 @@ public class BpmnProcessTest {
 
 		//断言
 		Assert.assertNotNull(processInstance);
+//		Assert.assertTrue(processInstance.get);
+
 	}
 //
 //    @Test

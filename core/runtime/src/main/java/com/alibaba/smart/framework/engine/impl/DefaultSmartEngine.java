@@ -26,6 +26,8 @@ public class DefaultSmartEngine implements SmartEngine {
 
     private ExtensionPointRegistry   extensionPointRegistry;
     private Map<String, ClassLoader> classLoaderHolder = new ConcurrentHashMap<>();
+
+
     
     @Override
     public void init(ProcessEngineConfiguration processEngineConfiguration ) {
@@ -67,7 +69,7 @@ public class DefaultSmartEngine implements SmartEngine {
   
 
     @Override
-    public void destory() {
+    public void destroy() {
         this.extensionPointRegistry.stop();
         ThreadLocalUtil.remove();
 

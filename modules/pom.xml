@@ -14,8 +14,6 @@
 
 	<modules>
 		<module>bpmn</module>
-		<module>mvel</module>
-		<module>groovy</module>
 		<module>storage.memory</module>
 		<module>storage.database</module>
 	</modules>
