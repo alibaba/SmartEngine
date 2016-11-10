@@ -1,15 +1,15 @@
-package com.alibaba.smart.framework.engine.service.impl;
+package com.alibaba.smart.framework.engine.service.command.impl;
 
 import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.service.TaskService;
+import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 
 /**
  * Created by ettear on 16-4-19.
  */
-public class DefaultTaskService implements TaskService {
+public class DefaultTaskCommandService implements TaskCommandService {
 
     @Override
     public void complete(  String taskId, Map<String, Object> variables) {

@@ -15,6 +15,6 @@ public interface ProcessEngine {
 
     ExtensionPointRegistry getExtensionPointRegistry();
 
-    // RepositoryService getRepositoryService();
+    // RepositoryCommandService getRepositoryService();
 
 }

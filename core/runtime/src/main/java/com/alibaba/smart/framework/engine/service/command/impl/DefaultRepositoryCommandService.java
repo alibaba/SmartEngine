@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.service.impl;
+package com.alibaba.smart.framework.engine.service.command.impl;
 
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
@@ -12,6 +12,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
@@ -40,7 +41,6 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmActivity;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcessComponent;
-import com.alibaba.smart.framework.engine.service.RepositoryService;
 import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -51,7 +51,7 @@ import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
  * 
  *TODO deploy 完成后,需要被获取流程定义 .
  */
-public class DefaultRepositoryService implements RepositoryService, LifeCycleListener {
+public class DefaultRepositoryCommandService implements RepositoryCommandService, LifeCycleListener {
 
     /**
      * 扩展点注册器

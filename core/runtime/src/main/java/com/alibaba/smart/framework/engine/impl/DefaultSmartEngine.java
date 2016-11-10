@@ -3,6 +3,9 @@ package com.alibaba.smart.framework.engine.impl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
+import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
@@ -11,10 +14,7 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
-import com.alibaba.smart.framework.engine.service.ExecutionService;
-import com.alibaba.smart.framework.engine.service.ProcessService;
-import com.alibaba.smart.framework.engine.service.RepositoryService;
-import com.alibaba.smart.framework.engine.service.TaskService;
+import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 /**
@@ -84,23 +84,23 @@ public class DefaultSmartEngine implements SmartEngine {
     }
 
     @Override
-    public RepositoryService getRepositoryService() {
-        return this.extensionPointRegistry.getExtensionPoint(RepositoryService.class);
+    public RepositoryCommandService getRepositoryService() {
+        return this.extensionPointRegistry.getExtensionPoint(RepositoryCommandService.class);
     }
 
     @Override
-    public ProcessService getProcessService() {
-        return this.extensionPointRegistry.getExtensionPoint(ProcessService.class);
+    public ProcessCommandService getProcessService() {
+        return this.extensionPointRegistry.getExtensionPoint(ProcessCommandService.class);
     }
 
     @Override
-    public ExecutionService getExecutionService() {
-        return this.extensionPointRegistry.getExtensionPoint(ExecutionService.class);
+    public ExecutionCommandService getExecutionService() {
+        return this.extensionPointRegistry.getExtensionPoint(ExecutionCommandService.class);
     }
 
     @Override
-    public TaskService getTaskService() {
-        return this.extensionPointRegistry.getExtensionPoint(TaskService.class);
+    public TaskCommandService getTaskService() {
+        return this.extensionPointRegistry.getExtensionPoint(TaskCommandService.class);
     }
 
     public ExtensionPointRegistry getExtensionPointRegistry() {

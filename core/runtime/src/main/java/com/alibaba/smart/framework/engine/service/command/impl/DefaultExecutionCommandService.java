@@ -1,7 +1,8 @@
-package com.alibaba.smart.framework.engine.service.impl;
+package com.alibaba.smart.framework.engine.service.command.impl;
 
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
@@ -13,19 +14,18 @@ import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
-import com.alibaba.smart.framework.engine.service.ExecutionService;
 
 /**
  * Created by ettear on 16-4-19.
  */
-public class DefaultExecutionService implements ExecutionService, LifeCycleListener {
+public class DefaultExecutionCommandService implements ExecutionCommandService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
     private ProcessDefinitionContainer       processContainer;
     private ProcessInstanceStorage processInstanceStorage;
     private InstanceContextFactory instanceContextFactory;
 
-    public DefaultExecutionService(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultExecutionCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 

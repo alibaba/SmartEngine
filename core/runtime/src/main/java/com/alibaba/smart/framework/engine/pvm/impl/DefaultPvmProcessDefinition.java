@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,7 +27,6 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
-import com.alibaba.smart.framework.engine.service.ExecutionService;
 import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 /**
@@ -110,7 +110,7 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
 
         Message processMessage = this.runProcess(runtimeActivity, context);
         if (!processMessage.isSuspend()) {
-            ExecutionService executionManager = extensionPointRegistry.getExtensionPoint(ExecutionService.class);
+            ExecutionCommandService executionManager = extensionPointRegistry.getExtensionPoint(ExecutionCommandService.class);
 
             Map<String, Object> variables = new HashMap<>();
             ProcessInstance parentProcessInstance = executionManager.signal(processInstance.getParentInstanceId(),

@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.service;
+package com.alibaba.smart.framework.engine.service.command;
 
 import java.util.Map;
 
@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.param.EngineParam;
 import com.alibaba.smart.framework.engine.result.EngineResult;
 
 
-public interface ProcessService {
+public interface ProcessCommandService {
 
     /**
      * 启动流程

@@ -13,21 +13,21 @@
 //import com.alibaba.smart.framework.process.context.ProcessContext;
 //import com.alibaba.smart.framework.process.context.ProcessContextHolder;
 //import com.alibaba.smart.framework.process.engine.ProcessEngine;
-//import com.alibaba.smart.framework.process.service.RepositoryService;
+//import com.alibaba.smart.framework.process.service.RepositoryCommandService;
 //import com.alibaba.smart.framework.process.service.RuntimeService;
-//import com.alibaba.smart.framework.process.service.TaskService;
+//import com.alibaba.smart.framework.process.service.TaskCommandService;
 //import com.alibaba.smart.framework.process.service.impl.DefaultRuntimeService;
-//import com.alibaba.smart.framework.process.service.impl.DefaultTaskService;
+//import com.alibaba.smart.framework.process.service.impl.DefaultTaskCommandService;
 //
 //public class DefaultProcessEngine implements ProcessEngine {
 //
 //    // TODO 剥离接口,API,支持远程调用,结合初期目标
 //    @Setter
-//    private RepositoryService      repositoryService;
+//    private RepositoryCommandService      repositoryService;
 //    @Setter
 //    private RuntimeService         runtimeService;
 //    @Setter
-//    private TaskService            taskService;
+//    private TaskCommandService            taskService;
 //
 //    private ProcessContext         processContext;
 //
@@ -42,7 +42,7 @@
 //            this.smartEngine = new DefaultSmartEngine();
 //            this.smartEngine.start();
 //
-//            RepositoryService deployer = smartEngine.getRepositoryService();
+//            RepositoryCommandService deployer = smartEngine.getRepositoryService();
 //            this.extensionPointRegistry = smartEngine.getExtensionPointRegistry();
 //            ProcessContainer processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessContainer.class);
 //
@@ -54,7 +54,7 @@
 //
 //            // TODO 支持注入,参考activiti
 //            this.runtimeService = new DefaultRuntimeService();
-//            this.taskService = new DefaultTaskService();
+//            this.taskService = new DefaultTaskCommandService();
 //
 //            this.processContext = new ProcessContext();
 //            this.processContext.setProcessContainer(processContainer);
@@ -77,7 +77,7 @@
 //    }
 //
 //    @Override
-//    public TaskService getTaskService() {
+//    public TaskCommandService getTaskService() {
 //        return this.taskService;
 //    }
 //
@@ -88,7 +88,7 @@
 //    }
 //
 //    // @Override
-//    // public RepositoryService getRepositoryService() {
+//    // public RepositoryCommandService getRepositoryService() {
 //    // // TODO Auto-generated method stub
 //    // return null;
 //    // }

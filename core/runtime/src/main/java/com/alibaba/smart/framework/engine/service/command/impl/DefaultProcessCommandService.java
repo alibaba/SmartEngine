@@ -1,8 +1,6 @@
-package com.alibaba.smart.framework.engine.service.impl;
+package com.alibaba.smart.framework.engine.service.command.impl;
 
 import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
@@ -14,7 +12,6 @@ import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFact
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
@@ -22,15 +19,13 @@ import com.alibaba.smart.framework.engine.param.EngineParam;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
-import com.alibaba.smart.framework.engine.result.EngineResult;
-import com.alibaba.smart.framework.engine.service.ProcessService;
-
+import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 
 
 /**
  * DefaultProcessManager Created by ettear on 16-4-19.
  */
-public class DefaultProcessService implements ProcessService, LifeCycleListener {
+public class DefaultProcessCommandService implements ProcessCommandService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
     private ProcessDefinitionContainer       processDefinitionContainer;
@@ -44,7 +39,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
 
     // private InstanceFactFactory factFactory;
 
-    public DefaultProcessService(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultProcessCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 
