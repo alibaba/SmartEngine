@@ -8,5 +8,5 @@ public interface ProcessEngineConfiguration {
 
     void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
 
-    public Object getBean(String bean) ;
+    Object getBean(String bean) ;
 }

@@ -26,4 +26,8 @@ public interface ExecutionContext {
     Map<String,Object > getRequest();
     
     void setRequest(Map<String,Object > request);
+
+    void setNeedPause(boolean needPause);
+
+    boolean isNeedPause();
 }

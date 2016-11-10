@@ -33,21 +33,30 @@ public class BpmnProcessTest {
 	    ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration(); 
 	    
 		SmartEngine smartEngine = new DefaultSmartEngine();
+
+		//初始化流程引擎
 		smartEngine.init(processEngineConfiguration);
 
+		//部署流程定义
 		RepositoryService repositoryService = smartEngine
 				.getRepositoryService();
 		ProcessDefinition processDefinition = repositoryService
 				.deploy("test-servicetask-exclusive.bpmn20.xml");
+
+		//断言
         Assert.assertEquals(25, processDefinition.getProcess().getElements().size());
+
 
 		ProcessService processService = smartEngine.getProcessService();
 		Map<String, Object> request = new HashMap<>();
 		request.put("input", 2);
+
+		//启动流程实例
 		ProcessInstance processInstance = processService.start(
 				processDefinition.getId(), processDefinition.getVersion(),
 				request);
 
+		//断言
 		Assert.assertNotNull(processInstance);
 	}
 //

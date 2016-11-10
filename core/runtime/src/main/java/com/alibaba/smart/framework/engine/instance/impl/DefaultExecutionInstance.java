@@ -21,13 +21,12 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
     // private InstanceFact fact;
     //TODO 去掉对象关联
     private ActivityInstance  activity;
-    private boolean           fault;
+//    private boolean           needPause;
 
 
 
     @Override
     public String toDatabase() {
-
 
 
        return Strings.nullToEmpty(getInstanceId())

@@ -123,6 +123,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
                     break;
                 }
             } while (reader.hasNext());
+
             if (findStart) {
                 return (ProcessDefinition) this.assemblyParserExtensionPoint.parse(reader, context);
             } else {

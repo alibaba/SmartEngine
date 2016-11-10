@@ -20,4 +20,6 @@ public class DefaultInstanceContext implements ExecutionContext {
     private PvmProcessDefinition pvmProcessDefinition;
     
     private Map<String,Object > request;
+
+    private boolean needPause;
 }

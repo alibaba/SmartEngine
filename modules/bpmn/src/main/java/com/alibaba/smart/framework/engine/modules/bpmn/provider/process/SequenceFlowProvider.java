@@ -30,7 +30,7 @@ public class SequenceFlowProvider extends AbstractTransitionProvider<SequenceFlo
             if ("mvel".equals(conditionExpression.getExpressionType())) {
                 return new MvelInvoker(conditionExpression);
             }else{
-                throw new EngineException("unsuppoted condition expression type:"+conditionExpression.getExpressionType());
+                throw new EngineException("unsupported condition expression type:"+conditionExpression.getExpressionType());
             }
 
             // if (null != conditionExpression && null != conditionExpression.getHandler()) {

@@ -6,8 +6,7 @@ package com.alibaba.smart.framework.engine.util;
 import java.util.Collection;
 
 /**
- * 参数校验帮助类
- * 
+ *
  * @author dongdong.zdd
  *
  */

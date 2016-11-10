@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TransitionInstanceFactory;
@@ -42,7 +43,7 @@ public abstract class AbstractGatewayInvoker implements Invoker {
             List<PvmTransition> hitTransitions = new ArrayList<>();
             for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
                 PvmTransition pvmTransition = transitionEntry.getValue();
-                // 执行命中判断逻辑
+                // 执行命中判断逻辑,执行 MvelInvoker
                 Message result = pvmTransition.fireEvent(PvmEventConstant.TRANSITION_HIT.name(), context);
                 if (null != result) {
                     Object resultBody = result.getBody();
@@ -55,10 +56,10 @@ public abstract class AbstractGatewayInvoker implements Invoker {
             }
 
             if (hitTransitions.isEmpty()) {
-                executionInstance.setStatus(InstanceStatus.suspended);
-                // TODO ettear Exception
+                throw new EngineException("No default outgoing transition found, check the  transition condition expression or specify the default transition.");
+//                executionInstance.setStatus(InstanceStatus.suspended);
                 // message.setBody();
-                message.setFault(true);
+//                message.setFault(true);
             } else {
                 List<ExecutionInstance> executions = new ArrayList<>();
                 executions.add(executionInstance);

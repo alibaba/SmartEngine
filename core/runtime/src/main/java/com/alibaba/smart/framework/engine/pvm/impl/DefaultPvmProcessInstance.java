@@ -98,13 +98,17 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
 //        }
         //TODO 这边怎么突然来了一个存储 存储流程实例
         ProcessInstanceStorage processInstanceStorage = extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
-        processInstanceStorage.save(context.getProcessInstance());
+//        processInstanceStorage.save(context.getProcessInstance());
         return processMessage;
     }
     
     private Message executeCurrentActivityAndLookupNextTransitionRecursively(PvmActivity pvmActivity, ExecutionContext context) {
         // 执行当前节点,会触发当前节点的行为执行
         Message activityExecuteMessage = pvmActivity.execute(context);
+
+        if(context.isNeedPause()){
+            return activityExecuteMessage;
+        }
 
         Message processMessage = new DefaultMessage();
         if (activityExecuteMessage.isSuspend()) {
