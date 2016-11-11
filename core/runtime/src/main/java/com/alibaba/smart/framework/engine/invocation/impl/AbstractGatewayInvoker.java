@@ -24,7 +24,8 @@ import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 /**
- * Created by ettear on 16-5-4.
+ * @author 高海军 帝奇  2016.11.11
+ * @author ettear 2016.04.13
  */
 public abstract class AbstractGatewayInvoker implements Invoker {
 

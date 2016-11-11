@@ -6,7 +6,8 @@ import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.IndentityElement;
 
 /**
- * 运行时Invocable Created by ettear on 16-4-14.
+ * @author 高海军 帝奇  2016.11.11   TODO 看下存在性
+ * @author ettear 2016.04.13
  */
 public interface PvmInvocable<M extends IndentityElement> extends LifeCycleListener {
 

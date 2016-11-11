@@ -46,10 +46,10 @@ import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoin
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
+
 /**
- * 默认部署器 Created by ettear on 16-4-13.
- * 
- *TODO deploy 完成后,需要被获取流程定义 .
+ * @author 高海军 帝奇  2016.11.11  *TODO deploy 完成后,需要被获取流程定义 .
+ * @author ettear 2016.04.13
  */
 public class DefaultRepositoryCommandService implements RepositoryCommandService, LifeCycleListener {
 

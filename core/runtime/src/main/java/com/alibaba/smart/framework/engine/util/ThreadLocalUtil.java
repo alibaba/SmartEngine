@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.util;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 
 /**
- * @author 高海军 帝奇 Apr 19, 2015 11:43:33 AM
+ * @author 高海军 帝奇
  */
 public class ThreadLocalUtil {
 

@@ -10,7 +10,8 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 /**
- * Created by ettear on 16-4-13.
+ * @author 高海军 帝奇  2016.11.11   TODO 看下存在性
+ * @author ettear 2016.04.13
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

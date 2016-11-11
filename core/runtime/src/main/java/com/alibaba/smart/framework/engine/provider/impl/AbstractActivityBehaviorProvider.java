@@ -7,8 +7,10 @@ import com.alibaba.smart.framework.engine.provider.ActivityBehaviorProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
+
 /**
- * 抽象Activity Provider实现 Created by ettear on 16-4-20. TODO 职责略不清晰
+ * @author 高海军 帝奇  2016.11.11 TODO 职责略不清晰
+ * @author ettear 2016.04.13
  */
 public   class AbstractActivityBehaviorProvider<T extends Activity> implements ActivityBehaviorProvider<T> {
 

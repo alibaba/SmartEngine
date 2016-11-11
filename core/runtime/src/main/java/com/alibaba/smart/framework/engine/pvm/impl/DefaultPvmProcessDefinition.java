@@ -30,7 +30,8 @@ import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 /**
- * DefaultRuntimeProcess Created by ettear on 16-4-12.
+ * @author 高海军 帝奇  2016.11.11   TODO 看下存在性
+ * @author ettear 2016.04.13
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

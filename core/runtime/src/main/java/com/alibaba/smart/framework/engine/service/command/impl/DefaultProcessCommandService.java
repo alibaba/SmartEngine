@@ -23,7 +23,8 @@ import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 
 
 /**
- * DefaultProcessManager Created by ettear on 16-4-19.
+ * @author 高海军 帝奇  2016.11.11
+ * @author ettear 2016.04.13
  */
 public class DefaultProcessCommandService implements ProcessCommandService, LifeCycleListener {
 

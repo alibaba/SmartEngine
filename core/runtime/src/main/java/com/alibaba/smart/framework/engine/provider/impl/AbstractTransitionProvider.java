@@ -7,7 +7,8 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 /**
- * 抽象Transition Provider实现 Created by ettear on 16-4-20.
+ * @author 高海军 帝奇  2016.11.11 TODO 职责略不清晰
+ * @author ettear 2016.04.13
  */
 public abstract class AbstractTransitionProvider<T extends Transition> implements TransitionProvider<T> {
 

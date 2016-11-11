@@ -6,7 +6,10 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.param.EngineParam;
 import com.alibaba.smart.framework.engine.result.EngineResult;
-
+/**
+ * @author 高海军 帝奇  2016.11.11
+ * @author ettear 2016.04.13
+ */
 
 public interface ProcessCommandService {
 

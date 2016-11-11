@@ -18,7 +18,8 @@ import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 /**
- * Default Smart Engine Created by ettear on 16-4-12.
+ * @author 高海军 帝奇  2016.11.11
+ * @author ettear 2016.04.13
  */
 public class DefaultSmartEngine implements SmartEngine {
 

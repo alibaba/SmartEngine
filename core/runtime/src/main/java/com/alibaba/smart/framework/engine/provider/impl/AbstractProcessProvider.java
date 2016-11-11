@@ -8,9 +8,10 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
+
 /**
- * 抽象Process Provider实现 Created by ettear on 16-4-20.
- * TODO 看下存在性
+ * @author 高海军 帝奇  2016.11.11   TODO 看下存在性
+ * @author ettear 2016.04.13
  */
 public class AbstractProcessProvider<T extends Process> implements ActivityBehaviorProvider<T> {
 

@@ -5,7 +5,8 @@ import com.alibaba.smart.framework.engine.provider.ActivityBehaviorProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**
- * Created by ettear on 16-4-11.
+ * @author 高海军 帝奇  2016.11.11
+ * @author ettear 2016.04.13
  */
 public interface ActivityProviderFactory<M extends Activity> extends ProviderFactory<M> {
 

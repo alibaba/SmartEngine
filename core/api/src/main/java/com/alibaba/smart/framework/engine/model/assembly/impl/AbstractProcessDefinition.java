@@ -6,7 +6,8 @@ import lombok.EqualsAndHashCode;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 
 /**
- * Created by ettear on 16-4-13.
+ * @author 高海军 帝奇  2016.11.11
+ * @author ettear 2016.04.13
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

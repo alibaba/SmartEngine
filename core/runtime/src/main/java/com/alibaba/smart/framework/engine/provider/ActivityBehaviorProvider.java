@@ -5,7 +5,8 @@ import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**
- * Created by ettear on 16-4-11.
+ * @author 高海军 帝奇  2016.11.11   TODO 看下存在性
+ * @author ettear 2016.04.13
  */
 public interface ActivityBehaviorProvider<M extends Activity> extends InvokerProvider{
 

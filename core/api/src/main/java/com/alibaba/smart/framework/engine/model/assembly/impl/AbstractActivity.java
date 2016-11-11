@@ -3,7 +3,8 @@ package com.alibaba.smart.framework.engine.model.assembly.impl;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 
 /**
- * Created by ettear on 16-4-13.
+ * @author 高海军 帝奇  2016.11.11
+ * @author ettear 2016.04.13
  */
 public abstract class AbstractActivity extends AbstractBase implements Activity {
 
