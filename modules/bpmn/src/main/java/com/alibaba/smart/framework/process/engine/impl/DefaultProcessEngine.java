@@ -77,7 +77,7 @@
 //    }
 //
 //    @Override
-//    public TaskCommandService getTaskService() {
+//    public TaskCommandService getTaskCommandService() {
 //        return this.taskService;
 //    }
 //

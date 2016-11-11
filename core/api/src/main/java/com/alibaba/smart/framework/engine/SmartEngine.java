@@ -6,6 +6,7 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
 /**
  * @author 高海军 帝奇
@@ -21,7 +22,10 @@ public interface SmartEngine {
 
     ExecutionCommandService getExecutionService();
 
-    TaskCommandService getTaskService();
+    TaskCommandService getTaskCommandService();
+
+    TaskQueryService getTaskQueryService();
+
 
     void init(ProcessEngineConfiguration processEngineConfiguration);
 

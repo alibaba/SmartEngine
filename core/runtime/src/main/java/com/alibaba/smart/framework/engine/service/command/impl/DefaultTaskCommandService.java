@@ -16,9 +16,5 @@ public class DefaultTaskCommandService implements TaskCommandService {
 
     }
 
-    @Override
-    public List<TaskInstance> find(String processInstanceId) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+
 }

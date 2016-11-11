@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -70,9 +71,11 @@ public class TaskActivityTest {
 
 
         //1st: create 1st task
-        TaskCommandService taskCommandService =    smartEngine.getTaskService();
+        TaskCommandService taskCommandService =    smartEngine.getTaskCommandService();
+        TaskQueryService taskQueryService =    smartEngine.getTaskQueryService();
+
         String processInstanceId = processInstance.getInstanceId();
-        List<TaskInstance> taskInstanceList =     taskCommandService.find(processInstanceId);
+        List<TaskInstance> taskInstanceList =     taskQueryService.find(processInstanceId);
 
         Assert.assertNotNull(taskInstanceList);
         Assert.assertEquals(1,taskInstanceList.size());
@@ -87,7 +90,7 @@ public class TaskActivityTest {
 
 
 
-        taskInstanceList =     taskCommandService.find(processInstanceId);
+        taskInstanceList =     taskQueryService.find(processInstanceId);
 
         Assert.assertNotNull(taskInstanceList);
         Assert.assertEquals(1,taskInstanceList.size());

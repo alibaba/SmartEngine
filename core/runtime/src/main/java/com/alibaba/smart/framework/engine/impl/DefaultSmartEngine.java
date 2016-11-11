@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
@@ -100,8 +101,13 @@ public class DefaultSmartEngine implements SmartEngine {
     }
 
     @Override
-    public TaskCommandService getTaskService() {
+    public TaskCommandService getTaskCommandService() {
         return this.extensionPointRegistry.getExtensionPoint(TaskCommandService.class);
+    }
+
+    @Override
+    public TaskQueryService getTaskQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(TaskQueryService.class);
     }
 
     public ExtensionPointRegistry getExtensionPointRegistry() {

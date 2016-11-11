@@ -15,7 +15,6 @@ public interface TaskCommandService {
     void complete(String taskId, Map<String, Object> variables);
     
     //TODO claim ,vs executionservice 
-    
-    List<TaskInstance> find(String processInstanceId);
+
 
 }
