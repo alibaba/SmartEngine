@@ -5,8 +5,6 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.process.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.process.behavior.util.ActivityBehaviorRegister;
-import com.alibaba.smart.framework.process.context.ProcessContext;
-import com.alibaba.smart.framework.process.context.ProcessContextHolder;
 import com.alibaba.smart.framework.process.model.runtime.command.impl.ExecutionInstanceSignalCommand;
 import com.alibaba.smart.framework.process.model.runtime.command.impl.ProcessInstanceStartCommand;
 import com.alibaba.smart.framework.process.service.RuntimeService;
@@ -26,11 +24,10 @@ public class DefaultRuntimeService implements RuntimeService {
 
         String processDefinitionId = command.getProcessDefinitionId();
         String version = command.getBusinessKey();
-        ProcessContext processContext = ProcessContextHolder.get();
 
         // TODO 与流程定义的区别,改成PVMxxxx
 
-        PvmProcessDefinition runtimeProcess = processContext.get(processDefinitionId, version);
+        PvmProcessDefinition runtimeProcess =null;
 
         // TODO debug 时看数据结构有点怪
         PvmActivity startActivity = runtimeProcess.getStartActivity();
@@ -40,7 +37,7 @@ public class DefaultRuntimeService implements RuntimeService {
 
         ActivityBehavior activityBehavior = ActivityBehaviorRegister.getActivityBehavior(activityClassName);
 
-        activityBehavior.execute();
+//        activityBehavior.execute();
 
 //        ProcessInstance processInstance = ThreadLocalUtil.get().getProcessInstance();
 

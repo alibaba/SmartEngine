@@ -44,15 +44,16 @@ public abstract class AbstractGatewayInvoker implements Invoker {
             List<PvmTransition> hitTransitions = new ArrayList<>();
             for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
                 PvmTransition pvmTransition = transitionEntry.getValue();
-                // 执行命中判断逻辑,执行 MvelInvoker
-                Message result = pvmTransition.fireEvent(PvmEventConstant.TRANSITION_HIT.name(), context);
-                if (null != result) {
-                    Object resultBody = result.getBody();
-                    if (null == resultBody || !(resultBody instanceof Boolean) || !((Boolean) resultBody)) {
-                        // 没有命中
-                        continue;
-                    }
-                }// 无执行结果为命中
+                 // 执行命中判断逻辑,执行 MvelInvoker
+                 pvmTransition.fireEvent(PvmEventConstant.TRANSITION_HIT.name(), context);
+
+                //FIXME
+//                if (null != result) {
+//                    Object resultBody = result.getBody();
+
+//                        continue;
+
+                // 无执行结果为命中
                 hitTransitions.add(pvmTransition);
             }
 

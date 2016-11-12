@@ -21,13 +21,13 @@ public interface PvmActivity extends PvmInvocable<Activity>,ProviderRegister {
      * 流程实例启动,节点进入 会调用此方法.
      * @param context
      */
-    Message execute(ExecutionContext context);
+    void execute(ExecutionContext context);
     
     /**
      * 暂停型节点恢复执行时,会调用此方法.
      * @param context
      */
-    Message signal(ExecutionContext context);
+    void signal(ExecutionContext context);
 
 
 }

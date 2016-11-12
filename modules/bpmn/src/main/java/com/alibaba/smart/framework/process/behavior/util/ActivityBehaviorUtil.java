@@ -25,7 +25,7 @@ public class ActivityBehaviorUtil {
         PvmActivity currentRuntimeActivity = executionSession.getCurrentRuntimeActivity();
         Map<String, PvmTransition> outcomeTransitions = currentRuntimeActivity.getOutcomeTransitions();
 
-        List<PvmTransition> toBeChoosenRuntimeTransition = new ArrayList<>();
+        List<PvmTransition> toBeChosenRuntimeTransition = new ArrayList<>();
 
         Set<Entry<String, PvmTransition>> transitionEntries = outcomeTransitions.entrySet();
 
@@ -37,7 +37,7 @@ public class ActivityBehaviorUtil {
             SequenceFlow sequenceFlow = (SequenceFlow) transition;
             ConditionExpression conditionExpression = sequenceFlow.getConditionExpression();
             if (null == conditionExpression) {
-                toBeChoosenRuntimeTransition.add(runtimeTransition);
+                toBeChosenRuntimeTransition.add(runtimeTransition);
             } else {
                 String expressionType = conditionExpression.getExpressionType();
                 String expressionContent = conditionExpression.getExpressionContent();
@@ -45,31 +45,31 @@ public class ActivityBehaviorUtil {
                 ConditionExpressionEvaluater conditionExpressionEvaluater = ConditionExpressionEvaluaterFactory.createConditionExpression(expressionType);
                 boolean conditionPassed = conditionExpressionEvaluater.evaluate(expressionContent);
                 if (conditionPassed) {
-                    toBeChoosenRuntimeTransition.add(runtimeTransition);
+                    toBeChosenRuntimeTransition.add(runtimeTransition);
                 }
             }
         }
 
-        if (toBeChoosenRuntimeTransition.size() == 1) {
-            PvmTransition outgoingRuntimeTransition = toBeChoosenRuntimeTransition.get(0);
+        if (toBeChosenRuntimeTransition.size() == 1) {
+            PvmTransition outgoingRuntimeTransition = toBeChosenRuntimeTransition.get(0);
             PvmActivity targetRuntimeActivity = outgoingRuntimeTransition.getTarget();
 
 //            ThreadLocalUtil.get().setCurrentRuntimeActivity(targetRuntimeActivity);
 
             String activityClassName = targetRuntimeActivity.getModel().getClass().getName();
             ActivityBehavior activityBehavior = ActivityBehaviorRegister.getActivityBehavior(activityClassName);
-            activityBehavior.execute();
+            activityBehavior.execute(null);
 
-        } else if (toBeChoosenRuntimeTransition.size() > 1) {
+        } else if (toBeChosenRuntimeTransition.size() > 1) {
             // FIXME 需要支持并行网关
-            PvmTransition outgoingRuntimeTransition = toBeChoosenRuntimeTransition.get(0);
+            PvmTransition outgoingRuntimeTransition = toBeChosenRuntimeTransition.get(0);
             PvmActivity targetRuntimeActivity = outgoingRuntimeTransition.getTarget();
 
 //            ThreadLocalUtil.get().setCurrentRuntimeActivity(targetRuntimeActivity);
 
             String activityClassName = targetRuntimeActivity.getModel().getClass().getName();
             ActivityBehavior activityBehavior = ActivityBehaviorRegister.getActivityBehavior(activityClassName);
-            activityBehavior.execute();
+            activityBehavior.execute(null);
 
         } else {
 

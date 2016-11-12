@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.process;
 
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
@@ -9,6 +10,7 @@ import com.alibaba.smart.framework.engine.modules.mvel.MvelInvoker;
 import com.alibaba.smart.framework.engine.provider.TransitionProvider;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractTransitionProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import org.mvel2.MVEL;
 
 public class SequenceFlowProvider extends AbstractTransitionProvider<SequenceFlow> implements TransitionProvider<SequenceFlow> {
 
@@ -55,5 +57,21 @@ public class SequenceFlowProvider extends AbstractTransitionProvider<SequenceFlo
         // // 不存在条件表达式
         // return null;
         // }
+    }
+
+    @Override
+    public boolean execute(PvmTransition pvmTransition, ExecutionContext context) {
+        SequenceFlow sequenceFlow = (SequenceFlow) pvmTransition.getModel();
+        ConditionExpression conditionExpression = sequenceFlow.getConditionExpression();
+
+        if (null != conditionExpression) {
+            if ("mvel".equals(conditionExpression.getExpressionType())) {
+                Object result = MVEL.eval(conditionExpression.getExpressionContent(), context.getRequest());
+                return (boolean)result;
+            }else{
+                throw new EngineException("unsupported condition expression type:"+conditionExpression.getExpressionType());
+            }
+        }
+        return true;
     }
 }

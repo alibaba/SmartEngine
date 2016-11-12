@@ -39,15 +39,15 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
     }
 
     @Override
-    public Message fireEvent(String event, ExecutionContext context) {
+    public void fireEvent(String event, ExecutionContext context) {
         Invoker invoker = this.getInvoker(event);
         if (null == invoker) {
             LOGGER.debug("invoker is null for event:" + event + ",so now return.");
-            return null;
+            return ;
         } else {
             LOGGER.debug("invoker is ok for event:" + event + ",so deep into.");
 
-            return invoker.invoke(context);
+             invoker.invoke(context);
 
         }
     }

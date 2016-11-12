@@ -51,6 +51,7 @@ public class BpmnProcessTest {
 				processDefinition.getId(), processDefinition.getVersion(),
 				request);
 
+
 		//断言
 		Assert.assertNotNull(processInstance);
 //		Assert.assertTrue(processInstance.get);

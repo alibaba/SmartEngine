@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.process.behavior.task;
 
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.process.behavior.AbstractActivityBehavior;
 
 /**
@@ -8,7 +9,7 @@ import com.alibaba.smart.framework.process.behavior.AbstractActivityBehavior;
 public class ServiceTaskBehavior extends AbstractActivityBehavior {
 
     @Override
-    public void execute() {
+    public void execute(ExecutionContext executionContext) {
 
 
     }

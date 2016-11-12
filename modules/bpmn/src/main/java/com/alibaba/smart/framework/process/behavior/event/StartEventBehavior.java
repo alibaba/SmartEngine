@@ -1,14 +1,15 @@
 package com.alibaba.smart.framework.process.behavior.event;
 
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.process.behavior.AbstractActivityBehavior;
-import com.alibaba.smart.framework.process.context.ProcessContext;
-import com.alibaba.smart.framework.process.context.ProcessContextHolder;
 
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
@@ -16,38 +17,29 @@ import com.alibaba.smart.framework.process.context.ProcessContextHolder;
 public class StartEventBehavior extends AbstractActivityBehavior {
 
     @Override
-    public void execute() {
-        // TODO 每个节点有自己的行为,每个行为负责自己的职责.具体Execution生成几个,由网关或者默认行为控制.
+    public void execute(ExecutionContext executionContext) {
 
         // TODO 这块数据拼接职责的确有点太businessLogic,考虑拆分下
 
-        ProcessContext processContext = ProcessContextHolder.get();
-
-        // 从扩展注册机获取实例工厂
-        ExtensionPointRegistry extensionPointRegistry = processContext.getProcessEngine().getExtensionPointRegistry();
-        // ExecutionInstanceFactory executionInstanceFactory = extensionPointRegistry.getExtensionPoint(
-        // ExecutionInstanceFactory.class);
+        ExtensionPointRegistry extensionPointRegistry = executionContext.getExtensionPointRegistry();
+        ProcessInstanceFactory  processInstanceFactory= extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class) ;
+        ExecutionInstanceFactory  executionInstanceFactory= extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class) ;
         ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
-        ProcessInstanceFactory processInstanceFactory = extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
 
-        // 流程实例ID
         ProcessInstance processInstance = processInstanceFactory.create();
+        ExecutionInstance executionInstance = executionInstanceFactory.create();
+        executionInstance.setProcessInstanceId(processInstance.getInstanceId());
+        processInstance.addExecution(executionInstance);
+
         String processInstanceId = processInstance.getInstanceId();
-        // 状态
         processInstance.setStatus(InstanceStatus.running);
 
-        // 构建活动实例: 指向开始节点
         ActivityInstance activityInstance = activityInstanceFactory.create();
         activityInstance.setProcessInstanceId(processInstanceId);
 
-//        ExecutionSession executionSession = ThreadLocalUtil.get();
-//        activityInstance.setActivityId(executionSession.getCurrentRuntimeActivity().getId());
-//        processInstance.addActivityInstance(activityInstance);
-//
-//        executionSession.setProcessInstance(processInstance);
 
-        // TODO 这段逻辑要结合store 一起看下
+        //FIXME
 
         super.activityBehaviorUtil.leaveCurrentActivity();
     }

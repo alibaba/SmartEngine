@@ -33,12 +33,8 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     private ProcessInstanceStorage processInstanceStorage;
     private InstanceContextFactory instanceContextFactory;
     private ProcessInstanceFactory processInstanceFactory;
-    ExecutionInstanceFactory       executionInstanceFactory;
+    private ExecutionInstanceFactory       executionInstanceFactory;
     private ActivityInstanceFactory activityInstanceFactory;
-
-//    private static String DEFAULT_VERSION= "1";
-
-    // private InstanceFactFactory factFactory;
 
     public DefaultProcessCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -52,7 +48,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         this.processInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
         this.executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
         this.activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
-        // this.factFactory = this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
 
     }
 
@@ -65,26 +60,16 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     public ProcessInstance start(String processId, String version, Map<String, Object> request) {
         PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processId, version);
         
-        PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
-        
-        ProcessInstance processInstance = this.processInstanceFactory.create();
-
-        ExecutionInstance executionInstance = this.executionInstanceFactory.create();
-        executionInstance.setProcessInstanceId(processInstance.getInstanceId());
-        // executionInstance.setFact(factFactory.create(variables));
-
-        processInstance.setProcessUri(pvmProcessDefinition.getUri());
-        processInstance.addExecution(executionInstance);// 执行实例添加到流程实例
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
-        executionContext.setProcessInstance(processInstance);
-        executionContext.setCurrentExecution(executionInstance);// 执行实例添加到当前上下文中
+        executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
         executionContext.setRequest(request);
 
-        pvmProcessInstance.start(executionContext);
+        //TODO TUNE 减少不必要的对象创建
+        PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
+        return  pvmProcessInstance.start(executionContext);
         
-        return processInstance;
     }
 
     @Override

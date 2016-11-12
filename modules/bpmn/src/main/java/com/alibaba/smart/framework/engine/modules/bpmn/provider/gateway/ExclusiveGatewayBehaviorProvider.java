@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.gateway;
 
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
@@ -17,5 +18,10 @@ public class ExclusiveGatewayBehaviorProvider extends AbstractBpmnActivityBehavi
     @Override
     protected Invoker createTransitionSelectInvoker() {
         return new ExclusiveGatewayInvoker(this.getExtensionPointRegistry(), this.getRuntimeActivity());
+    }
+
+    @Override
+    public void execute(PvmActivity runtimeActivity, ExecutionContext context) {
+
     }
 }

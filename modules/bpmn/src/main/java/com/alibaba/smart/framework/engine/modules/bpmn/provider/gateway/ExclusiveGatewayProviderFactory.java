@@ -5,7 +5,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.Exclusiv
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
-public class ExclusiveGatewayProviderFactory implements ActivityProviderFactory<ExclusiveGateway> {
+public class  ExclusiveGatewayProviderFactory implements ActivityProviderFactory<ExclusiveGateway> {
 
     private ExtensionPointRegistry extensionPointRegistry;
 

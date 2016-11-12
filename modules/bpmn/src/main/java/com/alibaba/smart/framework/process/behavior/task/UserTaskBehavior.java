@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.process.behavior.task;
 
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
@@ -8,8 +9,6 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.process.behavior.AbstractActivityBehavior;
-import com.alibaba.smart.framework.process.context.ProcessContext;
-import com.alibaba.smart.framework.process.context.ProcessContextHolder;
 import com.alibaba.smart.framework.process.session.ExecutionSession;
 
 /**
@@ -18,14 +17,13 @@ import com.alibaba.smart.framework.process.session.ExecutionSession;
 public class UserTaskBehavior extends AbstractActivityBehavior {
 
     @Override
-    public void execute() {
+    public void execute(ExecutionContext executionContext) {
         // 创建 ai,ei和user task instance
 
-        ProcessContext processContext = ProcessContextHolder.get();
         ExecutionSession executionSession =null;//  ThreadLocalUtil.get();
         ProcessInstance processInstance = executionSession.getProcessInstance();
 
-        ExtensionPointRegistry extensionPointRegistry = processContext.getProcessEngine().getExtensionPointRegistry();
+        ExtensionPointRegistry extensionPointRegistry = executionContext.getExtensionPointRegistry();
 
         ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 

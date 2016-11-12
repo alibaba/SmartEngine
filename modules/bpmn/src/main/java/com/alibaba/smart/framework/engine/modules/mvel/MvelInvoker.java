@@ -28,24 +28,18 @@ public class MvelInvoker implements Invoker {
 
     @Override
     public Message invoke(ExecutionContext context) {
-        Message message = new DefaultMessage();
-//        Map<String, Object> mvelContext = new HashMap<>();
-////        InstanceFact current = context.getCurrentExecution().getFact();
-////        mvelContext.put("fact", context.getProcessInstance().getFact());
-////        mvelContext.put("current", current);
-////        mvelContext.putAll(current);
+
         try {
             Object result = MVEL.eval(this.script.getExpressionContent(), context.getRequest());
             LOGGER.debug("Invoke mvel '" + this.script + "' result is " + result);
 
-            message.setBody(result);
- 
+
         } catch (Exception e) {
             LOGGER.error(e.getMessage(),e);
 
-            message.setFault(true);
         }
 
-        return message;
+        //FIXME
+        return null;
     }
 }

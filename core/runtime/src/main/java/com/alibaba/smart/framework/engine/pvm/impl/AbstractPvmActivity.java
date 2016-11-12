@@ -44,8 +44,7 @@ public abstract class AbstractPvmActivity<M extends Activity> extends AbstractPv
 //
     
     @Override
-    public Message signal(ExecutionContext context) {
-        return null;
+    public void signal(ExecutionContext context) {
     }
 
 //    protected abstract Message doInternalExecute(ExecutionContext context);

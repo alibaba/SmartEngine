@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.context;
 
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -30,4 +31,8 @@ public interface ExecutionContext {
     void setNeedPause(boolean needPause);
 
     boolean isNeedPause();
+
+    ExtensionPointRegistry getExtensionPointRegistry();
+
+    void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
 }

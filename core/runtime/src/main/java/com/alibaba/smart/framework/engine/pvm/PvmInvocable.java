@@ -20,7 +20,7 @@ public interface PvmInvocable<M extends IndentityElement> extends LifeCycleListe
      * @param context The request message
      * @return The response message
      */
-    Message fireEvent(String event, ExecutionContext context);
+    void fireEvent(String event, ExecutionContext context);
 
    
 

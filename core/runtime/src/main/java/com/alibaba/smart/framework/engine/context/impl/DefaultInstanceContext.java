@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.context.impl;
 
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import lombok.Data;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
@@ -22,4 +23,6 @@ public class DefaultInstanceContext implements ExecutionContext {
     private Map<String,Object > request;
 
     private boolean needPause;
+
+    private  ExtensionPointRegistry extensionPointRegistry;
 }

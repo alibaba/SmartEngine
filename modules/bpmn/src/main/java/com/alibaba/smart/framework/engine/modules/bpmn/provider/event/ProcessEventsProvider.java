@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.event;
 
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvents;
@@ -20,5 +21,10 @@ public class ProcessEventsProvider extends AbstractBpmnActivityBehaviorProvider<
     @Override
     protected Invoker createEventInvoker(String event) {
         return new ProcessEventInvoker(getRuntimeActivity());
+    }
+
+    @Override
+    public void execute(PvmActivity runtimeActivity, ExecutionContext context) {
+
     }
 }

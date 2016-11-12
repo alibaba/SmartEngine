@@ -27,7 +27,7 @@ public interface PvmProcessDefinition extends PvmActivity {
      * @param context 实例上下文
      * @return 是否暂停
      */
-    Message run(ExecutionContext context);
+    void run(ExecutionContext context);
 
     /**
      * 继续执行流程
@@ -35,7 +35,7 @@ public interface PvmProcessDefinition extends PvmActivity {
      * @param context 实例上下文
      * @return 是否暂停
      */
-    Message resume(ExecutionContext context);
+    void resume(ExecutionContext context);
 
 
     Map<String,PvmActivity> getActivities();

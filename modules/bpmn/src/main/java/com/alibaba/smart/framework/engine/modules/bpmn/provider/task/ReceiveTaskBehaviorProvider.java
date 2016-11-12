@@ -27,8 +27,6 @@ public class ReceiveTaskBehaviorProvider extends AbstractBpmnActivityBehaviorPro
         return null;
     }
 
-
-
     @Override
     public Invoker createCustomInvoker(PvmActivity runtimeActivity) {
        return null;

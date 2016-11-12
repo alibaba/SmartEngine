@@ -53,7 +53,7 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
     }
 
     @Override
-    public Message run(ExecutionContext context) {
+    public void run(ExecutionContext context) {
         // 从扩展注册机获取实例工厂
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
 
@@ -86,18 +86,19 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
         // 执行流程启动事件
         this.fireEvent(PvmEventConstant.PROCESS_START.name(), context);
         // 从开始节点开始执行
-        return this.runProcess(this.startActivity, context);
+         this.runProcess(this.startActivity, context);
     }
 
     @Override
-    public Message resume(ExecutionContext context) {
+    public void resume(ExecutionContext context) {
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
 
         
         ProcessInstance processInstance = context.getProcessInstance();
 
         if (InstanceStatus.completed == processInstance.getStatus()) {
-            return new DefaultMessage();
+            context.setNeedPause(true);
+            return ;
         }
 
         ExecutionInstance currentExecutionInstance = context.getCurrentExecution();
@@ -109,8 +110,8 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
         // 状态
         processInstance.setStatus(InstanceStatus.running);
 
-        Message processMessage = this.runProcess(runtimeActivity, context);
-        if (!processMessage.isSuspend()) {
+        this.runProcess(runtimeActivity, context);
+        if (!context.isNeedPause()) {
             ExecutionCommandService executionManager = extensionPointRegistry.getExtensionPoint(ExecutionCommandService.class);
 
             Map<String, Object> variables = new HashMap<>();
@@ -120,17 +121,15 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
             if (null != parentProcessInstance && null != parentProcessInstance.getExecutions()) {
                 for (Map.Entry<String, ExecutionInstance> executionInstanceEntry : parentProcessInstance.getExecutions().entrySet()) {
                     if (executionInstanceEntry.getValue().isSuspend()) {
-                        processMessage.setSuspend(true);
                         break;
                     }
                 }
             }
         }
-        return processMessage;
     }
 
     @Override
-    public Message execute(ExecutionContext context) {
+    public void execute(ExecutionContext context) {
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
 
         
@@ -143,9 +142,8 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
         // 子流程没有结束
         if (InstanceStatus.completed != subProcessInstance.getStatus()) {
             activityInstance.setStatus(InstanceStatus.suspended);
-            Message message = new DefaultMessage();
-            message.setSuspend(true);
-            return message;
+            context.setNeedPause(true);
+            return ;
         }
 
         // 重置状态
@@ -168,16 +166,15 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
         // TODO ettear 或者用主流程活动事实做为子流程事实?
         // subInstanceContext.setExecutionFact(context.getExecutionFact());
         // 运行子流程
-        return this.run(subInstanceContext);
+         this.run(subInstanceContext);
     }
 
-    private Message runProcess(PvmActivity startActivity, ExecutionContext context) {
+    private void runProcess(PvmActivity startActivity, ExecutionContext context) {
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
 
-        
-        Message processMessage = this.executeActivity(startActivity, context);
+        this.executeActivity(startActivity, context);
         ProcessInstance processInstance = context.getProcessInstance();
-        if (!processMessage.isSuspend()) {
+        if (!context.isNeedPause()) {
             // 流程结束
             this.fireEvent(PvmEventConstant.PROCESS_END.name(), context);
             processInstance.setStatus(InstanceStatus.completed);
@@ -186,24 +183,23 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
         }
         // 存储流程实例
         extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class).save(context.getProcessInstance());
-        return processMessage;
     }
 
-    private Message executeActivity(PvmActivity runtimeActivity, ExecutionContext context) {
+    private void executeActivity(PvmActivity runtimeActivity, ExecutionContext context) {
         // 执行当前节点
-        Message activityExecuteMessage = runtimeActivity.execute(context);
+        runtimeActivity.execute(context);
 
         Message processMessage = new DefaultMessage();
-        if (activityExecuteMessage.isSuspend()) {
-            processMessage.setSuspend(true);
-            return processMessage;
+        if (context.isNeedPause()) {
+            return ;
         }
 
         // 执行后续节点选择
-        Message transitionSelectMessage = runtimeActivity.fireEvent(PvmEventConstant.ACTIVITY_TRANSITION_SELECT.name(),
+         runtimeActivity.fireEvent(PvmEventConstant.ACTIVITY_TRANSITION_SELECT.name(),
                                                                  context);
-        if (null != transitionSelectMessage) {
-            Object transitionSelectBody = transitionSelectMessage.getBody();
+        //FIXME
+        if (null != "") {
+            Object transitionSelectBody = null;
             if (null != transitionSelectBody && transitionSelectBody instanceof List) {
                 List<?> executionObjects = (List<?>) transitionSelectBody;
                 if (!executionObjects.isEmpty()) {
@@ -236,7 +232,6 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
                 }
             }
         }
-        return processMessage;
     }
 
 }

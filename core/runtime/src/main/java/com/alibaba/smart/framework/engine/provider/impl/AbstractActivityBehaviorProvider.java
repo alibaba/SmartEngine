@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
  * @author 高海军 帝奇  2016.11.11 TODO 职责略不清晰
  * @author ettear 2016.04.13
  */
-public   class AbstractActivityBehaviorProvider<T extends Activity> implements ActivityBehaviorProvider<T> {
+public abstract class AbstractActivityBehaviorProvider<T extends Activity> implements ActivityBehaviorProvider<T> {
 
     private PvmActivity runtimeActivity;
 
@@ -77,8 +77,5 @@ public   class AbstractActivityBehaviorProvider<T extends Activity> implements A
         return runtimeActivity;
     }
 
-    @Override
-    public void execute(PvmActivity runtimeActivity, ExecutionContext context) {
 
-    }
 }
