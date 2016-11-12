@@ -82,10 +82,11 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
                     matchedTransitions.add(pvmTransition1);
                 }
 
-                for (PvmTransition matchedTransition : matchedTransitions) {
-                    PvmActivity  targetPvmActivity =   matchedTransition.getTarget();
-                    this.executeCurrentActivityAndLookupNextTransitionRecursively(targetPvmActivity, context);
-                }
+            }
+
+            for (PvmTransition matchedTransition : matchedTransitions) {
+                PvmActivity  targetPvmActivity =   matchedTransition.getTarget();
+                this.executeCurrentActivityAndLookupNextTransitionRecursively(targetPvmActivity, context);
             }
 
             //FIXME
