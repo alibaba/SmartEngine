@@ -34,7 +34,7 @@ public class UserTaskBehaviorProvider extends AbstractBpmnActivityBehaviorProvid
 
         ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance);
 
-        TaskInstance taskInstance = super.taskInstanceFactory.create(executionInstance);
+        TaskInstance taskInstance = super.taskInstanceFactory.create(pvmActivity,executionInstance);
 
         executionInstance.setTaskInstance(taskInstance);
         activityInstance.setExecutionInstance(executionInstance);

@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,5 +27,8 @@ public interface ProcessInstance extends LifeCycleInstance {
     void setParentActivityInstanceId(String parentActivityInstanceId);
 
     void addActivityInstance(ActivityInstance activityInstance);
+
+    List<ActivityInstance> getActivityInstances();
+
 
 }

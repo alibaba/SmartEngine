@@ -13,6 +13,7 @@ import com.alibaba.smart.framework.engine.model.instance.DatabaseMod;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.param.ProcessParam;
+import lombok.Getter;
 
 /**
  * Default Process Instance Created by ettear on 16-4-12.
@@ -41,6 +42,7 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     /**
      * 需要顺序,并且不需要根据key来获取数据,所以是list数据结构
      */
+    @Getter
     private List<ActivityInstance>         activityInstances = new ArrayList<>();
 //
 //    @Override

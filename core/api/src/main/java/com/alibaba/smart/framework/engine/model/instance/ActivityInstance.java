@@ -69,19 +69,19 @@ public interface ActivityInstance extends Instance{
 //     */
 //    void setCurrentStep(String step);
 
-    /**
-     * 获取任务实例
-     * 
-     * @return 任务实例
-     */
-    TaskInstance getTaskInstance();
-
-    /**
-     * 设置任务实例
-     * 
-     * @param taskInstance 任务实例
-     */
-    void setTaskInstance(TaskInstance taskInstance);
+//    /**
+//     * 获取任务实例
+//     *
+//     * @return 任务实例
+//     */
+//    TaskInstance getTaskInstance();
+//
+//    /**
+//     * 设置任务实例
+//     *
+//     * @param taskInstance 任务实例
+//     */
+//    void setTaskInstance(TaskInstance taskInstance);
 
     Date getStartDate();
 

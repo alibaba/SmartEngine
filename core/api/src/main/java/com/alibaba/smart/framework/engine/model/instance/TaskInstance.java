@@ -6,9 +6,9 @@ package com.alibaba.smart.framework.engine.model.instance;
  */
 public interface TaskInstance extends LifeCycleInstance {
 
-    String getName();
+    String getActivityId();
 
-    void setName(String name);
+    void setActivityId(String activityId);
 
     String getProcessInstanceId();
 

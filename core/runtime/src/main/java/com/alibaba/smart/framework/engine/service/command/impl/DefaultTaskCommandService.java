@@ -7,7 +7,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 
 /**
- * @author 高海军 帝奇  2016.11.11  *TODO deploy 完成后,需要被获取流程定义 .
+ * @author 高海军 帝奇  2016.11.11
  */
 public class DefaultTaskCommandService implements TaskCommandService {
 
