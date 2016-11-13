@@ -14,6 +14,16 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     void setActivityId(String activityId);
 
+
+    String getActivityInstanceId();
+
+    void setActivityInstanceId (String activityInstanceId);
+
+
+    void setTaskInstance(TaskInstance taskInstance);
+
+    TaskInstance getTaskInstance();
+
     //TODO
     String toDatabase();
 }

@@ -85,21 +85,21 @@ public abstract class AbstractGatewayInvoker implements Invoker {
 
     protected void buildExecutionInstance(PvmTransition runtimeTransition, ProcessInstance processInstance,
                                           ExecutionInstance executionInstance) {
-        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
-        TransitionInstanceFactory transitionInstanceFactory = extensionPointRegistry.getExtensionPoint(TransitionInstanceFactory.class);
-        ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
-
-        TransitionInstance transitionInstance = transitionInstanceFactory.create();
-        transitionInstance.setTransitionId(runtimeTransition.getModel().getId());
-        //TODO
-       // transitionInstance.setSourceActivityInstanceId(currentActivityInstance.getInstanceId());
-
-        ActivityInstance activityInstance = activityInstanceFactory.create();
-        activityInstance.setActivityId(runtimeTransition.getTarget().getModel().getId());
-        activityInstance.setProcessInstanceId(processInstance.getInstanceId());
-        activityInstance.addIncomeTransition(transitionInstance);
-
-        executionInstance.setActivityId(runtimeTransition.getTarget().getModel().getId());
+//        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
+//        TransitionInstanceFactory transitionInstanceFactory = extensionPointRegistry.getExtensionPoint(TransitionInstanceFactory.class);
+//        ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
+//
+//        TransitionInstance transitionInstance = transitionInstanceFactory.create();
+//        transitionInstance.setTransitionId(runtimeTransition.getModel().getId());
+//        //TODO
+//       // transitionInstance.setSourceActivityInstanceId(currentActivityInstance.getInstanceId());
+//
+//        ActivityInstance activityInstance = activityInstanceFactory.create();
+//        activityInstance.setActivityId(runtimeTransition.getTarget().getModel().getId());
+//        activityInstance.setProcessInstanceId(processInstance.getInstanceId());
+//        activityInstance.addIncomeTransition(transitionInstance);
+//
+//        executionInstance.setActivityId(runtimeTransition.getTarget().getModel().getId());
     }
 
     protected PvmActivity getRuntimeActivity() {

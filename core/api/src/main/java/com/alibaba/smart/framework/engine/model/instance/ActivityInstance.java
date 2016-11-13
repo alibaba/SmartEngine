@@ -37,6 +37,10 @@ public interface ActivityInstance extends Instance{
      */
     void setProcessInstanceId(String processInstanceId);
 
+    void setExecutionInstance(ExecutionInstance executionInstance);
+
+    ExecutionInstance getExecutionInstance();
+
     /**
      * 获取进入活动的关联
      * 
@@ -70,14 +74,14 @@ public interface ActivityInstance extends Instance{
      * 
      * @return 任务实例
      */
-    TaskInstance getTask();
+    TaskInstance getTaskInstance();
 
     /**
      * 设置任务实例
      * 
      * @param taskInstance 任务实例
      */
-    void setTask(TaskInstance taskInstance);
+    void setTaskInstance(TaskInstance taskInstance);
 
     Date getStartDate();
 

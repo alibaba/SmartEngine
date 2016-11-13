@@ -3,7 +3,9 @@ package com.alibaba.smart.framework.engine.instance.factory.impl;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.util.DateUtil;
 
 /**
  * 默认任务实例工厂实现 Created by ettear on 16-4-20.
@@ -11,9 +13,15 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
 
     @Override
-    public TaskInstance create() {
-        DefaultTaskInstance defaultTaskInstance = new DefaultTaskInstance();
-        defaultTaskInstance.setInstanceId(InstanceIdUtil.uuid());
-        return defaultTaskInstance;
+    public TaskInstance create(ExecutionInstance executionInstance) {
+        TaskInstance taskInstance = new DefaultTaskInstance();
+        taskInstance.setInstanceId(InstanceIdUtil.uuid());
+        taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
+        taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
+        taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
+
+        taskInstance.setStartDate(DateUtil.getCurrentDate());
+
+        return taskInstance;
     }
 }

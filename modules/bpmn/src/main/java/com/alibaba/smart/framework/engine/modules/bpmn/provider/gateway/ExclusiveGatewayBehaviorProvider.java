@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.gateway;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityBehaviorProvider;
 import com.alibaba.smart.framework.engine.provider.ActivityBehaviorProvider;
@@ -21,7 +22,9 @@ public class ExclusiveGatewayBehaviorProvider extends AbstractBpmnActivityBehavi
     }
 
     @Override
-    public void execute(PvmActivity runtimeActivity, ExecutionContext context) {
+    public void execute(PvmActivity pvmActivity, ExecutionContext context) {
+        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity,context.getProcessInstance());
 
+        context.getProcessInstance().addActivityInstance(activityInstance);
     }
 }

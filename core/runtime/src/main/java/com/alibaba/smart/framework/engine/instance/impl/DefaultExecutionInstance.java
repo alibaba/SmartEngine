@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,12 +19,11 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
 
     private static final long serialVersionUID = 2323809298485587299L;
     private String            processInstanceId;
-    // private InstanceFact fact;
+    private String            activityInstanceId;
+
     //TODO 去掉对象关联
     private String  activityId;
-//    private boolean           needPause;
-
-
+    private TaskInstance taskInstance;
 
     @Override
     public String toDatabase() {

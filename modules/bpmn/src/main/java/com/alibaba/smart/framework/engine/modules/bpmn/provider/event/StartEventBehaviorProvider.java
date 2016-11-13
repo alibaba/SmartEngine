@@ -29,25 +29,11 @@ public class StartEventBehaviorProvider extends AbstractBpmnActivityBehaviorProv
 
 
     @Override
-    public void execute(PvmActivity runtimeActivity, ExecutionContext executionContext) {
-
-        ExtensionPointRegistry extensionPointRegistry = executionContext.getExtensionPointRegistry();
-        ProcessInstanceFactory processInstanceFactory= extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class) ;
-        ExecutionInstanceFactory executionInstanceFactory= extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class) ;
-        ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
-
-        String startActivityId = runtimeActivity.getModel().getId();
+    public void execute(PvmActivity pvmActivity, ExecutionContext executionContext) {
 
         ProcessInstance processInstance = processInstanceFactory.create();
-        processInstance.setStatus(InstanceStatus.running);
 
-
-        ExecutionInstance executionInstance = executionInstanceFactory.create();
-        executionInstance.setProcessInstanceId(processInstance.getInstanceId());
-
-        ActivityInstance activityInstance = activityInstanceFactory.create();
-        activityInstance.setActivityId(startActivityId);
-
+        ActivityInstance activityInstance = super.activityInstanceFactory.create( pvmActivity, processInstance);
         processInstance.addActivityInstance(activityInstance);
 
         executionContext.setProcessInstance(processInstance);

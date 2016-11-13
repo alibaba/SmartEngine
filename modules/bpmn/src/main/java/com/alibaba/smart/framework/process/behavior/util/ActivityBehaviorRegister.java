@@ -11,11 +11,8 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.process.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.process.behavior.event.EndEventBehavior;
-import com.alibaba.smart.framework.process.behavior.event.StartEventBehavior;
-import com.alibaba.smart.framework.process.behavior.gateway.ExclusiveGatewayBehavior;
 import com.alibaba.smart.framework.process.behavior.gateway.ParallelGatewayBehavior;
 import com.alibaba.smart.framework.process.behavior.task.ServiceTaskBehavior;
-import com.alibaba.smart.framework.process.behavior.task.UserTaskBehavior;
 
 public class ActivityBehaviorRegister {
 
@@ -26,15 +23,15 @@ public class ActivityBehaviorRegister {
 
     // TODO 确定下是否有更好的方式,使用扩展点或者约定的方式
     static {
-        // TODO add 唯一性check
-        holder.put(StartEvent.class.getName(), new StartEventBehavior());
-        holder.put(EndEvent.class.getName(), new EndEventBehavior());
-
-        holder.put(ServiceTask.class.getName(), new ServiceTaskBehavior());
-        holder.put(UserTask.class.getName(), new UserTaskBehavior());
-
-        holder.put(ExclusiveGateway.class.getName(), new ExclusiveGatewayBehavior());
-        holder.put(ParallelGateway.class.getName(), new ParallelGatewayBehavior());
+//        // TODO add 唯一性check
+//        holder.put(StartEvent.class.getName(), new StartEventBehavior());
+//        holder.put(EndEvent.class.getName(), new EndEventBehavior());
+//
+//        holder.put(ServiceTask.class.getName(), new ServiceTaskBehavior());
+//        holder.put(UserTask.class.getName(), new UserTaskBehavior());
+//
+//        holder.put(ExclusiveGateway.class.getName(), new ExclusiveGatewayBehavior());
+//        holder.put(ParallelGateway.class.getName(), new ParallelGatewayBehavior());
 
     }
 

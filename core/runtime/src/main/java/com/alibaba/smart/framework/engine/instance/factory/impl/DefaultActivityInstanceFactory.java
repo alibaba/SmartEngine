@@ -4,7 +4,10 @@ import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFacto
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
 import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.param.ActivityParam;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.util.DateUtil;
 
 /**
  * 默认活动实例工厂实现 Created by ettear on 16-4-20.
@@ -12,10 +15,15 @@ import com.alibaba.smart.framework.engine.param.ActivityParam;
 public class DefaultActivityInstanceFactory implements ActivityInstanceFactory {
 
     @Override
-    public ActivityInstance create() {
-        DefaultActivityInstance defaultActivityInstance = new DefaultActivityInstance();
-        defaultActivityInstance.setInstanceId(InstanceIdUtil.uuid());
-        return defaultActivityInstance;
+    public ActivityInstance create(PvmActivity pvmActivity, ProcessInstance processInstance) {
+        DefaultActivityInstance activityInstance = new DefaultActivityInstance();
+        activityInstance.setInstanceId(InstanceIdUtil.uuid());
+        activityInstance.setStartDate(DateUtil.getCurrentDate());
+        activityInstance.setProcessInstanceId(processInstance.getInstanceId());
+
+        String activityId = pvmActivity.getModel().getId();
+        activityInstance.setActivityId(activityId);
+        return activityInstance;
     }
 
     @Override

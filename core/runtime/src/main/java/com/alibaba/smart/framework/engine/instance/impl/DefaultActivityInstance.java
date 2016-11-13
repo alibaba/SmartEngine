@@ -3,13 +3,10 @@ package com.alibaba.smart.framework.engine.instance.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.model.instance.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.DatabaseMod;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.param.ActivityParam;
 
 /**
@@ -24,7 +21,8 @@ public class DefaultActivityInstance extends AbstractLifeCycleInstance implement
     private String                   processInstanceId;
     private List<TransitionInstance> incomeTransitions = new ArrayList<>();
     private String                   currentStep;
-    private TaskInstance             task;
+    private TaskInstance             taskInstance;
+    private ExecutionInstance        executionInstance;
 
     @Override
     public void addIncomeTransition(TransitionInstance transitionInstance) {

@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.factory;
 
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 
 /**
@@ -12,5 +13,5 @@ public interface TaskInstanceFactory {
      *
      * @return 任务实例
      */
-    TaskInstance create();
+    TaskInstance create(ExecutionInstance executionInstance);
 }

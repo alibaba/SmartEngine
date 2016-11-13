@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.factory;
 
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.param.ExecutionParam;
 
@@ -13,7 +14,7 @@ public interface ExecutionInstanceFactory {
      *
      * @return 执行实例
      */
-    ExecutionInstance create();
+    ExecutionInstance create(ActivityInstance activityInstance);
 
 
     ExecutionInstance recovery(ExecutionParam executionParam);
