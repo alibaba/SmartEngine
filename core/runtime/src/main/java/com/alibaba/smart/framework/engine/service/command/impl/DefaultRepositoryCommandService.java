@@ -161,13 +161,17 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             if (StringUtils.isBlank(process.getId())) {
                 process.setId("default");
             }
-            PvmProcessDefinition runtimeProcess = this.buildPvmProcessDefinition(process, processComponent, false);
-            if (null != runtimeProcess && runtimeProcess instanceof ProviderRegister) {
-                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
-                ActivityBehaviorProvider activityBehaviorProvider = providerFactory.createActivityProvider(runtimeProcess);
-                ((ProviderRegister) runtimeProcess).registerProvider(activityBehaviorProvider);
-                processComponent.setProcess(runtimeProcess);
+            PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(process, processComponent, false);
+
+            // && pvmProcessDefinition instanceof ProviderRegister
+            if (null != pvmProcessDefinition) {
+//                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
+                //TODO
+//                ActivityBehaviorProvider activityBehaviorProvider = providerFactory.createActivityProvider(pvmProcessDefinition);
+//                ((ProviderRegister) pvmProcessDefinition).registerProvider(activityBehaviorProvider);
+                processComponent.setProcess(pvmProcessDefinition);
             } else {
+
                 return null;
             }
         }
@@ -206,12 +210,14 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     }
                     index++;
 
-                    PvmProcessDefinition runtimeSubProcess = this.buildPvmProcessDefinition(subProcess, component, true);
-                    runtimeActivities.put(runtimeSubProcess.getModel().getId(), runtimeSubProcess);
+                    PvmProcessDefinition processDefinition = this.buildPvmProcessDefinition(subProcess, component, true);
 
-                    if (runtimeSubProcess.getModel().isStartActivity()) {
-                        pvmProcessDefinition.setStartActivity(runtimeSubProcess);
-                    }
+                    //TODO support subProcess
+//                    runtimeActivities.put(processDefinition.getModel().getId(), processDefinition);
+//
+//                    if (processDefinition.getModel().isStartActivity()) {
+//                        pvmProcessDefinition.setStartActivity(processDefinition);
+//                    }
                 } else if (element instanceof Transition) {
                     Transition transition = (Transition) element;
 

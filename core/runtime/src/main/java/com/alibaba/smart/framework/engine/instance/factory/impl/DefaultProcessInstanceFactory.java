@@ -22,7 +22,7 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
     @Override
     public ProcessInstance recovery(ProcessParam param) {
         DefaultProcessInstance defaultProcessInstance  = new DefaultProcessInstance();
-        defaultProcessInstance.getModle(param);
+        defaultProcessInstance.getModel(param);
         return defaultProcessInstance;
     }
 

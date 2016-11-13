@@ -15,7 +15,6 @@ import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -37,7 +36,7 @@ public abstract class AbstractGatewayInvoker implements Invoker {
 
     @Override
     public Message invoke(ExecutionContext context) {
-        ExecutionInstance executionInstance = context.getCurrentExecution();
+//        ExecutionInstance executionInstance = context.getCurrentExecution();
         Map<String, PvmTransition> outcomeTransitions = this.runtimeActivity.getOutcomeTransitions();
         Message message = new DefaultMessage();
         if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
@@ -64,14 +63,15 @@ public abstract class AbstractGatewayInvoker implements Invoker {
 //                message.setFault(true);
             } else {
                 List<ExecutionInstance> executions = new ArrayList<>();
-                executions.add(executionInstance);
-                List<ExecutionInstance> processExecution = this.processExecution(hitTransitions, context.getProcessInstance(), executionInstance,
-                                                      executionInstance.getActivity());
+//                executions.add(executionInstance);
+                List<ExecutionInstance> processExecution = null;
+//                this.processExecution(hitTransitions, context.getProcessInstance()
+//                                                      );
                 message.setBody(processExecution);
             }
         } else {// 没有后续节点，结束执行实例
-            executionInstance.setStatus(InstanceStatus.completed);
-            executionInstance.setCompleteDate(new Date());
+//            executionInstance.setStatus(InstanceStatus.completed);
+//            executionInstance.setCompleteDate(new Date());
             // this.executionInstanceManager.complete(processInstance.getProcessId(),
             // executionInstance.getProcessId());
         }
@@ -80,28 +80,26 @@ public abstract class AbstractGatewayInvoker implements Invoker {
 
     protected abstract List<ExecutionInstance> processExecution(List<PvmTransition> transitions,
                                                                 ProcessInstance processInstance,
-                                                                ExecutionInstance currentExecutionInstance,
-                                                                ActivityInstance currentActivityInstance);
+                                                                ExecutionInstance currentExecutionInstance
+                                                                );
 
     protected void buildExecutionInstance(PvmTransition runtimeTransition, ProcessInstance processInstance,
-                                          ExecutionInstance executionInstance, ActivityInstance currentActivityInstance) {
+                                          ExecutionInstance executionInstance) {
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
         TransitionInstanceFactory transitionInstanceFactory = extensionPointRegistry.getExtensionPoint(TransitionInstanceFactory.class);
         ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
         TransitionInstance transitionInstance = transitionInstanceFactory.create();
         transitionInstance.setTransitionId(runtimeTransition.getModel().getId());
-        transitionInstance.setSourceActivityInstanceId(currentActivityInstance.getInstanceId());
+        //TODO
+       // transitionInstance.setSourceActivityInstanceId(currentActivityInstance.getInstanceId());
 
         ActivityInstance activityInstance = activityInstanceFactory.create();
         activityInstance.setActivityId(runtimeTransition.getTarget().getModel().getId());
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
         activityInstance.addIncomeTransition(transitionInstance);
 
-        // this.executionInstanceManager.updateActivity(processInstance.getProcessId(),
-        // executionInstance.getProcessId(),
-        // activityInstance);
-        executionInstance.setActivity(activityInstance);
+        executionInstance.setActivityId(runtimeTransition.getTarget().getModel().getId());
     }
 
     protected PvmActivity getRuntimeActivity() {

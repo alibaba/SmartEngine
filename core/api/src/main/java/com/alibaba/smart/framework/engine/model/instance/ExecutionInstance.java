@@ -10,22 +10,10 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     void setProcessInstanceId(String processInstanceId);
 
-//    InstanceFact getFact();
-//
-//    void setFact(InstanceFact fact);
+    String getActivityId();
 
-    ActivityInstance getActivity();
+    void setActivityId(String activityId);
 
-    void setActivity(ActivityInstance activityInstance);
-
-    //通过异常来返回异常状态,fault 不应该侵入ExecutionInstance
-//    boolean isFault();
-//
-//    void setFault(boolean fault);
-
-
-
+    //TODO
     String toDatabase();
-
-
 }

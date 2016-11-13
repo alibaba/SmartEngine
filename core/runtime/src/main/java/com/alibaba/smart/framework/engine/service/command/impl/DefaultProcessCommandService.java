@@ -59,7 +59,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     @Override
     public ProcessInstance start(String processId, String version, Map<String, Object> request) {
         PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processId, version);
-        
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
         executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
@@ -108,9 +107,9 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         if (null != processInstanceStorage.find(processInstance.getInstanceId())) {
             processInstance = processInstanceStorage.find(processInstance.getInstanceId());
         }
-        executionInstance.setActivity(activityInstance);
+        executionInstance.setActivityId(activityInstance.getActivityId());
         processInstance.setProcessUri(processDefinition.getUri());
-        processInstance.addExecution(executionInstance);
+//        processInstance.addExecution(executionInstance);
         processInstanceStorage.save(processInstance);
 
 

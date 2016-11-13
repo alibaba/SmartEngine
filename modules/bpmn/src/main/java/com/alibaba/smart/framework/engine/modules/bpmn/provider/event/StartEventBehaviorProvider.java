@@ -36,20 +36,22 @@ public class StartEventBehaviorProvider extends AbstractBpmnActivityBehaviorProv
         ExecutionInstanceFactory executionInstanceFactory= extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class) ;
         ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
-
-        ProcessInstance processInstance = processInstanceFactory.create();
-        ExecutionInstance executionInstance = executionInstanceFactory.create();
-        executionInstance.setProcessInstanceId(processInstance.getInstanceId());
-        processInstance.addExecution(executionInstance);
-
-        String processInstanceId = processInstance.getInstanceId();
-        processInstance.setStatus(InstanceStatus.running);
-
         String startActivityId = runtimeActivity.getModel().getId();
 
+        ProcessInstance processInstance = processInstanceFactory.create();
+        processInstance.setStatus(InstanceStatus.running);
+
+
+        ExecutionInstance executionInstance = executionInstanceFactory.create();
+        executionInstance.setProcessInstanceId(processInstance.getInstanceId());
+
         ActivityInstance activityInstance = activityInstanceFactory.create();
-        activityInstance.setProcessInstanceId(processInstanceId);
         activityInstance.setActivityId(startActivityId);
+
+        processInstance.addActivityInstance(activityInstance);
+
+        executionContext.setProcessInstance(processInstance);
+
 
         //TODO 触发流程启动事件
 //        this.fireEvent(PvmEventConstant.PROCESS_START.name(), executionContext);

@@ -17,7 +17,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 public class DefaultInstanceContext implements ExecutionContext {
 
     private ProcessInstance   processInstance;
-    private ExecutionInstance currentExecution;
+//    private ExecutionInstance currentExecution;
     private PvmProcessDefinition pvmProcessDefinition;
     
     private Map<String,Object > request;

@@ -1,12 +1,13 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public interface ActivityInstance extends LifeCycleInstance {
+public interface ActivityInstance extends Instance{
 
     /**
      * 获取活动ID
@@ -50,19 +51,19 @@ public interface ActivityInstance extends LifeCycleInstance {
      */
     void addIncomeTransition(TransitionInstance transitionInstance);
 
-    /**
-     * 获取当前阶段
-     * 
-     * @return 当前阶段
-     */
-    String getCurrentStep();
-
-    /**
-     * 设置当前阶段
-     * 
-     * @param step 当前阶段
-     */
-    void setCurrentStep(String step);
+//    /**
+//     * 获取当前阶段
+//     *
+//     * @return 当前阶段
+//     */
+//    String getCurrentStep();
+//
+//    /**
+//     * 设置当前阶段
+//     *
+//     * @param step 当前阶段
+//     */
+//    void setCurrentStep(String step);
 
     /**
      * 获取任务实例
@@ -77,4 +78,12 @@ public interface ActivityInstance extends LifeCycleInstance {
      * @param taskInstance 任务实例
      */
     void setTask(TaskInstance taskInstance);
+
+    Date getStartDate();
+
+    void setStartDate(Date startDate);
+
+    Date getCompleteDate();
+
+    void setCompleteDate(Date completeDate);
 }

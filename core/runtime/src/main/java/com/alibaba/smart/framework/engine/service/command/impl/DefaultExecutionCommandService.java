@@ -50,15 +50,17 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             ExecutionContext instanceContext = this.instanceContextFactory.create();
             instanceContext.setProcessInstance(processInstance);
             ExecutionInstance currentExecutionInstance = null;
-            for (Map.Entry<String, ExecutionInstance> executionInstanceEntry : processInstance.getExecutions().entrySet()) {
-                ExecutionInstance executionInstance = executionInstanceEntry.getValue();
-                if (StringUtils.equals(executionInstance.getInstanceId(), executionInstanceId)) {
-                    currentExecutionInstance = executionInstance;
-                    break;
-                }
-            }
-            instanceContext.setCurrentExecution(currentExecutionInstance);
-            runtimeProcess.resume(instanceContext);
+
+            //FIXME
+//            for (Map.Entry<String, ExecutionInstance> executionInstanceEntry : processInstance.getExecutions().entrySet()) {
+//                ExecutionInstance executionInstance = executionInstanceEntry.getValue();
+//                if (StringUtils.equals(executionInstance.getInstanceId(), executionInstanceId)) {
+//                    currentExecutionInstance = executionInstance;
+//                    break;
+//                }
+//            }
+//            instanceContext.setCurrentExecution(currentExecutionInstance);
+//            runtimeProcess.resume(instanceContext);
         }
         return processInstance;
     }

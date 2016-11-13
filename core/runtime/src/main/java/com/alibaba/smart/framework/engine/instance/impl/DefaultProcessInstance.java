@@ -36,22 +36,22 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     /**
      * Running executions
      */
-    private Map<String, ExecutionInstance> executions        = new ConcurrentHashMap<>();
-
+//    private Map<String, ExecutionInstance> executions        = new ConcurrentHashMap<>();
+//
     /**
      * 需要顺序,并且不需要根据key来获取数据,所以是list数据结构
      */
     private List<ActivityInstance>         activityInstances = new ArrayList<>();
-
-    @Override
-    public void addExecution(ExecutionInstance executionInstance) {
-        this.executions.put(executionInstance.getInstanceId(), executionInstance);
-    }
-
-    @Override
-    public void removeExecution(String executionInstanceId) {
-        this.executions.remove(executionInstanceId);
-    }
+//
+//    @Override
+//    public void addExecution(ExecutionInstance executionInstance) {
+//        this.executions.put(executionInstance.getInstanceId(), executionInstance);
+//    }
+//
+//    @Override
+//    public void removeExecution(String executionInstanceId) {
+//        this.executions.remove(executionInstanceId);
+//    }
 
     @Override
     public void addActivityInstance(ActivityInstance activityInstance) {
@@ -62,17 +62,17 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     public String toDatabase() {
 
         StringBuilder data = new StringBuilder();
-        for (ExecutionInstance executionInstance:this.getExecutions().values()) {
-            data.append(executionInstance.toDatabase());
-            data.append("|");
-        }
+//        for (ExecutionInstance executionInstance:this.getExecutions().values()) {
+//            data.append(executionInstance.toDatabase());
+//            data.append("|");
+//        }
 
         return data.toString();
 
     }
 
     @Override
-    public DefaultProcessInstance getModle(ProcessParam param) {
+    public DefaultProcessInstance getModel(ProcessParam param) {
         this.setInstanceId(param.getProcessId());
         return this;
 

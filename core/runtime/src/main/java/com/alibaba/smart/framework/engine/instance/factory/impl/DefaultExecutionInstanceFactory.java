@@ -23,7 +23,7 @@ public class DefaultExecutionInstanceFactory implements ExecutionInstanceFactory
     @Override
     public ExecutionInstance recovery(ExecutionParam executionParam) {
         DefaultExecutionInstance executionInstance = new DefaultExecutionInstance();
-        executionInstance.getModle(executionParam);
+        executionInstance.getModel(executionParam);
         return executionInstance;
     }
 

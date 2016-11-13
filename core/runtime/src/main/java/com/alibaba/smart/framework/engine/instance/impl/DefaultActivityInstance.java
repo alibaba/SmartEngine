@@ -37,7 +37,7 @@ public class DefaultActivityInstance extends AbstractLifeCycleInstance implement
     }
 
     @Override
-    public DefaultActivityInstance getModle(ActivityParam param) {
+    public DefaultActivityInstance getModel(ActivityParam param) {
         this.setProcessInstanceId(param.getProcessId());
         this.setActivityId(param.getActivityId());
         this.setCurrentStep(param.getCurrentStep());

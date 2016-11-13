@@ -10,5 +10,5 @@ public interface DatabaseMod <T,F extends Param>{
 
     String toDatabase();
 
-    T getModle(F param);
+    T getModel(F param);
 }

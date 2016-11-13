@@ -30,7 +30,7 @@ public class StartEventBehavior extends AbstractActivityBehavior {
         ProcessInstance processInstance = processInstanceFactory.create();
         ExecutionInstance executionInstance = executionInstanceFactory.create();
         executionInstance.setProcessInstanceId(processInstance.getInstanceId());
-        processInstance.addExecution(executionInstance);
+//        processInstance.addExecution(executionInstance);
 
         String processInstanceId = processInstance.getInstanceId();
         processInstance.setStatus(InstanceStatus.running);

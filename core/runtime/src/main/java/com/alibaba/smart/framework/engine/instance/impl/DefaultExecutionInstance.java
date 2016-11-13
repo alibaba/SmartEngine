@@ -20,7 +20,7 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
     private String            processInstanceId;
     // private InstanceFact fact;
     //TODO 去掉对象关联
-    private ActivityInstance  activity;
+    private String  activityId;
 //    private boolean           needPause;
 
 
@@ -31,14 +31,16 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
 
        return Strings.nullToEmpty(getInstanceId())
                + "|"
-               +Strings.nullToEmpty(getActivity().getActivityId())
-               + "|"
-               +Strings.nullToEmpty(getActivity().getCurrentStep());
+               +Strings.nullToEmpty(activityId)
+               + "|";
+//               +Strings.nullToEmpty(getActivity().getCurrentStep());
 
     }
 
+
+    //TODO fix typo
     @Override
-    public DefaultExecutionInstance getModle(ExecutionParam param) {
+    public DefaultExecutionInstance getModel(ExecutionParam param) {
 
         this.setProcessInstanceId(param.getProcessId());
         this.setInstanceId(param.getExecutionId());

@@ -20,15 +20,17 @@ public class DefaultActivityTransitionSelectInvoker extends AbstractGatewayInvok
     }
 
     @Override
-    protected List<ExecutionInstance> processExecution(List<PvmTransition> transitions,
-                                                       ProcessInstance processInstance,
-                                                       ExecutionInstance currentExecutionInstance,
-                                                       ActivityInstance currentActivityInstance) {
-        PvmTransition runtimeTransition = transitions.get(0);
-        this.buildExecutionInstance(runtimeTransition, processInstance, currentExecutionInstance,
-                                    currentActivityInstance);
-        List<ExecutionInstance> executions = new ArrayList<>();
-        executions.add(currentExecutionInstance);
-        return executions;
+    protected List<ExecutionInstance> processExecution(List<PvmTransition> transitions, ProcessInstance processInstance, ExecutionInstance currentExecutionInstance) {
+        return null;
     }
+
+//    @Override
+//    protected List<ExecutionInstance> processExecution(List<PvmTransition> transitions,
+//                                                       ProcessInstance processInstance
+//                                                       ) {
+//        PvmTransition runtimeTransition = transitions.get(0);
+//        this.buildExecutionInstance(runtimeTransition, processInstance,null);
+//        List<ExecutionInstance> executions = new ArrayList<>();
+//        return executions;
+//    }
 }

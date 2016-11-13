@@ -26,30 +26,36 @@ public class ForkGatewayInvoker extends AbstractGatewayInvoker {
     }
 
     @Override
-    protected List<ExecutionInstance> processExecution(List<PvmTransition> transitions,
-                                                       ProcessInstance processInstance,
-                                                       ExecutionInstance currentExecutionInstance,
-                                                       ActivityInstance currentActivityInstance) {
-        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
-
-        ExecutionInstanceFactory executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
-//        InstanceFactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
-
-        currentExecutionInstance.setStatus(InstanceStatus.completed);
-        currentExecutionInstance.setCompleteDate(new Date());
-        processInstance.removeExecution(currentExecutionInstance.getInstanceId());
-
-        List<ExecutionInstance> executions = new ArrayList<>();
-        for (PvmTransition transition : transitions) {
-            ExecutionInstance executionInstance = executionInstanceFactory.create();
-            executionInstance.setInstanceId(InstanceIdUtil.uuid());
-            executionInstance.setProcessInstanceId(processInstance.getInstanceId());
-//            executionInstance.setFact(factFactory.create());
-            this.buildExecutionInstance(transition, processInstance, executionInstance, currentActivityInstance);
-            processInstance.addExecution(executionInstance);
-            executions.add(executionInstance);
-        }
-
-        return executions;
+    protected List<ExecutionInstance> processExecution(List<PvmTransition> transitions, ProcessInstance processInstance, ExecutionInstance currentExecutionInstance) {
+        return null;
     }
+
+//    @Override
+//    protected List<ExecutionInstance> processExecution(List<PvmTransition> transitions,
+//                                                       ProcessInstance processInstance,
+//                                                       ExecutionInstance currentExecutionInstance,
+//                                                       ActivityInstance currentActivityInstance) {
+//        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
+//
+//        ExecutionInstanceFactory executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
+////        InstanceFactFactory factFactory = this.getExtensionPointRegistry().getExtensionPoint(InstanceFactFactory.class);
+//
+//        currentExecutionInstance.setStatus(InstanceStatus.completed);
+//        currentExecutionInstance.setCompleteDate(new Date());
+////        processInstance.removeExecution(currentExecutionInstance.getInstanceId());
+////
+////        List<ExecutionInstance> executions = new ArrayList<>();
+////        for (PvmTransition transition : transitions) {
+////            ExecutionInstance executionInstance = executionInstanceFactory.create();
+////            executionInstance.setInstanceId(InstanceIdUtil.uuid());
+////            executionInstance.setProcessInstanceId(processInstance.getInstanceId());
+//////            executionInstance.setFact(factFactory.create());
+////            this.buildExecutionInstance(transition, processInstance, executionInstance, currentActivityInstance);
+////            processInstance.addExecution(executionInstance);
+////            executions.add(executionInstance);
+////        }
+//
+////        return executions;
+//        return null;
+//    }
 }

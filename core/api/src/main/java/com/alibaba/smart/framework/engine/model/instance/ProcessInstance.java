@@ -25,19 +25,6 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     void setParentActivityInstanceId(String parentActivityInstanceId);
 
-
-
-    /**
-     * 获取流程的执行实例
-     * 
-     * @return 流程执行实例
-     */
-    Map<String, ExecutionInstance> getExecutions();
-
-    void addExecution(ExecutionInstance executionInstance);
-
-    void removeExecution(String executionInstanceId);
-
     void addActivityInstance(ActivityInstance activityInstance);
 
 }

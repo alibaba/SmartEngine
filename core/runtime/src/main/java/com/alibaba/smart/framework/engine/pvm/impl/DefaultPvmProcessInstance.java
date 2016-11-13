@@ -83,6 +83,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
                 }
 
             }
+            //TODO 针对互斥和并行网关的线要检验,返回值只有一个或者多个。如果无则抛异常。
 
             for (PvmTransition matchedTransition : matchedTransitions) {
                 PvmActivity  targetPvmActivity =   matchedTransition.getTarget();

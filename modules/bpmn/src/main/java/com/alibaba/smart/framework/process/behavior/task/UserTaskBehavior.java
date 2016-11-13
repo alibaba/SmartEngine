@@ -32,7 +32,6 @@ public class UserTaskBehavior extends AbstractActivityBehavior {
         ExecutionInstance executionInstance = executionInstanceFactory.create();
         executionInstance.setInstanceId(InstanceIdUtil.uuid());
         executionInstance.setProcessInstanceId(processInstance.getInstanceId());
-        processInstance.addExecution(executionInstance);// 执行实例添加到流程实例
 
         ActivityInstance activityInstance = activityInstanceFactory.create();
 
@@ -44,7 +43,6 @@ public class UserTaskBehavior extends AbstractActivityBehavior {
 
         activityInstance.setActivityId(executionSession.getCurrentRuntimeActivity().getModel().getId());
 
-        executionInstance.setActivity(activityInstance);
 
         processInstance.addActivityInstance(activityInstance);
     }

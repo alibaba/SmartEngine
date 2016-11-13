@@ -16,9 +16,9 @@ public interface ExecutionContext {
 
     void setProcessInstance(ProcessInstance processInstance);
 
-    ExecutionInstance getCurrentExecution();
-
-    void setCurrentExecution(ExecutionInstance executionInstance);
+//    ExecutionInstance getCurrentExecution();
+//
+//    void setCurrentExecution(ExecutionInstance executionInstance);
 
     PvmProcessDefinition getPvmProcessDefinition();
 

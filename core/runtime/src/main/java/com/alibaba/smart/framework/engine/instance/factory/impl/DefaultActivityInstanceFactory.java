@@ -21,7 +21,7 @@ public class DefaultActivityInstanceFactory implements ActivityInstanceFactory {
     @Override
     public ActivityInstance recovery(ActivityParam activityParam) {
         DefaultActivityInstance defaultActivityInstance = new DefaultActivityInstance();
-        defaultActivityInstance.getModle(activityParam);
+        defaultActivityInstance.getModel(activityParam);
 
         return defaultActivityInstance;
 
