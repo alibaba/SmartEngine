@@ -75,8 +75,7 @@ public class ReceiveTaskProcessTest {
 
         request.put("input", 11);
 
-        //2nd. create service task ,and then create task
-        executionCommandService.signal(taskInstance.getInstanceId(), request);
+        executionCommandService.signal(lastExecutionInstance.getInstanceId(), request);
 
 
 //

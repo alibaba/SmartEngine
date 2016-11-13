@@ -22,38 +22,13 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
     public ProcessInstance start(ExecutionContext executionContext) {
 
         PvmProcessDefinition pvmProcessDefinition = executionContext.getPvmProcessDefinition();
-        PvmActivity pvmStartActivity = pvmProcessDefinition.getStartActivity();
-        return this.startProcessInstance(pvmStartActivity, executionContext);
+        PvmActivity startActivity = pvmProcessDefinition.getStartActivity();
+        this.executeCurrentActivityAndLookupNextTransitionRecursively(startActivity, executionContext);
+
+        return executionContext.getProcessInstance();
 
     }
 
-//    @Override
-//    public void run(ExecutionContext context) {
-//        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
-//        ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
-//        ProcessInstance processInstance = context.getProcessInstance();
-//        String processInstanceId = processInstance.getInstanceId();
-//        ActivityInstance activityInstance = activityInstanceFactory.create();
-//        activityInstance.setProcessInstanceId(processInstanceId);
-//        processInstance.setStatus(InstanceStatus.running);
-//        activityInstance.setCurrentStep(String.valueOf(PvmEventConstant.ACTIVITY_START.getCode()));
-//        activityInstance.setActivityId(context.getCurrentExecution().getActivity().getActivityId());
-//        context.getCurrentExecution().setActivity(activityInstance);
-//        PvmProcessDefinition pvmProcessDefinition=     context.getPvmProcessDefinition();
-//        Map<String,PvmActivity> activityMap = pvmProcessDefinition.getActivities();
-//        if (activityMap.isEmpty() || !activityMap.containsKey(context.getCurrentExecution().getActivity().getActivityId())) {
-//            throw new EngineException("not have this activity!");
-//        }
-//        this.startProcessInstance(activityMap.get(context.getCurrentExecution().getActivity().getActivityId()),context);
-//
-//
-//    }
-
-    private ProcessInstance startProcessInstance(PvmActivity startActivity, ExecutionContext context) {
-        this.executeCurrentActivityAndLookupNextTransitionRecursively(startActivity, context);
-
-        return context.getProcessInstance();
-    }
 
     private void executeCurrentActivityAndLookupNextTransitionRecursively(PvmActivity pvmActivity, ExecutionContext context) {
 
@@ -65,10 +40,12 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
             return;
         }
 
-        // 执行后续节点选择,实际上会调用此类 DefaultActivityTransitionSelectInvoker
-//        pvmActivity.fireEvent(PvmEventConstant.ACTIVITY_TRANSITION_SELECT.name(),
-//                                                                 context);
+        leaveCurrentActivity(pvmActivity, context);
 
+
+    }
+
+    private void leaveCurrentActivity(PvmActivity pvmActivity, ExecutionContext context) {
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
 
         if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
@@ -90,37 +67,17 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
                 this.executeCurrentActivityAndLookupNextTransitionRecursively(targetPvmActivity, context);
             }
 
-            //FIXME
-//            if (null != "") {
-//                Object transitionSelectBody = null;
-//                if (null != transitionSelectBody && transitionSelectBody instanceof List) {
-//                    List<?> executionObjects = (List<?>) transitionSelectBody;
-//                    if (!executionObjects.isEmpty()) {
-//
-//                        for (Object executionObject : executionObjects) {
-//                            // 执行所有实例
-//                            if (executionObject instanceof ExecutionInstance) {
-//                                ExecutionInstance executionInstance = (ExecutionInstance) executionObject;
-//                                context.setCurrentExecution(executionInstance);
-//
-//                                TransitionInstance transitionInstance = executionInstance.getActivity().getIncomeTransitions().get(0);
-//                                PvmTransition pvmTransition = pvmActivity.getOutcomeTransitions().get(transitionInstance.getTransitionId());
-//                                // 执行Transition,目前仅是fireEvent,没做其他逻辑
-//                                pvmTransition.execute(context);
-//                                PvmActivity targetPvmActivity = pvmTransition.getTarget();
-//
-//                                //重要:递归调用 执行Activity
-//                                this.executeCurrentActivityAndLookupNextTransitionRecursively(targetPvmActivity, context);
-//                            } else {
-//                                throw new EngineException("unsupported class type:ExecutionInstance");
-//                            }
-//                        }
-//
-//                    }
-//                }
-//            }
-        }
 
+        }
+    }
+
+    @Override
+    public ProcessInstance signal(PvmActivity pvmActivity,ExecutionContext executionContext) {
+
+        this.leaveCurrentActivity(pvmActivity, executionContext);
+
+        return executionContext.getProcessInstance();
 
     }
+
 }

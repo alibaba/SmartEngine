@@ -2,6 +2,12 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import org.apache.commons.lang3.StringUtils;
 
@@ -22,8 +28,12 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
     private ExtensionPointRegistry extensionPointRegistry;
     private ProcessDefinitionContainer       processContainer;
-    private ProcessInstanceStorage processInstanceStorage;
     private InstanceContextFactory instanceContextFactory;
+
+    private ProcessInstanceStorage processInstanceStorage;
+    private ActivityInstanceStorage activityInstanceStorage;
+    private ExecutionInstanceStorage executionInstanceStorage;
+
 
     public DefaultExecutionCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -32,8 +42,12 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     @Override
     public void start() {
         this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
-        this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
+
+        this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
+        this.activityInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceStorage.class);
+        this.executionInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceStorage.class);
+
     }
 
     @Override
@@ -42,25 +56,24 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     @Override
-    public ProcessInstance signal(String processInstanceId, String executionInstanceId, Map<String, Object> variables) {
-        ProcessInstance processInstance = this.processInstanceStorage.find(processInstanceId);
-        if (null != processInstance) {
-            PvmProcessDefinition runtimeProcess = this.processContainer.get(processInstance.getProcessUri());
-            ExecutionContext instanceContext = this.instanceContextFactory.create();
-            instanceContext.setProcessInstance(processInstance);
-            ExecutionInstance currentExecutionInstance = null;
+    public ProcessInstance signal( String executionInstanceId, Map<String, Object> request) {
+        ExecutionInstance executionInstance =  this.executionInstanceStorage.find(executionInstanceId);
+        ProcessInstance processInstance = this.processInstanceStorage.find(executionInstance.getProcessInstanceId());
 
-            //FIXME
-//            for (Map.Entry<String, ExecutionInstance> executionInstanceEntry : processInstance.getExecutions().entrySet()) {
-//                ExecutionInstance executionInstance = executionInstanceEntry.getValue();
-//                if (StringUtils.equals(executionInstance.getInstanceId(), executionInstanceId)) {
-//                    currentExecutionInstance = executionInstance;
-//                    break;
-//                }
-//            }
-//            instanceContext.setCurrentExecution(currentExecutionInstance);
-//            runtimeProcess.resume(instanceContext);
-        }
-        return processInstance;
+        PvmProcessDefinition pvmProcessDefinition = this.processContainer.get(processInstance.getProcessUri());
+        String activityId= executionInstance.getActivityId();
+        PvmActivity pvmActivity= pvmProcessDefinition.getActivities().get(activityId);
+
+
+        ExecutionContext executionContext = this.instanceContextFactory.create();
+        executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
+        executionContext.setPvmProcessDefinition(pvmProcessDefinition);
+        executionContext.setRequest(request);
+
+        //TODO TUNE 减少不必要的对象创建
+        PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
+        ProcessInstance newProcessInstance =  pvmProcessInstance.signal( pvmActivity,executionContext);
+
+        return newProcessInstance;
     }
 }

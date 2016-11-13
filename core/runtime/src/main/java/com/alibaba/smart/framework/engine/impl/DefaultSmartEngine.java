@@ -16,7 +16,6 @@ import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultExtensionPo
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
-import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -36,8 +35,7 @@ public class DefaultSmartEngine implements SmartEngine {
         this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
         
         processEngineConfiguration.setExtensionPointRegistry(this.extensionPointRegistry);
-        ThreadLocalUtil.set(processEngineConfiguration);
-        
+
         ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
         this.install(DEFAULT_MODULE, classLoader);
         this.extensionPointRegistry.start();
@@ -73,7 +71,6 @@ public class DefaultSmartEngine implements SmartEngine {
     @Override
     public void destroy() {
         this.extensionPointRegistry.stop();
-        ThreadLocalUtil.remove();
 
     }
 

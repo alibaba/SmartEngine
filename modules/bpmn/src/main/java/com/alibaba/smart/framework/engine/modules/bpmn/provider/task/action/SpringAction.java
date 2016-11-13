@@ -4,7 +4,6 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.task.action;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.util.ParamChecker;
-import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 import java.util.Map;
 
@@ -19,7 +18,9 @@ public class SpringAction extends BaseActionExecutor {
     private Map<String, Object> context;
 
     public SpringAction(String obj, String method, Map<String, Object> workflowContext) {
-        bean = ThreadLocalUtil.get().getBean(obj);
+
+        //FIXME
+//        bean = ThreadLocalUtil.get().getBean(obj);
         excuteMethod = method;
         context = workflowContext;
     }

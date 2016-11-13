@@ -11,5 +11,5 @@ public interface PvmProcessInstance {
 
     ProcessInstance start(ExecutionContext executionContext);
 
-//    void run(ExecutionContext context);
+    ProcessInstance signal(PvmActivity pvmActivity, ExecutionContext executionContext);
 }

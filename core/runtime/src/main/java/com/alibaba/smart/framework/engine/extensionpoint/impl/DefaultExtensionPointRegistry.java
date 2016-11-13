@@ -44,7 +44,6 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T getExtensionPoint(Class<T> extensionPointType) {
         return (T) this.extensionPoints.get(extensionPointType);
     }

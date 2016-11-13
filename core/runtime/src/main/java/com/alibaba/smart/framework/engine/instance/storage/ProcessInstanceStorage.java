@@ -23,14 +23,6 @@ public interface ProcessInstanceStorage {
     ProcessInstance find(String processInstanceId);
 
     /**
-     * 加载执行实例下子流程
-     *
-     * @param activityInstanceId 活动实例ID
-     * @return 实例
-     */
-    ProcessInstance findSubProcess(String activityInstanceId);
-
-    /**
      * 删除流程实例
      *
      * @param processInstanceId 流程实例ID

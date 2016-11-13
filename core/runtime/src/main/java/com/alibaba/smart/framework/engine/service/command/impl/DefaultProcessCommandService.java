@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
@@ -10,6 +11,8 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
@@ -29,12 +32,18 @@ import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 public class DefaultProcessCommandService implements ProcessCommandService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
+
     private ProcessDefinitionContainer       processDefinitionContainer;
-    private ProcessInstanceStorage processInstanceStorage;
+
     private InstanceContextFactory instanceContextFactory;
     private ProcessInstanceFactory processInstanceFactory;
     private ExecutionInstanceFactory       executionInstanceFactory;
     private ActivityInstanceFactory activityInstanceFactory;
+
+    private ProcessInstanceStorage processInstanceStorage;
+    private ActivityInstanceStorage activityInstanceStorage;
+    private ExecutionInstanceStorage executionInstanceStorage;
+
 
     public DefaultProcessCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -43,11 +52,15 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     @Override
     public void start() {
         this.processDefinitionContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
-        this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
         this.processInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
         this.executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
         this.activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
+
+        this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
+        this.activityInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceStorage.class);
+        this.executionInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceStorage.class);
+
 
     }
 
@@ -67,8 +80,23 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         //TODO TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
-        return  pvmProcessInstance.start(executionContext);
+        ProcessInstance processInstance =  pvmProcessInstance.start(executionContext);
+
+        persist(processInstance);
+
+        return processInstance;
         
+    }
+
+    private void persist(ProcessInstance processInstance) {
+        processInstanceStorage.save(processInstance);
+        List<ActivityInstance> activityInstances= processInstance.getActivityInstances();
+        for (ActivityInstance activityInstance : activityInstances) {
+            activityInstanceStorage.save(activityInstance);
+
+            ExecutionInstance executionInstance=  activityInstance.getExecutionInstance();
+            executionInstanceStorage.save(executionInstance);
+        }
     }
 
     @Override
@@ -147,20 +175,8 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
 
     private ProcessInstance getProcessInstance(String processId, boolean sub) {
-        ProcessInstance processInstance ;
-        if (!sub) {
-            processInstance = processInstanceStorage.find(processId);
-            if (null == processInstance) {
-                throw new EngineException("process instance is null");
-            }
+        ProcessInstance processInstance  = processInstanceStorage.find(processId);
 
-        }else {
-            processInstance = processInstanceStorage.findSubProcess(processId);
-            if (null == processInstance) {
-                throw new EngineException("sub process instance is null");
-            }
-
-        }
         return processInstance;
 
     }

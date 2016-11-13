@@ -41,7 +41,6 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmActivity;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcessComponent;
-import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
@@ -57,11 +56,15 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
      * 扩展点注册器
      */
     private SmartEngine                   smartEngine;
+    private ExtensionPointRegistry extensionPointRegistry;
+
     private AssemblyParserExtensionPoint  assemblyParserExtensionPoint;
     private ProviderFactoryExtensionPoint providerFactoryExtensionPoint;
     private ProcessDefinitionContainer              processContainer;
 
- 
+    public DefaultRepositoryCommandService(ExtensionPointRegistry extensionPointRegistry) {
+        this.extensionPointRegistry = extensionPointRegistry;
+    }
 
     @Override
     public ProcessDefinition deploy(String uri) throws DeployException {
@@ -89,7 +92,6 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     @Override
     public void start() {
         
-        ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
         this.smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
         this.assemblyParserExtensionPoint = extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
         this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);

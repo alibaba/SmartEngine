@@ -1,27 +1,29 @@
 package com.alibaba.smart.framework.engine.modules.storage.memory;
 
+import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
 /**
  * 内存实例存储 Created by ettear on 16-4-13.
  */
-public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
+public class MemoryExecutionInstanceStorage implements ExecutionInstanceStorage {
 
-    private Map<String, ProcessInstance> instances           = new ConcurrentHashMap<>();
+    private Map<String, ExecutionInstance> instances           = new ConcurrentHashMap<>();
 
     @Override
-    public ProcessInstance save(ProcessInstance instance) {
+    public ExecutionInstance save(ExecutionInstance instance) {
         this.instances.put(instance.getInstanceId(), instance);
 
         return instance;
     }
 
     @Override
-    public ProcessInstance find(String instanceId) {
+    public ExecutionInstance find(String instanceId) {
         return this.instances.get(instanceId);
     }
 

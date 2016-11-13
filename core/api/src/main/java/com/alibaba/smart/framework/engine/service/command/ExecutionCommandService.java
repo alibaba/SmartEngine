@@ -10,5 +10,5 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 public interface ExecutionCommandService {
 
 
-    ProcessInstance signal(String processInstanceId, String executionInstanceId, Map<String, Object> variables);
+    ProcessInstance signal(String executionInstanceId, Map<String, Object> variables);
 }
