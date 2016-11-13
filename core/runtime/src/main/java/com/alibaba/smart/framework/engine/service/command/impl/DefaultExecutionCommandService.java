@@ -1,14 +1,18 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
+import com.alibaba.smart.framework.engine.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
@@ -44,6 +48,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
 
+        //TODO 启动时判断各个实例不为空
         this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
         this.activityInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceStorage.class);
         this.executionInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceStorage.class);
@@ -68,12 +73,40 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         ExecutionContext executionContext = this.instanceContextFactory.create();
         executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
+        executionContext.setProcessInstance(processInstance);
         executionContext.setRequest(request);
 
         //TODO TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
         ProcessInstance newProcessInstance =  pvmProcessInstance.signal( pvmActivity,executionContext);
 
+        persist(newProcessInstance);
+        markDone(executionInstance);
+
         return newProcessInstance;
     }
+
+    //TODO duplicated
+    private void persist(ProcessInstance processInstance) {
+
+
+        processInstanceStorage.save(processInstance);
+        List<ActivityInstance> activityInstances= processInstance.getActivityInstances();
+        for (ActivityInstance activityInstance : activityInstances) {
+            activityInstanceStorage.save(activityInstance);
+
+            ExecutionInstance executionInstance=  activityInstance.getExecutionInstance();
+            if(null != executionInstance){
+                executionInstanceStorage.save(executionInstance);
+            }
+        }
+    }
+
+    void markDone(ExecutionInstance executionInstance){
+        executionInstance.setCompleteDate(DateUtil.getCurrentDate());
+        executionInstance.setStatus(InstanceStatus.completed);
+        executionInstanceStorage.save(executionInstance);
+
+    }
+
 }

@@ -95,7 +95,9 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
             activityInstanceStorage.save(activityInstance);
 
             ExecutionInstance executionInstance=  activityInstance.getExecutionInstance();
-            executionInstanceStorage.save(executionInstance);
+            if(null != executionInstance){
+                executionInstanceStorage.save(executionInstance);
+            }
         }
     }
 

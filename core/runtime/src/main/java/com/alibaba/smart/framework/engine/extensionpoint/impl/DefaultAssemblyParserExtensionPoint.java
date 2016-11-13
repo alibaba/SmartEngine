@@ -55,7 +55,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
     }
 
     @Override
-    protected void initExtension(ClassLoader classLoader, String entensionEntryKey, Object artifactParseObject)  {
+    protected void initExtension(ClassLoader classLoader, String extensionEntryKey, Object artifactParseObject)  {
         if (artifactParseObject instanceof StAXArtifactParser) {
             StAXArtifactParser artifactParser = (StAXArtifactParser) artifactParseObject;
             QName artifactType = artifactParser.getArtifactType();

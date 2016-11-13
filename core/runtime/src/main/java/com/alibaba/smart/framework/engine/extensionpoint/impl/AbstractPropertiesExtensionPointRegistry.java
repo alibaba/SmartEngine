@@ -106,12 +106,8 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
 
     /**
      * 初始化扩展点
-     *
-     * @param type Type
-     * @param object Object
-     * @throws ExtensionPointRegistryException
      */
-    protected abstract void initExtension(ClassLoader classLoader, String entensionEntryKey, Object object);
+    protected abstract void initExtension(ClassLoader classLoader, String extensionEntryKey, Object object);
 
     /**
      * 扩展点名称

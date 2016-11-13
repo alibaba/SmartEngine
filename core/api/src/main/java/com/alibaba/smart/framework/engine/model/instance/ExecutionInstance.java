@@ -24,6 +24,7 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     TaskInstance getTaskInstance();
 
+
     //TODO
     String toDatabase();
 }

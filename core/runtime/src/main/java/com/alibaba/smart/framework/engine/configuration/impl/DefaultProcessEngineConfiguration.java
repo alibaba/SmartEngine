@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 /**
  * @author 高海军 帝奇  2016.11.11
+ * TODO 支持多种模式 不持久,内存,数据库等。
  */
 @Data
 public class DefaultProcessEngineConfiguration implements ProcessEngineConfiguration,InitializingBean,ApplicationContextAware {

@@ -6,6 +6,7 @@ import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.param.ProcessParam;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.util.DateUtil;
 
 /**
@@ -14,11 +15,12 @@ import com.alibaba.smart.framework.engine.util.DateUtil;
 public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
     @Override
-    public ProcessInstance create() {
+    public ProcessInstance create(PvmProcessDefinition pvmProcessDefinition) {
         DefaultProcessInstance defaultProcessInstance = new DefaultProcessInstance();
         defaultProcessInstance.setInstanceId(InstanceIdUtil.uuid());
         defaultProcessInstance.setStatus(InstanceStatus.running);
         defaultProcessInstance.setStartDate(DateUtil.getCurrentDate());
+        defaultProcessInstance.setProcessUri(pvmProcessDefinition.getUri());
 
         return defaultProcessInstance;
     }

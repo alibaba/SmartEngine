@@ -5,10 +5,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.model.instance.*;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
@@ -27,7 +24,7 @@ public class ReceiveTaskProcessTest {
 
 	
 	@Test
-    public void testUserTaskExclusive() throws Exception {
+    public void testExclusive() throws Exception {
         ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
 
         SmartEngine smartEngine = new DefaultSmartEngine();
@@ -50,11 +47,12 @@ public class ReceiveTaskProcessTest {
         List<ActivityInstance> activityInstances=  processInstance.getActivityInstances();
 
         Assert.assertNotNull(activityInstances);
-
         int size = activityInstances.size();
+        ActivityInstance lastActivityInstance = activityInstances.get(size - 1);
+
         assertEquals(3, size);
 
-        ActivityInstance lastActivityInstance = activityInstances.get(size - 1);
+
         assertEquals("theTask1",lastActivityInstance.getActivityId());
 
 
@@ -69,13 +67,24 @@ public class ReceiveTaskProcessTest {
         assertEquals("theTask1",lastExecutionInstance.getActivityId());
 
 
-        //1st: create 1st task
         ExecutionCommandService executionCommandService =    smartEngine.getExecutionCommandService();
 
 
-        request.put("input", 11);
 
-        executionCommandService.signal(lastExecutionInstance.getInstanceId(), request);
+       processInstance=  executionCommandService.signal(lastExecutionInstance.getInstanceId(), null);
+       activityInstances=  processInstance.getActivityInstances();
+
+        Assert.assertNotNull(activityInstances);
+         size = activityInstances.size();
+         lastActivityInstance = activityInstances.get(size - 1);
+        lastExecutionInstance = lastActivityInstance.getExecutionInstance();
+        Assert.assertNotNull(lastExecutionInstance);
+
+        request.put("input", 11);
+        processInstance= executionCommandService.signal(lastExecutionInstance.getInstanceId(), request);
+
+        Assert.assertNotNull(processInstance.getCompleteDate());
+        assertEquals(InstanceStatus.completed,processInstance.getStatus());
 
 
 //
