@@ -20,7 +20,7 @@ import com.alibaba.smart.framework.engine.service.command.RepositoryCommandServi
 
 import static org.junit.Assert.*;
 
-public class TaskActivityTest {
+public class UserTaskProcessTest {
 
 
 //	@Test

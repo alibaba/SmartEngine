@@ -96,7 +96,7 @@ public class DefaultSmartEngine implements SmartEngine {
     }
 
     @Override
-    public ExecutionCommandService getExecutionService() {
+    public ExecutionCommandService getExecutionCommandService() {
         return this.extensionPointRegistry.getExtensionPoint(ExecutionCommandService.class);
     }
 

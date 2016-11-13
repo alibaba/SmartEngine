@@ -20,7 +20,7 @@ public interface SmartEngine {
 
     ProcessCommandService getProcessService();
 
-    ExecutionCommandService getExecutionService();
+    ExecutionCommandService getExecutionCommandService();
 
     TaskCommandService getTaskCommandService();
 
