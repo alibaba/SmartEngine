@@ -8,6 +8,9 @@ import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
 import com.alibaba.smart.framework.engine.invocation.message.impl.SuspendMessage;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.Action;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.event.ProcessEventInvoker;
@@ -50,6 +53,12 @@ public class ServiceTaskBehaviorProvider extends AbstractBpmnActivityBehaviorPro
 
     @Override
     public void execute(PvmActivity pvmActivity,ExecutionContext executionContext) {
+        ProcessInstance processInstance = executionContext.getProcessInstance();
+        ActivityInstance activityInstance = super.activityInstanceFactory.create( pvmActivity,processInstance);
+        
+        processInstance.addActivityInstance(activityInstance);
+
+
 
         ServiceTask serviceTask = (ServiceTask) pvmActivity.getModel();
         String className = serviceTask.getClassName();
