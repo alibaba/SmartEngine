@@ -14,7 +14,6 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 /**
  * Created by ettear on 16-5-4.

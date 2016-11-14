@@ -27,7 +27,6 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
-import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 /**
  * @author 高海军 帝奇  2016.11.11   TODO 看下存在性

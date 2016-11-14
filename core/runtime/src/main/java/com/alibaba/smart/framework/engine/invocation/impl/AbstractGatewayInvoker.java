@@ -20,7 +20,6 @@ import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
-import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 
 /**
  * @author 高海军 帝奇  2016.11.11
