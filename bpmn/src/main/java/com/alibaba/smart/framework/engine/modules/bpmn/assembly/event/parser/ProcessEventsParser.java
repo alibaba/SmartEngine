@@ -8,11 +8,11 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.A
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.google.common.collect.Lists;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +23,6 @@ public class ProcessEventsParser extends AbstractBpmnParser<ProcessEvents> imple
     public ProcessEventsParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
-
 
     @Override
     public QName getArtifactType() {
@@ -41,7 +40,7 @@ public class ProcessEventsParser extends AbstractBpmnParser<ProcessEvents> imple
 
         ProcessEvents events = new ProcessEvents();
         if (null == events.getEvents()) {
-            List<ProcessEvent> list = Lists.newArrayList();
+            List<ProcessEvent> list = new ArrayList();
             events.setEvents(list);
         }
         this.parseChildren(events, reader, context);

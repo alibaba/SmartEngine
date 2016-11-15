@@ -26,12 +26,12 @@ public class DefaultActivityInstanceFactory implements ActivityInstanceFactory {
         return activityInstance;
     }
 
-    @Override
-    public ActivityInstance recovery(ActivityParam activityParam) {
-        DefaultActivityInstance defaultActivityInstance = new DefaultActivityInstance();
-        defaultActivityInstance.getModel(activityParam);
-
-        return defaultActivityInstance;
-
-    }
+//    @Override
+//    public ActivityInstance recovery(ActivityParam activityParam) {
+//        DefaultActivityInstance defaultActivityInstance = new DefaultActivityInstance();
+//        defaultActivityInstance.getModel(activityParam);
+//
+//        return defaultActivityInstance;
+//
+//    }
 }

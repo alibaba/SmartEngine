@@ -18,5 +18,5 @@ public interface ActivityInstanceFactory {
     ActivityInstance create(PvmActivity pvmActivity, ProcessInstance processInstance);
 
 
-    ActivityInstance recovery(ActivityParam activityParam);
+//    ActivityInstance recovery(ActivityParam activityParam);
 }

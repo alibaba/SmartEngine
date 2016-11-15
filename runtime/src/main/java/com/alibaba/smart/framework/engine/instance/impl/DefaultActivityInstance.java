@@ -13,31 +13,30 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DefaultActivityInstance extends AbstractLifeCycleInstance implements ActivityInstance, DatabaseMod<DefaultActivityInstance, ActivityParam> {
+public class DefaultActivityInstance extends AbstractLifeCycleInstance implements ActivityInstance {
 
     private static final long serialVersionUID = -3395004618384899752L;
     private String activityId;
     private String processInstanceId;
     private List<TransitionInstance> incomeTransitions = new ArrayList<>();
-    private String currentStep;
-    private TaskInstance taskInstance;
+//    private String currentStep;
+//    private TaskInstance taskInstance;
     private ExecutionInstance executionInstance;
+
 
     @Override
     public void addIncomeTransition(TransitionInstance transitionInstance) {
         this.incomeTransitions.add(transitionInstance);
     }
 
-    @Override
-    public String toDatabase() {
-        return null;
-    }
-
-    @Override
-    public DefaultActivityInstance getModel(ActivityParam param) {
-        this.setProcessInstanceId(param.getProcessId());
-        this.setActivityId(param.getActivityId());
-        this.setCurrentStep(param.getCurrentStep());
-        return this;
-    }
+//    @Override
+//
+//
+//    @Override
+//    public DefaultActivityInstance getModel(ActivityParam param) {
+//        this.setProcessInstanceId(param.getProcessId());
+//        this.setActivityId(param.getActivityId());
+////        this.setCurrentStep(param.getCurrentStep());
+//        return this;
+//    }
 }

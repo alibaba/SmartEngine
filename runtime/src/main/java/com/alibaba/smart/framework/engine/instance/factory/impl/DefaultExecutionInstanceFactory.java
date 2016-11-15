@@ -27,18 +27,18 @@ public class DefaultExecutionInstanceFactory implements ExecutionInstanceFactory
         return defaultExecutionInstance;
     }
 
-    @Override
-    public ExecutionInstance recovery(ExecutionParam executionParam) {
-        DefaultExecutionInstance executionInstance = new DefaultExecutionInstance();
-        executionInstance.getModel(executionParam);
-        return executionInstance;
-    }
+//    @Override
+//    public ExecutionInstance recovery(ExecutionParam executionParam) {
+//        DefaultExecutionInstance executionInstance = new DefaultExecutionInstance();
+//        executionInstance.getModel(executionParam);
+//        return executionInstance;
+//    }
 
-    @Override
-    public String toDatabase(ExecutionInstance executionInstance) {
-        if (executionInstance instanceof DefaultExecutionInstance) {
-            return ((DefaultExecutionInstance) executionInstance).toDatabase();
-        }
-        return null;
-    }
+//    @Override
+//    public String toDatabase(ExecutionInstance executionInstance) {
+//        if (executionInstance instanceof DefaultExecutionInstance) {
+//            return ((DefaultExecutionInstance) executionInstance).toDatabase();
+//        }
+//        return null;
+//    }
 }

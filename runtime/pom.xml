@@ -8,14 +8,14 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>engine.core.runtime</artifactId>
+    <artifactId>engine.runtime</artifactId>
     <name>Smart Engine Core - Runtime</name>
 
     <dependencies>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>engine.core.base</artifactId>
+            <artifactId>engine.base</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

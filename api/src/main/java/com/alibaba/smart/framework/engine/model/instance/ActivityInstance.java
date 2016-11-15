@@ -55,33 +55,6 @@ public interface ActivityInstance extends Instance {
      */
     void addIncomeTransition(TransitionInstance transitionInstance);
 
-//    /**
-//     * 获取当前阶段
-//     *
-//     * @return 当前阶段
-//     */
-//    String getCurrentStep();
-//
-//    /**
-//     * 设置当前阶段
-//     *
-//     * @param step 当前阶段
-//     */
-//    void setCurrentStep(String step);
-
-//    /**
-//     * 获取任务实例
-//     *
-//     * @return 任务实例
-//     */
-//    TaskInstance getTaskInstance();
-//
-//    /**
-//     * 设置任务实例
-//     *
-//     * @param taskInstance 任务实例
-//     */
-//    void setTaskInstance(TaskInstance taskInstance);
 
     Date getStartDate();
 

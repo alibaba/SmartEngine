@@ -17,7 +17,7 @@ public interface ExecutionInstanceFactory {
     ExecutionInstance create(ActivityInstance activityInstance);
 
 
-    ExecutionInstance recovery(ExecutionParam executionParam);
+//    ExecutionInstance recovery(ExecutionParam executionParam);
 
-    String toDatabase(ExecutionInstance executionInstance);
+//    String toDatabase(ExecutionInstance executionInstance);
 }

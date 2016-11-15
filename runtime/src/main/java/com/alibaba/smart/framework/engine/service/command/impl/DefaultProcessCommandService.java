@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
-import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
@@ -15,7 +14,6 @@ import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.param.EngineParam;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
@@ -106,44 +104,44 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     }
 
-    @Override
-    public ProcessInstance find(String processInstanceId) {
-        return this.processInstanceStorage.find(processInstanceId);
-    }
+//    @Override
+//    public ProcessInstance find(String processInstanceId) {
+//        return this.processInstanceStorage.find(processInstanceId);
+//    }
 
-    @Override
-    public void recovery(EngineParam engineParam) {
-
-
-        ProcessInstance processInstance = this.processInstanceFactory.recovery(engineParam.getProcessParam());
-        ExecutionInstance executionInstance = this.executionInstanceFactory.recovery(engineParam.getExecutionParam());
-        ActivityInstance activityInstance = this.activityInstanceFactory.recovery(engineParam.getActivityParam());
-
-
-        if (!processInstance.getInstanceId().equals(executionInstance.getProcessInstanceId())
-                || !executionInstance.getProcessInstanceId().equals(activityInstance.getProcessInstanceId())) {
-
-            throw new EngineException("recovery instance is not right!");
-
-        }
-        PvmProcessDefinition processDefinition = this.processDefinitionContainer.get(
-                engineParam.getProcessParam().getProcessDefationId(),
-                engineParam.getProcessParam().getProcessDefationVersion());
-
-        if (null == processDefinition) {
-            throw new EngineException("can not find process definition");
-        }
-
-        if (null != processInstanceStorage.find(processInstance.getInstanceId())) {
-            processInstance = processInstanceStorage.find(processInstance.getInstanceId());
-        }
-        executionInstance.setActivityId(activityInstance.getActivityId());
-        processInstance.setProcessUri(processDefinition.getUri());
-//        processInstance.addExecution(executionInstance);
-        processInstanceStorage.save(processInstance);
-
-
-    }
+//    @Override
+//    public void recovery(EngineParam engineParam) {
+//
+//
+//        ProcessInstance processInstance = this.processInstanceFactory.recovery(engineParam.getProcessParam());
+//        ExecutionInstance executionInstance = this.executionInstanceFactory.recovery(engineParam.getExecutionParam());
+//        ActivityInstance activityInstance = this.activityInstanceFactory.recovery(engineParam.getActivityParam());
+//
+//
+//        if (!processInstance.getInstanceId().equals(executionInstance.getProcessInstanceId())
+//                || !executionInstance.getProcessInstanceId().equals(activityInstance.getProcessInstanceId())) {
+//
+//            throw new EngineException("recovery instance is not right!");
+//
+//        }
+//        PvmProcessDefinition processDefinition = this.processDefinitionContainer.get(
+//                engineParam.getProcessParam().getProcessDefationId(),
+//                engineParam.getProcessParam().getProcessDefationVersion());
+//
+//        if (null == processDefinition) {
+//            throw new EngineException("can not find process definition");
+//        }
+//
+//        if (null != processInstanceStorage.find(processInstance.getInstanceId())) {
+//            processInstance = processInstanceStorage.find(processInstance.getInstanceId());
+//        }
+//        executionInstance.setActivityId(activityInstance.getActivityId());
+//        processInstance.setProcessUri(processDefinition.getUri());
+////        processInstance.addExecution(executionInstance);
+//        processInstanceStorage.save(processInstance);
+//
+//
+//    }
 
 //    @Override
 //    public ProcessInstance run(ProcessDefinition definition,String instanceId, String activityId, boolean sub,Map<String,Object> request) {
@@ -176,17 +174,17 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 //    }
 
 
-    private ProcessInstance getProcessInstance(String processId, boolean sub) {
-        ProcessInstance processInstance = processInstanceStorage.find(processId);
-
-        return processInstance;
-
-    }
-
-    @Override
-    public void clear(String processId) {
-        processInstanceStorage.remove(processId);
-    }
+//    private ProcessInstance getProcessInstance(String processId, boolean sub) {
+//        ProcessInstance processInstance = processInstanceStorage.find(processId);
+//
+//        return processInstance;
+//
+//    }
+//
+//    @Override
+//    public void clear(String processId) {
+//        processInstanceStorage.remove(processId);
+//    }
 
 
 }
