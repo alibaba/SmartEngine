@@ -34,9 +34,9 @@ public class ReceiveTaskParser extends AbstractBpmnActivityParser<ReceiveTask> i
         receiveTask.setId(this.getString(reader, "id"));
 
         //TODO
-        String className = this.getString(reader, "smart:class");
-               className= reader.getAttributeValue(2);
-        receiveTask.setClassName( className);
+//        String className = this.getString(reader, "smart:class");
+        String className = reader.getAttributeValue(2);
+        receiveTask.setClassName(className);
         this.parseChildren(receiveTask, reader, context);
         return receiveTask;
     }
@@ -51,7 +51,6 @@ public class ReceiveTaskParser extends AbstractBpmnActivityParser<ReceiveTask> i
 //        }
 
     }
-
 
 
 }

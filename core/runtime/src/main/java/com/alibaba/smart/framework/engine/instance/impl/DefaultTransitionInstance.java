@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 public class DefaultTransitionInstance extends AbstractInstance implements TransitionInstance {
 
     private static final long serialVersionUID = 8888812970442968263L;
-    private String            transitionId;
-    private String            sourceActivityInstanceId;
-    private String            targetActivityInstanceId;
+    private String transitionId;
+    private String sourceActivityInstanceId;
+    private String targetActivityInstanceId;
 }

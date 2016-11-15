@@ -42,7 +42,7 @@ public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExte
     }
 
     @Override
-    protected void initExtension(ClassLoader classLoader, String type, Object providerFactoryObject)  {
+    protected void initExtension(ClassLoader classLoader, String type, Object providerFactoryObject) {
         if (providerFactoryObject instanceof ProviderFactory) {
             ProviderFactory providerFactory = (ProviderFactory) providerFactoryObject;
             this.providerFactories.put(providerFactory.getModelType(), providerFactory);

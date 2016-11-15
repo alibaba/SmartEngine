@@ -19,10 +19,10 @@ public class SequenceFlow extends AbstractTransition {
     /**
      *
      */
-    private static final long   serialVersionUID = 664248469321447390L;
-    public final static QName   type             = new QName(BpmnBase.NAME_SPACE, "sequenceFlow");
+    private static final long serialVersionUID = 664248469321447390L;
+    public final static QName type = new QName(BpmnBase.NAME_SPACE, "sequenceFlow");
 
     private ConditionExpression conditionExpression;
-    private ExtensionElements   extensions;
+    private ExtensionElements extensions;
 
 }

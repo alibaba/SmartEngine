@@ -12,8 +12,8 @@ import lombok.EqualsAndHashCode;
 public class DefaultTaskInstance extends AbstractLifeCycleInstance implements TaskInstance {
 
     private static final long serialVersionUID = -3920292154786127202L;
-    private String            activityId;
-    private String            processInstanceId;
-    private String            executionInstanceId;
-    private String            activityInstanceId;
+    private String activityId;
+    private String processInstanceId;
+    private String executionInstanceId;
+    private String activityInstanceId;
 }

@@ -18,15 +18,15 @@ public abstract class AbstractLifeCycleInstance extends AbstractInstance impleme
     /**
      * 状态
      */
-    private InstanceStatus    status           = InstanceStatus.running;
+    private InstanceStatus status = InstanceStatus.running;
     /**
      * 开始时间
      */
-    private Date              startDate;
+    private Date startDate;
     /**
      * 结束时间
      */
-    private Date              completeDate;
+    private Date completeDate;
 
     // private boolean suspend;
 

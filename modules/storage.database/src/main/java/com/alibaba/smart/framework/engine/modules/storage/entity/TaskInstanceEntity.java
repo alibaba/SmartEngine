@@ -15,19 +15,19 @@ public class TaskInstanceEntity extends BaseProcessEntity {
 
     @Id
     @Sequence("task_instance")
-    private Long    id;
+    private Long id;
 
-    private Long    processInstanceId;
+    private Long processInstanceId;
 
-    private Long    executionInstanceId;
+    private Long executionInstanceId;
 
-    private Long    activityInstanceId;
+    private Long activityInstanceId;
 
-    private String  assigneeId;
+    private String assigneeId;
 
     private Integer priority;
 
-    private Date    claimTime;
+    private Date claimTime;
 
-    private Date    endTime;
+    private Date endTime;
 }

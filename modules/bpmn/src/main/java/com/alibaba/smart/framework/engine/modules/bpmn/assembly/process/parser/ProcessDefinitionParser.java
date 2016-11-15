@@ -30,7 +30,7 @@ public class ProcessDefinitionParser extends AbstractStAXArtifactParser<ProcessD
 
     @Override
     public ProcessDefinition parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                                XMLStreamException {
+            XMLStreamException {
 
         ProcessDefinition processDefinition = new ProcessDefinition();
         processDefinition.setId(this.getString(reader, "id"));

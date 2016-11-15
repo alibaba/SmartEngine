@@ -63,11 +63,12 @@ public class SequenceFlowProvider extends AbstractTransitionProvider<SequenceFlo
         ConditionExpression conditionExpression = sequenceFlow.getConditionExpression();
 
         if (null != conditionExpression) {
+            //TODO SUPPORT OTHER ,TODO  预编译
             if ("mvel".equals(conditionExpression.getExpressionType())) {
                 Object result = MVEL.eval(conditionExpression.getExpressionContent(), context.getRequest());
-                return (boolean)result;
-            }else{
-                throw new EngineException("unsupported condition expression type:"+conditionExpression.getExpressionType());
+                return (boolean) result;
+            } else {
+                throw new EngineException("unsupported condition expression type:" + conditionExpression.getExpressionType());
             }
         }
         return true;

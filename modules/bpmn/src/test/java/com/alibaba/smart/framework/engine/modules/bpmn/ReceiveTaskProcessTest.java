@@ -24,10 +24,9 @@ import static org.junit.Assert.assertEquals;
 public class ReceiveTaskProcessTest {
 
 
-	
-	@Test
+    @Test
     public void testExclusive() throws Exception {
-        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
+        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -46,7 +45,7 @@ public class ReceiveTaskProcessTest {
                 request);
 
         Assert.assertNotNull(processInstance);
-        List<ActivityInstance> activityInstances=  processInstance.getActivityInstances();
+        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
 
         Assert.assertNotNull(activityInstances);
         int size = activityInstances.size();
@@ -55,38 +54,37 @@ public class ReceiveTaskProcessTest {
         assertEquals(3, size);
 
 
-        assertEquals("theTask1",lastActivityInstance.getActivityId());
+        assertEquals("theTask1", lastActivityInstance.getActivityId());
 
 
         ExecutionInstance lastExecutionInstance = lastActivityInstance.getExecutionInstance();
         Assert.assertNotNull(lastExecutionInstance);
 
-        assertEquals(processInstance.getInstanceId(),lastExecutionInstance.getProcessInstanceId());
-        assertEquals(lastActivityInstance.getInstanceId(),lastExecutionInstance.getActivityInstanceId());
-        assertEquals(lastActivityInstance.getActivityId(),lastExecutionInstance.getActivityId());
+        assertEquals(processInstance.getInstanceId(), lastExecutionInstance.getProcessInstanceId());
+        assertEquals(lastActivityInstance.getInstanceId(), lastExecutionInstance.getActivityInstanceId());
+        assertEquals(lastActivityInstance.getActivityId(), lastExecutionInstance.getActivityId());
 
 
-        assertEquals("theTask1",lastExecutionInstance.getActivityId());
+        assertEquals("theTask1", lastExecutionInstance.getActivityId());
 
 
-        ExecutionCommandService executionCommandService =    smartEngine.getExecutionCommandService();
+        ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
 
-
-       processInstance=  executionCommandService.signal(lastExecutionInstance.getInstanceId(), null);
-       activityInstances=  processInstance.getActivityInstances();
+        processInstance = executionCommandService.signal(lastExecutionInstance.getInstanceId(), null);
+        activityInstances = processInstance.getActivityInstances();
 
         Assert.assertNotNull(activityInstances);
-         size = activityInstances.size();
-         lastActivityInstance = activityInstances.get(size - 1);
+        size = activityInstances.size();
+        lastActivityInstance = activityInstances.get(size - 1);
         lastExecutionInstance = lastActivityInstance.getExecutionInstance();
         Assert.assertNotNull(lastExecutionInstance);
 
         request.put("input", 11);
-        processInstance= executionCommandService.signal(lastExecutionInstance.getInstanceId(), request);
+        processInstance = executionCommandService.signal(lastExecutionInstance.getInstanceId(), request);
 
         Assert.assertNotNull(processInstance.getCompleteDate());
-        assertEquals(InstanceStatus.completed,processInstance.getStatus());
+        assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
 
 //
@@ -110,6 +108,5 @@ public class ReceiveTaskProcessTest {
 
     }
 
- 
 
 }

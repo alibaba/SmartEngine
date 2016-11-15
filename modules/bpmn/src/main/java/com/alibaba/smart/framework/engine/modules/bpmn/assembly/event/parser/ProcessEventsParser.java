@@ -25,7 +25,6 @@ public class ProcessEventsParser extends AbstractBpmnParser<ProcessEvents> imple
     }
 
 
-
     @Override
     public QName getArtifactType() {
         return ProcessEvents.NameType;
@@ -49,7 +48,6 @@ public class ProcessEventsParser extends AbstractBpmnParser<ProcessEvents> imple
         return events;
 
     }
-
 
 
     @Override

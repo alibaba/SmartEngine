@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPointRegistry {
 
-    private static final Logger   LOGGER          = LoggerFactory.getLogger(DefaultExtensionPointRegistry.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultExtensionPointRegistry.class);
 
     private Map<Class<?>, Object> extensionPoints = new ConcurrentHashMap<>();
 
@@ -25,7 +25,7 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
     }
 
     @Override
-    public void register(String moduleName, ClassLoader classLoader)   {
+    public void register(String moduleName, ClassLoader classLoader) {
         //一层加载:将extensions properties全部加载进来,加载一层扩展点
         //TODO extensionPoints 这个里面的东西还是比较杂,还可以细化. 太多的instanceof 是有点懒政的.
         super.register(moduleName, classLoader);
@@ -55,7 +55,7 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
 
                 LifeCycleListener lifeCycleListener = (LifeCycleListener) extensionPoint;
                 lifeCycleListener.start();
-            }else{
+            } else {
                 LOGGER.debug(extensionPoint.getClass() + " is not a LifeCycleListener,so ignored.");
 
             }

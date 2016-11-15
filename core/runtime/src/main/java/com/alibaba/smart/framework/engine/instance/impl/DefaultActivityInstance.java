@@ -13,15 +13,15 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DefaultActivityInstance extends AbstractLifeCycleInstance implements ActivityInstance ,DatabaseMod<DefaultActivityInstance,ActivityParam>{
+public class DefaultActivityInstance extends AbstractLifeCycleInstance implements ActivityInstance, DatabaseMod<DefaultActivityInstance, ActivityParam> {
 
-    private static final long        serialVersionUID  = -3395004618384899752L;
-    private String                   activityId;
-    private String                   processInstanceId;
+    private static final long serialVersionUID = -3395004618384899752L;
+    private String activityId;
+    private String processInstanceId;
     private List<TransitionInstance> incomeTransitions = new ArrayList<>();
-    private String                   currentStep;
-    private TaskInstance             taskInstance;
-    private ExecutionInstance        executionInstance;
+    private String currentStep;
+    private TaskInstance taskInstance;
+    private ExecutionInstance executionInstance;
 
     @Override
     public void addIncomeTransition(TransitionInstance transitionInstance) {

@@ -6,17 +6,16 @@ package com.alibaba.smart.framework.engine.pvm.event;
 public enum PvmEventConstant {
     PROCESS_START(1),
     PROCESS_END(2),
-    
+
     ACTIVITY_START(3),
     ACTIVITY_EXECUTE(4),
     ACTIVITY_END(5),
-    
+
     ACTIVITY_TRANSITION_SELECT(6),
     TRANSITION_HIT(7),
     TRANSITION_START(8),
     TRANSITION_EXECUTE(9),
     TRANSITION_END(10);
-
 
 
     private int code;
@@ -30,7 +29,7 @@ public enum PvmEventConstant {
     }
 
     public static String getName(int i) {
-        for (PvmEventConstant eventConstant: PvmEventConstant.values()) {
+        for (PvmEventConstant eventConstant : PvmEventConstant.values()) {
             if (eventConstant.getCode() == i) {
                 return eventConstant.name();
             }

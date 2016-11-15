@@ -1,21 +1,19 @@
 /**
- * 
+ *
  */
 package com.alibaba.smart.framework.engine.util;
 
 import java.util.Collection;
 
 /**
- *
  * @author dongdong.zdd
- *
  */
 public class ParamChecker {
-	
-	 /**
+
+    /**
      * Check that a value is not null. If null throws an IllegalArgumentException.
      *
-     * @param obj value.
+     * @param obj  value.
      * @param name parameter name for the exception message.
      * @return the given value.
      */
@@ -25,14 +23,14 @@ public class ParamChecker {
         }
         return obj;
     }
-    
+
     @SuppressWarnings("rawtypes")
-	public static boolean isNotEmpty(Collection coll) {
+    public static boolean isNotEmpty(Collection coll) {
         return !ParamChecker.isEmpty(coll);
     }
-    
+
     @SuppressWarnings("rawtypes")
-	public static boolean isEmpty(Collection coll) {
+    public static boolean isEmpty(Collection coll) {
         return (coll == null || coll.isEmpty());
     }
 

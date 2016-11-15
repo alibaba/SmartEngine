@@ -16,13 +16,12 @@ public class StartEventBehaviorProvider extends AbstractBpmnActivityBehaviorProv
     }
 
 
-
     @Override
     public void execute(PvmActivity pvmActivity, ExecutionContext executionContext) {
 
         ProcessInstance processInstance = processInstanceFactory.create(executionContext.getPvmProcessDefinition());
 
-        ActivityInstance activityInstance = super.activityInstanceFactory.create( pvmActivity, processInstance);
+        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
         processInstance.addActivityInstance(activityInstance);
 
         executionContext.setProcessInstance(processInstance);

@@ -11,12 +11,12 @@ import java.util.Map;
 
 public class DbSqlSession implements Session {
 
-    private PersistentObjectCacheService cacheService     = new PersistentObjectCacheService();
+    private PersistentObjectCacheService cacheService = new PersistentObjectCacheService();
 
-    protected List<PersistentObject>     insertedObjects  = new ArrayList<PersistentObject>();
-    protected List<DeleteOperation>      deleteOperations = new ArrayList<DeleteOperation>();
+    protected List<PersistentObject> insertedObjects = new ArrayList<PersistentObject>();
+    protected List<DeleteOperation> deleteOperations = new ArrayList<DeleteOperation>();
 
-    private static final Logger          log              = LoggerFactory.getLogger(DbSqlSession.class);
+    private static final Logger log = LoggerFactory.getLogger(DbSqlSession.class);
 
     /**
      * brings the given persistenObject to the top if it already exists
@@ -58,7 +58,7 @@ public class DbSqlSession implements Session {
     }
 
     @SuppressWarnings("unused")
-	public <T extends PersistentObject> T selectById(Class<T> entityClass, String id) {
+    public <T extends PersistentObject> T selectById(Class<T> entityClass, String id) {
         T persistentObject = cacheService.cacheGet(entityClass, id);
         if (persistentObject != null) {
             return persistentObject;
@@ -81,7 +81,7 @@ public class DbSqlSession implements Session {
 
         if (log.isDebugEnabled()) {
             log.debug("flush summary: {} insert, {} update, {} delete.", insertedObjects.size(), updatedObjects.size(),
-                      deleteOperations.size());
+                    deleteOperations.size());
             for (PersistentObject insertedObject : insertedObjects) {
                 log.debug("  insert {}", insertedObject);
             }
@@ -105,10 +105,10 @@ public class DbSqlSession implements Session {
     private List<DeleteOperation> removeUnnecessaryOperations() {
         List<DeleteOperation> removedDeleteOperations = new ArrayList<DeleteOperation>();
 
-        for (Iterator<DeleteOperation> deleteIt = deleteOperations.iterator(); deleteIt.hasNext();) {
+        for (Iterator<DeleteOperation> deleteIt = deleteOperations.iterator(); deleteIt.hasNext(); ) {
             DeleteOperation deleteOperation = deleteIt.next();
 
-            for (Iterator<PersistentObject> insertIt = insertedObjects.iterator(); insertIt.hasNext();) {
+            for (Iterator<PersistentObject> insertIt = insertedObjects.iterator(); insertIt.hasNext(); ) {
                 PersistentObject insertedObject = insertIt.next();
 
                 // if the deleted object is inserted,
@@ -144,7 +144,7 @@ public class DbSqlSession implements Session {
                 if (!isPersistentObjectDeleted(persistentObject)) {
                     Object originalState = cachedObject.getPersistentObjectState();
                     if (persistentObject.getPersistentState() != null
-                        && !persistentObject.getPersistentState().equals(originalState)) {
+                            && !persistentObject.getPersistentState().equals(originalState)) {
                         updatedObjects.add(persistentObject);
                     } else {
                         log.trace("loaded object '{}' was not updated", persistentObject);
@@ -179,6 +179,7 @@ public class DbSqlSession implements Session {
         }
         return prunedList;
     }
+
     @SuppressWarnings("unused")
     private void flushInserts() {
         for (PersistentObject insertedObject : insertedObjects) {
@@ -200,6 +201,7 @@ public class DbSqlSession implements Session {
         }
         insertedObjects.clear();
     }
+
     @SuppressWarnings("unused")
 
     private void flushUpdates(List<PersistentObject> updatedObjects) {

@@ -29,7 +29,7 @@ public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<Exclusive
 
     @Override
     public ExclusiveGateway parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                               XMLStreamException {
+            XMLStreamException {
         ExclusiveGateway exclusiveGateway = new ExclusiveGateway();
         exclusiveGateway.setId(this.getString(reader, "id"));
 

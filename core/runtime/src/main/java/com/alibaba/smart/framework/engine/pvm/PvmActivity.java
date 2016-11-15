@@ -7,7 +7,7 @@ import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import java.util.Map;
 
 /**
- * @author 高海军 帝奇  2016.11.11   TODO 看下存在性
+ * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
 public interface PvmActivity extends PvmInvocable<Activity> {
@@ -18,16 +18,18 @@ public interface PvmActivity extends PvmInvocable<Activity> {
 
     ActivityBehavior getActivityBehavior();
 
-    void  setActivityBehavior(ActivityBehavior activityBehavior);
+    void setActivityBehavior(ActivityBehavior activityBehavior);
 
     /**
      * 流程实例启动,节点进入 会调用此方法.
+     *
      * @param context
      */
     void execute(ExecutionContext context);
-    
+
     /**
      * 暂停型节点恢复执行时,会调用此方法.
+     *
      * @param context
      */
     void signal(ExecutionContext context);

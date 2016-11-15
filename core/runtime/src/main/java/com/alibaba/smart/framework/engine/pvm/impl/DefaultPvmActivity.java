@@ -16,14 +16,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author 高海军 帝奇  2016.11.11   TODO 看下存在性
+ * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements PvmActivity {
 
-    private final static List<Integer>  EXECUTE_EVENTS = new ArrayList<>();
+    private final static List<Integer> EXECUTE_EVENTS = new ArrayList<>();
 
     static {
 
@@ -36,33 +36,32 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
     public void execute(ExecutionContext context) {
 
         //TODO 居然强转
-        ActivityBehavior activityBehaviorProvider =   this.getActivityBehavior();
-        activityBehaviorProvider.execute(this,context);
+        ActivityBehavior activityBehaviorProvider = this.getActivityBehavior();
+        activityBehaviorProvider.execute(this, context);
     }
 
     private void dealEvent(ExecutionContext context, ActivityInstance activityInstance) {
-        Map<String,Object> request = context.getRequest();
+        Map<String, Object> request = context.getRequest();
         String event = (String) request.get("event");
-        ParamChecker.notNull(event,"assignEvent is null !");
-        this.invokeActivity(event,context);
+        ParamChecker.notNull(event, "assignEvent is null !");
+        this.invokeActivity(event, context);
 
 
     }
-
 
 
     private void invokeActivity(String event, ExecutionContext context) {
-         this.fireEvent(event, context);
+        this.fireEvent(event, context);
     }
 
 
-    //TODO
     @Override
     public String toString() {
         return " [id=" + getModel().getId() + "]";
     }
 
 
+    // //TODO
     @Override
     public void fireEvent(String event, ExecutionContext context) {
 

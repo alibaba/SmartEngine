@@ -16,18 +16,18 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DefaultProcessInstance extends AbstractLifeCycleInstance implements ProcessInstance,DatabaseMod<DefaultProcessInstance,ProcessParam> {
+public class DefaultProcessInstance extends AbstractLifeCycleInstance implements ProcessInstance, DatabaseMod<DefaultProcessInstance, ProcessParam> {
 
-    private static final long              serialVersionUID  = -201885591457164713L;
+    private static final long serialVersionUID = -201885591457164713L;
 
 
-    private String                         processUri;
-    private String                         processDefinitionId;
-    private String                         processDefinitionVersion;
+    private String processUri;
+    private String processDefinitionId;
+    private String processDefinitionVersion;
 
-    private String                         parentInstanceId;
-    private String                         parentExecutionInstanceId;
-    private String                         parentActivityInstanceId;
+    private String parentInstanceId;
+    private String parentExecutionInstanceId;
+    private String parentActivityInstanceId;
 
     // private InstanceFact fact;
     /**
@@ -39,7 +39,7 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
      * 需要顺序,并且不需要根据key来获取数据,所以是list数据结构
      */
     @Getter
-    private List<ActivityInstance>         activityInstances = new ArrayList<>();
+    private List<ActivityInstance> activityInstances = new ArrayList<>();
 //
 //    @Override
 //    public void addExecution(ExecutionInstance executionInstance) {

@@ -18,6 +18,6 @@ public interface PvmTransition extends PvmInvocable<Transition> {
 
     TransitionBehavior getTransitionBehavior();
 
-    void  setTransitionBehavior(TransitionBehavior transitionBehavior);
+    void setTransitionBehavior(TransitionBehavior transitionBehavior);
 
 }

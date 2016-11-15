@@ -5,7 +5,7 @@ import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 /**
- * @author 高海军 帝奇  2016.11.11 TODO 职责略不清晰
+ * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
 public abstract class AbstractTransitionProvider<T extends Transition> implements TransitionBehavior<T> {
@@ -15,7 +15,6 @@ public abstract class AbstractTransitionProvider<T extends Transition> implement
     public AbstractTransitionProvider(PvmTransition runtimeTransition) {
         this.runtimeTransition = runtimeTransition;
     }
-
 
 
     protected PvmTransition getRuntimeTransition() {

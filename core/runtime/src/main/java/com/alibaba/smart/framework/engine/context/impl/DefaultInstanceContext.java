@@ -14,13 +14,13 @@ import java.util.Map;
 @Data
 public class DefaultInstanceContext implements ExecutionContext {
 
-    private ProcessInstance   processInstance;
-//    private ExecutionInstance currentExecution;
+    private ProcessInstance processInstance;
+    //    private ExecutionInstance currentExecution;
     private PvmProcessDefinition pvmProcessDefinition;
-    
-    private Map<String,Object > request;
+
+    private Map<String, Object> request;
 
     private boolean needPause;
 
-    private  ExtensionPointRegistry extensionPointRegistry;
+    private ExtensionPointRegistry extensionPointRegistry;
 }

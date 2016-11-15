@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author 高海军 帝奇  2016.11.11   TODO 看下存在性
+ * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
 @Data
@@ -20,15 +20,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractPvmActivity<M extends Activity> extends AbstractPvmInvocable<Activity> implements PvmActivity {
 
 
-    //TODO 这个类现在看价值不大了,看看把各个 instance 赋值逻辑给统一起来。
-    private Map<String, PvmTransition> incomeTransitions  = new ConcurrentHashMap<>();
+    private Map<String, PvmTransition> incomeTransitions = new ConcurrentHashMap<>();
     private Map<String, PvmTransition> outcomeTransitions = new ConcurrentHashMap<>();
     private ActivityBehavior activityBehavior;
-    
+
+
+    //TODO
     @Override
     public void signal(ExecutionContext context) {
     }
-
 
 
     // Getter & Setter

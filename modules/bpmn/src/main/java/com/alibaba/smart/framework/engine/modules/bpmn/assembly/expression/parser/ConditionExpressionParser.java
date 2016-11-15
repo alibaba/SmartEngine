@@ -29,17 +29,16 @@ public class ConditionExpressionParser extends AbstractStAXArtifactParser<Condit
 
     @Override
     public ConditionExpression parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                                  XMLStreamException {
+            XMLStreamException {
         ConditionExpression conditionExpression = new ConditionExpression();
-        
+
         String type = getString(reader, "type");
         String content = reader.getElementText();
-        
+
         conditionExpression.setExpressionContent(content);
         conditionExpression.setExpressionType(type);
-        
 
-        
+
 //        Script script = new Script();
 //        script.setType(type);
 //        script.setContent(content);

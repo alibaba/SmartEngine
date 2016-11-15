@@ -13,13 +13,13 @@ public class ExecutionInstanceEntity extends BaseProcessEntity {
 
     @Id
     @Sequence("execution_instance")
-    private Long    id;
+    private Long id;
 
-    private Long    processInstanceId;
+    private Long processInstanceId;
 
-    private String  processDefinitionActivityId;
+    private String processDefinitionActivityId;
 
-    private Long    activityInstanceId;
+    private Long activityInstanceId;
 
     private boolean active;
 }

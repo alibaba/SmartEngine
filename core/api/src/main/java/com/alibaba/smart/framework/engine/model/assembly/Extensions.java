@@ -16,7 +16,7 @@ import java.util.List;
 public class Extensions extends AbstractBase {
 
     private static final long serialVersionUID = -9017389195653634752L;
-    private List<Extension>   extensions       = new ArrayList<Extension>(5);
+    private List<Extension> extensions = new ArrayList<Extension>(5);
 
     public void addExtension(Extension extension) {
         this.extensions.add(extension);

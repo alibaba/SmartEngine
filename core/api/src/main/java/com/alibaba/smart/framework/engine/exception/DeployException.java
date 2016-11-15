@@ -7,7 +7,7 @@ package com.alibaba.smart.framework.engine.exception;
  */
 public class DeployException extends EngineException {
 
-    
+
     private static final long serialVersionUID = -5576514678329147766L;
 
     public DeployException(String message) {

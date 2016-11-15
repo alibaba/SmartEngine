@@ -12,9 +12,9 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 /**
  * Created by ettear on 16-4-29.
  */
-public abstract   class AbstractBpmnActivityBehaviorProvider<M extends AbstractBpmnActivity> extends AbstractActivityBehaviorProvider<M> {
+public abstract class AbstractBpmnActivityBehaviorProvider<M extends AbstractBpmnActivity> extends AbstractActivityBehaviorProvider<M> {
 
-    private ExtensionPointRegistry        extensionPointRegistry;
+    private ExtensionPointRegistry extensionPointRegistry;
 
     protected ProcessInstanceFactory processInstanceFactory;
     protected ExecutionInstanceFactory executionInstanceFactory;
@@ -24,13 +24,11 @@ public abstract   class AbstractBpmnActivityBehaviorProvider<M extends AbstractB
     public AbstractBpmnActivityBehaviorProvider(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(runtimeActivity);
         this.extensionPointRegistry = extensionPointRegistry;
-        this.processInstanceFactory= extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class) ;
-        this.executionInstanceFactory= extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class) ;
+        this.processInstanceFactory = extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
+        this.executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
         this.activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
         this.taskInstanceFactory = extensionPointRegistry.getExtensionPoint(TaskInstanceFactory.class);
     }
-
-
 
 
     protected ExtensionPointRegistry getExtensionPointRegistry() {

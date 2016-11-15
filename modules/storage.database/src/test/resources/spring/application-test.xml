@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/context/spring-context.xsd
         http://www.foo.com/schema/data/mybatis http://www.foo.com/schema/data/mybatis/spring-mybatis.xsd">
 
-    <import resource="sequence.xml" />
+    <import resource="sequence.xml"/>
 
     <bean id="dataSource" class="com.taobao.tddl.jdbc.group.TGroupDataSource" init-method="init">
         <property name="appName" value="#{datasourceProperties.tddlApp}"/>
@@ -38,10 +38,9 @@
           p:sqlSessionTemplateBeanName="sqlSession"/>
 
 
-
     <mybatis:repositories base-package="com.alibaba.smart.framework.engine.modules.storage"
                           sql-session-ref="sqlSession"
-                          sequence-dao-ref="sequenceDao" />
+                          sequence-dao-ref="sequenceDao"/>
 
 
     <!-- 事务管理器 -->

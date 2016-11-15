@@ -44,7 +44,7 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> impleme
     protected void parseChild(SequenceFlow model, BaseElement child) {
         if (child instanceof ConditionExpression) {
             model.setConditionExpression((ConditionExpression) child);
-        }  else if (child instanceof ExtensionElements) {
+        } else if (child instanceof ExtensionElements) {
             model.setExtensions((ExtensionElements) child);
         }
     }

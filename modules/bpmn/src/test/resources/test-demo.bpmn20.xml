@@ -3,22 +3,22 @@
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
              targetNamespace="Examples">
 
-    <process id="2001" version ="1.0.0" name="demo流程">
+    <process id="2001" version="1.0.0" name="demo流程">
 
-        <startEvent id="theStart" />
+        <startEvent id="theStart"/>
 
 
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="theTask1"/>
 
 
-        <serviceTask id="theTask1" name="pay" >
+        <serviceTask id="theTask1" name="pay">
         </serviceTask>
 
         <sequenceFlow id="flow2" sourceRef="theTask1" targetRef="theTask2"/>
 
-        <serviceTask id="theTask2" name="createOutDeliveryOrder" >
+        <serviceTask id="theTask2" name="createOutDeliveryOrder">
             <events>
-                <event type="spring" id="modifyFee" method="modify" />
+                <event type="spring" id="modifyFee" method="modify"/>
             </events>
         </serviceTask>
 

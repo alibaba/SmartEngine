@@ -23,11 +23,11 @@ public class UserTaskBehaviorProvider extends AbstractBpmnActivityBehaviorProvid
         context.setNeedPause(true);
 
         ProcessInstance processInstance = context.getProcessInstance();
-        ActivityInstance activityInstance = super.activityInstanceFactory.create( pvmActivity,processInstance);
+        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
 
         ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance);
 
-        TaskInstance taskInstance = super.taskInstanceFactory.create(pvmActivity,executionInstance);
+        TaskInstance taskInstance = super.taskInstanceFactory.create(pvmActivity, executionInstance);
 
         executionInstance.setTaskInstance(taskInstance);
         activityInstance.setExecutionInstance(executionInstance);

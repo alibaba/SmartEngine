@@ -28,7 +28,7 @@ import java.util.Map;
 public class DefaultExecutionCommandService implements ExecutionCommandService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
-    private ProcessDefinitionContainer       processContainer;
+    private ProcessDefinitionContainer processContainer;
     private InstanceContextFactory instanceContextFactory;
 
     private ProcessInstanceStorage processInstanceStorage;
@@ -58,13 +58,13 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     @Override
-    public ProcessInstance signal( String executionInstanceId, Map<String, Object> request) {
-        ExecutionInstance executionInstance =  this.executionInstanceStorage.find(executionInstanceId);
+    public ProcessInstance signal(String executionInstanceId, Map<String, Object> request) {
+        ExecutionInstance executionInstance = this.executionInstanceStorage.find(executionInstanceId);
         ProcessInstance processInstance = this.processInstanceStorage.find(executionInstance.getProcessInstanceId());
 
         PvmProcessDefinition pvmProcessDefinition = this.processContainer.get(processInstance.getProcessUri());
-        String activityId= executionInstance.getActivityId();
-        PvmActivity pvmActivity= pvmProcessDefinition.getActivities().get(activityId);
+        String activityId = executionInstance.getActivityId();
+        PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
 
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
@@ -75,7 +75,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         //TODO TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
-        ProcessInstance newProcessInstance =  pvmProcessInstance.signal( pvmActivity,executionContext);
+        ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
         persist(newProcessInstance);
         markDone(executionInstance);
@@ -88,18 +88,18 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
 
         processInstanceStorage.save(processInstance);
-        List<ActivityInstance> activityInstances= processInstance.getActivityInstances();
+        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
         for (ActivityInstance activityInstance : activityInstances) {
             activityInstanceStorage.save(activityInstance);
 
-            ExecutionInstance executionInstance=  activityInstance.getExecutionInstance();
-            if(null != executionInstance){
+            ExecutionInstance executionInstance = activityInstance.getExecutionInstance();
+            if (null != executionInstance) {
                 executionInstanceStorage.save(executionInstance);
             }
         }
     }
 
-    void markDone(ExecutionInstance executionInstance){
+    void markDone(ExecutionInstance executionInstance) {
         executionInstance.setCompleteDate(DateUtil.getCurrentDate());
         executionInstance.setStatus(InstanceStatus.completed);
         executionInstanceStorage.save(executionInstance);

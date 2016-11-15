@@ -7,10 +7,9 @@ import java.util.Map;
  */
 public class TestRun {
 
-    public void test(Map<String,Object> context) {
+    public void test(Map<String, Object> context) {
         System.out.printf("run success");
     }
-
 
 
 }

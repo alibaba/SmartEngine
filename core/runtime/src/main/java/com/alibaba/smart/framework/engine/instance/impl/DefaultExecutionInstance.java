@@ -13,24 +13,24 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DefaultExecutionInstance extends AbstractLifeCycleInstance implements ExecutionInstance,DatabaseMod<DefaultExecutionInstance,ExecutionParam> {
+public class DefaultExecutionInstance extends AbstractLifeCycleInstance implements ExecutionInstance, DatabaseMod<DefaultExecutionInstance, ExecutionParam> {
 
     private static final long serialVersionUID = 2323809298485587299L;
-    private String            processInstanceId;
-    private String            activityInstanceId;
+    private String processInstanceId;
+    private String activityInstanceId;
 
     //TODO 去掉对象关联
-    private String  activityId;
+    private String activityId;
     private TaskInstance taskInstance;
 
     @Override
     public String toDatabase() {
 
 
-       return Strings.nullToEmpty(getInstanceId())
-               + "|"
-               +Strings.nullToEmpty(activityId)
-               + "|";
+        return Strings.nullToEmpty(getInstanceId())
+                + "|"
+                + Strings.nullToEmpty(activityId)
+                + "|";
 //               +Strings.nullToEmpty(getActivity().getCurrentStep());
 
     }

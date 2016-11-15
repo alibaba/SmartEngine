@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 public class ProcessInstanceDAOTest extends BaseTest {
 
     @Resource
-    ProcessInstanceDAO    dao;
+    ProcessInstanceDAO dao;
 
     ProcessInstanceEntity entity = null;
 

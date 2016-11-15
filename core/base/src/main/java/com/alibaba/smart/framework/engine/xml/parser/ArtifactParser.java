@@ -13,7 +13,7 @@ public interface ArtifactParser<M> extends LifeCycleListener {
     /**
      * Resolve
      *
-     * @param model The model to resolve
+     * @param model   The model to resolve
      * @param context The context for the parser
      */
     void resolve(M model, ParseContext context) throws ResolveException;

@@ -14,7 +14,6 @@ public class ParallelGatewayBehaviorProvider extends AbstractBpmnActivityBehavio
     }
 
 
-
     @Override
     public void execute(PvmActivity runtimeActivity, ExecutionContext context) {
 

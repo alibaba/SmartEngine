@@ -15,6 +15,6 @@ public class ParallelGateway extends AbstractGateway {
 
     private static final long serialVersionUID = 4234776128556310813L;
 
-    public final static QName type             = new QName(BpmnBase.NAME_SPACE, "parallelGateway");
+    public final static QName type = new QName(BpmnBase.NAME_SPACE, "parallelGateway");
 
 }

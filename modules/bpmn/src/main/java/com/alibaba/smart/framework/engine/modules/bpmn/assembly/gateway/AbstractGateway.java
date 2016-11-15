@@ -7,9 +7,9 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Abstract
  */
 public abstract class AbstractGateway extends AbstractBpmnActivity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2096892589768688904L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2096892589768688904L;
 
 }

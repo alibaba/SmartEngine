@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
 
-    private Map<String, TaskInstance> instances           = new ConcurrentHashMap<>();
+    private Map<String, TaskInstance> instances = new ConcurrentHashMap<>();
 
     @Override
     public TaskInstance save(TaskInstance instance) {
@@ -24,7 +24,6 @@ public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
     public TaskInstance find(String instanceId) {
         return this.instances.get(instanceId);
     }
-
 
 
     @Override

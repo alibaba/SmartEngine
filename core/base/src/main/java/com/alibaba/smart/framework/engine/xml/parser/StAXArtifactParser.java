@@ -13,7 +13,7 @@ public interface StAXArtifactParser<M> extends ArtifactParser<M> {
     /**
      * Reads a model from an XMLStreamReader.
      *
-     * @param reader The XMLStreamReader
+     * @param reader  The XMLStreamReader
      * @param context The context
      * @return A model representation of the input.
      */

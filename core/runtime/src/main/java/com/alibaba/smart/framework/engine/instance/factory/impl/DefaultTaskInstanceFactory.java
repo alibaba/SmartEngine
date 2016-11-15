@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.util.DateUtil;
 public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
 
     @Override
-    public TaskInstance create(PvmActivity pvmActivity,ExecutionInstance executionInstance) {
+    public TaskInstance create(PvmActivity pvmActivity, ExecutionInstance executionInstance) {
         TaskInstance taskInstance = new DefaultTaskInstance();
         taskInstance.setInstanceId(InstanceIdUtil.uuid());
         taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());

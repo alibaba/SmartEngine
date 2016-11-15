@@ -16,12 +16,12 @@ import javax.xml.namespace.QName;
 public class Action extends AbstractBpmnActivity {
 
 
-    public final static QName NameType             = new QName(BpmnBase.NAME_SPACE, "action");
+    public final static QName NameType = new QName(BpmnBase.NAME_SPACE, "action");
     private static final long serialVersionUID = 8925386572847689717L;
 
-    private String            type;
-    private String            id;
-    private String            method;
+    private String type;
+    private String id;
+    private String method;
 
 
 }

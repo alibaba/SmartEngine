@@ -47,11 +47,11 @@ public class UserTaskProcessTest {
 //
 //		Assert.assertNotNull(processInstance);
 //	}
-	
-	
-	@Test
+
+
+    @Test
     public void testUserTaskExclusive() throws Exception {
-        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
+        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -70,7 +70,7 @@ public class UserTaskProcessTest {
                 request);
 
         Assert.assertNotNull(processInstance);
-        List<ActivityInstance> activityInstances=  processInstance.getActivityInstances();
+        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
 
         Assert.assertNotNull(activityInstances);
 
@@ -78,23 +78,23 @@ public class UserTaskProcessTest {
         assertEquals(3, size);
 
         ActivityInstance lastActivityInstance = activityInstances.get(size - 1);
-        assertEquals("theTask1",lastActivityInstance.getActivityId());
+        assertEquals("theTask1", lastActivityInstance.getActivityId());
 
 
         ExecutionInstance lastExecutionInstance = lastActivityInstance.getExecutionInstance();
         Assert.assertNotNull(lastExecutionInstance);
 
-        assertEquals(processInstance.getInstanceId(),lastExecutionInstance.getProcessInstanceId());
-        assertEquals(lastActivityInstance.getInstanceId(),lastExecutionInstance.getActivityInstanceId());
-        assertEquals(lastActivityInstance.getActivityId(),lastExecutionInstance.getActivityId());
+        assertEquals(processInstance.getInstanceId(), lastExecutionInstance.getProcessInstanceId());
+        assertEquals(lastActivityInstance.getInstanceId(), lastExecutionInstance.getActivityInstanceId());
+        assertEquals(lastActivityInstance.getActivityId(), lastExecutionInstance.getActivityId());
 
         TaskInstance latestTaskInstance = lastExecutionInstance.getTaskInstance();
         assertNotNull(latestTaskInstance);
-        assertEquals("theTask1",latestTaskInstance.getActivityId());
+        assertEquals("theTask1", latestTaskInstance.getActivityId());
 
 
         //1st: create 1st task
-        TaskCommandService taskCommandService =    smartEngine.getTaskCommandService();
+        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
 
         TaskInstance taskInstance = latestTaskInstance;
 
@@ -188,6 +188,6 @@ public class UserTaskProcessTest {
 //
 //
 //    }
- 
+
 
 }

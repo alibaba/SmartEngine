@@ -29,10 +29,10 @@ public class EngineParam {
 
     @Getter
     @Setter
-    Map<String,Object> processContext;
+    Map<String, Object> processContext;
 
 
-    public static EngineParam of(String processId,String defationId,String version,String executionString) {
+    public static EngineParam of(String processId, String defationId, String version, String executionString) {
 
         EngineParam param = new EngineParam();
         ExecutionParam execution = new ExecutionParam();
@@ -56,7 +56,7 @@ public class EngineParam {
         execution.setExecutionId(executionParams[0]);
 
         activity.setActivityId(executionParams[1]);
-        if (executionParams.length >2) {
+        if (executionParams.length > 2) {
             activity.setCurrentStep(executionParams[2]);
         }
 
@@ -65,8 +65,6 @@ public class EngineParam {
         param.setProcessParam(process);
 
         return param;
-
-
 
 
     }

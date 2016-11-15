@@ -35,6 +35,6 @@ public interface PvmProcessDefinition {
 //    void resume(ExecutionContext context);
 
 
-    Map<String,PvmActivity> getActivities();
+    Map<String, PvmActivity> getActivities();
 
 }

@@ -41,7 +41,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 
 /**
- * @author 高海军 帝奇  2016.11.11  *TODO deploy 完成后,需要被获取流程定义 .
+ * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
 public class DefaultRepositoryCommandService implements RepositoryCommandService, LifeCycleListener {
@@ -49,12 +49,12 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     /**
      * 扩展点注册器
      */
-    private SmartEngine                   smartEngine;
+    private SmartEngine smartEngine;
     private ExtensionPointRegistry extensionPointRegistry;
 
-    private AssemblyParserExtensionPoint  assemblyParserExtensionPoint;
+    private AssemblyParserExtensionPoint assemblyParserExtensionPoint;
     private ProviderFactoryExtensionPoint providerFactoryExtensionPoint;
-    private ProcessDefinitionContainer              processContainer;
+    private ProcessDefinitionContainer processContainer;
 
     public DefaultRepositoryCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -67,9 +67,9 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
     @Override
     public ProcessDefinition deploy(String moduleName, String uri) throws DeployException {
-        
-        ClassLoader classLoader = this.smartEngine.getClassLoader(moduleName); 
-        
+
+        ClassLoader classLoader = this.smartEngine.getClassLoader(moduleName);
+
         if (null == classLoader) {
             throw new DeployException("Module[" + moduleName + "] not found!");
         }
@@ -85,7 +85,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
     @Override
     public void start() {
-        
+
         this.smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
         this.assemblyParserExtensionPoint = extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
         this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
@@ -158,18 +158,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 process.setId("default");
             }
             PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(process, processComponent, false);
-
-            // && pvmProcessDefinition instanceof ProviderRegister
-            if (null != pvmProcessDefinition) {
-//                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
-                //TODO
-//                ActivityBehavior activityBehaviorProvider = providerFactory.createActivityProvider(pvmProcessDefinition);
-//                ((ProviderRegister) pvmProcessDefinition).registerProvider(activityBehaviorProvider);
-                processComponent.setProcess(pvmProcessDefinition);
-            } else {
-
-                return null;
-            }
+            processComponent.setProcess(pvmProcessDefinition);
         }
 
         this.processContainer.install(processComponent);

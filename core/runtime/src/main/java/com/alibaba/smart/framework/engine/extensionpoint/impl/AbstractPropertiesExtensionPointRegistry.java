@@ -19,7 +19,7 @@ import java.util.Properties;
  */
 public abstract class AbstractPropertiesExtensionPointRegistry implements ExtensionPointRegistry {
 
-    private static final Logger    LOGGER = LoggerFactory.getLogger(AbstractPropertiesExtensionPointRegistry.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPropertiesExtensionPointRegistry.class);
     /**
      * 扩展点注册器
      */
@@ -38,7 +38,7 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
      * @param classLoader ClassLoader
      */
     @Override
-    public void register(String moduleName, ClassLoader classLoader)   {
+    public void register(String moduleName, ClassLoader classLoader) {
         Enumeration<URL> extensionConfigFiles;
         String extensionName = getExtensionName();
         try {
@@ -58,7 +58,7 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
                     properties.load(openStream);
                 } catch (IOException e) {
                     throw new EngineException("Load config file " + extensionConfigFile.toString()
-                                                          + " failure!", e);
+                            + " failure!", e);
                 } finally {
                     IOUtil.closeQuietly(openStream);
                 }
@@ -78,8 +78,7 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
     }
 
     @SuppressWarnings("rawtypes")
-    private void instantiateAndInitExtension(ClassLoader classLoader, String entensionEntryKey, String entensionEntryValue)
-                                                                                                                 {
+    private void instantiateAndInitExtension(ClassLoader classLoader, String entensionEntryKey, String entensionEntryValue) {
         Class<?> extensionValueClass;
         try {
             extensionValueClass = classLoader.loadClass(entensionEntryValue);
@@ -97,7 +96,7 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
                 extensionValueObject = constructor.newInstance();
             } catch (Exception ex) {
                 throw new EngineException("Instance constructor for class " + entensionEntryValue + " !",
-                                                      ex);
+                        ex);
             }
         }
         this.initExtension(classLoader, entensionEntryKey, extensionValueObject);
@@ -118,7 +117,7 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
     public void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
-    
+
     @Override
     public <T> T getExtensionPoint(Class<T> extensionPointType) {
         throw new RuntimeException("not implemented");

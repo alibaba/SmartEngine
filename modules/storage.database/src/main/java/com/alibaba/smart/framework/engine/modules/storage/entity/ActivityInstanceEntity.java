@@ -13,13 +13,13 @@ public class ActivityInstanceEntity extends BaseProcessEntity {
 
     @Id
     @Sequence("activity_instance")
-    private Long   id;
+    private Long id;
 
-    private Long   processInstanceId;
+    private Long processInstanceId;
 
     private String processDefinitionActivityId;
 
-    private Long   executionInstanceId;
+    private Long executionInstanceId;
 
-    private Long   taskInstanceId;
+    private Long taskInstanceId;
 }

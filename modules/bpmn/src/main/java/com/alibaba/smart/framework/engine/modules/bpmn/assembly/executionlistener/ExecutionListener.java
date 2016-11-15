@@ -10,12 +10,12 @@ import lombok.EqualsAndHashCode;
 public class ExecutionListener extends AbstractBase implements Extension {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -2881657965418926667L;
 
-    private String            clazzName;
-    private String            event;
-    private String            type;
+    private String clazzName;
+    private String event;
+    private String type;
 
 }

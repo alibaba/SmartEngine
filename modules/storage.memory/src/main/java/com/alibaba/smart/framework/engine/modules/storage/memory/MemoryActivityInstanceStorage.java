@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryActivityInstanceStorage implements ActivityInstanceStorage {
 
-    private Map<String, ActivityInstance> instances           = new ConcurrentHashMap<>();
+    private Map<String, ActivityInstance> instances = new ConcurrentHashMap<>();
 
     @Override
     public ActivityInstance save(ActivityInstance instance) {
@@ -23,7 +23,6 @@ public class MemoryActivityInstanceStorage implements ActivityInstanceStorage {
     public ActivityInstance find(String instanceId) {
         return this.instances.get(instanceId);
     }
-
 
 
     @Override

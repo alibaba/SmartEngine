@@ -14,5 +14,5 @@ public interface TaskInstanceFactory {
      *
      * @return 任务实例
      */
-    TaskInstance create(PvmActivity pvmActivity,ExecutionInstance executionInstance);
+    TaskInstance create(PvmActivity pvmActivity, ExecutionInstance executionInstance);
 }

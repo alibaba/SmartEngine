@@ -19,7 +19,7 @@ public abstract class AbstractBpmnParser<M extends BaseElement> extends Abstract
     }
 
     protected void parseChildren(M model, XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                                       XMLStreamException {
+            XMLStreamException {
         while (this.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
             if (element instanceof BaseElement) {

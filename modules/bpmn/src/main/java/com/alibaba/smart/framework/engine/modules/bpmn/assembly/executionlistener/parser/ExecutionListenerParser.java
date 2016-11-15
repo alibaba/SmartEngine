@@ -32,7 +32,7 @@ public class ExecutionListenerParser extends AbstractStAXArtifactParser<Executio
 
     @Override
     public ExecutionListener parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                                XMLStreamException {
+            XMLStreamException {
         ExecutionListener executionListener = new ExecutionListener();
         executionListener.setType(this.getString(reader, "type"));
         executionListener.setClazzName(this.getString(reader, "class"));

@@ -22,40 +22,40 @@ import java.util.Map;
 public class BpmnProcessTest {
 
 
-	@Test
-	public void testExclusive() throws Exception {
-	    ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration(); 
-	    
-		SmartEngine smartEngine = new DefaultSmartEngine();
+    @Test
+    public void testExclusive() throws Exception {
+        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
-		//初始化流程引擎
-		smartEngine.init(processEngineConfiguration);
+        SmartEngine smartEngine = new DefaultSmartEngine();
 
-		//部署流程定义
-		RepositoryCommandService repositoryCommandService = smartEngine
-				.getRepositoryService();
-		ProcessDefinition processDefinition = repositoryCommandService
-				.deploy("test-servicetask-exclusive.bpmn20.xml");
+        //初始化流程引擎
+        smartEngine.init(processEngineConfiguration);
 
-		//断言
+        //部署流程定义
+        RepositoryCommandService repositoryCommandService = smartEngine
+                .getRepositoryService();
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("test-servicetask-exclusive.bpmn20.xml");
+
+        //断言
         Assert.assertEquals(25, processDefinition.getProcess().getElements().size());
 
 
-		ProcessCommandService processCommandService = smartEngine.getProcessService();
-		Map<String, Object> request = new HashMap<>();
-		request.put("input", 2);
+        ProcessCommandService processCommandService = smartEngine.getProcessService();
+        Map<String, Object> request = new HashMap<>();
+        request.put("input", 2);
 
-		//启动流程实例
-		ProcessInstance processInstance = processCommandService.start(
-				processDefinition.getId(), processDefinition.getVersion(),
-				request);
+        //启动流程实例
+        ProcessInstance processInstance = processCommandService.start(
+                processDefinition.getId(), processDefinition.getVersion(),
+                request);
 
 
-		//断言
-		Assert.assertNotNull(processInstance);
+        //断言
+        Assert.assertNotNull(processInstance);
 //		Assert.assertTrue(processInstance.get);
 
-	}
+    }
 //
 //    @Test
 //    public void testParallel() throws Exception {
@@ -236,8 +236,6 @@ public class BpmnProcessTest {
 //
 //
 //    }
-
-
 
 
 }

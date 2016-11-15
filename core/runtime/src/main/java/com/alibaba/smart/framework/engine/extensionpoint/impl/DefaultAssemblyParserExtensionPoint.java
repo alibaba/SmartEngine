@@ -18,11 +18,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("rawtypes")
 public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements AssemblyParserExtensionPoint {
 
-    private Map<QName, StAXArtifactParser>  artifactParsers        = new ConcurrentHashMap<>();
+    private Map<QName, StAXArtifactParser> artifactParsers = new ConcurrentHashMap<>();
 
-    private Map<QName, StAXAttributeParser> attributeParsers       = new ConcurrentHashMap<>();
+    private Map<QName, StAXAttributeParser> attributeParsers = new ConcurrentHashMap<>();
 
-    private Map<Class, ArtifactParser>      resolveArtifactParsers = new ConcurrentHashMap<>();
+    private Map<Class, ArtifactParser> resolveArtifactParsers = new ConcurrentHashMap<>();
 
     public DefaultAssemblyParserExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -49,7 +49,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
     }
 
     @Override
-    protected void initExtension(ClassLoader classLoader, String extensionEntryKey, Object artifactParseObject)  {
+    protected void initExtension(ClassLoader classLoader, String extensionEntryKey, Object artifactParseObject) {
         if (artifactParseObject instanceof StAXArtifactParser) {
             StAXArtifactParser artifactParser = (StAXArtifactParser) artifactParseObject;
             QName artifactType = artifactParser.getArtifactType();
@@ -80,8 +80,8 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
 
     @Override
     public Object readAttribute(QName attributeName, XMLStreamReader reader, ParseContext context)
-                                                                                                  throws ParseException,
-                                                                                                  XMLStreamException {
+            throws ParseException,
+            XMLStreamException {
         if (null == attributeName) {
             return null;
         }

@@ -12,7 +12,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- *
  * Created by dongdongzdd on 16/9/20.
  */
 public class ProcessEventParser extends AbstractStAXArtifactParser<ProcessEvent> implements StAXArtifactParser<ProcessEvent> {
@@ -36,9 +35,9 @@ public class ProcessEventParser extends AbstractStAXArtifactParser<ProcessEvent>
             XMLStreamException {
 
         ProcessEvent event = new ProcessEvent();
-        event.setType(this.getString(reader,"type"));
-        event.setId(this.getString(reader,"id"));
-        event.setMethod(this.getString(reader,"method"));
+        event.setType(this.getString(reader, "type"));
+        event.setId(this.getString(reader, "id"));
+        event.setMethod(this.getString(reader, "method"));
 
         while (this.nextChildElement(reader)) {
 

@@ -34,12 +34,12 @@ public class ServiceTaskParser extends AbstractBpmnActivityParser<ServiceTask> i
     public ServiceTask parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         ServiceTask serviceTask = new ServiceTask();
         serviceTask.setId(this.getString(reader, "id"));
-        serviceTask.setAuto(this.getBoolean(reader,"auto"));
+        serviceTask.setAuto(this.getBoolean(reader, "auto"));
 
         //TODO
-        String className = this.getString(reader, "smart:class");
-               className= reader.getAttributeValue(2);
-               serviceTask.setClassName( className);
+//        String className = this.getString(reader, "smart:class");
+        String className = reader.getAttributeValue(2);
+        serviceTask.setClassName(className);
         this.parseChildren(serviceTask, reader, context);
         return serviceTask;
     }
@@ -54,7 +54,6 @@ public class ServiceTaskParser extends AbstractBpmnActivityParser<ServiceTask> i
         }
 
     }
-
 
 
 }

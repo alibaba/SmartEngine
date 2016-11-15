@@ -11,7 +11,7 @@ import java.util.Date;
 public class TaskInstanceDAOTest extends BaseTest {
 
     @Resource
-    TaskInstanceDAO    dao;
+    TaskInstanceDAO dao;
 
     TaskInstanceEntity entity = null;
 

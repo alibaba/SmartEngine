@@ -27,7 +27,7 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
     /**
      * 扩展点注册器
      */
-    private ExtensionPointRegistry       extensionPointRegistry;
+    private ExtensionPointRegistry extensionPointRegistry;
     private AssemblyParserExtensionPoint assemblyParserExtensionPoint;
 
     public AbstractStAXArtifactParser(ExtensionPointRegistry extensionPointRegistry) {
@@ -98,7 +98,7 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
 
     /**
      * Advance the stream to the next END_ELEMENT event skipping any nested content.
-     * 
+     *
      * @param reader the reader to advance
      * @throws XMLStreamException if there was a problem reading the stream
      */
@@ -119,7 +119,7 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
     }
 
     protected Object readElement(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                              XMLStreamException {
+            XMLStreamException {
         return this.getAssemblyParserExtensionPoint().parse(reader, context);
     }
 

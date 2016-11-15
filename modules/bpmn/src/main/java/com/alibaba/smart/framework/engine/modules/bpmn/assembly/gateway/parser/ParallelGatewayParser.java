@@ -29,7 +29,7 @@ public class ParallelGatewayParser extends AbstractBpmnActivityParser<ParallelGa
 
     @Override
     public ParallelGateway parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                              XMLStreamException {
+            XMLStreamException {
 
         ParallelGateway parallelGateway = new ParallelGateway();
         parallelGateway.setId(this.getString(reader, "id"));

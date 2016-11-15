@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 public class ProcessEvents extends AbstractEvent {
 
-    public final static QName NameType             = new QName(BpmnBase.NAME_SPACE, "events");
+    public final static QName NameType = new QName(BpmnBase.NAME_SPACE, "events");
     private static final long serialVersionUID = 4440927851993238207L;
 
 

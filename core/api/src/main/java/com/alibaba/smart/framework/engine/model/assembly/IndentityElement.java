@@ -8,7 +8,7 @@ public interface IndentityElement extends BaseElement {
 
     /**
      * 获取元素ID
-     * 
+     *
      * @return 元素ID
      */
     String getId();

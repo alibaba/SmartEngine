@@ -18,7 +18,7 @@ public class EndEventBehaviorProvider extends AbstractBpmnActivityBehaviorProvid
 
     @Override
     public void execute(PvmActivity runtimeActivity, ExecutionContext context) {
-      ProcessInstance processInstance=  context.getProcessInstance();
+        ProcessInstance processInstance = context.getProcessInstance();
         processInstance.setStatus(InstanceStatus.completed);
         processInstance.setCompleteDate(DateUtil.getCurrentDate());
 

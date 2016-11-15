@@ -14,12 +14,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultProcessDefinitionContainer implements ProcessDefinitionContainer {
 
-    private final static String     DEFAULT_VERSION   = "1.0.0";
-    private final static String     DEFAULT_NAMESPACE = "smart";
+    private final static String DEFAULT_VERSION = "1.0.0";
+    private final static String DEFAULT_NAMESPACE = "smart";
 
     // private Map<String, Map<String, RuntimeProcessComponent>> processes = new ConcurrentHashMap<>();
-    private Map<String, PvmProcessDefinition> processes         = new ConcurrentHashMap<>();
-    private String                  namespace         = DEFAULT_NAMESPACE;
+    private Map<String, PvmProcessDefinition> processes = new ConcurrentHashMap<>();
+    private String namespace = DEFAULT_NAMESPACE;
 
     @Override
     public void install(PvmProcessComponent processComponent) {
@@ -46,8 +46,6 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
     }
 
 
-
-
     @Override
     public PvmProcessDefinition get(String uri) {
         return this.processes.get(uri);
@@ -55,8 +53,8 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     /**
      * Install Process
-     * 
-     * @param uri Process URI
+     *
+     * @param uri            Process URI
      * @param runtimeProcess Process
      */
     private void install(String uri, PvmProcessDefinition runtimeProcess) {

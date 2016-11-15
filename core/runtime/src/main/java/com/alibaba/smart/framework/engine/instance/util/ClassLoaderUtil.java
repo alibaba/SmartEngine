@@ -28,7 +28,7 @@ public final class ClassLoaderUtil {
      * Gets the <code>ClassLoader</code> that all classes in ehcache, and extensions, should use for classloading. All
      * ClassLoading in ehcache should use this one. This is the only thing that seems to work for all of the class
      * loading situations found in the wild.
-     * 
+     *
      * @return the thread context class loader.
      */
     public static ClassLoader getStandardClassLoader() {
@@ -38,7 +38,7 @@ public final class ClassLoaderUtil {
     /**
      * Gets a fallback <code>ClassLoader</code> that all classes in ehcache, and extensions, should use for
      * classloading. This is used if the context class loader does not work.
-     * 
+     *
      * @return the <code>ClassLoaderUtil.class.getClassLoader();</code>
      */
     public static ClassLoader getFallbackClassLoader() {
@@ -62,8 +62,8 @@ public final class ClassLoaderUtil {
      * loaded using the ehcache standard classloader.
      *
      * @param className a fully qualified class name
-     * @param argTypes Types for constructor argument parameters
-     * @param args Values for constructor argument parameters
+     * @param argTypes  Types for constructor argument parameters
+     * @param args      Values for constructor argument parameters
      * @return the newly created instance
      * @throws EngineException if instance cannot be created due to a missing class or exception
      */
@@ -92,7 +92,7 @@ public final class ClassLoaderUtil {
             throw new EngineException("Unable to load class " + className + ". Initial cause was " + e.getMessage(), e);
         } catch (InvocationTargetException e) {
             throw new EngineException("Unable to load class " + className + ". Initial cause was "
-                                      + e.getCause().getMessage(), e.getCause());
+                    + e.getCause().getMessage(), e.getCause());
         }
         return newInstance;
     }
@@ -118,9 +118,8 @@ public final class ClassLoaderUtil {
     }
 
 
-
     public static URL[] getResources(String resourceName) {
-        LinkedList urls  = new LinkedList();
+        LinkedList urls = new LinkedList();
         boolean found = false;
 
         // 首先试着从当前线程的ClassLoader中查找。
@@ -154,7 +153,7 @@ public final class ClassLoaderUtil {
 
         Set urlSet = new HashSet(urls.size());
 
-        for (Iterator i = urls.iterator(); i.hasNext();) {
+        for (Iterator i = urls.iterator(); i.hasNext(); ) {
             URL url = (URL) i.next();
 
             if (urlSet.contains(url)) {

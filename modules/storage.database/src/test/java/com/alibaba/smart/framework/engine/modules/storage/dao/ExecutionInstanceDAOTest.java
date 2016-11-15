@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 public class ExecutionInstanceDAOTest extends BaseTest {
 
     @Resource
-    ExecutionInstanceDAO    dao;
+    ExecutionInstanceDAO dao;
 
     ExecutionInstanceEntity entity = null;
 
@@ -47,7 +47,6 @@ public class ExecutionInstanceDAOTest extends BaseTest {
         ExecutionInstanceEntity result = dao.findOne(entity.getId());
         Assert.assertNotNull(result);
 
-        // TODO 返回删除行数,去掉findAll 接口
         dao.delete(entity.getId());
 
         result = dao.findOne(entity.getId());

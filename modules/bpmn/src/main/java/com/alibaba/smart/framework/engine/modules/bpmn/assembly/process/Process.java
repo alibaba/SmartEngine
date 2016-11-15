@@ -10,7 +10,7 @@ import javax.xml.namespace.QName;
  */
 public class Process extends AbstractProcess {
 
-    public final static QName type             = new QName(BpmnBase.NAME_SPACE, "process");
+    public final static QName type = new QName(BpmnBase.NAME_SPACE, "process");
 
     private static final long serialVersionUID = -2660788294142169268L;
 

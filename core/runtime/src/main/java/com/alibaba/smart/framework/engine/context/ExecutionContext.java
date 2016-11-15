@@ -22,10 +22,10 @@ public interface ExecutionContext {
     PvmProcessDefinition getPvmProcessDefinition();
 
     void setPvmProcessDefinition(PvmProcessDefinition pvmProcessDefinition);
-    
-    Map<String,Object > getRequest();
-    
-    void setRequest(Map<String,Object > request);
+
+    Map<String, Object> getRequest();
+
+    void setRequest(Map<String, Object> request);
 
     void setNeedPause(boolean needPause);
 

@@ -21,12 +21,12 @@ public class ReceiveTaskBehaviorProvider extends AbstractBpmnActivityBehaviorPro
 
 
     @Override
-    public void execute(PvmActivity pvmActivity,ExecutionContext executionContext) {
+    public void execute(PvmActivity pvmActivity, ExecutionContext executionContext) {
         //TODO 在父类控制
         executionContext.setNeedPause(true);
 
         ProcessInstance processInstance = executionContext.getProcessInstance();
-        ActivityInstance activityInstance = super.activityInstanceFactory.create( pvmActivity,processInstance);
+        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
 
         ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance);
 
@@ -43,11 +43,10 @@ public class ReceiveTaskBehaviorProvider extends AbstractBpmnActivityBehaviorPro
 
     private void executeExtension(ExecutionContext executionContext, String className) {
         //TODO
-        if(null == className){
+        if (null == className) {
 
 
-
-        }else{
+        } else {
             // TODO need cache,rename
             Object ss = ClassLoaderUtil.createNewInstance(className);
             if (ss instanceof TccDelegation<?>) {

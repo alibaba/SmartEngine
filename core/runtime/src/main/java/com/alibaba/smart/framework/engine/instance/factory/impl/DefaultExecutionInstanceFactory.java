@@ -14,7 +14,6 @@ import com.alibaba.smart.framework.engine.util.DateUtil;
 public class DefaultExecutionInstanceFactory implements ExecutionInstanceFactory {
 
 
-
     @Override
     public ExecutionInstance create(ActivityInstance activityInstance) {
         DefaultExecutionInstance defaultExecutionInstance = new DefaultExecutionInstance();

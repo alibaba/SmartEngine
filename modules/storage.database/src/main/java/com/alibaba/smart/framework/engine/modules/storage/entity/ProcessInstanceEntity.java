@@ -13,9 +13,9 @@ public class ProcessInstanceEntity extends BaseProcessEntity {
 
     @Id
     @Sequence("process_instance")
-    private Long   id;
+    private Long id;
 
-    private Long   parentProcessInstanceId;
+    private Long parentProcessInstanceId;
 
     private String status;
 

@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryExecutionInstanceStorage implements ExecutionInstanceStorage {
 
-    private Map<String, ExecutionInstance> instances           = new ConcurrentHashMap<>();
+    private Map<String, ExecutionInstance> instances = new ConcurrentHashMap<>();
 
     @Override
     public ExecutionInstance save(ExecutionInstance instance) {
@@ -24,7 +24,6 @@ public class MemoryExecutionInstanceStorage implements ExecutionInstanceStorage 
     public ExecutionInstance find(String instanceId) {
         return this.instances.get(instanceId);
     }
-
 
 
     @Override

@@ -74,7 +74,7 @@ class PersistentObjectCacheService {
     public static class CachedObject {
 
         protected PersistentObject persistentObject;
-        protected Object           persistentObjectState;
+        protected Object persistentObjectState;
 
         public CachedObject(PersistentObject persistentObject, boolean storeState) {
             this.persistentObject = persistentObject;

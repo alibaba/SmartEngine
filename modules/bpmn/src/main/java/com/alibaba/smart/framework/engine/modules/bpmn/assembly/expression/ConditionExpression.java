@@ -15,8 +15,8 @@ import javax.xml.namespace.QName;
 public class ConditionExpression extends Condition {
 
     private static final long serialVersionUID = -6152070683207905381L;
-    public final static QName type             = new QName(BpmnBase.NAME_SPACE, "conditionExpression");
+    public final static QName type = new QName(BpmnBase.NAME_SPACE, "conditionExpression");
 
-    private String            expressionType;
-    private String            expressionContent;
+    private String expressionType;
+    private String expressionContent;
 }

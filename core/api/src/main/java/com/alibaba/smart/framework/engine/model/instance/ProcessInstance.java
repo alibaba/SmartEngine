@@ -8,7 +8,6 @@ import java.util.List;
  */
 public interface ProcessInstance extends LifeCycleInstance {
 
-    //TODO 干掉?
     String getProcessUri();
 
     void setProcessUri(String processUri);

@@ -17,7 +17,6 @@ import javax.xml.stream.XMLStreamReader;
 public class ActionParser extends AbstractStAXArtifactParser<Action> implements StAXArtifactParser<Action> {
 
 
-
     public ActionParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
@@ -37,9 +36,9 @@ public class ActionParser extends AbstractStAXArtifactParser<Action> implements 
             XMLStreamException {
 
         Action action = new Action();
-        action.setType(this.getString(reader,"type"));
-        action.setId(this.getString(reader,"id"));
-        action.setMethod(this.getString(reader,"method"));
+        action.setType(this.getString(reader, "type"));
+        action.setId(this.getString(reader, "id"));
+        action.setMethod(this.getString(reader, "method"));
 
         while (this.nextChildElement(reader)) {
 

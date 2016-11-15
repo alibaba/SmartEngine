@@ -35,11 +35,11 @@
           p:sqlSessionFactoryBeanName="sqlSessionFactory"
           p:sqlSessionTemplateBeanName="sqlSession"/>
 
-   <!-- TODO 配置需要精简下 -->
+    <!-- TODO 配置需要精简下 -->
 
     <mybatis:repositories base-package="com.alibaba.smart.framework.engine.modules.storage.dao"
                           sql-session-ref="sqlSession"
-                          sequence-dao-ref="sequenceDao" />
+                          sequence-dao-ref="sequenceDao"/>
 
-	
+
 </beans>

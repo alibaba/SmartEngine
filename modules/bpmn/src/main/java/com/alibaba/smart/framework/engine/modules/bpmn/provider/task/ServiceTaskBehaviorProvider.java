@@ -20,26 +20,23 @@ public class ServiceTaskBehaviorProvider extends AbstractBpmnActivityBehaviorPro
     }
 
 
-
-
     @Override
-    public void execute(PvmActivity pvmActivity,ExecutionContext executionContext) {
+    public void execute(PvmActivity pvmActivity, ExecutionContext executionContext) {
         ProcessInstance processInstance = executionContext.getProcessInstance();
-        ActivityInstance activityInstance = super.activityInstanceFactory.create( pvmActivity,processInstance);
+        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
 
         processInstance.addActivityInstance(activityInstance);
-
 
 
         ServiceTask serviceTask = (ServiceTask) pvmActivity.getModel();
         String className = serviceTask.getClassName();
 
         //TODO
-        if(null == className){
+        if (null == className) {
 
             Action action = serviceTask.getAction();
             if (action == null) {
-               return;
+                return;
             }
 
             if (action.getType().equals("spring")) {
@@ -53,7 +50,7 @@ public class ServiceTaskBehaviorProvider extends AbstractBpmnActivityBehaviorPro
 
 
             }
-        }else{
+        } else {
             // TODO need cache,rename
             Object ss = ClassLoaderUtil.createNewInstance(className);
             if (ss instanceof TccDelegation<?>) {
@@ -64,7 +61,6 @@ public class ServiceTaskBehaviorProvider extends AbstractBpmnActivityBehaviorPro
 //                return defaultMessage;
             }
         }
-
 
 
     }

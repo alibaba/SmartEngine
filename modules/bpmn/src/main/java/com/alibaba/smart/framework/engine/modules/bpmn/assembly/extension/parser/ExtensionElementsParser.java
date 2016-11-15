@@ -23,7 +23,7 @@ public class ExtensionElementsParser extends AbstractStAXArtifactParser<Extensio
 
     @Override
     public ExtensionElements parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                                XMLStreamException {
+            XMLStreamException {
         ExtensionElements extensionElements = new ExtensionElements();
 
         while (this.nextChildElement(reader)) {

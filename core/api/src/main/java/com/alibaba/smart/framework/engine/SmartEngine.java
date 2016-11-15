@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
  */
 public interface SmartEngine {
 
-    
+
     ExtensionPointRegistry getExtensionPointRegistry();
 
     RepositoryCommandService getRepositoryService();

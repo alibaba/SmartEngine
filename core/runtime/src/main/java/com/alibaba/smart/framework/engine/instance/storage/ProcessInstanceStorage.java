@@ -30,9 +30,4 @@ public interface ProcessInstanceStorage {
     void remove(String processInstanceId);
 
 
-
-
-
-
-
 }

@@ -33,11 +33,11 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     private ExtensionPointRegistry extensionPointRegistry;
 
-    private ProcessDefinitionContainer       processDefinitionContainer;
+    private ProcessDefinitionContainer processDefinitionContainer;
 
     private InstanceContextFactory instanceContextFactory;
     private ProcessInstanceFactory processInstanceFactory;
-    private ExecutionInstanceFactory       executionInstanceFactory;
+    private ExecutionInstanceFactory executionInstanceFactory;
     private ActivityInstanceFactory activityInstanceFactory;
 
     private ProcessInstanceStorage processInstanceStorage;
@@ -80,22 +80,22 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         //TODO TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
-        ProcessInstance processInstance =  pvmProcessInstance.start(executionContext);
+        ProcessInstance processInstance = pvmProcessInstance.start(executionContext);
 
         persist(processInstance);
 
         return processInstance;
-        
+
     }
 
     private void persist(ProcessInstance processInstance) {
         processInstanceStorage.save(processInstance);
-        List<ActivityInstance> activityInstances= processInstance.getActivityInstances();
+        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
         for (ActivityInstance activityInstance : activityInstances) {
             activityInstanceStorage.save(activityInstance);
 
-            ExecutionInstance executionInstance=  activityInstance.getExecutionInstance();
-            if(null != executionInstance){
+            ExecutionInstance executionInstance = activityInstance.getExecutionInstance();
+            if (null != executionInstance) {
                 executionInstanceStorage.save(executionInstance);
             }
         }
@@ -177,7 +177,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
 
     private ProcessInstance getProcessInstance(String processId, boolean sub) {
-        ProcessInstance processInstance  = processInstanceStorage.find(processId);
+        ProcessInstance processInstance = processInstanceStorage.find(processId);
 
         return processInstance;
 
@@ -187,8 +187,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     public void clear(String processId) {
         processInstanceStorage.remove(processId);
     }
-
-
 
 
 }

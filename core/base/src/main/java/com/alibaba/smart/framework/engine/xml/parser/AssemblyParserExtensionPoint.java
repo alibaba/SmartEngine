@@ -16,7 +16,7 @@ public interface AssemblyParserExtensionPoint extends LifeCycleListener {
     /**
      * Reads a model from an XMLStreamReader.
      *
-     * @param reader The XMLStreamReader
+     * @param reader  The XMLStreamReader
      * @param context The context
      * @return A model representation of the input.
      */
@@ -25,12 +25,12 @@ public interface AssemblyParserExtensionPoint extends LifeCycleListener {
     /**
      * Reads a model from an XMLStreamReader.
      *
-     * @param reader The XMLStreamReader
+     * @param reader  The XMLStreamReader
      * @param context The context
      * @return A model representation of the input.
      */
     Object readAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) throws ParseException,
-                                                                                           XMLStreamException;
+            XMLStreamException;
 
     void resolve(Object model, ParseContext context) throws ResolveException;
 }

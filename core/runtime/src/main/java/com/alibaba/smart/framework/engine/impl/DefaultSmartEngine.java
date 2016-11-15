@@ -22,17 +22,16 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultSmartEngine implements SmartEngine {
 
-    private final static String      DEFAULT_MODULE    = "framework";
+    private final static String DEFAULT_MODULE = "framework";
 
-    private ExtensionPointRegistry   extensionPointRegistry;
+    private ExtensionPointRegistry extensionPointRegistry;
     private Map<String, ClassLoader> classLoaderHolder = new ConcurrentHashMap<>();
 
 
-    
     @Override
-    public void init(ProcessEngineConfiguration processEngineConfiguration ) {
+    public void init(ProcessEngineConfiguration processEngineConfiguration) {
         this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
-        
+
         processEngineConfiguration.setExtensionPointRegistry(this.extensionPointRegistry);
 
         ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
@@ -55,9 +54,9 @@ public class DefaultSmartEngine implements SmartEngine {
                 }
                 this.classLoaderHolder.put(moduleName, classLoader);
                 if (!loaded) {
-                     this.extensionPointRegistry.register(moduleName, classLoader);
+                    this.extensionPointRegistry.register(moduleName, classLoader);
                 } else {
-                    throw  new IllegalStateException("duplicated module :"+moduleName);
+                    throw new IllegalStateException("duplicated module :" + moduleName);
                 }
             } catch (EngineException loadException) {
                 throw new EngineException("Init engine failure!", loadException);
@@ -65,7 +64,6 @@ public class DefaultSmartEngine implements SmartEngine {
         }
     }
 
-  
 
     @Override
     public void destroy() {

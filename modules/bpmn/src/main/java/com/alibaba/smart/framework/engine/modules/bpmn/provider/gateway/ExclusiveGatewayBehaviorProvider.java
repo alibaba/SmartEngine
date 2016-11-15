@@ -17,7 +17,7 @@ public class ExclusiveGatewayBehaviorProvider extends AbstractBpmnActivityBehavi
 
     @Override
     public void execute(PvmActivity pvmActivity, ExecutionContext context) {
-        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity,context.getProcessInstance());
+        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, context.getProcessInstance());
 
         context.getProcessInstance().addActivityInstance(activityInstance);
     }

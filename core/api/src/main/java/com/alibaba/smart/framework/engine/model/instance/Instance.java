@@ -9,14 +9,14 @@ public interface Instance extends Serializable {
 
     /**
      * 获取实例ID
-     * 
+     *
      * @return 实例ID
      */
     String getInstanceId();
 
     /**
      * 设置实例ID
-     * 
+     *
      * @param id 实例ID
      */
     void setInstanceId(String id);

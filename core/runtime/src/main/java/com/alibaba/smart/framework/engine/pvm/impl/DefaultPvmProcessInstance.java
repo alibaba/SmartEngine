@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author 高海军 帝奇  2016.11.11   TODO 看下存在性
+ * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
 public class DefaultPvmProcessInstance implements PvmProcessInstance {
@@ -52,8 +52,8 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
             List<PvmTransition> matchedTransitions = new ArrayList<>(outcomeTransitions.size());
             for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
                 PvmTransition pendingTransition = transitionEntry.getValue();
-                TransitionBehavior invokerProvider = pendingTransition.getTransitionBehavior();
-                boolean matched = invokerProvider.execute(pendingTransition, context);
+                TransitionBehavior transitionBehavior = pendingTransition.getTransitionBehavior();
+                boolean matched = transitionBehavior.execute(pendingTransition, context);
 
                 if (matched) {
                     matchedTransitions.add(pendingTransition);
@@ -63,7 +63,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
             //TODO 针对互斥和并行网关的线要检验,返回值只有一个或者多个。如果无则抛异常。
 
             for (PvmTransition matchedTransition : matchedTransitions) {
-                PvmActivity  targetPvmActivity =   matchedTransition.getTarget();
+                PvmActivity targetPvmActivity = matchedTransition.getTarget();
                 this.executeCurrentActivityAndLookupNextTransitionRecursively(targetPvmActivity, context);
             }
 
@@ -72,7 +72,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
     }
 
     @Override
-    public ProcessInstance signal(PvmActivity pvmActivity,ExecutionContext executionContext) {
+    public ProcessInstance signal(PvmActivity pvmActivity, ExecutionContext executionContext) {
 
         this.leaveCurrentActivity(pvmActivity, executionContext);
 

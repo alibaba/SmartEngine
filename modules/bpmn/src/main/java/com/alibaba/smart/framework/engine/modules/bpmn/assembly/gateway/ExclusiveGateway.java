@@ -14,9 +14,9 @@ import javax.xml.namespace.QName;
 @EqualsAndHashCode(callSuper = true)
 public class ExclusiveGateway extends AbstractGateway {
 
-    public final static QName type             = new QName(BpmnBase.NAME_SPACE, "exclusiveGateway");
+    public final static QName type = new QName(BpmnBase.NAME_SPACE, "exclusiveGateway");
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 5754815434014251702L;
 

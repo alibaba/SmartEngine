@@ -14,12 +14,12 @@ import javax.xml.namespace.QName;
 @Data
 public class ProcessEvent extends AbstractEvent {
 
-    public final static QName NameType             = new QName(BpmnBase.NAME_SPACE, "event");
+    public final static QName NameType = new QName(BpmnBase.NAME_SPACE, "event");
     private static final long serialVersionUID = 8077655548367028036L;
 
 
-    private String            type;
-    private String            id;
-    private String            method;
+    private String type;
+    private String id;
+    private String method;
 
 }

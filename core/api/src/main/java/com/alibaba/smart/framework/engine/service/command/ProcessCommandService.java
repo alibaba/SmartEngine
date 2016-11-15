@@ -4,6 +4,7 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.param.EngineParam;
 
 import java.util.Map;
+
 /**
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
@@ -13,6 +14,7 @@ public interface ProcessCommandService {
 
     /**
      * 启动流程
+     *
      * @param processId
      * @param version
      * @param variables
@@ -22,12 +24,14 @@ public interface ProcessCommandService {
 
     /**
      * 终止
+     *
      * @param processInstanceId
      */
     void abort(String processInstanceId);
 
     /**
      * 查找某个流程
+     *
      * @param processInstanceId
      * @return
      */
@@ -35,6 +39,7 @@ public interface ProcessCommandService {
 
     /**
      * 从参数中恢复流程实例到内存中
+     *
      * @param processParam
      * @return
      */
@@ -52,8 +57,6 @@ public interface ProcessCommandService {
 
 
     void clear(String processId);
-
-
 
 
 }

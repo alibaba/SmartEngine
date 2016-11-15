@@ -6,14 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author 高海军 帝奇  2016.11.11   TODO 看下存在性
+ * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
 public abstract class AbstractPvmInvocable<M extends IndentityElement> implements PvmInvocable<M> {
 
-    private static final Logger  LOGGER   = LoggerFactory.getLogger(AbstractPvmInvocable.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPvmInvocable.class);
 
-    private M                    model;
+    private M model;
 
 
     @Override
@@ -28,7 +28,7 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
 
     @Override
     public String toString() {
-        return " [getId()=" + getModel().getId() + ", getModelType()=" + getModel().getClass() + "]";
+        return " [getId()=" + getModel().getId();
     }
 
 

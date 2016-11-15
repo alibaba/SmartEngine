@@ -1,98 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions id="test-exclusive" version="1.0.0"
-	xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:smart="http://smart.alibaba-inc.com/schema/process"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="Examples">
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:smart="http://smart.alibaba-inc.com/schema/process"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="Examples">
 
-	<process id="exclusiveTest">
+    <process id="exclusiveTest">
 
-		<startEvent id="theStart">
-			<extensionElements>
-				<smart:executionListener
-					class="com.aliababa.tradeplatform.executionlistener.ProcessStartedEventListener" event="create"/>
-			</extensionElements>
-		</startEvent>
+        <startEvent id="theStart">
+            <extensionElements>
+                <smart:executionListener
+                        class="com.aliababa.tradeplatform.executionlistener.ProcessStartedEventListener"
+                        event="create"/>
+            </extensionElements>
+        </startEvent>
 
-		<sequenceFlow id="flow1" sourceRef="theStart" targetRef="exclusiveGw1" />
+        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="exclusiveGw1"/>
 
-		<exclusiveGateway id="exclusiveGw1" name="Exclusive Gateway 1" />
+        <exclusiveGateway id="exclusiveGw1" name="Exclusive Gateway 1"/>
 
-		<sequenceFlow id="flow2" sourceRef="exclusiveGw1"
-			targetRef="theTask1">
-			<conditionExpression xsi:type="mvel">input == 2
-			</conditionExpression>
-		</sequenceFlow>
+        <sequenceFlow id="flow2" sourceRef="exclusiveGw1"
+                      targetRef="theTask1">
+            <conditionExpression xsi:type="mvel">input == 2
+            </conditionExpression>
+        </sequenceFlow>
 
-		<sequenceFlow id="flow3" sourceRef="exclusiveGw1"
-			targetRef="theTask2">
-			<conditionExpression xsi:type="mvel">input == 3
-			</conditionExpression>
-		</sequenceFlow>
+        <sequenceFlow id="flow3" sourceRef="exclusiveGw1"
+                      targetRef="theTask2">
+            <conditionExpression xsi:type="mvel">input == 3
+            </conditionExpression>
+        </sequenceFlow>
 
-		<sequenceFlow id="flow4" sourceRef="exclusiveGw1"
-			targetRef="theTask3">
-			<conditionExpression xsi:type="mvel">input == 4
-			</conditionExpression>
-		</sequenceFlow>
+        <sequenceFlow id="flow4" sourceRef="exclusiveGw1"
+                      targetRef="theTask3">
+            <conditionExpression xsi:type="mvel">input == 4
+            </conditionExpression>
+        </sequenceFlow>
 
-		 <userTask id="theTask1" name="Task 1">
-    	 </userTask>            
-    
+        <userTask id="theTask1" name="Task 1">
+        </userTask>
 
-		<sequenceFlow id="flow5" sourceRef="theTask1" targetRef="selectTask" />
 
-		<userTask id="theTask2" name="Task 2" >
-		</userTask>
+        <sequenceFlow id="flow5" sourceRef="theTask1" targetRef="selectTask"/>
 
-		<sequenceFlow id="flow6" sourceRef="theTask2" targetRef="selectTask" />
+        <userTask id="theTask2" name="Task 2">
+        </userTask>
 
-		<userTask id="theTask3" name="Task 3">
-		</userTask>
+        <sequenceFlow id="flow6" sourceRef="theTask2" targetRef="selectTask"/>
 
-		<sequenceFlow id="flow7" sourceRef="theTask3" targetRef="selectTask" />
+        <userTask id="theTask3" name="Task 3">
+        </userTask>
 
-		<serviceTask id="selectTask" name="Select Task" smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ServiceTaskDelegation">
-		</serviceTask>
+        <sequenceFlow id="flow7" sourceRef="theTask3" targetRef="selectTask"/>
 
-		<sequenceFlow id="flow8" sourceRef="selectTask"
-			targetRef="exclusiveGw2" />
+        <serviceTask id="selectTask" name="Select Task"
+                     smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ServiceTaskDelegation">
+        </serviceTask>
 
-		<exclusiveGateway id="exclusiveGw2" name="Exclusive Gateway 2" />
+        <sequenceFlow id="flow8" sourceRef="selectTask"
+                      targetRef="exclusiveGw2"/>
 
-		<sequenceFlow id="flow9" sourceRef="exclusiveGw2"
-			targetRef="theTask4">
-			<conditionExpression type="mvel">input == 4
-			</conditionExpression>
-		</sequenceFlow>
+        <exclusiveGateway id="exclusiveGw2" name="Exclusive Gateway 2"/>
 
-		<sequenceFlow id="flow10" sourceRef="exclusiveGw2"
-			targetRef="theTask5">
-			<conditionExpression type="mvel">input == 5
-			</conditionExpression>
-		</sequenceFlow>
+        <sequenceFlow id="flow9" sourceRef="exclusiveGw2"
+                      targetRef="theTask4">
+            <conditionExpression type="mvel">input == 4
+            </conditionExpression>
+        </sequenceFlow>
 
-		<sequenceFlow id="flow11" sourceRef="exclusiveGw2"
-			targetRef="theTask6">
-			<conditionExpression type="mvel">input == 2
-			</conditionExpression>
-		</sequenceFlow>
+        <sequenceFlow id="flow10" sourceRef="exclusiveGw2"
+                      targetRef="theTask5">
+            <conditionExpression type="mvel">input == 5
+            </conditionExpression>
+        </sequenceFlow>
 
-		<userTask id="theTask4" name="Task 4" >
-		</userTask>
+        <sequenceFlow id="flow11" sourceRef="exclusiveGw2"
+                      targetRef="theTask6">
+            <conditionExpression type="mvel">input == 2
+            </conditionExpression>
+        </sequenceFlow>
 
-		<sequenceFlow id="flow12" sourceRef="theTask4" targetRef="theEnd" />
+        <userTask id="theTask4" name="Task 4">
+        </userTask>
 
-		<userTask id="theTask5" name="Task 5" >
-		</userTask>
+        <sequenceFlow id="flow12" sourceRef="theTask4" targetRef="theEnd"/>
 
-		<sequenceFlow id="flow13" sourceRef="theTask5" targetRef="theEnd" />
+        <userTask id="theTask5" name="Task 5">
+        </userTask>
 
-		<userTask id="theTask6" name="Task 6" >
-		</userTask>
+        <sequenceFlow id="flow13" sourceRef="theTask5" targetRef="theEnd"/>
 
-		<sequenceFlow id="flow14" sourceRef="theTask6" targetRef="theEnd" />
+        <userTask id="theTask6" name="Task 6">
+        </userTask>
 
-		<endEvent id="theEnd" />
+        <sequenceFlow id="flow14" sourceRef="theTask6" targetRef="theEnd"/>
 
-	</process>
+        <endEvent id="theEnd"/>
+
+    </process>
 
 </definitions>
