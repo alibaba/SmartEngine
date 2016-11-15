@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 高海军 帝奇  2016.11.11

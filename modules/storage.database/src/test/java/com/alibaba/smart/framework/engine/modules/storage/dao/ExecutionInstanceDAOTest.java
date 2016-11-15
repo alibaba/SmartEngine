@@ -1,12 +1,11 @@
 package com.alibaba.smart.framework.engine.modules.storage.dao;
 
-import javax.annotation.Resource;
-
+import com.alibaba.smart.framework.engine.modules.storage.entity.ExecutionInstanceEntity;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.alibaba.smart.framework.engine.modules.storage.entity.ExecutionInstanceEntity;
+import javax.annotation.Resource;
 
 public class ExecutionInstanceDAOTest extends BaseTest {
 

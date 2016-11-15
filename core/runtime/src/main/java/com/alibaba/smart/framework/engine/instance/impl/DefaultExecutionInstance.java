@@ -1,14 +1,12 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.DatabaseMod;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.param.ExecutionParam;
 import com.google.common.base.Strings;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * DefaultExecutionInstance Created by ettear on 16-4-19.

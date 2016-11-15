@@ -1,13 +1,12 @@
 package com.alibaba.smart.framework.engine.deployment.impl;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author 高海军 帝奇  2016.11.11

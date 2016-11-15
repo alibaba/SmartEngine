@@ -1,24 +1,26 @@
 package com.alibaba.smart.framework.engine.modules.bpmn;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.alibaba.smart.framework.engine.model.instance.*;
-import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import org.junit.Assert;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class UserTaskProcessTest {
 

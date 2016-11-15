@@ -1,15 +1,15 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.parser;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 public class ParallelGatewayParser extends AbstractBpmnActivityParser<ParallelGateway> implements StAXArtifactParser<ParallelGateway> {
 

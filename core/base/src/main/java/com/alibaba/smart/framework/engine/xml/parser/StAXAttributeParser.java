@@ -1,10 +1,10 @@
 package com.alibaba.smart.framework.engine.xml.parser;
 
+import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
 /**
  * An artifact parser that can parse attributes from a StAX XMLStreamReader. Created by ettear on 16-4-12.

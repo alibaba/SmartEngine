@@ -1,25 +1,19 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
+import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehaviorProvider;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.util.ParamChecker;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-
-import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.invocation.Invoker;
-import com.alibaba.smart.framework.engine.invocation.impl.DefaultActivityTransitionSelectInvoker;
-import com.alibaba.smart.framework.engine.invocation.message.Message;
-import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
-import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehaviorProvider;
-import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author 高海军 帝奇  2016.11.11   TODO 看下存在性
@@ -42,11 +36,11 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
     public void execute(ExecutionContext context) {
 
         //TODO 居然强转
-        AbstractActivityBehaviorProvider<?> activityBehaviorProvider =   (AbstractActivityBehaviorProvider<?>) this.getProvider();
+        ActivityBehavior activityBehaviorProvider =   this.getActivityBehavior();
         activityBehaviorProvider.execute(this,context);
     }
 
-    private void dealEvent(ExecutionContext context, ActivityInstance activityInstance, Message activityExecuteMessage) {
+    private void dealEvent(ExecutionContext context, ActivityInstance activityInstance) {
         Map<String,Object> request = context.getRequest();
         String event = (String) request.get("event");
         ParamChecker.notNull(event,"assignEvent is null !");
@@ -55,25 +49,32 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
 
     }
 
-    @Override
-    protected Invoker createDefaultInvoker(String event) {
-        if (PvmEventConstant.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
-            return new DefaultActivityTransitionSelectInvoker( this);
-        } else {
-            return super.createDefaultInvoker(event);
-        }
-    }
+
 
     private void invokeActivity(String event, ExecutionContext context) {
          this.fireEvent(event, context);
     }
 
 
+    //TODO
     @Override
     public String toString() {
         return " [id=" + getModel().getId() + "]";
     }
 
 
+    @Override
+    public void fireEvent(String event, ExecutionContext context) {
 
+    }
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void stop() {
+
+    }
 }

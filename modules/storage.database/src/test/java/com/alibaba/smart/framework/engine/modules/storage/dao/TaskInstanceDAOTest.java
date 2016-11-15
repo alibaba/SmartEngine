@@ -1,14 +1,12 @@
 package com.alibaba.smart.framework.engine.modules.storage.dao;
 
-import java.util.Date;
-
-import javax.annotation.Resource;
-
+import com.alibaba.smart.framework.engine.modules.storage.entity.TaskInstanceEntity;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.alibaba.smart.framework.engine.modules.storage.entity.TaskInstanceEntity;
+import javax.annotation.Resource;
+import java.util.Date;
 
 public class TaskInstanceDAOTest extends BaseTest {
 

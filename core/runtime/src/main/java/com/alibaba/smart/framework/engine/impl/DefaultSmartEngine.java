@@ -1,21 +1,20 @@
 package com.alibaba.smart.framework.engine.impl;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
-import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
+import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
+import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author 高海军 帝奇  2016.11.11

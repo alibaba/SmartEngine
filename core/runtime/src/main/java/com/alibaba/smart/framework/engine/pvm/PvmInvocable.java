@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.pvm;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.IndentityElement;
 

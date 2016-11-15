@@ -1,16 +1,16 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.provider.TransitionProvider;
+import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author 高海军 帝奇  2016.11.11   TODO 看下存在性
@@ -51,12 +51,12 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
         if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
             List<PvmTransition> matchedTransitions = new ArrayList<>(outcomeTransitions.size());
             for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
-                PvmTransition pvmTransition1 = transitionEntry.getValue();
-                TransitionProvider invokerProvider = (TransitionProvider) pvmTransition1.getProvider();
-                boolean matched = invokerProvider.execute(pvmTransition1, context);
+                PvmTransition pendingTransition = transitionEntry.getValue();
+                TransitionBehavior invokerProvider = pendingTransition.getTransitionBehavior();
+                boolean matched = invokerProvider.execute(pendingTransition, context);
 
                 if (matched) {
-                    matchedTransitions.add(pvmTransition1);
+                    matchedTransitions.add(pendingTransition);
                 }
 
             }

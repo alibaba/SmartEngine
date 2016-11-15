@@ -2,8 +2,6 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.parser;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.Action;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvents;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ReceiveTask;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;

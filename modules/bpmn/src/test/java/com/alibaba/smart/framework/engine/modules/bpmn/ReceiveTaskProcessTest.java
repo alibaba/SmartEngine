@@ -5,7 +5,10 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.instance.*;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
@@ -17,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class ReceiveTaskProcessTest {
 

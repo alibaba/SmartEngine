@@ -1,12 +1,5 @@
 package com.alibaba.smart.framework.engine.xml.parser.impl;
 
-import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
-import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
@@ -15,6 +8,13 @@ import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoin
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 /**
  * Abstract StAXArtifactParser Created by ettear on 16-4-14.

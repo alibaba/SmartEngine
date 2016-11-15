@@ -1,20 +1,5 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
-import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
-import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
-
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
@@ -22,15 +7,11 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
-import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.*;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.assembly.Transition;
-import com.alibaba.smart.framework.engine.provider.ActivityBehaviorProvider;
+import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.provider.ProviderRegister;
-import com.alibaba.smart.framework.engine.provider.TransitionProvider;
+import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -41,9 +22,22 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmActivity;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcessComponent;
+import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 
 /**
@@ -169,7 +163,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             if (null != pvmProcessDefinition) {
 //                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(process.getClass());
                 //TODO
-//                ActivityBehaviorProvider activityBehaviorProvider = providerFactory.createActivityProvider(pvmProcessDefinition);
+//                ActivityBehavior activityBehaviorProvider = providerFactory.createActivityProvider(pvmProcessDefinition);
 //                ((ProviderRegister) pvmProcessDefinition).registerProvider(activityBehaviorProvider);
                 processComponent.setProcess(pvmProcessDefinition);
             } else {
@@ -275,8 +269,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     throw new RuntimeException("No factory found for " + runtimeTransition.getModel().getClass());
                 }
 
-                TransitionProvider transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
-                runtimeTransition.registerProvider(transitionProvider);
+                TransitionBehavior transitionBehavior = providerFactory.createTransitionProvider(runtimeTransition);
+                runtimeTransition.setTransitionBehavior(transitionBehavior);
             }
 
             // Create Invoker for Activity
@@ -288,8 +282,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     throw new RuntimeException("No factory found for " + runtimeActivity.getModel().getClass());
                 }
 
-                ActivityBehaviorProvider activityBehaviorProvider = providerFactory.createActivityProvider(runtimeActivity);
-                runtimeActivity.registerProvider(activityBehaviorProvider);
+                ActivityBehavior activityBehavior = providerFactory.createActivityProvider(runtimeActivity);
+                runtimeActivity.setActivityBehavior(activityBehavior);
             }
 
             pvmProcessDefinition.setActivities(runtimeActivities);

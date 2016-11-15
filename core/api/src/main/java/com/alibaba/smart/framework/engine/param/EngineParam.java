@@ -1,12 +1,11 @@
 package com.alibaba.smart.framework.engine.param;
 
-import java.util.Map;
-
+import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.util.EngineConstant;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.util.EngineConstant;
+import java.util.Map;
 
 /**
  * 流程引擎入参

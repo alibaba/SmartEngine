@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions id="test-parallel" version="1.0.0"
-             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-             xmlns:smart="http://smart.alibaba-inc.com/schema/process"
-             targetNamespace="Examples">
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 targetNamespace="Examples">
 
 	<process id="2001">
 

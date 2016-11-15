@@ -1,9 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.storage.memory;
 
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
-import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

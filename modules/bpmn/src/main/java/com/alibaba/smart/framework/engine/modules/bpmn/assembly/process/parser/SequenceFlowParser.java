@@ -1,9 +1,5 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Handler;
@@ -13,6 +9,10 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Sequence
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> implements StAXArtifactParser<SequenceFlow> {
 

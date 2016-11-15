@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.pvm;
 
-import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
 
 import java.util.Map;

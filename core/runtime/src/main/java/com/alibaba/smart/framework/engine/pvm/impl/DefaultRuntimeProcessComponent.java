@@ -1,12 +1,11 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import lombok.Data;
-
 import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
+import lombok.Data;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author 高海军 帝奇  2016.11.11   TODO 看下存在性

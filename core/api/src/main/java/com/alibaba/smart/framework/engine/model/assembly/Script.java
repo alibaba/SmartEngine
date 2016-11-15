@@ -1,9 +1,8 @@
 package com.alibaba.smart.framework.engine.model.assembly;
 
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBase;
 
 /**
  * @author 高海军 帝奇  2016.11.11

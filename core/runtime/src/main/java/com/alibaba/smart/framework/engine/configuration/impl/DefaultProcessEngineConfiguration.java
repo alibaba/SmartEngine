@@ -1,9 +1,8 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
-import lombok.Data;
-
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;

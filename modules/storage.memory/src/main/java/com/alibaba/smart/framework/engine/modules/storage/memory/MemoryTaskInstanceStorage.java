@@ -1,8 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.storage.memory;
 
-import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 
 import java.util.Map;

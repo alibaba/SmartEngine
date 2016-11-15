@@ -1,10 +1,8 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+
+import java.util.Map;
 
 /**
  * @author 高海军 帝奇  2016.11.11
