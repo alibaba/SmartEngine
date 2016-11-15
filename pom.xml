@@ -33,8 +33,13 @@
     </properties>
 
     <modules>
-        <module>core</module>
-        <module>modules</module>
+        <module>api</module>
+        <module>base</module>
+        <module>bpmn</module>
+        <module>runtime</module>
+        <module>storage.database</module>
+        <module>storage.memory</module>
+
     </modules>
 
     <dependencies>
