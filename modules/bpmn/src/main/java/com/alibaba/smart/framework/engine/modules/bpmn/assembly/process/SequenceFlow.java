@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process;
 
-import com.alibaba.smart.framework.engine.model.assembly.Handler;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTransition;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
@@ -24,7 +23,6 @@ public class SequenceFlow extends AbstractTransition {
     public final static QName   type             = new QName(BpmnBase.NAME_SPACE, "sequenceFlow");
 
     private ConditionExpression conditionExpression;
-    private Handler             handler;
     private ExtensionElements   extensions;
 
 }

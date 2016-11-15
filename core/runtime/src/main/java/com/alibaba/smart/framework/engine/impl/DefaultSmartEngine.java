@@ -57,7 +57,7 @@ public class DefaultSmartEngine implements SmartEngine {
                 if (!loaded) {
                      this.extensionPointRegistry.register(moduleName, classLoader);
                 } else {
-                    //TODO
+                    throw  new IllegalStateException("duplicated module :"+moduleName);
                 }
             } catch (EngineException loadException) {
                 throw new EngineException("Init engine failure!", loadException);

@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.Handler;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
@@ -45,9 +44,7 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> impleme
     protected void parseChild(SequenceFlow model, BaseElement child) {
         if (child instanceof ConditionExpression) {
             model.setConditionExpression((ConditionExpression) child);
-        } else if (child instanceof Handler) {
-            model.setHandler((Handler) child);
-        } else if (child instanceof ExtensionElements) {
+        }  else if (child instanceof ExtensionElements) {
             model.setExtensions((ExtensionElements) child);
         }
     }

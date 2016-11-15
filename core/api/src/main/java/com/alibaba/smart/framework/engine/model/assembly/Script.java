@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Script extends AbstractBase implements Handler {
+public class Script extends AbstractBase implements BaseElement {
 
     private static final long serialVersionUID = -5323003411376547684L;
     private String type;
