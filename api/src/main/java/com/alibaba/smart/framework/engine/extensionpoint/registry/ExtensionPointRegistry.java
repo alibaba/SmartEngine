@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
  */
 public interface ExtensionPointRegistry extends LifeCycleListener {
 
-    void register(String moduleName, ClassLoader classLoader);
+    void register();
 
     /**
      * 获取扩展点

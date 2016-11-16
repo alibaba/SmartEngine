@@ -10,7 +10,6 @@ import com.alibaba.smart.framework.engine.model.assembly.IndentityElement;
  */
 public interface PvmInvocable<M extends IndentityElement> extends LifeCycleListener {
 
-    //TODO 看下子类
     M getModel();
 
     /**

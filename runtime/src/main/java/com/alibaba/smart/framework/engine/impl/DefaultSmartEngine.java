@@ -22,7 +22,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultSmartEngine implements SmartEngine {
 
-    private final static String DEFAULT_MODULE = "framework";
 
     private ExtensionPointRegistry extensionPointRegistry;
     private Map<String, ClassLoader> classLoaderHolder = new ConcurrentHashMap<>();
@@ -32,36 +31,14 @@ public class DefaultSmartEngine implements SmartEngine {
     public void init(ProcessEngineConfiguration processEngineConfiguration) {
         this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
 
-        processEngineConfiguration.setExtensionPointRegistry(this.extensionPointRegistry);
-
-        ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
-        this.install(DEFAULT_MODULE, classLoader);
+        this.install();
         this.extensionPointRegistry.start();
     }
 
-    private void install(String moduleName, ClassLoader classLoader) throws EngineException {
-        if (StringUtils.isBlank(moduleName)) {
-            moduleName = DEFAULT_MODULE;
-        }
-        if (!this.classLoaderHolder.containsKey(moduleName)) {
-            try {
-                boolean loaded = false;
-                for (ClassLoader loader : classLoaderHolder.values()) {
-                    if (loader == classLoader) {
-                        loaded = true;
-                        break;
-                    }
-                }
-                this.classLoaderHolder.put(moduleName, classLoader);
-                if (!loaded) {
-                    this.extensionPointRegistry.register(moduleName, classLoader);
-                } else {
-                    throw new IllegalStateException("duplicated module :" + moduleName);
-                }
-            } catch (EngineException loadException) {
-                throw new EngineException("Init engine failure!", loadException);
-            }
-        }
+    private void install() throws EngineException {
+
+       this.extensionPointRegistry.register();
+
     }
 
 
@@ -71,13 +48,6 @@ public class DefaultSmartEngine implements SmartEngine {
 
     }
 
-    @Override
-    public ClassLoader getClassLoader(String moduleName) {
-        if (StringUtils.isBlank(moduleName)) {
-            moduleName = DEFAULT_MODULE;
-        }
-        return this.classLoaderHolder.get(moduleName);
-    }
 
     @Override
     public RepositoryCommandService getRepositoryService() {

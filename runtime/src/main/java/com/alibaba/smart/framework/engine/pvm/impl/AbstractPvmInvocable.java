@@ -25,11 +25,4 @@ public abstract class AbstractPvmInvocable<M extends IndentityElement> implement
         this.model = model;
     }
 
-
-    @Override
-    public String toString() {
-        return " [getId()=" + getModel().getId();
-    }
-
-
 }

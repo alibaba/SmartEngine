@@ -43,4 +43,9 @@ public class DefaultPvmTransition extends AbstractPvmInvocable<Transition> imple
     public void stop() {
 
     }
+
+    @Override
+    public String toString() {
+        return " [getId()=" + getModel().getId();
+    }
 }

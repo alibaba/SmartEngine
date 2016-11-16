@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,13 +36,15 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
     /**
      * 扫描和加载class loader内扩展点配置
      *
-     * @param classLoader ClassLoader
      */
     @Override
-    public void register(String moduleName, ClassLoader classLoader) {
+    public void register() {
         Enumeration<URL> extensionConfigFiles;
         String extensionName = getExtensionName();
+        ClassLoader classLoader;
+
         try {
+            classLoader = ClassLoaderUtil.getStandardClassLoader();
             extensionConfigFiles = classLoader.getResources("smart/" + extensionName + ".properties");
         } catch (IOException e) {
             throw new EngineException("Scan config file " + extensionName + " failure!", e);
@@ -68,9 +71,9 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
                 if (!properties.isEmpty()) {
 
                     for (Map.Entry<Object, Object> propertyEntry : properties.entrySet()) {
-                        String entensionEntryKey = (String) propertyEntry.getKey();
-                        String entensionEntryValue = (String) propertyEntry.getValue();
-                        this.instantiateAndInitExtension(classLoader, entensionEntryKey, entensionEntryValue);
+                        String extensionEntryKey = (String) propertyEntry.getKey();
+                        String extensionEntryValue = (String) propertyEntry.getValue();
+                        this.instantiateAndInitExtension(classLoader, extensionEntryKey, extensionEntryValue);
                     }
                 }
             }
@@ -78,10 +81,10 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
     }
 
     @SuppressWarnings("rawtypes")
-    private void instantiateAndInitExtension(ClassLoader classLoader, String entensionEntryKey, String entensionEntryValue) {
+    private void instantiateAndInitExtension(ClassLoader classLoader, String extensionEntryKey, String extensionEntryValue) {
         Class<?> extensionValueClass;
         try {
-            extensionValueClass = classLoader.loadClass(entensionEntryValue);
+            extensionValueClass = classLoader.loadClass(extensionEntryValue);
 
         } catch (ClassNotFoundException e) {
             throw new EngineException("Scan config file " + getExtensionName() + " failure!", e);
@@ -95,11 +98,11 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
                 Constructor constructor = extensionValueClass.getConstructor();
                 extensionValueObject = constructor.newInstance();
             } catch (Exception ex) {
-                throw new EngineException("Instance constructor for class " + entensionEntryValue + " !",
+                throw new EngineException("Instance constructor for class " + extensionEntryValue + " !",
                         ex);
             }
         }
-        this.initExtension(classLoader, entensionEntryKey, extensionValueObject);
+        this.initExtension(classLoader, extensionEntryKey, extensionValueObject);
     }
 
     /**

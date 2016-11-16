@@ -31,6 +31,5 @@ public interface SmartEngine {
 
     void destroy();
 
-    //TODO 干掉 
-    ClassLoader getClassLoader(String moduleName);
+
 }

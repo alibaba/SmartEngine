@@ -25,17 +25,17 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
     }
 
     @Override
-    public void register(String moduleName, ClassLoader classLoader) {
+    public void register() {
         //一层加载:将extensions properties全部加载进来,加载一层扩展点
         //TODO extensionPoints 这个里面的东西还是比较杂,还可以细化. 太多的instanceof 是有点懒政的.
-        super.register(moduleName, classLoader);
+        super.register();
         for (Object extensionPoint : extensionPoints.values()) {
             if (extensionPoint instanceof ExtensionPointRegistry) {
                 LOGGER.debug(extensionPoint.getClass() + " is a ExtensionPointRegistry,so deep into.");
 
                 //两层加载:找到扩展点的扩展点,然后继续加载 
                 ExtensionPointRegistry extensionPointRegistry = (ExtensionPointRegistry) extensionPoint;
-                extensionPointRegistry.register(moduleName, classLoader);
+                extensionPointRegistry.register();
             } else {
                 LOGGER.debug(extensionPoint.getClass() + " is not a ExtensionPointRegistry,so igonred.");
             }

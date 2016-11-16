@@ -5,6 +5,7 @@ import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.*;
@@ -61,18 +62,9 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @Override
-    public ProcessDefinition deploy(String uri) throws DeployException {
-        return this.deploy(null, uri);
-    }
+    public ProcessDefinition deploy( String uri) throws DeployException {
 
-    @Override
-    public ProcessDefinition deploy(String moduleName, String uri) throws DeployException {
-
-        ClassLoader classLoader = this.smartEngine.getClassLoader(moduleName);
-
-        if (null == classLoader) {
-            throw new DeployException("Module[" + moduleName + "] not found!");
-        }
+       ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
 
         //TODO 支持从不同地方加载 优先级高
         ProcessDefinition definition = this.parse(classLoader, uri);
