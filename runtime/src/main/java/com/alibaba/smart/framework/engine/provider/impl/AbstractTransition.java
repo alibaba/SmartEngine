@@ -8,11 +8,11 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public abstract class AbstractTransitionProvider<T extends Transition> implements TransitionBehavior<T> {
+public abstract class AbstractTransition<T extends Transition> implements TransitionBehavior<T> {
 
     private PvmTransition runtimeTransition;
 
-    public AbstractTransitionProvider(PvmTransition runtimeTransition) {
+    public AbstractTransition(PvmTransition runtimeTransition) {
         this.runtimeTransition = runtimeTransition;
     }
 

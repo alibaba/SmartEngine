@@ -27,12 +27,4 @@ public interface PvmActivity extends PvmInvocable<Activity> {
      */
     void execute(ExecutionContext context);
 
-    /**
-     * 暂停型节点恢复执行时,会调用此方法.
-     *
-     * @param context
-     */
-    void signal(ExecutionContext context);
-
-
 }

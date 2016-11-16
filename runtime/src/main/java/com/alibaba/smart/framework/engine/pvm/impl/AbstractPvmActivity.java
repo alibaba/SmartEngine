@@ -23,13 +23,7 @@ public abstract class AbstractPvmActivity<M extends Activity> extends AbstractPv
     private Map<String, PvmTransition> incomeTransitions = new ConcurrentHashMap<>();
     private Map<String, PvmTransition> outcomeTransitions = new ConcurrentHashMap<>();
     private ActivityBehavior activityBehavior;
-
-
-    //TODO
-    @Override
-    public void signal(ExecutionContext context) {
-    }
-
+    
 
     // Getter & Setter
     public void addIncomeTransition(String transitionId, PvmTransition income) {
