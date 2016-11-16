@@ -19,11 +19,6 @@ public class ServiceTask extends AbstractTask {
     private static final long serialVersionUID = 2900871220232200586L;
 
     /**
-     * 该流程节点是否是自动连接下一个节点
-     */
-    private boolean auto;
-
-    /**
      * 流程节点的主要执行动作
      */
     private Action action;

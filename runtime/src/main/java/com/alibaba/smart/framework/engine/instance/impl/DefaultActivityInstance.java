@@ -19,8 +19,6 @@ public class DefaultActivityInstance extends AbstractLifeCycleInstance implement
     private String activityId;
     private String processInstanceId;
     private List<TransitionInstance> incomeTransitions = new ArrayList<>();
-//    private String currentStep;
-//    private TaskInstance taskInstance;
     private ExecutionInstance executionInstance;
 
 
@@ -29,14 +27,5 @@ public class DefaultActivityInstance extends AbstractLifeCycleInstance implement
         this.incomeTransitions.add(transitionInstance);
     }
 
-//    @Override
-//
-//
-//    @Override
-//    public DefaultActivityInstance getModel(ActivityParam param) {
-//        this.setProcessInstanceId(param.getProcessId());
-//        this.setActivityId(param.getActivityId());
-////        this.setCurrentStep(param.getCurrentStep());
-//        return this;
-//    }
+
 }

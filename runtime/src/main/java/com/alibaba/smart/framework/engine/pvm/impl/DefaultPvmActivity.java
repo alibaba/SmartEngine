@@ -35,7 +35,6 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
     @Override
     public void execute(ExecutionContext context) {
 
-        //TODO 居然强转
         ActivityBehavior activityBehaviorProvider = this.getActivityBehavior();
         activityBehaviorProvider.execute(this, context);
     }

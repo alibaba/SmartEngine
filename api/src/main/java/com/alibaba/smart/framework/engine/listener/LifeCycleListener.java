@@ -2,8 +2,6 @@ package com.alibaba.smart.framework.engine.listener;
 
 /**
  * 生命周期监听 Created by ettear on 16-4-13.
- * <p>
- * TODO 可能滥用
  */
 public interface LifeCycleListener {
 

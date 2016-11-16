@@ -17,5 +17,4 @@ public interface ProcessInstanceFactory {
     ProcessInstance create(PvmProcessDefinition pvmProcessDefinition);
 
 
-    ProcessInstance recovery(ProcessParam param);
 }

@@ -16,7 +16,6 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
     private String processInstanceId;
     private String activityInstanceId;
 
-    //TODO 去掉对象关联
     private String activityId;
     private TaskInstance taskInstance;
 
