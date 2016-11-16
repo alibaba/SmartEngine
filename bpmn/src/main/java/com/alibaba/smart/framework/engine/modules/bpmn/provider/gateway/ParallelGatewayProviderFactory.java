@@ -14,8 +14,8 @@ public class ParallelGatewayProviderFactory implements ActivityProviderFactory<P
     }
 
     @Override
-    public ParallelGatewayBehaviorProvider createActivityProvider(PvmActivity activity) {
-        return new ParallelGatewayBehaviorProvider(this.extensionPointRegistry, activity);
+    public ParallelGatewayBehavior createActivityProvider(PvmActivity activity) {
+        return new ParallelGatewayBehavior(this.extensionPointRegistry, activity);
     }
 
     @Override

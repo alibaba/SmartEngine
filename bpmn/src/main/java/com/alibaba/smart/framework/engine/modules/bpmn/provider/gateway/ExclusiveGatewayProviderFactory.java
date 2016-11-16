@@ -14,8 +14,8 @@ public class ExclusiveGatewayProviderFactory implements ActivityProviderFactory<
     }
 
     @Override
-    public ExclusiveGatewayBehaviorProvider createActivityProvider(PvmActivity activity) {
-        return new ExclusiveGatewayBehaviorProvider(this.extensionPointRegistry, activity);
+    public ExclusiveGatewayBehavior createActivityProvider(PvmActivity activity) {
+        return new ExclusiveGatewayBehavior(this.extensionPointRegistry, activity);
     }
 
     @Override

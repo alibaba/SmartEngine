@@ -9,11 +9,11 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public abstract class AbstractActivityBehaviorProvider<T extends Activity> implements ActivityBehavior<T> {
+public abstract class AbstractActivityBehavior<T extends Activity> implements ActivityBehavior<T> {
 
     private PvmActivity runtimeActivity;
 
-    public AbstractActivityBehaviorProvider(PvmActivity runtimeActivity) {
+    public AbstractActivityBehavior(PvmActivity runtimeActivity) {
         this.runtimeActivity = runtimeActivity;
     }
 

@@ -6,13 +6,13 @@ import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFact
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.AbstractBpmnActivity;
-import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehaviorProvider;
+import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**
  * Created by ettear on 16-4-29.
  */
-public abstract class AbstractBpmnActivityBehaviorProvider<M extends AbstractBpmnActivity> extends AbstractActivityBehaviorProvider<M> {
+public abstract class AbstractBpmnActivityBehavior<M extends AbstractBpmnActivity> extends AbstractActivityBehavior<M> {
 
     private ExtensionPointRegistry extensionPointRegistry;
 
@@ -21,7 +21,7 @@ public abstract class AbstractBpmnActivityBehaviorProvider<M extends AbstractBpm
     protected ActivityInstanceFactory activityInstanceFactory;
     protected TaskInstanceFactory taskInstanceFactory;
 
-    public AbstractBpmnActivityBehaviorProvider(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    public AbstractBpmnActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(runtimeActivity);
         this.extensionPointRegistry = extensionPointRegistry;
         this.processInstanceFactory = extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);

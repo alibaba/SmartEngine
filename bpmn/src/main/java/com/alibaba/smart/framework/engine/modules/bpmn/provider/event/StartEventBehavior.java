@@ -5,13 +5,13 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.StartEvent;
-import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityBehaviorProvider;
+import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
-public class StartEventBehaviorProvider extends AbstractBpmnActivityBehaviorProvider<StartEvent> implements ActivityBehavior<StartEvent> {
+public class StartEventBehavior extends AbstractBpmnActivityBehavior<StartEvent> implements ActivityBehavior<StartEvent> {
 
-    public StartEventBehaviorProvider(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    public StartEventBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 

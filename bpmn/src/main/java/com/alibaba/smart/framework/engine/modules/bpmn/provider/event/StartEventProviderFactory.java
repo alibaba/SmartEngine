@@ -14,8 +14,8 @@ public class StartEventProviderFactory implements ActivityProviderFactory<StartE
     }
 
     @Override
-    public StartEventBehaviorProvider createActivityProvider(PvmActivity activity) {
-        return new StartEventBehaviorProvider(this.extensionPointRegistry, activity);
+    public StartEventBehavior createActivityProvider(PvmActivity activity) {
+        return new StartEventBehavior(this.extensionPointRegistry, activity);
     }
 
     @Override

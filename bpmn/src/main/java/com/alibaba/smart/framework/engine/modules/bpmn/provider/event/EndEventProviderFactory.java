@@ -14,8 +14,8 @@ public class EndEventProviderFactory implements ActivityProviderFactory<EndEvent
     }
 
     @Override
-    public EndEventBehaviorProvider createActivityProvider(PvmActivity activity) {
-        return new EndEventBehaviorProvider(this.extensionPointRegistry, activity);
+    public EndEventBehavior createActivityProvider(PvmActivity activity) {
+        return new EndEventBehavior(this.extensionPointRegistry, activity);
     }
 
     @Override

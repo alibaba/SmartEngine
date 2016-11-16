@@ -7,13 +7,13 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
-import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityBehaviorProvider;
+import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
-public class UserTaskBehaviorProvider extends AbstractBpmnActivityBehaviorProvider<UserTask> implements ActivityBehavior<UserTask> {
+public class UserTaskBehavior extends AbstractBpmnActivityBehavior<UserTask> implements ActivityBehavior<UserTask> {
 
-    public UserTaskBehaviorProvider(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    public UserTaskBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 

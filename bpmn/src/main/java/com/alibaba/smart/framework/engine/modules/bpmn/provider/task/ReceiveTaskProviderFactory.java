@@ -14,8 +14,8 @@ public class ReceiveTaskProviderFactory implements ActivityProviderFactory<Recei
     }
 
     @Override
-    public ReceiveTaskBehaviorProvider createActivityProvider(PvmActivity activity) {
-        return new ReceiveTaskBehaviorProvider(this.extensionPointRegistry, activity);
+    public ReceiveTaskBehavior createActivityProvider(PvmActivity activity) {
+        return new ReceiveTaskBehavior(this.extensionPointRegistry, activity);
     }
 
     @Override

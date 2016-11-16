@@ -4,13 +4,13 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
-import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityBehaviorProvider;
+import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
-public class ExclusiveGatewayBehaviorProvider extends AbstractBpmnActivityBehaviorProvider<ExclusiveGateway> implements ActivityBehavior<ExclusiveGateway> {
+public class ExclusiveGatewayBehavior extends AbstractBpmnActivityBehavior<ExclusiveGateway> implements ActivityBehavior<ExclusiveGateway> {
 
-    public ExclusiveGatewayBehaviorProvider(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    public ExclusiveGatewayBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 
