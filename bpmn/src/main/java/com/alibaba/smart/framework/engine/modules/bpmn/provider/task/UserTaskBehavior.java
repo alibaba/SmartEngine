@@ -18,9 +18,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> impleme
     }
 
     @Override
-    public void execute(PvmActivity pvmActivity, ExecutionContext context) {
-        //TODO 在父类控制
-        context.setNeedPause(true);
+    public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext context) {
 
         ProcessInstance processInstance = context.getProcessInstance();
         ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
@@ -33,5 +31,10 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> impleme
         activityInstance.setExecutionInstance(executionInstance);
 
         processInstance.addActivityInstance(activityInstance);
+    }
+
+    @Override
+    public boolean needSuspend() {
+        return true;
     }
 }

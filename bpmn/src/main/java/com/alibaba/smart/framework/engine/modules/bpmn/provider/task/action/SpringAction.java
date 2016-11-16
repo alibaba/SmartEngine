@@ -26,7 +26,7 @@
 //
 //
 //    @Override
-//    public Message execute() {
+//    public Message buildInstanceRelationShip() {
 //        ParamChecker.notNull(bean,"bean is null,not exist");
 //        ParamChecker.notNull(excuteMethod,"excute method is null");
 //        ParamChecker.notNull(context,"excute context is null");

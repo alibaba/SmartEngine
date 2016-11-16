@@ -5,9 +5,10 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
+import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
-public class ExclusiveGatewayBehavior extends com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior<ExclusiveGateway> implements ActivityBehavior<ExclusiveGateway> {
+public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<ExclusiveGateway> implements ActivityBehavior<ExclusiveGateway> {
 
     public ExclusiveGatewayBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
@@ -15,9 +16,14 @@ public class ExclusiveGatewayBehavior extends com.alibaba.smart.framework.engine
 
 
     @Override
-    public void execute(PvmActivity pvmActivity, ExecutionContext context) {
+    public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext context) {
         ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, context.getProcessInstance());
 
         context.getProcessInstance().addActivityInstance(activityInstance);
+    }
+
+    @Override
+    public boolean needSuspend() {
+        return false;
     }
 }

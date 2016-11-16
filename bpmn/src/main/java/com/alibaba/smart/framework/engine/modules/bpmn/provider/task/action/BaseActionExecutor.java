@@ -56,7 +56,7 @@
 //        return message;
 //    }
 //
-//    public abstract Message execute();
+//    public abstract Message buildInstanceRelationShip();
 //
 //
 //

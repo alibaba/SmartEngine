@@ -40,7 +40,7 @@
 //            if (event.getId().equals(assigineEvent)) {
 //                SpringAction springAction = new SpringAction(event.getId(),event.getMethod(),executionContext.getRequest());
 //                try {
-//                    springAction.execute();
+//                    springAction.buildInstanceRelationShip();
 //                } catch (Throwable e) {
 //                    //这里好像抓不到异常了已经
 //                }

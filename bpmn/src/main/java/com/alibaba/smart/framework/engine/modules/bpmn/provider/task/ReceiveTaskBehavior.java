@@ -21,9 +21,8 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> i
 
 
     @Override
-    public void execute(PvmActivity pvmActivity, ExecutionContext executionContext) {
-        //TODO 在父类控制
-        executionContext.setNeedPause(true);
+    public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext executionContext) {
+
 
         ProcessInstance processInstance = executionContext.getProcessInstance();
         ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
@@ -57,5 +56,10 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> i
 //                return defaultMessage;
             }
         }
+    }
+
+    @Override
+    public boolean needSuspend() {
+        return true;
     }
 }

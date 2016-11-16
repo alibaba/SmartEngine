@@ -12,4 +12,6 @@ public interface ActivityBehavior<M extends Activity> {
 
     void execute(PvmActivity runtimeActivity, ExecutionContext context);
 
+
+
 }

@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
@@ -45,5 +46,19 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     }
 
 
+    @Override
+    public void execute(PvmActivity runtimeActivity, ExecutionContext context) {
+        if(needSuspend()){
+            context.setNeedPause(true);
+        }
 
+        buildInstanceRelationShip(runtimeActivity,context);
+
+    }
+
+    protected abstract boolean needSuspend();
+
+    protected abstract void  buildInstanceRelationShip(PvmActivity runtimeActivity, ExecutionContext context);
+
+    
 }

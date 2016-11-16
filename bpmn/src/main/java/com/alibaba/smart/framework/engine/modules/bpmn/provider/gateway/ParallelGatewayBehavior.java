@@ -4,9 +4,10 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
+import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
-public class ParallelGatewayBehavior extends com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior<ParallelGateway> implements ActivityBehavior<ParallelGateway> {
+public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> implements ActivityBehavior<ParallelGateway> {
 
     public ParallelGatewayBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
@@ -14,7 +15,12 @@ public class ParallelGatewayBehavior extends com.alibaba.smart.framework.engine.
 
 
     @Override
-    public void execute(PvmActivity runtimeActivity, ExecutionContext context) {
+    public void buildInstanceRelationShip(PvmActivity runtimeActivity, ExecutionContext context) {
 
+    }
+
+    @Override
+    public boolean needSuspend() {
+        return false;
     }
 }

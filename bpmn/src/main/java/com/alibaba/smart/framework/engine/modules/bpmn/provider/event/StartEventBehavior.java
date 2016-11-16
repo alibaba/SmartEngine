@@ -17,7 +17,7 @@ public class StartEventBehavior extends AbstractActivityBehavior<StartEvent> imp
 
 
     @Override
-    public void execute(PvmActivity pvmActivity, ExecutionContext executionContext) {
+    public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext executionContext) {
 
         ProcessInstance processInstance = processInstanceFactory.create(executionContext.getPvmProcessDefinition());
 
@@ -31,6 +31,11 @@ public class StartEventBehavior extends AbstractActivityBehavior<StartEvent> imp
 //        this.fireEvent(PvmEventConstant.PROCESS_START.name(), executionContext);
         // 从开始节点开始执行
 
+    }
+
+    @Override
+    public boolean needSuspend() {
+        return false;
     }
 
 }

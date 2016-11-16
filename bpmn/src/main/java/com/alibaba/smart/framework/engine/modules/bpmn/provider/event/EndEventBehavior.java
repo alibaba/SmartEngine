@@ -17,11 +17,15 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> impleme
     }
 
     @Override
-    public void execute(PvmActivity runtimeActivity, ExecutionContext context) {
+    public void buildInstanceRelationShip(PvmActivity runtimeActivity, ExecutionContext context) {
         ProcessInstance processInstance = context.getProcessInstance();
         processInstance.setStatus(InstanceStatus.completed);
         processInstance.setCompleteDate(DateUtil.getCurrentDate());
 
-        context.setNeedPause(true);
+    }
+
+    @Override
+    public boolean needSuspend() {
+        return true;
     }
 }

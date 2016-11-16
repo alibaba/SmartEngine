@@ -21,7 +21,7 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> i
 
 
     @Override
-    public void execute(PvmActivity pvmActivity, ExecutionContext executionContext) {
+    public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext executionContext) {
         ProcessInstance processInstance = executionContext.getProcessInstance();
         ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
 
@@ -43,7 +43,7 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> i
 //                SpringAction springAction = new SpringAction(action.getId(),action.getMethod(),executionContext.getRequest());
 //                try {
 //                    // TODO 考虑下是否需要给对应的返回值,和 wufeng 确认
-//                     springAction.execute();
+//                     springAction.buildInstanceRelationShip();
 //                } catch (Throwable e) {
 //                    //这里好像抓不到异常了已经
 //                }
@@ -63,5 +63,10 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> i
         }
 
 
+    }
+
+    @Override
+    public boolean needSuspend() {
+        return false;
     }
 }
