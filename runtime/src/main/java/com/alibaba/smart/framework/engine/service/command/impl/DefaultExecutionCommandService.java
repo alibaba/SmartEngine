@@ -45,7 +45,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
 
-        //TODO 启动时判断各个实例不为空
         this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
         this.activityInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceStorage.class);
         this.executionInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceStorage.class);

@@ -21,11 +21,11 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-public class ReceiveTaskProcessTest {
+public class ReceiveTaskParallelGatewayTest {
 
 
     @Test
-    public void testExclusive() throws Exception {
+    public void testParallelGateway() throws Exception {
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
         SmartEngine smartEngine = new DefaultSmartEngine();
@@ -34,8 +34,8 @@ public class ReceiveTaskProcessTest {
         RepositoryCommandService repositoryCommandService = smartEngine
                 .getRepositoryService();
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("test-receivetask-exclusive.bpmn20.xml");
-        assertEquals(25, processDefinition.getProcess().getElements().size());
+                .deploy("test-receivetask-parallel-gateway.bpmn20.xml");
+        assertEquals(14, processDefinition.getProcess().getElements().size());
 
         ProcessCommandService processCommandService = smartEngine.getProcessService();
         Map<String, Object> request = new HashMap<>();
@@ -49,10 +49,9 @@ public class ReceiveTaskProcessTest {
 
         Assert.assertNotNull(activityInstances);
         int size = activityInstances.size();
+        assertEquals(4, size);
+
         ActivityInstance lastActivityInstance = activityInstances.get(size - 1);
-
-        assertEquals(3, size);
-
 
         assertEquals("theTask1", lastActivityInstance.getActivityId());
 
