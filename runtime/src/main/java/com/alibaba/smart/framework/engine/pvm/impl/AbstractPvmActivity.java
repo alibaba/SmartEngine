@@ -25,7 +25,6 @@ public abstract class AbstractPvmActivity<M extends Activity> extends AbstractPv
     private ActivityBehavior activityBehavior;
     
 
-    // Getter & Setter
     public void addIncomeTransition(String transitionId, PvmTransition income) {
         this.incomeTransitions.put(transitionId, income);
     }

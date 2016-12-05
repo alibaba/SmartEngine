@@ -22,14 +22,6 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements PvmActivity {
 
-    private final static List<Integer> EXECUTE_EVENTS = new ArrayList<>();
-
-    static {
-
-        EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_START.getCode());
-        EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_EXECUTE.getCode());
-        EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_END.getCode());
-    }
 
     @Override
     public void execute(ExecutionContext context) {

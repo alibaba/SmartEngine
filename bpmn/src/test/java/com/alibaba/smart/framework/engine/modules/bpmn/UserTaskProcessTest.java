@@ -25,28 +25,28 @@ import static org.junit.Assert.assertNotNull;
 public class UserTaskProcessTest {
 
 
-//	@Test
-//	public void testExclusive() throws Exception {
-//	    ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
-//
-//		SmartEngine smartEngine = new DefaultSmartEngine();
-//		smartEngine.init(processEngineConfiguration);
-//
-//		RepositoryCommandService repositoryService = smartEngine
-//				.getRepositoryService();
-//		ProcessDefinition processDefinition = repositoryService
-//				.deploy("test-servicetask-exclusive.bpmn20.xml");
-//        Assert.assertEquals(25, processDefinition.getProcess().getElements().size());
-//
-//		ProcessCommandService processService = smartEngine.getProcessService();
-//		Map<String, Object> request = new HashMap<>();
-//		request.put("input", 2);
-//		ProcessInstance processInstance = processService.start(
-//				processDefinition.getId(), processDefinition.getVersion(),
-//				request);
-//
-//		Assert.assertNotNull(processInstance);
-//	}
+	@Test
+	public void testExclusive() throws Exception {
+	    ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
+
+		SmartEngine smartEngine = new DefaultSmartEngine();
+		smartEngine.init(processEngineConfiguration);
+
+		RepositoryCommandService repositoryService = smartEngine
+				.getRepositoryService();
+		ProcessDefinition processDefinition = repositoryService
+				.deploy("test-servicetask-exclusive.bpmn20.xml");
+        Assert.assertEquals(25, processDefinition.getProcess().getElements().size());
+
+		ProcessCommandService processService = smartEngine.getProcessService();
+		Map<String, Object> request = new HashMap<>();
+		request.put("input", 2);
+		ProcessInstance processInstance = processService.start(
+				processDefinition.getId(), processDefinition.getVersion(),
+				request);
+
+		Assert.assertNotNull(processInstance);
+	}
 
 
     @Test
