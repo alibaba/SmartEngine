@@ -12,21 +12,22 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     void setProcessUri(String processUri);
 
-    String getParentInstanceId();
+    Long getParentInstanceId();
 
-    void setParentInstanceId(String parentInstanceId);
+    void setParentInstanceId(Long parentInstanceId);
 
-    String getParentExecutionInstanceId();
+//    Long getParentExecutionInstanceId();
+//
+//    void setParentExecutionInstanceId(Long parentExecutionInstanceId);
+//
+//    Long getParentActivityInstanceId();
+//
+//    void setParentActivityInstanceId(Long parentActivityInstanceId);
 
-    void setParentExecutionInstanceId(String parentExecutionInstanceId);
+    // should used  internally
+    void addNewActivityInstance(ActivityInstance activityInstance);
 
-    String getParentActivityInstanceId();
-
-    void setParentActivityInstanceId(String parentActivityInstanceId);
-
-    void addActivityInstance(ActivityInstance activityInstance);
-
-    List<ActivityInstance> getActivityInstances();
+    List<ActivityInstance> getNewActivityInstances();
 
 
 }

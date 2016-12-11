@@ -45,7 +45,7 @@ public class ReceiveTaskParallelGatewayTest {
                 request);
 
         Assert.assertNotNull(processInstance);
-        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
+        List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
 
         Assert.assertNotNull(activityInstances);
         int size = activityInstances.size();
@@ -71,7 +71,7 @@ public class ReceiveTaskParallelGatewayTest {
 
 
         processInstance = executionCommandService.signal(lastExecutionInstance.getInstanceId(), null);
-        activityInstances = processInstance.getActivityInstances();
+        activityInstances = processInstance.getNewActivityInstances();
 
         Assert.assertNotNull(activityInstances);
         size = activityInstances.size();

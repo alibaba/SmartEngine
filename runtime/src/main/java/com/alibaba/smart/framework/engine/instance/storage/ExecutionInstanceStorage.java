@@ -7,8 +7,8 @@ public interface ExecutionInstanceStorage {
 
     ExecutionInstance save(ExecutionInstance executionInstance);
 
-    ExecutionInstance find(String executionInstanceId);
+    ExecutionInstance find(Long executionInstanceId);
 
-    void remove(String executionInstanceId);
+    void remove(Long executionInstanceId);
 
 }

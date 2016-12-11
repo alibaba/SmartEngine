@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.alibaba.smart.framework.engine.modules.storage.dao.ActivityInstanceDAO">
+<mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.ActivityInstanceDAO">
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,
@@ -18,7 +18,7 @@
         delete from activity_instance where id=#{id}
     </delete>
 
-    <!--     <update id="update" parameterType="com.alibaba.smart.framework.engine.modules.storage.entity.ActivityInstanceEntity">
+    <!--     <update id="update" parameterType="ActivityInstanceEntity">
             update activity_instance
             <set>
                 gmt_modified=now()

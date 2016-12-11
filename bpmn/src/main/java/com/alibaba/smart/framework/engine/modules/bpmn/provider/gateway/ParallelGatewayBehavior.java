@@ -5,7 +5,6 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
@@ -50,7 +49,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
                 activityInstance.setExecutionInstance(executionInstance);
 
-                processInstance.addActivityInstance(activityInstance);
+                processInstance.addNewActivityInstance(activityInstance);
 
 
 
@@ -68,7 +67,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, context.getProcessInstance());
 
-        context.getProcessInstance().addActivityInstance(activityInstance);
+        context.getProcessInstance().addNewActivityInstance(activityInstance);
     }
 
     @Override

@@ -24,17 +24,21 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     private String processDefinitionId;
     private String processDefinitionVersion;
 
-    private String parentInstanceId;
-    private String parentExecutionInstanceId;
-    private String parentActivityInstanceId;
+    private Long parentInstanceId;
+//    private Long parentExecutionInstanceId;
+//    private Long parentActivityInstanceId;
 
 
-    @Getter
     private List<ActivityInstance> activityInstances = new ArrayList<>();
 
     @Override
-    public void addActivityInstance(ActivityInstance activityInstance) {
+    public void addNewActivityInstance(ActivityInstance activityInstance) {
         this.activityInstances.add(activityInstance);
     }
+
+    public List<ActivityInstance> getNewActivityInstances(){
+        return activityInstances;
+    }
+
 
 }

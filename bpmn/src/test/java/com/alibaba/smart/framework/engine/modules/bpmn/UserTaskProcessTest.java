@@ -46,7 +46,7 @@ public class UserTaskProcessTest {
                 request);
 
         Assert.assertNotNull(processInstance);
-        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
+        List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
 
         Assert.assertNotNull(activityInstances);
 
@@ -127,7 +127,7 @@ public class UserTaskProcessTest {
 //
 //        //1st: create 1st task
 //        TaskCommandService taskCommandService =    smartEngine.getTaskCommandService();
-//        TaskQueryService taskQueryService =    smartEngine.getTaskQueryService();
+//        TaskInstanceQueryService taskQueryService =    smartEngine.getTaskQueryService();
 //
 //        String processInstanceId = processInstance.getInstanceId();
 //        List<TaskInstance> taskInstanceList =     taskQueryService.find(processInstanceId);

@@ -5,13 +5,11 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
-import org.apache.commons.lang3.StringUtils;
+import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,7 +22,6 @@ public class DefaultSmartEngine implements SmartEngine {
 
 
     private ExtensionPointRegistry extensionPointRegistry;
-    private Map<String, ClassLoader> classLoaderHolder = new ConcurrentHashMap<>();
 
 
     @Override
@@ -70,8 +67,8 @@ public class DefaultSmartEngine implements SmartEngine {
     }
 
     @Override
-    public TaskQueryService getTaskQueryService() {
-        return this.extensionPointRegistry.getExtensionPoint(TaskQueryService.class);
+    public TaskInstanceQueryService getTaskQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(TaskInstanceQueryService.class);
     }
 
     public ExtensionPointRegistry getExtensionPointRegistry() {

@@ -9,7 +9,7 @@ import java.util.Map;
 public interface TaskCommandService {
 
 
-    void complete(String taskId, Map<String, Object> variables);
+    void complete(Long taskId, Map<String, Object> variables);
 
     // claim
 

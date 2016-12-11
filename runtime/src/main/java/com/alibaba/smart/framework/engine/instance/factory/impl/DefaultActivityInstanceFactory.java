@@ -17,7 +17,7 @@ public class DefaultActivityInstanceFactory implements ActivityInstanceFactory {
     @Override
     public ActivityInstance create(PvmActivity pvmActivity, ProcessInstance processInstance) {
         DefaultActivityInstance activityInstance = new DefaultActivityInstance();
-        activityInstance.setInstanceId(InstanceIdUtil.uuid());
+        activityInstance.setInstanceId(InstanceIdUtil.simpleId());
         activityInstance.setStartDate(DateUtil.getCurrentDate());
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
 

@@ -57,7 +57,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     @Override
-    public ProcessInstance signal(String executionInstanceId, Map<String, Object> request) {
+    public ProcessInstance signal(Long executionInstanceId, Map<String, Object> request) {
         ExecutionInstance executionInstance = this.executionInstanceStorage.find(executionInstanceId);
         ProcessInstance processInstance = this.processInstanceStorage.find(executionInstance.getProcessInstanceId());
 
@@ -87,7 +87,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
 
         processInstanceStorage.save(processInstance);
-        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
+        List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
         for (ActivityInstance activityInstance : activityInstances) {
             activityInstanceStorage.save(activityInstance);
 

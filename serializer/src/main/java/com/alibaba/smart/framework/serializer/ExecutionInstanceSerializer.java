@@ -8,9 +8,9 @@ import com.alibaba.smart.framework.engine.param.ExecutionParam;
  */
 public class ExecutionInstanceSerializer {
     public static String toString(ExecutionInstance executionInstance){
-        return nullToEmpty(executionInstance.getInstanceId())
+        return nullToEmpty(executionInstance.getInstanceId().toString())
                 + "|"
-                + nullToEmpty(executionInstance.getActivityId())
+                + nullToEmpty(executionInstance.getActivityId().toString())
                 + "|";
     }
 

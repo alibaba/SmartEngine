@@ -30,7 +30,7 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> i
         ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance);
 
         activityInstance.setExecutionInstance(executionInstance);
-        processInstance.addActivityInstance(activityInstance);
+        processInstance.addNewActivityInstance(activityInstance);
 
 
         ReceiveTask ReceiveTask = (ReceiveTask) pvmActivity.getModel();

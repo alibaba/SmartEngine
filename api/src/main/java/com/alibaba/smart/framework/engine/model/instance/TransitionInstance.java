@@ -10,11 +10,11 @@ public interface TransitionInstance extends Instance {
 
     void setTransitionId(String transitionId);
 
-    String getSourceActivityInstanceId();
+    Long getSourceActivityInstanceId();
 
-    void setSourceActivityInstanceId(String sourceActivityInstanceId);
+    void setSourceActivityInstanceId(Long sourceActivityInstanceId);
 
-    String getTargetActivityInstanceId();
+    Long getTargetActivityInstanceId();
 
-    void setTargetActivityInstanceId(String sourceActivityInstanceId);
+    void setTargetActivityInstanceId(Long sourceActivityInstanceId);
 }

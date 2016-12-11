@@ -28,14 +28,14 @@ public interface ActivityInstance extends Instance {
      *
      * @return 流程实例ID
      */
-    String getProcessInstanceId();
+    Long getProcessInstanceId();
 
     /**
      * 设置流程实例ID
      *
      * @param processInstanceId 流程实例ID
      */
-    void setProcessInstanceId(String processInstanceId);
+    void setProcessInstanceId(Long processInstanceId);
 
     void setExecutionInstance(ExecutionInstance executionInstance);
 

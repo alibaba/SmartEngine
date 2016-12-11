@@ -19,9 +19,9 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProcessEngineConfiguration.class);
 
-
     private ExtensionPointRegistry extensionPointRegistry;
 
+    private String persisteModel;
 
     //TODO 核心引擎不依赖 Spring
     private static ApplicationContext applicationContext;

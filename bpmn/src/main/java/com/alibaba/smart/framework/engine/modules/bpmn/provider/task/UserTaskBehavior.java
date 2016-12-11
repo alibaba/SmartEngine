@@ -30,7 +30,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> impleme
         executionInstance.setTaskInstance(taskInstance);
         activityInstance.setExecutionInstance(executionInstance);
 
-        processInstance.addActivityInstance(activityInstance);
+        processInstance.addNewActivityInstance(activityInstance);
     }
 
     @Override

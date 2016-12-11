@@ -13,5 +13,5 @@ public abstract class AbstractInstance implements Instance {
     /**
      * 实例Id
      */
-    private String instanceId;
+    private Long instanceId;
 }

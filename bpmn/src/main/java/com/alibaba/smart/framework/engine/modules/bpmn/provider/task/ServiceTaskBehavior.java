@@ -25,7 +25,7 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> i
         ProcessInstance processInstance = executionContext.getProcessInstance();
         ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
 
-        processInstance.addActivityInstance(activityInstance);
+        processInstance.addNewActivityInstance(activityInstance);
 
 
         ServiceTask serviceTask = (ServiceTask) pvmActivity.getModel();

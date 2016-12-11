@@ -11,5 +11,9 @@ public interface ProcessEngineConfiguration {
 
     void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
 
+    void setPersisteModel(String persisteModel);
+
+    String getPersisteModel();
+
     Object getBean(String bean);
 }

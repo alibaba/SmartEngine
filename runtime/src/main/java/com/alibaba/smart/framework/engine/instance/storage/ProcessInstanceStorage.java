@@ -20,14 +20,14 @@ public interface ProcessInstanceStorage {
      * @param processInstanceId 流程实例ID
      * @return 实例
      */
-    ProcessInstance find(String processInstanceId);
+    ProcessInstance find(Long processInstanceId);
 
     /**
      * 删除流程实例
      *
      * @param processInstanceId 流程实例ID
      */
-    void remove(String processInstanceId);
+    void remove(Long processInstanceId);
 
 
 }

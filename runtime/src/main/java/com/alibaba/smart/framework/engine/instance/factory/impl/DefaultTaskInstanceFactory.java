@@ -16,7 +16,7 @@ public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
     @Override
     public TaskInstance create(PvmActivity pvmActivity, ExecutionInstance executionInstance) {
         TaskInstance taskInstance = new DefaultTaskInstance();
-        taskInstance.setInstanceId(InstanceIdUtil.uuid());
+        taskInstance.setInstanceId(InstanceIdUtil.simpleId());
         taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
         taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
         taskInstance.setActivityId(pvmActivity.getModel().getId());

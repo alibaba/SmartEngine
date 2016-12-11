@@ -9,16 +9,17 @@ import java.util.UUID;
  */
 public abstract class InstanceIdUtil {
 
-    private static int executionId = 1;
+    private static Long executionId = 1L;
 
     public static String uuid() {
         return StringUtils.remove(UUID.randomUUID().toString(), "-");
     }
 
 
-    public static String simpleId() {
+    //TODO DELETE
+    public static Long simpleId() {
 
-        return String.valueOf(executionId++);
+        return (executionId++);
 
     }
 

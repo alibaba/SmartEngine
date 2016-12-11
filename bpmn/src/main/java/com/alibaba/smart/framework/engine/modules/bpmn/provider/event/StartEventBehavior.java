@@ -22,7 +22,7 @@ public class StartEventBehavior extends AbstractActivityBehavior<StartEvent> imp
         ProcessInstance processInstance = processInstanceFactory.create(executionContext.getPvmProcessDefinition());
 
         ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
-        processInstance.addActivityInstance(activityInstance);
+        processInstance.addNewActivityInstance(activityInstance);
 
         executionContext.setProcessInstance(processInstance);
 

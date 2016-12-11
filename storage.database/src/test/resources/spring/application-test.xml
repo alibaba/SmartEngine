@@ -18,7 +18,7 @@
         <property name="dataSourceType" value="DruidDataSource"/>
     </bean>
 
-    <context:component-scan base-package="com.alibaba.smart.framework.engine.modules.storage"/>
+    <context:component-scan base-package="com.alibaba.smart.framework.engine.persister"/>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
           p:dataSource-ref="dataSource"
@@ -32,13 +32,13 @@
 
 
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer"
-          p:basePackage="com.alibaba.smart.framework.engine.modules.storage"
+          p:basePackage="com.alibaba.smart.framework.engine.persister.database.dao"
           p:markerInterface="com.alibaba.spring.data.mybatis.repository.MybatisRepository"
           p:sqlSessionFactoryBeanName="sqlSessionFactory"
           p:sqlSessionTemplateBeanName="sqlSession"/>
 
 
-    <mybatis:repositories base-package="com.alibaba.smart.framework.engine.modules.storage"
+    <mybatis:repositories base-package="com.alibaba.smart.framework.engine.persister.database.dao"
                           sql-session-ref="sqlSession"
                           sequence-dao-ref="sequenceDao"/>
 
@@ -46,4 +46,7 @@
     <!-- 事务管理器 -->
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
           p:dataSource-ref="dataSource"/>
+
+    <bean id="springContextUtil" class="com.alibaba.smart.framework.engine.persister.util.SpringContextUtil" />
+
 </beans>

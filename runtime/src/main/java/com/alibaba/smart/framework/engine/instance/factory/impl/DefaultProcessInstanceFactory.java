@@ -17,7 +17,7 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
     @Override
     public ProcessInstance create(PvmProcessDefinition pvmProcessDefinition) {
         DefaultProcessInstance defaultProcessInstance = new DefaultProcessInstance();
-        defaultProcessInstance.setInstanceId(InstanceIdUtil.uuid());
+        defaultProcessInstance.setInstanceId(InstanceIdUtil.simpleId());
         defaultProcessInstance.setStatus(InstanceStatus.running);
         defaultProcessInstance.setStartDate(DateUtil.getCurrentDate());
         defaultProcessInstance.setProcessUri(pvmProcessDefinition.getUri());

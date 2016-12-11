@@ -10,7 +10,7 @@ import java.util.Map;
 public class DefaultTaskCommandService implements TaskCommandService {
 
     @Override
-    public void complete(String taskId, Map<String, Object> variables) {
+    public void complete(Long taskId, Map<String, Object> variables) {
 
     }
 

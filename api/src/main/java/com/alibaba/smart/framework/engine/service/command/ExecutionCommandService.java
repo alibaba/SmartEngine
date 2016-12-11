@@ -11,5 +11,5 @@ import java.util.Map;
 public interface ExecutionCommandService {
 
 
-    ProcessInstance signal(String executionInstanceId, Map<String, Object> variables);
+    ProcessInstance signal(Long executionInstanceId, Map<String, Object> variables);
 }

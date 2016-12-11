@@ -42,4 +42,6 @@
                           sequence-dao-ref="sequenceDao"/>
 
 
+    <bean id="springContextUtil" class="com.alibaba.smart.framework.engine.persister.util.SpringContextUtil" />
+
 </beans>

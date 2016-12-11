@@ -9,7 +9,7 @@
         <startEvent id="theStart">
             <extensionElements>
                 <smart:executionListener
-                        class="com.aliababa.tradeplatform.executionlistener.ProcessStartedEventListener"
+                        class="com.alibaba.tradeplatform.executionlistener.ProcessStartedEventListener"
                         event="create"/>
             </extensionElements>
         </startEvent>

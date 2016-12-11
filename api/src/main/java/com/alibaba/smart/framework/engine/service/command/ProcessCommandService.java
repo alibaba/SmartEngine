@@ -11,22 +11,15 @@ import java.util.Map;
 
 public interface ProcessCommandService {
 
-    /**
-     * 启动流程
-     *
-     * @param processId
-     * @param version
-     * @param variables
-     * @return
-     */
+
     ProcessInstance start(String processId, String version, Map<String, Object> variables);
 
-    /**
-     * 终止
-     *
-     * @param processInstanceId
-     */
-    void abort(String processInstanceId);
+    ProcessInstance start(String processId, String version);
+
+
+    void abort(Long processInstanceId);
+
+    void abort(Long processInstanceId,String reason);
 
 //    /**
 //     * 查找某个流程

@@ -13,8 +13,8 @@ import lombok.EqualsAndHashCode;
 public class DefaultExecutionInstance extends AbstractLifeCycleInstance implements ExecutionInstance {
 
     private static final long serialVersionUID = 2323809298485587299L;
-    private String processInstanceId;
-    private String activityInstanceId;
+    private Long processInstanceId;
+    private Long activityInstanceId;
 
     private String activityId;
     private TaskInstance taskInstance;

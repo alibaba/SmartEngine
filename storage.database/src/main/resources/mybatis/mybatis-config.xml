@@ -7,6 +7,6 @@
     </settings>
 
     <typeAliases>
-        <package name="com.alibaba.smart.framework.engine.modules.storage.entity"/>
+        <package name="com.alibaba.smart.framework.engine.persister.database.entity"/>
     </typeAliases>
 </configuration>

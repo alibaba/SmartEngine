@@ -10,15 +10,15 @@ public interface TaskInstance extends LifeCycleInstance {
 
     void setActivityId(String activityId);
 
-    String getProcessInstanceId();
+    Long getProcessInstanceId();
 
-    void setProcessInstanceId(String processInstanceId);
+    void setProcessInstanceId(Long processInstanceId);
 
-    String getExecutionInstanceId();
+    Long getExecutionInstanceId();
 
-    void setExecutionInstanceId(String executionInstanceId);
+    void setExecutionInstanceId(Long executionInstanceId);
 
-    String getActivityInstanceId();
+    Long getActivityInstanceId();
 
-    void setActivityInstanceId(String activityInstanceId);
+    void setActivityInstanceId(Long activityInstanceId);
 }

@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
+import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultPersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
@@ -14,6 +15,7 @@ import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
@@ -38,9 +40,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     private ExecutionInstanceFactory executionInstanceFactory;
     private ActivityInstanceFactory activityInstanceFactory;
 
-    private ProcessInstanceStorage processInstanceStorage;
-    private ActivityInstanceStorage activityInstanceStorage;
-    private ExecutionInstanceStorage executionInstanceStorage;
 
 
     public DefaultProcessCommandService(ExtensionPointRegistry extensionPointRegistry) {
@@ -55,10 +54,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         this.executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
         this.activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
-        this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
-        this.activityInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceStorage.class);
-        this.executionInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceStorage.class);
-
 
     }
 
@@ -68,8 +63,8 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     }
 
     @Override
-    public ProcessInstance start(String processId, String version, Map<String, Object> request) {
-        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processId, version);
+    public ProcessInstance start(String processDefinitionId, String version, Map<String, Object> request) {
+        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processDefinitionId, version);
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
         executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
@@ -86,9 +81,20 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     }
 
+    public ProcessInstance start(String processDefinitionId, String version){
+        return this.start(processDefinitionId,version,null);
+    }
+
     private void persist(ProcessInstance processInstance) {
+
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+        ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
+        ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
+        ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
+
         processInstanceStorage.save(processInstance);
-        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
+        List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
         for (ActivityInstance activityInstance : activityInstances) {
             activityInstanceStorage.save(activityInstance);
 
@@ -100,9 +106,15 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     }
 
     @Override
-    public void abort(String processInstanceId) {
+    public void abort(Long processInstanceId) {
+        this.abort(processInstanceId,null);
+    }
+
+    @Override
+    public void abort(Long processInstanceId,String reason){
 
     }
+
 
 //    @Override
 //    public ProcessInstance find(String processInstanceId) {
@@ -124,9 +136,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 //            throw new EngineException("recovery instance is not right!");
 //
 //        }
-//        PvmProcessDefinition processDefinition = this.processDefinitionContainer.get(
-//                engineParam.getProcessParam().getProcessDefationId(),
-//                engineParam.getProcessParam().getProcessDefationVersion());
+//        PvmProcessDefinition processDefinition = null;
 //
 //        if (null == processDefinition) {
 //            throw new EngineException("can not find process definition");
@@ -159,7 +169,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 //
 //        }
 //        if (chosenExecution == null) {
-//            throw new EngineException("not find acitivity,check process definition");
+//            throw new EngineException("not find activity,check process definition");
 //        }
 //        ExecutionContext instanceContext = this.instanceContextFactory.create();
 //        instanceContext.setProcessInstance(processInstance);

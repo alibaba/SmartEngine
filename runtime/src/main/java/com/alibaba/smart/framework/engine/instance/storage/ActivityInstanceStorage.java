@@ -7,8 +7,8 @@ public interface ActivityInstanceStorage {
 
     ActivityInstance save(ActivityInstance activityInstance);
 
-    ActivityInstance find(String activityInstanceId);
+    ActivityInstance find(Long activityInstanceId);
 
-    void remove(String activityInstanceId);
+    void remove(Long activityInstanceId);
 
 }

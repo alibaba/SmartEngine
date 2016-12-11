@@ -13,7 +13,7 @@ public class DefaultTransitionInstanceFactory implements TransitionInstanceFacto
     @Override
     public TransitionInstance create() {
         DefaultTransitionInstance defaultTransitionInstance = new DefaultTransitionInstance();
-        defaultTransitionInstance.setInstanceId(InstanceIdUtil.uuid());
+        defaultTransitionInstance.setInstanceId(InstanceIdUtil.simpleId());
         return defaultTransitionInstance;
     }
 }

@@ -7,8 +7,8 @@ public interface TaskInstanceStorage {
 
     TaskInstance save(TaskInstance taskInstance);
 
-    TaskInstance find(String taskInstanceId);
+    TaskInstance find(Long taskInstanceId);
 
-    void remove(String taskInstanceId);
+    void remove(Long taskInstanceId);
 
 }

@@ -13,7 +13,7 @@ public class DefaultTaskInstance extends AbstractLifeCycleInstance implements Ta
 
     private static final long serialVersionUID = -3920292154786127202L;
     private String activityId;
-    private String processInstanceId;
-    private String executionInstanceId;
-    private String activityInstanceId;
+    private Long processInstanceId;
+    private Long executionInstanceId;
+    private Long activityInstanceId;
 }

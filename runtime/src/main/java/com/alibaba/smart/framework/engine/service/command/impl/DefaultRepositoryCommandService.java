@@ -91,12 +91,16 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
     private ProcessDefinition parse(ClassLoader classLoader, String uri) throws DeployException {
 
-        InputStream in = null;
+        InputStream inputStream = null;
         try {
             XMLInputFactory factory = XMLInputFactory.newInstance();
-            in = classLoader.getResourceAsStream(uri);
+            inputStream = classLoader.getResourceAsStream(uri);
 
-            XMLStreamReader reader = factory.createXMLStreamReader(in);
+            if(null == inputStream){
+                throw new IllegalArgumentException("Cant find any resources for the uri:"+uri);
+            }
+
+            XMLStreamReader reader = factory.createXMLStreamReader(inputStream);
 
             ParseContext context = new ParseContext();
 
@@ -120,7 +124,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         } catch (ParseException | XMLStreamException e) {
             throw new DeployException("Read process config file[" + uri + "] failure!", e);
         } finally {
-            IOUtil.closeQuietly(in);
+            IOUtil.closeQuietly(inputStream);
         }
     }
 
