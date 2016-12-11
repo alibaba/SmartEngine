@@ -7,9 +7,9 @@ import java.util.Date;
  */
 public interface LifeCycleInstance extends Instance {
 
-    InstanceStatus getStatus();
-
-    void setStatus(InstanceStatus status);
+//    InstanceStatus getStatus();
+//
+//    void setStatus(InstanceStatus status);
 
     Date getStartDate();
 
@@ -19,8 +19,6 @@ public interface LifeCycleInstance extends Instance {
 
     void setCompleteDate(Date completeDate);
 
-    boolean isSuspend();
 
-    // void setSuspend(boolean suspend);
 
 }

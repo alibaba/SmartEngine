@@ -10,6 +10,10 @@ import java.util.Map;
  */
 public interface PvmProcessDefinition {
 
+    String getId();
+
+    String getVersion();
+
     String getUri();
 
     void setUri(String uri);

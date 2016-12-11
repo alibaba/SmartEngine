@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface TaskInstanceQueryService {
 
-    List<TaskInstance> find(String processInstanceId);
+    List<TaskInstance> findPendingTask(Long processInstanceId);
 }

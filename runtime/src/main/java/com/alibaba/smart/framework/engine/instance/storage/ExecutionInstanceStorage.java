@@ -2,6 +2,8 @@ package com.alibaba.smart.framework.engine.instance.storage;
 
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 
+import java.util.List;
+
 
 public interface ExecutionInstanceStorage {
 
@@ -10,5 +12,7 @@ public interface ExecutionInstanceStorage {
     ExecutionInstance find(Long executionInstanceId);
 
     void remove(Long executionInstanceId);
+
+    List<ExecutionInstance> findActiveExecution(String processInstanceId);
 
 }

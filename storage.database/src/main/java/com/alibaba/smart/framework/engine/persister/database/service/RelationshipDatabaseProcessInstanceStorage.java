@@ -1,44 +1,71 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
+import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.database.dao.ProcessInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * 内存实例存储 Created by ettear on 16-4-13.
- */
 public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstanceStorage {
 
 
     @Override
-    public ProcessInstance save(ProcessInstance instance) {
+    public ProcessInstance save(ProcessInstance processInstance) {
 
+        //TUNE
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
-        ProcessInstanceEntity processInstanceEntity = new ProcessInstanceEntity();
-        processInstanceEntity.setParentProcessInstanceId(instance.getParentInstanceId());
-        processInstanceEntity.setStatus(instance.getStatus().name());
-        processInstanceEntity.setProcessDefinitionId(instance.getProcessUri());
 
-        processInstanceEntity =  processInstanceDAO.insert(processInstanceEntity);
+        ProcessInstanceEntity processInstanceEntityToBePersisted = new ProcessInstanceEntity();
+        processInstanceEntityToBePersisted.setParentProcessInstanceId(processInstance.getParentInstanceId());
+        processInstanceEntityToBePersisted.setStatus(processInstance.getStatus().name());
+        processInstanceEntityToBePersisted.setProcessDefinitionId(processInstance.getProcessDefinitionIdAndVersion());
 
-        ProcessInstanceEntity xxx =  processInstanceDAO.findOne(processInstanceEntity.getId());
+        processInstanceEntityToBePersisted =  processInstanceDAO.insert(processInstanceEntityToBePersisted);
 
-        return instance;
+        ProcessInstanceEntity processInstanceEntity1 =  processInstanceDAO.findOne(processInstanceEntityToBePersisted.getId());
+
+        //TODO 命名不一致
+        buildEntityToInstance(processInstance, processInstanceEntity1);
+
+        return processInstance;
+    }
+
+    private void buildEntityToInstance(ProcessInstance processInstance, ProcessInstanceEntity processInstanceEntity1) {
+        processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity1.getProcessDefinitionId());
+        processInstance.setParentInstanceId(processInstanceEntity1.getParentProcessInstanceId());
+        processInstance.setInstanceId(processInstanceEntity1.getId());
+        processInstance.setStartDate(processInstanceEntity1.getGmtCreate());
     }
 
     @Override
     public ProcessInstance find(Long instanceId) {
-        return null;
+        //TUNE :解决系统服务初始化依赖问题,避免每次获取该dao
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+
+        ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOne(instanceId);
+
+        ProcessInstance processInstance  = new DefaultProcessInstance();
+        processInstance.setParentInstanceId(processInstanceEntity.getParentProcessInstanceId());
+        InstanceStatus processStatus = InstanceStatus.valueOf(processInstanceEntity.getStatus());
+        processInstance.setStatus(processStatus);
+        processInstance.setStartDate(processInstanceEntity.getGmtCreate());
+        processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity.getProcessDefinitionId());
+        processInstance.setSuspend(InstanceStatus.suspended.equals(processStatus)  );
+
+        //TUNE 还是叫做更新时间比较好一点,是否完成等 还是根据status 去判断.
+        processInstance.setCompleteDate(processInstanceEntity.getGmtModified());
+        processInstance.setInstanceId(processInstanceEntity.getId());
+
+        return processInstance;
     }
 
 
     @Override
     public void remove(Long instanceId) {
-
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+        processInstanceDAO.delete(instanceId);
     }
 }

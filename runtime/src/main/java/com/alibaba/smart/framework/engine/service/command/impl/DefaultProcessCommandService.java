@@ -11,10 +11,12 @@ import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactor
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
@@ -75,7 +77,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
         ProcessInstance processInstance = pvmProcessInstance.start(executionContext);
 
-        persist(processInstance);
+        processInstance =  persist(processInstance);
 
         return processInstance;
 
@@ -85,24 +87,47 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         return this.start(processDefinitionId,version,null);
     }
 
-    private void persist(ProcessInstance processInstance) {
+    private ProcessInstance persist(ProcessInstance processInstance) {
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
+        //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
         ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
         ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
+        TaskInstanceStorage taskInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
-        processInstanceStorage.save(processInstance);
+
+        ProcessInstance newProcessInstance=   processInstanceStorage.save(processInstance);
         List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
         for (ActivityInstance activityInstance : activityInstances) {
+
+            //TUNE 这里重新赋值了,id还是统一由数据库分配.
+            activityInstance.setProcessInstanceId(processInstance.getInstanceId());
             activityInstanceStorage.save(activityInstance);
 
             ExecutionInstance executionInstance = activityInstance.getExecutionInstance();
             if (null != executionInstance) {
+                executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
+                executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
                 executionInstanceStorage.save(executionInstance);
+
+                TaskInstance taskInstance = executionInstance.getTaskInstance();
+                if(null!= taskInstance) {
+                    taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
+                    taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
+                    taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
+
+                    //reAssign
+                    taskInstance = taskInstanceStorage.save(taskInstance);
+                    executionInstance.setTaskInstance(taskInstance);
+               }
+
+
             }
         }
+
+        return newProcessInstance;
     }
 
     @Override
@@ -117,8 +142,8 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
 
 //    @Override
-//    public ProcessInstance find(String processInstanceId) {
-//        return this.processInstanceStorage.find(processInstanceId);
+//    public ProcessInstance findAll(String processInstanceId) {
+//        return this.processInstanceStorage.findAll(processInstanceId);
 //    }
 
 //    @Override
@@ -139,11 +164,11 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 //        PvmProcessDefinition processDefinition = null;
 //
 //        if (null == processDefinition) {
-//            throw new EngineException("can not find process definition");
+//            throw new EngineException("can not findAll process definition");
 //        }
 //
-//        if (null != processInstanceStorage.find(processInstance.getInstanceId())) {
-//            processInstance = processInstanceStorage.find(processInstance.getInstanceId());
+//        if (null != processInstanceStorage.findAll(processInstance.getInstanceId())) {
+//            processInstance = processInstanceStorage.findAll(processInstance.getInstanceId());
 //        }
 //        executionInstance.setActivityId(activityInstance.getActivityId());
 //        processInstance.setProcessUri(processDefinition.getUri());
@@ -169,7 +194,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 //
 //        }
 //        if (chosenExecution == null) {
-//            throw new EngineException("not find activity,check process definition");
+//            throw new EngineException("not findAll activity,check process definition");
 //        }
 //        ExecutionContext instanceContext = this.instanceContextFactory.create();
 //        instanceContext.setProcessInstance(processInstance);
@@ -185,7 +210,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
 
 //    private ProcessInstance getProcessInstance(String processId, boolean sub) {
-//        ProcessInstance processInstance = processInstanceStorage.find(processId);
+//        ProcessInstance processInstance = processInstanceStorage.findAll(processId);
 //
 //        return processInstance;
 //

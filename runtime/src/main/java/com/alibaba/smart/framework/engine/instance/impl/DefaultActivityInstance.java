@@ -16,16 +16,17 @@ import java.util.List;
 public class DefaultActivityInstance extends AbstractLifeCycleInstance implements ActivityInstance {
 
     private static final long serialVersionUID = -3395004618384899752L;
+    private String processDefinitionIdAndVersion;
     private String activityId;
     private Long processInstanceId;
-    private List<TransitionInstance> incomeTransitions = new ArrayList<>();
+//    private List<TransitionInstance> incomeTransitions = new ArrayList<>();
     private ExecutionInstance executionInstance;
 
 
-    @Override
-    public void addIncomeTransition(TransitionInstance transitionInstance) {
-        this.incomeTransitions.add(transitionInstance);
-    }
+//    @Override
+//    public void addIncomeTransition(TransitionInstance transitionInstance) {
+//        this.incomeTransitions.add(transitionInstance);
+//    }
 
 
 }

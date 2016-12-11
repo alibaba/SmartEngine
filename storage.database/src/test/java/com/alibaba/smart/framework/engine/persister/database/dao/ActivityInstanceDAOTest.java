@@ -18,11 +18,11 @@ public class ActivityInstanceDAOTest extends BaseTest {
     public void before() {
         entity = new ActivityInstanceEntity();
         entity.setProcessDefinitionId("processDefinitionId");
-        entity.setExecutionInstanceId(11L);
+//        entity.setExecutionInstanceId(11L);
         entity.setProcessDefinitionActivityId("ProcessDefinitionActivityId");
         entity.setProcessDefinitionId("processDefinitionId");
         entity.setProcessInstanceId(22L);
-        entity.setTaskInstanceId(33L);
+//        entity.setTaskInstanceId(33L);
     }
 
     @Test

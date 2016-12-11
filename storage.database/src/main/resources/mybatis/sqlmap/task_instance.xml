@@ -36,5 +36,11 @@
         from task_instance where id=#{id}
     </select>
 
+    <select id="findPendingTask" resultType="TaskInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from task_instance where process_instance_id=#{processInstanceId}
+    </select>
+
 
 </mapper>

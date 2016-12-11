@@ -19,7 +19,7 @@ public class ActivityInstanceEntity extends BaseProcessEntity {
 
     private String processDefinitionActivityId;
 
-    private Long executionInstanceId;
+//    private Long executionInstanceId;
 
-    private Long taskInstanceId;
+//    private Long taskInstanceId;
 }

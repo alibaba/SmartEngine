@@ -16,13 +16,11 @@ import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmActivity;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
-import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcessComponent;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -68,10 +66,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
         //TODO 支持从不同地方加载 优先级高
         ProcessDefinition definition = this.parse(classLoader, uri);
-        PvmProcessComponent runtimeProcessComponent = install(classLoader, definition);
-        if (null == runtimeProcessComponent) {
-            throw new DeployException("Deploy " + uri + " failure!");
-        }
+        install(classLoader, definition);
+
         return definition;
     }
 
@@ -97,7 +93,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             inputStream = classLoader.getResourceAsStream(uri);
 
             if(null == inputStream){
-                throw new IllegalArgumentException("Cant find any resources for the uri:"+uri);
+                throw new IllegalArgumentException("Cant findAll any resources for the uri:"+uri);
             }
 
             XMLStreamReader reader = factory.createXMLStreamReader(inputStream);
@@ -129,40 +125,31 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @SuppressWarnings("rawtypes")
-    private PvmProcessComponent install(ClassLoader classLoader, ProcessDefinition definition) {
+    private ProcessDefinitionContainer install(ClassLoader classLoader, ProcessDefinition processDefinition) {
 
-        if (null == definition) {
-            throw new EngineException("null definition found");
+        if (null == processDefinition) {
+            throw new EngineException("null processDefinition found");
         }
 
-        String processId = definition.getId();
-        String version = definition.getVersion();
+        String processId = processDefinition.getId();
+        String version = processDefinition.getVersion();
 
         if (StringUtils.isBlank(processId) || StringUtils.isBlank(version)) {
             throw new EngineException("empty processId or version");
         }
 
-        // Build runtime model;
-        DefaultRuntimeProcessComponent processComponent = new DefaultRuntimeProcessComponent();
-        processComponent.setId(processId);
-        processComponent.setVersion(version);
-        processComponent.setClassLoader(classLoader);
 
-        Process process = definition.getProcess();
-        if (null != process) {
-            if (StringUtils.isBlank(process.getId())) {
-                process.setId("default");
-            }
-            PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(process, processComponent, false);
-            processComponent.setProcess(pvmProcessDefinition);
-        }
+        PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(processDefinition, false);
 
-        this.processContainer.install(processComponent);
-        return processComponent;
+        this.processContainer.install(pvmProcessDefinition);
+        return processContainer;
     }
 
     @SuppressWarnings("rawtypes")
-    private PvmProcessDefinition buildPvmProcessDefinition(Process process, DefaultRuntimeProcessComponent component, boolean sub) {
+    private PvmProcessDefinition buildPvmProcessDefinition(ProcessDefinition processDefinition,  boolean sub) {
+
+
+        Process process = processDefinition.getProcess();
         String idPrefix = "";
         if (sub) {
             idPrefix = process.getId() + "_";
@@ -170,11 +157,12 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
         int index = 0;
 
-        // Build runtime model;
         DefaultPvmProcessDefinition pvmProcessDefinition = new DefaultPvmProcessDefinition();
-        pvmProcessDefinition.setClassLoader(component.getClassLoader());
+        pvmProcessDefinition.setId(processDefinition.getId());
+        pvmProcessDefinition.setVersion(processDefinition.getVersion());
+
+
         pvmProcessDefinition.setModel(process);
-        component.addProcess(pvmProcessDefinition.getModel().getId(), pvmProcessDefinition);
 
         List<BaseElement> elements = process.getElements();
         if (null != elements && !elements.isEmpty()) {
@@ -191,7 +179,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     }
                     index++;
 
-                    PvmProcessDefinition processDefinition = this.buildPvmProcessDefinition(subProcess, component, true);
+//                    PvmProcessDefinition processDefinition = this.buildPvmProcessDefinition(subProcess, true);
 
                     //TODO support subProcess
 //                    runtimeActivities.put(processDefinition.getModel().getId(), processDefinition);

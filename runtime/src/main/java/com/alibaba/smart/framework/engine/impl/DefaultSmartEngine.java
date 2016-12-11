@@ -9,6 +9,9 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
 
 import java.util.Map;
@@ -27,22 +30,13 @@ public class DefaultSmartEngine implements SmartEngine {
     @Override
     public void init(ProcessEngineConfiguration processEngineConfiguration) {
         this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
-
-        this.install();
+        this.extensionPointRegistry.register();
         this.extensionPointRegistry.start();
     }
-
-    private void install() throws EngineException {
-
-       this.extensionPointRegistry.register();
-
-    }
-
 
     @Override
     public void destroy() {
         this.extensionPointRegistry.stop();
-
     }
 
 
@@ -64,6 +58,21 @@ public class DefaultSmartEngine implements SmartEngine {
     @Override
     public TaskCommandService getTaskCommandService() {
         return this.extensionPointRegistry.getExtensionPoint(TaskCommandService.class);
+    }
+
+    @Override
+    public ProcessInstanceQueryService getProcessQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(ProcessInstanceQueryService.class);
+    }
+
+    @Override
+    public ActivityInstanceQueryService getActivityQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(ActivityInstanceQueryService.class);
+    }
+
+    @Override
+    public ExecutionInstanceQueryService getExecutionQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceQueryService.class);
     }
 
     @Override

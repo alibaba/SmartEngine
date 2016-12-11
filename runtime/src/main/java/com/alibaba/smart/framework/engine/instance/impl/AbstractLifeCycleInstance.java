@@ -4,6 +4,7 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.LifeCycleInstance;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 
 import java.util.Date;
 
@@ -15,10 +16,7 @@ import java.util.Date;
 public abstract class AbstractLifeCycleInstance extends AbstractInstance implements LifeCycleInstance {
 
     private static final long serialVersionUID = -170898515347885220L;
-    /**
-     * 状态
-     */
-    private InstanceStatus status = InstanceStatus.running;
+
     /**
      * 开始时间
      */
@@ -28,10 +26,5 @@ public abstract class AbstractLifeCycleInstance extends AbstractInstance impleme
      */
     private Date completeDate;
 
-    // private boolean suspend;
 
-    @Override
-    public boolean isSuspend() {
-        return InstanceStatus.suspended == this.status;
-    }
 }

@@ -21,7 +21,7 @@ public class DefaultExecutionInstanceFactory implements ExecutionInstanceFactory
         defaultExecutionInstance.setActivityId(activityInstance.getActivityId());
         defaultExecutionInstance.setActivityInstanceId(activityInstance.getInstanceId());
         defaultExecutionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
-
+        defaultExecutionInstance.setProcessDefinitionIdAndVersion(activityInstance.getProcessDefinitionIdAndVersion());
         defaultExecutionInstance.setStartDate(DateUtil.getCurrentDate());
 
         return defaultExecutionInstance;

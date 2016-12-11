@@ -88,7 +88,7 @@ public class ReceiveTaskExclusiveGatewayTest {
 
 
 //
-//        taskInstanceList =     taskQueryService.find(processInstanceId);
+//        taskInstanceList =     taskQueryService.findAll(processInstanceId);
 //
 //        Assert.assertNotNull(taskInstanceList);
 //        assertEquals(1,taskInstanceList.size());
@@ -102,7 +102,7 @@ public class ReceiveTaskExclusiveGatewayTest {
 //
 //        //
 //
-//        processInstance =    processCommandService.find(processInstanceId);
+//        processInstance =    processCommandService.findAll(processInstanceId);
 //        assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
 

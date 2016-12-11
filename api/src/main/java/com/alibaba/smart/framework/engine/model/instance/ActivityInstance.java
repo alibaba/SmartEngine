@@ -9,6 +9,11 @@ import java.util.List;
  */
 public interface ActivityInstance extends Instance {
 
+    String getProcessDefinitionIdAndVersion();
+
+    void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
+
+
     /**
      * 获取活动ID
      *
@@ -40,20 +45,20 @@ public interface ActivityInstance extends Instance {
     void setExecutionInstance(ExecutionInstance executionInstance);
 
     ExecutionInstance getExecutionInstance();
-
-    /**
-     * 获取进入活动的关联
-     *
-     * @return 进入活动的关联
-     */
-    List<TransitionInstance> getIncomeTransitions();
-
-    /**
-     * 添加进入活动的关联
-     *
-     * @param transitionInstance 进入活动的关联
-     */
-    void addIncomeTransition(TransitionInstance transitionInstance);
+//
+//    /**
+//     * 获取进入活动的关联
+//     *
+//     * @return 进入活动的关联
+//     */
+//    List<TransitionInstance> getIncomeTransitions();
+//
+//    /**
+//     * 添加进入活动的关联
+//     *
+//     * @param transitionInstance 进入活动的关联
+//     */
+//    void addIncomeTransition(TransitionInstance transitionInstance);
 
 
     Date getStartDate();

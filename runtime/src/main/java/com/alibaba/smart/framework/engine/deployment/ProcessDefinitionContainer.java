@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.deployment;
 
-import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 
 /**
@@ -12,9 +11,9 @@ public interface ProcessDefinitionContainer {
     /**
      * 安装流程
      *
-     * @param processComponent 流程
+     * @param pvmProcessDefinition 流程
      */
-    void install(PvmProcessComponent processComponent);
+    void install(PvmProcessDefinition pvmProcessDefinition);
 
     /**
      * 获取流程

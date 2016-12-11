@@ -21,7 +21,7 @@ public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
         taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
         taskInstance.setActivityId(pvmActivity.getModel().getId());
         taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
-
+        taskInstance.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
         taskInstance.setStartDate(DateUtil.getCurrentDate());
 
         return taskInstance;

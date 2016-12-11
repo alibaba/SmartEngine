@@ -61,7 +61,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         ExecutionInstance executionInstance = this.executionInstanceStorage.find(executionInstanceId);
         ProcessInstance processInstance = this.processInstanceStorage.find(executionInstance.getProcessInstanceId());
 
-        PvmProcessDefinition pvmProcessDefinition = this.processContainer.get(processInstance.getProcessUri());
+        PvmProcessDefinition pvmProcessDefinition = this.processContainer.get(processInstance.getProcessDefinitionIdAndVersion());
         String activityId = executionInstance.getActivityId();
         PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
 
@@ -100,7 +100,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
     void markDone(ExecutionInstance executionInstance) {
         executionInstance.setCompleteDate(DateUtil.getCurrentDate());
-        executionInstance.setStatus(InstanceStatus.completed);
+        executionInstance.setActive(false);
         executionInstanceStorage.save(executionInstance);
 
     }

@@ -27,7 +27,7 @@ public interface ProcessCommandService {
 //     * @param processInstanceId
 //     * @return
 //     */
-//    ProcessInstance find(String processInstanceId);
+//    ProcessInstance findAll(String processInstanceId);
 
 //    /**
 //     * 从参数中恢复流程实例到内存中

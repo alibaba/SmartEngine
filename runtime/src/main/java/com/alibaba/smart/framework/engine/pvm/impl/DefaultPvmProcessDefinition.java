@@ -17,8 +17,8 @@ public class DefaultPvmProcessDefinition implements PvmProcessDefinition {
 
     private String uri;
 
-    private ClassLoader classLoader;
-
+        private String id;
+    private String version;
     private Map<String, PvmActivity> activities;
 
     private Map<String, PvmTransition> transitions;

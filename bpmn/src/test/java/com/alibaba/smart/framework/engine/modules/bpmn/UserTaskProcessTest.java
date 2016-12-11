@@ -81,7 +81,7 @@ public class UserTaskProcessTest {
 
 
 //
-//        taskInstanceList =     taskQueryService.find(processInstanceId);
+//        taskInstanceList =     taskQueryService.findAll(processInstanceId);
 //
 //        Assert.assertNotNull(taskInstanceList);
 //        assertEquals(1,taskInstanceList.size());
@@ -95,7 +95,7 @@ public class UserTaskProcessTest {
 //
 //        //
 //
-//        processInstance =    processCommandService.find(processInstanceId);
+//        processInstance =    processCommandService.findAll(processInstanceId);
 //        assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
 
@@ -113,7 +113,7 @@ public class UserTaskProcessTest {
 //                .getRepositoryService();
 //        ProcessDefinition processDefinition = repositoryCommandService
 //                .deploy("test-usertask-exclusive.bpmn20.xml");
-//        assertEquals(25, processDefinition.getProcess().getElements().size());
+//        assertEquals(25, processDefinition.getPvmProcessDefinition().getElements().size());
 //
 //        ProcessCommandService processCommandService = smartEngine.getProcessService();
 //        Map<String, Object> request = new HashMap<>();
@@ -130,7 +130,7 @@ public class UserTaskProcessTest {
 //        TaskInstanceQueryService taskQueryService =    smartEngine.getTaskQueryService();
 //
 //        String processInstanceId = processInstance.getInstanceId();
-//        List<TaskInstance> taskInstanceList =     taskQueryService.find(processInstanceId);
+//        List<TaskInstance> taskInstanceList =     taskQueryService.findAll(processInstanceId);
 //
 //        Assert.assertNotNull(taskInstanceList);
 //        assertEquals(1,taskInstanceList.size());
@@ -145,7 +145,7 @@ public class UserTaskProcessTest {
 //
 //
 //
-//        taskInstanceList =     taskQueryService.find(processInstanceId);
+//        taskInstanceList =     taskQueryService.findAll(processInstanceId);
 //
 //        Assert.assertNotNull(taskInstanceList);
 //        assertEquals(1,taskInstanceList.size());
@@ -159,7 +159,7 @@ public class UserTaskProcessTest {
 //
 //        //
 //
-//        processInstance =    processCommandService.find(processInstanceId);
+//        processInstance =    processCommandService.findAll(processInstanceId);
 //        assertEquals(InstanceStatus.completed, processInstance.getStatus());
 //
 //

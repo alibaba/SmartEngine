@@ -6,5 +6,7 @@ package com.alibaba.smart.framework.engine.model.instance;
 public enum InstanceStatus {
 
 
-    running, suspended, completed;
+    running, suspended, aborted,completed;
+
+
 }

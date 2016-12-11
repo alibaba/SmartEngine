@@ -33,5 +33,12 @@
         from execution_instance where id=#{id}
     </select>
 
+    <select id="findAllExecutionList" resultType="ExecutionInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from execution_instance where process_instance_id=#{processInstanceId}
+    </select>
+
+
 
 </mapper>

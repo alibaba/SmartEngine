@@ -20,7 +20,7 @@ public class DefaultActivityInstanceFactory implements ActivityInstanceFactory {
         activityInstance.setInstanceId(InstanceIdUtil.simpleId());
         activityInstance.setStartDate(DateUtil.getCurrentDate());
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
-
+        activityInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
         String activityId = pvmActivity.getModel().getId();
         activityInstance.setActivityId(activityId);
         return activityInstance;
