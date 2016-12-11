@@ -5,7 +5,9 @@ import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorag
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.database.dao.ProcessInstanceDAO;
+import com.alibaba.smart.framework.engine.persister.database.dao.TaskInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
+import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
 
 
@@ -13,15 +15,12 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
 
     @Override
-    public ProcessInstance save(ProcessInstance processInstance) {
+    public ProcessInstance insert(ProcessInstance processInstance) {
 
         //TUNE
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
 
-        ProcessInstanceEntity processInstanceEntityToBePersisted = new ProcessInstanceEntity();
-        processInstanceEntityToBePersisted.setParentProcessInstanceId(processInstance.getParentInstanceId());
-        processInstanceEntityToBePersisted.setStatus(processInstance.getStatus().name());
-        processInstanceEntityToBePersisted.setProcessDefinitionId(processInstance.getProcessDefinitionIdAndVersion());
+        ProcessInstanceEntity processInstanceEntityToBePersisted = buildProcessInstanceEntity(processInstance);
 
         processInstanceEntityToBePersisted =  processInstanceDAO.insert(processInstanceEntityToBePersisted);
 
@@ -30,6 +29,22 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         //TODO 命名不一致
         buildEntityToInstance(processInstance, processInstanceEntity1);
 
+        return processInstance;
+    }
+
+    private ProcessInstanceEntity buildProcessInstanceEntity(ProcessInstance processInstance) {
+        ProcessInstanceEntity processInstanceEntityToBePersisted = new ProcessInstanceEntity();
+        processInstanceEntityToBePersisted.setParentProcessInstanceId(processInstance.getParentInstanceId());
+        processInstanceEntityToBePersisted.setStatus(processInstance.getStatus().name());
+        processInstanceEntityToBePersisted.setProcessDefinitionId(processInstance.getProcessDefinitionIdAndVersion());
+        return processInstanceEntityToBePersisted;
+    }
+
+    @Override
+    public ProcessInstance update(ProcessInstance processInstance) {
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+        ProcessInstanceEntity processInstanceEntity = buildProcessInstanceEntity(processInstance);
+        processInstanceDAO.update(processInstanceEntity);
         return processInstance;
     }
 

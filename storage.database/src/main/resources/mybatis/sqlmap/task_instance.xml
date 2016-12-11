@@ -21,11 +21,12 @@
     <update id="update" parameterType="TaskInstanceEntity">
         update task_instance
         <set>
-            gmt_modified=now()
-            <if test="assigneeId != null">,assignee_id = #{assigneeId}</if>
-            <if test="priority != null">,priority = #{priority}</if>
-            <if test="claimTime != null">,claim_time = #{claimTime}</if>
-            <if test="endTime != null">,end_time = #{endTime}</if>
+            gmt_modified=now(),end_time = now()
+            <!--<if test="assigneeId != null">,assignee_id = #{assigneeId}</if>-->
+            <!--<if test="priority != null">,priority = #{priority}</if>-->
+            <!--<if test="claimTime != null">,claim_time = #{claimTime}</if>-->
+            <!--<if test="endTime != null">,end_time = #{endTime}</if>-->
+
         </set>
         where id=#{id}
     </update>

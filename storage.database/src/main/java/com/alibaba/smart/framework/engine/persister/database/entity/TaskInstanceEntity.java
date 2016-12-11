@@ -27,6 +27,7 @@ public class TaskInstanceEntity extends BaseProcessEntity {
 
     private Integer priority;
 
+
     private Date claimTime;
 
     private Date endTime;

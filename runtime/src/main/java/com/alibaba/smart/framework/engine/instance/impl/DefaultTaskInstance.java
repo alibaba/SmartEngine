@@ -4,6 +4,8 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
+
 /**
  * 默认任务实例 Created by ettear on 16-4-20.
  */
@@ -19,4 +21,10 @@ public class DefaultTaskInstance extends AbstractLifeCycleInstance implements Ta
     private Long processInstanceId;
     private Long executionInstanceId;
     private Long activityInstanceId;
+
+    private String assigneeId;
+    private Integer priority;
+    private Date claimTime;
+    private Date endTime;
+
 }

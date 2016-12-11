@@ -9,7 +9,10 @@ public interface TaskInstanceStorage {
 
      List<TaskInstance> findPendingTask(Long processInstanceId);
 
-    TaskInstance save(TaskInstance taskInstance);
+    TaskInstance insert(TaskInstance taskInstance);
+
+    TaskInstance update(TaskInstance taskInstance);
+
 
     TaskInstance find(Long taskInstanceId);
 

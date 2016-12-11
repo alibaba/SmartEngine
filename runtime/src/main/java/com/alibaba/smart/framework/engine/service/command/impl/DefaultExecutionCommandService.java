@@ -7,11 +7,13 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
@@ -31,9 +33,9 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     private ProcessDefinitionContainer processContainer;
     private InstanceContextFactory instanceContextFactory;
 
-    private ProcessInstanceStorage processInstanceStorage;
-    private ActivityInstanceStorage activityInstanceStorage;
-    private ExecutionInstanceStorage executionInstanceStorage;
+//    private ProcessInstanceStorage processInstanceStorage;
+//    private ActivityInstanceStorage activityInstanceStorage;
+//    private ExecutionInstanceStorage executionInstanceStorage;
 
 
     public DefaultExecutionCommandService(ExtensionPointRegistry extensionPointRegistry) {
@@ -45,9 +47,9 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
 
-        this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
-        this.activityInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceStorage.class);
-        this.executionInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceStorage.class);
+//        this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
+//        this.activityInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceStorage.class);
+//        this.executionInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceStorage.class);
 
     }
 
@@ -58,10 +60,19 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
     @Override
     public ProcessInstance signal(Long executionInstanceId, Map<String, Object> request) {
-        ExecutionInstance executionInstance = this.executionInstanceStorage.find(executionInstanceId);
-        ProcessInstance processInstance = this.processInstanceStorage.find(executionInstance.getProcessInstanceId());
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        PvmProcessDefinition pvmProcessDefinition = this.processContainer.get(processInstance.getProcessDefinitionIdAndVersion());
+        //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
+        ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
+        ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
+        ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
+        TaskInstanceStorage taskInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+
+
+        ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId);
+        ProcessInstance processInstance = processInstanceStorage.find(executionInstance.getProcessInstanceId());
+
+        PvmProcessDefinition pvmProcessDefinition = this.processContainer.get(executionInstance.getProcessDefinitionIdAndVersion());
         String activityId = executionInstance.getActivityId();
         PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
 
@@ -76,32 +87,67 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
         ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
-        persist(newProcessInstance);
         markDone(executionInstance);
+        persist(newProcessInstance);
 
         return newProcessInstance;
     }
 
-    //TODO duplicated
-    private void persist(ProcessInstance processInstance) {
 
 
-        processInstanceStorage.save(processInstance);
-        List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
-        for (ActivityInstance activityInstance : activityInstances) {
-            activityInstanceStorage.save(activityInstance);
 
-            ExecutionInstance executionInstance = activityInstance.getExecutionInstance();
-            if (null != executionInstance) {
-                executionInstanceStorage.save(executionInstance);
+        private ProcessInstance persist(ProcessInstance processInstance) {
+
+            PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+            //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
+            ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
+            ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
+            ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
+            TaskInstanceStorage taskInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+
+
+            ProcessInstance newProcessInstance=   processInstanceStorage.update(processInstance);
+            List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
+            for (ActivityInstance activityInstance : activityInstances) {
+
+                //TUNE 这里重新赋值了,id还是统一由数据库分配.
+                activityInstance.setProcessInstanceId(processInstance.getInstanceId());
+                activityInstanceStorage.insert(activityInstance);
+
+                ExecutionInstance executionInstance = activityInstance.getExecutionInstance();
+                if (null != executionInstance) {
+                    executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
+                    executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
+                    executionInstanceStorage.insert(executionInstance);
+
+                    TaskInstance taskInstance = executionInstance.getTaskInstance();
+                    if(null!= taskInstance) {
+                        taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
+                        taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
+                        taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
+
+                        //reAssign
+                        taskInstance = taskInstanceStorage.insert(taskInstance);
+                        executionInstance.setTaskInstance(taskInstance);
+                    }
+
+
+                }
             }
-        }
-    }
 
-    void markDone(ExecutionInstance executionInstance) {
+            return newProcessInstance;
+        }
+
+
+    private  void markDone(ExecutionInstance executionInstance) {
         executionInstance.setCompleteDate(DateUtil.getCurrentDate());
         executionInstance.setActive(false);
-        executionInstanceStorage.save(executionInstance);
+
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
+
+        executionInstanceStorage.update(executionInstance);
 
     }
 

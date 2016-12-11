@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface ActivityInstanceStorage {
 
-    ActivityInstance save(ActivityInstance activityInstance);
+    ActivityInstance insert(ActivityInstance activityInstance);
+
+    ActivityInstance update(ActivityInstance activityInstance);
+
 
     ActivityInstance find(Long activityInstanceId);
 

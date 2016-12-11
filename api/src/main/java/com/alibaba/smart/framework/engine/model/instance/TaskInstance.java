@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
+import java.util.Date;
+
 /**
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
@@ -26,4 +28,21 @@ public interface TaskInstance extends LifeCycleInstance {
     Long getActivityInstanceId();
 
     void setActivityInstanceId(Long activityInstanceId);
+
+      String getAssigneeId() ;
+
+      void setAssigneeId(String assigneeId);
+
+      Integer getPriority();
+
+      void setPriority(Integer priority) ;
+
+      Date getClaimTime() ;
+
+      void setClaimTime(Date claimTime) ;
+
+      Date getEndTime() ;
+
+      void setEndTime(Date endTime);
+
 }

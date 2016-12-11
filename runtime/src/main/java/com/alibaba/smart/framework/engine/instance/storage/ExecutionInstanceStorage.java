@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface ExecutionInstanceStorage {
 
-    ExecutionInstance save(ExecutionInstance executionInstance);
+    ExecutionInstance insert(ExecutionInstance executionInstance);
+
+    ExecutionInstance update(ExecutionInstance executionInstance);
+
 
     ExecutionInstance find(Long executionInstanceId);
 

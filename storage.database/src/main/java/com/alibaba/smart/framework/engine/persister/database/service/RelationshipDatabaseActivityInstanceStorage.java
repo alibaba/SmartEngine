@@ -22,14 +22,11 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
 
     @Override
-    public ActivityInstance save(ActivityInstance activityInstance) {
+    public ActivityInstance insert(ActivityInstance activityInstance) {
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
-        ActivityInstanceEntity activityInstanceEntityToBePersisted = new ActivityInstanceEntity();
-        activityInstanceEntityToBePersisted.setProcessDefinitionId(activityInstance.getProcessDefinitionIdAndVersion());
 
-        //TUNE 命名不统一
-        activityInstanceEntityToBePersisted.setProcessDefinitionActivityId(activityInstance.getActivityId());
-        activityInstanceEntityToBePersisted.setProcessInstanceId(activityInstance.getProcessInstanceId());
+
+        ActivityInstanceEntity activityInstanceEntityToBePersisted = buildActivityInstanceEntity(activityInstance);
 
         activityInstanceDAO.insert(activityInstanceEntityToBePersisted);
 
@@ -40,6 +37,24 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
         return activityInstance;
     }
+
+    private ActivityInstanceEntity buildActivityInstanceEntity(ActivityInstance activityInstance) {
+        ActivityInstanceEntity activityInstanceEntityToBePersisted = new ActivityInstanceEntity();
+        activityInstanceEntityToBePersisted.setProcessDefinitionId(activityInstance.getProcessDefinitionIdAndVersion());
+
+        //TUNE 命名不统一
+        activityInstanceEntityToBePersisted.setProcessDefinitionActivityId(activityInstance.getActivityId());
+        activityInstanceEntityToBePersisted.setProcessInstanceId(activityInstance.getProcessInstanceId());
+        return activityInstanceEntityToBePersisted;
+    }
+
+    @Override
+    public ActivityInstance update(ActivityInstance activityInstance) {
+        //TUNE no need to persister
+//        ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
+//        ActivityInstanceEntity processInstanceEntity = buildProcessInstanceEntity(processInstance);
+//        activityInstanceDAO.update(processInstanceEntity);
+        return activityInstance;    }
 
     @Override
     public ActivityInstance find(Long instanceId) {

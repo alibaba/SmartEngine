@@ -14,7 +14,7 @@ public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
     private Map<Long, ProcessInstance> instances = new ConcurrentHashMap<>();
 
     @Override
-    public ProcessInstance save(ProcessInstance instance) {
+    public ProcessInstance insert(ProcessInstance instance) {
         this.instances.put(instance.getInstanceId(), instance);
 
         return instance;

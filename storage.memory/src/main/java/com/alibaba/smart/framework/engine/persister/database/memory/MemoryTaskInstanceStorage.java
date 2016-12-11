@@ -14,7 +14,7 @@ public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
     private Map<Long, TaskInstance> instances = new ConcurrentHashMap<>();
 
     @Override
-    public TaskInstance save(TaskInstance instance) {
+    public TaskInstance insert(TaskInstance instance) {
         this.instances.put(instance.getInstanceId(), instance);
 
         return instance;

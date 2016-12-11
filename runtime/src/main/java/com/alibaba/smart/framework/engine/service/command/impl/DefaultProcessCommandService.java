@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
-import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultPersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
@@ -98,19 +97,19 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         TaskInstanceStorage taskInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
 
-        ProcessInstance newProcessInstance=   processInstanceStorage.save(processInstance);
+        ProcessInstance newProcessInstance=   processInstanceStorage.insert(processInstance);
         List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
         for (ActivityInstance activityInstance : activityInstances) {
 
             //TUNE 这里重新赋值了,id还是统一由数据库分配.
             activityInstance.setProcessInstanceId(processInstance.getInstanceId());
-            activityInstanceStorage.save(activityInstance);
+            activityInstanceStorage.insert(activityInstance);
 
             ExecutionInstance executionInstance = activityInstance.getExecutionInstance();
             if (null != executionInstance) {
                 executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
                 executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
-                executionInstanceStorage.save(executionInstance);
+                executionInstanceStorage.insert(executionInstance);
 
                 TaskInstance taskInstance = executionInstance.getTaskInstance();
                 if(null!= taskInstance) {
@@ -119,7 +118,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
                     taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
 
                     //reAssign
-                    taskInstance = taskInstanceStorage.save(taskInstance);
+                    taskInstance = taskInstanceStorage.insert(taskInstance);
                     executionInstance.setTaskInstance(taskInstance);
                }
 
@@ -173,7 +172,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 //        executionInstance.setActivityId(activityInstance.getActivityId());
 //        processInstance.setProcessUri(processDefinition.getUri());
 ////        processInstance.addExecution(executionInstance);
-//        processInstanceStorage.save(processInstance);
+//        processInstanceStorage.insert(processInstance);
 //
 //
 //    }

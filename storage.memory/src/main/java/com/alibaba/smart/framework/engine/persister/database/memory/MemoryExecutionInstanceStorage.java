@@ -14,7 +14,7 @@ public class MemoryExecutionInstanceStorage implements ExecutionInstanceStorage 
     private Map<Long, ExecutionInstance> instances = new ConcurrentHashMap<>();
 
     @Override
-    public ExecutionInstance save(ExecutionInstance instance) {
+    public ExecutionInstance insert(ExecutionInstance instance) {
         this.instances.put(instance.getInstanceId(), instance);
 
         return instance;

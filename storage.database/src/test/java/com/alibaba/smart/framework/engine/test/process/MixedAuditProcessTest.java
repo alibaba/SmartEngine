@@ -31,7 +31,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+//@Transactional
 public class MixedAuditProcessTest {
 
 
@@ -96,7 +96,7 @@ public class MixedAuditProcessTest {
         Assert.assertNotNull(activityInstanceList);
         Assert.assertEquals(3,activityInstanceList.size() );
 
-        taskQueryService.findPendingTask(processInstance.getInstanceId());
+        taskInstanceList = taskQueryService.findPendingTask(processInstance.getInstanceId());
         Assert.assertNotNull(taskInstanceList);
 
         TaskInstance approveTaskInstance = taskInstanceList.get(0);

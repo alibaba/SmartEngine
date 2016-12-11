@@ -14,7 +14,7 @@ public class MemoryActivityInstanceStorage implements ActivityInstanceStorage {
     private Map<Long, ActivityInstance> instances = new ConcurrentHashMap<>();
 
     @Override
-    public ActivityInstance save(ActivityInstance instance) {
+    public ActivityInstance insert(ActivityInstance instance) {
         this.instances.put(instance.getInstanceId(), instance);
         return instance;
     }

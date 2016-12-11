@@ -12,7 +12,10 @@ public interface ProcessInstanceStorage {
      *
      * @param processInstance 流程实例
      */
-    ProcessInstance save(ProcessInstance processInstance);
+    ProcessInstance insert(ProcessInstance processInstance);
+
+    ProcessInstance update(ProcessInstance processInstance);
+
 
     /**
      * 加载流程实例
