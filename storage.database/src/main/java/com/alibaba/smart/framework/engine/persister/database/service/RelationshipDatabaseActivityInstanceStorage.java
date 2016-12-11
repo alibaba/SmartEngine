@@ -27,6 +27,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
 
         ActivityInstanceEntity activityInstanceEntityToBePersisted = buildActivityInstanceEntity(activityInstance);
+        activityInstanceEntityToBePersisted.setId(null);
 
         activityInstanceDAO.insert(activityInstanceEntityToBePersisted);
 

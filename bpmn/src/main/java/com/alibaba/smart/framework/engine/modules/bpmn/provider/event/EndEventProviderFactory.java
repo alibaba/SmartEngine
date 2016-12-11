@@ -15,7 +15,7 @@ public class EndEventProviderFactory implements ActivityProviderFactory<EndEvent
 
     @Override
     public EndEventBehavior createActivityProvider(PvmActivity activity) {
-        //TODO  减少每次都 new,其他类也类似
+        //TUNE  减少每次都 new,其他类也类似
         return new EndEventBehavior(this.extensionPointRegistry, activity);
     }
 

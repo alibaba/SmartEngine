@@ -26,18 +26,18 @@
 
         <sequenceFlow id="flow2" sourceRef="exclusiveGw1"
                       targetRef="executeTask">
-            <conditionExpression xsi:type="mvel">approve == agree
+            <conditionExpression xsi:type="mvel">approve == 'agree'
             </conditionExpression>
         </sequenceFlow>
 
         <sequenceFlow id="flow3" sourceRef="exclusiveGw1"
                       targetRef="advancedAuditTask">
-            <conditionExpression xsi:type="mvel">approve == upgrade
+            <conditionExpression xsi:type="mvel">approve == 'upgrade'
             </conditionExpression>
         </sequenceFlow>
 
 
-        <serviceTask id="executeTask" name="ExecuteTask" smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ServiceTaskDelegation">
+        <serviceTask id="executeTask" name="ExecuteTask" smart:class="com.alibaba.smart.framework.engine.test.process.AuditProcessServiceTaskDelegation">
         </serviceTask>
 
 
@@ -54,13 +54,13 @@
 
         <sequenceFlow id="flow9" sourceRef="exclusiveGw2"
                       targetRef="executeTask">
-            <conditionExpression type="mvel">approve == agree
+            <conditionExpression type="mvel">approve == 'agree'
             </conditionExpression>
         </sequenceFlow>
 
         <sequenceFlow id="flow10" sourceRef="exclusiveGw2"
                       targetRef="theEnd">
-            <conditionExpression type="mvel">approve == deny
+            <conditionExpression type="mvel">approve == 'deny'
             </conditionExpression>
         </sequenceFlow>
 

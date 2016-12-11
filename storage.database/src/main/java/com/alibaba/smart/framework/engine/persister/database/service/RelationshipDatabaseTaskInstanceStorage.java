@@ -41,6 +41,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
 
         TaskInstanceEntity taskInstanceEntity = buildTaskInstanceEntity(taskInstance);
+        taskInstanceEntity.setId(null);
         taskInstanceDAO.insert(taskInstanceEntity);
 
         //reAssign
@@ -53,6 +54,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     private TaskInstanceEntity buildTaskInstanceEntity(TaskInstance taskInstance) {
         TaskInstanceEntity taskInstanceEntity = new TaskInstanceEntity();
 
+        taskInstanceEntity.setId(taskInstance.getInstanceId());
         taskInstanceEntity.setProcessDefinitionId(taskInstance.getActivityId());
         taskInstanceEntity.setProcessInstanceId(taskInstance.getProcessInstanceId());
         taskInstanceEntity.setActivityInstanceId(taskInstance.getActivityInstanceId());
@@ -71,7 +73,6 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         TaskInstanceEntity taskInstanceEntity = buildTaskInstanceEntity(taskInstance);
         taskInstanceDAO.update(taskInstanceEntity);
 
-          taskInstanceEntity =  taskInstanceDAO.findOne(taskInstance.getInstanceId());
 
         return taskInstance;
     }
