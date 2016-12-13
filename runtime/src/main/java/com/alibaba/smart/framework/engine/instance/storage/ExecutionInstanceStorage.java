@@ -16,6 +16,6 @@ public interface ExecutionInstanceStorage {
 
     void remove(Long executionInstanceId);
 
-    List<ExecutionInstance> findActiveExecution(String processInstanceId);
+    List<ExecutionInstance> findActiveExecution(Long processInstanceId);
 
 }

@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface ExecutionInstanceQueryService {
 
-    List<ExecutionInstance> findActiveExecution(String processInstanceId);
+    List<ExecutionInstance> findActiveExecution(Long processInstanceId);
 
 }

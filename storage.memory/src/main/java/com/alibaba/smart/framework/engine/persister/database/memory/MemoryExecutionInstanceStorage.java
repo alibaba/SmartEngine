@@ -38,7 +38,7 @@ public class MemoryExecutionInstanceStorage implements ExecutionInstanceStorage 
     }
 
     @Override
-    public List<ExecutionInstance> findActiveExecution(String processInstanceId) {
+    public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
         return null;
     }
 }

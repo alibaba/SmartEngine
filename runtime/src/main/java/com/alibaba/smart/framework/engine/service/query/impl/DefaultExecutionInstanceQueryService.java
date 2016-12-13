@@ -37,7 +37,7 @@ public class DefaultExecutionInstanceQueryService implements ExecutionInstanceQu
 
 
     @Override
-    public List<ExecutionInstance> findActiveExecution(String processInstanceId) {
+    public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
 

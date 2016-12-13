@@ -81,7 +81,7 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
     }
 
     @Override
-    public List<ExecutionInstance> findActiveExecution(String processInstanceId) {
+    public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
         executionInstanceDAO.findAllExecutionList(processInstanceId);
         return null;

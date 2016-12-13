@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ExecutionInstanceDAO extends MybatisRepository<ExecutionInstanceEntity, Long> {
 
-    List<ExecutionInstanceEntity> findAllExecutionList(String processInstanceId);
+    List<ExecutionInstanceEntity> findAllExecutionList(Long processInstanceId);
 
 }
