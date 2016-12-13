@@ -64,7 +64,7 @@ public class MixedAuditProcessTest {
 
 
 
-        //4.启动流程定义
+        //4.启动流程实例
         ProcessInstance processInstance = processCommandService.start(
                 processDefinition.getId(), processDefinition.getVersion()
                 );
