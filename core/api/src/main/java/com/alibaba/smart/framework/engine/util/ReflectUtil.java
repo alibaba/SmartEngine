@@ -54,7 +54,7 @@ public class ReflectUtil {
 
 	
 	/**
-	 * 获取error的根原因
+	 * 鑾峰彇error鐨勬牴鍘熷洜
 	 * 
 	 * @param throwable
 	 * @return
