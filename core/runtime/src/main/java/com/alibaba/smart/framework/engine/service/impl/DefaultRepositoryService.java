@@ -12,6 +12,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.util.ParamChecker;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
@@ -190,102 +191,108 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
         pvmProcessDefinition.setModel(process);
         component.addProcess(pvmProcessDefinition.getModel().getId(), pvmProcessDefinition);
 
-        List<BaseElement> elements = process.getElements();
-        if (null != elements && !elements.isEmpty()) {
 
-            //TODO ocp 
-            Map<String, PvmTransition> runtimeTransitions = new HashMap<>();
-            Map<String, PvmActivity> runtimeActivities = new HashMap<>();
-            for (BaseElement element : elements) {
-                if (element instanceof Process) {
-                    Process subProcess = (Process) element;
+            List<BaseElement> elements = process.getElements();
+            if (null != elements && !elements.isEmpty()) {
 
-                    if (StringUtils.isBlank(subProcess.getId())) {
-                        subProcess.setId(idPrefix + "process" + index);
-                    }
-                    index++;
+                //TODO ocp
+                Map<String, PvmTransition> runtimeTransitions = new HashMap<>();
+                Map<String, PvmActivity> runtimeActivities = new HashMap<>();
+                for (BaseElement element : elements) {
+                    if (element instanceof Process) {
+                        Process subProcess = (Process) element;
 
-                    PvmProcessDefinition runtimeSubProcess = this.buildPvmProcessDefinition(subProcess, component, true);
-                    runtimeActivities.put(runtimeSubProcess.getModel().getId(), runtimeSubProcess);
+                        if (StringUtils.isBlank(subProcess.getId())) {
+                            subProcess.setId(idPrefix + "process" + index);
+                        }
+                        index++;
 
-                    if (runtimeSubProcess.getModel().isStartActivity()) {
-                        pvmProcessDefinition.setStartActivity(runtimeSubProcess);
-                    }
-                } else if (element instanceof Transition) {
-                    Transition transition = (Transition) element;
+                        PvmProcessDefinition runtimeSubProcess = this.buildPvmProcessDefinition(subProcess, component, true);
+                        runtimeActivities.put(runtimeSubProcess.getModel().getId(), runtimeSubProcess);
 
-                    if (StringUtils.isBlank(transition.getId())) {
-                        transition.setId(idPrefix + "transition" + index);
-                    }
-                    index++;
+                        if (runtimeSubProcess.getModel().isStartActivity()) {
+                            pvmProcessDefinition.setStartActivity(runtimeSubProcess);
+                        }
+                    } else if (element instanceof Transition) {
+                        Transition transition = (Transition) element;
 
-                    DefaultPvmTransition runtimeTransition = new DefaultPvmTransition();
-                    runtimeTransition.setModel(transition);
+                        if (StringUtils.isBlank(transition.getId())) {
+                            transition.setId(idPrefix + "transition" + index);
+                        }
+                        index++;
 
-                    runtimeTransitions.put(runtimeTransition.getModel().getId(), runtimeTransition);
+                        DefaultPvmTransition runtimeTransition = new DefaultPvmTransition();
+                        runtimeTransition.setModel(transition);
 
-                } else if (element instanceof Activity) {
-                    Activity activity = (Activity) element;
+                        runtimeTransitions.put(runtimeTransition.getModel().getId(), runtimeTransition);
 
-                    if (StringUtils.isBlank(activity.getId())) {
-                        activity.setId(idPrefix + "activity" + index);
-                    }
-                    index++;
+                    } else if (element instanceof Activity) {
+                        Activity activity = (Activity) element;
 
-                    DefaultPvmActivity runtimeActivity = new DefaultPvmActivity();
-                    runtimeActivity.setModel(activity);
+                        if (StringUtils.isBlank(activity.getId())) {
+                            activity.setId(idPrefix + "activity" + index);
+                        }
+                        index++;
 
-                    runtimeActivities.put(runtimeActivity.getModel().getId(), runtimeActivity);
+                        DefaultPvmActivity runtimeActivity = new DefaultPvmActivity();
+                        runtimeActivity.setModel(activity);
 
-                    if (runtimeActivity.getModel().isStartActivity()) {
-                        pvmProcessDefinition.setStartActivity(runtimeActivity);
+                        runtimeActivities.put(runtimeActivity.getModel().getId(), runtimeActivity);
+
+                        if (runtimeActivity.getModel().isStartActivity()) {
+                            pvmProcessDefinition.setStartActivity(runtimeActivity);
+                        }
                     }
                 }
-            }
 
-            // Process Transition Flow
-            for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
-                DefaultPvmTransition runtimeTransition = (DefaultPvmTransition) runtimeTransitionEntry.getValue();
-                String sourceRef = runtimeTransition.getModel().getSourceRef();
-                String targetRef = runtimeTransition.getModel().getTargetRef();
-                DefaultPvmActivity source = (DefaultPvmActivity) runtimeActivities.get(sourceRef);
-                DefaultPvmActivity target = (DefaultPvmActivity) runtimeActivities.get(targetRef);
+                // Process Transition Flow
+                for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
+                    DefaultPvmTransition runtimeTransition = (DefaultPvmTransition) runtimeTransitionEntry.getValue();
+                    String sourceRef = runtimeTransition.getModel().getSourceRef();
+                    String targetRef = runtimeTransition.getModel().getTargetRef();
+                    DefaultPvmActivity source = (DefaultPvmActivity) runtimeActivities.get(sourceRef);
+                    DefaultPvmActivity target = (DefaultPvmActivity) runtimeActivities.get(targetRef);
 
-                runtimeTransition.setSource(source);
-                runtimeTransition.setTarget(target);
-                source.addOutcomeTransition(runtimeTransition.getModel().getId(), runtimeTransition);
-                target.addIncomeTransition(runtimeTransition.getModel().getId(), runtimeTransition);
-            }
+                    ParamChecker.notNull(target,"sequence line is error,target is null ,please check id is : "+ runtimeTransition.getModel().getId());
+                    ParamChecker.notNull(source,"sequence line is error,source is null ,please check id is : "+ runtimeTransition.getModel().getId());
 
-            // Create Invoker for Transition Flow
-            for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
-                PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
-                TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModel().getClass());
-
-                if (null == providerFactory) {
-                    throw new RuntimeException("No factory found for " + runtimeTransition.getModel().getClass());
+                    runtimeTransition.setSource(source);
+                    runtimeTransition.setTarget(target);
+                    source.addOutcomeTransition(runtimeTransition.getModel().getId(), runtimeTransition);
+                    target.addIncomeTransition(runtimeTransition.getModel().getId(), runtimeTransition);
                 }
 
-                TransitionProvider transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
-                runtimeTransition.registerProvider(transitionProvider);
-            }
+                // Create Invoker for Transition Flow
+                for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
+                    PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
+                    TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModel().getClass());
 
-            // Create Invoker for Activity
-            for (Map.Entry<String, PvmActivity> runtimeActivityEntry : runtimeActivities.entrySet()) {
-                PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
-                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModel().getClass());
+                    if (null == providerFactory) {
+                        throw new RuntimeException("No factory found for " + runtimeTransition.getModel().getClass());
+                    }
 
-                if (null == providerFactory) {
-                    throw new RuntimeException("No factory found for " + runtimeActivity.getModel().getClass());
+                    TransitionProvider transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
+                    runtimeTransition.registerProvider(transitionProvider);
                 }
 
-                ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeActivity);
-                runtimeActivity.registerProvider(activityProvider);
+                // Create Invoker for Activity
+                for (Map.Entry<String, PvmActivity> runtimeActivityEntry : runtimeActivities.entrySet()) {
+                    PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
+                    ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModel().getClass());
+
+                    if (null == providerFactory) {
+                        throw new RuntimeException("No factory found for " + runtimeActivity.getModel().getClass());
+                    }
+
+                    ActivityProvider activityProvider = providerFactory.createActivityProvider(runtimeActivity);
+                    runtimeActivity.registerProvider(activityProvider);
+                }
+
+                pvmProcessDefinition.setActivities(runtimeActivities);
+                pvmProcessDefinition.setTransitions(runtimeTransitions);
             }
 
-            pvmProcessDefinition.setActivities(runtimeActivities);
-            pvmProcessDefinition.setTransitions(runtimeTransitions);
-        }
+
         return pvmProcessDefinition;
     }
 }

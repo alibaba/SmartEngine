@@ -13,6 +13,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.task.action.SpringAction;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.util.ParamChecker;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class ProcessEventInvoker implements Invoker {
                 } catch (Throwable e) {
                     //这里好像抓不到异常了已经
                 }
-                if (event.getSignal().equals("abort")) {
+                if (StringUtils.equalsIgnoreCase(event.getSignal(),"abort")) {
                     throw new AbortSignal("event :"+event.getId()+" method: "+event.getMethod()+" will be abort processInstance after execute");
                 }
             }
