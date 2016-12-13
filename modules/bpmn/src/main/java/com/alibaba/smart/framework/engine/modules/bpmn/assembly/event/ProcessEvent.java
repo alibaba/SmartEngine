@@ -22,5 +22,7 @@ public class ProcessEvent extends AbstractEvent {
     private String            type;
     private String            id;
     private String            method;
+    private String            signal;
+
 
 }

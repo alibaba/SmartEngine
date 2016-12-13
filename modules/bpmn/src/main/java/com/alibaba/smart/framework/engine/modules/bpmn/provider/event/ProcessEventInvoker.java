@@ -4,9 +4,9 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
-import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
 import com.alibaba.smart.framework.engine.invocation.message.impl.SubsbandMessage;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.Action;
+import com.alibaba.smart.framework.engine.invocation.signal.AbortSignal;
+import com.alibaba.smart.framework.engine.invocation.signal.Signal;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvents;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
@@ -27,7 +27,7 @@ public class ProcessEventInvoker implements Invoker {
     }
 
     @Override
-    public Message invoke(ExecutionContext executionContext) {
+    public Message invoke(ExecutionContext executionContext) throws Signal {
         String assigineEvent = (String) executionContext.getRequest().get("event");
 
         ServiceTask serviceTask = (ServiceTask) pvmActivity.getModel();
@@ -45,6 +45,9 @@ public class ProcessEventInvoker implements Invoker {
                     springAction.execute();
                 } catch (Throwable e) {
                     //这里好像抓不到异常了已经
+                }
+                if (event.getSignal().equals("abort")) {
+                    throw new AbortSignal("event :"+event.getId()+" method: "+event.getMethod()+" will be abort processInstance after execute");
                 }
             }
         }

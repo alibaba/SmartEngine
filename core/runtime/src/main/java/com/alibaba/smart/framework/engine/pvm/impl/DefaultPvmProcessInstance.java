@@ -1,8 +1,5 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -10,18 +7,17 @@ import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFacto
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
+import com.alibaba.smart.framework.engine.invocation.signal.Signal;
+import com.alibaba.smart.framework.engine.model.instance.*;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
-import com.alibaba.smart.framework.engine.util.ParamChecker;
 import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
+
+import java.util.List;
+import java.util.Map;
 
 
 public class DefaultPvmProcessInstance implements PvmProcessInstance{
@@ -62,6 +58,8 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
 
     @Override
     public void run(ExecutionContext context) {
+
+
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
         ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
         ProcessInstance processInstance = context.getProcessInstance();
@@ -77,18 +75,21 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
         if (activityMap.isEmpty() || !activityMap.containsKey(context.getCurrentExecution().getActivity().getActivityId())) {
             throw new EngineException("not have this activity!");
         }
-        this.runProcess(activityMap.get(context.getCurrentExecution().getActivity().getActivityId()),context);
+        try {
 
+            this.runProcess(activityMap.get(context.getCurrentExecution().getActivity().getActivityId()),context);
+
+        }catch (Signal signal) {
+            context.getCurrentExecution().abort();
+        }
 
     }
 
     private Message runProcess(PvmActivity startActivity, ExecutionContext context) {
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
 
-        
-        Message processMessage = this.executeActivity(startActivity, context);
-        
-        
+        Message   processMessage = this.executeActivity(startActivity, context);
+
         ProcessInstance processInstance = context.getProcessInstance();
         if (!processMessage.isSuspend()) {
           //TODO 触发流程启动事件

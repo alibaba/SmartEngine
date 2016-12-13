@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.parser;
 
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.Action;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvent;
@@ -40,7 +41,10 @@ public class ProcessEventParser extends AbstractStAXArtifactParser<ProcessEvent>
         event.setType(this.getString(reader,"type"));
         event.setId(this.getString(reader,"id"));
         event.setMethod(this.getString(reader,"method"));
-
+        String signal =  this.getString(reader,"signal");
+        if (!signal.equals("abort")) {
+            throw new EngineException("id : "+event.getId()+" can not have this signal: "+signal+" !");
+        }
         while (this.nextChildElement(reader)) {
 
         }

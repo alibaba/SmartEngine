@@ -63,7 +63,13 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
 
         StringBuilder data = new StringBuilder();
         for (ExecutionInstance executionInstance:this.getExecutions().values()) {
-            data.append(executionInstance.toDatabase());
+
+            if (executionInstance.isAbort()) {
+                data.append("abort");
+            }else {
+                data.append(executionInstance.toDatabase());
+            }
+
             data.append("|");
         }
 

@@ -24,4 +24,7 @@ public interface ExecutionInstance extends LifeCycleInstance {
     String toDatabase();
 
 
+    void abort();
+
+    boolean isAbort();
 }

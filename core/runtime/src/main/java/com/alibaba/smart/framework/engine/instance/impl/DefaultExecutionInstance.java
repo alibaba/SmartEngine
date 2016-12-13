@@ -22,12 +22,12 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
     //TODO 去掉对象关联
     private ActivityInstance  activity;
     private boolean           fault;
+    private boolean           isAbort = false;
 
 
 
     @Override
     public String toDatabase() {
-
 
 
        return Strings.nullToEmpty(getInstanceId())
@@ -36,6 +36,11 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
                + "|"
                +Strings.nullToEmpty(getActivity().getCurrentStep());
 
+    }
+
+    @Override
+    public void abort() {
+        isAbort = true;
     }
 
     @Override
