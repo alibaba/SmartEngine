@@ -37,7 +37,7 @@ public interface ProcessService {
      * @param processParam
      * @return
      */
-    void recovery(EngineParam processParam);
+    ProcessInstance recovery(EngineParam processParam);
 
 
     /**

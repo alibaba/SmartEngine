@@ -102,7 +102,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
     }
 
     @Override
-    public void recovery(EngineParam engineParam) {
+    public ProcessInstance recovery(EngineParam engineParam) {
 
 
         ProcessInstance processInstance = this.processInstanceFactory.recovery(engineParam.getProcessParam());
@@ -132,7 +132,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         processInstance.addExecution(executionInstance);
         processInstanceStorage.save(processInstance);
 
-
+        return processInstance;
     }
 
     @Override
