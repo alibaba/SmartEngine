@@ -42,6 +42,8 @@
         <module>storage.database</module>
         <module>storage.memory</module>
         <module>serializer</module>
+        <module>example</module>
+
 
     </modules>
 

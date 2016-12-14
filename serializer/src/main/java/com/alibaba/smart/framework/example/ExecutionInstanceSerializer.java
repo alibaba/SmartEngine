@@ -1,7 +1,6 @@
-package com.alibaba.smart.framework.serializer;
+package com.alibaba.smart.framework.example;
 
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.param.ExecutionParam;
 
 /**
  * Created by 高海军 帝奇 74394 on 2016 November  20:23.

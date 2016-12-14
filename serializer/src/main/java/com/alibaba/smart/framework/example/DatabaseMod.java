@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.serializer;
+package com.alibaba.smart.framework.example;
 
 import com.alibaba.smart.framework.engine.param.Param;
 
