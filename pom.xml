@@ -24,8 +24,8 @@
     <name>Smart Engine</name>
 
     <properties>
-        <java.source.version>1.8</java.source.version>
-        <java.target.version>1.8</java.target.version>
+        <java.source.version>1.7</java.source.version>
+        <java.target.version>1.7</java.target.version>
         <java.file.encoding>UTF-8</java.file.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
