@@ -13,7 +13,7 @@
 
         <serviceTask id="createOrder" name="create" >
             <events>
-                <event type="spring" id="testAbort" method="process" signal="abort" />
+                <event type="spring" bean="testAbort" id="testAbort" method="process" signal="abort" />
             </events>
         </serviceTask>
 
@@ -21,7 +21,7 @@
 
         <serviceTask id="theTask2" name="createOutDeliveryOrder"  >
             <events>
-                <event type="spring" id="modifyFee" method="modify" bean="" />
+                <event type="spring"  id="modifyFee" method="modify" bean="modifyFee" />
             </events>
         </serviceTask>
 
