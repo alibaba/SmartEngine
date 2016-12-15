@@ -31,7 +31,7 @@ import static org.junit.Assert.assertEquals;
 
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+//@Transactional
 public class AuditProcessTest {
 
 
@@ -40,6 +40,7 @@ public class AuditProcessTest {
 
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 
@@ -64,6 +65,71 @@ public class AuditProcessTest {
         ProcessInstance processInstance = processCommandService.start(
                 processDefinition.getId(), processDefinition.getVersion()
                 );
+        Assert.assertNotNull(processInstance);
+
+        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findPendingTask(processInstance.getInstanceId());
+        TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
+
+        //5.流程流转:构造提交申请参数
+        Map<String, Object> submitFormRequest = new HashMap<>();
+        submitFormRequest.put("qps", "300");
+        submitFormRequest.put("capacity","10g");
+        submitFormRequest.put("assigner","leader");
+
+        //6.流程流转:处理 submitTask,完成任务申请.
+        taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
+
+        //7. 获取当前待处理任务.
+        List<TaskInstance>   auditTaskInstanceList = taskQueryService.findPendingTask(processInstance.getInstanceId());
+        TaskInstance auditTaskInstance = auditTaskInstanceList.get(0);
+        Map<String, Object> approveFormRequest = new HashMap<>();
+
+        //10.
+        approveFormRequest.put("approve", "agree");
+        approveFormRequest.put("desc", "ok");
+
+        //9.审批通过,驱动流程节点到自动执行任务环节
+
+        taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
+
+        //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
+        ProcessInstance finalProcessInstance = processQueryService.findOne(auditTaskInstance.getProcessInstanceId());
+        Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
+
+
+    }
+
+
+    @Test
+    public void testFailedServiceTaskAuditProcess() throws Exception {
+
+        //1.初始化
+        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        SmartEngine smartEngine = new DefaultSmartEngine();
+        smartEngine.init(processEngineConfiguration);
+
+
+        //2.获得常用服务
+        ProcessCommandService processCommandService = smartEngine.getProcessService();
+        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
+
+        ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
+        ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
+        TaskInstanceQueryService taskQueryService = smartEngine.getTaskQueryService();
+
+
+        //3. 部署流程定义
+        RepositoryCommandService repositoryCommandService = smartEngine
+                .getRepositoryService();
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("failed-test-usertask-and-servicetask-exclusive.bpmn20.xml");
+        assertEquals(17, processDefinition.getProcess().getElements().size());
+
+        //4.启动流程实例
+        ProcessInstance processInstance = processCommandService.start(
+                processDefinition.getId(), processDefinition.getVersion()
+        );
         Assert.assertNotNull(processInstance);
 
         List<TaskInstance> submitTaskInstanceList=  taskQueryService.findPendingTask(processInstance.getInstanceId());

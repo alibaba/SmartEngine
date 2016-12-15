@@ -48,9 +48,9 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> i
         } else {
             // TODO need cache,rename
             Object ss = ClassLoaderUtil.createNewInstance(className);
-            if (ss instanceof TccDelegation<?>) {
-                TccDelegation<?> tccDelegation = (TccDelegation<?>) ss;
-                TccResult<?> tccResult = tccDelegation.tryExecute(executionContext);
+            if (ss instanceof TccDelegation) {
+                TccDelegation tccDelegation = (TccDelegation) ss;
+                TccResult tccResult = tccDelegation.tryExecute(executionContext);
 //                DefaultMessage defaultMessage = new DefaultMessage();
 //                defaultMessage.setBody(tccResult);
 //                return defaultMessage;

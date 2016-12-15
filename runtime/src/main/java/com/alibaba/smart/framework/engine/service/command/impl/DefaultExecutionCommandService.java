@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
@@ -19,7 +21,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
-import com.alibaba.smart.framework.engine.util.DateUtil;
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -79,6 +81,8 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
         executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+        executionContext.setProcessEngineConfiguration(processEngineConfiguration);
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
         executionContext.setProcessInstance(processInstance);
         executionContext.setRequest(request);

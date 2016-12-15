@@ -13,6 +13,8 @@ import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQuerySer
 import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,9 +28,14 @@ public class DefaultSmartEngine implements SmartEngine {
 
     private ExtensionPointRegistry extensionPointRegistry;
 
+    @Getter
+    @Setter
+    private ProcessEngineConfiguration processEngineConfiguration;
+
 
     @Override
     public void init(ProcessEngineConfiguration processEngineConfiguration) {
+        this.setProcessEngineConfiguration(processEngineConfiguration);
         this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
         this.extensionPointRegistry.register();
         this.extensionPointRegistry.start();

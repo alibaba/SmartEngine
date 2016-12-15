@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.context;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -34,4 +35,9 @@ public interface ExecutionContext {
     ExtensionPointRegistry getExtensionPointRegistry();
 
     void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
+
+
+    ProcessEngineConfiguration getProcessEngineConfiguration();
+
+    void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration);
 }

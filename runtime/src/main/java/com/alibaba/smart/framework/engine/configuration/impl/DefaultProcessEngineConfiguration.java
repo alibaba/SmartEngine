@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
+import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import lombok.Data;
@@ -20,6 +21,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProcessEngineConfiguration.class);
 
     private ExtensionPointRegistry extensionPointRegistry;
+
+    private ExceptionProcessor exceptionProcessor;
 
     private String persisteModel;
 

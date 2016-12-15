@@ -17,6 +17,11 @@ import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService
 public interface SmartEngine {
 
 
+    ProcessEngineConfiguration getProcessEngineConfiguration();
+
+    void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration);
+
+
     ExtensionPointRegistry getExtensionPointRegistry();
 
     RepositoryCommandService getRepositoryService();

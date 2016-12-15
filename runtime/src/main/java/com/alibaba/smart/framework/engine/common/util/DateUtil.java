@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.util;
+package com.alibaba.smart.framework.engine.common.util;
 
 import java.util.Date;
 

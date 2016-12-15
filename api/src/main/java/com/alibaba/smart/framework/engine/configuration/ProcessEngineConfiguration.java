@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.configuration;
 
+import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 
 /**
@@ -7,11 +8,18 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
  */
 public interface ProcessEngineConfiguration {
 
+    void setExceptionProcessor(ExceptionProcessor exceptionProcessor);
+
+    ExceptionProcessor getExceptionProcessor();
+
     ExtensionPointRegistry getExtensionPointRegistry();
 
     void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
 
     void setPersisteModel(String persisteModel);
+
+
+
 
     String getPersisteModel();
 

@@ -6,7 +6,7 @@ import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.util.DateUtil;
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 
 /**
  * 默认任务实例工厂实现 Created by ettear on 16-4-20.

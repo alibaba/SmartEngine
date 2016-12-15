@@ -3,22 +3,18 @@ package com.alibaba.smart.framework.example;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.TccDelegation;
 import com.alibaba.smart.framework.engine.delegation.TccResult;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 
+public class ThrowExceptionTaskDelegation implements TccDelegation {
 
-public class AuditProcessServiceTaskDelegation implements TccDelegation {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuditProcessServiceTaskDelegation.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ThrowExceptionTaskDelegation.class);
 
     @Override
     public TccResult tryExecute(ExecutionContext executionContext) {
 
-        LOGGER.info("TCC executing: current request is " + executionContext.getRequest());
-        return TccResult.buildSucessfulResult( executionContext.getRequest());
+       throw new RuntimeException("test exception");
 
     }
 

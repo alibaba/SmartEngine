@@ -10,12 +10,12 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 
-public class AuditProcessServiceTaskDelegation implements TccDelegation<Object> {
+public class AuditProcessServiceTaskDelegation implements TccDelegation  {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuditProcessServiceTaskDelegation.class);
 
     @Override
-    public TccResult<Object> tryExecute(ExecutionContext executionContext) {
+    public TccResult tryExecute(ExecutionContext executionContext) {
 //         LOGGER.info(executionContext.getRequest().toString());
 //         LOGGER.info("TCC executing: "+executionContext.getCurrentExecution().toString());
         List<ActivityInstance> activityInstances = executionContext.getProcessInstance().getNewActivityInstances();
@@ -25,12 +25,12 @@ public class AuditProcessServiceTaskDelegation implements TccDelegation<Object> 
     }
 
     @Override
-    public TccResult<Object> confirmExecute(ExecutionContext executionContext) {
+    public TccResult  confirmExecute(ExecutionContext executionContext) {
         return null;
     }
 
     @Override
-    public TccResult<Object> cancelExecute(ExecutionContext executionContext) {
+    public TccResult cancelExecute(ExecutionContext executionContext) {
         return null;
     }
 

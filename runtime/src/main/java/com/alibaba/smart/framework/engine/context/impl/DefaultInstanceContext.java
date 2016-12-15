@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.context.impl;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
@@ -15,8 +16,10 @@ import java.util.Map;
 public class DefaultInstanceContext implements ExecutionContext {
 
     private ProcessInstance processInstance;
-    //    private ExecutionInstance currentExecution;
+
     private PvmProcessDefinition pvmProcessDefinition;
+
+    private ProcessEngineConfiguration processEngineConfiguration;
 
     private Map<String, Object> request;
 

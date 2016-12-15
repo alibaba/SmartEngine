@@ -1,16 +1,38 @@
 package com.alibaba.smart.framework.engine.delegation;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author 高海军 帝奇  2016.11.11
  */
-public interface TccResult<T> {
 
-    boolean isSuccessful();
+public class TccResult {
 
-    void setSuccessful(boolean isSuccessful);
+    private TccResult(){
+    }
 
-    void setTarget(T target);
+    @Getter
+    @Setter
+    private boolean isSucessful;
 
-    T getTarget();
+    @Getter
+    @Setter
+    private Object target;
 
+    public static  TccResult  buildSucessfulResult(Object target){
+        TccResult result = new TccResult();
+        result.setSucessful(true);
+        result.setTarget(target);
+        return  result;
+    }
+
+
+    public static  TccResult  buildFailedResult(Object target){
+        TccResult result = new TccResult();
+        result.setSucessful(false);
+        result.setTarget(target);
+        return  result;
+    }
 }

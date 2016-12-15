@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
@@ -69,6 +71,9 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
         executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+        executionContext.setProcessEngineConfiguration(processEngineConfiguration);
+
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
         executionContext.setRequest(request);
 

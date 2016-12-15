@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="test-exclusive" version="1.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:smart="http://smart.alibaba-inc.com/schema/process"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="Examples">
+
+    <process id="exclusiveTest">
+
+        <startEvent id="theStart">
+        </startEvent>
+
+        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="submitTask"/>
+
+        <userTask id="submitTask" name="SubmitTask">
+        </userTask>
+
+        <sequenceFlow id="flowFromSubmitTask" sourceRef="submitTask" targetRef="auditTask"/>
+
+        <userTask id="auditTask" name="AuditTask">
+        </userTask>
+
+        <sequenceFlow id="flowFromAuditTask" sourceRef="auditTask" targetRef="exclusiveGw1"/>
+
+
+        <exclusiveGateway id="exclusiveGw1" name="Exclusive Gateway 1"/>
+
+        <sequenceFlow id="flow2" sourceRef="exclusiveGw1"
+                      targetRef="executeTask">
+            <conditionExpression xsi:type="mvel">approve == 'agree'
+            </conditionExpression>
+        </sequenceFlow>
+
+        <sequenceFlow id="flow3" sourceRef="exclusiveGw1"
+                      targetRef="advancedAuditTask">
+            <conditionExpression xsi:type="mvel">approve == 'upgrade'
+            </conditionExpression>
+        </sequenceFlow>
+
+
+        <serviceTask id="executeTask" name="ExecuteTask" smart:class="com.alibaba.smart.framework.example.ThrowExceptionTaskDelegation">
+        </serviceTask>
+
+
+        <sequenceFlow id="flow5" sourceRef="executeTask" targetRef="theEnd"/>
+
+
+        <userTask id="advancedAuditTask" name="AdvancedAuditTask">
+        </userTask>
+
+        <sequenceFlow id="flowFromAdvancedAuditTask" sourceRef="advancedAuditTask"
+                      targetRef="exclusiveGw2"/>
+
+        <exclusiveGateway id="exclusiveGw2" name="Exclusive Gateway 2"/>
+
+        <sequenceFlow id="flow9" sourceRef="exclusiveGw2"
+                      targetRef="executeTask">
+            <conditionExpression type="mvel">approve == 'agree'
+            </conditionExpression>
+        </sequenceFlow>
+
+        <sequenceFlow id="flow10" sourceRef="exclusiveGw2"
+                      targetRef="theEnd">
+            <conditionExpression type="mvel">approve == 'deny'
+            </conditionExpression>
+        </sequenceFlow>
+
+        <endEvent id="theEnd"/>
+
+    </process>
+
+</definitions>

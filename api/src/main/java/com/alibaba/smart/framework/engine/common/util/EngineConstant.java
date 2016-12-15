@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.util;
+package com.alibaba.smart.framework.engine.common.util;
 
 /**
  * Created by dongdongzdd on 16/8/15.
