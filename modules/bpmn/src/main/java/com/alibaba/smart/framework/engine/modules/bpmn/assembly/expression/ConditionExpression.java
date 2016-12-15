@@ -1,12 +1,11 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression;
 
-import javax.xml.namespace.QName;
-
+import com.alibaba.smart.framework.engine.model.assembly.Condition;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.model.assembly.Condition;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
+import javax.xml.namespace.QName;
 
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM

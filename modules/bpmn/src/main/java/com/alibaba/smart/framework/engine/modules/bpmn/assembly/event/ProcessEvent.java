@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.event;
 
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBase;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +22,7 @@ public class ProcessEvent extends AbstractEvent {
     private String            id;
     private String            method;
     private String            signal;
+    private String            bean;
 
 
 }

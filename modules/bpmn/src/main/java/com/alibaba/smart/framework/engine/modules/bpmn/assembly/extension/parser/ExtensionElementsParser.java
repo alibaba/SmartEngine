@@ -1,9 +1,5 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.parser;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.ExtensionElements;
@@ -11,6 +7,10 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 /**
  * Extension Elements Parser Created by ettear on 16-4-14.

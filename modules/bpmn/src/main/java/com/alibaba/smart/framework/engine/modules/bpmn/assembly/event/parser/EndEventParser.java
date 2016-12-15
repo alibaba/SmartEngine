@@ -1,26 +1,20 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.parser;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 public class EndEventParser extends AbstractBpmnActivityParser<EndEvent> implements StAXArtifactParser<EndEvent> {
 
     public EndEventParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
-    }
-
-    @Override
-    public void resolve(EndEvent model, ParseContext context) throws ResolveException {
-        model.setUnresolved(false);
     }
 
     @Override

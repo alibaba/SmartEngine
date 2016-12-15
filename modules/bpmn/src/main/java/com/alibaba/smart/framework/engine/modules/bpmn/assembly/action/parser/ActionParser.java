@@ -1,9 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.parser;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.model.assembly.SmartBase;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.Action;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.executionlistener.ExecutionListener;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
@@ -42,6 +40,7 @@ public class ActionParser extends AbstractStAXArtifactParser<Action> implements 
         action.setType(this.getString(reader,"type"));
         action.setId(this.getString(reader,"id"));
         action.setMethod(this.getString(reader,"method"));
+        action.setBean(this.getString(reader,"bean"));
 
         while (this.nextChildElement(reader)) {
 

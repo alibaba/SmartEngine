@@ -11,11 +11,12 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
+ *
  * Created by dongdongzdd on 16/9/8.
  */
 public abstract class BaseActionExecutor {
 
-    protected static final Logger logger = LoggerFactory.getLogger(BaseActionExecutor.class);
+    private static final Logger logger = LoggerFactory.getLogger(BaseActionExecutor.class);
 
 
     /**
@@ -36,7 +37,7 @@ public abstract class BaseActionExecutor {
             Class[] clazzs = new Class[]{workflowContext.getClass()};
             try {
                 Method method = ReflectUtil.getMethod(obj, methodStr, clazzs);
-                ParamChecker.notNull(method,"spring method is null");
+                ParamChecker.notNull(method,"spring method ");
                 method.invoke(obj, workflowContext);
             } catch (Throwable e) {
                 if (logger.isDebugEnabled()) {

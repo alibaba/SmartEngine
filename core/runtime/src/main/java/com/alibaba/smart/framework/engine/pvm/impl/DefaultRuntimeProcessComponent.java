@@ -1,12 +1,11 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import lombok.Data;
-
 import com.alibaba.smart.framework.engine.pvm.PvmProcessComponent;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
+import lombok.Data;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ettear on 16-4-13.

@@ -1,22 +1,15 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.xml.parser.*;
+import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.xml.parser.ArtifactParser;
-import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
-import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
-import com.alibaba.smart.framework.engine.xml.parser.StAXAttributeParser;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 默认处理器扩展点 Created by ettear on 16-4-12.
@@ -74,7 +67,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
     }
 
     @Override
-    public Object parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+    public Object parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException,IllegalArgumentException {
         QName type = reader.getName();
         StAXArtifactParser artifactParser = this.artifactParsers.get(type);
         if (null != artifactParser) {
@@ -105,14 +98,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         }
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public void resolve(Object model, ParseContext context) throws ResolveException {
-        ArtifactParser artifactParser = this.resolveArtifactParsers.get(model.getClass());
-        if (null != artifactParser) {
-            artifactParser.resolve(model, context);
-        }
-    }
+
 
 
 }

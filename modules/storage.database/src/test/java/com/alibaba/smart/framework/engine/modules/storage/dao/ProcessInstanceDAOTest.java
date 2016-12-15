@@ -1,12 +1,11 @@
 package com.alibaba.smart.framework.engine.modules.storage.dao;
 
-import javax.annotation.Resource;
-
+import com.alibaba.smart.framework.engine.modules.storage.entity.ProcessInstanceEntity;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.alibaba.smart.framework.engine.modules.storage.entity.ProcessInstanceEntity;
+import javax.annotation.Resource;
 
 public class ProcessInstanceDAOTest extends BaseTest {
 

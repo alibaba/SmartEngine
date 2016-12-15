@@ -1,12 +1,12 @@
 package com.alibaba.smart.framework.engine.param;
 
-import java.util.Map;
-
+import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.util.EngineConstant;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.util.EngineConstant;
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * 流程引擎入参
@@ -54,6 +54,10 @@ public class EngineParam {
         if (executionParams.length < 2) {
             throw new EngineException("execution param is not right");
         }
+        if (Arrays.stream(executionParams).anyMatch(p->p.equals("abort"))) {
+            throw new EngineException("the process instance is alreay abort,engine will not excute ");
+        }
+
         execution.setExecutionId(executionParams[0]);
 
         activity.setActivityId(executionParams[1]);

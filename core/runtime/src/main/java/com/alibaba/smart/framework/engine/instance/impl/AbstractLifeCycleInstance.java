@@ -1,12 +1,11 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
-import java.util.Date;
-
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
+import com.alibaba.smart.framework.engine.model.instance.LifeCycleInstance;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
-import com.alibaba.smart.framework.engine.model.instance.LifeCycleInstance;
+import java.util.Date;
 
 /**
  * 抽象实例 Created by ettear on 16-4-19.

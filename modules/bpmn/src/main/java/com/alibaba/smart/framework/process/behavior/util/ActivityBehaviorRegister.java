@@ -1,8 +1,5 @@
 package com.alibaba.smart.framework.process.behavior.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.StartEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
@@ -16,6 +13,9 @@ import com.alibaba.smart.framework.process.behavior.gateway.ExclusiveGatewayBeha
 import com.alibaba.smart.framework.process.behavior.gateway.ParallelGatewayBehavior;
 import com.alibaba.smart.framework.process.behavior.task.ServiceTaskBehavior;
 import com.alibaba.smart.framework.process.behavior.task.UserTaskBehavior;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ActivityBehaviorRegister {
 

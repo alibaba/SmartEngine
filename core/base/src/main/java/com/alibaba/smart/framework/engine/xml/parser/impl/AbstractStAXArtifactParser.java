@@ -1,20 +1,20 @@
 package com.alibaba.smart.framework.engine.xml.parser.impl;
 
-import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
-import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.util.ParamChecker;
+import com.alibaba.smart.framework.engine.xml.parser.ArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
+import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
-import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.xml.parser.ArtifactParser;
-import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
-import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 /**
  * Abstract StAXArtifactParser Created by ettear on 16-4-14.
@@ -44,13 +44,16 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
 
     }
 
-    @Override
-    public void resolve(M model, ParseContext context) throws ResolveException {
-        model.setUnresolved(false);
-    }
+
 
     protected String getString(XMLStreamReader reader, String name) {
         return reader.getAttributeValue((String) null, name);
+    }
+
+    protected String getStringThrowException(XMLStreamReader reader,String name) throws IllegalArgumentException {
+        String result = reader.getAttributeValue(null,name);
+        ParamChecker.notNull(result,"'"+name+"' in Qname " + reader.getName());
+        return result;
     }
 
     protected boolean getBoolean(XMLStreamReader reader, String name) {
@@ -123,9 +126,7 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
         return this.getAssemblyParserExtensionPoint().parse(reader, context);
     }
 
-    protected void resolveElement(Object model, ParseContext context) throws ResolveException {
-        this.getAssemblyParserExtensionPoint().resolve(model, context);
-    }
+
 
     // GETTER & SETTER
 

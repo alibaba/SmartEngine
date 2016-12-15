@@ -7,4 +7,7 @@ public class ParseException extends AbstractParseException {
 
     private static final long serialVersionUID = 6304946747125320343L;
 
+    public ParseException(String s) {
+        super(s);
+    }
 }

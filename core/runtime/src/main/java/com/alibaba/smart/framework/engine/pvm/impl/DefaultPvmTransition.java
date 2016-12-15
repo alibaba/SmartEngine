@@ -1,13 +1,12 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Created by ettear on 16-4-13.

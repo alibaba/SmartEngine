@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.action;
 
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBase;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.AbstractBpmnActivity;
 import lombok.Data;
@@ -23,6 +22,7 @@ public class Action extends AbstractBpmnActivity {
     private String            type;
     private String            id;
     private String            method;
+    private String            bean;
 
 
 }

@@ -1,27 +1,22 @@
 package com.alibaba.smart.framework.engine.modules.bpmn;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.Maps;
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.param.EngineParam;
 import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
-import com.alibaba.smart.framework.engine.util.EngineConstant;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring.xml"})

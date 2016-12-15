@@ -1,11 +1,5 @@
 package com.alibaba.smart.framework.process.behavior.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
@@ -13,6 +7,12 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.process.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.process.session.ExecutionSession;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * @author 高海军 帝奇

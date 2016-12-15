@@ -1,9 +1,5 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.parser;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.StartEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.ExtensionElements;
@@ -11,6 +7,10 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.A
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 public class StartEventParser extends AbstractBpmnActivityParser<StartEvent> implements StAXArtifactParser<StartEvent> {
 

@@ -1,11 +1,10 @@
 package com.alibaba.smart.framework.engine.service;
 
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.param.EngineParam;
-import com.alibaba.smart.framework.engine.result.EngineResult;
+
+import java.util.Map;
 
 
 public interface ProcessService {

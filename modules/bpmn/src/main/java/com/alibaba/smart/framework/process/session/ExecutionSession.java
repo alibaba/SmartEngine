@@ -1,13 +1,12 @@
 package com.alibaba.smart.framework.process.session;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import lombok.Data;
-
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.process.model.runtime.command.Command;
+import lombok.Data;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Data
 public class ExecutionSession {

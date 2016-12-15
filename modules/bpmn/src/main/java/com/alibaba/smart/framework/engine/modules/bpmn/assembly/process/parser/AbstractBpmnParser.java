@@ -1,13 +1,13 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 /**
  * Created by ettear on 16-4-29.

@@ -1,9 +1,8 @@
 package com.alibaba.smart.framework.engine.model.assembly.impl;
 
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 
 /**
  * Created by ettear on 16-4-13.

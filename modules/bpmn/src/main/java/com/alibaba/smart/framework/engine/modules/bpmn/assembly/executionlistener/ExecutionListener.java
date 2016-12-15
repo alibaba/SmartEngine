@@ -1,10 +1,9 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.executionlistener;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBase;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

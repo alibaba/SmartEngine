@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.instance.util;
 
-import java.util.UUID;
-
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.UUID;
 
 /**
  * Created by ettear on 16-4-19.

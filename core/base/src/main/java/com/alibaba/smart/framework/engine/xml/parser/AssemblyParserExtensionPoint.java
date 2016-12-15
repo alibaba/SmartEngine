@@ -1,12 +1,11 @@
 package com.alibaba.smart.framework.engine.xml.parser;
 
+import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
 
 /**
  * XML处理器扩展点 Created by ettear on 16-4-12.
@@ -32,5 +31,5 @@ public interface AssemblyParserExtensionPoint extends LifeCycleListener {
     Object readAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) throws ParseException,
                                                                                            XMLStreamException;
 
-    void resolve(Object model, ParseContext context) throws ResolveException;
+
 }

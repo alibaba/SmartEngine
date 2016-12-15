@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.task.action;
 
 
-import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.util.ParamChecker;
 import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;

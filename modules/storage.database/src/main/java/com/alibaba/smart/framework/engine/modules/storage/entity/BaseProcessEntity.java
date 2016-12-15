@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.modules.storage.entity;
 
-import java.util.Date;
-
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class BaseProcessEntity {

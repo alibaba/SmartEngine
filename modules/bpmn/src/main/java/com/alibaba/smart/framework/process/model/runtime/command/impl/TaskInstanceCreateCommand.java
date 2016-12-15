@@ -1,8 +1,7 @@
 package com.alibaba.smart.framework.process.model.runtime.command.impl;
 
-import lombok.Data;
-
 import com.alibaba.smart.framework.process.model.runtime.command.Command;
+import lombok.Data;
 
 @Data
 public class TaskInstanceCreateCommand<T> implements Command {

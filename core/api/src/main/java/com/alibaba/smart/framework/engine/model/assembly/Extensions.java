@@ -1,12 +1,11 @@
 package com.alibaba.smart.framework.engine.model.assembly;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBase;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ettear on 16-4-12.

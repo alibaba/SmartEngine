@@ -1,11 +1,5 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
@@ -15,6 +9,11 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by ettear on 16-4-21.

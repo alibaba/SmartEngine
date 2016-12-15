@@ -1,20 +1,5 @@
 package com.alibaba.smart.framework.engine.service.impl;
 
-import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
-import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
-
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import com.alibaba.smart.framework.engine.util.ParamChecker;
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
@@ -22,11 +7,8 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
-import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.*;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.assembly.Transition;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.ProviderRegister;
@@ -42,10 +24,23 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultRuntimeProcessComponent;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
+import com.alibaba.smart.framework.engine.util.ParamChecker;
 import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 /**
  * 默认部署器 Created by ettear on 16-4-13.
@@ -131,7 +126,9 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             }
         } catch (ParseException | XMLStreamException e) {
             throw new DeployException("Read process config file[" + uri + "] failure!", e);
-        } finally {
+        } catch (IllegalArgumentException e) {
+            throw new DeployException("process confirg file "+uri+" have some problem : "+e.getMessage());
+        }finally {
             IOUtil.closeQuietly(in);
         }
     }

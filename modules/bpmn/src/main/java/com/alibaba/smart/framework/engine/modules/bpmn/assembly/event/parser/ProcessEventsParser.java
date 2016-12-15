@@ -38,7 +38,7 @@ public class ProcessEventsParser extends AbstractBpmnParser<ProcessEvents> imple
 
     @Override
     public ProcessEvents parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-            XMLStreamException {
+            XMLStreamException,IllegalArgumentException {
 
         ProcessEvents events = new ProcessEvents();
         if (null == events.getEvents()) {

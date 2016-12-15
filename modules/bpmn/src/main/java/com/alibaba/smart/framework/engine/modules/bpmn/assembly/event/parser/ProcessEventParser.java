@@ -1,15 +1,11 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.parser;
 
-import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.Action;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvent;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
-import com.google.common.base.Strings;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -36,19 +32,19 @@ public class ProcessEventParser extends AbstractStAXArtifactParser<ProcessEvent>
     }
 
     @Override
-    public ProcessEvent parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-            XMLStreamException {
+    public ProcessEvent parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
 
         ProcessEvent event = new ProcessEvent();
-        event.setType(this.getString(reader,"type"));
-        event.setId(this.getString(reader,"id"));
-        event.setMethod(this.getString(reader,"method"));
+        event.setType(this.getStringThrowException(reader,"type"));
+        event.setId(this.getStringThrowException(reader,"id"));
+        event.setMethod(this.getStringThrowException(reader,"method"));
         String signal =  this.getString(reader,"signal");
         //todo 目前只支持abort 信号 后续再加
         if (null != signal && !signal.equals("abort")) {
-            throw new EngineException("id : "+event.getId()+" can not have this signal: "+signal+" !");
+            throw new ParseException("id : "+event.getId()+" can not have this signal: "+signal+" !");
         }
         event.setSignal(signal);
+        event.setBean(this.getStringThrowException(reader,"bean"));
         while (this.nextChildElement(reader)) {
 
         }

@@ -41,7 +41,7 @@ public class ProcessEventInvoker implements Invoker {
 
         for (ProcessEvent event:eventList) {
             if (event.getId().equals(assigineEvent)) {
-                SpringAction springAction = new SpringAction(event.getId(),event.getMethod(),executionContext.getRequest());
+                SpringAction springAction = new SpringAction(event.getBean(),event.getMethod(),executionContext.getRequest());
                 try {
                     springAction.execute();
                 } catch (Throwable e) {

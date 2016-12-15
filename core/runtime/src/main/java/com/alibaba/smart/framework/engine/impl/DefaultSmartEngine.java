@@ -1,10 +1,5 @@
 package com.alibaba.smart.framework.engine.impl;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -16,6 +11,10 @@ import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
 import com.alibaba.smart.framework.engine.service.TaskService;
 import com.alibaba.smart.framework.engine.util.ThreadLocalUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Default Smart Engine Created by ettear on 16-4-12.

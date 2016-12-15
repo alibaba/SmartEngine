@@ -1,12 +1,12 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 默认Provider工厂扩展点 Created by ettear on 16-4-12.
