@@ -67,13 +67,13 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
     }
 
     @Override
-    public Object parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException,IllegalArgumentException {
+    public Object parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         QName type = reader.getName();
         StAXArtifactParser artifactParser = this.artifactParsers.get(type);
         if (null != artifactParser) {
             return artifactParser.parse(reader, context);
         } else {
-            throw new RuntimeException("No StAXArtifactParser found for QName: " + type);
+            throw new ParseException("No Parser found for QName: localpart : " + type.getLocalPart()+",namespace is : "+type.getNamespaceURI());
         }
     }
 

@@ -18,7 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 
 /**
- * Created by dongdongzdd on 16/9/20.
+ *
+ * @author dongdong.zdd
  */
 public class ProcessEventInvoker implements Invoker {
     private PvmActivity pvmActivity;

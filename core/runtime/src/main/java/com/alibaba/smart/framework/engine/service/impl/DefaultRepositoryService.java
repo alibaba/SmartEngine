@@ -124,9 +124,9 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
             } else {
                 throw new DeployException("Read process config file[" + uri + "] failure! Not found start element!");
             }
-        } catch (ParseException | XMLStreamException e) {
+        } catch ( XMLStreamException e) {
             throw new DeployException("Read process config file[" + uri + "] failure!", e);
-        } catch (IllegalArgumentException e) {
+        } catch (ParseException e) {
             throw new DeployException("process confirg file "+uri+" have some problem : "+e.getMessage());
         }finally {
             IOUtil.closeQuietly(in);

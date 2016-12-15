@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.xml.parser.ArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.google.common.base.Strings;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -50,9 +51,11 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
         return reader.getAttributeValue((String) null, name);
     }
 
-    protected String getStringThrowException(XMLStreamReader reader,String name) throws IllegalArgumentException {
+    protected String getStringThrowException(XMLStreamReader reader,String name) throws ParseException {
         String result = reader.getAttributeValue(null,name);
-        ParamChecker.notNull(result,"'"+name+"' in Qname " + reader.getName());
+        if (Strings.isNullOrEmpty(result) ) {
+            throw new ParseException("'"+name+"' in Qname : '" + reader.getName().getLocalPart()+"' is empty or null ! namespace is "+reader.getName().getNamespaceURI());
+        }
         return result;
     }
 

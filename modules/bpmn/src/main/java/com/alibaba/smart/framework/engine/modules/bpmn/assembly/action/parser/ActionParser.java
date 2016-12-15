@@ -12,7 +12,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * Created by dongdongzdd on 16/9/8.
+ *
+ * @author dongdong.zdd
  */
 public class ActionParser extends AbstractStAXArtifactParser<Action> implements StAXArtifactParser<Action> {
 
@@ -37,10 +38,10 @@ public class ActionParser extends AbstractStAXArtifactParser<Action> implements 
             XMLStreamException {
 
         Action action = new Action();
-        action.setType(this.getString(reader,"type"));
-        action.setId(this.getString(reader,"id"));
-        action.setMethod(this.getString(reader,"method"));
-        action.setBean(this.getString(reader,"bean"));
+        action.setType(this.getStringThrowException(reader,"type"));
+        action.setId(this.getStringThrowException(reader,"id"));
+        action.setMethod(this.getStringThrowException(reader,"method"));
+        action.setBean(this.getStringThrowException(reader,"bean"));
 
         while (this.nextChildElement(reader)) {
 
