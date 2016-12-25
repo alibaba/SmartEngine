@@ -43,11 +43,7 @@ public class ProcessEventInvoker implements Invoker {
         for (ProcessEvent event:eventList) {
             if (event.getId().equals(assigineEvent)) {
                 SpringAction springAction = new SpringAction(event.getBean(),event.getMethod(),executionContext.getRequest());
-                try {
-                    springAction.execute();
-                } catch (Throwable e) {
-                    //这里好像抓不到异常了已经
-                }
+                springAction.execute();
                 if (StringUtils.equalsIgnoreCase(event.getSignal(),"abort")) {
                     throw new AbortSignal("event :"+event.getId()+" method: "+event.getMethod()+" will be abort processInstance after execute");
                 }

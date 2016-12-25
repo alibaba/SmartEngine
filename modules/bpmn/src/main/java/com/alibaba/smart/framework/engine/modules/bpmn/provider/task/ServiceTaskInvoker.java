@@ -29,11 +29,8 @@ public class ServiceTaskInvoker implements Invoker {
         
         if (action.getType().equals("spring")) {
             SpringAction springAction = new SpringAction(action.getBean(),action.getMethod(),executionContext.getRequest());
-            try {
-                return springAction.execute();
-            } catch (Throwable e) {
-                //这里好像抓不到异常了已经
-            }
+            return springAction.execute();
+
 
 
         }

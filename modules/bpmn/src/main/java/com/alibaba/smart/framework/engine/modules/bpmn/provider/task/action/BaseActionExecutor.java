@@ -39,7 +39,7 @@ public abstract class BaseActionExecutor {
                 Method method = ReflectUtil.getMethod(obj, methodStr, clazzs);
                 ParamChecker.notNull(method,"spring method ");
                 method.invoke(obj, workflowContext);
-            } catch (Throwable e) {
+            } catch (ReflectiveOperationException e) {
                 if (logger.isDebugEnabled()) {
                     logger.error("method is " + methodStr);
                     logger.error("obj is " + obj);
