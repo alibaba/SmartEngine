@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.VariableInstanceDAO">
+
+    <sql id="baseColumn">
+        id, gmt_create, gmt_modified,type,process_instance_id,
+         execution_instance_id,task_instance_id,double_field,long_field,string_field
+    </sql>
+
+    <insert id="insert" parameterType="VariableInstanceEntity">
+        insert into variable_instance(<include refid="baseColumn"/>)
+        values (#{id}, now(), now(), #{processInstanceId}, #{executionInstanceId},
+        #{taskInstanceId},#{doubleField},#{longField},#{stringField}
+    </insert>
+
+    <delete id="delete" parameterType="long">
+        delete from variable_instance where id=#{id}
+    </delete>
+
+    <update id="update" parameterType="VariableInstanceEntity">
+        update variable_instance
+        <set>
+            gmt_modified=now()
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="findOne" resultType="VariableInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from variable_instance where id=#{id}
+    </select>
+
+    <select id="findPendingTask" resultType="VariableInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from variable_instance where execution_instance_id=#{processInstanceId}
+    </select>
+
+
+</mapper>
