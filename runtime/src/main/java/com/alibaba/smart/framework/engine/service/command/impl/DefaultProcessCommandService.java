@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
@@ -81,7 +82,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
         ProcessInstance processInstance = pvmProcessInstance.start(executionContext);
 
-        processInstance =  persist(processInstance);
+        processInstance =  persist(processInstance,request);
 
         return processInstance;
 
@@ -91,7 +92,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         return this.start(processDefinitionId,version,null);
     }
 
-    private ProcessInstance persist(ProcessInstance processInstance) {
+    private ProcessInstance persist(ProcessInstance processInstance,Map<String, Object> request) {
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
@@ -124,6 +125,16 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
                     //reAssign
                     taskInstance = taskInstanceStorage.insert(taskInstance);
+
+                    ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+
+
+                    TaskAssigneeService taskAssigneeService = processEngineConfiguration.getTaskAssigneeService();
+                    if(null != taskAssigneeService){
+                        taskAssigneeService.persistTaskAssignee(taskInstance,request);
+                    }
+
+
                     executionInstance.setTaskInstance(taskInstance);
                }
 

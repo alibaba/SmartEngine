@@ -1,5 +1,8 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
@@ -50,6 +53,8 @@ public class DefaultTaskCommandService implements TaskCommandService , LifeCycle
     @Override
     public void complete(Long taskId, Map<String, Object> variables) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         TaskInstance taskInstance= taskInstanceStorage.find(taskId);
@@ -57,6 +62,15 @@ public class DefaultTaskCommandService implements TaskCommandService , LifeCycle
         taskInstance.setCompleteDate(currentDate);
         taskInstance.setEndTime(currentDate);
         taskInstanceStorage.update(taskInstance);
+
+
+
+        TaskAssigneeService taskAssigneeService = processEngineConfiguration.getTaskAssigneeService();
+        if(null != taskAssigneeService){
+            taskAssigneeService.complete(taskInstance.getInstanceId());
+        }
+
+
 
         executionCommandService.signal(taskInstance.getExecutionInstanceId(),variables);
 

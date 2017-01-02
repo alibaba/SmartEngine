@@ -6,6 +6,6 @@ package com.alibaba.smart.framework.engine.model.assembly;
  */
 public interface SmartBase {
 
-    public final static String SMART_NS = "http://smart.alibaba-inc.com/schema/process";
+       String SMART_NS = "http://smart.alibaba-inc.com/schema/process";
 
 }

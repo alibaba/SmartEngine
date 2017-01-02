@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.example;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
@@ -9,6 +10,8 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.persister.database.dao.TaskAssigneeDAO;
+import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
@@ -41,6 +44,7 @@ public class AuditProcessTest {
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        processEngineConfiguration.setTaskAssigneeService(new DefaultTaskAssigneeService());
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 
@@ -52,6 +56,8 @@ public class AuditProcessTest {
         ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
         ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
         TaskInstanceQueryService taskQueryService = smartEngine.getTaskQueryService();
+
+        TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
 
 
         //3. 部署流程定义
@@ -72,9 +78,10 @@ public class AuditProcessTest {
 
         //5.流程流转:构造提交申请参数
         Map<String, Object> submitFormRequest = new HashMap<>();
+        submitFormRequest.put("title", "new_title");
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
-        submitFormRequest.put("assigner","leader");
+        submitFormRequest.put("assigneeId","1");
 
         //6.流程流转:处理 submitTask,完成任务申请.
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);

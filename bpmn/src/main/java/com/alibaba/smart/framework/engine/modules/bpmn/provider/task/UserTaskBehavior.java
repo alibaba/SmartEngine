@@ -11,6 +11,8 @@ import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
+import java.util.Map;
+
 public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> implements ActivityBehavior<UserTask> {
 
     public UserTaskBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
@@ -27,10 +29,20 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> impleme
 
         TaskInstance taskInstance = super.taskInstanceFactory.create(pvmActivity, executionInstance);
 
+        Map<String, Object> request = context.getRequest();
+        if(null != request){
+            String assigneeId = (String) request.get("assigneeId");
+            if(null != assigneeId){
+                taskInstance.setAssigneeId(assigneeId);
+            }
+        }
+
+
         executionInstance.setTaskInstance(taskInstance);
         activityInstance.setExecutionInstance(executionInstance);
 
         processInstance.addNewActivityInstance(activityInstance);
+
     }
 
     @Override

@@ -12,3 +12,4 @@ test-output/
 src/generated/*
 logs/
 .DS_Store
+pom.xml.versionsBackup

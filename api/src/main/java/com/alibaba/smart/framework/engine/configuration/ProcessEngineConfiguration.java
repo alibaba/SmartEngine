@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.configuration;
 
 import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
+import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 
 /**
@@ -11,6 +12,11 @@ public interface ProcessEngineConfiguration {
     void setExceptionProcessor(ExceptionProcessor exceptionProcessor);
 
     ExceptionProcessor getExceptionProcessor();
+
+
+    void setTaskAssigneeService(TaskAssigneeService taskAssigneeService);
+
+    TaskAssigneeService getTaskAssigneeService();
 
     ExtensionPointRegistry getExtensionPointRegistry();
 

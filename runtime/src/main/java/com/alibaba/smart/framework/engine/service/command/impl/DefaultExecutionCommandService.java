@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
@@ -87,12 +88,12 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         executionContext.setProcessInstance(processInstance);
         executionContext.setRequest(request);
 
-        //TODO TUNE 减少不必要的对象创建
+        // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
         ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
         markDone(executionInstance);
-        persist(newProcessInstance);
+        persist(newProcessInstance,  request);
 
         return newProcessInstance;
     }
@@ -100,7 +101,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
 
 
-        private ProcessInstance persist(ProcessInstance processInstance) {
+        private ProcessInstance persist(ProcessInstance processInstance,Map<String, Object> request) {
 
             PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
@@ -115,6 +116,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
             for (ActivityInstance activityInstance : activityInstances) {
 
+                //TUNE 代码有点重复
                 //TUNE 这里重新赋值了,id还是统一由数据库分配.
                 activityInstance.setProcessInstanceId(processInstance.getInstanceId());
                 activityInstanceStorage.insert(activityInstance);
@@ -133,6 +135,16 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
                         //reAssign
                         taskInstance = taskInstanceStorage.insert(taskInstance);
+
+
+                        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+
+
+                        TaskAssigneeService taskAssigneeService = processEngineConfiguration.getTaskAssigneeService();
+                        if(null != taskAssigneeService){
+                            taskAssigneeService.persistTaskAssignee(taskInstance,request);
+                        }
+
                         executionInstance.setTaskInstance(taskInstance);
                     }
 
