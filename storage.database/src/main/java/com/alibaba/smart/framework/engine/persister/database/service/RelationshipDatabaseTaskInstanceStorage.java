@@ -94,6 +94,8 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstance.setProcessInstanceId(taskInstanceEntity.getProcessInstanceId());
         taskInstance.setActivityInstanceId(taskInstanceEntity.getActivityInstanceId());
         taskInstance.setExecutionInstanceId(taskInstanceEntity.getExecutionInstanceId());
+
+        taskInstance.setAssigneeId(taskInstanceEntity.getAssigneeId());
         taskInstance.setCompleteDate(taskInstanceEntity.getEndTime());
         taskInstance.setEndTime(taskInstanceEntity.getEndTime());
         // taskInstance.setActivityId(taskInstanceEntity.get);

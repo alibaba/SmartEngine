@@ -31,6 +31,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> impleme
 
         Map<String, Object> request = context.getRequest();
         if(null != request){
+
+            //TODO 约定了key。。。
             String assigneeId = (String) request.get("assigneeId");
             if(null != assigneeId){
                 taskInstance.setAssigneeId(assigneeId);

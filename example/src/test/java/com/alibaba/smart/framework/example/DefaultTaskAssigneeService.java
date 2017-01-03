@@ -44,7 +44,7 @@ public class DefaultTaskAssigneeService implements TaskAssigneeService {
             taskAssigneeEntity.setTitle((String)variables.get("title"));
         }
 
-        taskAssigneeEntity.setAssigneeId(taskInstance.getAssigneeId());
+        taskAssigneeEntity.setAssigneeId(assigneeId);
         taskAssigneeEntity.setClaimTime(taskInstance.getClaimTime());
         taskAssigneeEntity.setEndTime(taskInstance.getEndTime());
         taskAssigneeEntity.setPriority(taskInstance.getPriority());
