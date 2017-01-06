@@ -212,6 +212,45 @@ public class BpmnProcessTest {
                 processDefinition.getId(), processDefinition.getVersion(),
                 null);
         Map<String,Object> context = Maps.newHashMap();
+        context.put("event","testAbort");
+
+        try {
+            processService.run(processDefinition, processInstance.getInstanceId(),"createOrder",false, context);
+        }catch (Throwable e) {
+            System.out.printf(e.getMessage());
+        }
+
+
+
+        System.out.println(processInstance.toString());
+
+
+
+
+
+        Assert.assertNotNull(processInstance);
+
+
+    }
+
+
+    public void testThrowException() throws Exception {
+
+
+        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
+        DefaultSmartEngine smartEngine = new DefaultSmartEngine();
+        smartEngine.init(processEngineConfiguration);
+
+        RepositoryService repositoryService = smartEngine
+                .getRepositoryService();
+        ProcessDefinition processDefinition = repositoryService
+                .deploy("test-demo.bpmn20.xml");
+
+        ProcessService processService = smartEngine.getProcessService();
+        ProcessInstance processInstance = processService.start(
+                processDefinition.getId(), processDefinition.getVersion(),
+                null);
+        Map<String,Object> context = Maps.newHashMap();
         context.put("1","1");
 
         processService.start(processDefinition.getId(), processDefinition.getVersion(),
@@ -222,7 +261,6 @@ public class BpmnProcessTest {
 
 
         Assert.assertNotNull(processInstance);
-
 
     }
 

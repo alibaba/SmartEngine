@@ -44,7 +44,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
         ExecutionInstance executionInstance = context.getCurrentExecution();
         ActivityInstance activityInstance = executionInstance.getActivity();
         Map<String,Object> request = context.getRequest();
-        if (request.containsKey("event")) {
+        if (null != request && request.containsKey("event")) {
             dealEvent(context,activityInstance,activityExecuteMessage);
             return activityExecuteMessage;
         }

@@ -1,5 +1,9 @@
 package com.alibaba.smart.framework.engine.test;
 
+import com.alibaba.smart.framework.engine.invocation.signal.AbortSignal;
+import com.alibaba.smart.framework.engine.invocation.signal.Signal;
+import com.alibaba.smart.framework.engine.modules.bpmn.TestRunTimeException;
+
 import java.util.Map;
 
 /**
@@ -9,8 +13,7 @@ import java.util.Map;
 public class TestAbortEvent {
 
     public void process(Map<String,Object> context) {
-        System.out.println("\"run success!!!!!!!!!!!!!);");
-        context.entrySet().stream().forEach(p -> System.out.println(p.toString()));
+       throw new TestRunTimeException("test txcetprion");
     }
 
 }

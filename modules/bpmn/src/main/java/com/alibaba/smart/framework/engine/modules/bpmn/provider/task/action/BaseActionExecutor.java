@@ -45,10 +45,9 @@ public abstract class BaseActionExecutor {
                     logger.error("obj is " + obj);
                     logger.error("fumo " , e);
                 }
-                message.setFault(true);
-                message.setBody(e);
-                message.setSuspend(true);
-                return message;
+                if (e.getCause() instanceof RuntimeException) {
+                    throw (RuntimeException) e.getCause();
+                }
             }
         }
 
