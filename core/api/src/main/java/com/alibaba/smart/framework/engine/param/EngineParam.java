@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.param;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.util.EngineConstant;
-import com.sun.istack.internal.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
