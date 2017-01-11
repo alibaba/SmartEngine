@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.param;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.util.EngineConstant;
+import com.sun.istack.internal.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,6 +36,9 @@ public class EngineParam {
 
     public static EngineParam of(String processId,String defationId,String version,String executionString) {
 
+        if (null == executionString || null == processId|| null == defationId|| null == version) {
+            throw new EngineException("param can not be null");
+        }
         EngineParam param = new EngineParam();
         ExecutionParam execution = new ExecutionParam();
         ProcessParam process = new ProcessParam();
