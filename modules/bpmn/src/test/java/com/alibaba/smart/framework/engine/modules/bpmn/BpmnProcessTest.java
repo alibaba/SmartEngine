@@ -6,9 +6,13 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngin
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.param.EngineParam;
+import com.alibaba.smart.framework.engine.param.ProcessParam;
 import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
 import com.google.common.collect.Maps;
+import lombok.Getter;
+import lombok.Setter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +25,11 @@ import java.util.Map;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring.xml"})
 public class BpmnProcessTest {
+
+
+
+    @Getter
+    public static ProcessTest processTest = new ProcessTest();
 
 
 	@Test
@@ -261,6 +270,43 @@ public class BpmnProcessTest {
 
 
         Assert.assertNotNull(processInstance);
+
+    }
+
+
+    @Test
+    public void testRunMideng() throws Exception {
+
+        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
+        DefaultSmartEngine smartEngine = new DefaultSmartEngine();
+        smartEngine.init(processEngineConfiguration);
+
+        RepositoryService repositoryService = smartEngine.getRepositoryService();
+        ProcessDefinition processDefinition = repositoryService.deploy("test-demo.bpmn20.xml");
+
+        ProcessService processService = smartEngine.getProcessService();
+        ProcessInstance processInstance = processService.start(processDefinition.getId(), processDefinition.getVersion(), null);
+        Map<String,Object> context = Maps.newHashMap();
+        context.put("1","1");
+
+        ProcessInstance processInstance1 =  processService.run(processDefinition,processInstance.getInstanceId(), "createOrder",false,context);
+        BpmnProcessTest.getProcessTest().setProcessStore(processInstance1.toString());
+        processService.clear(processInstance1.getInstanceId());
+
+
+        //recovery
+
+        EngineParam engineParam = EngineParam.of(
+                processInstance1.getInstanceId(),
+                processDefinition.getId(),
+                processDefinition.getVersion(),
+                BpmnProcessTest.getProcessTest().getProcessStore());
+        ProcessInstance processInstance2 = processService.recovery(engineParam);
+
+        ProcessInstance processInstance3 =  processService.run(processDefinition,processInstance.getInstanceId(), "createOrder",false,context);
+
+
+
 
     }
 
