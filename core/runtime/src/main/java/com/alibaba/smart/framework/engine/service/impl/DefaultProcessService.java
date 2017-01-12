@@ -186,7 +186,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
             if (transition.getSource().getModel().getId().equals(assignId)) {
                 return true;
             }else {
-                checkIsBefore(transition.getTarget(),assignId);
+                checkIsBefore(transition.getSource(),assignId);
             }
         }
         return false;
