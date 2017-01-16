@@ -168,8 +168,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         if (null != elements && !elements.isEmpty()) {
 
             //TODO ocp 
-            Map<String, PvmTransition> runtimeTransitions = new HashMap<>();
-            Map<String, PvmActivity> runtimeActivities = new HashMap<>();
+            Map<String, PvmTransition> pvmTransitionMap = new HashMap<>();
+            Map<String, PvmActivity> pvmActivityMap = new HashMap<>();
             for (BaseElement element : elements) {
                 if (element instanceof Process) {
                     Process subProcess = (Process) element;
@@ -182,7 +182,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 //                    PvmProcessDefinition processDefinition = this.buildPvmProcessDefinition(subProcess, true);
 
                     //TODO support subProcess
-//                    runtimeActivities.put(processDefinition.getModel().getId(), processDefinition);
+//                    pvmActivityMap.put(processDefinition.getModel().getId(), processDefinition);
 //
 //                    if (processDefinition.getModel().isStartActivity()) {
 //                        pvmProcessDefinition.setStartActivity(processDefinition);
@@ -195,10 +195,16 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     }
                     index++;
 
-                    DefaultPvmTransition runtimeTransition = new DefaultPvmTransition();
-                    runtimeTransition.setModel(transition);
+                    DefaultPvmTransition pvmTransition = new DefaultPvmTransition();
+                    pvmTransition.setModel(transition);
 
-                    runtimeTransitions.put(runtimeTransition.getModel().getId(), runtimeTransition);
+                    String id = pvmTransition.getModel().getId();
+
+
+                    PvmTransition oldValue =    pvmTransitionMap.put(id, pvmTransition);
+                    if(null != oldValue){
+                        throw new EngineException("duplicated id found for "+id);
+                    }
 
                 } else if (element instanceof Activity) {
                     Activity activity = (Activity) element;
@@ -208,24 +214,31 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     }
                     index++;
 
-                    DefaultPvmActivity runtimeActivity = new DefaultPvmActivity();
-                    runtimeActivity.setModel(activity);
+                    DefaultPvmActivity pvmActivity = new DefaultPvmActivity();
+                    pvmActivity.setModel(activity);
 
-                    runtimeActivities.put(runtimeActivity.getModel().getId(), runtimeActivity);
+                    String id = pvmActivity.getModel().getId();
 
-                    if (runtimeActivity.getModel().isStartActivity()) {
-                        pvmProcessDefinition.setStartActivity(runtimeActivity);
+
+                    PvmActivity oldValue =   pvmActivityMap.put(id, pvmActivity);
+                    if(null != oldValue){
+                        throw new EngineException("duplicated id found for "+id);
+                    }
+
+
+                    if (pvmActivity.getModel().isStartActivity()) {
+                        pvmProcessDefinition.setStartActivity(pvmActivity);
                     }
                 }
             }
 
             // Process Transition Flow
-            for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
+            for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
                 DefaultPvmTransition runtimeTransition = (DefaultPvmTransition) runtimeTransitionEntry.getValue();
                 String sourceRef = runtimeTransition.getModel().getSourceRef();
                 String targetRef = runtimeTransition.getModel().getTargetRef();
-                DefaultPvmActivity source = (DefaultPvmActivity) runtimeActivities.get(sourceRef);
-                DefaultPvmActivity target = (DefaultPvmActivity) runtimeActivities.get(targetRef);
+                DefaultPvmActivity source = (DefaultPvmActivity) pvmActivityMap.get(sourceRef);
+                DefaultPvmActivity target = (DefaultPvmActivity) pvmActivityMap.get(targetRef);
 
                 runtimeTransition.setSource(source);
                 runtimeTransition.setTarget(target);
@@ -234,7 +247,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             }
 
             // Create Invoker for Transition Flow
-            for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeTransitions.entrySet()) {
+            for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
                 PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
                 TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModel().getClass());
 
@@ -247,7 +260,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             }
 
             // Create Invoker for Activity
-            for (Map.Entry<String, PvmActivity> runtimeActivityEntry : runtimeActivities.entrySet()) {
+            for (Map.Entry<String, PvmActivity> runtimeActivityEntry : pvmActivityMap.entrySet()) {
                 PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
                 ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModel().getClass());
 
@@ -259,8 +272,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 runtimeActivity.setActivityBehavior(activityBehavior);
             }
 
-            pvmProcessDefinition.setActivities(runtimeActivities);
-            pvmProcessDefinition.setTransitions(runtimeTransitions);
+            pvmProcessDefinition.setActivities(pvmActivityMap);
+            pvmProcessDefinition.setTransitions(pvmTransitionMap);
         }
         return pvmProcessDefinition;
     }

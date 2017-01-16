@@ -22,4 +22,8 @@ public class StartEvent extends AbstractEvent {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return super.getId();
+    }
 }

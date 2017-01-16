@@ -17,6 +17,7 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
+import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
@@ -24,6 +25,7 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -71,8 +73,9 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
         TaskInstanceStorage taskInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
-
         ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId);
+        ActivityInstance activityInstance= activityInstanceStorage.find(executionInstance.getActivityInstanceId());
+
         ProcessInstance processInstance = processInstanceStorage.find(executionInstance.getProcessInstanceId());
 
         PvmProcessDefinition pvmProcessDefinition = this.processContainer.get(executionInstance.getProcessDefinitionIdAndVersion());
@@ -87,12 +90,22 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
         executionContext.setProcessInstance(processInstance);
         executionContext.setRequest(request);
+        executionContext.setBlockId(activityInstance.getBlockId());
+
+
+        //执行每个节点的hook方法
+        ActivityBehavior activityBehavior =  pvmActivity.getActivityBehavior();
+        activityBehavior.leave(pvmActivity,executionContext);
+
 
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
+
+        markDone(activityInstance,executionInstance);
+
+
         ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
-        markDone(executionInstance);
         persist(newProcessInstance,  request);
 
         return newProcessInstance;
@@ -156,9 +169,16 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
 
 
-    private  void markDone(ExecutionInstance executionInstance) {
-        executionInstance.setCompleteDate(DateUtil.getCurrentDate());
+    private  void markDone(ActivityInstance activityInstance,ExecutionInstance executionInstance) {
+        Date completeDate = DateUtil.getCurrentDate();
+        executionInstance.setCompleteDate(completeDate);
         executionInstance.setActive(false);
+
+        activityInstance.setCompleteDate(completeDate);
+
+        //TODO
+        //activityInstance.setActive(false);
+
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);

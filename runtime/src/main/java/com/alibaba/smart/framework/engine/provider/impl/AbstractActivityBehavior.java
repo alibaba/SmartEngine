@@ -26,8 +26,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     protected ActivityInstanceFactory activityInstanceFactory;
     protected TaskInstanceFactory taskInstanceFactory;
 
-    public AbstractActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-        this.runtimeActivity = runtimeActivity;
+    public AbstractActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity pvmActivity) {
+        this.runtimeActivity = pvmActivity;
         this.extensionPointRegistry = extensionPointRegistry;
         this.processInstanceFactory = extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
         this.executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
@@ -47,7 +47,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
 
     @Override
-    public void execute(PvmActivity runtimeActivity, ExecutionContext context) {
+    public void enter(PvmActivity runtimeActivity, ExecutionContext context) {
+
         if(needSuspend()){
             context.setNeedPause(true);
         }
@@ -56,7 +57,15 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     }
 
-    protected abstract boolean needSuspend();
+    @Override
+    public void leave(PvmActivity runtimeActivity, ExecutionContext context){
+
+    }
+
+    protected boolean needSuspend() {
+        return false;
+    }
+
 
     protected abstract void  buildInstanceRelationShip(PvmActivity runtimeActivity, ExecutionContext context);
 

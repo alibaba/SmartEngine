@@ -1,8 +1,11 @@
 package com.alibaba.smart.framework.engine.persister.database.memory;
 
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,9 +25,10 @@ public class MemoryExecutionInstanceStorage implements ExecutionInstanceStorage 
     }
 
     @Override
-    public ExecutionInstance update(ExecutionInstance executionInstance) {
-        return null;
-    }
+    public ExecutionInstance update(ExecutionInstance instance) {
+        this.instances.put(instance.getInstanceId(), instance);
+
+        return instance;    }
 
     @Override
     public ExecutionInstance find(Long instanceId) {
@@ -39,6 +43,17 @@ public class MemoryExecutionInstanceStorage implements ExecutionInstanceStorage 
 
     @Override
     public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
-        return null;
-    }
+        ExecutionInstance[] activityInstances = instances.values().toArray(new ExecutionInstance[]{});
+        List<ExecutionInstance> tempList =  Arrays.asList(activityInstances);
+
+        List<ExecutionInstance> resultList = new ArrayList(tempList.size());
+        for (ExecutionInstance executionInstance : tempList) {
+            if(executionInstance.isActive()){
+                resultList.add(executionInstance);
+            }
+        }
+
+        return resultList;
+
+     }
 }

@@ -31,7 +31,7 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> i
     @Override
     public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext executionContext) {
         ProcessInstance processInstance = executionContext.getProcessInstance();
-        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
+        ActivityInstance activityInstance = super.activityInstanceFactory.createWithBlockId(pvmActivity, executionContext);
 
         ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance);
         activityInstance.setExecutionInstance(executionInstance);
@@ -96,8 +96,5 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> i
 
     }
 
-    @Override
-    public boolean needSuspend() {
-        return false;
-    }
+
 }

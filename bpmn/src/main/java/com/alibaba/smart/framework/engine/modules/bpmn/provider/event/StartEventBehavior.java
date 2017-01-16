@@ -21,21 +21,19 @@ public class StartEventBehavior extends AbstractActivityBehavior<StartEvent> imp
 
         ProcessInstance processInstance = processInstanceFactory.create(executionContext.getPvmProcessDefinition());
 
-        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
+        executionContext.setProcessInstance(processInstance);
+
+
+        ActivityInstance activityInstance = super.activityInstanceFactory.createWithBlockId(pvmActivity, executionContext);
+
         processInstance.addNewActivityInstance(activityInstance);
 
-        executionContext.setProcessInstance(processInstance);
 
 
         //TODO 触发流程启动事件
 //        this.fireEvent(PvmEventConstant.PROCESS_START.name(), executionContext);
         // 从开始节点开始执行
 
-    }
-
-    @Override
-    public boolean needSuspend() {
-        return false;
     }
 
 }

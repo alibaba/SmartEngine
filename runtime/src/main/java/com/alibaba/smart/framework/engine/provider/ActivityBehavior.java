@@ -10,8 +10,9 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
  */
 public interface ActivityBehavior<M extends Activity> {
 
-    void execute(PvmActivity runtimeActivity, ExecutionContext context);
+    void enter(PvmActivity runtimeActivity, ExecutionContext context);
 
+    void leave(PvmActivity runtimeActivity, ExecutionContext context);
 
 
 }

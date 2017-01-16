@@ -20,4 +20,9 @@ public class ReceiveTask extends AbstractTask {
 
     private String className;
 
+    @Override
+    public String toString() {
+        return super.getId();
+    }
+
 }

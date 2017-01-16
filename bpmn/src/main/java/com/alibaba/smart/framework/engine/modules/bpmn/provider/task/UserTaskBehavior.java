@@ -23,7 +23,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> impleme
     public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext context) {
 
         ProcessInstance processInstance = context.getProcessInstance();
-        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
+        ActivityInstance activityInstance = super.activityInstanceFactory.createWithBlockId(pvmActivity, context);
 
         ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance);
 
@@ -51,4 +51,6 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> impleme
     public boolean needSuspend() {
         return true;
     }
+
+
 }

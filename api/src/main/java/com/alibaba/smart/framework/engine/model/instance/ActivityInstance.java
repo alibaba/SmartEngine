@@ -68,4 +68,8 @@ public interface ActivityInstance extends Instance {
     Date getCompleteDate();
 
     void setCompleteDate(Date completeDate);
+
+    Long getBlockId();
+
+    void setBlockId(Long blockId);
 }

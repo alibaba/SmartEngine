@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.memory;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,8 +22,9 @@ public class MemoryActivityInstanceStorage implements ActivityInstanceStorage {
     }
 
     @Override
-    public ActivityInstance update(ActivityInstance activityInstance) {
-        return null;
+    public ActivityInstance update(ActivityInstance instance) {
+        this.instances.put(instance.getInstanceId(), instance);
+        return instance;
     }
 
     @Override
@@ -38,6 +40,7 @@ public class MemoryActivityInstanceStorage implements ActivityInstanceStorage {
 
     @Override
     public List<ActivityInstance> findAll(Long processInstanceId) {
-        return null;
+        ActivityInstance[] activityInstances = instances.values().toArray(new ActivityInstance[]{});
+        return Arrays.asList(activityInstances);
     }
 }

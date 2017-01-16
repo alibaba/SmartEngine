@@ -17,13 +17,10 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<Exclusive
 
     @Override
     public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext context) {
-        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, context.getProcessInstance());
+        ActivityInstance activityInstance = super.activityInstanceFactory.createWithBlockId(pvmActivity, context);
 
         context.getProcessInstance().addNewActivityInstance(activityInstance);
     }
 
-    @Override
-    public boolean needSuspend() {
-        return false;
-    }
+
 }

@@ -25,19 +25,20 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> i
 
 
         ProcessInstance processInstance = executionContext.getProcessInstance();
-        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, processInstance);
+        ActivityInstance activityInstance = super.activityInstanceFactory.createWithBlockId(pvmActivity, executionContext);
 
         ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance);
 
         activityInstance.setExecutionInstance(executionInstance);
         processInstance.addNewActivityInstance(activityInstance);
 
+    }
 
+    @Override
+    public void leave(PvmActivity pvmActivity, ExecutionContext executionContext){
         ReceiveTask ReceiveTask = (ReceiveTask) pvmActivity.getModel();
         String className = ReceiveTask.getClassName();
         executeExtension(executionContext, className);
-
-
     }
 
     private void executeExtension(ExecutionContext executionContext, String className) {
@@ -62,4 +63,6 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> i
     public boolean needSuspend() {
         return true;
     }
+
+
 }

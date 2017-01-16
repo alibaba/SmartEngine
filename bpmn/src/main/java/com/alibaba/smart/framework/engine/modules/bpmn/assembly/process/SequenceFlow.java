@@ -25,4 +25,9 @@ public class SequenceFlow extends AbstractTransition {
     private ConditionExpression conditionExpression;
     private ExtensionElements extensions;
 
+
+    @Override
+    public String toString() {
+        return super.getId() +", <-- " + super.getSourceRef() + " --> " + super.getTargetRef();
+    }
 }

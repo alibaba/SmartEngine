@@ -24,7 +24,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
     public void execute(ExecutionContext context) {
 
         ActivityBehavior activityBehaviorProvider = this.getActivityBehavior();
-        activityBehaviorProvider.execute(this, context);
+        activityBehaviorProvider.enter(this, context);
     }
 
     private void dealEvent(ExecutionContext context, ActivityInstance activityInstance) {

@@ -22,6 +22,8 @@ public class DefaultActivityInstance extends AbstractLifeCycleInstance implement
 //    private List<TransitionInstance> incomeTransitions = new ArrayList<>();
     private ExecutionInstance executionInstance;
 
+    private Long blockId;
+
 
 //    @Override
 //    public void addIncomeTransition(TransitionInstance transitionInstance) {

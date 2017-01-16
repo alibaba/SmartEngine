@@ -20,4 +20,9 @@ public class ExclusiveGateway extends AbstractGateway {
      */
     private static final long serialVersionUID = 5754815434014251702L;
 
+    @Override
+    public String toString() {
+        return super.getId();
+    }
+
 }

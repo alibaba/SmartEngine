@@ -31,4 +31,9 @@ public class ServiceTask extends AbstractTask {
     private String className;
 
 
+    @Override
+    public String toString() {
+        return super.getId();
+    }
+
 }

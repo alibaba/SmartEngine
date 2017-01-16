@@ -21,8 +21,10 @@ public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
     }
 
     @Override
-    public ProcessInstance update(ProcessInstance processInstance) {
-        return null;
+    public ProcessInstance update(ProcessInstance instance) {
+        this.instances.put(instance.getInstanceId(), instance);
+
+        return instance;
     }
 
     @Override

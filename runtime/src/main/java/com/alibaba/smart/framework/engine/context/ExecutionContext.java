@@ -16,9 +16,6 @@ public interface ExecutionContext {
 
     void setProcessInstance(ProcessInstance processInstance);
 
-//    ExecutionInstance getCurrentExecution();
-//
-//    void setCurrentExecution(ExecutionInstance executionInstance);
 
     PvmProcessDefinition getPvmProcessDefinition();
 
@@ -28,16 +25,23 @@ public interface ExecutionContext {
 
     void setRequest(Map<String, Object> request);
 
-    void setNeedPause(boolean needPause);
-
-    boolean isNeedPause();
-
     ExtensionPointRegistry getExtensionPointRegistry();
 
     void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
 
-
     ProcessEngineConfiguration getProcessEngineConfiguration();
 
     void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration);
+
+
+    void setNeedPause(boolean needPause);
+
+    boolean isNeedPause();
+
+    Long getBlockId();
+
+    void setBlockId(Long blockId);
+
+
+
 }

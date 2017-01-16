@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.factory;
 
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.param.ActivityParam;
@@ -16,6 +17,11 @@ public interface ActivityInstanceFactory {
      * @return 活动实例
      */
     ActivityInstance create(PvmActivity pvmActivity, ProcessInstance processInstance);
+
+    ActivityInstance createWithBlockId(PvmActivity pvmActivity, ProcessInstance processInstance,Long blockId);
+
+    ActivityInstance createWithBlockId(PvmActivity pvmActivity,  ExecutionContext context);
+
 
 
 //    ActivityInstance recovery(ActivityParam activityParam);

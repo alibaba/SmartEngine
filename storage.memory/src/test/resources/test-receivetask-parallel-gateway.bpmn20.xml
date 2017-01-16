@@ -39,13 +39,13 @@
         </parallelGateway>
 
 
-        <sequenceFlow id="flow3" sourceRef="join"
+        <sequenceFlow id="flow7" sourceRef="join"
                       targetRef="theTask3">
         </sequenceFlow>
 
-        <serviceTask id="theTask3" name="Task3"
+        <receiveTask id="theTask3" name="Task3"
                      smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ServiceTaskDelegation">
-        </serviceTask>
+        </receiveTask>
 
         <sequenceFlow id="flow4" sourceRef="theTask3" targetRef="theEnd"/>
 

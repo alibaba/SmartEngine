@@ -17,4 +17,9 @@ public class ParallelGateway extends AbstractGateway {
 
     public final static QName type = new QName(BpmnBase.NAME_SPACE, "parallelGateway");
 
+    @Override
+    public String toString() {
+        return super.getId();
+    }
+
 }

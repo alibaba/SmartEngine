@@ -26,4 +26,6 @@ public class DefaultInstanceContext implements ExecutionContext {
     private boolean needPause;
 
     private ExtensionPointRegistry extensionPointRegistry;
+
+    private Long blockId;
 }

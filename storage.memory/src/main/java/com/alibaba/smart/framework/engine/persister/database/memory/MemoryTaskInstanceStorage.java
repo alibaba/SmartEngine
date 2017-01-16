@@ -27,8 +27,11 @@ public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
     }
 
     @Override
-    public TaskInstance update(TaskInstance taskInstance) {
-        return null;
+    public TaskInstance update(TaskInstance instance) {
+
+        this.instances.put(instance.getInstanceId(), instance);
+
+        return instance;
     }
 
     @Override

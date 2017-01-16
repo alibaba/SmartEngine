@@ -46,6 +46,9 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
     }
 
     private void leaveCurrentActivity(PvmActivity pvmActivity, ExecutionContext context) {
+
+
+
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
 
         if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {

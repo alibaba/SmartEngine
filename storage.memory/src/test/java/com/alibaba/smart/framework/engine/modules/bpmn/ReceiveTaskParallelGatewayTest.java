@@ -12,6 +12,11 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -20,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ReceiveTaskParallelGatewayTest {
 
@@ -31,78 +37,80 @@ public class ReceiveTaskParallelGatewayTest {
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 
+        //2.获得常用服务
+        ProcessCommandService processCommandService = smartEngine.getProcessService();
+        ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
+
+        ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
+        ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
+        ExecutionInstanceQueryService executionQueryService = smartEngine.getExecutionQueryService();
+        TaskInstanceQueryService taskQueryService = smartEngine.getTaskQueryService();
+
+
+
         RepositoryCommandService repositoryCommandService = smartEngine
                 .getRepositoryService();
         ProcessDefinition processDefinition = repositoryCommandService
                 .deploy("test-receivetask-parallel-gateway.bpmn20.xml");
         assertEquals(14, processDefinition.getProcess().getElements().size());
 
-        ProcessCommandService processCommandService = smartEngine.getProcessService();
+
+
         Map<String, Object> request = new HashMap<>();
         request.put("input", 7);
         ProcessInstance processInstance = processCommandService.start(
                 processDefinition.getId(), processDefinition.getVersion(),
                 request);
 
-        Assert.assertNotNull(processInstance);
-        List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
 
+
+        // 流程启动后,正确状态断言
+        Assert.assertNotNull(processInstance);
+        List<ActivityInstance>  activityInstances =  activityQueryService.findAll(processInstance.getInstanceId());
         Assert.assertNotNull(activityInstances);
         int size = activityInstances.size();
         assertEquals(4, size);
 
-        ActivityInstance lastActivityInstance = activityInstances.get(size - 1);
-
-        assertEquals("theTask1", lastActivityInstance.getActivityId());
-
-
-        ExecutionInstance lastExecutionInstance = lastActivityInstance.getExecutionInstance();
-        Assert.assertNotNull(lastExecutionInstance);
-
-        assertEquals(processInstance.getInstanceId(), lastExecutionInstance.getProcessInstanceId());
-        assertEquals(lastActivityInstance.getInstanceId(), lastExecutionInstance.getActivityInstanceId());
-        assertEquals(lastActivityInstance.getActivityId(), lastExecutionInstance.getActivityId());
+        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        assertEquals(2, executionInstanceList.size());
 
 
-        assertEquals("theTask1", lastExecutionInstance.getActivityId());
+        ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
+        ExecutionInstance secondExecutionInstance = executionInstanceList.get(1);
+        assertTrue("theTask1".equals(firstExecutionInstance.getActivityId()) ||"theTask2".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("theTask1".equals(secondExecutionInstance.getActivityId()) ||"theTask2".equals(secondExecutionInstance.getActivityId()));
 
 
-        ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
+        //完成两个任务节点创建,已经进入fork节点后面的数据。完成其中一个节点的驱动。
+        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
 
-        processInstance = executionCommandService.signal(lastExecutionInstance.getInstanceId(), null);
-        activityInstances = processInstance.getNewActivityInstances();
+        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        firstExecutionInstance = executionInstanceList.get(0);
+        assertEquals(1, executionInstanceList.size());
+        assertTrue("theTask1".equals(firstExecutionInstance.getActivityId()) ||"theTask2".equals(firstExecutionInstance.getActivityId()));
 
+        activityInstances =  activityQueryService.findAll(processInstance.getInstanceId());
         Assert.assertNotNull(activityInstances);
         size = activityInstances.size();
-        lastActivityInstance = activityInstances.get(size - 1);
-        lastExecutionInstance = lastActivityInstance.getExecutionInstance();
-        Assert.assertNotNull(lastExecutionInstance);
+        assertEquals(5, size);
 
+
+
+        //完成后面一个节点的驱动。
         request.put("input", 11);
-        processInstance = executionCommandService.signal(lastExecutionInstance.getInstanceId(), request);
+        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
 
+        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        firstExecutionInstance = executionInstanceList.get(0);
+        assertEquals(1, executionInstanceList.size());
+        assertTrue("theTask3".equals(firstExecutionInstance.getActivityId()));
+
+
+
+        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
         Assert.assertNotNull(processInstance.getCompleteDate());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
-
-
-//
-//        taskInstanceList =     taskQueryService.findAll(processInstanceId);
-//
-//        Assert.assertNotNull(taskInstanceList);
-//        assertEquals(1,taskInstanceList.size());
-//
-//          taskInstance = taskInstanceList.get(0);
-//        assertEquals("theTask4", taskInstance.getName());
-//
-//
-//        taskCommandService.complete(taskInstance.getInstanceId(), request);
-//
-//
-//        //
-//
-//        processInstance =    processCommandService.findAll(processInstanceId);
-//        assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
 
     }
