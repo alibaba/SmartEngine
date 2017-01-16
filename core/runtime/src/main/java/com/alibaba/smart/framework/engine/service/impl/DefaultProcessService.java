@@ -178,6 +178,9 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
     }
 
     private PvmActivity findCurrentAcitivy(PvmProcessDefinition pvmProcessDefinition, String currentId) {
+        if (!pvmProcessDefinition.getActivities().containsKey(currentId)) {
+            throw new EngineException("can not find assign activity : "+currentId+"");
+        }
         return pvmProcessDefinition.getActivities().get(currentId);
     }
 
