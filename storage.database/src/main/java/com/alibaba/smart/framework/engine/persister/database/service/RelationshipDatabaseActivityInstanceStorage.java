@@ -91,7 +91,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
         List<ActivityInstanceEntity> activityInstanceEntities  = activityInstanceDAO.findAllActivity(processInstanceId);
 
-        List<ActivityInstance> activityInstanceList= new ArrayList<>();
+        List<ActivityInstance> activityInstanceList= new ArrayList<ActivityInstance>();
 
         for (ActivityInstanceEntity activityInstanceEntity : activityInstanceEntities) {
             ActivityInstance activityInstance = new DefaultActivityInstance();
