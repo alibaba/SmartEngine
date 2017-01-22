@@ -56,7 +56,7 @@ public class ReceiveTaskParallelGatewayTest {
 
 
 
-        Map<String, Object> request = new HashMap<>();
+        Map<String, Object> request = new HashMap<String, Object>();
         request.put("input", 7);
         ProcessInstance processInstance = processCommandService.start(
                 processDefinition.getId(), processDefinition.getVersion(),

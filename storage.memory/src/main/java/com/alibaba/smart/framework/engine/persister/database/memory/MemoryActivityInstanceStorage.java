@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryActivityInstanceStorage implements ActivityInstanceStorage {
 
-    private Map<Long, ActivityInstance> instances = new ConcurrentHashMap<>();
+    private Map<Long, ActivityInstance> instances = new ConcurrentHashMap<Long, ActivityInstance>();
 
     @Override
     public ActivityInstance insert(ActivityInstance instance) {

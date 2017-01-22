@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultProcessDefinitionContainer implements ProcessDefinitionContainer {
 
 
-    private Map<String, PvmProcessDefinition> pvmProcessDefinitionConcurrentHashMap = new ConcurrentHashMap<>();
+    private Map<String, PvmProcessDefinition> pvmProcessDefinitionConcurrentHashMap = new ConcurrentHashMap<String, PvmProcessDefinition>();
 
     @Override
     public void install(PvmProcessDefinition pvmProcessDefinition) {

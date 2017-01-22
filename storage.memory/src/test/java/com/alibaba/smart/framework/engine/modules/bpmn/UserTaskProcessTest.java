@@ -39,7 +39,7 @@ public class UserTaskProcessTest {
         assertEquals(25, processDefinition.getProcess().getElements().size());
 
         ProcessCommandService processCommandService = smartEngine.getProcessService();
-        Map<String, Object> request = new HashMap<>();
+        Map<String, Object> request = new HashMap<String, Object>();
         request.put("input", 2);
         ProcessInstance processInstance = processCommandService.start(
                 processDefinition.getId(), processDefinition.getVersion(),

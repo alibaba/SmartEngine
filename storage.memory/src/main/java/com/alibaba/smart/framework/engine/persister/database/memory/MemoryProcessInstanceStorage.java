@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
 
-    private Map<Long, ProcessInstance> instances = new ConcurrentHashMap<>();
+    private Map<Long, ProcessInstance> instances = new ConcurrentHashMap<Long, ProcessInstance>();
 
     @Override
     public ProcessInstance insert(ProcessInstance instance) {

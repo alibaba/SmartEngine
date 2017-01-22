@@ -40,7 +40,7 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     }
 
 
-    private List<ActivityInstance> activityInstances = new ArrayList<>();
+    private List<ActivityInstance> activityInstances = new ArrayList<ActivityInstance>();
 
 
     @Override

@@ -117,7 +117,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             } else {
                 throw new DeployException("Read process config file[" + uri + "] failure! Not found start element!");
             }
-        } catch (ParseException | XMLStreamException e) {
+        } catch (Exception e) {
             throw new DeployException("Read process config file[" + uri + "] failure!", e);
         } finally {
             IOUtil.closeQuietly(inputStream);
@@ -168,8 +168,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         if (null != elements && !elements.isEmpty()) {
 
             //TODO ocp 
-            Map<String, PvmTransition> pvmTransitionMap = new HashMap<>();
-            Map<String, PvmActivity> pvmActivityMap = new HashMap<>();
+            Map<String, PvmTransition> pvmTransitionMap = new HashMap<String, PvmTransition>();
+            Map<String, PvmActivity> pvmActivityMap = new HashMap<String, PvmActivity>();
             for (BaseElement element : elements) {
                 if (element instanceof Process) {
                     Process subProcess = (Process) element;

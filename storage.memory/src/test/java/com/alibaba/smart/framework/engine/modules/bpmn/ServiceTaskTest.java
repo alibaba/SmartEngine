@@ -39,7 +39,7 @@ public class ServiceTaskTest {
         Assert.assertEquals(25, processDefinition.getProcess().getElements().size());
 
 		ProcessCommandService processService = smartEngine.getProcessService();
-		Map<String, Object> request = new HashMap<>();
+		Map<String, Object> request = new HashMap<String, Object>();
 		request.put("input", 2);
 		ProcessInstance processInstance = processService.start(
 				processDefinition.getId(), processDefinition.getVersion(),

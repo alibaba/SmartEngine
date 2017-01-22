@@ -18,11 +18,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("rawtypes")
 public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements AssemblyParserExtensionPoint {
 
-    private Map<QName, StAXArtifactParser> artifactParsers = new ConcurrentHashMap<>();
+    private Map<QName, StAXArtifactParser> artifactParsers = new ConcurrentHashMap<QName, StAXArtifactParser>();
 
-    private Map<QName, StAXAttributeParser> attributeParsers = new ConcurrentHashMap<>();
+    private Map<QName, StAXAttributeParser> attributeParsers = new ConcurrentHashMap<QName, StAXAttributeParser>();
 
-    private Map<Class, ArtifactParser> resolveArtifactParsers = new ConcurrentHashMap<>();
+    private Map<Class, ArtifactParser> resolveArtifactParsers = new ConcurrentHashMap<Class, ArtifactParser>();
 
     public DefaultAssemblyParserExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

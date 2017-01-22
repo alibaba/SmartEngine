@@ -17,7 +17,7 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultExtensionPointRegistry.class);
 
-    private Map<Class<?>, Object> extensionPoints = new ConcurrentHashMap<>();
+    private Map<Class<?>, Object> extensionPoints = new ConcurrentHashMap<Class<?>, Object>();
 
     public DefaultExtensionPointRegistry(SmartEngine engine) {
         super.setExtensionPointRegistry(this);

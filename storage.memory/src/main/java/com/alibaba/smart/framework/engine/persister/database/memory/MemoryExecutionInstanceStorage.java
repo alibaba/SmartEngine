@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryExecutionInstanceStorage implements ExecutionInstanceStorage {
 
-    private Map<Long, ExecutionInstance> instances = new ConcurrentHashMap<>();
+    private Map<Long, ExecutionInstance> instances = new ConcurrentHashMap<Long, ExecutionInstance>();
 
     @Override
     public ExecutionInstance insert(ExecutionInstance instance) {

@@ -52,7 +52,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
 
         if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
-            List<PvmTransition> matchedTransitions = new ArrayList<>(outcomeTransitions.size());
+            List<PvmTransition> matchedTransitions = new ArrayList<PvmTransition>(outcomeTransitions.size());
             for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
                 PvmTransition pendingTransition = transitionEntry.getValue();
                 TransitionBehavior transitionBehavior = pendingTransition.getTransitionBehavior();

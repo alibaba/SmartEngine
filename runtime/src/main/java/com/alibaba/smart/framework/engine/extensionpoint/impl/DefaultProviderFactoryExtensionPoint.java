@@ -17,7 +17,7 @@ public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExte
     /**
      * Artifact处理器
      */
-    private Map<Class, ProviderFactory> providerFactories = new ConcurrentHashMap<>();
+    private Map<Class, ProviderFactory> providerFactories = new ConcurrentHashMap<Class, ProviderFactory>();
 
     public DefaultProviderFactoryExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

@@ -77,7 +77,7 @@ public class AuditProcessTest {
         TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
 
         //5.流程流转:构造提交申请参数
-        Map<String, Object> submitFormRequest = new HashMap<>();
+        Map<String, Object> submitFormRequest = new HashMap<String, Object>();
         submitFormRequest.put("title", "new_title");
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
@@ -89,7 +89,7 @@ public class AuditProcessTest {
         //7. 获取当前待处理任务.
         List<TaskInstance>   auditTaskInstanceList = taskQueryService.findPendingTask(processInstance.getInstanceId());
         TaskInstance auditTaskInstance = auditTaskInstanceList.get(0);
-        Map<String, Object> approveFormRequest = new HashMap<>();
+        Map<String, Object> approveFormRequest = new HashMap<String, Object>();
 
         //10.
         approveFormRequest.put("approve", "agree");
@@ -143,7 +143,7 @@ public class AuditProcessTest {
         TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
 
         //5.流程流转:构造提交申请参数
-        Map<String, Object> submitFormRequest = new HashMap<>();
+        Map<String, Object> submitFormRequest = new HashMap<String, Object>();
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
         submitFormRequest.put("assigner","leader");
@@ -154,7 +154,7 @@ public class AuditProcessTest {
         //7. 获取当前待处理任务.
         List<TaskInstance>   auditTaskInstanceList = taskQueryService.findPendingTask(processInstance.getInstanceId());
         TaskInstance auditTaskInstance = auditTaskInstanceList.get(0);
-        Map<String, Object> approveFormRequest = new HashMap<>();
+        Map<String, Object> approveFormRequest = new HashMap<String, Object>();
 
         //10.
         approveFormRequest.put("approve", "agree");

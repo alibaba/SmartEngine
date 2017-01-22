@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultPersisterFactoryExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements PersisterFactoryExtensionPoint {
 
 
-    private Map<Class<?>, Object> factories = new ConcurrentHashMap<>();
+    private Map<Class<?>, Object> factories = new ConcurrentHashMap<Class<?>, Object>();
 
     public DefaultPersisterFactoryExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

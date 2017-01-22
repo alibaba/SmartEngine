@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
 
-    private Map<Long, TaskInstance> instances = new ConcurrentHashMap<>();
+    private Map<Long, TaskInstance> instances = new ConcurrentHashMap<Long, TaskInstance>();
 
     @Override
     public List<TaskInstance> findPendingTask(Long processInstanceId) {

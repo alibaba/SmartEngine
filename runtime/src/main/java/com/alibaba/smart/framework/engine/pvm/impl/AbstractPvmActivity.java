@@ -20,8 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractPvmActivity<M extends Activity> extends AbstractPvmInvocable<Activity> implements PvmActivity {
 
 
-    private Map<String, PvmTransition> incomeTransitions = new ConcurrentHashMap<>();
-    private Map<String, PvmTransition> outcomeTransitions = new ConcurrentHashMap<>();
+    private Map<String, PvmTransition> incomeTransitions = new ConcurrentHashMap<String, PvmTransition>();
+    private Map<String, PvmTransition> outcomeTransitions = new ConcurrentHashMap<String, PvmTransition>();
     private ActivityBehavior activityBehavior;
     
 

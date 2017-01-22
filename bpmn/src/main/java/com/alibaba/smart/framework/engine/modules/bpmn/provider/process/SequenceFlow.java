@@ -27,7 +27,7 @@ public class SequenceFlow extends AbstractTransition<com.alibaba.smart.framework
             //TODO SUPPORT OTHER ,TODO  预编译
             if ("mvel".equals(conditionExpression.getExpressionType())) {
                 Object result = MVEL.eval(conditionExpression.getExpressionContent(), context.getRequest());
-                return (boolean) result;
+                return (Boolean) result;
             } else {
                 throw new EngineException("unsupported condition expression type:" + conditionExpression.getExpressionType());
             }

@@ -37,7 +37,7 @@ public class ProcessParser extends AbstractStAXArtifactParser<Process> implement
         Process process = new Process();
         process.setId(this.getString(reader, "id"));
 
-        List<BaseElement> elements = new ArrayList<>();
+        List<BaseElement> elements = new ArrayList<BaseElement>();
         while (this.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
             if (element instanceof BaseElement) {
