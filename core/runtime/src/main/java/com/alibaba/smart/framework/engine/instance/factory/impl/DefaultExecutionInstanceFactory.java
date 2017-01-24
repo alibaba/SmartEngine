@@ -16,7 +16,8 @@ public class DefaultExecutionInstanceFactory implements ExecutionInstanceFactory
     @Override
     public ExecutionInstance create() {
         DefaultExecutionInstance defaultExecutionInstance = new DefaultExecutionInstance();
-        defaultExecutionInstance.setInstanceId(InstanceIdUtil.simpleId());
+        defaultExecutionInstance.setInstanceId(InstanceIdUtil.simpleId(defaultExecutionInstance.getId()));
+        defaultExecutionInstance.increaseId();
         return defaultExecutionInstance;
     }
 

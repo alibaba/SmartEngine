@@ -22,6 +22,12 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
     private ActivityInstance  activity;
     private boolean           fault;
     private boolean           isAbort = false;
+    private long id = 1L;
+
+
+    public void increaseId() {
+        this.id = this.id+1L;
+    }
 
 
 

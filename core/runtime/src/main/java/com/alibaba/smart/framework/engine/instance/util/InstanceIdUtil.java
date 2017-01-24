@@ -22,4 +22,10 @@ public abstract class InstanceIdUtil {
 
     }
 
+    public static String simpleId(long id) {
+
+        return String.valueOf(id);
+
+    }
+
 }
