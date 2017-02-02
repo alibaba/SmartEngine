@@ -31,7 +31,8 @@
                 <groupId>com.taobao.tddl</groupId>
                 <artifactId>tddl-client</artifactId>
                 <version>5.1.17</version>
-            </dependency>
+
+             </dependency>
 
         </dependencies>
 
