@@ -12,6 +12,31 @@
     <artifactId>engine.storage.database</artifactId>
     <name>Smart Engine Modules - Database Storage</name>
 
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>com.alibaba.intl.sourcing.shared</groupId>
+                <artifactId>spring-data-mybatis</artifactId>
+                <version>1.0.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.taobao.tddl</groupId>
+                <artifactId>tddl-sequence</artifactId>
+                <version>5.1.17</version>
+            </dependency>
+             <dependency>
+                <groupId>com.taobao.tddl</groupId>
+                <artifactId>tddl-client</artifactId>
+                <version>5.1.17</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -21,14 +46,6 @@
         <dependency>
             <groupId>com.alibaba.intl.sourcing.shared</groupId>
             <artifactId>spring-data-mybatis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
         </dependency>
         <dependency>
             <groupId>com.taobao.tddl</groupId>

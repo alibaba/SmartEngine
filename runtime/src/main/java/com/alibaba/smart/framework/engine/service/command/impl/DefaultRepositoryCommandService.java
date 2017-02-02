@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -24,8 +25,6 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -134,7 +133,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         String processId = processDefinition.getId();
         String version = processDefinition.getVersion();
 
-        if (StringUtils.isBlank(processId) || StringUtils.isBlank(version)) {
+        if (StringUtil.isEmpty(processId) || StringUtil.isEmpty(version)) {
             throw new EngineException("empty processId or version");
         }
 
@@ -174,7 +173,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 if (element instanceof Process) {
                     Process subProcess = (Process) element;
 
-                    if (StringUtils.isBlank(subProcess.getId())) {
+                    if (StringUtil.isEmpty(subProcess.getId())) {
                         subProcess.setId(idPrefix + "process" + index);
                     }
                     index++;
@@ -190,7 +189,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 } else if (element instanceof Transition) {
                     Transition transition = (Transition) element;
 
-                    if (StringUtils.isBlank(transition.getId())) {
+                    if (StringUtil.isEmpty(transition.getId())) {
                         transition.setId(idPrefix + "transition" + index);
                     }
                     index++;
@@ -209,7 +208,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 } else if (element instanceof Activity) {
                     Activity activity = (Activity) element;
 
-                    if (StringUtils.isBlank(activity.getId())) {
+                    if (StringUtil.isEmpty(activity.getId())) {
                         activity.setId(idPrefix + "activity" + index);
                     }
                     index++;

@@ -84,7 +84,7 @@ public class MixedAuditProcessTest {
 
 
         //7.流程流转:提交申请
-        Map<String, Object> submitFormRequest = new HashMap<>();
+        Map<String, Object> submitFormRequest = new HashMap<String, Object>();
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
         submitFormRequest.put("assigner","leader"); //TODO 提供统一抽象和隔离,和公司账户体系集成
@@ -103,7 +103,7 @@ public class MixedAuditProcessTest {
         Assert.assertNotNull(approveTaskInstance);
 
         //9.审批通过,驱动流程节点到自动执行任务环节
-        Map<String, Object> approveFormRequest = new HashMap<>();
+        Map<String, Object> approveFormRequest = new HashMap<String, Object>();
         approveFormRequest.put("approve", "agree");
         approveFormRequest.put("desc", "ok");
         taskCommandService.complete(approveTaskInstance.getInstanceId(),approveFormRequest);

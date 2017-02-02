@@ -71,7 +71,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
         ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
-        TaskInstanceStorage taskInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId);
         ActivityInstance activityInstance= activityInstanceStorage.find(executionInstance.getActivityInstanceId());

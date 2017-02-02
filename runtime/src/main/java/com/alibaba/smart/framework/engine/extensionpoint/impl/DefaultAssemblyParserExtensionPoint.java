@@ -1,10 +1,10 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.xml.parser.*;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -92,7 +92,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         }
         if (null != artifactParser) {
             return artifactParser.parse(attributeName, reader, context);
-        } else if (StringUtils.equals(type.getNamespaceURI(), attributeName.getNamespaceURI())) {
+        } else if (StringUtil.equals(type.getNamespaceURI(), attributeName.getNamespaceURI())) {
             return reader.getAttributeValue(attributeName.getNamespaceURI(), attributeName.getLocalPart());
         } else {
             throw new RuntimeException("No artifactParser found for QName: " + type);
@@ -107,6 +107,9 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
             artifactParser.resolve(model, context);
         }
     }
+
+
+
 
 
 }

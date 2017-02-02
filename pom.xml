@@ -90,12 +90,6 @@
             <!-- 3nd Dependency -->
             <!-- ======================================== -->
 
-            <!-- commons -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.4</version>
-            </dependency>
 
             <!-- cglib -->
             <dependency>
@@ -114,23 +108,12 @@
                 <version>3.20.0-GA</version>
             </dependency>
 
-            <!-- spring -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring</artifactId>
-                <version>99.0-does-not-exist</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
                 <version>${springframework.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${springframework.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
@@ -141,16 +124,7 @@
                 <artifactId>spring-context</artifactId>
                 <version>${springframework.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context-support</artifactId>
-                <version>${springframework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aspects</artifactId>
-                <version>${springframework.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
@@ -171,6 +145,7 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.16.6</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- log -->
@@ -194,52 +169,9 @@
                 <artifactId>log4j</artifactId>
                 <version>1.2.16</version>
             </dependency>
-            <dependency>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-                <version>1.2</version>
-            </dependency>
 
-            <dependency>
-                <groupId>com.googlecode.concurrentlinkedhashmap</groupId>
-                <artifactId>concurrentlinkedhashmap-lru</artifactId>
-                <version>1.4.2</version>
-            </dependency>
 
-            <dependency>
-                <groupId>org.drools</groupId>
-                <artifactId>drools-core</artifactId>
-                <version>6.3.0.Final</version>
-            </dependency>
 
-            <dependency>
-                <groupId>org.drools</groupId>
-                <artifactId>drools-compiler</artifactId>
-                <version>6.3.0.Final</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>18.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.alibaba.intl.sourcing.shared</groupId>
-                <artifactId>spring-data-mybatis</artifactId>
-                <version>1.0.3</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.taobao.tddl</groupId>
-                <artifactId>tddl-sequence</artifactId>
-                <version>5.1.17</version>
-            </dependency>
-            <dependency>
-                <groupId>com.taobao.tddl</groupId>
-                <artifactId>tddl-client</artifactId>
-                <version>5.1.17</version>
-            </dependency>
 
         </dependencies>
     </dependencyManagement>
