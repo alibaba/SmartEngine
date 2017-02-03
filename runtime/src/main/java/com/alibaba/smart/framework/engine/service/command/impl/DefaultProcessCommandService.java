@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
+import com.alibaba.smart.framework.engine.common.persister.PersisterStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
@@ -10,22 +10,15 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
-import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
-import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 
-import java.util.List;
 import java.util.Map;
 
 
@@ -82,7 +75,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
         ProcessInstance processInstance = pvmProcessInstance.start(executionContext);
 
-        processInstance =  persist(processInstance,request);
+        processInstance =  persist(processInstance, request);
 
         return processInstance;
 
@@ -94,56 +87,32 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     private ProcessInstance persist(ProcessInstance processInstance,Map<String, Object> request) {
 
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
-        //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
-        ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
-        ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
-        ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
-        TaskInstanceStorage taskInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+        PersisterStrategy persisterStrategy = processEngineConfiguration.getPersisterStrategy();
 
-
-        ProcessInstance newProcessInstance=   processInstanceStorage.insert(processInstance);
-        List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
-        for (ActivityInstance activityInstance : activityInstances) {
-
-            //TUNE 这里重新赋值了,id还是统一由数据库分配.
-            activityInstance.setProcessInstanceId(processInstance.getInstanceId());
-            activityInstanceStorage.insert(activityInstance);
-
-            ExecutionInstance executionInstance = activityInstance.getExecutionInstance();
-            if (null != executionInstance) {
-                executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
-                executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
-                executionInstanceStorage.insert(executionInstance);
-
-                TaskInstance taskInstance = executionInstance.getTaskInstance();
-                if(null!= taskInstance) {
-                    taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
-                    taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
-                    taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
-
-                    //reAssign
-                    taskInstance = taskInstanceStorage.insert(taskInstance);
-
-                    ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
-
-
-                    TaskAssigneeService taskAssigneeService = processEngineConfiguration.getTaskAssigneeService();
-                    if(null != taskAssigneeService){
-                        taskAssigneeService.persistTaskAssignee(taskInstance,request);
-                    }
-
-
-                    executionInstance.setTaskInstance(taskInstance);
-               }
-
-
-            }
+        ProcessInstance newProcessInstance ;
+        if(null == persisterStrategy){
+            newProcessInstance=  defaultPersisteInstance(processInstance, request, processEngineConfiguration);
+        }else {
+            newProcessInstance= persisterStrategy.persist(processInstance,request);
         }
 
         return newProcessInstance;
     }
+
+    private ProcessInstance defaultPersisteInstance(ProcessInstance processInstance, Map<String, Object> request, ProcessEngineConfiguration processEngineConfiguration) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+        //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
+        ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
+
+
+        ProcessInstance newProcessInstance=   processInstanceStorage.insert(processInstance);
+        CommonServiceHelper.persist(processInstance, request, processEngineConfiguration,  persisterFactoryExtensionPoint);
+        return newProcessInstance;
+    }
+
 
     @Override
     public void abort(Long processInstanceId) {

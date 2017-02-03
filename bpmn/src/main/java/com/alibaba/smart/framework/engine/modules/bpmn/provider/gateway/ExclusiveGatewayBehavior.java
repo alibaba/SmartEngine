@@ -17,6 +17,8 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<Exclusive
 
     @Override
     public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext context) {
+
+        //TUNE 流程节点不应该停留在该节点上。流转的职责可以更加聚焦下。
         ActivityInstance activityInstance = super.activityInstanceFactory.createWithBlockId(pvmActivity, context);
 
         context.getProcessInstance().addNewActivityInstance(activityInstance);

@@ -7,12 +7,11 @@ import java.util.List;
 
 public interface TaskInstanceStorage {
 
-     List<TaskInstance> findPendingTask(Long processInstanceId);
+    List<TaskInstance> findPendingTask(Long processInstanceId);
 
     TaskInstance insert(TaskInstance taskInstance);
 
     TaskInstance update(TaskInstance taskInstance);
-
 
     TaskInstance find(Long taskInstanceId);
 

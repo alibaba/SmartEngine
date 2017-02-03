@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.persister.database.memory;
+package com.alibaba.smart.framework.engine.persister.memory;
 
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;

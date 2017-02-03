@@ -12,7 +12,7 @@ import java.util.Map;
 public interface ProcessCommandService {
 
 
-    ProcessInstance start(String processId, String version, Map<String, Object> variables);
+    ProcessInstance start(String processId, String version, Map<String, Object> request);
 
     ProcessInstance start(String processId, String version);
 

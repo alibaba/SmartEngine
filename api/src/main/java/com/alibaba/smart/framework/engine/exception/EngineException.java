@@ -12,6 +12,10 @@ public class EngineException extends RuntimeException {
         super(message);
     }
 
+    public EngineException( Exception e) {
+        super("EngineException", e);
+    }
+
     public EngineException(String message, Exception e) {
         super(message, e);
     }

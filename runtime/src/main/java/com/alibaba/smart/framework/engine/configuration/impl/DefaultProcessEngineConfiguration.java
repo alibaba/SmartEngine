@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
+import com.alibaba.smart.framework.engine.common.persister.PersisterStrategy;
 import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -27,7 +28,7 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private TaskAssigneeService taskAssigneeService;
 
-    private String persisteModel;
+    private PersisterStrategy persisterStrategy;
 
     //TODO 核心引擎不依赖 Spring
     private static ApplicationContext applicationContext;

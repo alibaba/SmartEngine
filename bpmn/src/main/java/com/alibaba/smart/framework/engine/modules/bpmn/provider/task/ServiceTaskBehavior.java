@@ -5,6 +5,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.TccDelegation;
 import com.alibaba.smart.framework.engine.delegation.TccResult;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
@@ -12,6 +13,7 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.Action;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
+import com.alibaba.smart.framework.engine.modules.bpmn.provider.task.util.TccDelegationUtil;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -40,9 +42,6 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> i
 
 
 
-        ProcessEngineConfiguration processEngineConfiguration = executionContext.getProcessEngineConfiguration();
-        ExceptionProcessor exceptionProcessor= processEngineConfiguration.getExceptionProcessor();
-
 
         ServiceTask serviceTask = (ServiceTask) pvmActivity.getModel();
         String className = serviceTask.getClassName();
@@ -67,34 +66,13 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> i
 
             }
         } else {
-            // TODO need cache,rename
-            Object serviceTaskDelegation = ClassLoaderUtil.createNewInstance(className);
-            if (serviceTaskDelegation instanceof TccDelegation) {
-                TccDelegation tccDelegation = (TccDelegation) serviceTaskDelegation;
+            TccDelegationUtil.execute(executionContext, className);
 
-
-                try {
-                    TccResult  tccResult = tccDelegation.tryExecute(executionContext);
-                    if(tccResult != null){
-                        if(tccResult.isSucessful()){
-                            //do nothing
-                        }else{
-
-                            Object target = tccResult.getTarget();
-                            Exception exception = new Exception(target.toString());
-                            exceptionProcessor.process(exception);
-
-                        }
-                    }
-                } catch (Exception e) {
-                    exceptionProcessor.process(e);
-                }
-
-            }
         }
 
 
     }
+
 
 
 }

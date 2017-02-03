@@ -40,7 +40,6 @@ public class MixedAuditProcessTest {
 
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setPersisteModel("mysql-tddl");
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 

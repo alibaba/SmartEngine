@@ -9,6 +9,7 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ReceiveTask;
+import com.alibaba.smart.framework.engine.modules.bpmn.provider.task.util.TccDelegationUtil;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -47,15 +48,8 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> i
 
 
         } else {
-            // TODO need cache,rename
-            Object ss = ClassLoaderUtil.createNewInstance(className);
-            if (ss instanceof TccDelegation) {
-                TccDelegation tccDelegation = (TccDelegation) ss;
-                TccResult tccResult = tccDelegation.tryExecute(executionContext);
-//                DefaultMessage defaultMessage = new DefaultMessage();
-//                defaultMessage.setBody(tccResult);
-//                return defaultMessage;
-            }
+            TccDelegationUtil.execute(executionContext, className);
+
         }
     }
 

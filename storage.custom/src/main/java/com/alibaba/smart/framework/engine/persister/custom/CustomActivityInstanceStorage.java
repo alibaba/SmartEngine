@@ -1,5 +1,6 @@
-package com.alibaba.smart.framework.engine.persister.database.memory;
+package com.alibaba.smart.framework.engine.persister.custom;
 
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 
@@ -11,36 +12,32 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 内存实例存储 Created by ettear on 16-4-13.
  */
-public class MemoryActivityInstanceStorage implements ActivityInstanceStorage {
+public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
 
-    private Map<Long, ActivityInstance> instances = new ConcurrentHashMap<Long, ActivityInstance>();
 
     @Override
     public ActivityInstance insert(ActivityInstance instance) {
-        this.instances.put(instance.getInstanceId(), instance);
-        return instance;
+       throw new EngineException("not implement intentionally");
     }
 
     @Override
     public ActivityInstance update(ActivityInstance instance) {
-        this.instances.put(instance.getInstanceId(), instance);
-        return instance;
+        throw new EngineException("not implement intentionally");
     }
 
     @Override
     public ActivityInstance find(Long instanceId) {
-        return this.instances.get(instanceId);
+        return null;
     }
 
 
     @Override
     public void remove(Long instanceId) {
-        this.instances.remove(instanceId);
+        throw new EngineException("not implement intentionally");
     }
 
     @Override
     public List<ActivityInstance> findAll(Long processInstanceId) {
-        ActivityInstance[] activityInstances = instances.values().toArray(new ActivityInstance[]{});
-        return Arrays.asList(activityInstances);
+        throw new EngineException("not implement intentionally");
     }
 }
