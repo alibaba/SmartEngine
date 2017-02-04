@@ -1,6 +1,8 @@
 package com.alibaba.smart.framework.engine.instance.util;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.esotericsoftware.reflectasm.ConstructorAccess;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -56,6 +58,13 @@ public final class ClassLoaderUtil {
     public static Object createNewInstance(String className) throws EngineException {
         return createNewInstance(className, new Class[0], new Object[0]);
     }
+
+    public static Object createNewInstanceWithASM(String className) throws EngineException {
+        ConstructorAccess<ProcessEngineConfiguration> access = ConstructorAccess.get(ProcessEngineConfiguration.class);
+        ProcessEngineConfiguration someObject = access.newInstance();
+        return someObject;
+     }
+
 
     /**
      * Creates a new class instance and passes args to the constructor call. Logs errors along the way. Classes are

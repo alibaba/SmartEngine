@@ -21,9 +21,9 @@ public abstract  class TccDelegationUtil {
 
 
         // TODO need cache,rename
-        Object serviceTaskDelegation = ClassLoaderUtil.createNewInstance(className);
-        if (serviceTaskDelegation instanceof TccDelegation) {
-            TccDelegation tccDelegation = (TccDelegation) serviceTaskDelegation;
+        Object taskDelegation = ClassLoaderUtil.createNewInstance(className);
+        if (taskDelegation instanceof TccDelegation) {
+            TccDelegation tccDelegation = (TccDelegation) taskDelegation;
 
             TccResult tccResult = null;
             try {

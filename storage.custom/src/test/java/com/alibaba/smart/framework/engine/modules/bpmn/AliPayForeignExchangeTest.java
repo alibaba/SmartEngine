@@ -44,13 +44,7 @@ public class AliPayForeignExchangeTest {
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
-
-        ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
-
-        ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
         ExecutionInstanceQueryService executionQueryService = smartEngine.getExecutionQueryService();
-        TaskInstanceQueryService taskQueryService = smartEngine.getTaskQueryService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
 
