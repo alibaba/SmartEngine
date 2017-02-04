@@ -25,6 +25,7 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -59,15 +60,25 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @Override
-    public ProcessDefinition deploy( String uri) throws DeployException {
+    public ProcessDefinition deploy( String classPathUri) throws DeployException {
 
        ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
 
-        //TODO 支持从不同地方加载 优先级高
-        ProcessDefinition definition = this.parse(classLoader, uri);
-        install(classLoader, definition);
+        ProcessDefinition definition = this.parse(classLoader, classPathUri);
+        install( definition);
 
         return definition;
+    }
+
+    @Override
+    public ProcessDefinition deploy(InputStream inputStream) {
+        try {
+            return parseStream(inputStream);
+        } catch (Exception e) {
+            throw new DeployException("Parse process definition file failure!", e);
+        } finally {
+            IOUtil.closeQuietly(inputStream);
+        }
     }
 
     @Override
@@ -88,43 +99,48 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
         InputStream inputStream = null;
         try {
-            XMLInputFactory factory = XMLInputFactory.newInstance();
             inputStream = classLoader.getResourceAsStream(uri);
 
             if(null == inputStream){
                 throw new IllegalArgumentException("Cant findAll any resources for the uri:"+uri);
             }
 
-            XMLStreamReader reader = factory.createXMLStreamReader(inputStream);
-
-            ParseContext context = new ParseContext();
-
-            boolean findStart = false;
-            do {
-                int event = reader.next();
-                if (event == END_ELEMENT) {
-                    break;
-                }
-                if (event == START_ELEMENT) {
-                    findStart = true;
-                    break;
-                }
-            } while (reader.hasNext());
-
-            if (findStart) {
-                return (ProcessDefinition) this.assemblyParserExtensionPoint.parse(reader, context);
-            } else {
-                throw new DeployException("Read process config file[" + uri + "] failure! Not found start element!");
-            }
+            return parseStream(inputStream);
         } catch (Exception e) {
-            throw new DeployException("Read process config file[" + uri + "] failure!", e);
+            throw new DeployException("Read process definition file[" + uri + "] failure!", e);
         } finally {
             IOUtil.closeQuietly(inputStream);
         }
     }
 
+    private ProcessDefinition parseStream(InputStream inputStream) throws XMLStreamException, ParseException {
+        XMLInputFactory factory = XMLInputFactory.newInstance();
+
+        XMLStreamReader reader = factory.createXMLStreamReader(inputStream);
+
+        ParseContext context = new ParseContext();
+
+        boolean findStart = false;
+        do {
+            int event = reader.next();
+            if (event == END_ELEMENT) {
+                break;
+            }
+            if (event == START_ELEMENT) {
+                findStart = true;
+                break;
+            }
+        } while (reader.hasNext());
+
+        if (findStart) {
+            return (ProcessDefinition) this.assemblyParserExtensionPoint.parse(reader, context);
+        } else {
+            throw new DeployException("Read process definition file failure! Not found start element!");
+        }
+    }
+
     @SuppressWarnings("rawtypes")
-    private ProcessDefinitionContainer install(ClassLoader classLoader, ProcessDefinition processDefinition) {
+    private ProcessDefinitionContainer install(ProcessDefinition processDefinition) {
 
         if (null == processDefinition) {
             throw new EngineException("null processDefinition found");
