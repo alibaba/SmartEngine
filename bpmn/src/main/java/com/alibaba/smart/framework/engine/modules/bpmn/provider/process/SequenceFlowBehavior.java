@@ -4,15 +4,16 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractTransition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import org.mvel2.MVEL;
 
-public class SequenceFlow extends AbstractTransition<com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow> implements TransitionBehavior<com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow> {
+public class SequenceFlowBehavior extends AbstractTransition<com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow> implements TransitionBehavior<com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow> {
 
 
-    public SequenceFlow(ExtensionPointRegistry extensionPointRegistry, PvmTransition runtimeTransition) {
+    public SequenceFlowBehavior(ExtensionPointRegistry extensionPointRegistry, PvmTransition runtimeTransition) {
         super(runtimeTransition);
     }
 
@@ -20,7 +21,7 @@ public class SequenceFlow extends AbstractTransition<com.alibaba.smart.framework
 
     @Override
     public boolean execute(PvmTransition pvmTransition, ExecutionContext context) {
-        com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow sequenceFlow = (com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow) pvmTransition.getModel();
+        SequenceFlow sequenceFlow =  (SequenceFlow)pvmTransition.getModel();
         ConditionExpression conditionExpression = sequenceFlow.getConditionExpression();
 
         if (null != conditionExpression) {

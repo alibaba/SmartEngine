@@ -13,8 +13,8 @@ public class SequenceFlowProviderFactory implements TransitionProviderFactory<co
     }
 
     @Override
-    public SequenceFlow createTransitionProvider(PvmTransition runtimeTransition) {
-        return new SequenceFlow(this.extensionPointRegistry, runtimeTransition);
+    public SequenceFlowBehavior createTransitionProvider(PvmTransition runtimeTransition) {
+        return new SequenceFlowBehavior(this.extensionPointRegistry, runtimeTransition);
     }
 
     @Override
