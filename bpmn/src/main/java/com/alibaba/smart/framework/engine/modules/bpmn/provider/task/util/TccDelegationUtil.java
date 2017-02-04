@@ -20,8 +20,7 @@ public abstract  class TccDelegationUtil {
         ExceptionProcessor exceptionProcessor= processEngineConfiguration.getExceptionProcessor();
 
 
-        // TODO need cache,rename
-        Object taskDelegation = ClassLoaderUtil.createNewInstance(className);
+        Object taskDelegation = ClassLoaderUtil.createOrGetInstanceWithASM(className);
         if (taskDelegation instanceof TccDelegation) {
             TccDelegation tccDelegation = (TccDelegation) taskDelegation;
 

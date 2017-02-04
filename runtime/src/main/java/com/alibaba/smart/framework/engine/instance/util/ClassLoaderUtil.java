@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.util;
 
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.common.util.ObjectMap;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 
@@ -25,6 +25,9 @@ public final class ClassLoaderUtil {
     private ClassLoaderUtil() {
         // noop
     }
+
+    private  static ObjectMap<String,Object> objectMap = new ObjectMap<String,Object>();
+
 
     /**
      * Gets the <code>ClassLoader</code> that all classes in ehcache, and extensions, should use for classloading. All
@@ -59,10 +62,26 @@ public final class ClassLoaderUtil {
         return createNewInstance(className, new Class[0], new Object[0]);
     }
 
-    public static Object createNewInstanceWithASM(String className) throws EngineException {
-        ConstructorAccess<ProcessEngineConfiguration> access = ConstructorAccess.get(ProcessEngineConfiguration.class);
-        ProcessEngineConfiguration someObject = access.newInstance();
-        return someObject;
+    public static Object createOrGetInstanceWithASM(String className) throws EngineException {
+        Object object = objectMap.get(className);
+
+        //极端情况下,会多次实例化,但是不影响程序正确性。TUNE 也可以未来加个lock。
+        if(object == null){
+            Class clazz;
+            try {
+                clazz = getStandardClassLoader().loadClass(className);
+            } catch (ClassNotFoundException e) {
+                throw new EngineException(e);
+            }
+            ConstructorAccess access = ConstructorAccess.get(clazz);
+            object  = access.newInstance();
+            objectMap.put(className,object);
+            return object;
+        }else{
+            return object;
+        }
+
+
      }
 
 
