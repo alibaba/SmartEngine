@@ -16,8 +16,8 @@ public interface ProcessEngineConfiguration {
     void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
 
 
-    //TODO 删除
-    Object getBean(String bean);
+//    //TODO 删除
+//    Object getBean(String bean);
 
 
 

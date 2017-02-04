@@ -13,30 +13,7 @@
     <name>Smart Engine Modules - Custom Storage Example</name>
 
 
-    <dependencyManagement>
-        <dependencies>
 
-            <dependency>
-                <groupId>com.alibaba.intl.sourcing.shared</groupId>
-                <artifactId>spring-data-mybatis</artifactId>
-                <version>1.0.3</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.taobao.tddl</groupId>
-                <artifactId>tddl-sequence</artifactId>
-                <version>5.1.17</version>
-            </dependency>
-             <dependency>
-                <groupId>com.taobao.tddl</groupId>
-                <artifactId>tddl-client</artifactId>
-                <version>5.1.17</version>
-
-             </dependency>
-
-        </dependencies>
-
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -44,17 +21,13 @@
             <artifactId>engine.bpmn</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba.intl.sourcing.shared</groupId>
-            <artifactId>spring-data-mybatis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.taobao.tddl</groupId>
-            <artifactId>tddl-sequence</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.taobao.tddl</groupId>
-            <artifactId>tddl-client</artifactId>
-        </dependency>
+
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+
+        </dependencies>
+
+    </dependencyManagement>
 </project>
