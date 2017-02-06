@@ -93,10 +93,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
 
 
-        //执行每个节点的hook方法
-        ActivityBehavior activityBehavior =  pvmActivity.getActivityBehavior();
-        activityBehavior.leave(pvmActivity,executionContext);
-
 
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
@@ -105,6 +101,12 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
 
         ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
+
+        //执行每个节点的hook方法
+        ActivityBehavior activityBehavior =  pvmActivity.getActivityBehavior();
+        activityBehavior.leave(pvmActivity,executionContext);
+
+
 
         persist(newProcessInstance,  request);
 
