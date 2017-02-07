@@ -53,7 +53,7 @@
         <sequenceFlow id="flow7" sourceRef="theTask3" targetRef="selectTask"/>
 
         <serviceTask id="selectTask" name="Select Task"
-                     smart:class="com.alibaba.smart.framework.engine.modules.bpmn.MockedTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ServiceTaskDelegation">
         </serviceTask>
 
         <sequenceFlow id="flow8" sourceRef="selectTask"

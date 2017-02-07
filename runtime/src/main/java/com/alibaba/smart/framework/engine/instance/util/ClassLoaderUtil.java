@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Keeps all classloading in ehcache consistent.
@@ -26,7 +27,7 @@ public final class ClassLoaderUtil {
         // noop
     }
 
-    private  static ObjectMap<String,Object> objectMap = new ObjectMap<String,Object>();
+    private  static Map<String,Object> objectMap = new ConcurrentHashMap<String, Object>();
 
 
     /**
