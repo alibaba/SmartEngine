@@ -68,6 +68,7 @@ public class AliPayForeignExchangeTest {
 
         //在调用findActiveExecution和signal方法前调用此方法。当然,在实际场景下,persiste通常只需要调用一次;UpdateThreadLocal则很多场景下需要调用。
         persisteAndUpdateThreadLocal(orderId, processInstance);
+
         List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
         assertEquals(1, executionInstanceList.size());
         ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
