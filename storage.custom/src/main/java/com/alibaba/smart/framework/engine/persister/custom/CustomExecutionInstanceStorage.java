@@ -7,7 +7,6 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.alipay.IdentityThreadLocalUtil;
 import com.alibaba.smart.framework.engine.persister.alipay.InstanceSerializer;
-import com.alibaba.smart.framework.engine.persister.alipay.MockedDBService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +21,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
     @Override
     public ExecutionInstance insert(ExecutionInstance instance) {
-        throw new EngineException("not implement intentionally");
-
+        return instance;
     }
 
     @Override

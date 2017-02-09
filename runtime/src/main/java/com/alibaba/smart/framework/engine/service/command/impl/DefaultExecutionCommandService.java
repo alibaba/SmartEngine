@@ -123,14 +123,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
-            PersisterStrategy persisterStrategy = processEngineConfiguration.getPersisterStrategy();
-
-            ProcessInstance newProcessInstance ;
-            if(null == persisterStrategy){
-                newProcessInstance=  defaultPersisteInstance1(processInstance, request, processEngineConfiguration);
-            }else {
-                newProcessInstance= persisterStrategy.persist(processInstance,request);
-            }
+            ProcessInstance newProcessInstance =  defaultPersisteInstance1(processInstance, request, processEngineConfiguration);
 
             return newProcessInstance;
         }

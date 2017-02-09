@@ -19,7 +19,7 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
 
     @Override
     public ProcessInstance insert(ProcessInstance instance) {
-        throw new EngineException("not implement intentionally");
+       return instance;
     }
 
     @Override

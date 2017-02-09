@@ -89,14 +89,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
-        PersisterStrategy persisterStrategy = processEngineConfiguration.getPersisterStrategy();
-
-        ProcessInstance newProcessInstance ;
-        if(null == persisterStrategy){
-            newProcessInstance=  defaultPersisteInstance(processInstance, request, processEngineConfiguration);
-        }else {
-            newProcessInstance= persisterStrategy.persist(processInstance,request);
-        }
+        ProcessInstance newProcessInstance  =  defaultPersisteInstance(processInstance, request, processEngineConfiguration);
 
         return newProcessInstance;
     }

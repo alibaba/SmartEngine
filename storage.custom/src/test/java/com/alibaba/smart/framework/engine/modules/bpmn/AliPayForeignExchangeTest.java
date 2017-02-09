@@ -6,7 +6,6 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngin
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.*;
-import com.alibaba.smart.framework.engine.persister.alipay.AliPayPersisterStrategy;
 import com.alibaba.smart.framework.engine.persister.alipay.IdentityThreadLocalUtil;
 import com.alibaba.smart.framework.engine.persister.alipay.InstanceSerializer;
 import com.alibaba.smart.framework.engine.persister.alipay.MockedDBService;
@@ -37,7 +36,6 @@ public class AliPayForeignExchangeTest {
 
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 

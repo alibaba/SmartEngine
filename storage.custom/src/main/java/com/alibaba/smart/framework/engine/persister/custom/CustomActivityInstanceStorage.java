@@ -17,7 +17,7 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
 
     @Override
     public ActivityInstance insert(ActivityInstance instance) {
-       throw new EngineException("not implement intentionally");
+       return instance;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.configuration;
 
-import com.alibaba.smart.framework.engine.common.persister.PersisterStrategy;
 import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -33,8 +32,8 @@ public interface ProcessEngineConfiguration {
 
 
     //用于配置扩展,默认可以为空。设计目的是根据自己的业务需求,来自定义存储(该机制会绕过引擎自带的各种Storage机制,powerful and a little UnSafe)。。
-    void setPersisterStrategy(PersisterStrategy persisterStrategy);
-
-    PersisterStrategy getPersisterStrategy();
+//    void setPersisterStrategy(PersisterStrategy persisterStrategy);
+//
+//    PersisterStrategy getPersisterStrategy();
 }
 

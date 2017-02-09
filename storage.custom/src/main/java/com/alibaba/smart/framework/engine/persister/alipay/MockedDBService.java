@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.alipay;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,21 +11,21 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by 高海军 帝奇 74394 on 2017 February  15:31.
  */
 public class MockedDBService {
-    private static Map<Long, String> instances = new ConcurrentHashMap<Long, String>();
+    private static Map<Serializable, String> instances = new ConcurrentHashMap<Serializable, String>();
 
-    public static  void insert(Long orderId ,String value) {
-        instances.put(orderId,value);
+    public static  void insert(Serializable id , String value) {
+        instances.put(id,value);
     }
 
-    public static void update(Long orderId ,String value) {
-        instances.put(orderId,value);
+    public static void update(Serializable businessInstanceId ,String value) {
+        instances.put(businessInstanceId,value);
     }
 
-    public static String find(Long orderId) {
-        return instances.get(orderId);
+    public static String find(Serializable businessInstanceId) {
+        return instances.get(businessInstanceId);
     }
 
-    public static void remove(Long orderId) {
-         instances.remove(orderId);
+    public static void remove(Serializable businessInstanceId) {
+         instances.remove(businessInstanceId);
     }
 }
