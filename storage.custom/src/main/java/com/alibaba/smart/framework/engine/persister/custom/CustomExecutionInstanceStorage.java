@@ -6,7 +6,6 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.alipay.IdentityThreadLocalUtil;
-import com.alibaba.smart.framework.engine.persister.alipay.InstanceSerializer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
