@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 内存实例存储 Created by ettear on 16-4-13.
+ * Created by 高海军 帝奇 74394 on 2017 February  11:54.
  */
 public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage {
 
@@ -26,24 +26,18 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
     @Override
     public ExecutionInstance update(ExecutionInstance executionInstance) {
-        String string= (String)IdentityThreadLocalUtil.get();
-        ProcessInstance processInstance= InstanceSerializer.deserializeAll(string);
+        ProcessInstance processInstance= IdentityThreadLocalUtil.get();
         List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
 
         boolean matched= false;
         for (ActivityInstance activityInstance : activityInstances) {
             ExecutionInstance tempExecutionInstance = activityInstance.getExecutionInstance();
-            if(tempExecutionInstance.getInstanceId().equals(executionInstance.getInstanceId())){
+            if(null!= tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(executionInstance.getInstanceId())){
 
                 activityInstance.setExecutionInstance(executionInstance);
 
-                //TODO
-                String serialize=  InstanceSerializer.serialize(processInstance);
-
                 matched = true;
                 break;
-
-
 
             }
         }
@@ -58,15 +52,26 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
     @Override
     public ExecutionInstance find(Long instanceId) {
 
-        String string= (String)IdentityThreadLocalUtil.get();
+        ExecutionInstance executionInstance = null;
+        ProcessInstance processInstance= IdentityThreadLocalUtil.get();
+        List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
 
-        List<ExecutionInstance>  executionInstances = InstanceSerializer.deserializeExecutionInstances(string);
-        for (ExecutionInstance executionInstance : executionInstances) {
-            if(instanceId.equals(executionInstance.getInstanceId())){
-                return executionInstance;
+        boolean matched= false;
+        for (ActivityInstance activityInstance : activityInstances) {
+            ExecutionInstance tempExecutionInstance = activityInstance.getExecutionInstance();
+            if(null!= tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(instanceId)){
+                executionInstance= tempExecutionInstance;
+                matched = true;
+                break;
+
             }
         }
-        return null;
+
+        if(!matched){
+            throw new EngineException("No ExecutionInstance found for id : "+instanceId);
+        }
+
+        return executionInstance;
 
     }
 
@@ -78,11 +83,21 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
     @Override
     public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
-        String string= (String)IdentityThreadLocalUtil.get();
+        ProcessInstance processInstance= IdentityThreadLocalUtil.get();
 
-        List<ExecutionInstance>  executionInstances = InstanceSerializer.deserializeExecutionInstances(string);
+        List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
+
+        //TUNE 扩容
+        List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
+        for (ActivityInstance activityInstance : activityInstances) {
+            ExecutionInstance executionInstance =   activityInstance.getExecutionInstance();
+            if(null != executionInstance && executionInstance.isActive()){
+                executionInstances.add(executionInstance);
+            }
+        }
 
         return executionInstances;
+
 
      }
 }

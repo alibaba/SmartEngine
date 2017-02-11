@@ -1,21 +1,25 @@
 package com.alibaba.smart.framework.engine.persister.alipay;
 
-import java.io.Serializable;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
+import java.io.Serializable;
+/**
+ * Created by 高海军 帝奇 74394 on 2017 February  11:54.
+ */
 public class IdentityThreadLocalUtil {
 
-    private static Serializable identity ;
+    private static  ThreadLocal<ProcessInstance> processInstanceThreadLocal = new ThreadLocal<ProcessInstance>();
 
-    public static void set(Serializable value) {
-            identity = value;
+    public static void set(ProcessInstance processInstance) {
+        processInstanceThreadLocal.set(processInstance);
     }
 
     public static void remove() {
-        identity = null;
+        processInstanceThreadLocal.remove();
     }
 
-    public static Serializable get() {
-        return identity;
+    public static ProcessInstance get() {
+        return processInstanceThreadLocal.get();
     }
 
 }

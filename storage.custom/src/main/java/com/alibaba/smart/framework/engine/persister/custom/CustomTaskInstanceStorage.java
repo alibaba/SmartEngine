@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 内存实例存储 Created by ettear on 16-4-13.
+ * Created by 高海军 帝奇 74394 on 2017 February  11:54.
  */
 public class CustomTaskInstanceStorage implements TaskInstanceStorage {
 

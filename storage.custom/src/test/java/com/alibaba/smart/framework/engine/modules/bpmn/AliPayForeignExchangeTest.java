@@ -8,15 +8,10 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.*;
 import com.alibaba.smart.framework.engine.persister.alipay.IdentityThreadLocalUtil;
 import com.alibaba.smart.framework.engine.persister.alipay.InstanceSerializer;
-import com.alibaba.smart.framework.engine.persister.alipay.MockedDBService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -129,8 +124,9 @@ public class AliPayForeignExchangeTest {
         MockedDBService.update(orderId,string);
 
         // 注意:在执行之前,更新下ThreadLocal。另外,在线上环境,使用完毕后需要clean 下 ThreadLocal。
-        string =   MockedDBService.find(orderId);
-        IdentityThreadLocalUtil.set(string);
+        processInstance =  InstanceSerializer.deserializeAll(string);
+
+        IdentityThreadLocalUtil.set(processInstance);
     }
 
 
