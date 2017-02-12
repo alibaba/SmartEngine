@@ -11,18 +11,8 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
  */
 public interface ActivityInstanceFactory {
 
-    /**
-     * 创建活动实例
-     *
-     * @return 活动实例
-     */
-    ActivityInstance create(PvmActivity pvmActivity, ProcessInstance processInstance);
 
-    ActivityInstance createWithBlockId(PvmActivity pvmActivity, ProcessInstance processInstance,Long blockId);
-
-    ActivityInstance createWithBlockId(PvmActivity pvmActivity,  ExecutionContext context);
+    ActivityInstance create(PvmActivity pvmActivity, ExecutionContext context);
 
 
-
-//    ActivityInstance recovery(ActivityParam activityParam);
 }

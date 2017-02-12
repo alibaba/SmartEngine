@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.factory;
 
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 
 /**
@@ -12,5 +13,5 @@ public interface TransitionInstanceFactory {
      *
      * @return 关联实例
      */
-    TransitionInstance create();
+    TransitionInstance create(ExecutionContext executionContext);
 }

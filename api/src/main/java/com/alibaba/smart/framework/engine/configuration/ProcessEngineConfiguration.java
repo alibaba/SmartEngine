@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.configuration;
 
+import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
 import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -29,6 +30,10 @@ public interface ProcessEngineConfiguration {
     void setTaskAssigneeService(TaskAssigneeService taskAssigneeService);
 
     TaskAssigneeService getTaskAssigneeService();
+
+    void setIdGenerator(IdGenerator idGenerator);
+
+    IdGenerator getIdGenerator();
 
 
     //用于配置扩展,默认可以为空。设计目的是根据自己的业务需求,来自定义存储(该机制会绕过引擎自带的各种Storage机制,powerful and a little UnSafe)。。

@@ -1,8 +1,10 @@
 package com.alibaba.smart.framework.engine.instance.factory.impl;
 
+import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
-import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
+import com.alibaba.smart.framework.engine.instance.util.DefaultIdGenerator;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
@@ -14,9 +16,10 @@ public class DefaultExecutionInstanceFactory implements ExecutionInstanceFactory
 
 
     @Override
-    public ExecutionInstance create(ActivityInstance activityInstance) {
+    public ExecutionInstance create(ActivityInstance activityInstance,ExecutionContext executionContext) {
         DefaultExecutionInstance defaultExecutionInstance = new DefaultExecutionInstance();
-        defaultExecutionInstance.setInstanceId(InstanceIdUtil.simpleId());
+        IdGenerator idGenerator = executionContext.getProcessEngineConfiguration().getIdGenerator();
+        defaultExecutionInstance.setInstanceId(idGenerator.getId());
         defaultExecutionInstance.setActivityId(activityInstance.getActivityId());
         defaultExecutionInstance.setActivityInstanceId(activityInstance.getInstanceId());
         defaultExecutionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());

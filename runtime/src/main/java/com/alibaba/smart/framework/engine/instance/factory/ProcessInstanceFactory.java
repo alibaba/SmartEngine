@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.factory;
 
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.param.ProcessParam;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -14,7 +15,7 @@ public interface ProcessInstanceFactory {
      *
      * @return 流程实例
      */
-    ProcessInstance create(PvmProcessDefinition pvmProcessDefinition);
+    ProcessInstance create(ExecutionContext executionContext);
 
 
 }

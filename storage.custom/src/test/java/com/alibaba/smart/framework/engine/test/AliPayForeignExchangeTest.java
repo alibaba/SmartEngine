@@ -1,6 +1,7 @@
-package com.alibaba.smart.framework.engine.modules.bpmn;
+package com.alibaba.smart.framework.engine.test;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.persister.PersisterStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
@@ -24,13 +25,18 @@ import static org.junit.Assert.assertTrue;
 
 public class AliPayForeignExchangeTest {
 
+    private PersisterStrategy persisterStrategy = new AliPayPersisterStrategy();
+
+    private long orderId = 123456L;
+
 
     @Test
     public void test() throws Exception {
-        long orderId = 123456L;
 
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
+
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 
@@ -121,7 +127,7 @@ public class AliPayForeignExchangeTest {
 
         // 存储到业务系统里面
         String string =  InstanceSerializer.serialize(processInstance);
-        MockedDBService.update(orderId,string);
+        persisterStrategy.update(orderId,string);
 
         // 注意:在执行之前,更新下ThreadLocal。另外,在线上环境,使用完毕后需要clean 下 ThreadLocal。
         processInstance =  InstanceSerializer.deserializeAll(string);

@@ -1,10 +1,10 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.gateway;
 
+import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
-import com.alibaba.smart.framework.engine.instance.util.InstanceIdUtil;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ParallelGateway;
@@ -44,9 +44,10 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         if (outComeTransitionSize >= 2 && inComeTransitionSize == 1) {
             //fork
 
-            Long blockId = InstanceIdUtil.simpleId();
-            context.setBlockId(blockId);
-            ActivityInstance activityInstance = super.activityInstanceFactory.createWithBlockId(pvmActivity, context.getProcessInstance(), blockId);
+            IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
+            context.setBlockId(idGenerator.getId());
+
+            ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, context);
 
             context.getProcessInstance().addNewActivityInstance(activityInstance);
 
@@ -61,7 +62,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             }
 
 
-            ActivityInstance activityInstance = super.activityInstanceFactory.createWithBlockId(pvmActivity, context);
+            ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, context);
 
             context.getProcessInstance().addNewActivityInstance(activityInstance);
 

@@ -1,10 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.delegation.TccDelegation;
-import com.alibaba.smart.framework.engine.delegation.TccResult;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
@@ -26,9 +23,9 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> i
 
 
         ProcessInstance processInstance = executionContext.getProcessInstance();
-        ActivityInstance activityInstance = super.activityInstanceFactory.createWithBlockId(pvmActivity, executionContext);
+        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, executionContext);
 
-        ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance);
+        ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance,  executionContext);
 
         activityInstance.setExecutionInstance(executionInstance);
         processInstance.addNewActivityInstance(activityInstance);

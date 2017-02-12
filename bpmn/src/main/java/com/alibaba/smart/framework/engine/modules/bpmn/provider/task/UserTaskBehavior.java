@@ -23,11 +23,11 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> impleme
     public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext context) {
 
         ProcessInstance processInstance = context.getProcessInstance();
-        ActivityInstance activityInstance = super.activityInstanceFactory.createWithBlockId(pvmActivity, context);
+        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, context);
 
-        ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance);
+        ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance,context);
 
-        TaskInstance taskInstance = super.taskInstanceFactory.create(pvmActivity, executionInstance);
+        TaskInstance taskInstance = super.taskInstanceFactory.create(pvmActivity, executionInstance,  context);
 
         Map<String, Object> request = context.getRequest();
         if(null != request){

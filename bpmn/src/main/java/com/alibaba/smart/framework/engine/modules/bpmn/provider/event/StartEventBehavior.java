@@ -19,12 +19,12 @@ public class StartEventBehavior extends AbstractActivityBehavior<StartEvent> imp
     @Override
     public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext executionContext) {
 
-        ProcessInstance processInstance = processInstanceFactory.create(executionContext.getPvmProcessDefinition());
+        ProcessInstance processInstance = processInstanceFactory.create(executionContext);
 
         executionContext.setProcessInstance(processInstance);
 
 
-        ActivityInstance activityInstance = super.activityInstanceFactory.createWithBlockId(pvmActivity, executionContext);
+        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, executionContext);
 
         processInstance.addNewActivityInstance(activityInstance);
 
