@@ -5,13 +5,10 @@ import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStor
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.alipay.IdentityThreadLocalUtil;
+import com.alibaba.smart.framework.engine.persister.alipay.WorkFlowSession;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  11:54.
@@ -25,7 +22,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
     @Override
     public ExecutionInstance update(ExecutionInstance executionInstance) {
-        ProcessInstance processInstance= IdentityThreadLocalUtil.get();
+        ProcessInstance processInstance= WorkFlowSession.currentSession().getProcessInstance();
         List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
 
         boolean matched= false;
@@ -52,7 +49,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
     public ExecutionInstance find(Long instanceId) {
 
         ExecutionInstance executionInstance = null;
-        ProcessInstance processInstance= IdentityThreadLocalUtil.get();
+        ProcessInstance processInstance= WorkFlowSession.currentSession().getProcessInstance();
         List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
 
         boolean matched= false;
@@ -82,7 +79,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
     @Override
     public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
-        ProcessInstance processInstance= IdentityThreadLocalUtil.get();
+        ProcessInstance processInstance= WorkFlowSession.currentSession().getProcessInstance();
 
         List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
 

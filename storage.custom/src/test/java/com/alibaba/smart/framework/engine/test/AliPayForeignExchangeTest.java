@@ -7,8 +7,8 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngin
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.*;
-import com.alibaba.smart.framework.engine.persister.alipay.IdentityThreadLocalUtil;
 import com.alibaba.smart.framework.engine.persister.alipay.InstanceSerializer;
+import com.alibaba.smart.framework.engine.persister.alipay.WorkFlowSession;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
@@ -33,6 +33,7 @@ public class AliPayForeignExchangeTest {
     @Test
     public void test() throws Exception {
 
+        WorkFlowSession.create();
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
@@ -120,6 +121,8 @@ public class AliPayForeignExchangeTest {
         persisteAndUpdateThreadLocal(orderId, processInstance);
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
+        WorkFlowSession.destroySession();
+
 
     }
 
@@ -131,8 +134,7 @@ public class AliPayForeignExchangeTest {
 
         // 注意:在执行之前,更新下ThreadLocal。另外,在线上环境,使用完毕后需要clean 下 ThreadLocal。
         processInstance =  InstanceSerializer.deserializeAll(string);
-
-        IdentityThreadLocalUtil.set(processInstance);
+        WorkFlowSession.currentSession().setProcessInstance(processInstance);
     }
 
 

@@ -42,10 +42,7 @@
         <module>storage.database</module>
         <module>storage.memory</module>
         <module>storage.custom</module>
-        <module>serializer</module>
         <module>example</module>
-
-
     </modules>
 
     <dependencies>
