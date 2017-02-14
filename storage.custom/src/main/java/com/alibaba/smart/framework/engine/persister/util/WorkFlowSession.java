@@ -2,14 +2,12 @@
  * Alipay.com Inc.
  * Copyright (c) 2004-2017 All Rights Reserved.
  */
-package com.alibaba.smart.framework.engine.persister.alipay;
+package com.alibaba.smart.framework.engine.persister.util;
 
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
 /**
- * 工作流上下文
- * @author xuantian
- * @version $Id: WorkFlowSession.java, v 0.1 2017-02-08 下午5:50 xuantian Exp $$
+ * @author xuantian 2017-02-08 5:50 xuantian
  */
 public class WorkFlowSession {
 
@@ -31,7 +29,7 @@ public class WorkFlowSession {
     /**
      * default constructor.
      */
-    public WorkFlowSession() {
+    private WorkFlowSession() {
 
     }
 
@@ -63,9 +61,9 @@ public class WorkFlowSession {
      * the static method for destroy session for easy using.
      */
     public static void destroySession() {
-        WorkFlowSession bizSession = sessionThreadLocal.get();
-        if (null != bizSession) {
-            bizSession.destroy();
+        WorkFlowSession session = sessionThreadLocal.get();
+        if (null != session) {
+            session.destroy();
         }
 
         sessionThreadLocal.set(null);

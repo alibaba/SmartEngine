@@ -5,7 +5,7 @@ import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStor
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.alipay.WorkFlowSession;
+import com.alibaba.smart.framework.engine.persister.util.WorkFlowSession;
 
 import java.util.ArrayList;
 import java.util.List;

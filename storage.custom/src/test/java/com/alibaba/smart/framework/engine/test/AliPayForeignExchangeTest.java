@@ -7,8 +7,8 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngin
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.*;
-import com.alibaba.smart.framework.engine.persister.alipay.InstanceSerializer;
-import com.alibaba.smart.framework.engine.persister.alipay.WorkFlowSession;
+import com.alibaba.smart.framework.engine.persister.util.InstanceSerializer;
+import com.alibaba.smart.framework.engine.persister.util.WorkFlowSession;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;

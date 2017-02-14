@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.persister.custom;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.alipay.WorkFlowSession;
+import com.alibaba.smart.framework.engine.persister.util.WorkFlowSession;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  11:54.
