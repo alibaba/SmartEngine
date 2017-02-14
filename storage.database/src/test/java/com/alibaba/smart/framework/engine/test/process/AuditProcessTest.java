@@ -1,12 +1,10 @@
-package com.alibaba.smart.framework.example;
+package com.alibaba.smart.framework.engine.test.process;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
@@ -16,7 +14,6 @@ import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
 import org.junit.Assert;
@@ -24,7 +21,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;

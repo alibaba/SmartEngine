@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.example;
+package com.alibaba.smart.framework.engine.test.process;
 
 import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
 import org.slf4j.Logger;
