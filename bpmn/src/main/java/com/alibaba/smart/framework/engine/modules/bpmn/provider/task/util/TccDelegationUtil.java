@@ -50,6 +50,8 @@ public abstract  class TccDelegationUtil {
     private static void dealException(ExceptionProcessor exceptionProcessor, Exception exception)  {
         if(null != exceptionProcessor){
             exceptionProcessor.process(exception);
+        }else if (exception instanceof RuntimeException){
+            throw (RuntimeException)exception;
         }else{
             throw new EngineException(exception);
         }
