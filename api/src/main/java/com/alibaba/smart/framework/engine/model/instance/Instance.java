@@ -13,7 +13,6 @@ public interface Instance extends Serializable {
      * @return 实例ID
      */
 
-    //TUNE 改成id好了
     Long getInstanceId();
 
     /**

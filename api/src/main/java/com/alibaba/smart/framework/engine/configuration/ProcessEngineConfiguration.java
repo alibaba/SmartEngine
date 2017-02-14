@@ -15,12 +15,6 @@ public interface ProcessEngineConfiguration {
 
     void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
 
-
-//    //TODO 删除
-//    Object getBean(String bean);
-
-
-
     //用于配置扩展,默认可以为空。设计目的是用来处理ReceiverTask,ServiceTask内部跑出去的异常。
     void setExceptionProcessor(ExceptionProcessor exceptionProcessor);
 

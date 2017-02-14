@@ -16,7 +16,6 @@ public class DefaultTaskInstance extends AbstractLifeCycleInstance implements Ta
     private static final long serialVersionUID = -3920292154786127202L;
     private String processDefinitionIdAndVersion;
 
-    //TUNE 流程定义的环节id,在存储期我们称之为activityInstanceId
     private String activityId;
     private Long processInstanceId;
     private Long executionInstanceId;

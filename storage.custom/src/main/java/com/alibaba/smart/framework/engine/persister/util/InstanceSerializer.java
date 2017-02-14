@@ -109,7 +109,6 @@ public class InstanceSerializer {
 
         List<ActivityInstance>  activityInstances  = deserializeActivityInstances(serializeString);
 
-        //TUNE 扩容
         List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
         for (ActivityInstance activityInstance : activityInstances) {
             ExecutionInstance executionInstance =   activityInstance.getExecutionInstance();

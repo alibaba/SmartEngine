@@ -40,9 +40,7 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> i
     }
 
     private void executeExtension(ExecutionContext executionContext, String className) {
-        //TODO
         if (null == className) {
-
 
         } else {
             TccDelegationUtil.execute(executionContext, className);

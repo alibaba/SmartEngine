@@ -58,7 +58,7 @@ public class OrderService {
     public OrderDTO createOrder(String blalbla){
 
         OrderDTO orderDTO =new OrderDTO();
-        Long orderId = 123L; //TODO 确定下生成策略。
+        Long orderId = 123L;
 
 
         Map<String, Object> request = new HashMap<String, Object>();
