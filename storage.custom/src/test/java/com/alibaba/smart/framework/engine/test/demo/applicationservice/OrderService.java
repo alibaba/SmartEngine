@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.util.InstanceSerializer;
-import com.alibaba.smart.framework.engine.persister.util.WorkFlowSession;
+import com.alibaba.smart.framework.engine.persister.util.PersisterSession;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
@@ -68,7 +68,7 @@ public class OrderService {
                 processDefinition.getId(), processDefinition.getVersion(),request
         );
 
-        WorkFlowSession.currentSession().setProcessInstance(processInstance);
+        PersisterSession.currentSession().setProcessInstance(processInstance);
 
         List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
         assertEquals(1, executionInstanceList.size());
@@ -94,7 +94,7 @@ public class OrderService {
         // 注意:在执行之前,更新下ThreadLocal。另外,在线上环境,使用完毕后需要clean 下 ThreadLocal。
         processInstance =  InstanceSerializer.deserializeAll(string);
 
-        WorkFlowSession.currentSession().setProcessInstance(processInstance);
+        PersisterSession.currentSession().setProcessInstance(processInstance);
     }
 
 }

@@ -5,7 +5,7 @@ import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStor
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.util.WorkFlowSession;
+import com.alibaba.smart.framework.engine.persister.util.PersisterSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
     @Override
     public ExecutionInstance update(ExecutionInstance executionInstance) {
-        ProcessInstance processInstance= WorkFlowSession.currentSession().getProcessInstance();
+        ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance();
         List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
 
         boolean matched= false;
@@ -49,7 +49,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
     public ExecutionInstance find(Long instanceId) {
 
         ExecutionInstance executionInstance = null;
-        ProcessInstance processInstance= WorkFlowSession.currentSession().getProcessInstance();
+        ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance();
         List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
 
         boolean matched= false;
@@ -79,7 +79,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
     @Override
     public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
-        ProcessInstance processInstance= WorkFlowSession.currentSession().getProcessInstance();
+        ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance();
 
         List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
 

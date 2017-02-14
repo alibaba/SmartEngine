@@ -9,19 +9,19 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 /**
  * @author xuantian 2017-02-08 5:50 xuantian
  */
-public class WorkFlowSession {
+public class PersisterSession {
 
 
     /**
      * The Session Thread Local.
      */
-    private static ThreadLocal<WorkFlowSession> sessionThreadLocal = new ThreadLocal<WorkFlowSession>();
+    private static ThreadLocal<PersisterSession> sessionThreadLocal = new ThreadLocal<PersisterSession>();
 
 
     private ProcessInstance processInstance;
 
-    public static WorkFlowSession create() {
-        WorkFlowSession session = new WorkFlowSession();
+    public static PersisterSession create() {
+        PersisterSession session = new PersisterSession();
         session.store();
         return session;
     }
@@ -29,7 +29,7 @@ public class WorkFlowSession {
     /**
      * default constructor.
      */
-    private WorkFlowSession() {
+    private PersisterSession() {
 
     }
 
@@ -53,7 +53,7 @@ public class WorkFlowSession {
     /**
      * @return the BizSession got from the thread local.
      */
-    public static WorkFlowSession currentSession() {
+    public static PersisterSession currentSession() {
         return  sessionThreadLocal.get();
     }
 
@@ -61,7 +61,7 @@ public class WorkFlowSession {
      * the static method for destroy session for easy using.
      */
     public static void destroySession() {
-        WorkFlowSession session = sessionThreadLocal.get();
+        PersisterSession session = sessionThreadLocal.get();
         if (null != session) {
             session.destroy();
         }
