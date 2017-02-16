@@ -69,7 +69,7 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
                 data.append(executionInstance.toDatabase());
             }
 
-            data.append("|");
+            data.append("^");
         }
 
         return data.toString();
