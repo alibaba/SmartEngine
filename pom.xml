@@ -237,6 +237,23 @@
 					<encoding>${java.file.encoding}</encoding>
 				</configuration>
 			</plugin>
+
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <includes>
+                        <include>org.codehaus.plexus:*</include>
+                        <include>junit:junit</include>
+                    </includes>
+                    <excludes>
+                        <exclude>org.codehaus.plexus:plexus-utils</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
 		</plugins>
 	</build>
 
