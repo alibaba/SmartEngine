@@ -10,10 +10,10 @@
         <exclusiveGateway id="exclusivegateway1" name="exclusivegateway1"></exclusiveGateway>
 
         <sequenceFlow id="flow2" sourceRef="exclusivegateway1" targetRef="pre_order">
-            <conditionExpression xsi:type="custom"><![CDATA[smartEngineAction == "pre_order"]]></conditionExpression>
+            <conditionExpression type="custom"><![CDATA[smartEngineAction == "pre_order"]]></conditionExpression>
         </sequenceFlow>
         <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="formal_order">
-            <conditionExpression xsi:type="mvel"><![CDATA[smartEngineAction == "formal_order"]]></conditionExpression>
+            <conditionExpression type="mvel"><![CDATA[smartEngineAction == "formal_order"]]></conditionExpression>
         </sequenceFlow>
 
         <sequenceFlow id="flow11" sourceRef="formal_order" targetRef="wait_money_into_account"></sequenceFlow>
@@ -22,20 +22,20 @@
         <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
 
         <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="wait_money_into_account">
-            <conditionExpression xsi:type="mvel"><![CDATA[smartEngineAction == "go_to_pay"]]></conditionExpression>
+            <conditionExpression type="mvel"><![CDATA[smartEngineAction == "go_to_pay"]]></conditionExpression>
         </sequenceFlow>
         <sequenceFlow id="flow29" sourceRef="exclusivegateway2" targetRef="endevent4">
-            <conditionExpression xsi:type="mvel"><![CDATA[smartEngineAction == "time_out_pay"]]></conditionExpression>
+            <conditionExpression type="mvel"><![CDATA[smartEngineAction == "time_out_pay"]]></conditionExpression>
         </sequenceFlow>
 
         <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
         <sequenceFlow id="flow20" sourceRef="wait_money_into_account" targetRef="exclusivegateway3"></sequenceFlow>
 
         <sequenceFlow id="flow21" sourceRef="exclusivegateway3" targetRef="fund_delivery">
-            <conditionExpression xsi:type="mvel"><![CDATA[smartEngineAction == "money_into_account"]]></conditionExpression>
+            <conditionExpression type="mvel"><![CDATA[smartEngineAction == "money_into_account"]]></conditionExpression>
         </sequenceFlow>
         <sequenceFlow id="flow27" sourceRef="exclusivegateway3" targetRef="refund">
-            <conditionExpression xsi:type="mvel"><![CDATA[smartEngineAction == "money_outof_account"]]></conditionExpression>
+            <conditionExpression type="mvel"><![CDATA[smartEngineAction == "money_outof_account"]]></conditionExpression>
         </sequenceFlow>
 
 

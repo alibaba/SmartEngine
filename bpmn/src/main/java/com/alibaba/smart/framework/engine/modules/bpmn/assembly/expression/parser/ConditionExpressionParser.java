@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.parser;
 
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -54,6 +55,11 @@ public class ConditionExpressionParser extends AbstractStAXArtifactParser<Condit
             conditionExpression.setExpressionType(type2);
         }
 
+
+        String finalExpressionType = conditionExpression.getExpressionType();
+        if(null == finalExpressionType){
+            throw new EngineException("type should not be empty for expression content:"+ finalExpressionType);
+        }
 
 //        Script script = new Script();
 //        script.setType(type);
