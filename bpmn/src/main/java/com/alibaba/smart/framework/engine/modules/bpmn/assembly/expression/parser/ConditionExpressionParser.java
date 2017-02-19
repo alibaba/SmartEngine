@@ -33,10 +33,26 @@ public class ConditionExpressionParser extends AbstractStAXArtifactParser<Condit
         ConditionExpression conditionExpression = new ConditionExpression();
 
         String type = getString(reader, "type");
+
+        String type0 =  reader.getAttributeValue("xsi", "type");
+        String type1 =  reader.getAttributeValue(null, "type");
+        String type2 =  reader.getAttributeValue(0);
+
+
         String content = reader.getElementText();
 
         conditionExpression.setExpressionContent(content);
-        conditionExpression.setExpressionType(type);
+
+        // XML 解析有bug,这里兼容下。
+        if(null != type){
+            conditionExpression.setExpressionType(type);
+        }else  if(null != type0){
+            conditionExpression.setExpressionType(type0);
+        }else  if(null != type1){
+            conditionExpression.setExpressionType(type1);
+        }else  if(null != type2){
+            conditionExpression.setExpressionType(type2);
+        }
 
 
 //        Script script = new Script();
