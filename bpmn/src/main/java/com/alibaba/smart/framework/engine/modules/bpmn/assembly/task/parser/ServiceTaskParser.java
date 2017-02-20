@@ -35,7 +35,8 @@ public class ServiceTaskParser extends AbstractBpmnActivityParser<ServiceTask> i
         ServiceTask serviceTask = new ServiceTask();
         serviceTask.setId(this.getString(reader, "id"));
 
-        String className = this.getString(reader, "class");
+        String className =  ClassNameWorkAroundUtil.parse(reader);
+
 
         serviceTask.setClassName(className);
         this.parseChildren(serviceTask, reader, context);

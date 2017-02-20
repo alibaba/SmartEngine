@@ -68,6 +68,9 @@ public final class ClassLoaderUtil {
 
         //极端情况下,会多次实例化,但是不影响程序正确性。TUNE 也可以未来加个lock。
         if(object == null){
+
+
+
             Class clazz;
             try {
                 clazz = getStandardClassLoader().loadClass(className);

@@ -33,10 +33,15 @@ public class ReceiveTaskParser extends AbstractBpmnActivityParser<ReceiveTask> i
         ReceiveTask receiveTask = new ReceiveTask();
         receiveTask.setId(this.getString(reader, "id"));
 
-        //no need add namespaceUri ,or using reader.getAttributeValue(2) (not good),see http://www.saxproject.org/namespaces.html,
-        // http://stackoverflow.com/questions/7157355/what-is-the-difference-between-localname-and-qname,http://stackoverflow.com/questions/6390339/how-to-query-xml-using-namespaces-in-java-with-xpath
-        String className = this.getString(reader, "class");
-        receiveTask.setClassName(className);
+        String className =  ClassNameWorkAroundUtil.parse(reader);
+
+        if(null != className){
+            receiveTask.setClassName(className);
+        }
+
+
+
+
         this.parseChildren(receiveTask, reader, context);
         return receiveTask;
     }
