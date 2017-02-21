@@ -33,12 +33,12 @@ public class UserTaskProcessTest {
         smartEngine.init(processEngineConfiguration);
 
         RepositoryCommandService repositoryCommandService = smartEngine
-                .getRepositoryService();
+                .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
                 .deploy("test-usertask-exclusive.bpmn20.xml");
         assertEquals(25, processDefinition.getProcess().getElements().size());
 
-        ProcessCommandService processCommandService = smartEngine.getProcessService();
+        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         Map<String, Object> request = new HashMap<String, Object>();
         request.put("input", 2);
         ProcessInstance processInstance = processCommandService.start(
@@ -110,12 +110,12 @@ public class UserTaskProcessTest {
 //        smartEngine.init(processEngineConfiguration);
 //
 //        RepositoryCommandService repositoryCommandService = smartEngine
-//                .getRepositoryService();
+//                .getRepositoryCommandService();
 //        ProcessDefinition processDefinition = repositoryCommandService
 //                .deploy("test-usertask-exclusive.bpmn20.xml");
 //        assertEquals(25, processDefinition.getPvmProcessDefinition().getElements().size());
 //
-//        ProcessCommandService processCommandService = smartEngine.getProcessService();
+//        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
 //        Map<String, Object> request = new HashMap<>();
 //        request.put("input", 2);
 //        ProcessInstance processInstance = processCommandService.start(

@@ -43,14 +43,14 @@ public class AliPayForeignExchangeTest {
 
 
         //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessService();
+        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         ExecutionInstanceQueryService executionQueryService = smartEngine.getExecutionQueryService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
 
         //3. 部署流程定义
         RepositoryCommandService repositoryCommandService = smartEngine
-                .getRepositoryService();
+                .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
                 .deploy("alipay-forex.bpmn20.xml");
         assertEquals(28, processDefinition.getProcess().getElements().size());

@@ -43,14 +43,14 @@ public class OrderService {
 
 
         //2.获得常用服务
-          processCommandService = smartEngine.getProcessService();
+          processCommandService = smartEngine.getProcessCommandService();
           executionQueryService = smartEngine.getExecutionQueryService();
           executionCommandService = smartEngine.getExecutionCommandService();
 
 
         //3. 部署流程定义
         repositoryCommandService = smartEngine
-                .getRepositoryService();
+                .getRepositoryCommandService();
         processDefinition =   repositoryCommandService
                 .deploy("alipay-forex.bpmn20.xml");
     }

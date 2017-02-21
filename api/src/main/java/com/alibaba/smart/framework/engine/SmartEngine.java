@@ -24,9 +24,9 @@ public interface SmartEngine {
 
     ExtensionPointRegistry getExtensionPointRegistry();
 
-    RepositoryCommandService getRepositoryService();
+    RepositoryCommandService getRepositoryCommandService();
 
-    ProcessCommandService getProcessService();
+    ProcessCommandService getProcessCommandService();
 
     ExecutionCommandService getExecutionCommandService();
 

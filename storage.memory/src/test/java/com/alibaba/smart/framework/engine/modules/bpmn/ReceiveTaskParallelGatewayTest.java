@@ -12,7 +12,6 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
@@ -38,7 +37,7 @@ public class ReceiveTaskParallelGatewayTest {
         smartEngine.init(processEngineConfiguration);
 
         //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessService();
+        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
         ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
@@ -49,7 +48,7 @@ public class ReceiveTaskParallelGatewayTest {
 
 
         RepositoryCommandService repositoryCommandService = smartEngine
-                .getRepositoryService();
+                .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
                 .deploy("test-receivetask-parallel-gateway.bpmn20.xml");
         assertEquals(14, processDefinition.getProcess().getElements().size());

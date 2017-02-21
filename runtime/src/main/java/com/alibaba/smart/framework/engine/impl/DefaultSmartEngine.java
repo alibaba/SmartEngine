@@ -48,12 +48,12 @@ public class DefaultSmartEngine implements SmartEngine {
 
 
     @Override
-    public RepositoryCommandService getRepositoryService() {
+    public RepositoryCommandService getRepositoryCommandService() {
         return this.extensionPointRegistry.getExtensionPoint(RepositoryCommandService.class);
     }
 
     @Override
-    public ProcessCommandService getProcessService() {
+    public ProcessCommandService getProcessCommandService() {
         return this.extensionPointRegistry.getExtensionPoint(ProcessCommandService.class);
     }
 

@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +44,7 @@ public class MixedAuditProcessTest {
 
 
         //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessService();
+        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
 
         ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
@@ -56,7 +55,7 @@ public class MixedAuditProcessTest {
 
         //3. 部署流程定义
         RepositoryCommandService repositoryCommandService = smartEngine
-                .getRepositoryService();
+                .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
                 .deploy("test-usertask-and-servicetask-exclusive.bpmn20.xml");
         assertEquals(17, processDefinition.getProcess().getElements().size());

@@ -32,12 +32,12 @@ public class ReceiveTaskExclusiveGatewayTest {
         smartEngine.init(processEngineConfiguration);
 
         RepositoryCommandService repositoryCommandService = smartEngine
-                .getRepositoryService();
+                .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
                 .deploy("test-receivetask-exclusive.bpmn20.xml");
         assertEquals(25, processDefinition.getProcess().getElements().size());
 
-        ProcessCommandService processCommandService = smartEngine.getProcessService();
+        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         Map<String, Object> request = new HashMap<String, Object>();
         request.put("input", 7);
         ProcessInstance processInstance = processCommandService.start(
