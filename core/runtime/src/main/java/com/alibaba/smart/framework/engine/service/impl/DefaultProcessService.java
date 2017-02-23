@@ -217,11 +217,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
 
     private boolean checkIsBefore(PvmActivity currentActivity, String assignId) {
         for (PvmTransition transition:currentActivity.getIncomeTransitions().values()) {
-            if (transition.getSource().getModel().getId().equals(assignId)) {
-                return true;
-            }else {
-                checkIsBefore(transition.getSource(),assignId);
-            }
+            return transition.getSource().getModel().getId().equals(assignId) || checkIsBefore(transition.getSource(), assignId);
         }
         return false;
     }
@@ -233,11 +229,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
 
     private boolean checkIsAfter(PvmActivity currentActivity, String assignId) {
         for (PvmTransition transition:currentActivity.getOutcomeTransitions().values()) {
-            if (transition.getTarget().getModel().getId().equals(assignId)) {
-                return true;
-            }else {
-                checkIsAfter(transition.getTarget(),assignId);
-            }
+            return transition.getTarget().getModel().getId().equals(assignId) || checkIsAfter(transition.getTarget(), assignId);
         }
         return false;
     }
