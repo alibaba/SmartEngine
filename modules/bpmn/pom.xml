@@ -18,13 +18,7 @@
 			<artifactId>engine.core.runtime</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
-			<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>engine.modules.groovy</artifactId>
-			<version>${project.version}</version>
-			<scope>provided</scope>
-		</dependency>
+
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
