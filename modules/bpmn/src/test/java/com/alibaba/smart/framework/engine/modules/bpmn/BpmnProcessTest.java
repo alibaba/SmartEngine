@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.param.EngineParam;
 import com.alibaba.smart.framework.engine.param.ProcessParam;
 import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
+import com.alibaba.smart.framework.engine.util.EngineConstant;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
@@ -340,6 +341,47 @@ public class BpmnProcessTest {
 
 
     }
+
+
+    @Test
+    public void testRunDoomReback() throws Exception {
+
+        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
+
+        DefaultSmartEngine smartEngine = new DefaultSmartEngine();
+        smartEngine.init(processEngineConfiguration);
+        RepositoryService repositoryService = smartEngine
+                .getRepositoryService();
+        ProcessDefinition processDefinition = repositoryService
+                .deploy("test-demo.bpmn20.xml");
+
+
+        ProcessService processService = smartEngine.getProcessService();
+
+        Map<String,Object> request = Maps.newHashMap();
+        request.put("1","1");
+        ProcessInstance start = processService.start(
+                processDefinition.getId(), processDefinition.getVersion(),
+                request);
+
+
+
+
+        request.put("event","testAbort");
+        ProcessInstance select2 = processService.run(processDefinition,
+                start.getInstanceId(), EngineConstant.RUN_EVENT,false,request);
+
+        Assert.assertNotNull(start);
+        Assert.assertNotNull(select2);
+
+
+
+    }
+
+
+
+
+
 
 
 
