@@ -151,30 +151,21 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         ProcessInstance processInstance = getProcessInstance(instanceId,sub);
         PvmProcessInstance pvmProcess = new DefaultPvmProcessInstance();
         PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(definition.getId(), definition.getVersion());
-        ExecutionInstance chosenExecution  = null;
-        if (!EngineConstant.RUN_EVENT.equals(activityId)) {
-            for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
+        ExecutionInstance chosenExecution = null;
+        for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
 
-                if (StringUtils.equalsIgnoreCase(executionInstance.getActivity().getActivityId(),activityId)) {
-                    chosenExecution = executionInstance;
-                    break;
-                }
-                checkAlreadyProcessed(activityId,pvmProcessDefinition,executionInstance.getActivity().getActivityId());
+            if (StringUtils.equalsIgnoreCase(executionInstance.getActivity().getActivityId(), activityId)) {
+                chosenExecution = executionInstance;
+                break;
             }
-
-
-
-            if (chosenExecution == null) {
-                throw new EngineException("not find activiy,check process defintion");
-            }
-        }else {
-            chosenExecution = this.executionInstanceFactory.create();
-            ActivityInstance activityInstance = this.activityInstanceFactory.create();
-            activityInstance.setActivityId(activityId);
-            activityInstance.setProcessInstanceId(instanceId);
-            chosenExecution.setActivity(activityInstance);
-            chosenExecution.setProcessInstanceId(instanceId);
+            checkAlreadyProcessed(activityId, pvmProcessDefinition, executionInstance.getActivity().getActivityId());
         }
+
+
+        if (chosenExecution == null) {
+            throw new EngineException("not find activiy,check process defintion");
+        }
+
 
         ExecutionContext instanceContext = this.instanceContextFactory.create();
         instanceContext.setProcessInstance(processInstance);
