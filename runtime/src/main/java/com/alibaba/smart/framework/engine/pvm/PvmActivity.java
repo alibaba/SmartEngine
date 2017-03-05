@@ -27,4 +27,6 @@ public interface PvmActivity extends PvmInvocable<Activity> {
      */
     void execute(ExecutionContext context);
 
+    void leave(ExecutionContext context);
+
 }

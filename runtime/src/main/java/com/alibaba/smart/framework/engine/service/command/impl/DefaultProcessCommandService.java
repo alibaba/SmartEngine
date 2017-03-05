@@ -73,6 +73,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         //TODO TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
+
         ProcessInstance processInstance = pvmProcessInstance.start(executionContext);
 
         processInstance =  persist(processInstance, request);

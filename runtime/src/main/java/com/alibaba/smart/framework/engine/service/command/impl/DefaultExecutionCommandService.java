@@ -102,11 +102,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
-        //执行每个节点的hook方法
-        ActivityBehavior activityBehavior =  pvmActivity.getActivityBehavior();
-        activityBehavior.leave(pvmActivity,executionContext);
-
-
 
         persist(newProcessInstance,  request);
 
