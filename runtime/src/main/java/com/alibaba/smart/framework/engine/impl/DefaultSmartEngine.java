@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
@@ -15,9 +14,6 @@ import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryServ
 import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author 高海军 帝奇  2016.11.11

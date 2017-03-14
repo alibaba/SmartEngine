@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.delegation;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

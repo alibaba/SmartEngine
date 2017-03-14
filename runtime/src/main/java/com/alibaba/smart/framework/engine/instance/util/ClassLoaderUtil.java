@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.instance.util;
 
-import com.alibaba.smart.framework.engine.common.util.ObjectMap;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 

@@ -4,9 +4,7 @@ import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.persister.database.dao.ExecutionInstanceDAO;
-import com.alibaba.smart.framework.engine.persister.database.dao.ProcessInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity;
-import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
 
 import java.util.List;

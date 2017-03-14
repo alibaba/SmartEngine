@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.common.expression.evaluator;
 
 import org.mvel2.MVEL;
-import org.mvel2.ParserContext;
 
 import java.io.Serializable;
 import java.util.Map;

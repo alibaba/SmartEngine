@@ -2,7 +2,7 @@
 <definitions id="alipay-forex" version="1.0.0"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
              xmlns:smart="http://smart.alibaba-inc.com/schema/process"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="Examples">
+             targetNamespace="Examples">
 
     <process id="alipay-forex-process" isExecutable="true">
         <startEvent id="theStart"></startEvent>

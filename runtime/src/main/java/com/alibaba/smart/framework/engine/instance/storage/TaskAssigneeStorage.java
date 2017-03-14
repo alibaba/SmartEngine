@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.storage;
 
 import com.alibaba.smart.framework.engine.model.instance.TaskAssignee;
-import com.alibaba.smart.framework.engine.model.instance.TaskAssignee;
 
 import java.util.List;
 

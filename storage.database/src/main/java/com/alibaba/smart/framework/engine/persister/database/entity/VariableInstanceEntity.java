@@ -6,8 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 
-import java.util.Date;
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)

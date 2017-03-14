@@ -2,11 +2,9 @@ package com.alibaba.smart.framework.engine.pvm.impl;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.common.util.ParamChecker;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

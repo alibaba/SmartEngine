@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author 高海军 帝奇  2016.11.11

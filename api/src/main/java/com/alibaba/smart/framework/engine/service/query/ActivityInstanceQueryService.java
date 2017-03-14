@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.service.query;
 
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 
 import java.util.List;
 

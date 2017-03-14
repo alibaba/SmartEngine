@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.service.command;
 
-import com.alibaba.smart.framework.engine.exception.DeployException;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 
 import java.io.InputStream;

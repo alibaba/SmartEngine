@@ -2,8 +2,6 @@ package com.alibaba.smart.framework.engine.instance.factory;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.param.ActivityParam;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**
