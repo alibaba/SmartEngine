@@ -14,7 +14,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LotteryDrarProcessTest {
+public class LotteryDrawProcessTest {
 
 
 	@Test
@@ -27,7 +27,7 @@ public class LotteryDrarProcessTest {
 		RepositoryCommandService repositoryService = smartEngine
 				.getRepositoryCommandService();
 		ProcessDefinition processDefinition = repositoryService
-				.deploy(" lottery_draw_process.xml");
+				.deploy("lottery_draw_process.xml");
         Assert.assertEquals(18, processDefinition.getProcess().getElements().size());
 
 		ProcessCommandService processService = smartEngine.getProcessCommandService();
