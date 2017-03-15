@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.param.EngineParam;
 import com.alibaba.smart.framework.engine.param.ProcessParam;
 import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
+import com.alibaba.smart.framework.engine.util.EngineConstant;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
@@ -85,7 +86,6 @@ public class BpmnProcessTest {
 
         Assert.assertNotNull(instance);
 
-        Assert.assertEquals(instance.toString(),re.toString());
 
 
         ProcessInstance run1  = processService.run(processDefinition,"1","theTask1",false,context);
@@ -93,8 +93,14 @@ public class BpmnProcessTest {
         System.out.println(run1.toString());
 
         processTest.setProcessStore(run1.toString());
+        processService.clear(run1.getInstanceId());
 
-        ProcessInstance run2  = processService.run(processDefinition,"1","theTask2",false,context);
+
+        EngineParam engineParam2  = EngineParam.of("1","test-parallel","1.0.0",processTest.getProcessStore());
+        ProcessInstance re2 = processService.recovery(engineParam2);
+
+
+        ProcessInstance run2  = processService.run(processDefinition,re2.getInstanceId(),"theTask2",false,context);
         System.out.println(run2.toString());
         processTest.setProcessStore(run2.toString());
 
@@ -340,6 +346,14 @@ public class BpmnProcessTest {
 
 
     }
+
+
+
+
+
+
+
+
 
 
 
