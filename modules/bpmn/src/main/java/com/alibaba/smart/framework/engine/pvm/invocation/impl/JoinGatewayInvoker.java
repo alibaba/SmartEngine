@@ -47,29 +47,21 @@ public class JoinGatewayInvoker implements Invoker {
             ExecutionInstance executionInstance = executionInstanceEntry.getValue();
             String activityId = executionInstance.getActivity().getActivityId();
             if (StringUtils.equals(this.runtimeActivity.getModel().getId(), activityId)) {
-                // TODO ettear 并发Join同时处理运行状态
-                TransitionInstance transitionInstance = executionInstance.getActivity().getIncomeTransitions().get(0);
-                joinExecutionInstance.put(transitionInstance.getTransitionId(), executionInstance);
+                joinExecutionInstance.put(executionInstance.getInstanceId(), executionInstance);
             }
         }
+
+
+        boolean completed = true;
+        if (executionInstances.values().stream().anyMatch(p->!p.getActivity().getActivityId().equals(runtimeActivity.getModel().getId()))) {
+            completed = false;
+        }
+
         ActivityInstanceFactory activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
         ActivityInstance activityInstance = activityInstanceFactory.create();
         activityInstance.setActivityId(this.runtimeActivity.getModel().getId());
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
-
-        boolean completed = true;
-        for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : runtimeActivity.getIncomeTransitions().entrySet()) {
-            String transitionId = runtimeTransitionEntry.getKey();
-            ExecutionInstance executionInstance = joinExecutionInstance.get(transitionId);
-            if (null != executionInstance) {
-                TransitionInstance transitionInstance = executionInstance.getActivity().getIncomeTransitions().get(0);
-                activityInstance.addIncomeTransition(transitionInstance);
-            } else {
-                completed = false;
-                break;
-            }
-        }
         if (completed) {
             ExecutionInstanceFactory executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
 //            InstanceFactFactory factFactory = this.extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
