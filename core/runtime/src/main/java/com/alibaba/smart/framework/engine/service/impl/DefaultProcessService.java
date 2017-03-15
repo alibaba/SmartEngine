@@ -8,6 +8,8 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
@@ -22,6 +24,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.ProcessService;
+import com.alibaba.smart.framework.engine.util.EngineConstant;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
@@ -135,9 +138,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
             throw new EngineException("can not find process defiation");
         }
 
-        if (null != processInstanceStorage.find(processInstance.getInstanceId())) {
-            processInstance = processInstanceStorage.find(processInstance.getInstanceId());
-        }
+
         processInstance.setProcessUri(processDefinition.getUri());
         processInstanceStorage.save(processInstance);
         return processInstance;
@@ -150,21 +151,21 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         ProcessInstance processInstance = getProcessInstance(instanceId,sub);
         PvmProcessInstance pvmProcess = new DefaultPvmProcessInstance();
         PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(definition.getId(), definition.getVersion());
-        ExecutionInstance chosenExecution  = null;
+        ExecutionInstance chosenExecution = null;
         for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
 
-            if (StringUtils.equalsIgnoreCase(executionInstance.getActivity().getActivityId(),activityId)) {
+            if (StringUtils.equalsIgnoreCase(executionInstance.getActivity().getActivityId(), activityId)) {
                 chosenExecution = executionInstance;
                 break;
             }
-            checkAlreadyProcessed(activityId,pvmProcessDefinition,executionInstance.getActivity().getActivityId());
+            checkAlreadyProcessed(activityId, pvmProcessDefinition, executionInstance.getActivity().getActivityId());
         }
-
 
 
         if (chosenExecution == null) {
             throw new EngineException("not find activiy,check process defintion");
         }
+
 
         ExecutionContext instanceContext = this.instanceContextFactory.create();
         instanceContext.setProcessInstance(processInstance);
