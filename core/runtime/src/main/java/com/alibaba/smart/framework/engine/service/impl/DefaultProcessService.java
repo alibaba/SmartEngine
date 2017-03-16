@@ -135,9 +135,6 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
             throw new EngineException("can not find process defiation");
         }
 
-        if (null != processInstanceStorage.find(processInstance.getInstanceId())) {
-            processInstance = processInstanceStorage.find(processInstance.getInstanceId());
-        }
         processInstance.setProcessUri(processDefinition.getUri());
         processInstanceStorage.save(processInstance);
         return processInstance;
