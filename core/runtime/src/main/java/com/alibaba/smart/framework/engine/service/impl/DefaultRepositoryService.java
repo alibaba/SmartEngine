@@ -64,6 +64,23 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
         return this.deploy(null, uri);
     }
 
+
+    @Override
+    public ProcessDefinition deploy(InputStream inputStream) throws DeployException {
+
+        ClassLoader classLoader = this.smartEngine.getClassLoader(null);
+        if (null == classLoader) {
+            throw new DeployException("Module[" + "] not found!");
+        }
+        ProcessDefinition definition = this.parse(classLoader, null,inputStream);
+        PvmProcessComponent runtimeProcessComponent = install(classLoader, definition);
+        if (null == runtimeProcessComponent) {
+            throw new DeployException("Deploy "  + " failure!");
+        }
+        return definition;
+    }
+
+
     @Override
     public ProcessDefinition deploy(String moduleName, String uri) throws DeployException {
         
@@ -74,7 +91,7 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
         }
 
         //TODO 支持从不同地方加载 优先级高
-        ProcessDefinition definition = this.parse(classLoader, uri);
+        ProcessDefinition definition = this.parse(classLoader, uri,null);
         PvmProcessComponent runtimeProcessComponent = install(classLoader, definition);
         if (null == runtimeProcessComponent) {
             throw new DeployException("Deploy " + uri + " failure!");
@@ -97,9 +114,13 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
 
     }
 
-    private ProcessDefinition parse(ClassLoader classLoader, String uri) throws DeployException {
+    private ProcessDefinition parse(ClassLoader classLoader, String uri,InputStream inputStream) throws DeployException {
 
         InputStream in = null;
+        if (inputStream !=null) {
+            in = inputStream;
+        }
+
         try {
             XMLInputFactory factory = XMLInputFactory.newInstance();
             in = classLoader.getResourceAsStream(uri);
