@@ -11,13 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MvelExpressionEvaluator implements ExpressionEvaluator {
 
-    /** 运算上下文，固定，无须每次都new一个。 */
-   // private static ParserContext PARSER_CONTEXT                    = new ParserContext(null, null, null);
-//    Caused by: java.lang.NullPointerException
-//    at org.mvel2.ParserContext.initializeTables(ParserContext.java:458)
-//   重要:在16个线程并发压测时,发现ParserContext.java:458 报了NPE。 怀疑asm 在对象初始化该类时存在线程安全性问题。 故此处不再只实例化一次PARSER_CONTEXT,
 
-    /** 缓存默认初始大小以及最大值，当超过时会将缓存清空一次。一般一个流程里面尽量不要超出128个表达式 */
     private final static int  defaultCacheSize                     = 128;
 
     /** 表达式缓存，key是表达式字符串，value是编译后的表达式。 */
