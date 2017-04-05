@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.param.EngineParam;
 import com.alibaba.smart.framework.engine.param.ProcessParam;
 import com.alibaba.smart.framework.engine.service.ProcessService;
 import com.alibaba.smart.framework.engine.service.RepositoryService;
+import com.alibaba.smart.framework.engine.util.EngineConstant;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,28 +33,28 @@ public class BpmnProcessTest {
     public static ProcessTest processTest = new ProcessTest();
 
 
-	@Test
-	public void testExclusive() throws Exception {
-	    ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration(); 
-	    
-		SmartEngine smartEngine = new DefaultSmartEngine();
-		smartEngine.init(processEngineConfiguration);
+    @Test
+    public void testExclusive() throws Exception {
+        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
 
-		RepositoryService repositoryService = smartEngine
-				.getRepositoryService();
-		ProcessDefinition processDefinition = repositoryService
-				.deploy("test-servicetask-exclusive.bpmn20.xml");
+        SmartEngine smartEngine = new DefaultSmartEngine();
+        smartEngine.init(processEngineConfiguration);
+
+        RepositoryService repositoryService = smartEngine
+                .getRepositoryService();
+        ProcessDefinition processDefinition = repositoryService
+                .deploy("test-servicetask-exclusive.bpmn20.xml");
         Assert.assertEquals(25, processDefinition.getProcess().getElements().size());
 
-		ProcessService processService = smartEngine.getProcessService();
-		Map<String, Object> request = new HashMap<>();
-		request.put("input", 2);
-		ProcessInstance processInstance = processService.start(
-				processDefinition.getId(), processDefinition.getVersion(),
-				request);
+        ProcessService processService = smartEngine.getProcessService();
+        Map<String, Object> request = new HashMap<>();
+        request.put("input", 2);
+        ProcessInstance processInstance = processService.start(
+                processDefinition.getId(), processDefinition.getVersion(),
+                request);
 
-		Assert.assertNotNull(processInstance);
-	}
+        Assert.assertNotNull(processInstance);
+    }
 
     @Test
     public void testParallel() throws Exception {
@@ -63,14 +64,50 @@ public class BpmnProcessTest {
 
         RepositoryService repositoryService = smartEngine
                 .getRepositoryService();
-        ProcessDefinition processDefinition = repositoryService
-                .deploy("test-parallel.bpmn20.xml");
+        ProcessDefinition processDefinition = repositoryService.deploy("test-parallel.bpmn20.xml");
 
         ProcessService processService = smartEngine.getProcessService();
         Map<String,Object> context = Maps.newHashMap();
         context.put("1","1");
 
         ProcessInstance instance = processService.start(processDefinition.getId(), processDefinition.getVersion(), context);
+
+
+        System.out.println(instance.toString());
+
+        processTest.setProcessStore(instance.toString());
+
+        EngineParam engineParam  = EngineParam.of("1","test-parallel","1.0.0",processTest.getProcessStore());
+        ProcessInstance re = processService.recovery(engineParam);
+
+
+
+        Assert.assertNotNull(re);
+
+        Assert.assertNotNull(instance);
+
+
+
+        ProcessInstance run1  = processService.run(processDefinition,"1","theTask1",false,context);
+
+        System.out.println(run1.toString());
+
+        processTest.setProcessStore(run1.toString());
+        processService.clear(run1.getInstanceId());
+
+
+        EngineParam engineParam2  = EngineParam.of("1","test-parallel","1.0.0",processTest.getProcessStore());
+        ProcessInstance re2 = processService.recovery(engineParam2);
+
+
+        ProcessInstance run2  = processService.run(processDefinition,re2.getInstanceId(),"theTask2",false,context);
+        System.out.println(run2.toString());
+        processTest.setProcessStore(run2.toString());
+
+
+
+
+
 
 
 
@@ -309,6 +346,14 @@ public class BpmnProcessTest {
 
 
     }
+
+
+
+
+
+
+
+
 
 
 

@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.param.EngineParam;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -68,9 +69,9 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
     @Override
     public ProcessInstance start(String processId, String version, Map<String, Object> request) {
         PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processId, version);
-        
+
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
-        
+
         ProcessInstance processInstance = this.processInstanceFactory.create();
 
         ExecutionInstance executionInstance = this.executionInstanceFactory.create();
@@ -87,7 +88,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         executionContext.setRequest(request);
 
         pvmProcessInstance.start(executionContext);
-        
+
         return processInstance;
     }
 
@@ -106,16 +107,26 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
 
 
         ProcessInstance processInstance = this.processInstanceFactory.recovery(engineParam.getProcessParam());
-        ExecutionInstance executionInstance = this.executionInstanceFactory.recovery(engineParam.getExecutionParam());
-        ActivityInstance activityInstance = this.activityInstanceFactory.recovery(engineParam.getActivityParam());
+        ProcessInstance finalProcessInstance = processInstance;
+        engineParam.getExecutionParams().stream().forEach(
+                p->{
+                    ExecutionInstance executionInstance = this.executionInstanceFactory.recovery(p);
 
+                    ActivityInstance activityInstance = this.activityInstanceFactory.recovery(
+                            engineParam.getActivityParams().stream().filter(
+                                    activityParam->activityParam.getActivityId().equals(p.getActivityId())
+                            ).findFirst().orElseThrow(()->new EngineException("not assign activity"))
+                    );
+                    executionInstance.setActivity(activityInstance);
+                    if (!finalProcessInstance.getInstanceId().equals(executionInstance.getProcessInstanceId())
+                            || !executionInstance.getProcessInstanceId().equals(activityInstance.getProcessInstanceId())) {
 
-        if (!processInstance.getInstanceId().equals(executionInstance.getProcessInstanceId())
-                || !executionInstance.getProcessInstanceId().equals(activityInstance.getProcessInstanceId())) {
+                        throw new EngineException("recovery instance is not right!");
+                    }
+                    finalProcessInstance.addExecution(executionInstance);
+                }
+        );
 
-            throw new EngineException("recovery instance is not right!");
-
-        }
         PvmProcessDefinition processDefinition = this.processDefinitionContainer.get(
                 engineParam.getProcessParam().getProcessDefationId(),
                 engineParam.getProcessParam().getProcessDefationVersion());
@@ -124,14 +135,8 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
             throw new EngineException("can not find process defiation");
         }
 
-        if (null != processInstanceStorage.find(processInstance.getInstanceId())) {
-            processInstance = processInstanceStorage.find(processInstance.getInstanceId());
-        }
-        executionInstance.setActivity(activityInstance);
         processInstance.setProcessUri(processDefinition.getUri());
-        processInstance.addExecution(executionInstance);
         processInstanceStorage.save(processInstance);
-
         return processInstance;
     }
 
@@ -144,12 +149,14 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(definition.getId(), definition.getVersion());
         ExecutionInstance chosenExecution  = null;
         for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
+
             if (StringUtils.equalsIgnoreCase(executionInstance.getActivity().getActivityId(),activityId)) {
                 chosenExecution = executionInstance;
                 break;
             }
             checkAlreadyProcessed(activityId,pvmProcessDefinition,executionInstance.getActivity().getActivityId());
         }
+
 
 
         if (chosenExecution == null) {
@@ -168,8 +175,22 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
 
     }
 
+
+    private void checkAlreadyProcessed(String assignId,PvmActivity currentAcitivy) {
+        assert null != currentAcitivy;
+        if (checkIsAfter(currentAcitivy,assignId)) {
+            throw new EngineException("assign acitivy is on next");
+        }else if (checkIsBefore(currentAcitivy,assignId)) {
+            throw new EngineException("assign acitivy is on before");
+        }
+    }
+
+
     private void checkAlreadyProcessed(String assignId, PvmProcessDefinition pvmProcessDefinition, String currentId) {
         PvmActivity currentActivity = findCurrentAcitivy(pvmProcessDefinition,currentId);
+        if (currentActivity == null) {
+            return;
+        }
         if (checkIsAfter(currentActivity,assignId)) {
             throw new EngineException("assign acitivy is on next");
         }else if (checkIsBefore(currentActivity,assignId)) {
@@ -181,29 +202,31 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         if (!pvmProcessDefinition.getActivities().containsKey(currentId)) {
             throw new EngineException("can not find assign activity : "+currentId+"");
         }
-        return pvmProcessDefinition.getActivities().get(currentId);
+        PvmActivity currentAt = pvmProcessDefinition.getActivities().get(currentId);
+        /**
+         * 这里主要是解决图论中无法查找多点问题,解决方式有点丑
+         */
+        if (currentAt.getModel().getId().equals("joinGw") || currentAt.getModel().getId().equals("forkGw")) {
+            return null;
+        }
+        return currentAt;
     }
 
     private boolean checkIsBefore(PvmActivity currentActivity, String assignId) {
         for (PvmTransition transition:currentActivity.getIncomeTransitions().values()) {
-            if (transition.getSource().getModel().getId().equals(assignId)) {
-                return true;
-            }else {
-                return checkIsBefore(transition.getSource(),assignId);
-            }
+            return transition.getSource().getModel().getId().equals(assignId) || checkIsBefore(transition.getSource(), assignId);
         }
         return false;
     }
 
 
 
+
+
+
     private boolean checkIsAfter(PvmActivity currentActivity, String assignId) {
         for (PvmTransition transition:currentActivity.getOutcomeTransitions().values()) {
-            if (transition.getTarget().getModel().getId().equals(assignId)) {
-                return true;
-            }else {
-                return checkIsAfter(transition.getTarget(),assignId);
-            }
+            return transition.getTarget().getModel().getId().equals(assignId) || checkIsAfter(transition.getTarget(), assignId);
         }
         return false;
     }

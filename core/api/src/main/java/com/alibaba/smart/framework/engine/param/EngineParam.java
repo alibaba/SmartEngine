@@ -2,10 +2,12 @@ package com.alibaba.smart.framework.engine.param;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.util.EngineConstant;
+import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,11 +23,11 @@ public class EngineParam {
 
     @Getter
     @Setter
-    private ExecutionParam executionParam;
+    private List<ExecutionParam> executionParams = Lists.newArrayList();
 
     @Getter
     @Setter
-    private ActivityParam activityParam;
+    private List<ActivityParam> activityParams = Lists.newArrayList();
 
 
     @Getter
@@ -39,37 +41,43 @@ public class EngineParam {
             throw new EngineException("param can not be null");
         }
         EngineParam param = new EngineParam();
-        ExecutionParam execution = new ExecutionParam();
+
         ProcessParam process = new ProcessParam();
-        ActivityParam activity = new ActivityParam();
+
 
         process.setProcessId(processId);
-        execution.setProcessId(processId);
-        activity.setProceessId(processId);
+
 
         process.setProcessDefationId(defationId);
-        if (version != null) {
-            process.setProcessDefationVersion(version);
+        process.setProcessDefationVersion(version);
 
-        }
+        String[] executions = executionString.split(EngineConstant.REG_SEP_G);
+        Arrays.stream(executions).forEach(
+                p->{
+                    ExecutionParam execution = new ExecutionParam();
+                    execution.setProcessId(processId);
+                    ActivityParam activity = new ActivityParam();
+                    activity.setProceessId(processId);
+                    String[] executionParams = p.split(EngineConstant.REG_SEP_S);
+                    if (executionParams.length < 2) {
+                        throw new EngineException("execution param is not right");
+                    }
+                    if (Arrays.stream(executionParams).anyMatch(executionParam->executionParam.equals("abort"))) {
+                        throw new EngineException("the process instance is alreay abort,engine will not excute ");
+                    }
+                    execution.setExecutionId(executionParams[0]);
+                    execution.setActivityId(executionParams[1]);
+                    activity.setActivityId(executionParams[1]);
+                    if (executionParams.length >2) {
+                        activity.setCurrentStep(executionParams[2]);
+                    }
+                    param.getActivityParams().add(activity);
+                    param.getExecutionParams().add(execution);
+                }
+        );
 
-        String[] executionParams = executionString.split(EngineConstant.REG_SEP_S);
-        if (executionParams.length < 2) {
-            throw new EngineException("execution param is not right");
-        }
-        if (Arrays.stream(executionParams).anyMatch(p->p.equals("abort"))) {
-            throw new EngineException("the process instance is alreay abort,engine will not excute ");
-        }
 
-        execution.setExecutionId(executionParams[0]);
 
-        activity.setActivityId(executionParams[1]);
-        if (executionParams.length >2) {
-            activity.setCurrentStep(executionParams[2]);
-        }
-
-        param.setActivityParam(activity);
-        param.setExecutionParam(execution);
         param.setProcessParam(process);
 
         return param;
