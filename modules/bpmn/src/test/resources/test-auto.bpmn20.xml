@@ -11,20 +11,14 @@
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="createOrder"/>
 
 
-        <serviceTask id="createOrder" name="create" auto="true" >
+        <serviceTask id="createOrder" name="create" >
             <action type="spring" id="createOrder" bean="createOrder" method="create" />
-            <events>
-                <event type="spring" bean="testAbort" id="testAbort" method="process" signal="abort" />
-            </events>
         </serviceTask>
 
         <sequenceFlow id="flow2" sourceRef="createOrder" targetRef="theTask2"/>
 
         <serviceTask id="theTask2" name="createOutDeliveryOrder" auto="true" >
             <action type="spring" id="createOrder" bean="createOrder" method="create" />
-            <events>
-                <event type="spring"  id="modifyFee" method="modify" bean="modifyFee" />
-            </events>
         </serviceTask>
 
         <sequenceFlow id="flow3" sourceRef="theTask2" targetRef="theEnd"/>

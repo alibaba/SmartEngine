@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
 import com.alibaba.smart.framework.engine.invocation.Invoker;
+import com.alibaba.smart.framework.engine.invocation.message.impl.SubsbandMessage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -37,15 +38,22 @@ public class AbstractActivityProvider<T extends Activity> implements ActivityPro
             return this.createEndInvoker();
         } else if (PvmEventConstant.ACTIVITY_TRANSITION_SELECT.name().equals(event)) {
             return this.createTransitionSelectInvoker();
-        }else if (null == event){
-            //TODO 太恶心了.
+        } else if (PvmEventConstant.PROCESS_PUSH.name().equals(event)) {
+
+            return this.pushInvoker();
+
+
+        } else if (null == event){
             return this.createCustomInvoker(runtimeActivity);
-        }
-        else {
+        } else {
             return this.createEventInvoker(event);
         }
     }
-    
+
+    private Invoker pushInvoker() {
+        return context -> new SubsbandMessage();
+    }
+
     public Invoker createCustomInvoker(PvmActivity runtimeActivity) {
         return null;
     }

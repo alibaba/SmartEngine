@@ -48,15 +48,10 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
 
     @Override
     public Message run(ExecutionContext context) {
-        // 从扩展注册机获取实例工厂
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
 
         ExecutionInstanceFactory executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
         ActivityInstanceFactory activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
-        // InstanceFactFactory factFactory =
-        // extensionPointRegistry.getExtensionPoint(InstanceFactFactory.class);
-
-        // 流程实例ID
         ProcessInstance processInstance = context.getProcessInstance();
         String processInstanceId = processInstance.getInstanceId();
         // 构建活动实例: 指向开始节点
@@ -77,11 +72,11 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
         // 状态
         processInstance.setStatus(InstanceStatus.running);
 
-        // 执行流程启动事件
         this.fireEvent(PvmEventConstant.PROCESS_START.name(), context);
-        // 从开始节点开始执行
         return this.runProcess(this.startActivity, context);
     }
+
+
 
     @Override
     public Message resume(ExecutionContext context) {

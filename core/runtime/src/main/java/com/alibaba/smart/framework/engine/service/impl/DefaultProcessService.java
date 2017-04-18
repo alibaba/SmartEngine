@@ -22,6 +22,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.ProcessService;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
@@ -149,31 +150,48 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(definition.getId(), definition.getVersion());
         ExecutionInstance chosenExecution  = null;
         for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
-
             if (StringUtils.equalsIgnoreCase(executionInstance.getActivity().getActivityId(),activityId)) {
                 chosenExecution = executionInstance;
                 break;
             }
             checkAlreadyProcessed(activityId,pvmProcessDefinition,executionInstance.getActivity().getActivityId());
         }
-
-
-
         if (chosenExecution == null) {
             throw new EngineException("not find activiy,check process defintion");
         }
-
         ExecutionContext instanceContext = this.instanceContextFactory.create();
         instanceContext.setProcessInstance(processInstance);
         instanceContext.setCurrentExecution(chosenExecution);// 执行实例添加到当前上下文中
         instanceContext.setRequest(request);
-
         instanceContext.setPvmProcessDefinition(pvmProcessDefinition);
-
         pvmProcess.run(instanceContext);
         return processInstance;
+    }
+
+
+    @Override
+    public ProcessInstance pushActivityOnRam(ProcessDefinition definition,String processId) {
+        ProcessInstance processInstance = getProcessInstance(processId,false);
+        PvmProcessInstance pvmProcess = new DefaultPvmProcessInstance();
+        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(definition.getId(), definition.getVersion());
+
+        for (ExecutionInstance executionInstance :processInstance.getExecutions().values()) {
+            ExecutionContext instanceContext = this.instanceContextFactory.create();
+            instanceContext.setProcessInstance(processInstance);
+            instanceContext.setCurrentExecution(executionInstance);
+            instanceContext.setPvmProcessDefinition(pvmProcessDefinition);
+            instanceContext.changePushMod(true);
+            instanceContext.setRequest(Maps.newHashMap());
+            pvmProcess.run(instanceContext);
+        }
+
+        return processInstance;
+
 
     }
+
+
+
 
 
 
@@ -250,10 +268,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         processInstanceStorage.remove(processId);
     }
 
-    @Override
-    public ProcessInstance pushActivityOnRam(String activityId) {
-        return null;
-    }
+
 
 
 }

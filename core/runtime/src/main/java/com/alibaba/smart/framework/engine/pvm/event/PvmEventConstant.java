@@ -15,7 +15,11 @@ public enum PvmEventConstant {
     TRANSITION_HIT(7),
     TRANSITION_START(8),
     TRANSITION_EXECUTE(9),
-    TRANSITION_END(10);
+    TRANSITION_END(10),
+
+
+    PROCESS_PUSH(11)
+    ;
 
 
 
