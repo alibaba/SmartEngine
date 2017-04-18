@@ -12,8 +12,17 @@ import java.util.Map;
  */
 public class TestAbortEvent {
 
+    private int entrance = 0;
+
     public void process(Map<String,Object> context) {
-       throw new TestRunTimeException("test txcetprion");
+        if (entrance == 1) {
+            System.out.println("context = [" + context + "]");
+        }
+        if (entrance == 0) {
+            entrance++;
+            throw new TestRunTimeException("test txcetprion");
+        }
+
     }
 
 }

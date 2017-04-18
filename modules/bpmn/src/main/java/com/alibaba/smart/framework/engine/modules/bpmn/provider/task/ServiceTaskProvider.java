@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.invocation.Invoker;
+import com.alibaba.smart.framework.engine.invocation.message.impl.NotSubsbandMessage;
 import com.alibaba.smart.framework.engine.invocation.message.impl.SubsbandMessage;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.event.ProcessEventInvoker;
@@ -37,6 +38,10 @@ public class ServiceTaskProvider extends AbstractBpmnActivityProvider<ServiceTas
 
     @Override
     protected Invoker createStartInvoker() {
+        ServiceTask serviceTask = (ServiceTask) this.getRuntimeActivity().getModel();
+        if (serviceTask.isAuto()) {
+            return context -> new NotSubsbandMessage();
+        }
         return context -> new SubsbandMessage();
     }
 }

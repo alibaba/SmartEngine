@@ -176,14 +176,6 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
     }
 
 
-    private void checkAlreadyProcessed(String assignId,PvmActivity currentAcitivy) {
-        assert null != currentAcitivy;
-        if (checkIsAfter(currentAcitivy,assignId)) {
-            throw new EngineException("assign acitivy is on next");
-        }else if (checkIsBefore(currentAcitivy,assignId)) {
-            throw new EngineException("assign acitivy is on before");
-        }
-    }
 
 
     private void checkAlreadyProcessed(String assignId, PvmProcessDefinition pvmProcessDefinition, String currentId) {
@@ -258,7 +250,10 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         processInstanceStorage.remove(processId);
     }
 
-
+    @Override
+    public ProcessInstance pushActivityOnRam(String activityId) {
+        return null;
+    }
 
 
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="test-parallel" version="1.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             targetNamespace="Examples">
+
+    <process id="2001" version ="1.0.0" name="demo流程">
+
+        <startEvent id="theStart" />
+
+
+        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="createOrder"/>
+
+
+        <serviceTask id="createOrder" name="create" auto="true" >
+            <action type="spring" id="createOrder" bean="createOrder" method="create" />
+            <events>
+                <event type="spring" bean="testAbort" id="testAbort" method="process" signal="abort" />
+            </events>
+        </serviceTask>
+
+        <sequenceFlow id="flow2" sourceRef="createOrder" targetRef="theTask2"/>
+
+        <serviceTask id="theTask2" name="createOutDeliveryOrder" auto="true" >
+            <action type="spring" id="createOrder" bean="createOrder" method="create" />
+            <events>
+                <event type="spring"  id="modifyFee" method="modify" bean="modifyFee" />
+            </events>
+        </serviceTask>
+
+        <sequenceFlow id="flow3" sourceRef="theTask2" targetRef="theEnd"/>
+
+        <endEvent id="theEnd"/>
+
+    </process>
+
+</definitions>
