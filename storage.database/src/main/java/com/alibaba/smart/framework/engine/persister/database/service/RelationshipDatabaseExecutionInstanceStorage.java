@@ -30,6 +30,7 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
 
     private ExecutionInstanceEntity buildExecutionInstanceEntity(ExecutionInstance executionInstance) {
         ExecutionInstanceEntity executionInstanceEntity = new ExecutionInstanceEntity();
+        executionInstanceEntity.setActive(executionInstance.isActive());
         executionInstanceEntity.setProcessDefinitionId(executionInstance.getProcessDefinitionIdAndVersion());
         executionInstanceEntity.setProcessInstanceId(executionInstance.getProcessInstanceId());
         executionInstanceEntity.setActivityInstanceId(executionInstance.getActivityInstanceId());
