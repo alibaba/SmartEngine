@@ -53,15 +53,26 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
         List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
 
         boolean matched= false;
-        for (ActivityInstance activityInstance : activityInstances) {
-            ExecutionInstance tempExecutionInstance = activityInstance.getExecutionInstance();
-            if(null!= tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(instanceId)){
-                executionInstance= tempExecutionInstance;
-                matched = true;
-                break;
 
+        if(null == activityInstances ||activityInstances.isEmpty() ){
+
+            // do nothing , cause exception.
+        }else{
+            int size = activityInstances.size();
+            for (int i = size-1; i>=0;i--) {
+                ActivityInstance activityInstance = activityInstances.get(i);
+                ExecutionInstance tempExecutionInstance = activityInstance.getExecutionInstance();
+                if(null!= tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(instanceId)){
+                    executionInstance= tempExecutionInstance;
+                    matched = true;
+                    break;
+
+                }
             }
+
         }
+
+
 
         if(!matched){
             throw new EngineException("No ExecutionInstance found for id : "+instanceId);
