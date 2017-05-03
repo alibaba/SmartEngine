@@ -96,6 +96,9 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
 
         if (context.isPush()) {
             Message invokerMessage = this.invokeActivity(PvmEventConstant.PROCESS_PUSH.name(), context);
+            context.changePushMod(false);
+            activityExecuteMessage.setSuspend(invokerMessage.isSuspend());
+            return;
         }
 
         if (StringUtils.isNotBlank(currentStep)) {

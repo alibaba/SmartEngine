@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
 import com.alibaba.smart.framework.engine.invocation.Invoker;
+import com.alibaba.smart.framework.engine.invocation.message.impl.NotSubsbandMessage;
 import com.alibaba.smart.framework.engine.invocation.message.impl.SubsbandMessage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.provider.ActivityProvider;
@@ -50,8 +51,8 @@ public class AbstractActivityProvider<T extends Activity> implements ActivityPro
         }
     }
 
-    private Invoker pushInvoker() {
-        return context -> new SubsbandMessage();
+    protected Invoker pushInvoker() {
+        return context -> new NotSubsbandMessage();
     }
 
     public Invoker createCustomInvoker(PvmActivity runtimeActivity) {
