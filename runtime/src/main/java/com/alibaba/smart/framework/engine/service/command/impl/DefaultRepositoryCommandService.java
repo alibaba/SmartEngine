@@ -73,7 +73,10 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     @Override
     public ProcessDefinition deploy(InputStream inputStream) {
         try {
-            return parseStream(inputStream);
+            ProcessDefinition processDefinition = parseStream(inputStream);
+            install( processDefinition);
+
+            return processDefinition;
         } catch (Exception e) {
             throw new DeployException("Parse process definition file failure!", e);
         } finally {

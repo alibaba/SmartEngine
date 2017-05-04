@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.configuration;
 
 import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
 import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
+import com.alibaba.smart.framework.engine.common.service.InstanceAccessService;
 import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 
@@ -24,6 +25,10 @@ public interface ProcessEngineConfiguration {
     void setTaskAssigneeService(TaskAssigneeService taskAssigneeService);
 
     TaskAssigneeService getTaskAssigneeService();
+
+    void setInstanceAccessService(InstanceAccessService instanceAccessService);
+
+    InstanceAccessService getInstanceAccessService();
 
     void setIdGenerator(IdGenerator idGenerator);
 
