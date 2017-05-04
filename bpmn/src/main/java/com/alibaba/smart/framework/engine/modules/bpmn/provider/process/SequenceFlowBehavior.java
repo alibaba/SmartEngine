@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.process;
 
 import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
+import com.alibaba.smart.framework.engine.common.service.InstanceAccessService;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
@@ -29,7 +30,9 @@ public class SequenceFlowBehavior extends AbstractTransition<com.alibaba.smart.f
             String expressionType = conditionExpression.getExpressionType();
             String firstCharToUpperCase  = Character.toUpperCase(expressionType.charAt(0)) + expressionType.substring(1);
             String className = PACKAGE_NAME +firstCharToUpperCase+"ExpressionEvaluator";
-            ExpressionEvaluator expressionEvaluator = (ExpressionEvaluator) ClassLoaderUtil.createOrGetInstanceWithASM(className);
+            InstanceAccessService instanceAccessService = context.getProcessEngineConfiguration()
+                .getInstanceAccessService();
+            ExpressionEvaluator expressionEvaluator = (ExpressionEvaluator) instanceAccessService.access(className);
 
             Object result = expressionEvaluator.eval(conditionExpression.getExpressionContent(), context.getRequest());
             return (Boolean) result;

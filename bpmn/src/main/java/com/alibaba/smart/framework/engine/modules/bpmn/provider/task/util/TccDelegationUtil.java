@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.task.util;
 
 import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
+import com.alibaba.smart.framework.engine.common.service.InstanceAccessService;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.TccDelegation;
@@ -20,7 +21,10 @@ public abstract  class TccDelegationUtil {
         ExceptionProcessor exceptionProcessor= processEngineConfiguration.getExceptionProcessor();
 
 
-        Object taskDelegation = ClassLoaderUtil.createOrGetInstanceWithASM(className);
+        InstanceAccessService instanceAccessService = executionContext.getProcessEngineConfiguration()
+            .getInstanceAccessService();
+
+        Object taskDelegation = instanceAccessService.access(className);
         if (taskDelegation instanceof TccDelegation) {
             TccDelegation tccDelegation = (TccDelegation) taskDelegation;
 
