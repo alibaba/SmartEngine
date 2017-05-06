@@ -3,13 +3,6 @@
 
 
 	<modelVersion>4.0.0</modelVersion>
-	<!--
-	<parent>
-		<groupId>com.alibaba.icbu</groupId>
-		<artifactId>parent-pom</artifactId>
-		<version>2.0.0-SNAPSHOT</version>
-	</parent>
-	-->
     <parent>
         <groupId>com.taobao</groupId>
         <artifactId>parent</artifactId>
@@ -17,7 +10,7 @@
     </parent>
 	<groupId>com.alibaba.smart.framework</groupId>
 	<artifactId>engine</artifactId>
-	<version>1.0.7-TP3</version>
+	<version>1.0.7-TP3-auto-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Smart Engine</name>
 
@@ -230,7 +223,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5</version>
+				<version>3.1</version>
 				<configuration>
 					<source>${java.source.version}</source>
 					<target>${java.target.version}</target>

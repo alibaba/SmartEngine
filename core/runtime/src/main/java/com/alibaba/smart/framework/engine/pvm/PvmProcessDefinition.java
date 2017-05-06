@@ -28,6 +28,15 @@ public interface PvmProcessDefinition extends PvmActivity {
      */
     Message run(ExecutionContext context);
 
+
+    /**
+     * 推进流程
+     *
+     * @param context 实例上下文
+     * @return 是否暂停
+     */
+    Message push(ExecutionContext context);
+
     /**
      * 继续执行流程
      * 

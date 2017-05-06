@@ -52,6 +52,13 @@ public interface ProcessService {
     void clear(String processId);
 
 
+    /**
+     * 在内存中推进流程引擎
+     * @return
+     */
+    ProcessInstance pushActivityOnRam(ProcessDefinition definition,String processId);
+
+
 
 
 }

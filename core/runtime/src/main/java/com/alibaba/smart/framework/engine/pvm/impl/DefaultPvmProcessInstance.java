@@ -50,10 +50,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
         // 状态
         processInstance.setStatus(InstanceStatus.running);
 
-        //TODO 触发流程启动事件
-//        this.fireEvent(PvmEventConstant.PROCESS_START.name(), executionContext);
-        // 从开始节点开始执行
-          this.runProcess(startActivity, executionContext);
+        this.runProcess(startActivity, executionContext);
     }
 
     @Override
@@ -88,12 +85,11 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
     private Message runProcess(PvmActivity startActivity, ExecutionContext context) {
         ExtensionPointRegistry extensionPointRegistry = ThreadLocalUtil.get().getExtensionPointRegistry();
 
+
         Message   processMessage = this.executeActivity(startActivity, context);
 
         ProcessInstance processInstance = context.getProcessInstance();
         if (!processMessage.isSuspend()) {
-          //TODO 触发流程启动事件
-//            this.fireEvent(PvmEventConstant.PROCESS_END.name(), context);
             processInstance.setStatus(InstanceStatus.completed);
         } else {
             processInstance.setStatus(InstanceStatus.suspended);
@@ -106,7 +102,9 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
     
     private Message executeActivity(PvmActivity pvmActivity, ExecutionContext context) {
         // 执行当前节点
+
         Message activityExecuteMessage = pvmActivity.execute(context);
+
 
         Message processMessage = new DefaultMessage();
         if (activityExecuteMessage.isSuspend()) {
@@ -122,7 +120,6 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
             if (null != transitionSelectBody && transitionSelectBody instanceof List) {
                 List<?> executionObjects = (List<?>) transitionSelectBody;
                 if (!executionObjects.isEmpty()) {
-                    // TODO ettear 多线程
                     for (Object executionObject : executionObjects) {
                         // 执行所有实例
                         if (executionObject instanceof ExecutionInstance) {
@@ -131,10 +128,8 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
 
                             TransitionInstance transitionInstance = executionInstance.getActivity().getIncomeTransitions().get(0);
                             PvmTransition pvmTransition = pvmActivity.getOutcomeTransitions().get(transitionInstance.getTransitionId());
-                            // 执行Transition,目前仅是fireEvent,没做其他逻辑 
                             pvmTransition.execute(context);
                             PvmActivity targetPvmActivity = pvmTransition.getTarget();
-                            // 执行Activity
                             this.executeActivity(targetPvmActivity, context);
                         }else{
                             throw new EngineException("unpported class type:ExecutionInstance");

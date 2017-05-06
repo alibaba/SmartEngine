@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.pvm.impl;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
+import com.alibaba.smart.framework.engine.invocation.message.impl.SubsbandMessage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -58,8 +59,12 @@ public abstract class AbstractPvmActivity<M extends Activity> extends AbstractPv
         return activityExecuteMessage;
 
     }
-    
-    
+
+    @Override
+    public Message push(ExecutionContext context) {
+        return new SubsbandMessage();
+    }
+
     @Override
     public Message signal(ExecutionContext context) {
         return null;

@@ -29,4 +29,13 @@ public interface PvmActivity extends PvmInvocable<Activity>,ProviderRegister {
     Message signal(ExecutionContext context);
 
 
+
+    /**
+     * 流程实例启动,节点进入 会调用此方法.
+     * @param context
+     */
+    default Message push(ExecutionContext context){
+        return null;
+    }
+
 }

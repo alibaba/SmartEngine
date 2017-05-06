@@ -19,4 +19,11 @@ public class DefaultInstanceContext implements ExecutionContext {
     private PvmProcessDefinition pvmProcessDefinition;
     
     private Map<String,Object > request;
+
+    private boolean push = false;
+
+    @Override
+    public void changePushMod(boolean push) {
+        this.push = push;
+    }
 }

@@ -8,6 +8,7 @@
         <bean id="createOrder" class="com.alibaba.smart.framework.engine.modules.bpmn.CreateOrder" />
         <bean id="testAbort" class="com.alibaba.smart.framework.engine.test.TestAbortEvent"/>
         <bean id="workflowConfig" class="com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration"/>
+        <bean id="workflow" class="com.alibaba.smart.framework.engine.modules.bpmn.Workflow" init-method="init" />
 
 
     </beans>

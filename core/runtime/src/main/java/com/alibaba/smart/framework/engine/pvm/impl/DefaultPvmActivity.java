@@ -31,6 +31,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
 
     private final static List<Integer>  EXECUTE_EVENTS = new ArrayList<>();
 
+
     static {
 
         EXECUTE_EVENTS.add(PvmEventConstant.ACTIVITY_START.getCode());
@@ -91,6 +92,15 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
         // 恢复上次暂停时的执行器
         String currentStep = activityInstance.getCurrentStep();
         Iterator<Integer> executeEventIterator = EXECUTE_EVENTS.iterator();
+
+
+        if (context.isPush()) {
+            Message invokerMessage = this.invokeActivity(PvmEventConstant.PROCESS_PUSH.name(), context);
+            context.changePushMod(false);
+            activityExecuteMessage.setSuspend(invokerMessage.isSuspend());
+            return;
+        }
+
         if (StringUtils.isNotBlank(currentStep)) {
             while (executeEventIterator.hasNext()) {
                 int  event = executeEventIterator.next();
