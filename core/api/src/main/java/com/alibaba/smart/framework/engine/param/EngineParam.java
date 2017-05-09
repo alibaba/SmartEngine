@@ -54,6 +54,9 @@ public class EngineParam {
         String[] executions = executionString.split(EngineConstant.REG_SEP_G);
         Arrays.stream(executions).forEach(
                 p->{
+                    if (p.equals("abort")) {
+                        throw new EngineException("the process instance is alreay abort,engine will not excute ");
+                    }
                     ExecutionParam execution = new ExecutionParam();
                     execution.setProcessId(processId);
                     ActivityParam activity = new ActivityParam();
@@ -61,9 +64,6 @@ public class EngineParam {
                     String[] executionParams = p.split(EngineConstant.REG_SEP_S);
                     if (executionParams.length < 2) {
                         throw new EngineException("execution param is not right");
-                    }
-                    if (Arrays.stream(executionParams).anyMatch(executionParam->executionParam.equals("abort"))) {
-                        throw new EngineException("the process instance is alreay abort,engine will not excute ");
                     }
                     execution.setExecutionId(executionParams[0]);
                     execution.setActivityId(executionParams[1]);
