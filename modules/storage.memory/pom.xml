@@ -1,21 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="utf-8"?>
 
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.alibaba.smart.framework</groupId>
-		<artifactId>engine.modules</artifactId>
-		<version>1.0.10-TP3-auto-SNAPSHOT</version>
-	</parent>
-
-	<artifactId>engine.modules.storage.memory</artifactId>
-	<name>Smart Engine Modules - Memory Storage</name>
-
-	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>engine.core.runtime</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-	</dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  
+  <modelVersion>4.0.0</modelVersion>  
+  <parent> 
+    <groupId>com.alibaba.smart.framework</groupId>  
+    <artifactId>engine.modules</artifactId>  
+    <version>1.0.10-TP3-auto-SNAPSHOT</version> 
+  </parent>  
+  <artifactId>engine.modules.storage.memory</artifactId>  
+  <name>Smart Engine Modules - Memory Storage</name>  
+  <dependencies> 
+    <dependency> 
+      <groupId>${project.groupId}</groupId>  
+      <artifactId>engine.core.runtime</artifactId>  
+      <version>${project.version}</version> 
+    </dependency> 
+  </dependencies>  
+  <contributors><contributor><properties><provider>dongdong.zdd@alibaba-inc.com</provider><codeName>null</codeName><codeUrl>git@gitlab.alibaba-inc.com:smart-framework/smart-engine.git commit:55fc65a</codeUrl><description>contributors added by SCM Plugin, please don't modify it!</description></properties></contributor></contributors>
 </project>
