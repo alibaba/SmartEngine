@@ -49,7 +49,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     @Override
     public void enter(PvmActivity runtimeActivity, ExecutionContext context) {
 
-        if(needSuspend()){
+        if(needSuspend(context)){
             context.setNeedPause(true);
         }
 
@@ -62,7 +62,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     }
 
-    protected boolean needSuspend() {
+    protected boolean needSuspend(ExecutionContext context) {
         return false;
     }
 

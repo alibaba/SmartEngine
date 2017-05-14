@@ -34,8 +34,8 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> i
 
     @Override
     public void leave(PvmActivity pvmActivity, ExecutionContext executionContext){
-        ReceiveTask ReceiveTask = (ReceiveTask) pvmActivity.getModel();
-        String className = ReceiveTask.getClassName();
+        ReceiveTask receiveTask = (ReceiveTask) pvmActivity.getModel();
+        String className = receiveTask.getClassName();
         executeExtension(executionContext, className);
     }
 
@@ -49,7 +49,7 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> i
     }
 
     @Override
-    public boolean needSuspend() {
+    public boolean needSuspend(ExecutionContext context) {
         return true;
     }
 

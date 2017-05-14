@@ -29,6 +29,7 @@ public abstract class AbstractBase implements BaseElement, IndentityElement {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }

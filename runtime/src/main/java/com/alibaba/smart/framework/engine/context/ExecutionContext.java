@@ -16,6 +16,10 @@ public interface ExecutionContext {
 
     void setProcessInstance(ProcessInstance processInstance);
 
+    ProcessInstance getParentProcessInstance();
+
+    void setParentProcessInstance(ProcessInstance parentProcessInstance );
+
 
     PvmProcessDefinition getPvmProcessDefinition();
 
@@ -37,6 +41,10 @@ public interface ExecutionContext {
     void setNeedPause(boolean needPause);
 
     boolean isNeedPause();
+
+    //void setNested(boolean nested);
+    //
+    //boolean isNested();
 
     Long getBlockId();
 

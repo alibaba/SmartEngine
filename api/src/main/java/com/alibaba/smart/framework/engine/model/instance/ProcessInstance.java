@@ -16,6 +16,11 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     void setParentInstanceId(Long parentInstanceId);
 
+
+    Long getParentExecutionInstanceId();
+
+    void setParentExecutionInstanceId(Long parentExecutionInstanceId);
+
     InstanceStatus getStatus();
 
     void setStatus(InstanceStatus status);

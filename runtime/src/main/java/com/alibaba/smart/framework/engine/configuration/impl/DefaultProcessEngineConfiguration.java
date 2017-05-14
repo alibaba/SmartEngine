@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
 import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
+import com.alibaba.smart.framework.engine.common.persister.PersisterStrategy;
 import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.common.service.InstanceAccessService;
 import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
@@ -35,10 +36,14 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private InstanceAccessService instanceAccessService;
 
+    private PersisterStrategy persisterStrategy;
+
+
     public DefaultProcessEngineConfiguration() {
         //说明:先默认设置一个id生成器,业务使用方可以根据自己的需要再覆盖掉这个值。
         this.idGenerator = new DefaultIdGenerator();
         this.instanceAccessService = new DefaultInstanceAccessService();
+        this.persisterStrategy = new DefaultPersisterStrategy();
     }
 
     @Setter
@@ -49,9 +54,5 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         return idGenerator;
     }
 
-
-
-
-//    private PersisterStrategy persisterStrategy;
 
 }

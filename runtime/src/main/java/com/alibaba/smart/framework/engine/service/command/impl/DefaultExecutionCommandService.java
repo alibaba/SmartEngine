@@ -79,8 +79,10 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         }
 
+        //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
 
-        //注意:针对TP,AliPay场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
+
+        //BE AWARE: 注意:针对TP,AliPay场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
         ActivityInstance activityInstance= activityInstanceStorage.find(executionInstance.getActivityInstanceId());
 
         ProcessInstance processInstance = processInstanceStorage.find(executionInstance.getProcessInstanceId());
@@ -111,8 +113,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
-
-        persist(newProcessInstance,  request);
+        CommonServiceHelper.updateAndPersist(newProcessInstance,  request,extensionPointRegistry);
 
         return newProcessInstance;
     }
@@ -123,26 +124,8 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
 
-    private ProcessInstance persist(ProcessInstance processInstance,Map<String, Object> request) {
 
-            ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
-            ProcessInstance newProcessInstance =  defaultPersisteInstance1(processInstance, request, processEngineConfiguration);
-
-            return newProcessInstance;
-        }
-
-    private ProcessInstance defaultPersisteInstance1(ProcessInstance processInstance, Map<String, Object> request,ProcessEngineConfiguration processEngineConfiguration) {
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-
-        //TUNE 可以在对象创建时初始化,但是这里依赖稍微优化下。
-        ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
-
-        ProcessInstance newProcessInstance=   processInstanceStorage.update(processInstance);
-        CommonServiceHelper.persist(processInstance, request, processEngineConfiguration,  persisterFactoryExtensionPoint);
-
-        return newProcessInstance;
-    }
 
 
     private  void markDone(ActivityInstance activityInstance,ExecutionInstance executionInstance) {

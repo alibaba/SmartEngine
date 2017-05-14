@@ -17,6 +17,8 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private ProcessInstance processInstance;
 
+    private ProcessInstance parentProcessInstance;
+
     private PvmProcessDefinition pvmProcessDefinition;
 
     private ProcessEngineConfiguration processEngineConfiguration;
@@ -24,6 +26,8 @@ public class DefaultInstanceContext implements ExecutionContext {
     private Map<String, Object> request;
 
     private boolean needPause;
+
+    private boolean nested;
 
     private ExtensionPointRegistry extensionPointRegistry;
 

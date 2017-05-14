@@ -1,9 +1,12 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -18,8 +21,46 @@ import java.util.Map;
  * Created by 高海军 帝奇 74394 on 2017 February  20:38.
  */
 public abstract  class CommonServiceHelper {
-    public static void persist(ProcessInstance processInstance, Map<String, Object> request,
-                               ProcessEngineConfiguration processEngineConfiguration, PersisterFactoryExtensionPoint persisterFactoryExtensionPoint) {
+
+    public static ProcessInstance insertAndPersist(ProcessInstance processInstance,Map<String, Object> request,ExtensionPointRegistry extensionPointRegistry) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+
+        //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
+        ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
+
+
+        ProcessInstance newProcessInstance=   processInstanceStorage.insert(processInstance);
+
+        persist(processInstance, request,   extensionPointRegistry);
+        processEngineConfiguration.getPersisterStrategy().persister(processInstance);
+
+        return newProcessInstance;
+    }
+
+    public static  ProcessInstance updateAndPersist(ProcessInstance processInstance,Map<String, Object> request,ExtensionPointRegistry extensionPointRegistry) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+
+
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+        //TUNE 可以在对象创建时初始化,但是这里依赖稍微优化下。
+        ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
+
+        ProcessInstance newProcessInstance=   processInstanceStorage.update(processInstance);
+        persist(processInstance, request,   extensionPointRegistry);
+        processEngineConfiguration.getPersisterStrategy().persister(processInstance);
+
+        return newProcessInstance;
+    }
+
+
+
+    private static void persist(ProcessInstance processInstance, Map<String, Object> request, ExtensionPointRegistry extensionPointRegistry) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
@@ -62,6 +103,7 @@ public abstract  class CommonServiceHelper {
 
             }
         }
+
     }
 
 }

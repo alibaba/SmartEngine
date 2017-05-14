@@ -3,17 +3,18 @@ package com.alibaba.smart.framework.engine.common.persister;
 
 import java.io.Serializable;
 
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  08:58.
  */
 public interface PersisterStrategy {
 
-    void insert(Serializable businessInstanceId , String value) ;
+    String persister(ProcessInstance  processInstance);
 
-    void update(Serializable businessInstanceId ,String value) ;
+    ProcessInstance getProcessInstance(Long processInstanceId);
 
-    String find(Serializable businessInstanceId);
+    ProcessInstance getProcessInstanceByExecutionInstanceId(Long executionInstanceId);
 
-    void remove(Serializable businessInstanceId);
-}
+
+    }

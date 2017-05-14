@@ -48,7 +48,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> impleme
     }
 
     @Override
-    public boolean needSuspend() {
+    public boolean needSuspend(ExecutionContext context) {
         return true;
     }
 

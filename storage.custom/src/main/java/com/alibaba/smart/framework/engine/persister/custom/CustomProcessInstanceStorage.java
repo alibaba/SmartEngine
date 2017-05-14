@@ -25,8 +25,10 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
 
     @Override
     public ProcessInstance find(Long instanceId) {
+
         ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance();
 
+        //FIXME 需要判断是否当前id是否和session中传递的是否一样。增强安全性。
         return  processInstance;
     }
 
