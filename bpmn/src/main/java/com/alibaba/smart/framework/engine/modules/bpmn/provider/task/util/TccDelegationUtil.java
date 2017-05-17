@@ -15,7 +15,7 @@ import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 public abstract  class TccDelegationUtil {
 
 
-    public static void execute(ExecutionContext executionContext, String className) {
+    public static boolean execute(ExecutionContext executionContext, String className) {
 
         ProcessEngineConfiguration processEngineConfiguration = executionContext.getProcessEngineConfiguration();
         ExceptionProcessor exceptionProcessor= processEngineConfiguration.getExceptionProcessor();
@@ -23,6 +23,8 @@ public abstract  class TccDelegationUtil {
 
         InstanceAccessService instanceAccessService = executionContext.getProcessEngineConfiguration()
             .getInstanceAccessService();
+
+        boolean errorOccurred= false;
 
         Object taskDelegation = instanceAccessService.access(className);
         if (taskDelegation instanceof TccDelegation) {
@@ -32,7 +34,7 @@ public abstract  class TccDelegationUtil {
             try {
                 tccResult = tccDelegation.tryExecute(executionContext);
             } catch (Exception e) {
-                dealException(exceptionProcessor, e);
+                errorOccurred= dealException(exceptionProcessor, e);
             }
 
             if(tccResult != null){
@@ -43,15 +45,17 @@ public abstract  class TccDelegationUtil {
                     Object target = tccResult.getTarget();
                     Exception exception = new Exception(target.toString());
 
-                    dealException(exceptionProcessor, exception);
+                    errorOccurred= dealException(exceptionProcessor, exception);
 
                 }
             }
 
         }
+        return errorOccurred;
     }
 
-    private static void dealException(ExceptionProcessor exceptionProcessor, Exception exception)  {
+    private static boolean dealException(ExceptionProcessor exceptionProcessor, Exception exception)  {
+
         if(null != exceptionProcessor){
             exceptionProcessor.process(exception);
         }else if (exception instanceof RuntimeException){
@@ -59,5 +63,7 @@ public abstract  class TccDelegationUtil {
         }else{
             throw new EngineException(exception);
         }
+        return  true;
+
     }
 }

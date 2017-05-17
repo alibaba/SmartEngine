@@ -113,7 +113,7 @@ public class CallActivityProcessTest {
 
         //测试下是否符合预期
         updateThreadLocal( 333L, processEngineConfiguration);
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList = executionQueryService.findActiveExecution(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
         assertTrue("end_order".equals(firstExecutionInstance.getActivityId()));

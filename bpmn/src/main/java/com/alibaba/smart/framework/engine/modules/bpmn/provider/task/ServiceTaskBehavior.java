@@ -60,8 +60,11 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> i
 
             }
         } else {
-            TccDelegationUtil.execute(executionContext, className);
-
+            boolean errorOccurred =  TccDelegationUtil.execute(executionContext, className);
+            if(!errorOccurred){
+                //当没有错误发生时,则可以将该executionInstance设置成执行完毕。否则,则设置成活跃。以备未来重试。
+                executionInstance.setActive(false);
+            }
         }
 
 
