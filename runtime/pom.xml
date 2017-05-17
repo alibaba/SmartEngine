@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>engine.runtime</artifactId>
-    <name>Smart Engine Core - Runtime</name>
+    <name>Smart Engine Runtime</name>
 
     <dependencies>
 

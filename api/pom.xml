@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>engine.api</artifactId>
-    <name>Smart Engine Core - API</name>
+    <name>Smart Engine API</name>
 
 
 </project>

@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>engine.base</artifactId>
-    <name>Smart Engine Core - Base</name>
+    <name>Smart Engine Base</name>
 
     <dependencies>
         <dependency>
