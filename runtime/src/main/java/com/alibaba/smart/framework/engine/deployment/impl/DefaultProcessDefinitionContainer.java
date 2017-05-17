@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.deployment.impl;
 
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 
 import java.util.Map;
@@ -40,6 +41,12 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     private void install(String uri, PvmProcessDefinition runtimeProcess) {
         runtimeProcess.setUri(uri);
+
+        PvmProcessDefinition existedPvmProcessDefinition = pvmProcessDefinitionConcurrentHashMap.get(uri);
+        if(null!= existedPvmProcessDefinition){
+            throw new EngineException("duplicated processDefinitionId and version found for unique key:"+uri);
+        }
+
         this.pvmProcessDefinitionConcurrentHashMap.put(uri, runtimeProcess);
     }
 
