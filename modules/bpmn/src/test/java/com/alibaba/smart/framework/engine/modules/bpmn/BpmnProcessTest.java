@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,12 +34,14 @@ public class BpmnProcessTest {
     public static ProcessTest processTest = new ProcessTest();
 
 
+    @Resource
+    private Workflow workflow;
+
+
     @Test
     public void testExclusive() throws Exception {
-        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
 
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
+        SmartEngine smartEngine = workflow.getEngine();
 
         RepositoryService repositoryService = smartEngine
                 .getRepositoryService();
@@ -58,9 +61,7 @@ public class BpmnProcessTest {
 
     @Test
     public void testParallel() throws Exception {
-        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
-        DefaultSmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
+        SmartEngine smartEngine = workflow.getEngine();
 
         RepositoryService repositoryService = smartEngine
                 .getRepositoryService();
@@ -88,7 +89,7 @@ public class BpmnProcessTest {
 
 
 
-        ProcessInstance run1  = processService.run(processDefinition,"1","theTask1",false,context);
+        ProcessInstance run1  = processService.run(processDefinition,re,"theTask1",context);
 
         System.out.println(run1.toString());
 
