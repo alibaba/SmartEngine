@@ -5,7 +5,7 @@
   <parent> 
     <groupId>com.alibaba.smart.framework</groupId>  
     <artifactId>engine.modules</artifactId>  
-    <version>1.0.11-TP3-auto</version> 
+    <version>1.0.12-TP3-SNAPSHOT</version> 
   </parent>  
   <artifactId>engine.modules.bpmn</artifactId>  
   <name>Smart Engine Modules - BPMN</name>  
