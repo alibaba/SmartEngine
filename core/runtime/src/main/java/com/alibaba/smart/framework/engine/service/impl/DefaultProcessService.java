@@ -137,7 +137,31 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         }
 
         processInstance.setProcessUri(processDefinition.getUri());
-        processInstanceStorage.save(processInstance);
+        return processInstance;
+    }
+
+
+    @Override
+    public ProcessInstance run(ProcessDefinition definition, ProcessInstance processInstance, String activityId, Map<String, Object> request) {
+        PvmProcessInstance pvmProcess = new DefaultPvmProcessInstance();
+        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(definition.getId(), definition.getVersion());
+        ExecutionInstance chosenExecution  = null;
+        for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
+            if (StringUtils.equalsIgnoreCase(executionInstance.getActivity().getActivityId(),activityId)) {
+                chosenExecution = executionInstance;
+                break;
+            }
+            checkAlreadyProcessed(activityId,pvmProcessDefinition,executionInstance.getActivity().getActivityId());
+        }
+        if (chosenExecution == null) {
+            throw new EngineException("not find activiy,check process defintion");
+        }
+        ExecutionContext instanceContext = this.instanceContextFactory.create();
+        instanceContext.setProcessInstance(processInstance);
+        instanceContext.setCurrentExecution(chosenExecution);// 执行实例添加到当前上下文中
+        instanceContext.setRequest(request);
+        instanceContext.setPvmProcessDefinition(pvmProcessDefinition);
+        pvmProcess.run(instanceContext);
         return processInstance;
     }
 

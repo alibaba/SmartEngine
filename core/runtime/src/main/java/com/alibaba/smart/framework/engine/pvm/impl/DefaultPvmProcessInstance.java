@@ -94,9 +94,6 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
         } else {
             processInstance.setStatus(InstanceStatus.suspended);
         }
-        //TODO 这边怎么突然来了一个存储 存储流程实例
-        ProcessInstanceStorage processInstanceStorage = extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
-        processInstanceStorage.save(context.getProcessInstance());
         return processMessage;
     }
     

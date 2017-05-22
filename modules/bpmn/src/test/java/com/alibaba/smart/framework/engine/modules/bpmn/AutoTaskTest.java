@@ -103,10 +103,7 @@ public class AutoTaskTest {
     @Test
     public void testAbortAutoProcess() throws Exception {
 
-
-        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
-        DefaultSmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
+        SmartEngine smartEngine =  workflow.getEngine();
 
         RepositoryService repositoryService = smartEngine.getRepositoryService();
         ProcessDefinition processDefinition = repositoryService.deploy("test-auto-abort.bpmn20.xml");
@@ -117,7 +114,7 @@ public class AutoTaskTest {
         ProcessInstance processInstance  = null;
         try {
             processInstance = processService.start(processDefinition.getId(), processDefinition.getVersion(), context);
-            processInstance  = processService.run(processDefinition,processInstance.getInstanceId(),"createOrder",false,context);
+            processInstance  = processService.run(processDefinition,processInstance,"createOrder",context);
 
         }catch (Exception e) {
             System.out.println(processInstance.toString());
@@ -128,7 +125,7 @@ public class AutoTaskTest {
 
         EngineParam engineParam  = EngineParam.of("1","test-parallel","1.0.0",processTest.getProcessStore());
         ProcessInstance re = processService.recovery(engineParam);
-        processInstance  = processService.run(processDefinition,re.getInstanceId(),"theTask2",false,context);
+        processInstance  = processService.run(processDefinition,re,"theTask2",context);
 
         System.out.println(processInstance.toString());
 
