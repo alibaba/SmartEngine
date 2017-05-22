@@ -15,5 +15,5 @@
       <artifactId>guava</artifactId> 
     </dependency> 
   </dependencies>  
-  <contributors><contributor><properties><provider>dongdong.zdd@alibaba-inc.com</provider><codeName>null</codeName><codeUrl>git@gitlab.alibaba-inc.com:smart-framework/smart-engine.git commit:55fc65a</codeUrl><description>contributors added by SCM Plugin, please don't modify it!</description></properties></contributor></contributors>
+  <contributors><contributor><properties><provider>dongdong.zdd@alibaba-inc.com</provider><codeName>null</codeName><codeUrl>git@gitlab.alibaba-inc.com:smart-framework/smart-engine.git commit:5cd657e</codeUrl><description>contributors added by SCM Plugin, please don't modify it!</description></properties></contributor></contributors>
 </project>
