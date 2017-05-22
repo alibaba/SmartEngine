@@ -42,13 +42,10 @@ public interface ProcessService {
     /**
      * 指定activityId来运行流程
      *
-     * @param processId
+     * @param processInstance
      * @param activityId
      * @return
      */
-    ProcessInstance run(ProcessDefinition definition,String processId, String activityId, boolean sub,Map<String,Object> request);
-
-
     ProcessInstance run(ProcessDefinition definition,ProcessInstance processInstance, String activityId,Map<String,Object> request);
 
 
