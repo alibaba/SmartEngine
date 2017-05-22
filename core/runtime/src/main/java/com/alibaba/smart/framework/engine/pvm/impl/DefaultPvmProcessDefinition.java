@@ -173,8 +173,6 @@ public class DefaultPvmProcessDefinition extends AbstractPvmActivity<Process> im
         } else {
             processInstance.setStatus(InstanceStatus.suspended);
         }
-        // 存储流程实例
-        extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class).save(context.getProcessInstance());
         return processMessage;
     }
 
