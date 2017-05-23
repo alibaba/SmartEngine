@@ -5,7 +5,7 @@
   <parent> 
     <groupId>com.alibaba.smart.framework</groupId>  
     <artifactId>engine</artifactId>  
-    <version>1.0.13-TP3</version> 
+    <version>1.0.13-TP3-auto</version> 
   </parent>  
   <artifactId>engine.core</artifactId>  
   <packaging>pom</packaging>  
@@ -23,6 +23,5 @@
         <version>18.0</version> 
       </dependency> 
     </dependencies> 
-  </dependencyManagement>  
-  <contributors><contributor><properties><provider>dongdong.zdd@alibaba-inc.com</provider><codeName>null</codeName><codeUrl>git@gitlab.alibaba-inc.com:smart-framework/smart-engine.git commit:55fc65a</codeUrl><description>contributors added by SCM Plugin, please don't modify it!</description></properties></contributor></contributors>
+  </dependencyManagement>
 </project>

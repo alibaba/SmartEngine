@@ -5,7 +5,7 @@
   <parent> 
     <groupId>com.alibaba.smart.framework</groupId>  
     <artifactId>engine.modules</artifactId>  
-    <version>1.0.13-TP3</version> 
+    <version>1.0.13-TP3-auto</version> 
   </parent>  
   <artifactId>engine.modules.storage.database</artifactId>  
   <name>Smart Engine Modules - Database Storage</name>  
@@ -35,6 +35,5 @@
       <groupId>com.taobao.tddl</groupId>  
       <artifactId>tddl-client</artifactId> 
     </dependency> 
-  </dependencies>  
-  <contributors><contributor><properties><provider>dongdong.zdd@alibaba-inc.com</provider><codeName>null</codeName><codeUrl>git@gitlab.alibaba-inc.com:smart-framework/smart-engine.git commit:55fc65a</codeUrl><description>contributors added by SCM Plugin, please don't modify it!</description></properties></contributor></contributors>
+  </dependencies>
 </project>
