@@ -175,8 +175,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
 
 
     @Override
-    public ProcessInstance pushActivityOnRam(ProcessDefinition definition,String processId) {
-        ProcessInstance processInstance = getProcessInstance(processId,false);
+    public ProcessInstance pushActivityOnRam(ProcessDefinition definition,ProcessInstance processInstance) {
         PvmProcessInstance pvmProcess = new DefaultPvmProcessInstance();
         PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(definition.getId(), definition.getVersion());
 

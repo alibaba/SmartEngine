@@ -56,7 +56,7 @@ public interface ProcessService {
      * 在内存中推进流程引擎
      * @return
      */
-    ProcessInstance pushActivityOnRam(ProcessDefinition definition,String processId);
+    ProcessInstance pushActivityOnRam(ProcessDefinition definition,ProcessInstance processInstance);
 
 
 
