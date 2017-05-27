@@ -19,9 +19,9 @@
             <conditionExpression type="mvel"><![CDATA[smartEngineAction == "formal_order"]]></conditionExpression>
         </sequenceFlow>
 
-        <receiveTask id="pre_order" name="预下单" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="pre_order" name="pre_order" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
 
-        <receiveTask id="formal_order" name="正式下单" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="formal_order" name="formal_order" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
 
 
         <sequenceFlow id="flow4" sourceRef="pre_order" targetRef="callActivity"></sequenceFlow>
@@ -29,7 +29,7 @@
         <sequenceFlow id="flow5" sourceRef="formal_order" targetRef="callActivity"></sequenceFlow>
 
 
-        <callActivity id="callActivity" calledElement="simpleCallActivity" calledElementVersion="2.0.0" />
+        <callActivity id="callActivity" name="callActivity" calledElement="simpleCallActivity" calledElementVersion="2.0.0" />
 
 
         <sequenceFlow id="flow6" sourceRef="callActivity" targetRef="end_order"></sequenceFlow>

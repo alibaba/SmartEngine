@@ -49,6 +49,7 @@ public class InstanceSerializerV1 {
                 if(active){
                     //注意: 这里仅保存了需要被执行的实例,历史的activityInstance在这里并没有保存。在阿里的海量数据业务中,也通常不需要。
                     stringBuilder.append(activityInstance.getInstanceId()).append(",");
+                    stringBuilder.append(activityInstance.getBlockId()).append(",");
                     stringBuilder.append(activityInstance.getActivityId()).append(",");
                     stringBuilder.append(executionInstance.getInstanceId()).append(",");
                     stringBuilder.append(active).append(",");
@@ -146,6 +147,13 @@ public class InstanceSerializerV1 {
         activityInstance.setInstanceId(Long.valueOf(st1.nextToken()));
         String activityId = st1.nextToken();
         activityInstance.setActivityId(activityId);
+
+        String blockId = st1.nextToken();
+        if(!"null".equals(blockId)){
+            activityInstance.setBlockId(Long.valueOf(blockId));
+        }
+
+
         ExecutionInstance executionInstance = buildExecutionInstance(st1, activityId);
         activityInstance.setExecutionInstance(executionInstance);
         return activityInstance;
