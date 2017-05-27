@@ -144,14 +144,19 @@ public class InstanceSerializerV1 {
         String activityInstanceAndExecutionInstance = st.nextToken();
         StringTokenizer st1 = new StringTokenizer(activityInstanceAndExecutionInstance, ",");
         ActivityInstance activityInstance = new DefaultActivityInstance();
+
         activityInstance.setInstanceId(Long.valueOf(st1.nextToken()));
-        String activityId = st1.nextToken();
-        activityInstance.setActivityId(activityId);
+
 
         String blockId = st1.nextToken();
         if(!"null".equals(blockId)){
             activityInstance.setBlockId(Long.valueOf(blockId));
         }
+
+
+        String activityId = st1.nextToken();
+        activityInstance.setActivityId(activityId);
+
 
 
         ExecutionInstance executionInstance = buildExecutionInstance(st1, activityId);
