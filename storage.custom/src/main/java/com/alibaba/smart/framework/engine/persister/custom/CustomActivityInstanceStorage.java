@@ -3,6 +3,9 @@ package com.alibaba.smart.framework.engine.persister.custom;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.persister.util.PersisterSession;
 
 import java.util.List;
 
@@ -23,8 +26,23 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
     }
 
     @Override
-    public ActivityInstance find(Long instanceId) {
-        return null;
+    public ActivityInstance find(Long activityInstanceId) {
+        ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance();
+        List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
+
+        ActivityInstance matchedActivityInstance = null;
+        for (ActivityInstance activityInstance : activityInstances) {
+            if(activityInstance.getInstanceId().equals(activityInstanceId)){
+                matchedActivityInstance = activityInstance;
+                break;
+            }
+        }
+
+        //if(null != matchedActivityInstance){
+        //    throw new EngineException("No ActivityInstance found : "+activityInstanceId);
+        //}
+
+        return matchedActivityInstance;
     }
 
 
@@ -35,6 +53,10 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
 
     @Override
     public List<ActivityInstance> findAll(Long processInstanceId) {
-        throw new EngineException("not implement intentionally");
+        ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance();
+        List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
+
+
+       return activityInstances;
     }
 }

@@ -16,6 +16,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> implements ActivityBehavior<ParallelGateway> {
@@ -61,11 +62,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 throw new EngineException("blockId should not be blank when in fork activity");
             }
 
-
-            ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, context);
-
-            context.getProcessInstance().addNewActivityInstance(activityInstance);
-
             //TODO 这里如果会有并发的话,会导致两个节点都完成了,但是流程节点并没有驱动下去。
             // 判断当前db中的,blockId是否相同(相同的blockId表示是一对 fork,join 网关) 以及 当前pvmActivity 的activityInstance数量 是否与 (inComeTransitionSize -1) 差相等。
             // 如果相等,则说明该fork网关职责结束,可以前往下一个节点。否则,跳出当前执行逻辑。
@@ -77,12 +73,15 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             List<ActivityInstance> activityInstanceList = activityInstanceStorage.findAll(processInstance.getInstanceId());
 
 
-            Integer sum = 0;
+            //Integer sum = 0;
 
-            if (null != activityInstanceList) {
+            //if (null != activityInstanceList) {
                 Collection<PvmTransition> pvmTransitions = incomeTransitions.values();
 
-                for (ActivityInstance completeActivityInstance : activityInstanceList) {
+                ListIterator<ActivityInstance> listIterator = activityInstanceList.listIterator();
+
+                while (listIterator.hasNext()){
+                    ActivityInstance completeActivityInstance =listIterator.next();
                     for (PvmTransition pvmTransition : pvmTransitions) {
                         String activityId = pvmTransition.getSource().getModel().getId();
 
@@ -93,17 +92,42 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
                                 //如果不为空,那么则说明当前环节已经完成。 TODO 增加activity的active状态
                                 if (null != completeActivityInstance.getCompleteDate()) {
-                                    sum++;
+                                    listIterator.remove();
+                                    //sum++;
                                 }
                             }
                         }
 
                     }
                 }
-            }
+
+                //for (ActivityInstance completeActivityInstance : activityInstanceList) {
+                //    for (PvmTransition pvmTransition : pvmTransitions) {
+                //        String activityId = pvmTransition.getSource().getModel().getId();
+                //
+                //        //如果相等,说明当前节点是join 网关的前置节点之一
+                //        if (activityId.equals(completeActivityInstance.getActivityId())) {
+                //            //如果相等,说明在同一个fork,join 环内。
+                //            if (blockId.equals(completeActivityInstance.getBlockId())) {
+                //
+                //                //如果不为空,那么则说明当前环节已经完成。 TODO 增加activity的active状态
+                //                if (null != completeActivityInstance.getCompleteDate()) {
+                //                    sum++;
+                //                }
+                //            }
+                //        }
+                //
+                //    }
+                //}
+            //}
+
+            //ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, context);
+            //
+            //context.getProcessInstance().addNewActivityInstance(activityInstance);
+
 
             //所有节点已经完成
-            if (sum == inComeTransitionSize) {
+            if (activityInstanceList.isEmpty()) {
                 //do nothing
             } else {
                 context.setNeedPause(true);

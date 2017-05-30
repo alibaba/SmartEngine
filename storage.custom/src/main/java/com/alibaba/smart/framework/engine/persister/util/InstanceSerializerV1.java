@@ -98,7 +98,7 @@ public class InstanceSerializerV1 {
 
     }
 
-    public static List<ActivityInstance>  deserializeActivityInstances(String serializeString) {
+    public static List<ActivityInstance>  deserializeActivityInstances(String serializeString,ProcessInstance processInstance) {
 
         StringTokenizer st = new StringTokenizer(serializeString, "|");
         String version = st.nextToken();
@@ -107,7 +107,7 @@ public class InstanceSerializerV1 {
         List<ActivityInstance> activityInstances = new ArrayList<ActivityInstance>();
 
         while (st.hasMoreTokens()) {
-            ActivityInstance activityInstance = buildActivityInstanceAndExecutionInstance(st);
+            ActivityInstance activityInstance = buildActivityInstanceAndExecutionInstance1(st,  processInstance);
 
             activityInstances.add(activityInstance);
         }
@@ -117,10 +117,10 @@ public class InstanceSerializerV1 {
     }
 
 
-    public static List<ExecutionInstance>  deserializeExecutionInstances(String serializeString) {
+    public static List<ExecutionInstance>  deserializeExecutionInstances(String serializeString,ProcessInstance processInstance) {
 
 
-        List<ActivityInstance>  activityInstances  = deserializeActivityInstances(serializeString);
+        List<ActivityInstance>  activityInstances  = deserializeActivityInstances(serializeString,  processInstance);
 
         List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
         for (ActivityInstance activityInstance : activityInstances) {
@@ -134,39 +134,43 @@ public class InstanceSerializerV1 {
 
     private static void buildActivityInstanceAndExecutionInstance(StringTokenizer st, ProcessInstance processInstance) {
         while (st.hasMoreTokens()) {
-            ActivityInstance activityInstance = buildActivityInstanceAndExecutionInstance(st);
+            ActivityInstance activityInstance = buildActivityInstanceAndExecutionInstance1(st,  processInstance);
 
             processInstance.getNewActivityInstances().add(activityInstance);
         }
     }
 
-    private static ActivityInstance buildActivityInstanceAndExecutionInstance(StringTokenizer st) {
+    private static ActivityInstance buildActivityInstanceAndExecutionInstance1(StringTokenizer st,ProcessInstance processInstance) {
         String activityInstanceAndExecutionInstance = st.nextToken();
         StringTokenizer st1 = new StringTokenizer(activityInstanceAndExecutionInstance, ",");
         ActivityInstance activityInstance = new DefaultActivityInstance();
 
         activityInstance.setInstanceId(Long.valueOf(st1.nextToken()));
-
+        activityInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
+        activityInstance.setProcessInstanceId(processInstance.getInstanceId());
 
         String blockId = st1.nextToken();
         if(!"null".equals(blockId)){
             activityInstance.setBlockId(Long.valueOf(blockId));
         }
-
+        //activityInstance.setProcessDefinitionIdAndVersion();
 
         String activityId = st1.nextToken();
         activityInstance.setActivityId(activityId);
 
 
 
-        ExecutionInstance executionInstance = buildExecutionInstance(st1, activityId);
+        ExecutionInstance executionInstance = buildExecutionInstance(st1, activityId,   activityInstance,  processInstance);
         activityInstance.setExecutionInstance(executionInstance);
         return activityInstance;
     }
 
-    private static ExecutionInstance buildExecutionInstance(StringTokenizer st1, String activityId) {
+    private static ExecutionInstance buildExecutionInstance(StringTokenizer st1, String activityId,ActivityInstance activityInstance,ProcessInstance processInstance) {
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
         executionInstance.setInstanceId(Long.valueOf(st1.nextToken()));
+        executionInstance.setProcessInstanceId(processInstance.getInstanceId());
+        executionInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
+        executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
         executionInstance.setActivityId(activityId);
         executionInstance.setActive(Boolean.valueOf(st1.nextToken()));
         return executionInstance;

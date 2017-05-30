@@ -24,7 +24,17 @@ public class AliPayPersisterStrategy implements PersisterStrategy {
 
 
     @Override
-    public String persister(ProcessInstance processInstance) {
+    public String insert(ProcessInstance processInstance) {
+
+        String str =  InstanceSerializerFacade.serialize(processInstance);
+        processInstanceMap.put(processInstance.getInstanceId(),str);
+        return str;
+
+    }
+
+
+    @Override
+    public String update(ProcessInstance processInstance) {
 
         String str =  InstanceSerializerFacade.serialize(processInstance);
         processInstanceMap.put(processInstance.getInstanceId(),str);

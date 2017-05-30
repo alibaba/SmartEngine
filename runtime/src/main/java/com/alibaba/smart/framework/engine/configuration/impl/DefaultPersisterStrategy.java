@@ -8,7 +8,12 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
  */
 public class DefaultPersisterStrategy implements PersisterStrategy {
     @Override
-    public String persister(ProcessInstance processInstance) {
+    public String insert(ProcessInstance processInstance) {
+        return null;
+    }
+
+    @Override
+    public String update(ProcessInstance processInstance) {
         return null;
     }
 

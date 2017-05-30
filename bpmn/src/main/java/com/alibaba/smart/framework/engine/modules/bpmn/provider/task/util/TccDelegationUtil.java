@@ -50,6 +50,10 @@ public abstract  class TccDelegationUtil {
                 }
             }
 
+        } else {
+
+            throw new EngineException("So far only support TccDelegation implement : "+className);
+
         }
         return errorOccurred;
     }

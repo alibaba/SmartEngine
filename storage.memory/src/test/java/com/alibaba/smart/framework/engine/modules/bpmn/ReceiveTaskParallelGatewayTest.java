@@ -92,7 +92,7 @@ public class ReceiveTaskParallelGatewayTest {
         activityInstances =  activityQueryService.findAll(processInstance.getInstanceId());
         Assert.assertNotNull(activityInstances);
         size = activityInstances.size();
-        assertEquals(5, size);
+        assertEquals(4, size);
 
 
 

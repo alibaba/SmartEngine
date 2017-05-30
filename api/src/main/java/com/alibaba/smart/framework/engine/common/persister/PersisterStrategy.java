@@ -10,7 +10,10 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
  */
 public interface PersisterStrategy {
 
-    String persister(ProcessInstance  processInstance);
+    String insert(ProcessInstance  processInstance);
+
+    String update(ProcessInstance  processInstance);
+
 
     ProcessInstance getProcessInstance(Long processInstanceId);
 
