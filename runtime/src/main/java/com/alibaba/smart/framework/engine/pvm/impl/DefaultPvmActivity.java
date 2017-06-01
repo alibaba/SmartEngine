@@ -25,8 +25,8 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
     @Override
     public void execute(ExecutionContext context) {
 
-        ActivityBehavior activityBehaviorProvider = this.getActivityBehavior();
-        activityBehaviorProvider.enter(this, context);
+        ActivityBehavior activityBehavior = this.getActivityBehavior();
+        activityBehavior.enter(this, context);
 
         if (context.isNeedPause()) {
             // break;

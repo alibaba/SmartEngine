@@ -70,6 +70,9 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
             ActivityInstanceStorage activityInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
 
+
+            //FIXME lock 接口设置。 lockpid and activityId , 什么时候unlock? 还是说
+
             List<ActivityInstance> activityInstanceList = activityInstanceStorage.findAll(processInstance.getInstanceId());
 
 

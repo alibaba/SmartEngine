@@ -17,4 +17,5 @@ public class EndEvent extends AbstractEvent {
 
     private static final long serialVersionUID = 3529827842581828898L;
 
+    private String className;
 }

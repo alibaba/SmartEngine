@@ -9,6 +9,8 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ReceiveTask;
+import com.alibaba.smart.framework.engine.modules.bpmn.provider.task.util.TccDelegationUtil;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -30,6 +32,11 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> impleme
 
         processInstance.addNewActivityInstance(activityInstance);
 
+        EndEvent endEvent = (EndEvent) pvmActivity.getModel();
+        String className = endEvent.getClassName();
+        executeExtension(executionContext, className);
+
+
     }
 
     @Override
@@ -48,6 +55,8 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> impleme
 
     @Override
     public void leave(PvmActivity runtimeActivity, ExecutionContext context){
+
+
         //子流程结束时,才会进入到该环节里面来。这个时候没要慌,需要找出父流程的执行实例id,然后继续执行父流程的后续节点。
         ProcessInstance processInstance = context.getProcessInstance();
         if(null !=  processInstance.getParentInstanceId()){
@@ -65,5 +74,14 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> impleme
             executionCommandService.signal(parentExecutionInstanceId);
         }
 
+    }
+
+    private void executeExtension(ExecutionContext executionContext, String className) {
+        if (null == className) {
+
+        } else {
+            TccDelegationUtil.execute(executionContext, className);
+
+        }
     }
 }

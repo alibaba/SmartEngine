@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.parser;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.parser.ClassNameWorkAroundUtil;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
@@ -37,6 +38,11 @@ public class EndEventParser extends AbstractBpmnActivityParser<EndEvent> impleme
     public EndEvent parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         EndEvent endEvent = new EndEvent();
         endEvent.setId(this.getString(reader, "id"));
+
+        String className =  ClassNameWorkAroundUtil.parse(reader);
+
+        endEvent.setClassName(className);
+
         this.parseChildren(endEvent, reader, context);
         return endEvent;
     }

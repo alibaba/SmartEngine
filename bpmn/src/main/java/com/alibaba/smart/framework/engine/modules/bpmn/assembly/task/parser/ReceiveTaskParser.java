@@ -35,9 +35,7 @@ public class ReceiveTaskParser extends AbstractBpmnActivityParser<ReceiveTask> i
 
         String className =  ClassNameWorkAroundUtil.parse(reader);
 
-        if(null != className){
-            receiveTask.setClassName(className);
-        }
+        receiveTask.setClassName(className);
 
 
 
