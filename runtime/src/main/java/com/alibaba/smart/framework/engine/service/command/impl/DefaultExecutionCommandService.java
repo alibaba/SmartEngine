@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
@@ -108,7 +109,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
-        markDone(activityInstance,executionInstance);
+        MarkDoneUtil.markDone(activityInstance,executionInstance,this.extensionPointRegistry);
 
 
         ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
@@ -128,22 +129,5 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
 
 
-    private  void markDone(ActivityInstance activityInstance,ExecutionInstance executionInstance) {
-        Date completeDate = DateUtil.getCurrentDate();
-        executionInstance.setCompleteDate(completeDate);
-        executionInstance.setActive(false);
-        if(null != activityInstance){
-            activityInstance.setCompleteDate(completeDate);
-            //TODO
-            //activityInstance.setActive(false);
-        }
-
-        //TODO 这里可以把需要更新的对象放到另外一个队列中去,后面再统一更新。 需要结合 CustomExecutionInstanceStorage#Update 一起看下。
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-        ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
-
-        executionInstanceStorage.update(executionInstance);
-
-    }
 
 }

@@ -43,6 +43,9 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> i
         //TODO
         if (null == className) {
 
+            executionInstance.setActive(false);
+
+
             Action action = serviceTask.getAction();
             if (action == null) {
                 return;

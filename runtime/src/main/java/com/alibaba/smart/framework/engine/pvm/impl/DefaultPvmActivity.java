@@ -62,6 +62,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
 
             for (PvmTransition matchedTransition : matchedTransitions) {
                 PvmActivity targetPvmActivity = matchedTransition.getTarget();
+                context.setSourcePvmActivity(matchedTransition.getSource());
                 this.executeRecursively(targetPvmActivity, context);
             }
 

@@ -4,6 +4,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import lombok.Data;
 
@@ -32,4 +33,8 @@ public class DefaultInstanceContext implements ExecutionContext {
     private ExtensionPointRegistry extensionPointRegistry;
 
     private Long blockId;
+
+    private PvmActivity sourcePvmActivity;
+
+
 }
