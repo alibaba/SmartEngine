@@ -85,6 +85,31 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @Override
+    public ProcessDefinitionDeployment createDeployment(InputStream inputStream) {
+        return null;
+    }
+
+    @Override
+    public void inactivateDeployment(Long id) {
+
+    }
+
+    @Override
+    public void activateDeployment(Long id) {
+
+    }
+
+    @Override
+    public void inactivateProcessDefinitionById(String processDefinitionId, String version) {
+
+    }
+
+    @Override
+    public void activateProcessDefinitionById(String processDefinitionId, String version) {
+
+    }
+
+    @Override
     public void start() {
 
         this.smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
