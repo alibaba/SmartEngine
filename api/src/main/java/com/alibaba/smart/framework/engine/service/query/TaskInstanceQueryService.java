@@ -10,4 +10,5 @@ import java.util.List;
 public interface TaskInstanceQueryService {
 
     List<TaskInstance> findPendingTask(Long processInstanceId);
+
 }
