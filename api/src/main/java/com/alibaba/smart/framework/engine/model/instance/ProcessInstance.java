@@ -8,7 +8,23 @@ import java.util.List;
  */
 public interface ProcessInstance extends LifeCycleInstance {
 
+    /**
+     * get ProcessDefinitionId and ProcessDefinitionVersion
+     * @return
+     */
     String getProcessDefinitionIdAndVersion();
+
+    /**
+     * get ProcessDefinitionId
+     * @return
+     */
+    String getProcessDefinitionId();
+
+    /**
+     * get ProcessDefinitionVersion
+     * @return
+     */
+    String getProcessDefinitionVersion();
 
     void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
 
