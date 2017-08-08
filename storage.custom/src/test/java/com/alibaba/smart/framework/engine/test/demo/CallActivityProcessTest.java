@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.test.demo;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
 import com.alibaba.smart.framework.engine.test.AliPayIdGenerator;
 import com.alibaba.smart.framework.engine.test.AliPayPersisterStrategy;
 
@@ -52,6 +54,8 @@ public class CallActivityProcessTest {
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
+        ProcessInstanceQueryService processInstanceQueryService = smartEngine.getProcessQueryService();
+
         ExecutionInstanceQueryService executionQueryService = smartEngine.getExecutionQueryService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
@@ -76,53 +80,90 @@ public class CallActivityProcessTest {
         ProcessInstance processInstance = processCommandService.start(
             "parent-callactivity", "1.0.0",request
         );
+        ProcessInstance subProcessInstance=null;
         Assert.assertNotNull(processInstance);
 
-        //在调用findActiveExecution和signal方法前调用此方法。当然,在实际场景下,persiste通常只需要调用一次;UpdateThreadLocal则很多场景下需要调用。
-        updateThreadLocal( 333L, processEngineConfiguration);
+        Long processInstanceId = processInstance.getInstanceId();
+        Long subProcessInstanceId = null;
 
-        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        List<ExecutionInstance> executionInstanceList;
+        ExecutionInstance firstExecutionInstance;
+
+        List<ExecutionInstance> subExecutionInstanceList;
+        ExecutionInstance firstSubExecutionInstance;
+
+        //只有主流程一个实例
+        Collection<Long> processInstanceIds = PersisterSession.currentSession().getProcessInstances().keySet();
+        Assert.assertEquals(1, processInstanceIds.size());
+
+        executionInstanceList =executionQueryService.findActiveExecution(processInstanceId);
         assertEquals(1, executionInstanceList.size());
-        ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
+        firstExecutionInstance = executionInstanceList.get(0);
         assertTrue("pre_order".equals(firstExecutionInstance.getActivityId()));
         //完成预下单,将流程驱动到 下单确认环节。
-        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
+        executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
+
+        //因为执行到了callActivity节点,有主流程和子流程两个实例
+        processInstanceIds = PersisterSession.currentSession().getProcessInstances().keySet();
+        Assert.assertEquals(2, processInstanceIds.size());
+        for (Long instanceId : processInstanceIds) {
+            if (!processInstanceId.equals(instanceId)) {
+                subProcessInstanceId = instanceId;
+            }
+        }
 
         //TODO 这里需要断言父子数据均是正确。
 
-        //测试下是否符合预期
-        updateThreadLocal(1033L,processEngineConfiguration);
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        // 主流程在callActivity节点
+        executionInstanceList =executionQueryService.findActiveExecution(processInstanceId);
         assertEquals(1, executionInstanceList.size());
-
         firstExecutionInstance = executionInstanceList.get(0);
-        assertTrue("debit".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("callActivity".equals(firstExecutionInstance.getActivityId()));
+
+        // 子流程在debit节点
+        subExecutionInstanceList = executionQueryService.findActiveExecution(subProcessInstanceId);
+        assertEquals(1, subExecutionInstanceList.size());
+        firstSubExecutionInstance = subExecutionInstanceList.get(0);
+        assertTrue("debit".equals(firstSubExecutionInstance.getActivityId()));
+
+        // TODO ettear 如果这时执行主流程应该异常
+        //processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
+
 
         //完成下单确认,将流程驱动到等待资金到账环节。
-        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
+        executionCommandService.signal(firstSubExecutionInstance.getInstanceId(), request);
 
-        //测试下是否符合预期
-        updateThreadLocal( 1033L, processEngineConfiguration);
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
-        firstExecutionInstance = executionInstanceList.get(0);
+        // 主流程还是在callActivity节点
+        executionInstanceList =executionQueryService.findActiveExecution(processInstanceId);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("checkDebitResult".equals(firstExecutionInstance.getActivityId()));
+        firstExecutionInstance = executionInstanceList.get(0);
+        assertTrue("callActivity".equals(firstExecutionInstance.getActivityId()));
+
+        //子流程在checkDebitResult节点
+        subExecutionInstanceList = executionQueryService.findActiveExecution(subProcessInstanceId);
+        assertEquals(1, subExecutionInstanceList.size());
+        firstSubExecutionInstance = subExecutionInstanceList.get(0);
+        assertTrue("checkDebitResult".equals(firstSubExecutionInstance.getActivityId()));
 
         //完成资金到账,将流程驱动到资金交割处理环节。
-        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
+        executionCommandService.signal(firstSubExecutionInstance.getInstanceId(), request);
 
-        //测试下是否符合预期
-        updateThreadLocal( 333L, processEngineConfiguration);
-        executionInstanceList = executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        //主流程结束callActivity节点，在end_order节点
+        executionInstanceList = executionQueryService.findActiveExecution(processInstanceId);
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
         assertTrue("end_order".equals(firstExecutionInstance.getActivityId()));
+
+        //子流程结束
+        subProcessInstance=processInstanceQueryService.findOne(subProcessInstanceId);
+        Assert.assertEquals(InstanceStatus.completed,subProcessInstance.getStatus());
+        subExecutionInstanceList = executionQueryService.findActiveExecution(subProcessInstanceId);
+        assertEquals(0, subExecutionInstanceList.size());
 
         //完成资金交割处理,将流程驱动到ACK确认环节。
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId());
 
         //测试下是否符合预期
-        updateThreadLocal(333L,  processEngineConfiguration);
         executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
         assertEquals(0, executionInstanceList.size());
 
@@ -131,14 +172,5 @@ public class CallActivityProcessTest {
         PersisterSession.destroySession();
 
 
-    }
-
-    //BE AWARE:如果在主流程中,则需要设置父流程实例id,否则需要设置子流程实例id。
-    private void updateThreadLocal(Long pid, ProcessEngineConfiguration processEngineConfiguration) {
-
-
-        ProcessInstance processInstance = processEngineConfiguration.getPersisterStrategy().getProcessInstance(pid);
-
-        PersisterSession.currentSession().setProcessInstance(processInstance);
     }
 }

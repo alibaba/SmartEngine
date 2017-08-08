@@ -10,16 +10,15 @@ import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
-
 /**
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public abstract class AbstractActivityBehavior<T extends Activity> implements ActivityBehavior<T> {
+public abstract class AbstractActivityBehavior<T extends Activity> implements ActivityBehavior {
 
     private PvmActivity runtimeActivity;
 
-    private ExtensionPointRegistry extensionPointRegistry;
+    protected ExtensionPointRegistry extensionPointRegistry;
 
     protected ProcessInstanceFactory processInstanceFactory;
     protected ExecutionInstanceFactory executionInstanceFactory;
@@ -35,7 +34,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         this.taskInstanceFactory = extensionPointRegistry.getExtensionPoint(TaskInstanceFactory.class);
     }
 
-
     protected ExtensionPointRegistry getExtensionPointRegistry() {
         return extensionPointRegistry;
     }
@@ -45,29 +43,22 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         return runtimeActivity;
     }
 
-
     @Override
-    public void enter(PvmActivity runtimeActivity, ExecutionContext context) {
-
-        if(needSuspend(context)){
-            context.setNeedPause(true);
-        }
-
-        buildInstanceRelationShip(runtimeActivity,context);
-
-    }
-
-    @Override
-    public void leave(PvmActivity runtimeActivity, ExecutionContext context){
-
-    }
-
-    protected boolean needSuspend(ExecutionContext context) {
+    public boolean enter(ExecutionContext context) {
         return false;
     }
 
+    @Override
+    public boolean execute(ExecutionContext context) {
+        return false;
+    }
 
-    protected abstract void  buildInstanceRelationShip(PvmActivity runtimeActivity, ExecutionContext context);
+    @Override
+    public void leave(ExecutionContext context) {
 
-    
+    }
+
+    protected T getModel() {
+        return (T)this.runtimeActivity.getModel();
+    }
 }

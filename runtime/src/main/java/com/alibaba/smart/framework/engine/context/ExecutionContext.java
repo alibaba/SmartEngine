@@ -2,6 +2,8 @@ package com.alibaba.smart.framework.engine.context;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -17,10 +19,13 @@ public interface ExecutionContext {
 
     void setProcessInstance(ProcessInstance processInstance);
 
-    ProcessInstance getParentProcessInstance();
+    ExecutionInstance getExecutionInstance();
 
-    void setParentProcessInstance(ProcessInstance parentProcessInstance );
+    void setExecutionInstance(ExecutionInstance executionInstance);
 
+    ActivityInstance getActivityInstance();
+
+    void setActivityInstance(ActivityInstance activityInstance);
 
     PvmProcessDefinition getPvmProcessDefinition();
 

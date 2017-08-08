@@ -1,9 +1,12 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.gateway;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
@@ -12,30 +15,94 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-
-public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> implements ActivityBehavior<ParallelGateway> {
+public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> {
 
     public ParallelGatewayBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 
-
     @Override
-    public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext context) {
+    public boolean enter(ExecutionContext context) {
+        ParallelGateway parallelGateway = this.getModel();
+        PvmActivity pvmActivity = this.getRuntimeActivity();
+
+        Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();
+
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = super.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+        ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
+
+
+        Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
+
+
+        String sourcePvmActivityId = context.getSourcePvmActivity().getModel().getId();
+
+        for (PvmTransition pvmTransition : inComingPvmTransitions) {
+            String pvmTransitionSourceActivityId = pvmTransition.getSource().getModel().getId();
+            boolean equals1 = pvmTransitionSourceActivityId.equals(sourcePvmActivityId);
+            if (equals1) {
+                ActivityInstance activityInstance = super.activityInstanceFactory.create(parallelGateway, context);
+
+                ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance,  context);
+
+                activityInstance.setExecutionInstance(executionInstance);
+
+                context.getProcessInstance().addNewActivityInstance(activityInstance);
+            }
+        }
+
+        ProcessInstance processInstance = context.getProcessInstance();
+
+        List<ExecutionInstance> executionInstanceList = executionInstanceStorage.findActiveExecution(processInstance.getInstanceId());
+
+        int reachedForkedSum = 0;
+
+        if(null != executionInstanceList){
+
+            for (ExecutionInstance executionInstance : executionInstanceList) {
+
+                if (executionInstance.getActivityId().equals(parallelGateway.getId())) {
+                    reachedForkedSum = reachedForkedSum+1;
+                }
+            }
+        }
+
+        //如果已经完成
+        if(reachedForkedSum == inComingPvmTransitions.size()){
+            //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
+            ActivityInstanceStorage activityInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
+
+            List<ActivityInstance> activityInstanceList = activityInstanceStorage.findAll(processInstance.getInstanceId());
+
+            for (ActivityInstance activityInstance : activityInstanceList) {
+
+                if(activityInstance.getActivityId().equals(pvmActivity.getModel().getId())){
+                    MarkDoneUtil.markDone(activityInstance,activityInstance.getExecutionInstance(),super.getExtensionPointRegistry());
+                }
+            }
+            return false;
+
+        }else{
+            //未完成的话,流程继续暂停
+            return true;
+        }
+    }
+/*
+    @Override
+    public void buildInstanceRelationShip(ExecutionContext context) {
         //算法说明:ParallelGatewayBehavior 同时承担 fork 和 join 职责。所以说,如何判断是 fork 还是 join ?
         // 目前主要原则就看pvmActivity节点的 incomeTransition 和 outcomeTransition 的比较。
         // 如果 income 为1,则为 join 节点。
         // 如果 outcome 为 1 ,则为 fork 节点。
         // 重要:在流程定义解析时,需要判断如果是 fork,则 outcome >=2, income=1; 类似的,如果是 join,则 outcome = 1,income>=2
+
+        ParallelGateway parallelGateway = this.getModel();
+        PvmActivity pvmActivity = this.getRuntimeActivity();
 
         ProcessInstance processInstance = context.getProcessInstance();
 
@@ -47,14 +114,8 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         int inComeTransitionSize = incomeTransitions.size();
         if (outComeTransitionSize >= 2 && inComeTransitionSize == 1) {
             //fork
-
-            IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
-            context.setBlockId(idGenerator.getId());
-
-            ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, context);
-
+            ActivityInstance activityInstance = super.activityInstanceFactory.create(parallelGateway, context);
             context.getProcessInstance().addNewActivityInstance(activityInstance);
-
 
         } else if (outComeTransitionSize == 1 && inComeTransitionSize >= 2) {
 
@@ -74,7 +135,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 String pvmTransitionSourceActivityId = pvmTransition.getSource().getModel().getId();
                 boolean equals1 = pvmTransitionSourceActivityId.equals(sourcePvmActivityId);
                 if (equals1) {
-                    ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, context);
+                    ActivityInstance activityInstance = super.activityInstanceFactory.create(parallelGateway, context);
 
                     ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance,  context);
 
@@ -92,7 +153,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
                 for (ExecutionInstance executionInstance : executionInstanceList) {
 
-                  if(executionInstance.getActivityId().equals(pvmActivity.getModel().getId())){
+                    if (executionInstance.getActivityId().equals(parallelGateway.getId())) {
                             reachedForkedSum = reachedForkedSum+1;
                    }
                 }
@@ -126,6 +187,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
 
     }
+    */
 
     //private void old2(PvmActivity pvmActivity, ExecutionContext context, ProcessInstance processInstance,
     //                  Map<String, PvmTransition> incomeTransitions) {//join

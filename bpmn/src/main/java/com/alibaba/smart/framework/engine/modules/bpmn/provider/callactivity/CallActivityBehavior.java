@@ -1,15 +1,16 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.callactivity;
 
-import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import java.util.Map;
+
+import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.callactivity.CallActivity;
-import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -20,57 +21,51 @@ import com.alibaba.smart.framework.engine.service.command.impl.CommonServiceHelp
 /**
  * Created by 高海军 帝奇 74394 on 2017 May  16:07.
  */
-public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity> implements ActivityBehavior<CallActivity> {
+public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity> {
 
     public CallActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 
     @Override
-    public void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext executionContext) {
-        ProcessInstance parentProcessInstance = executionContext.getProcessInstance();
-
-        ActivityInstance parentActivityInstance = super.activityInstanceFactory.create(pvmActivity, executionContext);
-        ExecutionInstance parentExecutionInstance = super.executionInstanceFactory.create(parentActivityInstance,  executionContext);
-
-        parentActivityInstance.setExecutionInstance(parentExecutionInstance);
-        parentProcessInstance.addNewActivityInstance(parentActivityInstance);
-
-
-        //BE AWARE:set parentProcessInstance
-        executionContext.setParentProcessInstance(parentProcessInstance);
-
-        CallActivity callActivity =   (CallActivity)pvmActivity.getModel();
-
+    public boolean enter(ExecutionContext context) {
+        CallActivity callActivity = this.getModel();
         String processDefinitionId =  callActivity.getCalledElement();
         String processDefinitionVersion = callActivity.getCalledElementVersion();
 
-
-        ProcessDefinitionContainer processDefinitionContainer = executionContext.getExtensionPointRegistry().getExtensionPoint(ProcessDefinitionContainer.class);
-
-        PvmProcessDefinition pvmProcessDefinition = processDefinitionContainer.get(processDefinitionId, processDefinitionVersion);
-        executionContext.setPvmProcessDefinition(pvmProcessDefinition);
-
-        PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
-
-        ProcessInstance processInstance = pvmProcessInstance.start(executionContext);
-
-
-        CommonServiceHelper.insertAndPersist(processInstance, executionContext.getRequest(),executionContext.getExtensionPointRegistry());
-
-        //BE AWARE: 代码执行此处时,子流程已经开始启动,对应的子流程环节已经执行完毕,子流程数据也完成了持久化。此时,子流程状态可能处于running或者completed。
-        // 那么,对应的父流程也需要返回出去。所以,这里将父流程实例返回放到context里面,供外部调用。
-        ProcessInstance parentProcessInstance1 = executionContext.getParentProcessInstance();
-
-        //BE AWARE: 如果此时,子流程是全自动型节点,那么parentProcessInstance1应该为空。因为此时代码时序需要执行片段了。
-        if(null!= parentProcessInstance1){
-            executionContext.setProcessInstance(parentProcessInstance1);
-        }
-
+        return this.call(context.getProcessInstance().getInstanceId(), context.getExecutionInstance().getInstanceId(),
+            processDefinitionId, processDefinitionVersion, context.getRequest());
     }
 
-    @Override
-    public boolean needSuspend(ExecutionContext context) {
-        return false;
+    //TODO ettear 与DefaultProcessCommandService的逻辑合并
+    private boolean call(Long parentInstanceId, Long parentExecutionInstanceId, String processDefinitionId,
+                         String version, Map<String, Object> request) {
+
+        ExecutionContext executionContext = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class)
+            .create();
+        executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
+            SmartEngine.class).getProcessEngineConfiguration();
+        executionContext.setProcessEngineConfiguration(processEngineConfiguration);
+        executionContext.setRequest(request);
+
+        PvmProcessDefinition pvmProcessDefinition = this.extensionPointRegistry.getExtensionPoint(
+            ProcessDefinitionContainer.class).get(processDefinitionId, version);
+        executionContext.setPvmProcessDefinition(pvmProcessDefinition);
+
+        //TODO TUNE 减少不必要的对象创建
+        PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
+
+        ProcessInstance processInstance = processInstanceFactory.create(executionContext);
+        processInstance.setParentInstanceId(parentInstanceId);
+        processInstance.setParentExecutionInstanceId(parentExecutionInstanceId);
+
+        executionContext.setProcessInstance(processInstance);
+
+        processInstance = pvmProcessInstance.start(executionContext);
+
+        processInstance = CommonServiceHelper.insertAndPersist(processInstance, request, extensionPointRegistry);
+
+        return InstanceStatus.completed!=processInstance.getStatus();
     }
 }

@@ -23,11 +23,13 @@ public class MarkDoneUtil {
             //activityInstance.setActive(false);
         }
 
-        //TODO 这里可以把需要更新的对象放到另外一个队列中去,后面再统一更新。 需要结合 CustomExecutionInstanceStorage#Update 一起看下。
+        //TODO 这里可以把需要更新的对象放到另外一个队列中去,后面再统一更新。 需要结合 CustomExecutionInstanceStorage#Update 一起看下。 ettear
+        /*
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
 
         executionInstanceStorage.update(executionInstance);
+        */
 
     }
 

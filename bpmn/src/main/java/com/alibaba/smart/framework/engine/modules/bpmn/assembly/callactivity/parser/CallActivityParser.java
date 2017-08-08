@@ -37,13 +37,12 @@ public class CallActivityParser  extends AbstractBpmnActivityParser<CallActivity
     }
 
     @Override
-    public CallActivity parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+    public CallActivity parseModel(XMLStreamReader reader, ParseContext context)
+        throws ParseException, XMLStreamException {
         CallActivity callActivity = new CallActivity();
         callActivity.setId(this.getString(reader, "id"));
         callActivity.setCalledElement(this.getString(reader, "calledElement"));
         callActivity.setCalledElementVersion(this.getString(reader, "calledElementVersion"));
-
-        this.parseChildren(callActivity, reader, context);
         return callActivity;
     }
 }

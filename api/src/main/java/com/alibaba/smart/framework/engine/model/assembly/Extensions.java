@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.model.assembly;
 
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBase;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBaseElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Extensions extends AbstractBase {
+public class Extensions extends AbstractBaseElement {
 
     private static final long serialVersionUID = -9017389195653634752L;
     private List<Extension> extensions = new ArrayList<Extension>(5);

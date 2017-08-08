@@ -1,5 +1,12 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.parser;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvent;
@@ -8,17 +15,12 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.A
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
 /**
  * Created by dongdongzdd on 16/9/20.
  */
-public class ProcessEventsParser extends AbstractBpmnParser<ProcessEvents> implements StAXArtifactParser<ProcessEvents> {
+public class ProcessEventsParser extends AbstractElementParser<ProcessEvents> implements StAXArtifactParser<ProcessEvents> {
 
     public ProcessEventsParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -35,7 +37,7 @@ public class ProcessEventsParser extends AbstractBpmnParser<ProcessEvents> imple
     }
 
     @Override
-    public ProcessEvents parse(XMLStreamReader reader, ParseContext context) throws ParseException,
+    public ProcessEvents parseModel(XMLStreamReader reader, ParseContext context) throws ParseException,
             XMLStreamException {
 
         ProcessEvents events = new ProcessEvents();
@@ -43,9 +45,7 @@ public class ProcessEventsParser extends AbstractBpmnParser<ProcessEvents> imple
             List<ProcessEvent> list = new ArrayList();
             events.setEvents(list);
         }
-        this.parseChildren(events, reader, context);
         return events;
-
     }
 
 

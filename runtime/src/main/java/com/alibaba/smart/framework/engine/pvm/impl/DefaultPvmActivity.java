@@ -1,17 +1,24 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
-import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
-import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
-import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -19,39 +26,69 @@ import java.util.Map;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements PvmActivity {
+public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivity {
 
+    protected ActivityInstanceFactory activityInstanceFactory;
+    protected ExecutionInstanceFactory executionInstanceFactory;
 
-    @Override
-    public void execute(ExecutionContext context) {
+    public DefaultPvmActivity(ExtensionPointRegistry extensionPointRegistry) {
+        super(extensionPointRegistry);
+        this.executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
+        this.activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
+    }
 
-        ActivityBehavior activityBehavior = this.getActivityBehavior();
-        activityBehavior.enter(this, context);
-
+        @Override
+    public void enter(ExecutionContext context) {
+        this.buildInstanceRelationShip(context);
+        this.invoke(PvmEventConstant.ACTIVITY_START.name(), context);
         if (context.isNeedPause()) {
+            context.setNeedPause(false);
             // break;
             return;
         }
-
-        leave( context);
+        execute(context);
     }
 
 
     @Override
-    public  void leave( ExecutionContext context) {
+    public void execute(ExecutionContext context) {
+        this.invoke(PvmEventConstant.ACTIVITY_EXECUTE.name(), context);
+        if (context.isNeedPause()) {
+            context.setNeedPause(false);
+            // break;
+            return;
+        }
+        this.invoke(PvmEventConstant.ACTIVITY_END.name(), context);
+        this.executeRecursively(context);
+    }
+
+    private void buildInstanceRelationShip(ExecutionContext context){
+        ProcessInstance processInstance = context.getProcessInstance();
+
+        ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
+        ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance,  context);
+
+        activityInstance.setExecutionInstance(executionInstance);
+        processInstance.addNewActivityInstance(activityInstance);
+
+        context.setExecutionInstance(executionInstance);
+        context.setActivityInstance(activityInstance);
+    }
+
+    private void executeRecursively(ExecutionContext context) {
+        ExecutionInstance executionInstance=context.getExecutionInstance();
+        ActivityInstance activityInstance=context.getActivityInstance();
+
+        MarkDoneUtil.markDone(activityInstance,executionInstance,this.extensionPointRegistry);
 
         //执行每个节点的hook方法
-        ActivityBehavior activityBehavior =  this.getActivityBehavior();
-        activityBehavior.leave(this,context);
-
         Map<String, PvmTransition> outcomeTransitions = this.getOutcomeTransitions();
 
         if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
             List<PvmTransition> matchedTransitions = new ArrayList<PvmTransition>(outcomeTransitions.size());
             for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
                 PvmTransition pendingTransition = transitionEntry.getValue();
-                TransitionBehavior transitionBehavior = pendingTransition.getTransitionBehavior();
-                boolean matched = transitionBehavior.execute(pendingTransition, context);
+                boolean matched = pendingTransition.match(context);
 
                 if (matched) {
                     matchedTransitions.add(pendingTransition);
@@ -61,21 +98,9 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
             //TODO 针对互斥和并行网关的线要检验,返回值只有一个或者多个。如果无则抛异常。
 
             for (PvmTransition matchedTransition : matchedTransitions) {
-                PvmActivity targetPvmActivity = matchedTransition.getTarget();
-                context.setSourcePvmActivity(matchedTransition.getSource());
-                this.executeRecursively(targetPvmActivity, context);
+                matchedTransition.execute(context);
             }
-
-
         }
-    }
-
-    private void executeRecursively(PvmActivity pvmActivity, ExecutionContext context) {
-
-        //重要: 执行当前节点,会触发当前节点的行为执行
-        pvmActivity.execute(context);
-
-
     }
 
 
@@ -83,13 +108,6 @@ public class DefaultPvmActivity extends AbstractPvmActivity<Activity> implements
     @Override
     public String toString() {
         return " [id=" + getModel().getId() + "]";
-    }
-
-
-    // //TODO
-    @Override
-    public void fireEvent(String event, ExecutionContext context) {
-
     }
 
     @Override

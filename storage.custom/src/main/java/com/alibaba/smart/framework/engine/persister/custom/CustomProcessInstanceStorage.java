@@ -13,28 +13,24 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
 
     @Override
     public ProcessInstance insert(ProcessInstance instance) {
-       return instance;
+        PersisterSession.currentSession().putProcessInstance(instance);
+        return instance;
     }
 
     @Override
     public ProcessInstance update(ProcessInstance processInstanceVar) {
-        ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance();
-        processInstance.setStatus(processInstance.getStatus());
-        return processInstance;
+        PersisterSession.currentSession().putProcessInstance(processInstanceVar);
+        return processInstanceVar;
     }
 
     @Override
     public ProcessInstance find(Long instanceId) {
-
-        ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance();
-
-        //FIXME 需要判断是否当前id是否和session中传递的是否一样。增强安全性。
-        return  processInstance;
+        return  PersisterSession.currentSession().getProcessInstance(instanceId);
     }
 
 
     @Override
     public void remove(Long instanceId) {
-        throw new EngineException("not implement intentionally");
+        PersisterSession.currentSession().getProcessInstances().remove(instanceId);
     }
 }

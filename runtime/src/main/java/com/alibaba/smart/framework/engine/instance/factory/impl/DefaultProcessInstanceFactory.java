@@ -29,19 +29,6 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
         defaultProcessInstance.setStartDate(DateUtil.getCurrentDate());
         defaultProcessInstance.setProcessDefinitionIdAndVersion(pvmProcessDefinition.getUri());
 
-        ProcessInstance parentProcessInstance = executionContext.getParentProcessInstance();
-        if(null != parentProcessInstance){
-            defaultProcessInstance.setParentInstanceId(parentProcessInstance.getInstanceId());
-
-            List<ActivityInstance> parentNewActivityInstances = parentProcessInstance.getNewActivityInstances();
-
-            ExecutionInstance parentExecutionInstance = parentNewActivityInstances.get(parentNewActivityInstances.size()-1).getExecutionInstance();
-
-            //在子流程中,parentExecutionInstance 必须不能为空。 可以考虑加上断言。
-            defaultProcessInstance.setParentExecutionInstanceId(parentExecutionInstance.getInstanceId());
-
-        }
-
         return defaultProcessInstance;
     }
 

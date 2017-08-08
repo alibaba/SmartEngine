@@ -138,7 +138,7 @@ public class AliPayForeignExchange_ExceptionEndEventTest {
     private void persisteAndUpdateThreadLocal(long orderId, ProcessInstance processInstance) {
 
         
-        PersisterSession.currentSession().setProcessInstance(processInstance);
+        PersisterSession.currentSession().putProcessInstance(processInstance);
     }
 
 

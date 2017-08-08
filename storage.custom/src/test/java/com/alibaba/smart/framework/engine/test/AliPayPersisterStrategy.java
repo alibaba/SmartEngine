@@ -93,10 +93,7 @@ public class AliPayPersisterStrategy implements PersisterStrategy {
             throw new EngineException("No processInstance found for executionInstanceId : "+executionInstanceId);
         }
 
-
-        PersisterSession.currentSession().setProcessInstance(machedProcessInstance);
-
-
+        PersisterSession.currentSession().putProcessInstance(machedProcessInstance);
 
         return machedProcessInstance;
 

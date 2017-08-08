@@ -8,16 +8,16 @@ import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public interface PvmTransition extends PvmInvocable<Transition> {
+public interface PvmTransition extends PvmElement<Transition> {
 
     PvmActivity getSource();
 
     PvmActivity getTarget();
 
+    boolean match(ExecutionContext context);
+
     void execute(ExecutionContext context);
 
-    TransitionBehavior getTransitionBehavior();
-
-    void setTransitionBehavior(TransitionBehavior transitionBehavior);
+    void setBehavior(TransitionBehavior transitionBehavior);
 
 }

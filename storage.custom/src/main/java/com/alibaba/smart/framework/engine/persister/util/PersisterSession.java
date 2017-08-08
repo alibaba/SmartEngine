@@ -4,6 +4,9 @@
  */
 package com.alibaba.smart.framework.engine.persister.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
 /**
@@ -17,8 +20,7 @@ public class PersisterSession {
      */
     private static ThreadLocal<PersisterSession> sessionThreadLocal = new ThreadLocal<PersisterSession>();
 
-
-    private ProcessInstance processInstance;
+    private Map<Long, ProcessInstance> processInstances = new HashMap<Long, ProcessInstance>();
 
     public static PersisterSession create() {
         PersisterSession session = new PersisterSession();
@@ -69,21 +71,24 @@ public class PersisterSession {
         sessionThreadLocal.set(null);
     }
 
-    /**
-     * Getter method for property processInstance.
-     *
-     * @return property value of processInstance
-     */
-    public ProcessInstance getProcessInstance() {
-        return processInstance;
+    public Map<Long, ProcessInstance> getProcessInstances() {
+        return processInstances;
     }
 
+    @Deprecated
     /**
-     * Setter method for property processInstance.
-     *
-     * @param processInstance value to be assigned to property processInstance
+     * 为了支持子流程，改造为Map，仅为了兼容原有没有使用子流程的使用方
+     * TODO ettear
      */
-    public void setProcessInstance(ProcessInstance processInstance) {
-        this.processInstance = processInstance;
+    public ProcessInstance getProcessInstance(){
+        return processInstances.get(0);
+    }
+
+    public void putProcessInstance(ProcessInstance processInstance) {
+        this.processInstances.put(processInstance.getInstanceId(), processInstance);
+    }
+
+    public ProcessInstance getProcessInstance(Long instanceId) {
+        return this.processInstances.get(instanceId);
     }
 }

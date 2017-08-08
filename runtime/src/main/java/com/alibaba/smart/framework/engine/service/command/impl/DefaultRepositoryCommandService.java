@@ -1,5 +1,15 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
@@ -9,14 +19,25 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
-import com.alibaba.smart.framework.engine.model.assembly.*;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.Extension;
+import com.alibaba.smart.framework.engine.model.assembly.Extensions;
+import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
-import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionDeployment;
+import com.alibaba.smart.framework.engine.model.assembly.Transition;
+import com.alibaba.smart.framework.engine.provider.Invoker;
+import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
+import com.alibaba.smart.framework.engine.provider.factory.InvokerProviderFactory;
+import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
+import com.alibaba.smart.framework.engine.provider.impl.ComboInvoker;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmElement;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmActivity;
@@ -26,14 +47,6 @@ import com.alibaba.smart.framework.engine.service.command.RepositoryCommandServi
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
@@ -238,7 +251,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     }
                     index++;
 
-                    DefaultPvmTransition pvmTransition = new DefaultPvmTransition();
+                    DefaultPvmTransition pvmTransition = new DefaultPvmTransition(this.extensionPointRegistry);
                     pvmTransition.setModel(transition);
 
                     String id = pvmTransition.getModel().getId();
@@ -257,7 +270,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     }
                     index++;
 
-                    DefaultPvmActivity pvmActivity = new DefaultPvmActivity();
+                    DefaultPvmActivity pvmActivity = new DefaultPvmActivity(this.extensionPointRegistry);
                     pvmActivity.setModel(activity);
 
                     String id = pvmActivity.getModel().getId();
@@ -292,32 +305,77 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             // Create Invoker for Transition Flow
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
                 PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
+                this.initElement(runtimeTransition);
                 TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModel().getClass());
 
                 if (null == providerFactory) {
                     throw new RuntimeException("No factory found for " + runtimeTransition.getModel().getClass());
                 }
 
-                TransitionBehavior transitionBehavior = providerFactory.createTransitionProvider(runtimeTransition);
-                runtimeTransition.setTransitionBehavior(transitionBehavior);
+                runtimeTransition.setBehavior(providerFactory.createTransitionProvider(runtimeTransition));
             }
 
             // Create Invoker for Activity
             for (Map.Entry<String, PvmActivity> runtimeActivityEntry : pvmActivityMap.entrySet()) {
                 PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
+                this.initElement(runtimeActivity);
+
                 ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModel().getClass());
 
                 if (null == providerFactory) {
                     throw new RuntimeException("No factory found for " + runtimeActivity.getModel().getClass());
                 }
 
-                ActivityBehavior activityBehavior = providerFactory.createActivityProvider(runtimeActivity);
-                runtimeActivity.setActivityBehavior(activityBehavior);
+                runtimeActivity.setBehavior(providerFactory.createActivityProvider(runtimeActivity));
             }
 
             pvmProcessDefinition.setActivities(pvmActivityMap);
             pvmProcessDefinition.setTransitions(pvmTransitionMap);
         }
         return pvmProcessDefinition;
+    }
+
+    /**
+     * Init Element
+     *
+     * @param pvmElement element
+     */
+    private void initElement(PvmElement pvmElement) {
+        //Init extensions
+        Extensions extensions = pvmElement.getModel().getExtensions();
+        if (null != extensions) {
+            List<Extension> extensionList = extensions.getExtensions();
+            if (null != extensionList && !extensionList.isEmpty()) {
+                List<Invoker> prepareExtensionInvokers = new ArrayList<Invoker>();
+                List<Invoker> extensionInvokers = new ArrayList<Invoker>();
+                for (Extension extension : extensionList) {
+                    InvokerProviderFactory providerFactory = (InvokerProviderFactory)this.providerFactoryExtensionPoint
+                        .getProviderFactory(extension.getClass());
+                    if (null == providerFactory) {
+                        throw new RuntimeException("No factory found for " + extension.getClass());
+                    }
+                    Invoker extensionInvoker = providerFactory.createInvoker(extension);
+                    if (extension.isPrepare()) {
+                        prepareExtensionInvokers.add(extensionInvoker);
+                    } else {
+                        extensionInvokers.add(extensionInvoker);
+                    }
+                }
+                pvmElement.setPrepareExtensions(prepareExtensionInvokers);
+                pvmElement.setExtensions(extensionInvokers);
+            }
+        }
+
+        List<Performable> performers=pvmElement.getModel().getPerformers();
+        if (null != performers) {
+            ComboInvoker invoker=new ComboInvoker();
+            for (Performable performable : performers) {
+                PerformerProviderFactory providerFactory = (PerformerProviderFactory)this.providerFactoryExtensionPoint
+                    .getProviderFactory(performable.getClass());
+                Performer performer = providerFactory.createPerformer(performable);
+                invoker.addPerformer(performable.getAction(), performer);
+            }
+            pvmElement.setInvoker(invoker);
+        }
     }
 }

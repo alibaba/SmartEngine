@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.common.util.DateUtil;
-import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
@@ -22,9 +22,6 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
-
-import java.util.Date;
-import java.util.Map;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -99,18 +96,13 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         executionContext.setProcessEngineConfiguration(processEngineConfiguration);
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
         executionContext.setProcessInstance(processInstance);
+        executionContext.setExecutionInstance(executionInstance);
+        executionContext.setActivityInstance(activityInstance);
         executionContext.setRequest(request);
-        if(null != activityInstance){
-            executionContext.setBlockId(activityInstance.getBlockId());
-        }
-
 
 
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
-
-        MarkDoneUtil.markDone(activityInstance,executionInstance,this.extensionPointRegistry);
-
 
         ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
