@@ -28,12 +28,17 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
     @Override
     public boolean enter(ExecutionContext context) {
-        context.setProcessInstance(CommonServiceHelper.insertAndPersist(context.getProcessInstance(), context.getRequest(), this.extensionPointRegistry));
-        
+
         ParallelGateway parallelGateway = this.getModel();
         PvmActivity pvmActivity = this.getRuntimeActivity();
 
         Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();
+
+        if(incomeTransitions.size()==1){
+            return false;
+        }
+
+        context.setProcessInstance(CommonServiceHelper.insertAndPersist(context.getProcessInstance(), context.getRequest(), this.extensionPointRegistry));
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = super.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
@@ -43,6 +48,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
 
 
+        /*
         String sourcePvmActivityId = context.getSourcePvmActivity().getModel().getId();
 
         for (PvmTransition pvmTransition : inComingPvmTransitions) {
@@ -58,6 +64,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 context.getProcessInstance().addNewActivityInstance(activityInstance);
             }
         }
+        */
 
         ProcessInstance processInstance = context.getProcessInstance();
 
