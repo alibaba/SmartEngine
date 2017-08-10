@@ -21,9 +21,12 @@ public class JavaPerformer implements Performer {
         this.target = target;
     }
 
+    /**
+     * @author 高海军 帝奇 74394 on 2017 February  09:32: TccDelegationUtil
+     *
+     */
     @Override
     public Object perform(ExecutionContext context) {
-        boolean errorOccurred = false;
 
         ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
         ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();
@@ -34,24 +37,25 @@ public class JavaPerformer implements Performer {
 
         }
         if (this.target instanceof TccDelegation) {
+            //TODO TCC只实现了try,rewview by ettear
             TccDelegation tccDelegation = (TccDelegation)this.target;
 
             TccResult tccResult = null;
             try {
                 tccResult = tccDelegation.tryExecute(context);
             } catch (Exception e) {
-                errorOccurred = dealException(exceptionProcessor, e);
+                dealException(exceptionProcessor, e);
             }
 
             if (tccResult != null) {
                 if (tccResult.isSucessful()) {
-                    //do nothing
+                    return tccResult.getTarget();
                 } else {
 
                     Object target = tccResult.getTarget();
                     Exception exception = new Exception(target.toString());
 
-                    errorOccurred = dealException(exceptionProcessor, exception);
+                    dealException(exceptionProcessor, exception);
 
                 }
             }
@@ -59,10 +63,13 @@ public class JavaPerformer implements Performer {
         } else {
             throw new EngineException("The delegation not support : " + target.getClass());
         }
-        return errorOccurred;
+        return null;
     }
 
-    private static boolean dealException(ExceptionProcessor exceptionProcessor, Exception exception) {
+    /**
+     * @author 高海军 帝奇 74394 on 2017 February  09:32: TccDelegationUtil
+     */
+    private static void dealException(ExceptionProcessor exceptionProcessor, Exception exception) {
 
         if (null != exceptionProcessor) {
             exceptionProcessor.process(exception);
@@ -71,7 +78,5 @@ public class JavaPerformer implements Performer {
         } else {
             throw new EngineException(exception);
         }
-        return true;
-
     }
 }

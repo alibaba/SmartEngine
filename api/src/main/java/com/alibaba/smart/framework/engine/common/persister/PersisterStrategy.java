@@ -1,8 +1,5 @@
 package com.alibaba.smart.framework.engine.common.persister;
 
-
-import java.io.Serializable;
-
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
 /**

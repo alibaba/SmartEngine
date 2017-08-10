@@ -2,12 +2,11 @@ package com.alibaba.smart.framework.engine.test;//package com.alibaba.smart.fram
 
 import com.alibaba.smart.framework.engine.common.persister.PersisterStrategy;
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.model.assembly.Process;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
-import com.alibaba.smart.framework.engine.persister.util.PersisterSession;
+import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 
 import java.io.Serializable;
 import java.util.List;

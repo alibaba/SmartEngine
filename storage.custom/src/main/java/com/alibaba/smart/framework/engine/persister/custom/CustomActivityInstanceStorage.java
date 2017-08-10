@@ -7,7 +7,7 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.util.PersisterSession;
+import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  11:54.
