@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
@@ -181,6 +182,15 @@ public class InstanceSerializerV1 {
         processInstance.setInstanceId(Long.valueOf(st.nextToken()));
         String processDefinitionIdAndVersion = st.nextToken();
         processInstance.setProcessDefinitionIdAndVersion(processDefinitionIdAndVersion);
+
+        if (!StringUtil.isEmpty(processDefinitionIdAndVersion)){
+            StringTokenizer tokenizer = new StringTokenizer(processDefinitionIdAndVersion, ":");
+            String processDefinitionId = tokenizer.nextToken();
+            String processDefinitionVersion = tokenizer.nextToken();
+            processInstance.setProcessDefinitionId(processDefinitionId);
+            processInstance.setProcessDefinitionVersion(processDefinitionVersion);
+        }
+
         String parentProcessInstanceId = st.nextToken();
         if(!"null".equals(parentProcessInstanceId)){
             processInstance.setParentInstanceId(Long.valueOf(parentProcessInstanceId));
