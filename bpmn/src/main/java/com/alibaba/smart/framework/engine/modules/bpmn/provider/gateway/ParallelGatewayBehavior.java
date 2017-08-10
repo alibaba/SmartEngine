@@ -18,6 +18,7 @@ import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoi
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.service.command.impl.CommonServiceHelper;
 
 public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> {
 
@@ -27,6 +28,8 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
     @Override
     public boolean enter(ExecutionContext context) {
+        context.setProcessInstance(CommonServiceHelper.insertAndPersist(context.getProcessInstance(), context.getRequest(), this.extensionPointRegistry));
+        
         ParallelGateway parallelGateway = this.getModel();
         PvmActivity pvmActivity = this.getRuntimeActivity();
 
@@ -67,7 +70,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             for (ExecutionInstance executionInstance : executionInstanceList) {
 
                 if (executionInstance.getActivityId().equals(parallelGateway.getId())) {
-                    reachedForkedSum = reachedForkedSum+1;
+                    reachedForkedSum++;
                 }
             }
         }

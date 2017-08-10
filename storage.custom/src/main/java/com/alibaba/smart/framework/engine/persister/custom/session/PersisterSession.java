@@ -75,15 +75,6 @@ public class PersisterSession {
         return processInstances;
     }
 
-    @Deprecated
-    /**
-     * 为了支持子流程，改造为Map，仅为了兼容原有没有使用子流程的使用方
-     * TODO ettear
-     */
-    public ProcessInstance getProcessInstance(){
-        return processInstances.get(0);
-    }
-
     public void putProcessInstance(ProcessInstance processInstance) {
         this.processInstances.put(processInstance.getInstanceId(), processInstance);
     }

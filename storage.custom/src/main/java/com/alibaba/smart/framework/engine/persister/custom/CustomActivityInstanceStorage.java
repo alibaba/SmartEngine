@@ -63,6 +63,6 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
     @Override
     public List<ActivityInstance> findAll(Long processInstanceId) {
         ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance(processInstanceId);
-       return processInstance.getNewActivityInstances();
+        return null == processInstance ? null : processInstance.getNewActivityInstances();
     }
 }
