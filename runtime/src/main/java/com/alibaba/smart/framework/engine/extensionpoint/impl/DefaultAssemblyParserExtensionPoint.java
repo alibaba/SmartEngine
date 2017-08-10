@@ -103,7 +103,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         } else if (StringUtil.equals(type.getNamespaceURI(), attributeName.getNamespaceURI())) {
             return reader.getAttributeValue(attributeName.getNamespaceURI(), attributeName.getLocalPart());
         } else {
-            return null;
+            return null; //TODO XXX
             //throw new RuntimeException("No artifactParser found for QName: " + type);
         }
     }

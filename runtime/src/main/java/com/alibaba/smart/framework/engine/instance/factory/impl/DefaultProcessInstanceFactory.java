@@ -28,6 +28,8 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
         defaultProcessInstance.setStatus(InstanceStatus.running);
         defaultProcessInstance.setStartDate(DateUtil.getCurrentDate());
         defaultProcessInstance.setProcessDefinitionIdAndVersion(pvmProcessDefinition.getUri());
+        defaultProcessInstance.setProcessDefinitionId(pvmProcessDefinition.getId());
+        defaultProcessInstance.setProcessDefinitionVersion(pvmProcessDefinition.getVersion());
 
         return defaultProcessInstance;
     }
