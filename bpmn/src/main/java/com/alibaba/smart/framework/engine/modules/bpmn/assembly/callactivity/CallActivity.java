@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.callactivity;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.AbstractBpmnActivity;
 
 import lombok.Data;
@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class CallActivity extends AbstractBpmnActivity {
 
-    public final static QName type = new QName(BpmnBase.NAME_SPACE, "callActivity");
+    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "callActivity");
 
     private String calledElement;
 

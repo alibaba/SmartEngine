@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.action;
 
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.AbstractBpmnActivity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +16,7 @@ import javax.xml.namespace.QName;
 public class Action extends AbstractBpmnActivity {
 
 
-    public final static QName NameType = new QName(BpmnBase.NAME_SPACE, "action");
+    public final static QName NameType = new QName(BpmnNameSpaceConstant.NAME_SPACE, "action");
     private static final long serialVersionUID = 8925386572847689717L;
 
     private String type;

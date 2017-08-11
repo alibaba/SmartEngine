@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process;
 
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractProcess;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnNameSpaceConstant;
 
 import javax.xml.namespace.QName;
 
@@ -10,7 +10,7 @@ import javax.xml.namespace.QName;
  */
 public class Process extends AbstractProcess {
 
-    public final static QName type = new QName(BpmnBase.NAME_SPACE, "process");
+    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "process");
 
     private static final long serialVersionUID = -2660788294142169268L;
 

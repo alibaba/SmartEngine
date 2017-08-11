@@ -5,7 +5,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.diagram.Diagram;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
@@ -17,7 +17,7 @@ import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactPa
  */
 public class DiagramParser extends AbstractStAXArtifactParser<Diagram> implements StAXArtifactParser<Diagram> {
 
-    public final static QName type = new QName(BpmnBase.BPMNDI_NAME_SPACE, "BPMNDiagram");
+    public final static QName type = new QName(BpmnNameSpaceConstant.BPMNDI_NAME_SPACE, "BPMNDiagram");
 
     private static final long serialVersionUID = -2660788294142169268L;
 
