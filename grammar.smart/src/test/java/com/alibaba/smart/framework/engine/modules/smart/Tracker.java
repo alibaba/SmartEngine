@@ -11,7 +11,7 @@ public class Tracker implements JavaDelegation {
     @Override
     public Object execute(ExecutionContext executionContext) {
         String text= (String)executionContext.getRequest().get("text");
-        ProcessTest.trace.add(text);
+        ExecutionListenerAndValueTest.trace.add(text);
         return text;
     }
 }

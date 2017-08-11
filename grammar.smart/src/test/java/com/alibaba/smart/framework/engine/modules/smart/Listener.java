@@ -11,7 +11,7 @@ public class Listener implements JavaDelegation {
     @Override
     public Object execute(ExecutionContext executionContext) {
         String text= (String)executionContext.getRequest().get("text");
-        ProcessTest.trace.add("Listener: "+text);
+        ExecutionListenerAndValueTest.trace.add("Listener: "+text);
         return text;
     }
 }

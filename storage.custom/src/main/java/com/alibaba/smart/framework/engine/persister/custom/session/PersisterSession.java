@@ -20,7 +20,7 @@ public class PersisterSession {
      */
     private static ThreadLocal<PersisterSession> sessionThreadLocal = new ThreadLocal<PersisterSession>();
 
-    private Map<Long, ProcessInstance> processInstances = new HashMap<Long, ProcessInstance>();
+    private Map<Long, ProcessInstance> processInstances = new HashMap<Long, ProcessInstance>(4);
 
     public static PersisterSession create() {
         PersisterSession session = new PersisterSession();
@@ -73,6 +73,11 @@ public class PersisterSession {
 
     public Map<Long, ProcessInstance> getProcessInstances() {
         return processInstances;
+    }
+
+
+    public void setProcessInstance(ProcessInstance processInstance) {
+            putProcessInstance( processInstance) ;
     }
 
     public void putProcessInstance(ProcessInstance processInstance) {

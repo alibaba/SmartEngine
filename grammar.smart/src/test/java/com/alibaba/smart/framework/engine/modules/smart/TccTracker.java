@@ -12,7 +12,7 @@ public class TccTracker implements TccDelegation{
     @Override
     public TccResult tryExecute(ExecutionContext executionContext) {
         String text= (String)executionContext.getRequest().get("text");
-        ProcessTest.trace.add(text);
+        ExecutionListenerAndValueTest.trace.add(text);
         return TccResult.buildSucessfulResult(null);
     }
 

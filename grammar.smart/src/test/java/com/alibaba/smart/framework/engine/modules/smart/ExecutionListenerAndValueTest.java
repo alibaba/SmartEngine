@@ -22,7 +22,7 @@ import org.junit.Test;
  * @author ettear
  * Created by ettear on 04/08/2017.
  */
-public class ProcessTest {
+public class ExecutionListenerAndValueTest {
 
     public static List<String> trace;
 
@@ -41,7 +41,7 @@ public class ProcessTest {
         RepositoryCommandService repositoryService = smartEngine
             .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryService
-            .deploy("demo/process-demo.bpmn20.xml");
+            .deploy("demo/execution_listener_and_value_test.bpmn20.xml");
         Assert.assertEquals(7,processDefinition.getProcess().getElements().size());
 
         ProcessCommandService processService = smartEngine.getProcessCommandService();
