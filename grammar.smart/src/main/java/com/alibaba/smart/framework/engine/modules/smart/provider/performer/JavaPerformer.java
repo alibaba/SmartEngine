@@ -44,7 +44,7 @@ public class JavaPerformer implements Performer {
             try {
                 tccResult = tccDelegation.tryExecute(context);
             } catch (Exception e) {
-                dealException(exceptionProcessor, e);
+                dealException(exceptionProcessor, e,context);
             }
 
             if (tccResult != null) {
@@ -55,7 +55,7 @@ public class JavaPerformer implements Performer {
                     Object target = tccResult.getTarget();
                     Exception exception = new Exception(target.toString());
 
-                    dealException(exceptionProcessor, exception);
+                    dealException(exceptionProcessor, exception,context);
 
                 }
             }
@@ -69,10 +69,10 @@ public class JavaPerformer implements Performer {
     /**
      * @author 高海军 帝奇 74394 on 2017 February  09:32: TccDelegationUtil
      */
-    private static void dealException(ExceptionProcessor exceptionProcessor, Exception exception) {
+    private static void dealException(ExceptionProcessor exceptionProcessor, Exception exception,ExecutionContext context) {
 
         if (null != exceptionProcessor) {
-            exceptionProcessor.process(exception);
+            exceptionProcessor.process(exception,context);
         } else if (exception instanceof RuntimeException) {
             throw (RuntimeException)exception;
         } else {

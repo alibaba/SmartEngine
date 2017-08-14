@@ -12,7 +12,7 @@ public class CustomExceptioinProcessor implements ExceptionProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomExceptioinProcessor.class);
 
     @Override
-    public void process(Exception exception) {
+    public void process(Exception exception,Object args) {
         LOGGER.error(exception.getMessage(),exception);
 
 //        throw  new RuntimeException(exception);

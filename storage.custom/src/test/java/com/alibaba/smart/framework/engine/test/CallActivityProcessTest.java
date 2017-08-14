@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test.demo;
+package com.alibaba.smart.framework.engine.test;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,6 +22,7 @@ import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryServ
 import com.alibaba.smart.framework.engine.test.AliPayIdGenerator;
 import com.alibaba.smart.framework.engine.test.AliPayPersisterStrategy;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,6 +38,10 @@ public class CallActivityProcessTest {
 
     private long orderId = 123456L;
 
+    @After
+    public void clear(){
+        PersisterSession.destroySession();
+    }
 
     @Test
     public void test() throws Exception {

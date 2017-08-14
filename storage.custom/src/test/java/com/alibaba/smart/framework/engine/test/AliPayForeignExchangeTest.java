@@ -14,6 +14,8 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
+
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,6 +31,11 @@ public class AliPayForeignExchangeTest {
     private PersisterStrategy persisterStrategy = new AliPayPersisterStrategy();
 
     private long orderId = 123456L;
+
+    @After
+    public void clear(){
+        PersisterSession.destroySession();
+    }
 
 
     @Test
