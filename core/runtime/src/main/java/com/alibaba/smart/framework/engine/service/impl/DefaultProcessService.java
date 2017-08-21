@@ -158,6 +158,7 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
                         chosenExecution = executionInstance;
                         checkAlreadyProcessed(activityId,pvmProcessDefinition,executionInstance.getActivity().getActivityId());
                     }else {
+                        checkAlreadyProcessed(activityId,pvmProcessDefinition,executionInstance.getActivity().getActivityId());
                         chosenExecution = null;
                     }
 
