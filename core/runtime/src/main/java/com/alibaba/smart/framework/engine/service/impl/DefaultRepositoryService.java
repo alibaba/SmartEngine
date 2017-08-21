@@ -132,8 +132,9 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
 
         try {
             XMLInputFactory factory = XMLInputFactory.newInstance();
-            in = classLoader.getResourceAsStream(uri);
-
+            if (uri != null ) {
+                in = classLoader.getResourceAsStream(uri);
+            }
             XMLStreamReader reader = factory.createXMLStreamReader(in);
 
             ParseContext context = new ParseContext();
