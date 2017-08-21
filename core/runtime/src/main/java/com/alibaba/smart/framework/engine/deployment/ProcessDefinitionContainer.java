@@ -8,6 +8,9 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
  */
 public interface ProcessDefinitionContainer {
 
+
+    void remove(String processId, String version);
+
     /**
      * 安装流程
      *

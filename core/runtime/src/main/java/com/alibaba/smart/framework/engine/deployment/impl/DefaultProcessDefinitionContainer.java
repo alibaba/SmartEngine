@@ -21,6 +21,14 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
     private String                  namespace         = DEFAULT_NAMESPACE;
 
     @Override
+    public void remove(String processId, String version) {
+        if (null != get(processId,version)) {
+           String uri = this.buildComponentUri(processId,version);
+           processes.remove(uri);
+        }
+    }
+
+    @Override
     public void install(PvmProcessComponent processComponent) {
         String processDefinitionId = processComponent.getId();
         String version = processComponent.getVersion();

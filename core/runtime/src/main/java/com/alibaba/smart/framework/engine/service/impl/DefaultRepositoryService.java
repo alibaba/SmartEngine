@@ -80,6 +80,15 @@ public class DefaultRepositoryService implements RepositoryService, LifeCycleLis
         return definition;
     }
 
+    @Override
+    public boolean removeDefinition(ProcessDefinition processDefinition) {
+        if (null != processContainer.get(processDefinition.getId(),processDefinition.getVersion())) {
+            processContainer.remove(processDefinition.getId(),processDefinition.getVersion());
+            return true;
+        }
+        return true;
+    }
+
 
     @Override
     public ProcessDefinition deploy(String moduleName, String uri) throws DeployException {

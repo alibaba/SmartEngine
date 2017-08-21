@@ -14,4 +14,6 @@ public interface RepositoryService {
 
     ProcessDefinition deploy(InputStream inputStream) throws DeployException;
 
+    boolean removeDefinition(ProcessDefinition processDefinition);
+
 }
