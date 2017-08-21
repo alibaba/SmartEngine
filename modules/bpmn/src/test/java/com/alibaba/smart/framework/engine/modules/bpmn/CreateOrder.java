@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn;
 
+import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
@@ -24,11 +25,6 @@ public class CreateOrder {
         String activity = (String) context.get("activityId");
         String id = (String) context.get("id");
 
-        ProcessInstance push = workflow.getEngine().getProcessService().pushActivityOnRam(
-                processDefinition,
-                id
-        );
-        System.out.println("push result : "+push.toString());
 
 
     }

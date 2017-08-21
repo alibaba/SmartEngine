@@ -22,9 +22,11 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.ProcessService;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -149,13 +151,21 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
             PvmProcessInstance pvmProcess = new DefaultPvmProcessInstance();
             PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(definition.getId(), definition.getVersion());
             ExecutionInstance chosenExecution  = null;
-            for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
-                if (StringUtils.equalsIgnoreCase(executionInstance.getActivity().getActivityId(),activityId)) {
+            if (processInstance.getExecutions().size() == 1) {
+                for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
                     chosenExecution = executionInstance;
-                    break;
+                    checkAlreadyProcessed(activityId,pvmProcessDefinition,executionInstance.getActivity().getActivityId());
                 }
-                checkAlreadyProcessed(activityId,pvmProcessDefinition,executionInstance.getActivity().getActivityId());
+            }else {
+                for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
+                    if (StringUtils.equalsIgnoreCase(executionInstance.getActivity().getActivityId(),activityId)) {
+                        chosenExecution = executionInstance;
+                        break;
+                    }
+                    checkAlreadyProcessed(activityId,pvmProcessDefinition,executionInstance.getActivity().getActivityId());
+                }
             }
+
             if (chosenExecution == null) {
                 throw new EngineException("not find activiy,check process defintion");
             }
@@ -171,6 +181,9 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         }
 
     }
+
+
+
 
 
 

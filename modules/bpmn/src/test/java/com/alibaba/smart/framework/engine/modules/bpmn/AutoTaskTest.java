@@ -85,7 +85,7 @@ public class AutoTaskTest {
             context.put("1","1");
             processInstance = processService.start(processDefinition.getId(), processDefinition.getVersion(), context);
 
-            processInstance  = processService.run(processDefinition,processInstance.getInstanceId(),"createOrder",false,context);
+            processInstance  = processService.run(processDefinition,processInstance,"createOrder",context);
 
         }finally {
             System.out.println(processInstance.toString());
@@ -117,7 +117,7 @@ public class AutoTaskTest {
         ProcessInstance processInstance  = null;
         try {
             processInstance = processService.start(processDefinition.getId(), processDefinition.getVersion(), context);
-            processInstance  = processService.run(processDefinition,processInstance.getInstanceId(),"createOrder",false,context);
+            processInstance  = processService.run(processDefinition,processInstance,"createOrder",context);
 
         }catch (Exception e) {
             System.out.println(processInstance.toString());
@@ -128,7 +128,7 @@ public class AutoTaskTest {
 
         EngineParam engineParam  = EngineParam.of("1","test-parallel","1.0.0",processTest.getProcessStore());
         ProcessInstance re = processService.recovery(engineParam);
-        processInstance  = processService.run(processDefinition,re.getInstanceId(),"theTask2",false,context);
+        processInstance  = processService.run(processDefinition,re,"theTask2",context);
 
         System.out.println(processInstance.toString());
 
@@ -162,7 +162,7 @@ public class AutoTaskTest {
         try {
             processInstance = processService.start(processDefinition.getId(), processDefinition.getVersion(), context);
             context.put("id",processInstance.getInstanceId());
-            processInstance  = processService.run(processDefinition,processInstance.getInstanceId(),"createOrder",false,context);
+            processInstance  = processService.run(processDefinition,processInstance,"createOrder",context);
 
 
 
@@ -177,7 +177,7 @@ public class AutoTaskTest {
 
         EngineParam engineParam  = EngineParam.of("1","test-parallel","1.0.0",processTest.getProcessStore());
         ProcessInstance re = processService.recovery(engineParam);
-        processInstance  = processService.run(processDefinition,re.getInstanceId(),"theTask2",false,context);
+        processInstance  = processService.run(processDefinition,re,"theTask2",context);
 
         System.out.println(processInstance.toString());
 

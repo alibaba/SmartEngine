@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,9 @@ public class BpmnProcessTest {
 
     @Getter
     public static ProcessTest processTest = new ProcessTest();
+
+    @Resource
+    Workflow workflow;
 
 
     @Test
@@ -58,9 +62,7 @@ public class BpmnProcessTest {
 
     @Test
     public void testParallel() throws Exception {
-        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
-        DefaultSmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
+        SmartEngine smartEngine = workflow.getEngine();
 
         RepositoryService repositoryService = smartEngine
                 .getRepositoryService();
@@ -88,7 +90,7 @@ public class BpmnProcessTest {
 
 
 
-        ProcessInstance run1  = processService.run(processDefinition,"1","theTask1",false,context);
+        ProcessInstance run1  = processService.run(processDefinition,re,"theTask1",context);
 
         System.out.println(run1.toString());
 
@@ -100,7 +102,7 @@ public class BpmnProcessTest {
         ProcessInstance re2 = processService.recovery(engineParam2);
 
 
-        ProcessInstance run2  = processService.run(processDefinition,re2.getInstanceId(),"theTask2",false,context);
+        ProcessInstance run2  = processService.run(processDefinition,re2,"theTask1",context);
         System.out.println(run2.toString());
         processTest.setProcessStore(run2.toString());
 
@@ -141,11 +143,11 @@ public class BpmnProcessTest {
 
         request.put("2","2");
         ProcessInstance select = processService.run(processDefinition,
-                start.getInstanceId(),"theTask2",false,request);
+                start,"theTask2",request);
 
         request.put("event","createOrder");
         ProcessInstance select2 = processService.run(processDefinition,
-                start.getInstanceId(),"theTask1",false,request);
+                start,"theTask1",request);
 
         Assert.assertNotNull(start);
         Assert.assertNotNull(select);
@@ -180,7 +182,7 @@ public class BpmnProcessTest {
 
         request.put("event","createOrder");
         ProcessInstance select2 = processService.run(processDefinition,
-                start.getInstanceId(),"theTask1",false,request);
+                start,"theTask1",request);
 
         Assert.assertNotNull(start);
         Assert.assertNotNull(select2);
@@ -261,7 +263,7 @@ public class BpmnProcessTest {
         context.put("event","testAbort");
 
         try {
-            processService.run(processDefinition, processInstance.getInstanceId(),"createOrder",false, context);
+            processService.run(processDefinition, processInstance,"createOrder", context);
         }catch (Throwable e) {
             System.out.printf(e.getMessage());
         }
@@ -326,7 +328,7 @@ public class BpmnProcessTest {
         Map<String,Object> context = Maps.newHashMap();
         context.put("1","1");
 
-        ProcessInstance processInstance1 =  processService.run(processDefinition,processInstance.getInstanceId(), "createOrder",false,context);
+        ProcessInstance processInstance1 =  processService.run(processDefinition,processInstance, "createOrder",context);
         BpmnProcessTest.getProcessTest().setProcessStore(processInstance1.toString());
         processService.clear(processInstance1.getInstanceId());
 
@@ -340,7 +342,7 @@ public class BpmnProcessTest {
                 BpmnProcessTest.getProcessTest().getProcessStore());
         ProcessInstance processInstance2 = processService.recovery(engineParam);
 
-        ProcessInstance processInstance3 =  processService.run(processDefinition,processInstance.getInstanceId(), "createOrder",false,context);
+        ProcessInstance processInstance3 =  processService.run(processDefinition,processInstance, "createOrder",context);
 
 
 

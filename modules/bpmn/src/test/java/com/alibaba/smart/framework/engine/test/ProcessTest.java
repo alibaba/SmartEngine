@@ -54,7 +54,7 @@ public class ProcessTest {
         request.put("2","2");
         request.put("event","testAbort");
         ProcessInstance select = processService.run(processDefinition,
-                start.getInstanceId(),"createOrder",false,request);
+                start,"createOrder",request);
 
 
         System.out.printf(select.toString());
