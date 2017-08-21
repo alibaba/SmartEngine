@@ -5,7 +5,7 @@
   <parent> 
     <groupId>com.alibaba.smart.framework</groupId>  
     <artifactId>engine.core</artifactId>  
-    <version>step_process</version> 
+    <version>1.0.14-SNAPSHOT</version> 
   </parent>  
   <artifactId>engine.core.api</artifactId>  
   <name>Smart Engine Core - API</name>  

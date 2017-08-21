@@ -9,7 +9,7 @@
   </parent>  
   <groupId>com.alibaba.smart.framework</groupId>  
   <artifactId>engine</artifactId>  
-  <version>step_process</version>  
+  <version>1.0.14-SNAPSHOT</version>  
   <packaging>pom</packaging>  
   <name>Smart Engine</name>  
   <properties> 
