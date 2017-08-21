@@ -15,4 +15,9 @@ public interface InvokerProvider extends LifeCycleListener {
      * @return Invoker
      */
     Invoker createInvoker(String event);
+
+
+    default boolean containAction(String action){
+        return true;
+    }
 }

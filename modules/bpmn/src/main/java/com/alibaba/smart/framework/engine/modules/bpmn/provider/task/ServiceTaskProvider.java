@@ -17,6 +17,11 @@ public class ServiceTaskProvider extends AbstractBpmnActivityProvider<ServiceTas
     }
 
 
+    @Override
+    public boolean containAction(String action) {
+        ServiceTask serviceTask = (ServiceTask) this.getRuntimeActivity().getModel();
+        return serviceTask.getAction().getId().equals(action);
+    }
 
     @Override
     protected Invoker createExecuteInvoker() {
