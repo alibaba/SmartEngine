@@ -18,8 +18,8 @@
     <groupId>com.alibaba.smart.framework</groupId>
     <artifactId>engine</artifactId>
     <!--  mvn versions:set -DnewVersion=1.2.7 -DgenerateBackupPoms=false  -->
-    <!--  mvn versions:set -DnewVersion=1.2.6-SNAPSHOT -DgenerateBackupPoms=false  -->
-    <version>1.2.11-SNAPSHOT</version>
+    <!--  mvn versions:set -DnewVersion=1.2.14-SNAPSHOT -DgenerateBackupPoms=false  -->
+    <version>1.2.21-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
@@ -38,8 +38,9 @@
     <modules>
         <module>api</module>
         <module>base</module>
-        <module>bpmn</module>
         <module>runtime</module>
+        <module>bpmn</module>
+        <module>grammar.smart</module>
         <module>storage.database</module>
         <module>storage.memory</module>
         <module>storage.custom</module>

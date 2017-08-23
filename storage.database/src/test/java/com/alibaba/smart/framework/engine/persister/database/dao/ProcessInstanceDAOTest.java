@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import javax.annotation.Resource;
 
-public class ProcessInstanceDAOTest extends BaseTest {
+public class ProcessInstanceDAOTest extends BaseElementTest {
 
     @Resource
     ProcessInstanceDAO dao;

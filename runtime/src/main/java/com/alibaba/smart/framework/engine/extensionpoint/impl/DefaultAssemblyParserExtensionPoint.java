@@ -55,7 +55,8 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
             QName artifactType = artifactParser.getArtifactType();
             this.artifactParsers.put(artifactType, artifactParser);
             this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
-        } else if (artifactParseObject instanceof StAXAttributeParser) {
+        }
+        if (artifactParseObject instanceof StAXAttributeParser) {
             StAXAttributeParser artifactParser = (StAXAttributeParser) artifactParseObject;
             this.attributeParsers.put(artifactParser.getArtifactType(), artifactParser);
             this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
@@ -86,7 +87,14 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
             return null;
         }
         QName type = reader.getName();
-        StAXAttributeParser artifactParser = this.attributeParsers.get(attributeName);
+
+        QName attributeType;
+        if(null==attributeName.getNamespaceURI() || "".equals(attributeName.getNamespaceURI())){
+            attributeType=new QName(type.getNamespaceURI(),attributeName.getLocalPart());
+        }else{
+            attributeType=attributeName;
+        }
+        StAXAttributeParser artifactParser = this.attributeParsers.get(attributeType);
         if (null == artifactParser) {
             artifactParser = this.attributeParsers.get(type);
         }
@@ -95,7 +103,8 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         } else if (StringUtil.equals(type.getNamespaceURI(), attributeName.getNamespaceURI())) {
             return reader.getAttributeValue(attributeName.getNamespaceURI(), attributeName.getLocalPart());
         } else {
-            throw new RuntimeException("No artifactParser found for QName: " + type);
+            return null; //TODO XXX
+            //throw new RuntimeException("No artifactParser found for QName: " + type);
         }
     }
 

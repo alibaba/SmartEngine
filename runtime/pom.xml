@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.alibaba.smart.framework</groupId>
         <artifactId>engine</artifactId>
-        <version>1.2.11-SNAPSHOT</version>
+        <version>1.2.21-SNAPSHOT</version>
     </parent>
 
     <artifactId>engine.runtime</artifactId>
-    <name>Smart Engine Core - Runtime</name>
+    <name>Smart Engine Runtime</name>
 
     <dependencies>
 

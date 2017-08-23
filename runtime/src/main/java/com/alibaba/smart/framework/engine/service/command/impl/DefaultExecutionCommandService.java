@@ -1,7 +1,8 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
@@ -21,9 +22,6 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
-
-import java.util.Date;
-import java.util.Map;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -79,8 +77,10 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         }
 
+        //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
 
-        //注意:针对TP,AliPay场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
+
+        //BE AWARE: 注意:针对TP,AliPay场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
         ActivityInstance activityInstance= activityInstanceStorage.find(executionInstance.getActivityInstanceId());
 
         ProcessInstance processInstance = processInstanceStorage.find(executionInstance.getProcessInstanceId());
@@ -96,23 +96,17 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         executionContext.setProcessEngineConfiguration(processEngineConfiguration);
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
         executionContext.setProcessInstance(processInstance);
+        executionContext.setExecutionInstance(executionInstance);
+        executionContext.setActivityInstance(activityInstance);
         executionContext.setRequest(request);
-        if(null != activityInstance){
-            executionContext.setBlockId(activityInstance.getBlockId());
-        }
-
 
 
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
-        markDone(activityInstance,executionInstance);
-
-
         ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
-
-        persist(newProcessInstance,  request);
+        CommonServiceHelper.updateAndPersist(newProcessInstance,  request,extensionPointRegistry);
 
         return newProcessInstance;
     }
@@ -123,44 +117,9 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
 
-    private ProcessInstance persist(ProcessInstance processInstance,Map<String, Object> request) {
-
-            ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
-
-            ProcessInstance newProcessInstance =  defaultPersisteInstance1(processInstance, request, processEngineConfiguration);
-
-            return newProcessInstance;
-        }
-
-    private ProcessInstance defaultPersisteInstance1(ProcessInstance processInstance, Map<String, Object> request,ProcessEngineConfiguration processEngineConfiguration) {
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-
-        //TUNE 可以在对象创建时初始化,但是这里依赖稍微优化下。
-        ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
-
-        ProcessInstance newProcessInstance=   processInstanceStorage.update(processInstance);
-        CommonServiceHelper.persist(processInstance, request, processEngineConfiguration,  persisterFactoryExtensionPoint);
-
-        return newProcessInstance;
-    }
 
 
-    private  void markDone(ActivityInstance activityInstance,ExecutionInstance executionInstance) {
-        Date completeDate = DateUtil.getCurrentDate();
-        executionInstance.setCompleteDate(completeDate);
-        executionInstance.setActive(false);
-        if(null != activityInstance){
-            activityInstance.setCompleteDate(completeDate);
-            //TODO
-            //activityInstance.setActive(false);
-        }
 
-        //TODO 这里可以把需要更新的对象放到另外一个队列中去,后面再统一更新。 需要结合 CustomExecutionInstanceStorage#Update 一起看下。
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-        ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
 
-        executionInstanceStorage.update(executionInstance);
-
-    }
 
 }

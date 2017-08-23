@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task;
 
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnNameSpaceConstant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,7 +16,7 @@ public class UserTask extends AbstractTask {
     private static final long serialVersionUID = 2241766485621486315L;
 
 
-    public final static QName type = new QName(BpmnBase.NAME_SPACE, "userTask");
+    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "userTask");
 
 
     private String name;

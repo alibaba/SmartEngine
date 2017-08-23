@@ -10,6 +10,6 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
  */
 public interface TransitionProviderFactory<M extends Transition> extends ProviderFactory<M> {
 
-    TransitionBehavior<M> createTransitionProvider(PvmTransition runtimeTransition);
+    TransitionBehavior createTransitionProvider(PvmTransition runtimeTransition);
 
 }

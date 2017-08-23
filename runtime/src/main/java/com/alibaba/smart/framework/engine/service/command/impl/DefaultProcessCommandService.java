@@ -50,7 +50,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         this.executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
         this.activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
-
     }
 
     @Override
@@ -60,51 +59,40 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     @Override
     public ProcessInstance start(String processDefinitionId, String version, Map<String, Object> request) {
-        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processDefinitionId, version);
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
         executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         executionContext.setProcessEngineConfiguration(processEngineConfiguration);
-
-        executionContext.setPvmProcessDefinition(pvmProcessDefinition);
         executionContext.setRequest(request);
+
+
+        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processDefinitionId, version);
+        executionContext.setPvmProcessDefinition(pvmProcessDefinition);
 
         //TODO TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
-        ProcessInstance processInstance = pvmProcessInstance.start(executionContext);
+        ProcessInstance processInstance = processInstanceFactory.create(executionContext);
 
-        processInstance =  persist(processInstance, request);
+
+        executionContext.setProcessInstance(processInstance);
+
+        processInstance = pvmProcessInstance.start(executionContext);
+
+        processInstance = CommonServiceHelper.insertAndPersist(processInstance, request,  extensionPointRegistry);
 
         return processInstance;
 
     }
 
+    @Override
     public ProcessInstance start(String processDefinitionId, String version){
         return this.start(processDefinitionId,version,null);
     }
 
-    private ProcessInstance persist(ProcessInstance processInstance,Map<String, Object> request) {
-
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
-
-        ProcessInstance newProcessInstance  =  defaultPersisteInstance(processInstance, request, processEngineConfiguration);
-
-        return newProcessInstance;
-    }
-
-    private ProcessInstance defaultPersisteInstance(ProcessInstance processInstance, Map<String, Object> request, ProcessEngineConfiguration processEngineConfiguration) {
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-
-        //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
-        ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
 
-        ProcessInstance newProcessInstance=   processInstanceStorage.insert(processInstance);
-        CommonServiceHelper.persist(processInstance, request, processEngineConfiguration,  persisterFactoryExtensionPoint);
-        return newProcessInstance;
-    }
 
 
     @Override

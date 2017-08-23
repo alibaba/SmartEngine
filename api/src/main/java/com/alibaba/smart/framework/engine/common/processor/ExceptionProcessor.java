@@ -6,6 +6,6 @@ package com.alibaba.smart.framework.engine.common.processor;
  */
 public interface ExceptionProcessor {
 
-    void process(Exception exception);
+    void process(Exception exception,Object args);
 
 }

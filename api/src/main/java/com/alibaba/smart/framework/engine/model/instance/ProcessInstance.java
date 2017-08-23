@@ -8,13 +8,38 @@ import java.util.List;
  */
 public interface ProcessInstance extends LifeCycleInstance {
 
+    /**
+     * get ProcessDefinitionId and ProcessDefinitionVersion
+     * @return
+     */
     String getProcessDefinitionIdAndVersion();
+
+    /**
+     * get ProcessDefinitionId
+     * @return
+     */
+    String getProcessDefinitionId();
+
+    void setProcessDefinitionId(String processDefinitionId);
+
+    void setProcessDefinitionVersion(String processDefinitionVersion);
+
+    /**
+     * get ProcessDefinitionVersion
+     * @return
+     */
+    String getProcessDefinitionVersion();
 
     void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
 
     Long getParentInstanceId();
 
     void setParentInstanceId(Long parentInstanceId);
+
+
+    Long getParentExecutionInstanceId();
+
+    void setParentExecutionInstanceId(Long parentExecutionInstanceId);
 
     InstanceStatus getStatus();
 

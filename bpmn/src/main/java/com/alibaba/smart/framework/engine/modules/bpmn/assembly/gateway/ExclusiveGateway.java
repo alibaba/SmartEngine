@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway;
 
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnNameSpaceConstant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +14,7 @@ import javax.xml.namespace.QName;
 @EqualsAndHashCode(callSuper = true)
 public class ExclusiveGateway extends AbstractGateway {
 
-    public final static QName type = new QName(BpmnBase.NAME_SPACE, "exclusiveGateway");
+    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "exclusiveGateway");
     /**
      *
      */

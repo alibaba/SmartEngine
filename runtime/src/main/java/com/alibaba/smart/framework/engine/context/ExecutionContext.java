@@ -2,7 +2,10 @@ package com.alibaba.smart.framework.engine.context;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 
 import java.util.Map;
@@ -16,6 +19,13 @@ public interface ExecutionContext {
 
     void setProcessInstance(ProcessInstance processInstance);
 
+    ExecutionInstance getExecutionInstance();
+
+    void setExecutionInstance(ExecutionInstance executionInstance);
+
+    ActivityInstance getActivityInstance();
+
+    void setActivityInstance(ActivityInstance activityInstance);
 
     PvmProcessDefinition getPvmProcessDefinition();
 
@@ -37,6 +47,14 @@ public interface ExecutionContext {
     void setNeedPause(boolean needPause);
 
     boolean isNeedPause();
+
+    //void setNested(boolean nested);
+    //
+    //boolean isNested();
+
+    void setSourcePvmActivity(PvmActivity sourcePvmActivity);
+
+    PvmActivity getSourcePvmActivity();
 
     Long getBlockId();
 

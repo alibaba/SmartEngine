@@ -8,7 +8,7 @@ import org.junit.Test;
 import javax.annotation.Resource;
 import java.util.Date;
 
-public class TaskInstanceDAOTest extends BaseTest {
+public class TaskInstanceDAOTest extends BaseElementTest {
 
     @Resource
     TaskInstanceDAO dao;

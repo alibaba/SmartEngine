@@ -3,7 +3,10 @@ package com.alibaba.smart.framework.engine.context.impl;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import lombok.Data;
 
@@ -17,6 +20,10 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private ProcessInstance processInstance;
 
+    private ExecutionInstance executionInstance;
+
+    private ActivityInstance activityInstance;
+
     private PvmProcessDefinition pvmProcessDefinition;
 
     private ProcessEngineConfiguration processEngineConfiguration;
@@ -25,7 +32,13 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private boolean needPause;
 
+    private boolean nested;
+
     private ExtensionPointRegistry extensionPointRegistry;
 
     private Long blockId;
+
+    private PvmActivity sourcePvmActivity;
+
+
 }

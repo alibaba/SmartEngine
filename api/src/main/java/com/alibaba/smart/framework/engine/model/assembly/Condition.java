@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.model.assembly;
 
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBase;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBaseElement;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,7 +11,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Condition extends AbstractBase {
+@Deprecated
+public class Condition extends AbstractBaseElement {
 
     private static final long serialVersionUID = 1246008761760333354L;
 

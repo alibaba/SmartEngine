@@ -10,5 +10,5 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
  */
 public interface ActivityProviderFactory<M extends Activity> extends ProviderFactory<M> {
 
-    ActivityBehavior<M> createActivityProvider(PvmActivity activity);
+    ActivityBehavior createActivityProvider(PvmActivity activity);
 }

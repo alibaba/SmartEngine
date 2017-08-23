@@ -24,7 +24,7 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     private String processDefinitionVersion;
 
     private Long parentInstanceId;
-//    private Long parentExecutionInstanceId;
+    private Long parentExecutionInstanceId;
 //    private Long parentActivityInstanceId;
 
     private boolean suspend;
@@ -33,6 +33,7 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     @Setter
     private InstanceStatus status = InstanceStatus.running;
 
+    @Override
     public boolean isSuspend() {
         return InstanceStatus.suspended == this.status;
     }
@@ -46,6 +47,7 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
         this.activityInstances.add(activityInstance);
     }
 
+    @Override
     public List<ActivityInstance> getNewActivityInstances(){
         return activityInstances;
     }

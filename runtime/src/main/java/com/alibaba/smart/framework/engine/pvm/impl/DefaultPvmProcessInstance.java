@@ -18,7 +18,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
         PvmProcessDefinition pvmProcessDefinition = executionContext.getPvmProcessDefinition();
         PvmActivity startActivity = pvmProcessDefinition.getStartActivity();
 
-        startActivity.execute( executionContext);
+        startActivity.enter( executionContext);
 
         return executionContext.getProcessInstance();
 
@@ -30,7 +30,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
     @Override
     public ProcessInstance signal(PvmActivity pvmActivity, ExecutionContext executionContext) {
 
-        pvmActivity.leave( executionContext);
+        pvmActivity.execute( executionContext);
 
         return executionContext.getProcessInstance();
 

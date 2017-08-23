@@ -5,9 +5,9 @@ import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**
  * 默认任务实例工厂实现 Created by ettear on 16-4-20.
@@ -15,7 +15,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
 
     @Override
-    public TaskInstance create(PvmActivity pvmActivity, ExecutionInstance executionInstance,ExecutionContext context) {
+    public TaskInstance create(Activity activity, ExecutionInstance executionInstance, ExecutionContext context) {
         TaskInstance taskInstance = new DefaultTaskInstance();
 
         IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
@@ -23,7 +23,7 @@ public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
         taskInstance.setInstanceId(idGenerator.getId());
         taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
         taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
-        taskInstance.setActivityId(pvmActivity.getModel().getId());
+        taskInstance.setActivityId(activity.getId());
         taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
         taskInstance.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
         taskInstance.setStartDate(DateUtil.getCurrentDate());

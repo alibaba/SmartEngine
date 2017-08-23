@@ -9,12 +9,13 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.util.InstanceSerializer;
-import com.alibaba.smart.framework.engine.persister.util.PersisterSession;
+import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
+
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -31,6 +32,11 @@ public class AliPayForeignExchangeTest {
 
     private long orderId = 123456L;
 
+    @After
+    public void clear(){
+        PersisterSession.destroySession();
+    }
+
 
     @Test
     public void test() throws Exception {
@@ -39,6 +45,7 @@ public class AliPayForeignExchangeTest {
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
+        processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -130,13 +137,8 @@ public class AliPayForeignExchangeTest {
 
     private void persisteAndUpdateThreadLocal(long orderId, ProcessInstance processInstance) {
 
-        // 存储到业务系统里面
-        String string =  InstanceSerializer.serialize(processInstance);
-        persisterStrategy.update(orderId,string);
-
-        // 注意:在执行之前,更新下ThreadLocal。另外,在线上环境,使用完毕后需要clean 下 ThreadLocal。
-        processInstance =  InstanceSerializer.deserializeAll(string);
-        PersisterSession.currentSession().setProcessInstance(processInstance);
+        
+        PersisterSession.currentSession().putProcessInstance(processInstance);
     }
 
 

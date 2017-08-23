@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.alibaba.smart.framework</groupId>
         <artifactId>engine</artifactId>
-        <version>1.2.11-SNAPSHOT</version>
+        <version>1.2.21-SNAPSHOT</version>
     </parent>
 
     <artifactId>engine.storage.custom</artifactId>
@@ -18,7 +18,20 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>engine.runtime</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- add default dependency :bpmn,smart , for the purpose of  simplity  start-->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>engine.bpmn</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>engine.grammar.smart</artifactId>
             <version>${project.version}</version>
         </dependency>
 

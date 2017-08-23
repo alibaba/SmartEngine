@@ -1,12 +1,13 @@
 package com.alibaba.smart.framework.engine.persister.memory;
 
-import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 
 /**
  * 内存实例存储 Created by ettear on 16-4-13.
@@ -41,6 +42,7 @@ public class MemoryActivityInstanceStorage implements ActivityInstanceStorage {
     @Override
     public List<ActivityInstance> findAll(Long processInstanceId) {
         ActivityInstance[] activityInstances = instances.values().toArray(new ActivityInstance[]{});
-        return Arrays.asList(activityInstances);
+        List<ActivityInstance> activityInstanceList = Arrays.asList(activityInstances);
+        return new ArrayList<ActivityInstance>(activityInstanceList);
     }
 }

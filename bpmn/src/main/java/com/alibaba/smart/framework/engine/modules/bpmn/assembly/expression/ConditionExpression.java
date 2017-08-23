@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression;
 
 import com.alibaba.smart.framework.engine.model.assembly.Condition;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnBase;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnNameSpaceConstant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,7 +15,7 @@ import javax.xml.namespace.QName;
 public class ConditionExpression extends Condition {
 
     private static final long serialVersionUID = -6152070683207905381L;
-    public final static QName type = new QName(BpmnBase.NAME_SPACE, "conditionExpression");
+    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "conditionExpression");
 
     private String expressionType;
     private String expressionContent;

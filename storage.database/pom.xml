@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.alibaba.smart.framework</groupId>
         <artifactId>engine</artifactId>
-        <version>1.2.11-SNAPSHOT</version>
+        <version>1.2.21-SNAPSHOT</version>
     </parent>
 
     <artifactId>engine.storage.database</artifactId>
@@ -41,7 +41,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>engine.bpmn</artifactId>
+            <artifactId>engine.runtime</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -55,6 +55,19 @@
         <dependency>
             <groupId>com.taobao.tddl</groupId>
             <artifactId>tddl-client</artifactId>
+        </dependency>
+
+        <!-- add default dependency :bpmn,smart , for the purpose of  simplity  start-->
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>engine.bpmn</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>engine.grammar.smart</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
