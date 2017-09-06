@@ -9,8 +9,11 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
+import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.Extensions;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 
@@ -22,11 +25,14 @@ import org.junit.Test;
  * @author ettear
  * Created by ettear on 04/08/2017.
  */
-public class ExecutionListenerAndValueTest {
+public class SequenceFlowExtensionElementTest {
 
-    public static List<String> trace=new ArrayList<String>();
+    public static List<String> trace;
 
-
+    @Before
+    public void before(){
+        trace=new ArrayList<String>();
+    }
 
     @Test
     public void testDemo() throws Exception {
@@ -38,28 +44,27 @@ public class ExecutionListenerAndValueTest {
         RepositoryCommandService repositoryService = smartEngine
             .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryService
-            .deploy("demo/execution_listener_and_value_test.bpmn20.xml");
-        Assert.assertEquals(7,processDefinition.getProcess().getElements().size());
+            .deploy("demo/new_sale.bpmn20.xml");
+        Assert.assertEquals(38,processDefinition.getProcess().getElements().size());
 
-        ProcessCommandService processService = smartEngine.getProcessCommandService();
+        boolean found  = false;
 
-        Map<String, Object> request = new HashMap<String, Object>();
-        request.put("text", "start");
+        List<BaseElement> baseElements =  processDefinition.getProcess().getElements();
+        for (BaseElement baseElement : baseElements) {
+            if(baseElement instanceof SequenceFlow){
+                SequenceFlow sf = (SequenceFlow)baseElement;
+                if("SequenceFlow_16ifyt3".equals(sf.getId())){
+                    found = true;
+                    Extensions extensions = sf.getExtensions();
+                    Assert.assertNotNull(extensions);
+                }
 
-        ProcessInstance processInstance = processService.start(
-            processDefinition.getId(), processDefinition.getVersion(),
-            request);
-        Assert.assertNotNull(processInstance);
+            }
+        }
 
-        Assert.assertEquals(trace.get(0),"start");
-        Assert.assertEquals(trace.get(1),"Listener: Create task");
-        Assert.assertEquals(trace.get(2),"Create task");
-        Assert.assertEquals(trace.get(3),"Listener: Create task");
 
-        Assert.assertEquals(trace.get(4),"Listener: Pay task");
-        Assert.assertEquals(trace.get(5),"Pay task");
-        Assert.assertEquals(trace.get(6),"Listener: Pay task");
-        Assert.assertEquals(trace.get(7),"Listener: Pay task");
+        Assert.assertTrue(found);
+
 
     }
 

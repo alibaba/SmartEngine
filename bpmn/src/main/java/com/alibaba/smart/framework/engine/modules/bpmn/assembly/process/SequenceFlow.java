@@ -23,7 +23,6 @@ public class SequenceFlow extends AbstractTransition {
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "sequenceFlow");
 
     private ConditionExpression conditionExpression;
-    private ExtensionElements extensions;
 
 
     @Override
