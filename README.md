@@ -23,3 +23,12 @@ SmartEngine是一个开放性的，以社区化方式运作的流程引擎，目
 * parser：负责从多种介质获取 xml 以及将各个节点的 xml 解析成 pvm 运行时对象
 * pvm：负责流程流转时的内部逻辑，实现各种节点的流转和网关路径选择。
 * api：负责提供流程定义部署，流程实例流转，任务处理和实例查询等服务 
+
+## SmartEngine社区钉钉群
+
+![LOGO](http://gitlab.alibaba-inc.com/smart-framework/smart-engine/tree/master/SmartEngineUserGroupInDingDing.jpg)
+
+
+## 注意事项
+
+* 下载代码后，需要安装Lombok插件，才能保证在IDE中正常编译。

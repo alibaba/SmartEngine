@@ -19,19 +19,11 @@ public class TaskAssigneeEntity extends BaseProcessEntity {
 
     private Long processInstanceId;
 
-    private Long executionInstanceId;
-
-    private Long activityInstanceId;
-
     private Long taskInstanceId;
 
-    private String title;
 
     private String assigneeId;
 
     private Integer priority;
 
-    private Date claimTime;
-
-    private Date endTime;
 }
