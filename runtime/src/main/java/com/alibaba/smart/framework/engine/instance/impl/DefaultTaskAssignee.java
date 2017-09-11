@@ -18,10 +18,10 @@ public class DefaultTaskAssignee extends AbstractLifeCycleInstance implements Ta
 
     private String activityId;
     private Long processInstanceId;
-    private Long executionInstanceId;
-    private Long activityInstanceId;
-
-    private String title;
+    //private Long executionInstanceId;
+    //private Long activityInstanceId;
+    //
+    //private String title;
     private String assigneeId;
     private Integer priority;
     private Date claimTime;

@@ -30,6 +30,8 @@ public class ExtensionElementsParser extends AbstractStAXArtifactParser<Extensio
             Object element = this.readElement(reader, context);
             if (element instanceof Extension) {
                 extensionElements.addExtension((Extension) element);
+            } else {
+                //TODO logger error
             }
         }
         return extensionElements;

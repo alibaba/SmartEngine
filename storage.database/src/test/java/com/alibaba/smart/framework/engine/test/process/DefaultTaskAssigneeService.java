@@ -33,18 +33,18 @@ public class DefaultTaskAssigneeService implements TaskAssigneeService {
         taskAssigneeEntity.setId(taskInstance.getInstanceId());
         taskAssigneeEntity.setProcessDefinitionId(taskInstance.getActivityId());
         taskAssigneeEntity.setProcessInstanceId(taskInstance.getProcessInstanceId());
-        taskAssigneeEntity.setActivityInstanceId(taskInstance.getActivityInstanceId());
-        taskAssigneeEntity.setExecutionInstanceId(taskInstance.getExecutionInstanceId());
+        //taskAssigneeEntity.setActivityInstanceId(taskInstance.getActivityInstanceId());
+        //taskAssigneeEntity.setExecutionInstanceId(taskInstance.getExecutionInstanceId());
         taskAssigneeEntity.setTaskInstanceId(taskInstance.getInstanceId());
 
         //TODO 默认标题key约定
         if(null != variables){
-            taskAssigneeEntity.setTitle((String)variables.get("title"));
+            //taskAssigneeEntity.setTitle((String)variables.get("title"));
         }
 
         taskAssigneeEntity.setAssigneeId(assigneeId);
-        taskAssigneeEntity.setClaimTime(taskInstance.getClaimTime());
-        taskAssigneeEntity.setEndTime(taskInstance.getEndTime());
+        //taskAssigneeEntity.setClaimTime(taskInstance.getClaimTime());
+        //taskAssigneeEntity.setEndTime(taskInstance.getEndTime());
         taskAssigneeEntity.setPriority(taskInstance.getPriority());
         taskAssigneeEntity.setGmtModified(taskInstance.getEndTime());
         return taskAssigneeEntity;

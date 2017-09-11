@@ -15,6 +15,11 @@ public interface Element extends BaseElement,Indentity,Invocable{
     Extensions getExtensions();
 
     void setExtensions(Extensions extensions);
+    //
+    //MultiInstanceLoopCharacteristics getMultiInstanceLoopCharacteristics();
+    //
+    //void setMultiInstanceLoopCharacteristics(MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics);
+    //
 
     /**
      * Get Performers

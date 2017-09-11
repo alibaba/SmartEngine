@@ -5,13 +5,13 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,process_instance_id,
-        activity_instance_id, execution_instance_id,task_instance_id,title,assignee_id,priority,claim_time,end_time
+        task_instance_id,assignee_id
     </sql>
 
     <insert id="insert" parameterType="TaskAssigneeEntity">
         insert into task_assignee(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId},
-        #{activityInstanceId}, #{executionInstanceId},#{taskInstanceId},#{title},#{assigneeId},#{priority},#{claimTime},#{endTime})
+        #{taskInstanceId},#{assigneeId})
     </insert>
 
     <delete id="delete" parameterType="long">
@@ -22,11 +22,8 @@
         update task_assignee
         <set>
             gmt_modified=now()
-            <if test="title != null">,title = #{title}</if>
             <if test="assigneeId != null">,assignee_id = #{assigneeId}</if>
-            <if test="priority != null">,priority = #{priority}</if>
-            <if test="claimTime != null">,claim_time = #{claimTime}</if>
-            <if test="endTime != null">,end_time = #{endTime}</if>
+
         </set>
         where id=#{id}
     </update>

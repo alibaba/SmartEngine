@@ -37,6 +37,8 @@ public class SequenceFlowParser extends AbstractElementParser<SequenceFlow> {
 
     @Override
     protected void parseChild(SequenceFlow model, BaseElement child) {
+        //TODO duplicate code
+
         if (child instanceof Extensions) {
             model.setExtensions((Extensions)child);
         }else if (child instanceof Performable) {

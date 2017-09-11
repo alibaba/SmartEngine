@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.model.assembly.impl;
 
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.assembly.MultiInstanceLoopCharacteristics;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -11,6 +12,9 @@ public abstract class AbstractActivity extends AbstractElement implements Activi
     private static final long serialVersionUID = 3558917263151685441L;
     private boolean startActivity;
 
+
+
+
     @Override
     public boolean isStartActivity() {
         return startActivity;
@@ -19,4 +23,7 @@ public abstract class AbstractActivity extends AbstractElement implements Activi
     public void setStartActivity(boolean startActivity) {
         this.startActivity = startActivity;
     }
+
+
+
 }

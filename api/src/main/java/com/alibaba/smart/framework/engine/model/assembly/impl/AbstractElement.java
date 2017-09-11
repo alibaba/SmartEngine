@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.assembly.Element;
 import com.alibaba.smart.framework.engine.model.assembly.Extensions;
+import com.alibaba.smart.framework.engine.model.assembly.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 
 import lombok.Data;

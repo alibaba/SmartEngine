@@ -21,17 +21,17 @@ public interface TaskAssignee extends LifeCycleInstance {
 
     void setProcessInstanceId(Long processInstanceId);
 
-    Long getExecutionInstanceId();
-
-    void setExecutionInstanceId(Long executionInstanceId);
-
-    Long getActivityInstanceId();
-
-    void setActivityInstanceId(Long activityInstanceId);
-
-    String getTitle() ;
-
-    void setTitle(String title);
+    //Long getExecutionInstanceId();
+    //
+    //void setExecutionInstanceId(Long executionInstanceId);
+    //
+    //Long getActivityInstanceId();
+    //
+    //void setActivityInstanceId(Long activityInstanceId);
+    //
+    //String getTitle() ;
+    //
+    //void setTitle(String title);
 
       String getAssigneeId() ;
 
@@ -39,16 +39,16 @@ public interface TaskAssignee extends LifeCycleInstance {
 
 
 
-      Integer getPriority();
-
-      void setPriority(Integer priority) ;
-
-      Date getClaimTime() ;
-
-      void setClaimTime(Date claimTime) ;
-
-      Date getEndTime() ;
-
-      void setEndTime(Date endTime);
+      //Integer getPriority();
+      //
+      //void setPriority(Integer priority) ;
+      //
+      //Date getClaimTime() ;
+      //
+      //void setClaimTime(Date claimTime) ;
+      //
+      //Date getEndTime() ;
+      //
+      //void setEndTime(Date endTime);
 
 }

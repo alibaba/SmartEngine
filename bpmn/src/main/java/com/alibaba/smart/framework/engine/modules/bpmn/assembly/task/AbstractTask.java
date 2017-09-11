@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task;
 
+import com.alibaba.smart.framework.engine.model.assembly.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.AbstractBpmnActivity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,5 +16,16 @@ public abstract class AbstractTask extends AbstractBpmnActivity {
      *
      */
     private static final long serialVersionUID = 5042056118774610434L;
-    private boolean isAsync;
+
+    private MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics;
+    public MultiInstanceLoopCharacteristics getMultiInstanceLoopCharacteristics() {
+        return multiInstanceLoopCharacteristics;
+    }
+
+    public void setMultiInstanceLoopCharacteristics(
+        MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics) {
+        this.multiInstanceLoopCharacteristics = multiInstanceLoopCharacteristics;
+    }
+
+
 }
