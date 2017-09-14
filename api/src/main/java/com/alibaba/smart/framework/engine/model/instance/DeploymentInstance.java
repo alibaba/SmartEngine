@@ -13,9 +13,6 @@ public interface  DeploymentInstance  extends  Instance{
 
     String getProcessDefinitionVersion();
 
-    String getProcessDefinitionIdAndVersion();
-
-    void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
 
     String getProcessDefinitionType();
 
@@ -45,9 +42,6 @@ public interface  DeploymentInstance  extends  Instance{
     String getLogicStatus();
 
     void setLogicStatus(String logicStatus);
-
-
-
 
 
 }

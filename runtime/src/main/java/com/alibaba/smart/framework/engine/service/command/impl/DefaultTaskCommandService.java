@@ -76,5 +76,13 @@ public class DefaultTaskCommandService implements TaskCommandService , LifeCycle
 
     }
 
+    @Override
+    public void complete(Long taskId, Long userId, Map<String, Object> variables) {
 
+    }
+
+    @Override
+    public void claim(Long taskId, Long userId, Map<String, Object> variables) {
+
+    }
 }

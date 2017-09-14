@@ -37,7 +37,7 @@ public class MultiInstanceTest {
 
 
     @Test
-    public void testAuditProcess() throws Exception {
+    public void testMultiInstance() throws Exception {
 
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();

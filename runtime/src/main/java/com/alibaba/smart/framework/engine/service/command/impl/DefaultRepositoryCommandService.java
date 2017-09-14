@@ -26,7 +26,6 @@ import com.alibaba.smart.framework.engine.model.assembly.Extensions;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionDeployment;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
 import com.alibaba.smart.framework.engine.provider.Invoker;
 import com.alibaba.smart.framework.engine.provider.Performer;
@@ -97,30 +96,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         }
     }
 
-    @Override
-    public ProcessDefinitionDeployment createDeployment(InputStream inputStream) {
-        return null;
-    }
 
-    @Override
-    public void inactivateDeployment(Long id) {
-
-    }
-
-    @Override
-    public void activateDeployment(Long id) {
-
-    }
-
-    @Override
-    public void inactivateProcessDefinitionById(String processDefinitionId, String version) {
-
-    }
-
-    @Override
-    public void activateProcessDefinitionById(String processDefinitionId, String version) {
-
-    }
 
     @Override
     public void start() {
