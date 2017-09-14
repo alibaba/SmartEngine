@@ -9,6 +9,11 @@ import com.alibaba.smart.framework.engine.delegation.TccResult;
  * Created by ettear on 06/08/2017.
  */
 public class TccTracker implements TccDelegation{
+    public TccTracker(){
+        String text= "";
+
+    }
+
     @Override
     public TccResult tryExecute(ExecutionContext executionContext) {
         String text= (String)executionContext.getRequest().get("text");
