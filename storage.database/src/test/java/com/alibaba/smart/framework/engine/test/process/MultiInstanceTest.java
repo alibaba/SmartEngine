@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.persister.database.dao.TaskAssigneeDAO
 import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskInstanceCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
@@ -49,7 +49,7 @@ public class MultiInstanceTest {
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
+        TaskInstanceCommandService taskInstanceCommandService = smartEngine.getTaskCommandService();
 
         ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
         ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
@@ -82,7 +82,7 @@ public class MultiInstanceTest {
         submitFormRequest.put("assigneeId","1");
 
         //6.流程流转:处理 submitTask,完成任务申请.
-        taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
+        taskInstanceCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
         //7. 获取当前待处理任务.
         List<TaskInstance>   auditTaskInstanceList = taskQueryService.findPendingTask(processInstance.getInstanceId());
@@ -95,7 +95,7 @@ public class MultiInstanceTest {
 
         //9.审批通过,驱动流程节点到自动执行任务环节
 
-        taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
+        taskInstanceCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findOne(auditTaskInstance.getProcessInstanceId());
@@ -117,7 +117,7 @@ public class MultiInstanceTest {
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
+        TaskInstanceCommandService taskInstanceCommandService = smartEngine.getTaskCommandService();
 
         ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
         ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
@@ -147,7 +147,7 @@ public class MultiInstanceTest {
         submitFormRequest.put("assigner","leader");
 
         //6.流程流转:处理 submitTask,完成任务申请.
-        taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
+        taskInstanceCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
         //7. 获取当前待处理任务.
         List<TaskInstance>   auditTaskInstanceList = taskQueryService.findPendingTask(processInstance.getInstanceId());
@@ -160,7 +160,7 @@ public class MultiInstanceTest {
 
         //9.审批通过,驱动流程节点到自动执行任务环节
 
-        taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
+        taskInstanceCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findOne(auditTaskInstance.getProcessInstanceId());

@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskInstanceCommandService;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -70,14 +70,14 @@ public class UserTaskProcessTest {
 
 
         //1st: create 1st task
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
+        TaskInstanceCommandService taskInstanceCommandService = smartEngine.getTaskCommandService();
 
         TaskInstance taskInstance = latestTaskInstance;
 
         request.put("input", 4);
 
         //2nd. create service task ,and then create task
-        taskCommandService.complete(taskInstance.getInstanceId(), request);
+        taskInstanceCommandService.complete(taskInstance.getInstanceId(), request);
 
 
 //
@@ -90,7 +90,7 @@ public class UserTaskProcessTest {
 //        assertEquals("theTask4", taskInstance.getName());
 //
 //
-//        taskCommandService.complete(taskInstance.getInstanceId(), request);
+//        taskInstanceCommandService.complete(taskInstance.getInstanceId(), request);
 //
 //
 //        //
@@ -126,7 +126,7 @@ public class UserTaskProcessTest {
 //
 //
 //        //1st: create 1st task
-//        TaskCommandService taskCommandService =    smartEngine.getTaskCommandService();
+//        TaskInstanceCommandService taskCommandService =    smartEngine.getTaskCommandService();
 //        TaskInstanceQueryService taskQueryService =    smartEngine.getTaskQueryService();
 //
 //        String processInstanceId = processInstance.getInstanceId();

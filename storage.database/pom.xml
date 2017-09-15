@@ -20,17 +20,22 @@
                 <groupId>com.alibaba.intl.sourcing.shared</groupId>
                 <artifactId>spring-data-mybatis</artifactId>
                 <version>1.0.3</version>
+                <scope>provided</scope>
+
             </dependency>
 
             <dependency>
                 <groupId>com.taobao.tddl</groupId>
                 <artifactId>tddl-sequence</artifactId>
                 <version>5.1.17</version>
+                <scope>provided</scope>
             </dependency>
              <dependency>
                 <groupId>com.taobao.tddl</groupId>
                 <artifactId>tddl-client</artifactId>
                 <version>5.1.17</version>
+                <scope>provided</scope>
+
 
              </dependency>
 

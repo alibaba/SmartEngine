@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskInstanceCommandService;
 
 import java.util.Date;
 import java.util.Map;
@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * @author 高海军 帝奇  2016.11.11
  */
-public class DefaultTaskCommandService implements TaskCommandService , LifeCycleListener {
+public class DefaultTaskInstanceCommandService implements TaskInstanceCommandService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
 
@@ -31,7 +31,7 @@ public class DefaultTaskCommandService implements TaskCommandService , LifeCycle
     private ExecutionCommandService executionCommandService;
 
 
-    public DefaultTaskCommandService(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultTaskInstanceCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 

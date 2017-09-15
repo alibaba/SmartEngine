@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskInstanceCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
@@ -44,7 +44,7 @@ public class MixedAuditProcessTest {
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
+        TaskInstanceCommandService taskInstanceCommandService = smartEngine.getTaskCommandService();
 
         ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
         ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
@@ -86,7 +86,7 @@ public class MixedAuditProcessTest {
         submitFormRequest.put("capacity","10g");
         submitFormRequest.put("assigner","leader"); //TODO 提供统一抽象和隔离,和公司账户体系集成
 
-        taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
+        taskInstanceCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
         //8.测试:新流程节点数据正确
         activityInstanceList =  activityQueryService.findAll(processInstance.getInstanceId());
@@ -103,7 +103,7 @@ public class MixedAuditProcessTest {
         Map<String, Object> approveFormRequest = new HashMap<String, Object>();
         approveFormRequest.put("approve", "agree");
         approveFormRequest.put("desc", "ok");
-        taskCommandService.complete(approveTaskInstance.getInstanceId(),approveFormRequest);
+        taskInstanceCommandService.complete(approveTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findOne(approveTaskInstance.getProcessInstanceId());

@@ -7,7 +7,7 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskInstanceCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
@@ -59,8 +59,8 @@ public class DefaultSmartEngine implements SmartEngine {
     }
 
     @Override
-    public TaskCommandService getTaskCommandService() {
-        return this.extensionPointRegistry.getExtensionPoint(TaskCommandService.class);
+    public TaskInstanceCommandService getTaskCommandService() {
+        return this.extensionPointRegistry.getExtensionPoint(TaskInstanceCommandService.class);
     }
 
     @Override
