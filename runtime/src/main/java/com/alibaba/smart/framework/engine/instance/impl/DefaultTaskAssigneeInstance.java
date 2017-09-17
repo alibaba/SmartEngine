@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
-import com.alibaba.smart.framework.engine.model.instance.TaskAssignee;
+import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DefaultTaskAssignee extends AbstractLifeCycleInstance implements TaskAssignee {
+public class DefaultTaskAssigneeInstance extends AbstractLifeCycleInstance implements TaskAssigneeInstance {
 
     private static final long serialVersionUID = -3920292154786127202L;
     private String processDefinitionIdAndVersion;
@@ -23,8 +23,12 @@ public class DefaultTaskAssignee extends AbstractLifeCycleInstance implements Ta
     //
     //private String title;
     private String assigneeId;
-    private Integer priority;
-    private Date claimTime;
-    private Date endTime;
+    private String assigneeType;
+    private Long taskInstanceId;
+
+
+    //private Integer priority;
+    //private Date claimTime;
+    //private Date endTime;
 
 }

@@ -20,6 +20,11 @@ public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
     }
 
     @Override
+    public List<TaskInstance> findTask(Long processInstanceId, Long activityInstanceId) {
+        return null;
+    }
+
+    @Override
     public TaskInstance insert(TaskInstance instance) {
         this.instances.put(instance.getInstanceId(), instance);
 

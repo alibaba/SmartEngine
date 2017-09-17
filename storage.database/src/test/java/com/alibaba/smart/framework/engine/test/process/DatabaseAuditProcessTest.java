@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.persister.database.dao.TaskAssigneeDAO
 import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskInstanceCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
@@ -31,7 +31,7 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 //@Transactional
-public class AuditProcessTest {
+public class DatabaseAuditProcessTest {
 
 
     @Test
@@ -47,7 +47,7 @@ public class AuditProcessTest {
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        TaskInstanceCommandService taskInstanceCommandService = smartEngine.getTaskCommandService();
+        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
 
         ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
         ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
@@ -69,7 +69,7 @@ public class AuditProcessTest {
                 );
         Assert.assertNotNull(processInstance);
 
-        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findPendingTask(processInstance.getInstanceId());
+        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTasks(processInstance.getInstanceId());
         TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
 
         //5.流程流转:构造提交申请参数
@@ -80,10 +80,10 @@ public class AuditProcessTest {
         submitFormRequest.put("assigneeId","1");
 
         //6.流程流转:处理 submitTask,完成任务申请.
-        taskInstanceCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
+        taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
         //7. 获取当前待处理任务.
-        List<TaskInstance>   auditTaskInstanceList = taskQueryService.findPendingTask(processInstance.getInstanceId());
+        List<TaskInstance>   auditTaskInstanceList = taskQueryService.findAllPendingTasks(processInstance.getInstanceId());
         TaskInstance auditTaskInstance = auditTaskInstanceList.get(0);
         Map<String, Object> approveFormRequest = new HashMap<String, Object>();
 
@@ -93,7 +93,7 @@ public class AuditProcessTest {
 
         //9.审批通过,驱动流程节点到自动执行任务环节
 
-        taskInstanceCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
+        taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findOne(auditTaskInstance.getProcessInstanceId());
@@ -109,13 +109,15 @@ public class AuditProcessTest {
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        processEngineConfiguration.setTaskAssigneeService(new DefaultTaskAssigneeService());
+
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        TaskInstanceCommandService taskInstanceCommandService = smartEngine.getTaskCommandService();
+        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
 
         ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
         ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
@@ -135,7 +137,7 @@ public class AuditProcessTest {
         );
         Assert.assertNotNull(processInstance);
 
-        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findPendingTask(processInstance.getInstanceId());
+        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTasks(processInstance.getInstanceId());
         TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
 
         //5.流程流转:构造提交申请参数
@@ -145,10 +147,10 @@ public class AuditProcessTest {
         submitFormRequest.put("assigner","leader");
 
         //6.流程流转:处理 submitTask,完成任务申请.
-        taskInstanceCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
+        taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
         //7. 获取当前待处理任务.
-        List<TaskInstance>   auditTaskInstanceList = taskQueryService.findPendingTask(processInstance.getInstanceId());
+        List<TaskInstance>   auditTaskInstanceList = taskQueryService.findAllPendingTasks(processInstance.getInstanceId());
         TaskInstance auditTaskInstance = auditTaskInstanceList.get(0);
         Map<String, Object> approveFormRequest = new HashMap<String, Object>();
 
@@ -158,7 +160,7 @@ public class AuditProcessTest {
 
         //9.审批通过,驱动流程节点到自动执行任务环节
 
-        taskInstanceCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
+        taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findOne(auditTaskInstance.getProcessInstanceId());

@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,12 +21,13 @@ public class TaskInstanceDAOTest extends BaseElementTest {
         entity = new TaskInstanceEntity();
         entity.setProcessDefinitionId("processDefinitionId");
         entity.setActivityInstanceId(11L);
-        entity.setAssigneeId("assign_id");
+        entity.setClaimUserId("assign_id");
         Date claimTime = new Date();
         entity.setClaimTime(new Date(claimTime.getTime()));
-        entity.setEndTime(new Date(claimTime.getTime() + 1000000));
+        entity.setCompleteTime(new Date(claimTime.getTime() + 1000000));
         entity.setExecutionInstanceId(22L);
         entity.setPriority(333);
+        entity.setStatus(TaskInstanceConstant.PENDING);
         entity.setProcessInstanceId(444L);
     }
 
@@ -62,20 +64,20 @@ public class TaskInstanceDAOTest extends BaseElementTest {
     public void testUpdate() {
         dao.insert(entity);
 
-        entity.setAssigneeId("assign_id_new");
+        entity.setClaimUserId("assign_id_new");
         Date claimTime = new Date();
 
         entity.setClaimTime(new Date(claimTime.getTime()));
         Date endTime = new Date(claimTime.getTime() + 1000000);
-        entity.setEndTime(endTime);
+        entity.setCompleteTime(endTime);
         entity.setPriority(333444);
         dao.update(entity);
 
         TaskInstanceEntity result = dao.findOne(entity.getId());
         Assert.assertNotNull(result);
-        Assert.assertEquals("assign_id_new", entity.getAssigneeId());
+        Assert.assertEquals("assign_id_new", entity.getClaimUserId());
         Assert.assertEquals(claimTime, entity.getClaimTime());
-        Assert.assertEquals(endTime, entity.getEndTime());
+        Assert.assertEquals(endTime, entity.getCompleteTime());
         Assert.assertEquals(333444, entity.getPriority().intValue());
 
     }

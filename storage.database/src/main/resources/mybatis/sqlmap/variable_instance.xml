@@ -9,17 +9,17 @@
     </sql>
 
     <insert id="insert" parameterType="VariableInstanceEntity">
-        insert into variable_instance(<include refid="baseColumn"/>)
+        insert into se_variable_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{executionInstanceId},
         #{taskInstanceId},#{doubleField},#{longField},#{stringField}
     </insert>
 
     <delete id="delete" parameterType="long">
-        delete from variable_instance where id=#{id}
+        delete from se_variable_instance where id=#{id}
     </delete>
 
     <update id="update" parameterType="VariableInstanceEntity">
-        update variable_instance
+        update se_variable_instance
         <set>
             gmt_modified=now()
         </set>
@@ -29,13 +29,13 @@
     <select id="findOne" resultType="VariableInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from variable_instance where id=#{id}
+        from se_variable_instance where id=#{id}
     </select>
 
     <select id="findPendingTask" resultType="VariableInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from variable_instance where execution_instance_id=#{processInstanceId}
+        from se_variable_instance where execution_instance_id=#{processInstanceId}
     </select>
 
 

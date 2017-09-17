@@ -22,12 +22,27 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
 
-            if(null == taskInstanceEntity.getEndTime()){
+            if(null == taskInstanceEntity.getCompleteTime()){
                 TaskInstance taskInstance= buildTaskInstance(taskInstanceEntity);
 
                 taskInstanceList.add(taskInstance);
 
             }
+        }
+
+        return taskInstanceList;
+    }
+
+    @Override
+    public List<TaskInstance> findTask(Long processInstanceId, Long activityInstanceId) {
+        TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
+        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTask(processInstanceId ,activityInstanceId);
+
+        List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
+        for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
+                TaskInstance taskInstance= buildTaskInstance(taskInstanceEntity);
+                taskInstanceList.add(taskInstance);
+
         }
 
         return taskInstanceList;
@@ -42,10 +57,10 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstanceDAO.insert(taskInstanceEntity);
 
         //reAssign
-        taskInstance= buildTaskInstance(taskInstanceEntity);
+        TaskInstance   resultTaskInstance= buildTaskInstance(taskInstanceEntity);
+        resultTaskInstance.setTaskAssigneeInstanceList(taskInstance.getTaskAssigneeInstanceList());
 
-
-        return taskInstance;
+        return resultTaskInstance;
     }
 
     private TaskInstanceEntity buildTaskInstanceEntity(TaskInstance taskInstance) {
@@ -56,11 +71,12 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstanceEntity.setProcessInstanceId(taskInstance.getProcessInstanceId());
         taskInstanceEntity.setActivityInstanceId(taskInstance.getActivityInstanceId());
         taskInstanceEntity.setExecutionInstanceId(taskInstance.getExecutionInstanceId());
-        taskInstanceEntity.setAssigneeId(taskInstance.getAssigneeId());
+        taskInstanceEntity.setClaimUserId(taskInstance.getClaimUserId());
         taskInstanceEntity.setClaimTime(taskInstance.getClaimTime());
-        taskInstanceEntity.setEndTime(taskInstance.getEndTime());
+        taskInstanceEntity.setStatus(taskInstance.getStatus());
+        taskInstanceEntity.setCompleteTime(taskInstance.getCompleteTime());
         taskInstanceEntity.setPriority(taskInstance.getPriority());
-        taskInstanceEntity.setGmtModified(taskInstance.getEndTime());
+        taskInstanceEntity.setGmtModified(taskInstance.getCompleteTime());
         return taskInstanceEntity;
     }
 
@@ -86,15 +102,16 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     private TaskInstance buildTaskInstance(TaskInstanceEntity taskInstanceEntity) {
         TaskInstance taskInstance = new DefaultTaskInstance();
         taskInstance.setInstanceId(taskInstanceEntity.getId());
-        taskInstance.setStartDate(taskInstanceEntity.getGmtCreate());
+        taskInstance.setStartTime(taskInstanceEntity.getGmtCreate());
         taskInstance.setProcessDefinitionIdAndVersion(taskInstanceEntity.getProcessDefinitionId());
         taskInstance.setProcessInstanceId(taskInstanceEntity.getProcessInstanceId());
         taskInstance.setActivityInstanceId(taskInstanceEntity.getActivityInstanceId());
+        //TODO ADD setActivityId RONGYU
+        //taskInstance.setActivityId(taskInstanceEntity.get);
         taskInstance.setExecutionInstanceId(taskInstanceEntity.getExecutionInstanceId());
 
-        taskInstance.setAssigneeId(taskInstanceEntity.getAssigneeId());
-        taskInstance.setCompleteDate(taskInstanceEntity.getEndTime());
-        taskInstance.setEndTime(taskInstanceEntity.getEndTime());
+        taskInstance.setClaimUserId(taskInstanceEntity.getClaimUserId());
+        taskInstance.setCompleteTime(taskInstanceEntity.getCompleteTime());
         // taskInstance.setActivityId(taskInstanceEntity.get);
 
         return taskInstance;

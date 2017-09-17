@@ -57,7 +57,7 @@ public class ReceiveTaskExclusiveGatewayTest {
         assertEquals("theTask1", lastActivityInstance.getActivityId());
 
 
-        ExecutionInstance lastExecutionInstance = lastActivityInstance.getExecutionInstance();
+        ExecutionInstance lastExecutionInstance = lastActivityInstance.getExecutionInstanceList().get(0);;
         Assert.assertNotNull(lastExecutionInstance);
 
         assertEquals(processInstance.getInstanceId(), lastExecutionInstance.getProcessInstanceId());
@@ -77,13 +77,13 @@ public class ReceiveTaskExclusiveGatewayTest {
         Assert.assertNotNull(activityInstances);
         size = activityInstances.size();
         lastActivityInstance = activityInstances.get(size - 1);
-        lastExecutionInstance = lastActivityInstance.getExecutionInstance();
+        lastExecutionInstance = lastActivityInstance.getExecutionInstanceList().get(0);
         Assert.assertNotNull(lastExecutionInstance);
 
         request.put("input", 11);
         processInstance = executionCommandService.signal(lastExecutionInstance.getInstanceId(), request);
 
-        Assert.assertNotNull(processInstance.getCompleteDate());
+        Assert.assertNotNull(processInstance.getCompleteTime());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
 

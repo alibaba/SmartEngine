@@ -16,7 +16,7 @@ public class CreateDeploymentRequest {
     private  String processDefinitionDesc;
     private  String processDefinitionContent;
 
-    private  String deploymentUserId;
+    private  Long deploymentUserId;
     private  String deploymentStatus;
     private  String logicStatus;
 }

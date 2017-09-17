@@ -22,8 +22,8 @@ public abstract class AbstractPvmElement<M extends Element> implements PvmElemen
     private M model;
 
     private Invoker invoker;
-    private List<Invoker> prepareExtensions;
-    private List<Invoker> extensions;
+    private List<Invoker> prepareExtensionInvokers;
+    private List<Invoker> extensionInvokers;
 
     protected ExtensionPointRegistry extensionPointRegistry;
 
@@ -34,28 +34,28 @@ public abstract class AbstractPvmElement<M extends Element> implements PvmElemen
     @Override
     public Object invoke(String event, ExecutionContext context) {
         // 执行准备周期扩展：如，参数转换，配置设置，预处理逻辑
-        if (null != this.prepareExtensions) {
-            for (Invoker extension : prepareExtensions) {
-                extension.invoke(event, context);
+        if (null != this.prepareExtensionInvokers) {
+            for (Invoker prepareExtensionInvoker : prepareExtensionInvokers) {
+                prepareExtensionInvoker.invoke(event, context);
             }
         }
 
-        // invoke
-        Object result = invokeBehavior(event, context);
+       Object result =  invokeBehavior(event, context);
+
+        //FIXME 这个逻辑不合适。
         if (null != this.invoker) {
-            Object invokerResult = this.invoker.invoke(event, context);
-            if (null == result) {
-                result = invokerResult;
-            }
+            result =  this.invoker.invoke(event, context);
+
         }
         //TODO 增加事件发送机制 ettear
 
         // 执行扩展：如，事件监听
-        if (null != this.extensions) {
-            for (Invoker extension : extensions) {
+        if (null != this.extensionInvokers) {
+            for (Invoker extension : extensionInvokers) {
                 extension.invoke(event, context);
             }
         }
+
         return result;
     }
 
@@ -70,8 +70,8 @@ public abstract class AbstractPvmElement<M extends Element> implements PvmElemen
         this.model = model;
     }
 
-    public List<Invoker> getPrepareExtensions() {
-        return prepareExtensions;
+    public List<Invoker> getPrepareExtensionInvokers() {
+        return prepareExtensionInvokers;
     }
 
     public Invoker getInvoker() {
@@ -84,17 +84,17 @@ public abstract class AbstractPvmElement<M extends Element> implements PvmElemen
     }
 
     @Override
-    public void setPrepareExtensions(
-        List<Invoker> prepareExtensions) {
-        this.prepareExtensions = prepareExtensions;
+    public void setPrepareExtensionInvokers(
+        List<Invoker> prepareExtensionInvokers) {
+        this.prepareExtensionInvokers = prepareExtensionInvokers;
     }
 
-    public List<Invoker> getExtensions() {
-        return extensions;
+    public List<Invoker> getExtensionInvokers() {
+        return extensionInvokers;
     }
 
     @Override
-    public void setExtensions(List<Invoker> extensions) {
-        this.extensions = extensions;
+    public void setExtensionInvokers(List<Invoker> extensionInvokers) {
+        this.extensionInvokers = extensionInvokers;
     }
 }

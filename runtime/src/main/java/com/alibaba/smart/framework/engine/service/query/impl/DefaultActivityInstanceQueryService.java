@@ -44,4 +44,9 @@ public class DefaultActivityInstanceQueryService implements ActivityInstanceQuer
 
         return activityInstanceStorage.findAll(processInstanceId);
     }
+
+    @Override
+    public List<ActivityInstance> findAll(Long processInstanceId, boolean asc) {
+        return null;
+    }
 }

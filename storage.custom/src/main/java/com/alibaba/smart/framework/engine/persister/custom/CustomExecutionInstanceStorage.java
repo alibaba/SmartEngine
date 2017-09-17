@@ -31,16 +31,21 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
             List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
 
             for (ActivityInstance activityInstance : activityInstances) {
-                ExecutionInstance tempExecutionInstance = activityInstance.getExecutionInstance();
-                if (null != tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(
-                    executionInstance.getInstanceId())) {
+                List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+                for (ExecutionInstance tempExecutionInstance : executionInstances) {
+                    if (null != tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(
+                        executionInstance.getInstanceId())) {
 
-                    activityInstance.setExecutionInstance(executionInstance);
+                        //FIXME check logic
+                        tempExecutionInstance = executionInstance;
+                        //activityInstance.setExecutionInstance(executionInstance);
 
-                    matched = true;
-                    break;
+                        matched = true;
+                        break;
 
+                    }
                 }
+
             }
             if (matched) {
                 break;
@@ -74,13 +79,17 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
                 int size = activityInstances.size();
                 for (int i = size - 1; i >= 0; i--) {
                     ActivityInstance activityInstance = activityInstances.get(i);
-                    ExecutionInstance tempExecutionInstance = activityInstance.getExecutionInstance();
-                    if (null != tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(instanceId)) {
-                        executionInstance = tempExecutionInstance;
-                        matched = true;
-                        break;
 
+                    List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+                    for (ExecutionInstance tempExecutionInstance : executionInstances) {
+                        if (null != tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(instanceId)) {
+                            executionInstance = tempExecutionInstance;
+                            matched = true;
+                            break;
+
+                        }
                     }
+
                 }
 
             }
@@ -116,10 +125,13 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
         //TUNE 扩容
         List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
         for (ActivityInstance activityInstance : activityInstances) {
-            ExecutionInstance executionInstance =   activityInstance.getExecutionInstance();
-            if(null != executionInstance && executionInstance.isActive()){
-                executionInstances.add(executionInstance);
+            List<ExecutionInstance> executionInstances1 =    activityInstance.getExecutionInstanceList();
+            for (ExecutionInstance executionInstance : executionInstances1) {
+                if(null != executionInstance && executionInstance.isActive()){
+                    executionInstances.add(executionInstance);
+                }
             }
+
         }
 
         return executionInstances;

@@ -18,11 +18,11 @@ public abstract class AbstractLifeCycleInstance extends AbstractInstance impleme
     /**
      * 开始时间
      */
-    private Date startDate;
+    private Date startTime;
     /**
      * 结束时间
      */
-    private Date completeDate;
+    private Date completeTime;
 
 
 }

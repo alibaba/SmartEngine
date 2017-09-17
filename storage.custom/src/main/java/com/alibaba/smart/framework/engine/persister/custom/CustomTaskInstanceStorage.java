@@ -18,6 +18,11 @@ public class CustomTaskInstanceStorage implements TaskInstanceStorage {
     }
 
     @Override
+    public List<TaskInstance> findTask(Long processInstanceId, Long activityInstanceId) {
+        return null;
+    }
+
+    @Override
     public TaskInstance insert(TaskInstance instance) {
         throw new EngineException("not implement intentionally");
     }

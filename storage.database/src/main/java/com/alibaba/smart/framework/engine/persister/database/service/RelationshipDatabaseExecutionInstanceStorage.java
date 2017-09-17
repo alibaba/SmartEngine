@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.persister.database.dao.ExecutionInstan
 import com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,6 +44,9 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
 
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
         ExecutionInstanceEntity executionInstanceEntity = buildExecutionInstanceEntity(executionInstance);
+        executionInstanceEntity.setId(executionInstance.getInstanceId());
+        executionInstanceEntity.setGmtCreate(executionInstance.getStartTime());
+        executionInstanceEntity.setGmtModified(executionInstance.getCompleteTime());
 
         executionInstanceDAO.update(executionInstanceEntity);
         return executionInstance;
@@ -55,8 +59,8 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
         executionInstance.setActivityInstanceId(executionInstanceEntity.getActivityInstanceId());
         executionInstance.setActivityId(executionInstanceEntity.getProcessDefinitionActivityId());
         executionInstance.setActive(executionInstanceEntity.isActive());
-        executionInstance.setStartDate(executionInstanceEntity.getGmtCreate());
-        executionInstance.setCompleteDate(executionInstanceEntity.getGmtModified());
+        executionInstance.setStartTime(executionInstanceEntity.getGmtCreate());
+        executionInstance.setCompleteTime(executionInstanceEntity.getGmtModified());
 
         return executionInstance;
     }
@@ -82,7 +86,18 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
     @Override
     public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
-        executionInstanceDAO.findAllExecutionList(processInstanceId);
-        return null;
+        List<ExecutionInstanceEntity> executionInstanceEntities=  executionInstanceDAO.findActiveExecution(processInstanceId);
+
+        List<ExecutionInstance>  executionInstanceList = null;
+        if(null != executionInstanceEntities){
+            executionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceEntities.size());
+            for (ExecutionInstanceEntity executionInstanceEntity : executionInstanceEntities) {
+                ExecutionInstance executionInstance = new DefaultExecutionInstance();
+                buildExecutionInstance(executionInstance, executionInstanceEntity);
+                executionInstanceList.add(executionInstance);
+            }
+        }
+
+        return executionInstanceList;
     }
 }

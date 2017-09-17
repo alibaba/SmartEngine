@@ -9,17 +9,17 @@
     </sql>
 
     <insert id="insert" parameterType="ExecutionInstanceEntity">
-        insert into execution_instance(<include refid="baseColumn"/>)
+        insert into  se_execution_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionId},
         #{processDefinitionActivityId}, #{activityInstanceId},#{active})
     </insert>
 
     <delete id="delete" parameterType="long">
-        delete from execution_instance where id=#{id}
+        delete from  se_execution_instance where id=#{id}
     </delete>
 
     <update id="update" parameterType="ExecutionInstanceEntity">
-        update execution_instance
+        update  se_execution_instance
         <set>
             gmt_modified=now()
             <if test="active != null">,active = #{active}</if>
@@ -30,13 +30,19 @@
     <select id="findOne" resultType="ExecutionInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from execution_instance where id=#{id}
+        from  se_execution_instance where id=#{id}
     </select>
 
     <select id="findAllExecutionList" resultType="ExecutionInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from execution_instance where process_instance_id=#{processInstanceId}
+        from  se_execution_instance where process_instance_id=#{processInstanceId}
+    </select>
+
+    <select id="findActiveExecution" resultType="ExecutionInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from  se_execution_instance where process_instance_id=#{processInstanceId} and active = 1
     </select>
 
 

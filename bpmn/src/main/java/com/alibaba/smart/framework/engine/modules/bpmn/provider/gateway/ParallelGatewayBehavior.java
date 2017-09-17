@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -28,9 +27,11 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
     @Override
     public boolean enter(ExecutionContext context) {
+        beforeEnter(context);
+
 
         ParallelGateway parallelGateway = this.getModel();
-        PvmActivity pvmActivity = this.getRuntimeActivity();
+        PvmActivity pvmActivity = this.getPvmActivity();
 
         Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();
 
@@ -92,7 +93,10 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             for (ActivityInstance activityInstance : activityInstanceList) {
 
                 if(activityInstance.getActivityId().equals(pvmActivity.getModel().getId())){
-                    MarkDoneUtil.markDone(activityInstance,activityInstance.getExecutionInstance(),super.getExtensionPointRegistry());
+                    List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+                    for (ExecutionInstance executionInstance : executionInstances) {
+                        MarkDoneUtil.markDone(activityInstance,executionInstance,super.getExtensionPointRegistry());
+                    }
                 }
             }
             return false;
@@ -112,7 +116,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         // 重要:在流程定义解析时,需要判断如果是 fork,则 outcome >=2, income=1; 类似的,如果是 join,则 outcome = 1,income>=2
 
         ParallelGateway parallelGateway = this.getModel();
-        PvmActivity pvmActivity = this.getRuntimeActivity();
+        PvmActivity pvmActivity = this.getPvmActivity();
 
         ProcessInstance processInstance = context.getProcessInstance();
 

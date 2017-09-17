@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * @author 高海军 帝奇  2016.11.11
  */
 @Data
-public class DefaultProcessEngineConfiguration implements ProcessEngineConfiguration //, InitializingBean, ApplicationContextAware
+public class DefaultProcessEngineConfiguration implements ProcessEngineConfiguration
 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProcessEngineConfiguration.class);

@@ -5,21 +5,21 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,process_instance_id,
-        task_instance_id,assignee_id
+        task_instance_id,assignee_id,assignee_type
     </sql>
 
     <insert id="insert" parameterType="TaskAssigneeEntity">
-        insert into task_assignee(<include refid="baseColumn"/>)
+        insert into se_task_assignee(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId},
-        #{taskInstanceId},#{assigneeId})
+        #{taskInstanceId},#{assigneeId},#{assigneeType})
     </insert>
 
     <delete id="delete" parameterType="long">
-        delete from task_assignee where id=#{id}
+        delete from se_task_assignee where id=#{id}
     </delete>
 
     <update id="update" parameterType="TaskAssigneeEntity">
-        update task_assignee
+        update se_task_assignee
         <set>
             gmt_modified=now()
             <if test="assigneeId != null">,assignee_id = #{assigneeId}</if>
@@ -31,13 +31,7 @@
     <select id="findPendingTask" resultType="TaskAssigneeEntity">
         select
         <include refid="baseColumn"/>
-        from task_assignee where assignee_id=#{assigneeId}
-    </select>
-
-    <select id="findSameTask" resultType="TaskAssigneeEntity">
-        select
-        <include refid="baseColumn"/>
-        from task_assignee where task_instance_id=#{taskInstanceId}
+        from se_task_assignee where assignee_id=#{assigneeId}
     </select>
 
 

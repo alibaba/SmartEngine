@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -12,14 +13,13 @@ public interface TaskInstance extends LifeCycleInstance {
 
     void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
 
+    Long getProcessInstanceId();
+
+    void setProcessInstanceId(Long processInstanceId);
 
     String getActivityId();
 
     void setActivityId(String activityId);
-
-    Long getProcessInstanceId();
-
-    void setProcessInstanceId(Long processInstanceId);
 
     Long getExecutionInstanceId();
 
@@ -29,20 +29,28 @@ public interface TaskInstance extends LifeCycleInstance {
 
     void setActivityInstanceId(Long activityInstanceId);
 
-      String getAssigneeId() ;
+    String getClaimUserId();
 
-      void setAssigneeId(String assigneeId);
+    void setClaimUserId(String claimUserId);
 
-      Integer getPriority();
+    String getStatus();
 
-      void setPriority(Integer priority) ;
+    void setStatus(String status);
 
-      Date getClaimTime() ;
+    List<TaskAssigneeInstance> getTaskAssigneeInstanceList();
 
-      void setClaimTime(Date claimTime) ;
+    void setTaskAssigneeInstanceList(List<TaskAssigneeInstance> taskAssigneeInstanceList );
 
-      Date getEndTime() ;
+    Integer getPriority();
 
-      void setEndTime(Date endTime);
+    void setPriority(Integer priority);
+
+    Date getClaimTime();
+
+    void setClaimTime(Date claimTime);
+
+    //Date getEndTime();
+    //
+    //void setEndTime(Date endTime);
 
 }

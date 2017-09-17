@@ -42,23 +42,27 @@ public class InstanceSerializerV1 {
         List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
         for (ActivityInstance activityInstance : activityInstances) {
 
+            List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+            for (ExecutionInstance executionInstance : executionInstances) {
 
-            ExecutionInstance executionInstance = activityInstance.getExecutionInstance();
-            if (null != executionInstance) {
-                boolean active = executionInstance.isActive();
+                if (null != executionInstance) {
+                    boolean active = executionInstance.isActive();
 
-                if(active){
-                    //注意: 这里仅保存了需要被执行的实例,历史的activityInstance在这里并没有保存。在阿里的海量数据业务中,也通常不需要。
-                    stringBuilder.append(activityInstance.getInstanceId()).append(",");
-                    stringBuilder.append(activityInstance.getBlockId()).append(",");
-                    stringBuilder.append(activityInstance.getActivityId()).append(",");
-                    stringBuilder.append(executionInstance.getInstanceId()).append(",");
-                    stringBuilder.append(active).append(",");
+                    if(active){
+                        //注意: 这里仅保存了需要被执行的实例,历史的activityInstance在这里并没有保存。在阿里的海量数据业务中,也通常不需要。
+                        stringBuilder.append(activityInstance.getInstanceId()).append(",");
+                        stringBuilder.append(activityInstance.getBlockId()).append(",");
+                        stringBuilder.append(activityInstance.getActivityId()).append(",");
+                        stringBuilder.append(executionInstance.getInstanceId()).append(",");
+                        stringBuilder.append(active).append(",");
 
-                    stringBuilder.append("|");
+                        stringBuilder.append("|");
+                    }
+
                 }
-
             }
+
+
 
 
         }
@@ -123,13 +127,16 @@ public class InstanceSerializerV1 {
 
         List<ActivityInstance>  activityInstances  = deserializeActivityInstances(serializeString,  processInstance);
 
-        List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
+        List<ExecutionInstance> executionInstances1 = new ArrayList<ExecutionInstance>(activityInstances.size());
         for (ActivityInstance activityInstance : activityInstances) {
-            ExecutionInstance executionInstance =   activityInstance.getExecutionInstance();
-            executionInstances.add(executionInstance);
+            List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+            for (ExecutionInstance executionInstance : executionInstances) {
+                executionInstances1.add(executionInstance);
+
+            }
         }
 
-        return executionInstances;
+        return executionInstances1;
 
     }
 
@@ -162,7 +169,12 @@ public class InstanceSerializerV1 {
 
 
         ExecutionInstance executionInstance = buildExecutionInstance(st1, activityId,   activityInstance,  processInstance);
-        activityInstance.setExecutionInstance(executionInstance);
+
+        //FIXME 有点问题、
+        List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(2);
+        executionInstanceList.add(executionInstance);
+        activityInstance.setExecutionInstanceList(executionInstanceList);
+
         return activityInstance;
     }
 

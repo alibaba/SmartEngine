@@ -10,10 +10,8 @@ import com.alibaba.smart.framework.engine.model.assembly.MultiInstanceLoopCharac
 public abstract class AbstractActivity extends AbstractElement implements Activity {
 
     private static final long serialVersionUID = 3558917263151685441L;
+
     private boolean startActivity;
-
-
-
 
     @Override
     public boolean isStartActivity() {

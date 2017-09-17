@@ -1,5 +1,8 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
@@ -7,6 +10,9 @@ import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFact
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
@@ -16,7 +22,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
  */
 public abstract class AbstractActivityBehavior<T extends Activity> implements ActivityBehavior {
 
-    private PvmActivity runtimeActivity;
+    private PvmActivity pvmActivity;
 
     protected ExtensionPointRegistry extensionPointRegistry;
 
@@ -26,7 +32,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     protected TaskInstanceFactory taskInstanceFactory;
 
     public AbstractActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity pvmActivity) {
-        this.runtimeActivity = pvmActivity;
+        this.pvmActivity = pvmActivity;
         this.extensionPointRegistry = extensionPointRegistry;
         this.processInstanceFactory = extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
         this.executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
@@ -39,12 +45,28 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     }
 
 
-    protected PvmActivity getRuntimeActivity() {
-        return runtimeActivity;
+    protected PvmActivity getPvmActivity() {
+        return pvmActivity;
+    }
+
+    protected void beforeEnter(ExecutionContext context) {
+        ProcessInstance processInstance = context.getProcessInstance();
+
+        ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
+        ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance,  context);
+
+        List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(2);
+        executionInstanceList.add(executionInstance);
+        activityInstance.setExecutionInstanceList(executionInstanceList);
+        processInstance.addNewActivityInstance(activityInstance);
+
+        context.setExecutionInstance(executionInstance);
+        context.setActivityInstance(activityInstance);
     }
 
     @Override
     public boolean enter(ExecutionContext context) {
+        beforeEnter(context);
         return false;
     }
 
@@ -59,6 +81,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     }
 
     protected T getModel() {
-        return (T)this.runtimeActivity.getModel();
+        return (T)this.pvmActivity.getModel();
     }
 }

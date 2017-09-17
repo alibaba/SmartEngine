@@ -9,4 +9,8 @@ public interface TaskInstanceDAO extends MybatisRepository<TaskInstanceEntity, L
 
      List<TaskInstanceEntity> findPendingTask(Long processInstanceId);
 
+     List<TaskInstanceEntity> findTask(Long processInstanceId, Long activityInstanceId);
+
+
+
 }

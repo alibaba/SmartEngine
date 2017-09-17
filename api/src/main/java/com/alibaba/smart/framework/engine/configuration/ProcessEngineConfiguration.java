@@ -22,10 +22,13 @@ public interface ProcessEngineConfiguration {
 
     ExceptionProcessor getExceptionProcessor();
 
-    //用于配置扩展,默认可以为空。设计目的是用来处理任务的处理者。
+    //FixME 是否要干掉 用于配置扩展,默认可以为空。设计目的是用来处理任务的处理者。
     void setTaskAssigneeService(TaskAssigneeService taskAssigneeService);
 
     TaskAssigneeService getTaskAssigneeService();
+
+
+
 
     void setInstanceAccessService(InstanceAccessService instanceAccessService);
 
@@ -36,7 +39,7 @@ public interface ProcessEngineConfiguration {
     IdGenerator getIdGenerator();
 
 
-    //用于配置扩展,默认可以为空。设计目的是根据自己的业务需求,来自定义存储(该机制会绕过引擎自带的各种Storage机制,powerful and a little UnSafe)。。
+    //FixME 是否要干掉 用于配置扩展,默认可以为空。设计目的是根据自己的业务需求,来自定义存储(该机制会绕过引擎自带的各种Storage机制,powerful and a little UnSafe)。。
     void setPersisterStrategy(PersisterStrategy persisterStrategy);
 
     PersisterStrategy getPersisterStrategy();

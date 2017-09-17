@@ -337,8 +337,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                         extensionInvokers.add(extensionInvoker);
                     }
                 }
-                pvmElement.setPrepareExtensions(prepareExtensionInvokers);
-                pvmElement.setExtensions(extensionInvokers);
+                pvmElement.setPrepareExtensionInvokers(prepareExtensionInvokers);
+                pvmElement.setExtensionInvokers(extensionInvokers);
             }
         }
 

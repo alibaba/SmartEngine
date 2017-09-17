@@ -9,17 +9,17 @@
     </sql>
 
     <insert id="insert" parameterType="ProcessInstanceEntity">
-        insert into process_instance(<include refid="baseColumn"/>)
+        insert into se_process_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionId},
         #{status}, #{parentProcessInstanceId})
     </insert>
 
     <delete id="delete" parameterType="long">
-        delete from process_instance where id=#{id}
+        delete from se_process_instance where id=#{id}
     </delete>
 
     <update id="update" parameterType="ProcessInstanceEntity">
-        update process_instance
+        update se_process_instance
         <set>
             gmt_modified=now()
             <if test="status != null">,status = #{status}</if>
@@ -31,7 +31,7 @@
     <select id="findOne" resultType="ProcessInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from process_instance where id=#{id}
+        from se_process_instance where id=#{id}
     </select>
 
 

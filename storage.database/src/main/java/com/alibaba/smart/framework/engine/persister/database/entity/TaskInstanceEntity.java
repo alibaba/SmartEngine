@@ -23,12 +23,13 @@ public class TaskInstanceEntity extends BaseProcessEntity {
 
     private Long activityInstanceId;
 
-    private String assigneeId;
+    private String claimUserId;
 
     private Integer priority;
 
+    private String status;
 
     private Date claimTime;
 
-    private Date endTime;
+    private Date completeTime;
 }

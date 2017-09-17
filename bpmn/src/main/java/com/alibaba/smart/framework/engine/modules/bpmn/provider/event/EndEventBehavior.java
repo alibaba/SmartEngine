@@ -22,7 +22,7 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
     public void leave(ExecutionContext context) {
         ProcessInstance processInstance = context.getProcessInstance();
         processInstance.setStatus(InstanceStatus.completed);
-        processInstance.setCompleteDate(DateUtil.getCurrentDate());
+        processInstance.setCompleteTime(DateUtil.getCurrentDate());
 
         //子流程结束时,才会进入到该环节里面来。这个时候没要慌,需要找出父流程的执行实例id,然后继续执行父流程的后续节点。
         if(null !=  processInstance.getParentInstanceId()){

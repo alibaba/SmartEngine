@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskInstanceCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
@@ -38,13 +38,16 @@ public class MixedAuditProcessTest {
 
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        processEngineConfiguration.setTaskAssigneeService(new DefaultTaskAssigneeService());
+
         SmartEngine smartEngine = new DefaultSmartEngine();
+
         smartEngine.init(processEngineConfiguration);
 
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        TaskInstanceCommandService taskInstanceCommandService = smartEngine.getTaskCommandService();
+        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
 
         ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
         ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
@@ -74,7 +77,7 @@ public class MixedAuditProcessTest {
 
 
         //6.测试:断言任务数正确
-        List<TaskInstance> taskInstanceList=  taskQueryService.findPendingTask(processInstance.getInstanceId());
+        List<TaskInstance> taskInstanceList=  taskQueryService.findAllPendingTasks(processInstance.getInstanceId());
         Assert.assertNotNull(taskInstanceList);
         TaskInstance submitTaskInstance = taskInstanceList.get(0);
         Assert.assertNotNull(submitTaskInstance);
@@ -86,14 +89,14 @@ public class MixedAuditProcessTest {
         submitFormRequest.put("capacity","10g");
         submitFormRequest.put("assigner","leader"); //TODO 提供统一抽象和隔离,和公司账户体系集成
 
-        taskInstanceCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
+        taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
         //8.测试:新流程节点数据正确
         activityInstanceList =  activityQueryService.findAll(processInstance.getInstanceId());
         Assert.assertNotNull(activityInstanceList);
         Assert.assertEquals(3,activityInstanceList.size() );
 
-        taskInstanceList = taskQueryService.findPendingTask(processInstance.getInstanceId());
+        taskInstanceList = taskQueryService.findAllPendingTasks(processInstance.getInstanceId());
         Assert.assertNotNull(taskInstanceList);
 
         TaskInstance approveTaskInstance = taskInstanceList.get(0);
@@ -103,12 +106,12 @@ public class MixedAuditProcessTest {
         Map<String, Object> approveFormRequest = new HashMap<String, Object>();
         approveFormRequest.put("approve", "agree");
         approveFormRequest.put("desc", "ok");
-        taskInstanceCommandService.complete(approveTaskInstance.getInstanceId(),approveFormRequest);
+        taskCommandService.complete(approveTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findOne(approveTaskInstance.getProcessInstanceId());
         Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
-        Assert.assertNotNull(finalProcessInstance.getCompleteDate());
+        Assert.assertNotNull(finalProcessInstance.getCompleteTime());
 
 
         //11. TODO 处理加签流程,任务和人关联列表,流程变量存储,索引

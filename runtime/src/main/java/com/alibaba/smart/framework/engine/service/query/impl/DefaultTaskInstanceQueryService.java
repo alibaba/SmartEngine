@@ -5,6 +5,7 @@ import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
+import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
 import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
 
 import java.util.List;
@@ -35,10 +36,28 @@ public class DefaultTaskInstanceQueryService implements TaskInstanceQueryService
     }
 
     @Override
-    public List<TaskInstance> findPendingTask(Long processInstanceId) {
+    public List<TaskInstance> findPendingTask(Long processInstanceId, Long userId, PaginateRequest paginateRequest) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         return taskInstanceStorage.findPendingTask(processInstanceId);
+    }
+
+    @Override
+    public List<TaskInstance> findAllPendingTasks(Long processInstanceId) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+
+        return taskInstanceStorage.findPendingTask(processInstanceId);
+    }
+
+    @Override
+    public List<TaskInstance> findAllPendingTasks(Long processInstanceId, Long userId) {
+        return null;
+    }
+
+    @Override
+    public List<TaskInstance> findTaskByTag(Long processInstanceId, String tag, PaginateRequest paginateRequest) {
+        return null;
     }
 }

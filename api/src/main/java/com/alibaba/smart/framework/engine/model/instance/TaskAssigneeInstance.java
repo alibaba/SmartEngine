@@ -6,7 +6,7 @@ import java.util.Date;
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public interface TaskAssignee extends LifeCycleInstance {
+public interface TaskAssigneeInstance extends LifeCycleInstance {
 
     String getProcessDefinitionIdAndVersion();
 
@@ -21,6 +21,10 @@ public interface TaskAssignee extends LifeCycleInstance {
 
     void setProcessInstanceId(Long processInstanceId);
 
+    Long getTaskInstanceId();
+
+    void setTaskInstanceId(Long taskInstanceId);
+
     //Long getExecutionInstanceId();
     //
     //void setExecutionInstanceId(Long executionInstanceId);
@@ -33,13 +37,16 @@ public interface TaskAssignee extends LifeCycleInstance {
     //
     //void setTitle(String title);
 
-      String getAssigneeId() ;
+     String getAssigneeId() ;
 
-      void setAssigneeId(String assigneeId);
+     void setAssigneeId(String assigneeId);
+
+     String getAssigneeType();
+
+     void setAssigneeType(String assigneeType);
 
 
-
-      //Integer getPriority();
+    //Integer getPriority();
       //
       //void setPriority(Integer priority) ;
       //

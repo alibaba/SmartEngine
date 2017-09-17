@@ -9,18 +9,17 @@ import com.alibaba.smart.framework.engine.service.param.UpdateDeploymentRequest;
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  17:15.
  */
-public interface DeploymentInstanceCommandService {
+public interface DeploymentCommandService {
 
 
     DeploymentInstance createDeployment(CreateDeploymentRequest createDeploymentRequest) ;
 
     DeploymentInstance createDeployment(UpdateDeploymentRequest updateDeploymentRequest) ;
 
-
     void inactivateDeploymentInstance(Long deploymentInstanceId);
 
     void activateDeploymentInstance(Long deploymentInstanceId);
 
-    void deleteDeploymentInstance(Long deploymentId);
+    void deleteDeploymentInstanceLogically(Long deploymentInstanceId);
 
 }

@@ -25,7 +25,7 @@ public interface PvmElement<M extends Element> extends LifeCycleListener {
 
     void setInvoker(Invoker invoker);
 
-    void setPrepareExtensions(List<Invoker> prepareExtensions);
+    void setPrepareExtensionInvokers(List<Invoker> prepareExtensionInvokers);
 
-    void setExtensions(List<Invoker> extensions);
+    void setExtensionInvokers(List<Invoker> extensionInvokers);
 }

@@ -63,16 +63,16 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     }
 
     private void buildInstanceRelationShip(ExecutionContext context){
-        ProcessInstance processInstance = context.getProcessInstance();
-
-        ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
-        ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance,  context);
-
-        activityInstance.setExecutionInstance(executionInstance);
-        processInstance.addNewActivityInstance(activityInstance);
-
-        context.setExecutionInstance(executionInstance);
-        context.setActivityInstance(activityInstance);
+        //ProcessInstance processInstance = context.getProcessInstance();
+        //
+        //ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
+        //ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance,  context);
+        //
+        //activityInstance.setExecutionInstance(executionInstance);
+        //processInstance.addNewActivityInstance(activityInstance);
+        //
+        //context.setExecutionInstance(executionInstance);
+        //context.setActivityInstance(activityInstance);
     }
 
     private void executeRecursively(ExecutionContext context) {

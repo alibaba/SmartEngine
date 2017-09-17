@@ -115,7 +115,7 @@ public class ReceiveTaskParallelGatewayTest {
         assertTrue("theTask3".equals(firstExecutionInstance.getActivityId()));
 
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
-        Assert.assertNotNull(processInstance.getCompleteDate());
+        Assert.assertNotNull(processInstance.getCompleteTime());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
 

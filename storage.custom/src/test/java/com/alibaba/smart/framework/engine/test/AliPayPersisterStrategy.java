@@ -70,15 +70,23 @@ public class AliPayPersisterStrategy implements PersisterStrategy {
                 continue;
             }else{
                 int size = activityInstances.size();
+
+                //TODO DUPLICATED CODE
+
                 for (int i = size-1; i>=0;i--) {
                     ActivityInstance activityInstance = activityInstances.get(i);
-                    ExecutionInstance tempExecutionInstance = activityInstance.getExecutionInstance();
-                    if(null!= tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(executionInstanceId)){
-                        machedProcessInstance = processInstance;
-                        matched = true;
-                        break;
 
+                    List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+                    for (ExecutionInstance tempExecutionInstance : executionInstances) {
+                        if(null!= tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(executionInstanceId)){
+                            machedProcessInstance = processInstance;
+                            matched = true;
+                            break;
+
+                        }
                     }
+
+
                 }
 
             }

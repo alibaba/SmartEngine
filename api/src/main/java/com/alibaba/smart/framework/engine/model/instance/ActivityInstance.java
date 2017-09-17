@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -41,9 +42,9 @@ public interface ActivityInstance extends Instance {
      */
     void setProcessInstanceId(Long processInstanceId);
 
-    void setExecutionInstance(ExecutionInstance executionInstance);
+    void setExecutionInstanceList(List<ExecutionInstance> executionInstanceList);
 
-    ExecutionInstance getExecutionInstance();
+    List<ExecutionInstance> getExecutionInstanceList();
 //
 //    /**
 //     * 获取进入活动的关联
@@ -60,13 +61,13 @@ public interface ActivityInstance extends Instance {
 //    void addIncomeTransition(TransitionInstance transitionInstance);
 
 
-    Date getStartDate();
+    Date getStartTime();
 
-    void setStartDate(Date startDate);
+    void setStartTime(Date startTime);
 
-    Date getCompleteDate();
+    Date getCompleteTime();
 
-    void setCompleteDate(Date completeDate);
+    void setCompleteTime(Date completeTime);
 
     Long getBlockId();
 

@@ -15,10 +15,10 @@ public class MarkDoneUtil {
 
     public   static  void markDone(ActivityInstance activityInstance, ExecutionInstance executionInstance,ExtensionPointRegistry extensionPointRegistry) {
         Date completeDate = DateUtil.getCurrentDate();
-        executionInstance.setCompleteDate(completeDate);
+        executionInstance.setCompleteTime(completeDate);
         executionInstance.setActive(false);
         if(null != activityInstance){
-            activityInstance.setCompleteDate(completeDate);
+            activityInstance.setCompleteTime(completeDate);
             //TODO
             //activityInstance.setActive(false);
         }

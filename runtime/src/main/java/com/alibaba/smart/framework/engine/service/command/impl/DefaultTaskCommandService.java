@@ -4,6 +4,7 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
@@ -13,7 +14,7 @@ import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskInstanceCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 
 import java.util.Date;
 import java.util.Map;
@@ -21,7 +22,7 @@ import java.util.Map;
 /**
  * @author 高海军 帝奇  2016.11.11
  */
-public class DefaultTaskInstanceCommandService implements TaskInstanceCommandService, LifeCycleListener {
+public class DefaultTaskCommandService implements TaskCommandService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
 
@@ -31,7 +32,7 @@ public class DefaultTaskInstanceCommandService implements TaskInstanceCommandSer
     private ExecutionCommandService executionCommandService;
 
 
-    public DefaultTaskInstanceCommandService(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultTaskCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 
@@ -59,18 +60,17 @@ public class DefaultTaskInstanceCommandService implements TaskInstanceCommandSer
 
         TaskInstance taskInstance= taskInstanceStorage.find(taskId);
         Date currentDate = DateUtil.getCurrentDate();
-        taskInstance.setCompleteDate(currentDate);
-        taskInstance.setEndTime(currentDate);
+        taskInstance.setCompleteTime(currentDate);
+        taskInstance.setStatus(TaskInstanceConstant.COMPLETED);
+
         taskInstanceStorage.update(taskInstance);
 
 
 
-        TaskAssigneeService taskAssigneeService = processEngineConfiguration.getTaskAssigneeService();
-        if(null != taskAssigneeService){
-            taskAssigneeService.complete(taskInstance.getInstanceId());
-        }
-
-
+        //TaskAssigneeService taskAssigneeService = processEngineConfiguration.getTaskAssigneeService();
+        //if(null != taskAssigneeService){
+        //    taskAssigneeService.complete(taskInstance.getInstanceId());
+        //}
 
         executionCommandService.signal(taskInstance.getExecutionInstanceId(),variables);
 

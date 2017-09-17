@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 
@@ -74,36 +75,58 @@ public abstract  class CommonServiceHelper {
             activityInstance.setProcessInstanceId(processInstance.getInstanceId());
             activityInstanceStorage.insert(activityInstance);
 
-            ExecutionInstance executionInstance = activityInstance.getExecutionInstance();
-            if (null != executionInstance) {
-                executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
-                executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
-                executionInstanceStorage.insert(executionInstance);
+            List<ExecutionInstance> executionInstanceList = activityInstance.getExecutionInstanceList();
 
-                TaskInstance taskInstance = executionInstance.getTaskInstance();
-                if(null!= taskInstance) {
-                    taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
-                    taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
-                    taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
+            if(null != executionInstanceList){
+                for (ExecutionInstance executionInstance : executionInstanceList) {
+                    buildInstance(request, processEngineConfiguration, executionInstanceStorage, taskInstanceStorage,
+                        activityInstance,
+                        executionInstance);
+                }
+            }
 
-                    //reAssign
-                    taskInstance = taskInstanceStorage.insert(taskInstance);
+        }
+
+    }
+
+    private static void buildInstance(Map<String, Object> request,
+                                      ProcessEngineConfiguration processEngineConfiguration,
+                                      ExecutionInstanceStorage executionInstanceStorage,
+                                      TaskInstanceStorage taskInstanceStorage, ActivityInstance activityInstance,
+                                      ExecutionInstance executionInstance) {
+        if (null != executionInstance) {
+            executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
+            executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
+            executionInstanceStorage.insert(executionInstance);
+
+            TaskInstance taskInstance = executionInstance.getTaskInstance();
+            if(null!= taskInstance) {
+                taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
+                taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
+                taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
+
+                //reAssign
+                taskInstance = taskInstanceStorage.insert(taskInstance);
 
 
 
-                    TaskAssigneeService taskAssigneeService = processEngineConfiguration.getTaskAssigneeService();
-                    if(null != taskAssigneeService){
-                        taskAssigneeService.persistTaskAssignee(taskInstance,request);
+                TaskAssigneeService taskAssigneeService = processEngineConfiguration.getTaskAssigneeService();
+
+                List<TaskAssigneeInstance>  taskAssigneeInstances =  taskInstance.getTaskAssigneeInstanceList();
+
+                if(null != taskAssigneeInstances){
+                    for (TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstances) {
+                        taskAssigneeService.persistTaskAssignee(taskInstance,taskAssigneeInstance,request);
+
                     }
-
-
-                    executionInstance.setTaskInstance(taskInstance);
                 }
 
 
+                executionInstance.setTaskInstance(taskInstance);
             }
-        }
 
+
+        }
     }
 
 }

@@ -49,11 +49,13 @@ public class DefaultPvmTransition extends AbstractPvmElement<Transition> impleme
     @Override
     protected Object invokeBehavior(String event, ExecutionContext context) {
         if (PvmEventConstant.TRANSITION_START.name().equals(event)) {
-            return this.behavior.match(context);
+             return this.behavior.match(context);
         } else if (PvmEventConstant.TRANSITION_EXECUTE.name().equals(event)) {
-            return this.behavior.execute(context);
+             return this.behavior.execute(context);
         }
-        return null;
+
+        //FIXME XXX
+        return  null;
     }
 
     @Override

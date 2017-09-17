@@ -19,6 +19,7 @@ public abstract class AbstractElement implements Element {
     private static final long serialVersionUID = -8729383608303781741L;
     private boolean unresolved = true;
     private String id;
+    private String name;
     private Extensions extensions;
     private List<Performable> performers;
 }

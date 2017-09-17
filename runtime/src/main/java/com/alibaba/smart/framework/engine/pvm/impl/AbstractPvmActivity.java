@@ -42,7 +42,9 @@ public abstract class AbstractPvmActivity extends AbstractPvmElement<Activity> i
         } else if (PvmEventConstant.ACTIVITY_END.name().equals(event)) {
             this.behavior.leave(context);
         }
+
         return null;
+
     }
 
     public void addIncomeTransition(String transitionId, PvmTransition income) {

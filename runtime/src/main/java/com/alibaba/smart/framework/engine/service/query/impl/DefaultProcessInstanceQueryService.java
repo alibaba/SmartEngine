@@ -1,10 +1,13 @@
 package com.alibaba.smart.framework.engine.service.query.impl;
 
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
+import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
 import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
 
 /**
@@ -38,5 +41,16 @@ public class DefaultProcessInstanceQueryService implements ProcessInstanceQueryS
         ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
         return processInstanceStorage.find(processInstanceId);
+    }
+
+    @Override
+    public List<ProcessInstance> findStartedProcessInstance(Long startProcessUserId, PaginateRequest paginateRequest) {
+        return null;
+    }
+
+    @Override
+    public List<ProcessInstance> findStartedProcessInstanceBySatus(Long startProcessUserId, String processStatus,
+                                                                   PaginateRequest paginateRequest) {
+        return null;
     }
 }

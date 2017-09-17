@@ -27,7 +27,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(activityInstanceEntityToBePersisted.getId());
 
         activityInstance.setInstanceId(activityInstanceEntity.getId());
-        activityInstance.setStartDate(activityInstanceEntity.getGmtCreate());
+        activityInstance.setStartTime(activityInstanceEntity.getGmtCreate());
 
         return activityInstance;
     }
@@ -56,14 +56,14 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(instanceId);
 
         ActivityInstance activityInstance  = new DefaultActivityInstance();
-        activityInstance.setStartDate(activityInstanceEntity.getGmtCreate());
+        activityInstance.setStartTime(activityInstanceEntity.getGmtCreate());
         activityInstance.setProcessDefinitionIdAndVersion(activityInstanceEntity.getProcessDefinitionId());
         activityInstance.setInstanceId(activityInstanceEntity.getId());
         activityInstance.setProcessInstanceId(activityInstanceEntity.getProcessInstanceId());
         activityInstance.setActivityId(activityInstanceEntity.getProcessDefinitionActivityId());
 
         //TUNE 意义不准确?
-        activityInstance.setCompleteDate(activityInstanceEntity.getGmtModified());
+        activityInstance.setCompleteTime(activityInstanceEntity.getGmtModified());
 
 
 

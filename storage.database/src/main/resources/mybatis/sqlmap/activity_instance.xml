@@ -9,17 +9,17 @@
     </sql>
 
     <insert id="insert" parameterType="ActivityInstanceEntity">
-        insert into activity_instance(<include refid="baseColumn"/>)
+        insert into  se_activity_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionId},
         #{processDefinitionActivityId})
     </insert>
 
     <delete id="delete" parameterType="long">
-        delete from activity_instance where id=#{id}
+        delete from  se_activity_instance where id=#{id}
     </delete>
 
     <!--     <update id="update" parameterType="ActivityInstanceEntity">
-            update activity_instance
+            update  se_activity_instance
             <set>
                 gmt_modified=now()
                 <if test="status != null"> ,status = #{status}</if>
@@ -31,13 +31,13 @@
     <select id="findOne" resultType="ActivityInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from activity_instance where id=#{id}
+        from  se_activity_instance where id=#{id}
     </select>
 
     <select id="findAllActivity" resultType="ActivityInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from activity_instance where process_instance_id=#{processInstanceId}
+        from  se_activity_instance where process_instance_id=#{processInstanceId}
     </select>
 
 </mapper>

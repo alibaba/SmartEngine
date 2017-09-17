@@ -5,28 +5,28 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,process_instance_id, process_definition_id,
-        activity_instance_id, execution_instance_id,assignee_id,priority,claim_time,end_time
+        activity_instance_id, execution_instance_id,claim_user_id,priority,claim_time,complete_time,status
     </sql>
 
     <insert id="insert" parameterType="TaskInstanceEntity">
-        insert into task_instance(<include refid="baseColumn"/>)
+        insert into se_task_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionId},
-        #{activityInstanceId}, #{executionInstanceId},#{assigneeId},#{priority},#{claimTime},#{endTime})
+        #{activityInstanceId}, #{executionInstanceId},#{claimUserId},#{priority},#{claimTime},#{completeTime},#{status})
     </insert>
 
     <delete id="delete" parameterType="long">
-        delete from task_instance where id=#{id}
+        delete from se_task_instance where id=#{id}
     </delete>
 
     <update id="update" parameterType="TaskInstanceEntity">
-        update task_instance
+        update se_task_instance
         <set>
             gmt_modified=now()
-            <if test="assigneeId != null">,assignee_id = #{assigneeId}</if>
+            <if test="claimUserId != null">,claim_user_id = #{claimUserId}</if>
             <if test="priority != null">,priority = #{priority}</if>
             <if test="claimTime != null">,claim_time = #{claimTime}</if>
-            <if test="endTime != null">,end_time = #{endTime}</if>
-
+            <if test="completeTime != null">,complete_time = #{completeTime}</if>
+            <if test="status != null">,status = #{status}</if>
         </set>
         where id=#{id}
     </update>
@@ -34,14 +34,19 @@
     <select id="findOne" resultType="TaskInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from task_instance where id=#{id}
+        from se_task_instance where id=#{id}
     </select>
 
     <select id="findPendingTask" resultType="TaskInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from task_instance where process_instance_id=#{processInstanceId}
+        from se_task_instance where process_instance_id=#{processInstanceId}
     </select>
 
+    <select id="findTask" resultType="TaskInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from se_task_instance where process_instance_id=#{0} and  activity_instance_id = #{1}
+    </select>
 
 </mapper>

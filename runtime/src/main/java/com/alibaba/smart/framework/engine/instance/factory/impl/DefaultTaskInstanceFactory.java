@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.instance.factory.impl;
 
 import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
@@ -26,7 +27,8 @@ public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
         taskInstance.setActivityId(activity.getId());
         taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
         taskInstance.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
-        taskInstance.setStartDate(DateUtil.getCurrentDate());
+        taskInstance.setStartTime(DateUtil.getCurrentDate());
+        taskInstance.setStatus(TaskInstanceConstant.PENDING);
 
         return taskInstance;
     }

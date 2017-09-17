@@ -34,8 +34,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     private ProcessInstanceEntity buildProcessInstanceEntity(ProcessInstance processInstance) {
         ProcessInstanceEntity processInstanceEntityToBePersisted = new ProcessInstanceEntity();
         processInstanceEntityToBePersisted.setId(processInstance.getInstanceId());
-        processInstanceEntityToBePersisted.setGmtCreate(processInstance.getStartDate());
-        processInstanceEntityToBePersisted.setGmtModified(processInstance.getCompleteDate());
+        processInstanceEntityToBePersisted.setGmtCreate(processInstance.getStartTime());
+        processInstanceEntityToBePersisted.setGmtModified(processInstance.getCompleteTime());
         processInstanceEntityToBePersisted.setParentProcessInstanceId(processInstance.getParentInstanceId());
         processInstanceEntityToBePersisted.setStatus(processInstance.getStatus().name());
         processInstanceEntityToBePersisted.setProcessDefinitionId(processInstance.getProcessDefinitionIdAndVersion());
@@ -54,7 +54,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity1.getProcessDefinitionId());
         processInstance.setParentInstanceId(processInstanceEntity1.getParentProcessInstanceId());
         processInstance.setInstanceId(processInstanceEntity1.getId());
-        processInstance.setStartDate(processInstanceEntity1.getGmtCreate());
+        processInstance.setStartTime(processInstanceEntity1.getGmtCreate());
     }
 
     @Override
@@ -68,12 +68,12 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstance.setParentInstanceId(processInstanceEntity.getParentProcessInstanceId());
         InstanceStatus processStatus = InstanceStatus.valueOf(processInstanceEntity.getStatus());
         processInstance.setStatus(processStatus);
-        processInstance.setStartDate(processInstanceEntity.getGmtCreate());
+        processInstance.setStartTime(processInstanceEntity.getGmtCreate());
         processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity.getProcessDefinitionId());
         processInstance.setSuspend(InstanceStatus.suspended.equals(processStatus)  );
 
         //TUNE 还是叫做更新时间比较好一点,是否完成等 还是根据status 去判断.
-        processInstance.setCompleteDate(processInstanceEntity.getGmtModified());
+        processInstance.setCompleteTime(processInstanceEntity.getGmtModified());
         processInstance.setInstanceId(processInstanceEntity.getId());
 
         return processInstance;

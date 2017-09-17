@@ -12,6 +12,7 @@ public class DefaultIdGenerator implements IdGenerator{
 
     private static AtomicLong executionId = new AtomicLong();
 
+    //TODO 尽量做到不重复
     @Override
     public Long getId() {
         return Long.valueOf(executionId.getAndIncrement());

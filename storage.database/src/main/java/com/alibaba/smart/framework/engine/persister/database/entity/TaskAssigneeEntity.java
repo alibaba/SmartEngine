@@ -24,6 +24,8 @@ public class TaskAssigneeEntity extends BaseProcessEntity {
 
     private String assigneeId;
 
+    private String assigneeType;
+
     private Integer priority;
 
 }
