@@ -8,7 +8,7 @@
          execution_instance_id,task_instance_id,double_field,long_field,string_field
     </sql>
 
-    <insert id="insert" parameterType="VariableInstanceEntity">
+    <insert id="insert" parameterType="VariableInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into se_variable_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{executionInstanceId},
         #{taskInstanceId},#{doubleField},#{longField},#{stringField}

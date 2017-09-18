@@ -25,22 +25,34 @@
           p:configLocation="classpath:mybatis/mybatis-config.xml"
           p:mapperLocations="classpath:mybatis/sqlmap/*.xml"/>
 
+    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+        <!--<property name="dataSource" ref="jdbcDataSource" />-->
+        <!--<property name="configLocation" value="classpath:batisConfig.xml" />-->
+
+        <!--&lt;!&ndash; <property name="configurationProperties"> <props> <prop key="mapUnderscoreToCamelCase">true</prop> -->
+            <!--</props> </property> &ndash;&gt;-->
+    <!--</bean>-->
 
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg index="0" ref="sqlSessionFactory"/>
     </bean>
 
-
-    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer"
-          p:basePackage="com.alibaba.smart.framework.engine.persister.database.dao"
-          p:markerInterface="com.alibaba.spring.data.mybatis.repository.MybatisRepository"
-          p:sqlSessionFactoryBeanName="sqlSessionFactory"
-          p:sqlSessionTemplateBeanName="sqlSession"/>
+    <!-- Mapper接口所在包名，Spring会自动查找其下的Mapper -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.alibaba.smart.framework.engine.persister.database.dao" />
+    </bean>
 
 
-    <mybatis:repositories base-package="com.alibaba.smart.framework.engine.persister.database.dao"
-                          sql-session-ref="sqlSession"
-                          sequence-dao-ref="sequenceDao"/>
+    <!--<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer"-->
+          <!--p:basePackage="com.alibaba.smart.framework.engine.persister.database.dao"-->
+          <!--p:markerInterface="com.alibaba.spring.data.mybatis.repository.MybatisRepository"-->
+          <!--p:sqlSessionFactoryBeanName="sqlSessionFactory"-->
+          <!--p:sqlSessionTemplateBeanName="sqlSession"/>-->
+
+
+    <!--<mybatis:repositories base-package="com.alibaba.smart.framework.engine.persister.database.dao"-->
+                          <!--sql-session-ref="sqlSession"-->
+                          <!--sequence-dao-ref="sequenceDao"/>-->
 
 
     <!-- 事务管理器 -->

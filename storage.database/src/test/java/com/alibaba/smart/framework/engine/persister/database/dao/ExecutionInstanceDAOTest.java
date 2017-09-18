@@ -28,8 +28,8 @@ public class ExecutionInstanceDAOTest extends BaseElementTest {
     @Test
     public void testInsert() {
 
-        ExecutionInstanceEntity result = dao.insert(entity);
-        Assert.assertNotNull(result);
+        dao.insert(entity);
+        Assert.assertNotNull(entity);
     }
 
     @Test

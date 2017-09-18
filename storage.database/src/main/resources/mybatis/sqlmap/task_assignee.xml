@@ -8,7 +8,7 @@
         task_instance_id,assignee_id,assignee_type
     </sql>
 
-    <insert id="insert" parameterType="TaskAssigneeEntity">
+    <insert id="insert" parameterType="TaskAssigneeEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into se_task_assignee(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId},
         #{taskInstanceId},#{assigneeId},#{assigneeType})

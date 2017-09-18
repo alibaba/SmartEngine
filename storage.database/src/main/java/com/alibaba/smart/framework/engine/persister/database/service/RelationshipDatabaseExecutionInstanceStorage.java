@@ -23,6 +23,7 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
 
         executionInstanceDAO.insert(executionInstanceEntity);
 
+        executionInstanceEntity =   executionInstanceDAO.findOne(executionInstanceEntity.getId());
 
          executionInstance = buildExecutionInstance(executionInstance, executionInstanceEntity);
         return executionInstance;

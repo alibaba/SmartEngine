@@ -8,7 +8,7 @@
         status, parent_process_instance_id
     </sql>
 
-    <insert id="insert" parameterType="ProcessInstanceEntity">
+    <insert id="insert" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into se_process_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionId},
         #{status}, #{parentProcessInstanceId})

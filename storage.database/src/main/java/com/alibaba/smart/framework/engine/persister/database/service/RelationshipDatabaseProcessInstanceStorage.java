@@ -21,7 +21,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         ProcessInstanceEntity processInstanceEntityToBePersisted = buildProcessInstanceEntity(processInstance);
         processInstanceEntityToBePersisted.setId(null);
 
-        processInstanceEntityToBePersisted =  processInstanceDAO.insert(processInstanceEntityToBePersisted);
+          processInstanceDAO.insert(processInstanceEntityToBePersisted);
 
         ProcessInstanceEntity processInstanceEntity1 =  processInstanceDAO.findOne(processInstanceEntityToBePersisted.getId());
 

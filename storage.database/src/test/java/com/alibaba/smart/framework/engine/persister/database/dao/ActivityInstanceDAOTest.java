@@ -28,8 +28,8 @@ public class ActivityInstanceDAOTest extends BaseElementTest {
     @Test
     public void testInsert() {
 
-        ActivityInstanceEntity result = dao.insert(entity);
-        Assert.assertNotNull(result);
+       Object o =  dao.insert(entity);
+        Assert.assertNotNull(entity);
     }
 
     @Test

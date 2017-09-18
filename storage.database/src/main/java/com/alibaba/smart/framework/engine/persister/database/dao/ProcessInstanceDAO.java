@@ -1,8 +1,21 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 
+import com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity;
+import com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
-import com.alibaba.spring.data.mybatis.repository.MybatisRepository;
 
-public interface ProcessInstanceDAO extends MybatisRepository<ProcessInstanceEntity, Long> {
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 
+public interface ProcessInstanceDAO {
+
+    ProcessInstanceEntity findOne(@Param("id") Long id);
+
+
+    //@Options(useGeneratedKeys = true)
+    void insert(  ProcessInstanceEntity processInstanceEntity );
+
+    int update(ProcessInstanceEntity processInstanceEntity);
+
+    void delete(@Param("id") Long id);
 }

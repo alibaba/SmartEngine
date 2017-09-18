@@ -34,8 +34,8 @@ public class TaskInstanceDAOTest extends BaseElementTest {
     @Test
     public void testInsert() {
 
-        TaskInstanceEntity result = dao.insert(entity);
-        Assert.assertNotNull(result);
+         dao.insert(entity);
+        Assert.assertNotNull(entity);
     }
 
     @Test

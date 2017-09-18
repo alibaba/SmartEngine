@@ -19,6 +19,6 @@ public interface TaskAssigneeService {
 
     void complete(Long taskInstanceId);
 
-    List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity);
+    List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity,Map<String,Object> request);
 
 }

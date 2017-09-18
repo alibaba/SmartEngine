@@ -8,7 +8,7 @@
         process_instance_id,process_definition_id,process_definition_activity_id,activity_instance_id,active
     </sql>
 
-    <insert id="insert" parameterType="ExecutionInstanceEntity">
+    <insert id="insert" parameterType="ExecutionInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into  se_execution_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionId},
         #{processDefinitionActivityId}, #{activityInstanceId},#{active})

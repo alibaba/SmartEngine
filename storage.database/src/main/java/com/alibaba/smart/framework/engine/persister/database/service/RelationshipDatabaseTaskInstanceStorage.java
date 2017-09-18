@@ -56,6 +56,8 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstanceEntity.setId(null);
         taskInstanceDAO.insert(taskInstanceEntity);
 
+        taskInstanceEntity = taskInstanceDAO.findOne(taskInstanceEntity.getId());
+
         //reAssign
         TaskInstance   resultTaskInstance= buildTaskInstance(taskInstanceEntity);
         resultTaskInstance.setTaskAssigneeInstanceList(taskInstance.getTaskAssigneeInstanceList());

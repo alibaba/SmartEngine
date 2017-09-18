@@ -161,7 +161,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             throw  new EngineException("The taskAssigneeService can't be null for MultiInstanceLoopCharacteristics feature");
         }
 
-        return taskAssigneeService.getTaskAssigneeCandidateInstance(userTask);
+        return taskAssigneeService.getTaskAssigneeCandidateInstance(userTask,context.getRequest());
     }
 
     @Override

@@ -28,7 +28,7 @@ public class DefaultTaskAssigneeService implements TaskAssigneeService {
     }
 
     @Override
-    public List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity) {
+    public List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity,Map<String,Object> request) {
         List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList= new ArrayList();
 
         TaskAssigneeCandidateInstance taskAssigneeCandidateInstance = new TaskAssigneeCandidateInstance();

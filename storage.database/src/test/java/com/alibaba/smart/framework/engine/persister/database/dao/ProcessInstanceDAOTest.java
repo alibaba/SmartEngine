@@ -24,8 +24,8 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
     @Test
     public void testInsert() {
 
-        ProcessInstanceEntity result = dao.insert(entity);
-        Assert.assertNotNull(result);
+        dao.insert(entity);
+        Assert.assertNotNull(entity);
     }
 
     @Test

@@ -8,7 +8,7 @@
         activity_instance_id, execution_instance_id,claim_user_id,priority,claim_time,complete_time,status
     </sql>
 
-    <insert id="insert" parameterType="TaskInstanceEntity">
+    <insert id="insert" parameterType="TaskInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into se_task_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionId},
         #{activityInstanceId}, #{executionInstanceId},#{claimUserId},#{priority},#{claimTime},#{completeTime},#{status})
@@ -46,7 +46,7 @@
     <select id="findTask" resultType="TaskInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from se_task_instance where process_instance_id=#{0} and  activity_instance_id = #{1}
+        from se_task_instance where process_instance_id=#{param1} and  activity_instance_id = #{param2}
     </select>
 
 </mapper>
