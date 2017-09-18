@@ -25,11 +25,9 @@ public class JavaPerformerFactory implements PerformerProviderFactory<Java> {
             processEngineConfiguration = this.extensionPointRegistry.getExtensionPoint(SmartEngine.class)
             .getProcessEngineConfiguration();
 
-        InstanceAccessService instanceAccessService = processEngineConfiguration
-            .getInstanceAccessService();
 
-        Object target = instanceAccessService.access(performable.getClassName());
-        return new JavaPerformer(this.extensionPointRegistry, target);
+
+        return new JavaPerformer(this.extensionPointRegistry, performable.getClassName());
     }
 
     @Override

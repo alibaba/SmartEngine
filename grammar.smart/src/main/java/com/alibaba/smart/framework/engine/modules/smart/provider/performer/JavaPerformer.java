@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.smart.provider.performer;
 
 import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
+import com.alibaba.smart.framework.engine.common.service.InstanceAccessService;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
@@ -15,10 +16,10 @@ import com.alibaba.smart.framework.engine.provider.Performer;
  * Created by ettear on 06/08/2017.
  */
 public class JavaPerformer implements Performer {
-    private Object target;
+    private String className;
 
-    public JavaPerformer(ExtensionPointRegistry extensionPointRegistry, Object target) {
-        this.target = target;
+    public JavaPerformer(ExtensionPointRegistry extensionPointRegistry, String className) {
+        this.className = className;
     }
 
     /**
@@ -31,14 +32,19 @@ public class JavaPerformer implements Performer {
         ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
         ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();
 
-        if (this.target instanceof JavaDelegation) {
-            JavaDelegation javaDelegation = (JavaDelegation)this.target;
+        InstanceAccessService instanceAccessService = processEngineConfiguration
+            .getInstanceAccessService();
+        Object delegation = instanceAccessService.access(this.className);
+
+
+        if (delegation instanceof JavaDelegation) {
+            JavaDelegation javaDelegation = (JavaDelegation)delegation;
             return javaDelegation.execute(context);
 
         }
-        if (this.target instanceof TccDelegation) {
+        if (delegation instanceof TccDelegation) {
             //TODO TCC只实现了try,rewview by ettear
-            TccDelegation tccDelegation = (TccDelegation)this.target;
+            TccDelegation tccDelegation = (TccDelegation)delegation;
 
             TccResult tccResult = null;
             try {
@@ -61,7 +67,7 @@ public class JavaPerformer implements Performer {
             }
 
         } else {
-            throw new EngineException("The delegation not support : " + target.getClass());
+            throw new EngineException("The delegation not support : " + delegation.getClass());
         }
         return null;
     }
