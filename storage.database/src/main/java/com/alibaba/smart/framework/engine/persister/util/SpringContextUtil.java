@@ -14,12 +14,14 @@ public class SpringContextUtil implements ApplicationContextAware, BeanFactoryPo
     private static ApplicationContext appContext;
     private static ConfigurableListableBeanFactory factory;
 
+    @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory factory) throws BeansException {
-        this.factory = factory;
+        SpringContextUtil.factory = factory;
     }
 
+    @Override
     public void setApplicationContext(ApplicationContext c) throws BeansException {
-        this.appContext = c;
+        SpringContextUtil.appContext = c;
     }
 
     public static Object getBean(String name) {
