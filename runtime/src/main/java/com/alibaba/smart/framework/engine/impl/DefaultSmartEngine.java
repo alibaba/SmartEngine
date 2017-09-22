@@ -4,11 +4,13 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.DeploymentInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
@@ -27,7 +29,6 @@ public class DefaultSmartEngine implements SmartEngine {
     @Getter
     @Setter
     private ProcessEngineConfiguration processEngineConfiguration;
-
 
     @Override
     public void init(ProcessEngineConfiguration processEngineConfiguration) {
@@ -49,6 +50,11 @@ public class DefaultSmartEngine implements SmartEngine {
     }
 
     @Override
+    public DeploymentCommandService getDeploymentCommandService() {
+        return this.extensionPointRegistry.getExtensionPoint(DeploymentCommandService.class);
+    }
+
+    @Override
     public ProcessCommandService getProcessCommandService() {
         return this.extensionPointRegistry.getExtensionPoint(ProcessCommandService.class);
     }
@@ -61,6 +67,11 @@ public class DefaultSmartEngine implements SmartEngine {
     @Override
     public TaskCommandService getTaskCommandService() {
         return this.extensionPointRegistry.getExtensionPoint(TaskCommandService.class);
+    }
+
+    @Override
+    public DeploymentInstanceQueryService getDeploymentInstanceQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(DeploymentInstanceQueryService.class);
     }
 
     @Override
@@ -83,6 +94,7 @@ public class DefaultSmartEngine implements SmartEngine {
         return this.extensionPointRegistry.getExtensionPoint(TaskInstanceQueryService.class);
     }
 
+    @Override
     public ExtensionPointRegistry getExtensionPointRegistry() {
         return extensionPointRegistry;
     }

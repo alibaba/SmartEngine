@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateIn
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 
+
 /**
  * Created by 高海军 帝奇 74394 on 2017 January  18:03.
  */
@@ -29,6 +30,7 @@ public class DefaultTaskAssigneeService implements TaskAssigneeService {
 
     @Override
     public List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity,Map<String,Object> request) {
+
         List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList= new ArrayList();
 
         TaskAssigneeCandidateInstance taskAssigneeCandidateInstance = new TaskAssigneeCandidateInstance();

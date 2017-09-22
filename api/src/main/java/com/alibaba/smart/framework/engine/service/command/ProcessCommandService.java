@@ -21,34 +21,5 @@ public interface ProcessCommandService {
 
     void abort(Long processInstanceId,String reason);
 
-//    /**
-//     * 查找某个流程
-//     *
-//     * @param processInstanceId
-//     * @return
-//     */
-//    ProcessInstance findAll(String processInstanceId);
-
-//    /**
-//     * 从参数中恢复流程实例到内存中
-//     *
-//     * @param processParam
-//     * @return
-//     */
-//    void recovery(EngineParam processParam);
-
-
-//    /**
-//     * 指定activityId来运行流程
-//     *
-//     * @param processId
-//     * @param activityId
-//     * @return
-//     */
-//    ProcessInstance run(ProcessDefinition definition,String processId, String activityId, boolean sub,Map<String,Object> request);
-
-
-//    void clear(String processId);
-
 
 }

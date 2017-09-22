@@ -9,8 +9,6 @@ import lombok.Data;
 @Data
 public class CreateDeploymentRequest {
 
-    private  String processDefinitionId;
-    private  String processDefinitionVersion;
     private  String processDefinitionType;
     private  String processDefinitionName;
     private  String processDefinitionDesc;
@@ -18,5 +16,4 @@ public class CreateDeploymentRequest {
 
     private  Long deploymentUserId;
     private  String deploymentStatus;
-    private  String logicStatus;
 }

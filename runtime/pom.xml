@@ -52,6 +52,7 @@
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <artifactSet>
                         <includes>
+                            <!-- 重要:!!!! 千万记得这个 artifact 的scope 不要设置为provided了,已经浪费至少2个小时了!!!!!-->
                             <include>com.esotericsoftware:reflectasm:shaded</include>
                         </includes>
                     </artifactSet>

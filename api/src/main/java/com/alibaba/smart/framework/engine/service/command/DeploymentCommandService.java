@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.service.command;
 
-import java.io.InputStream;
-
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.service.param.CreateDeploymentRequest;
 import com.alibaba.smart.framework.engine.service.param.UpdateDeploymentRequest;
@@ -14,7 +12,7 @@ public interface DeploymentCommandService {
 
     DeploymentInstance createDeployment(CreateDeploymentRequest createDeploymentRequest) ;
 
-    DeploymentInstance createDeployment(UpdateDeploymentRequest updateDeploymentRequest) ;
+    DeploymentInstance updateDeployment(UpdateDeploymentRequest updateDeploymentRequest) ;
 
     void inactivateDeploymentInstance(Long deploymentInstanceId);
 

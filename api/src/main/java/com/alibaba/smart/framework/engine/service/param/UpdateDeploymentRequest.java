@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class UpdateDeploymentRequest {
 
+    private  Long   deployInstanceId;
 
     private  String processDefinitionName;
     private  String processDefinitionDesc;
