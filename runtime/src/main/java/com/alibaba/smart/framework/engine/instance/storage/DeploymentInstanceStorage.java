@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.instance.storage;
 
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 
 /**
@@ -14,9 +16,9 @@ public interface DeploymentInstanceStorage {
 
     DeploymentInstance update(DeploymentInstance deploymentInstance);
 
-    DeploymentInstance find(DeploymentInstance deploymentInstance);
+    DeploymentInstance findById(Long id);
 
-    DeploymentInstance findByPage(DeploymentInstance deploymentInstance,int pageOffSide, int pageSize);
+    List<DeploymentInstance> findByPage(DeploymentInstance deploymentInstance, int pageOffSide, int pageSize);
 
     int count(DeploymentInstance deploymentInstance);
 
