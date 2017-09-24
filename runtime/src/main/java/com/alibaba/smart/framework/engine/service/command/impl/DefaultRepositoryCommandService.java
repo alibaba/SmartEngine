@@ -1,6 +1,8 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +49,9 @@ import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoin
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
@@ -56,6 +61,9 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
  * @author ettear 2016.04.13
  */
 public class DefaultRepositoryCommandService implements RepositoryCommandService, LifeCycleListener {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRepositoryCommandService.class);
+
 
     /**
      * 扩展点注册器
@@ -96,7 +104,20 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         }
     }
 
+    @Override
+    public ProcessDefinition deployWithUTF8Content(String uTF8ProcessDefinitionContent) {
+        byte[] bytes ;
+        try {
+            bytes = uTF8ProcessDefinitionContent.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.error(e.getMessage(),e);
+            throw new EngineException(e);
+        }
+        InputStream stream = new ByteArrayInputStream(bytes);
+        ProcessDefinition processDefinition =  this.deploy(stream);
+        return  processDefinition;
 
+    }
 
     @Override
     public void start() {

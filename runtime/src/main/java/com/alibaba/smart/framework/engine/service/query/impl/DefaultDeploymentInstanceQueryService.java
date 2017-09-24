@@ -2,7 +2,11 @@ package com.alibaba.smart.framework.engine.service.query.impl;
 
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
+import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
+import com.alibaba.smart.framework.engine.service.param.DeploymentInstanceParam;
 import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
 import com.alibaba.smart.framework.engine.service.query.DeploymentInstanceQueryService;
 
@@ -11,19 +15,41 @@ import com.alibaba.smart.framework.engine.service.query.DeploymentInstanceQueryS
  */
 public class DefaultDeploymentInstanceQueryService implements DeploymentInstanceQueryService {
 
-    @Override
-    public DeploymentInstance findOne(Long deploymentId) {
-        return null;
+    private ExtensionPointRegistry extensionPointRegistry;
+
+
+    public DefaultDeploymentInstanceQueryService(ExtensionPointRegistry extensionPointRegistry) {
+        this.extensionPointRegistry = extensionPointRegistry;
     }
 
     @Override
-    public List<DeploymentInstance> findActiveDeploymentList(Long deployUserId, PaginateRequest paginateRequest) {
-        return null;
+    public DeploymentInstance findOne(Long deploymentInstanceId) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+        DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
+
+        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId);
+        return  currentDeploymentInstance;
     }
 
     @Override
-    public Integer queryActiveDeploymentCount(Long deployUserId) {
-        return null;
+    public List<DeploymentInstance> findActiveDeploymentList(DeploymentInstanceParam deploymentInstanceParam, PaginateRequest paginateRequest) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+        DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
+
+        List<DeploymentInstance> deploymentInstanceList = deploymentInstanceStorage.findByPage(deploymentInstanceParam);
+        return  deploymentInstanceList;
+    }
+
+    @Override
+    public Integer queryDeploymentInstanceCount(DeploymentInstanceParam deploymentInstanceParam) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+        DeploymentInstanceStorage deploymentInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
+
+        int count = deploymentInstanceStorage.count(deploymentInstanceParam);
+        return count;
     }
 
 }

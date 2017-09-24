@@ -11,11 +11,12 @@ public class UpdateDeploymentRequest {
 
     private  Long   deployInstanceId;
 
+    private  String processDefinitionType;
     private  String processDefinitionName;
     private  String processDefinitionDesc;
     private  String processDefinitionContent;
 
     private  String deploymentUserId;
     private  String deploymentStatus;
-    private  String logicStatus;
+    //private  String logicStatus;
 }

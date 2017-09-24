@@ -9,11 +9,13 @@ import lombok.Data;
 @Data
 public class CreateDeploymentRequest {
 
+    //TODO 细化下包名,命名 整个包.
+
     private  String processDefinitionType;
     private  String processDefinitionName;
     private  String processDefinitionDesc;
     private  String processDefinitionContent;
 
-    private  Long deploymentUserId;
+    private  String deploymentUserId;
     private  String deploymentStatus;
 }

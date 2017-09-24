@@ -16,6 +16,12 @@ public interface ProcessDefinitionContainer {
     void install(PvmProcessDefinition pvmProcessDefinition);
 
     /**
+     * @param processDefinitionId
+     * @param version
+     */
+    void uninstall(String processDefinitionId, String version);
+
+    /**
      * 获取流程
      *
      * @param processId 流程ID

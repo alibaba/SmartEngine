@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.service.query;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
+import com.alibaba.smart.framework.engine.service.param.DeploymentInstanceParam;
 import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
 
 /**
@@ -10,10 +11,9 @@ import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
  */
 public interface DeploymentInstanceQueryService {
 
-    DeploymentInstance findOne(Long deploymentId);
+    DeploymentInstance findOne(Long deploymentInstanceId);
 
-    List<DeploymentInstance> findActiveDeploymentList(Long deployUserId,PaginateRequest paginateRequest);
+    List<DeploymentInstance> findActiveDeploymentList(DeploymentInstanceParam deploymentInstanceParam, PaginateRequest paginateRequest);
 
-    Integer queryActiveDeploymentCount(Long deployUserId);
-
+    Integer queryDeploymentInstanceCount(DeploymentInstanceParam deploymentInstanceParam);
 }

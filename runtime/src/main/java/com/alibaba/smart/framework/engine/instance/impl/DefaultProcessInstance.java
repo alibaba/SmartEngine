@@ -23,6 +23,8 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     private String processDefinitionId;
     private String processDefinitionVersion;
 
+    private  String startUserId;
+
     private Long parentInstanceId;
     private Long parentExecutionInstanceId;
 //    private Long parentActivityInstanceId;

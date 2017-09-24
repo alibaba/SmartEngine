@@ -1,5 +1,10 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.alibaba.smart.framework.engine.constant.RequestMapSpeicalKeyConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -7,7 +12,8 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.database.dao.ProcessInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
-
+import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
+import com.alibaba.smart.framework.engine.service.param.ProcessInstanceParam;
 
 public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstanceStorage {
 
@@ -21,7 +27,9 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         ProcessInstanceEntity processInstanceEntityToBePersisted = buildProcessInstanceEntity(processInstance);
         processInstanceEntityToBePersisted.setId(null);
 
-          processInstanceDAO.insert(processInstanceEntityToBePersisted);
+
+
+        processInstanceDAO.insert(processInstanceEntityToBePersisted);
 
         ProcessInstanceEntity processInstanceEntity1 =  processInstanceDAO.findOne(processInstanceEntityToBePersisted.getId());
 
@@ -64,6 +72,12 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
         ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOne(instanceId);
 
+        ProcessInstance processInstance = buildProcessInstanceFromEntity(processInstanceEntity);
+
+        return processInstance;
+    }
+
+    private ProcessInstance buildProcessInstanceFromEntity(ProcessInstanceEntity processInstanceEntity) {
         ProcessInstance processInstance  = new DefaultProcessInstance();
         processInstance.setParentInstanceId(processInstanceEntity.getParentProcessInstanceId());
         InstanceStatus processStatus = InstanceStatus.valueOf(processInstanceEntity.getStatus());
@@ -75,9 +89,28 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         //TUNE 还是叫做更新时间比较好一点,是否完成等 还是根据status 去判断.
         processInstance.setCompleteTime(processInstanceEntity.getGmtModified());
         processInstance.setInstanceId(processInstanceEntity.getId());
-
         return processInstance;
     }
+
+    @Override
+    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceParam processInstanceParam) {
+
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+
+        List<ProcessInstanceEntity> processInstanceEntities = processInstanceDAO.find(processInstanceParam);
+
+        List<ProcessInstance> processInstanceList = null;
+        if(null != processInstanceEntities){
+            processInstanceList = new ArrayList<ProcessInstance>(processInstanceEntities.size());
+            for (ProcessInstanceEntity processInstanceEntity : processInstanceEntities) {
+                ProcessInstance processInstance = buildProcessInstanceFromEntity(processInstanceEntity);
+                processInstanceList.add(processInstance);
+            }
+        }
+        
+        return processInstanceList;
+    }
+
 
 
     @Override

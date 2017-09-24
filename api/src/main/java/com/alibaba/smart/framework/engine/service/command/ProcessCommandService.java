@@ -16,6 +16,10 @@ public interface ProcessCommandService {
 
     ProcessInstance start(String processId, String version);
 
+    ProcessInstance start(Long deploymentInstanceId, Map<String, Object> request);
+
+    ProcessInstance start(Long deploymentInstanceId);
+
 
     void abort(Long processInstanceId);
 

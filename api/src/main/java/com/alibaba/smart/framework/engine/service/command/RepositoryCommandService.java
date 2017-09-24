@@ -14,6 +14,8 @@ public interface RepositoryCommandService {
 
     ProcessDefinition deploy(InputStream inputStream) ;
 
+    ProcessDefinition deployWithUTF8Content(String uTF8ProcessDefinitionContent) ;
+
 
 
 

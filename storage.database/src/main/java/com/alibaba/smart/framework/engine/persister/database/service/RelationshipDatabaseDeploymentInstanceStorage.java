@@ -8,8 +8,8 @@ import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceSto
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.persister.database.dao.DeploymentInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity;
-import com.alibaba.smart.framework.engine.persister.database.param.DeploymentInstanceParam;
 import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
+import com.alibaba.smart.framework.engine.service.param.DeploymentInstanceParam;
 
 import org.springframework.util.CollectionUtils;
 
@@ -27,6 +27,9 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     public DeploymentInstance insert(DeploymentInstance deploymentInstance) {
         DeploymentInstanceEntity entity = convertByDeploymentInstance(deploymentInstance);
         deploymentnstanceDAO.insert(entity);
+
+        deploymentInstance = findById(entity.getId());
+
         return deploymentInstance;
     }
 
@@ -53,13 +56,13 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     }
 
     @Override
-    public List<DeploymentInstance> findByPage(DeploymentInstance deploymentInstance, int pageOffSide, int pageSize) {
-        DeploymentInstanceParam param = convertParamByDeploymentInstance(deploymentInstance,pageOffSide,pageSize);
-        List<DeploymentInstanceEntity> deploymentInstanceEntities = deploymentnstanceDAO.find(param);
+    public List<DeploymentInstance> findByPage(DeploymentInstanceParam deploymentInstanceParam) {
+        List<DeploymentInstanceEntity> deploymentInstanceEntities = deploymentnstanceDAO.find(deploymentInstanceParam);
         if (!CollectionUtils.isEmpty(deploymentInstanceEntities)) {
             List<DeploymentInstance> deploymentInstances = new ArrayList<DeploymentInstance>(deploymentInstanceEntities.size());
             for (DeploymentInstanceEntity entity : deploymentInstanceEntities) {
-                deploymentInstances.add(convertByDeploymentInstanceEntity(entity));
+                DeploymentInstance instance = convertByDeploymentInstanceEntity(entity);
+                deploymentInstances.add(instance);
             }
             return deploymentInstances;
         }
@@ -67,9 +70,8 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     }
 
     @Override
-    public int count(DeploymentInstance deploymentInstance) {
-        DeploymentInstanceParam param = convertParamByDeploymentInstance(deploymentInstance,null,null);
-        return deploymentnstanceDAO.count(param);
+    public int count(DeploymentInstanceParam deploymentInstanceParam) {
+        return deploymentnstanceDAO.count(deploymentInstanceParam);
     }
 
     @Override
@@ -78,21 +80,21 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     }
 
 
-    private DeploymentInstanceParam convertParamByDeploymentInstance(DeploymentInstance deploymentInstance, Integer pageOffSide, Integer pageSize){
-        DeploymentInstanceParam param = new DeploymentInstanceParam();
-        if (null != deploymentInstance) {
-            param.setDeploymentStatus(deploymentInstance.getDeploymentStatus());
-            param.setDeploymentUserId(deploymentInstance.getDeploymentUserId());
-            param.setLogicStatus(deploymentInstance.getLogicStatus());
-            param.setProcessDefinitionName(deploymentInstance.getProcessDefinitionName());
-            param.setProcessDefinitionType(deploymentInstance.getProcessDefinitionType());
-            param.setProcessDefinitionVersion(deploymentInstance.getProcessDefinitionVersion());
-            param.setId(deploymentInstance.getInstanceId());
-        }
-        param.setPageOffSide(pageOffSide);
-        param.setPageSize(pageSize);
-        return param;
-    }
+    //private DeploymentInstanceParam convertParamByDeploymentInstance(DeploymentInstance deploymentInstance, Integer pageOffSide, Integer pageSize){
+    //    DeploymentInstanceParam param = new DeploymentInstanceParam();
+    //    if (null != deploymentInstance) {
+    //        param.setDeploymentStatus(deploymentInstance.getDeploymentStatus());
+    //        param.setDeploymentUserId(deploymentInstance.getDeploymentUserId());
+    //        param.setLogicStatus(deploymentInstance.getLogicStatus());
+    //        param.setProcessDefinitionName(deploymentInstance.getProcessDefinitionName());
+    //        param.setProcessDefinitionType(deploymentInstance.getProcessDefinitionType());
+    //        param.setProcessDefinitionVersion(deploymentInstance.getProcessDefinitionVersion());
+    //        param.setId(deploymentInstance.getInstanceId());
+    //    }
+    //    param.setPageOffSide(pageOffSide);
+    //    param.setPageSize(pageSize);
+    //    return param;
+    //}
 
     private DeploymentInstance convertByDeploymentInstanceEntity(DeploymentInstanceEntity entity) {
         DeploymentInstance deploymentInstance = new DefaultDeploymentInstance();

@@ -1,17 +1,22 @@
 package com.alibaba.smart.framework.engine.deployment.impl;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
 public class DefaultProcessDefinitionContainer implements ProcessDefinitionContainer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProcessDefinitionContainer.class);
 
 
     private Map<String, PvmProcessDefinition> pvmProcessDefinitionConcurrentHashMap = new ConcurrentHashMap<String, PvmProcessDefinition>();
@@ -23,6 +28,13 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
         String uniqueKey = this.buildProcessDefinitionKey(processDefinitionId, version);
         this.install(uniqueKey, pvmProcessDefinition);
+
+    }
+
+    @Override
+    public void uninstall(String processDefinitionId, String version) {
+        String uniqueKey = this.buildProcessDefinitionKey(processDefinitionId, version);
+        this.pvmProcessDefinitionConcurrentHashMap.remove(uniqueKey);
 
     }
 
@@ -44,7 +56,7 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
         PvmProcessDefinition existedPvmProcessDefinition = pvmProcessDefinitionConcurrentHashMap.get(uri);
         if(null!= existedPvmProcessDefinition){
-            throw new EngineException("duplicated processDefinitionId and version found for unique key:"+uri);
+            LOGGER.warn(" Duplicated processDefinitionId and version found for unique key "+uri+" , but it's ok for deploy the process definition repeatedly. BUT this message should be NOTICED. ");
         }
 
         this.pvmProcessDefinitionConcurrentHashMap.put(uri, runtimeProcess);

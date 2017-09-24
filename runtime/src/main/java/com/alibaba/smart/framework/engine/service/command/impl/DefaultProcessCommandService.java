@@ -11,12 +11,14 @@ import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFact
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
+import com.alibaba.smart.framework.engine.service.query.DeploymentInstanceQueryService;
 
 import java.util.Map;
 
@@ -91,9 +93,19 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         return this.start(processDefinitionId,version,null);
     }
 
+    @Override
+    public ProcessInstance start(Long deploymentInstanceId, Map<String, Object> request) {
+        DeploymentInstanceQueryService deploymentInstanceQueryService = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getDeploymentInstanceQueryService();
+        DeploymentInstance deploymentInstance = deploymentInstanceQueryService.findOne(deploymentInstanceId);
+        ProcessInstance processInstance = this.start(deploymentInstance.getProcessDefinitionId(),
+            deploymentInstance.getProcessDefinitionVersion(), request);
+        return processInstance;
+    }
 
-
-
+    @Override
+    public ProcessInstance start(Long deploymentInstanceId) {
+        return start(deploymentInstanceId,null);
+    }
 
     @Override
     public void abort(Long processInstanceId) {

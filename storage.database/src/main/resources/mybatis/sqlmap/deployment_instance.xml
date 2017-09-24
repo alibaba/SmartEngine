@@ -47,6 +47,12 @@
         where id=#{id}
     </update>
 
+    <select id="findOne" resultType="DeploymentInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from  se_deployment_instance where id=#{id}
+    </select>
+
 
     <select id="find" resultType="DeploymentInstanceEntity" parameterType="DeploymentInstanceParam">
         select
@@ -59,7 +65,7 @@
     </select>
 
     <select id="count" resultType="int" parameterType="DeploymentInstanceParam">
-        select count(1) from  se_deployment_instance  <include refid="condition"/>
+        select count(1) from  se_deployment_instance  <include refid="condition"/> <if test="pageOffSide != null and pageSize != null">limit #{pageOffSide},#{pageSize}</if>
     </select>
 
 
