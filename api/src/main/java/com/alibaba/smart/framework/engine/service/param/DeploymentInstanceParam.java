@@ -23,7 +23,13 @@ public class DeploymentInstanceParam extends PaginateRequest {
 
     private String deploymentUserId;
 
+    /**
+     * @see com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant
+     */
     private String deploymentStatus;
 
+    /**
+     * @see com.alibaba.smart.framework.engine.constant.LogicStatusConstant
+     */
     private String logicStatus;
 }

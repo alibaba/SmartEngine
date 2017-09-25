@@ -9,17 +9,17 @@
     </sql>
 
     <insert id="insert" parameterType="TaskAssigneeEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into se_task_assignee(<include refid="baseColumn"/>)
+        insert into se_task_assignee_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId},
         #{taskInstanceId},#{assigneeId},#{assigneeType})
     </insert>
 
     <delete id="delete" parameterType="long">
-        delete from se_task_assignee where id=#{id}
+        delete from se_task_assignee_instance where id=#{id}
     </delete>
 
     <update id="update" parameterType="TaskAssigneeEntity">
-        update se_task_assignee
+        update se_task_assignee_instance
         <set>
             gmt_modified=now()
             <if test="assigneeId != null">,assignee_id = #{assigneeId}</if>
@@ -31,7 +31,7 @@
     <!--<select id="findPendingTaskList" resultType="TaskAssigneeEntity">-->
         <!--select-->
         <!--<include refid="baseColumn"/>-->
-        <!--from se_task_assignee where assignee_id=#{assigneeId}-->
+        <!--from se_task_assignee_instance where assignee_id=#{assigneeId}-->
     <!--</select>-->
 
 

@@ -33,7 +33,7 @@ public class DefaultDeploymentInstanceQueryService implements DeploymentInstance
     }
 
     @Override
-    public List<DeploymentInstance> findActiveDeploymentList(DeploymentInstanceParam deploymentInstanceParam, PaginateRequest paginateRequest) {
+    public List<DeploymentInstance> findDeploymentList(DeploymentInstanceParam deploymentInstanceParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);

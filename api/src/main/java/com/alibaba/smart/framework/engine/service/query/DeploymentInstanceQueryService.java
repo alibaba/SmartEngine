@@ -13,7 +13,7 @@ public interface DeploymentInstanceQueryService {
 
     DeploymentInstance findOne(Long deploymentInstanceId);
 
-    List<DeploymentInstance> findActiveDeploymentList(DeploymentInstanceParam deploymentInstanceParam, PaginateRequest paginateRequest);
+    List<DeploymentInstance> findDeploymentList(DeploymentInstanceParam deploymentInstanceParam) ;
 
     Integer queryDeploymentInstanceCount(DeploymentInstanceParam deploymentInstanceParam);
 }
