@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.persister.memory;
 
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 import java.util.List;
 import java.util.Map;
@@ -15,12 +16,7 @@ public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
     private Map<Long, TaskInstance> instances = new ConcurrentHashMap<Long, TaskInstance>();
 
     @Override
-    public List<TaskInstance> findPendingTask(Long processInstanceId) {
-        return null;
-    }
-
-    @Override
-    public List<TaskInstance> findTask(Long processInstanceId, Long activityInstanceId) {
+    public List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
         return null;
     }
 

@@ -32,11 +32,11 @@
         from se_variable_instance where id=#{id}
     </select>
 
-    <select id="findPendingTask" resultType="VariableInstanceEntity">
-        select
-        <include refid="baseColumn"/>
-        from se_variable_instance where execution_instance_id=#{processInstanceId}
-    </select>
+    <!--<select id="findPendingTaskList" resultType="VariableInstanceEntity">-->
+        <!--select-->
+        <!--<include refid="baseColumn"/>-->
+        <!--from se_variable_instance where execution_instance_id=#{processInstanceId}-->
+    <!--</select>-->
 
 
 </mapper>

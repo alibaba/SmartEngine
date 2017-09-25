@@ -1,15 +1,16 @@
 package com.alibaba.smart.framework.engine.instance.storage;
 
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 import java.util.List;
 
 
 public interface TaskInstanceStorage {
 
-    List<TaskInstance> findPendingTask(Long processInstanceId);
+    List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam);
 
-    List<TaskInstance> findTask(Long processInstanceId,Long activityInstanceId);
+    //List<TaskInstance> findTask(Long processInstanceId,Long activityInstanceId);
 
 
     TaskInstance insert(TaskInstance taskInstance);

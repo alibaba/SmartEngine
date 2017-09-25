@@ -98,6 +98,17 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
 
     private DeploymentInstance convertByDeploymentInstanceEntity(DeploymentInstanceEntity entity) {
         DeploymentInstance deploymentInstance = new DefaultDeploymentInstance();
+
+        deploymentInstance.setInstanceId(entity.getId());
+        deploymentInstance.setLogicStatus(entity.getLogicStatus());
+        deploymentInstance.setDeploymentStatus(entity.getDeploymentStatus());
+        deploymentInstance.setDeploymentUserId(entity.getDeploymentUserId());
+        deploymentInstance.setProcessDefinitionContent(entity.getProcessDefinitionContent());
+        deploymentInstance.setProcessDefinitionDesc(entity.getProcessDefinitionDesc());
+        deploymentInstance.setProcessDefinitionName(entity.getProcessDefinitionName());
+        deploymentInstance.setProcessDefinitionType(entity.getProcessDefinitionType());
+        deploymentInstance.setProcessDefinitionId(entity.getProcessDefinitionId());
+        deploymentInstance.setProcessDefinitionVersion(entity.getProcessDefinitionVersion());
         return deploymentInstance;
     }
 
@@ -108,8 +119,9 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         deploymentInstanceEntity.setDeploymentUserId(deploymentInstance.getDeploymentUserId());
         deploymentInstanceEntity.setProcessDefinitionContent(deploymentInstance.getProcessDefinitionContent());
         deploymentInstanceEntity.setProcessDefinitionDesc(deploymentInstance.getProcessDefinitionDesc());
-        deploymentInstanceEntity.setProcessDefinitionName(deploymentInstanceEntity.getProcessDefinitionName());
-        deploymentInstanceEntity.setProcessDefinitionType(deploymentInstanceEntity.getProcessDefinitionType());
+        deploymentInstanceEntity.setProcessDefinitionName(deploymentInstance.getProcessDefinitionName());
+        deploymentInstanceEntity.setProcessDefinitionType(deploymentInstance.getProcessDefinitionType());
+        deploymentInstanceEntity.setProcessDefinitionId(deploymentInstance.getProcessDefinitionId());
         deploymentInstanceEntity.setProcessDefinitionVersion(deploymentInstance.getProcessDefinitionVersion());
         return deploymentInstanceEntity;
     }

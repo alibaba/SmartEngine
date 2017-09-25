@@ -28,11 +28,11 @@
         where id=#{id}
     </update>
 
-    <select id="findPendingTask" resultType="TaskAssigneeEntity">
-        select
-        <include refid="baseColumn"/>
-        from se_task_assignee where assignee_id=#{assigneeId}
-    </select>
+    <!--<select id="findPendingTaskList" resultType="TaskAssigneeEntity">-->
+        <!--select-->
+        <!--<include refid="baseColumn"/>-->
+        <!--from se_task_assignee where assignee_id=#{assigneeId}-->
+    <!--</select>-->
 
 
 </mapper>

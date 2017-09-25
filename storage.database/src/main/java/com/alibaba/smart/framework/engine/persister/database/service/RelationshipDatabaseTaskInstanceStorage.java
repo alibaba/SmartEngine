@@ -6,6 +6,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.database.dao.TaskInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,9 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
 
 
     @Override
-    public List<TaskInstance> findPendingTask(Long processInstanceId) {
+    public List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
-        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findPendingTask(processInstanceId);
+        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findPendingTask(taskInstanceQueryParam);
 
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
@@ -33,20 +34,20 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         return taskInstanceList;
     }
 
-    @Override
-    public List<TaskInstance> findTask(Long processInstanceId, Long activityInstanceId) {
-        TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
-        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTask(processInstanceId ,activityInstanceId);
-
-        List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
-        for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
-                TaskInstance taskInstance= buildTaskInstance(taskInstanceEntity);
-                taskInstanceList.add(taskInstance);
-
-        }
-
-        return taskInstanceList;
-    }
+    //@Override
+    //public List<TaskInstance> findTask(Long processInstanceId, Long activityInstanceId) {
+    //    TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
+    //    List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTask(processInstanceId ,activityInstanceId);
+    //
+    //    List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
+    //    for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
+    //            TaskInstance taskInstance= buildTaskInstance(taskInstanceEntity);
+    //            taskInstanceList.add(taskInstance);
+    //
+    //    }
+    //
+    //    return taskInstanceList;
+    //}
 
     @Override
     public TaskInstance insert(TaskInstance taskInstance) {

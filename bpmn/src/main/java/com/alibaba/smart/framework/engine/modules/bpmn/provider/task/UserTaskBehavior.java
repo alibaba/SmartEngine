@@ -188,7 +188,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             ExecutionInstance executionInstance =    context.getExecutionInstance();
 
             //FIXME ADD INDEX
-            List<TaskInstance> taskInstanceList = taskInstanceStorage.findTask(executionInstance.getProcessInstanceId(),executionInstance.getActivityInstanceId());
+            List<TaskInstance> taskInstanceList = taskInstanceStorage.findTaskList(null);
 
 
             if(userTask.getProperties().get("approvalType").equals("anyone")){

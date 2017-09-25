@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.custom;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 import java.util.List;
 
@@ -13,14 +14,10 @@ public class CustomTaskInstanceStorage implements TaskInstanceStorage {
 
 
     @Override
-    public List<TaskInstance> findPendingTask(Long processInstanceId) {
+    public List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
         throw new EngineException("not implement intentionally");
     }
 
-    @Override
-    public List<TaskInstance> findTask(Long processInstanceId, Long activityInstanceId) {
-        return null;
-    }
 
     @Override
     public TaskInstance insert(TaskInstance instance) {

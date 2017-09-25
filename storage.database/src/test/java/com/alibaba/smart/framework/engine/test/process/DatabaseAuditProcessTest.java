@@ -69,7 +69,7 @@ public class DatabaseAuditProcessTest {
                 );
         Assert.assertNotNull(processInstance);
 
-        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTasks(processInstance.getInstanceId());
+        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
 
         //5.流程流转:构造提交申请参数
@@ -83,7 +83,7 @@ public class DatabaseAuditProcessTest {
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
         //7. 获取当前待处理任务.
-        List<TaskInstance>   auditTaskInstanceList = taskQueryService.findAllPendingTasks(processInstance.getInstanceId());
+        List<TaskInstance>   auditTaskInstanceList = taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         TaskInstance auditTaskInstance = auditTaskInstanceList.get(0);
         Map<String, Object> approveFormRequest = new HashMap<String, Object>();
 
@@ -137,7 +137,7 @@ public class DatabaseAuditProcessTest {
         );
         Assert.assertNotNull(processInstance);
 
-        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTasks(processInstance.getInstanceId());
+        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
 
         //5.流程流转:构造提交申请参数
@@ -150,7 +150,7 @@ public class DatabaseAuditProcessTest {
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
         //7. 获取当前待处理任务.
-        List<TaskInstance>   auditTaskInstanceList = taskQueryService.findAllPendingTasks(processInstance.getInstanceId());
+        List<TaskInstance>   auditTaskInstanceList = taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         TaskInstance auditTaskInstance = auditTaskInstanceList.get(0);
         Map<String, Object> approveFormRequest = new HashMap<String, Object>();
 

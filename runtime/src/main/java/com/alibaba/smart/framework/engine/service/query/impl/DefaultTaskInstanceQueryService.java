@@ -1,11 +1,13 @@
 package com.alibaba.smart.framework.engine.service.query.impl;
 
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
 
 import java.util.List;
@@ -36,28 +38,50 @@ public class DefaultTaskInstanceQueryService implements TaskInstanceQueryService
     }
 
     @Override
-    public List<TaskInstance> findPendingTask(Long processInstanceId, Long userId, PaginateRequest paginateRequest) {
+    public List<TaskInstance> findPendingTaskList(Long processInstanceId, String userId, PaginateRequest paginateRequest) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
-        return taskInstanceStorage.findPendingTask(processInstanceId);
+        TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
+        taskInstanceQueryParam.setAssigneeId(userId);
+        taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
+        taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
+        taskInstanceQueryParam.setPageOffSide(paginateRequest.getPageOffSide());
+        taskInstanceQueryParam.setPageSize(paginateRequest.getPageSize());
+        return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
     }
 
     @Override
-    public List<TaskInstance> findAllPendingTasks(Long processInstanceId) {
+    public List<TaskInstance> findAllPendingTaskList(Long processInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
-        return taskInstanceStorage.findPendingTask(processInstanceId);
+        TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
+        taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
+        taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
+
+        return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
     }
 
     @Override
-    public List<TaskInstance> findAllPendingTasks(Long processInstanceId, Long userId) {
-        return null;
+    public List<TaskInstance> findAllPendingTaskList(Long processInstanceId, String userId) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+
+
+        TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
+        taskInstanceQueryParam.setAssigneeId(userId);
+        taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
+        taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
+
+        return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
     }
 
     @Override
-    public List<TaskInstance> findTaskByTag(Long processInstanceId, String tag, PaginateRequest paginateRequest) {
-        return null;
+    public List<TaskInstance> findTask(TaskInstanceQueryParam taskInstanceQueryParam){
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+
+        return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
     }
 }

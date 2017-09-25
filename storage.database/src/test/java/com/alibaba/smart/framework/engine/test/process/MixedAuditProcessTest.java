@@ -77,7 +77,7 @@ public class MixedAuditProcessTest {
 
 
         //6.测试:断言任务数正确
-        List<TaskInstance> taskInstanceList=  taskQueryService.findAllPendingTasks(processInstance.getInstanceId());
+        List<TaskInstance> taskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         Assert.assertNotNull(taskInstanceList);
         TaskInstance submitTaskInstance = taskInstanceList.get(0);
         Assert.assertNotNull(submitTaskInstance);
@@ -96,7 +96,7 @@ public class MixedAuditProcessTest {
         Assert.assertNotNull(activityInstanceList);
         Assert.assertEquals(3,activityInstanceList.size() );
 
-        taskInstanceList = taskQueryService.findAllPendingTasks(processInstance.getInstanceId());
+        taskInstanceList = taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         Assert.assertNotNull(taskInstanceList);
 
         TaskInstance approveTaskInstance = taskInstanceList.get(0);

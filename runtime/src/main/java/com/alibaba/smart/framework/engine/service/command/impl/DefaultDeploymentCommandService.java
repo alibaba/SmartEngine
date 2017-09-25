@@ -37,6 +37,8 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
         String  processDefinitionContent = createDeploymentRequest.getProcessDefinitionContent();
+
+        //FIXME 明确下是否需要在这里部署.
         ProcessDefinition processDefinition =  repositoryCommandService.deployWithUTF8Content(processDefinitionContent);
 
         DeploymentInstance deploymentInstance  = new DefaultDeploymentInstance();
