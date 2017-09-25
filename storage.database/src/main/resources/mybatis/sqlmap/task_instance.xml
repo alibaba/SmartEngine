@@ -38,21 +38,23 @@
     </select>
 
 
-    <select id="findTask" resultType="TaskInstanceEntity">
-        select
-        <include refid="baseColumn"/>
-        from se_task_instance where process_instance_id=#{param1} and  activity_instance_id = #{param2}
-    </select>
+    <!--<select id="findTask" resultType="TaskInstanceEntity">-->
+        <!--select-->
+        <!--<include refid="baseColumn"/>-->
+        <!--from se_task_instance where process_instance_id=#{param1} and  activity_instance_id = #{param2}-->
+    <!--</select>-->
 
     <!-- FIXME SUPPORT GROUP AND USER -->
     <!--( ( assignee.assignee_id =  #{assigneeId} and assignee.assignee_type = 'user')  or ( assignee.assignee_id = #{assigneeId} and assignee.assignee_type = 'group')  )-->
 
 
-    <select id="findPendingTask" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryParam">
+    <select id="findTaskList" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryParam">
         select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id,
         activity_instance_id, execution_instance_id,claim_user_id,priority,claim_time,complete_time,status
         from  se_task_instance task,se_task_assignee assignee where task.id = assignee.task_instance_id
         <if test="status != null">  and  task.status = #{status} </if>
+        <if test="activityInstanceId != null">  and  task.activity_instance_id = #{activityInstanceId} </if>
+
         <if test="processInstanceId != null"> and task.process_instance_id = #{processInstanceId}</if>
         <if test="assigneeId != null"> and assignee.assignee_id =  #{assigneeId} and assignee.assignee_type = 'user' </if>
         order by task.gmt_modified desc

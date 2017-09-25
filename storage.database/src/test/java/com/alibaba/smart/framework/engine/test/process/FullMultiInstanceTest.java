@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpeicalKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
@@ -24,6 +25,7 @@ import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.param.CreateDeploymentRequest;
 import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
+import com.alibaba.smart.framework.engine.service.param.ProcessInstanceParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
 import com.alibaba.smart.framework.engine.service.query.DeploymentInstanceQueryService;
@@ -89,11 +91,23 @@ public class FullMultiInstanceTest {
 
         //FIXME 断言新的元素解析是否正确。新增的api，其他custom模式下需要增加判断。
 
+
+
         //4.启动流程实例
+
+        Map<String, Object> request = new HashMap();
+        request.put(RequestMapSpeicalKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
         ProcessInstance processInstance = processCommandService.start(
             deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
-                );
+              ,request  );
         Assert.assertNotNull(processInstance);
+
+        ProcessInstanceParam processInstanceParam = new ProcessInstanceParam();
+        processInstanceParam.setStartUserId("123");
+        List<ProcessInstance> processInstanceList = processQueryService.queryProcessInstanceList(processInstanceParam);
+        Assert.assertNotNull(processInstanceList);
+        Assert.assertTrue(processInstanceList.size()>=1 );
+
 
         List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         Assert.assertEquals(3,submitTaskInstanceList.size());
@@ -125,9 +139,9 @@ public class FullMultiInstanceTest {
         assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"1");
         Assert.assertEquals(0,assertedTaskInstanceList.size());
 
-          taskInstanceQueryParam = new TaskInstanceQueryParam();
-
+        taskInstanceQueryParam = new TaskInstanceQueryParam();
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.COMPLETED);
+        taskInstanceQueryParam.setAssigneeId("1");
         taskInstanceQueryParam.setProcessInstanceId(processInstance.getInstanceId());
         assertedTaskInstanceList=   taskQueryService.findTask(taskInstanceQueryParam);
         Assert.assertEquals(1,assertedTaskInstanceList.size());

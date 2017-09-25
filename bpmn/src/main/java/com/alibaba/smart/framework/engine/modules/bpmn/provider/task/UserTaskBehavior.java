@@ -29,6 +29,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
@@ -188,7 +189,10 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             ExecutionInstance executionInstance =    context.getExecutionInstance();
 
             //FIXME ADD INDEX
-            List<TaskInstance> taskInstanceList = taskInstanceStorage.findTaskList(null);
+            TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
+            taskInstanceQueryParam.setProcessInstanceId(executionInstance.getProcessInstanceId());
+            taskInstanceQueryParam.setActivityInstanceId(executionInstance.getActivityInstanceId());
+            List<TaskInstance> taskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam);
 
 
             if(userTask.getProperties().get("approvalType").equals("anyone")){

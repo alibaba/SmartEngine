@@ -12,9 +12,9 @@ import org.apache.ibatis.annotations.Param;
 
 public interface TaskInstanceDAO {
 
-     List<TaskInstanceEntity> findPendingTask(TaskInstanceQueryParam taskInstanceQueryParam);
+     List<TaskInstanceEntity> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam);
 
-     List<TaskInstanceEntity> findTask(Long processInstanceId, Long activityInstanceId);
+     //List<TaskInstanceEntity> findTask(Long processInstanceId, Long activityInstanceId);
 
      TaskInstanceEntity findOne(@Param("id") Long id);
 
