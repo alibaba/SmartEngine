@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TaskAssigneeStorage {
 
-     List<TaskAssigneeInstance> findPendingTask(Long processInstanceId);
+    List<TaskAssigneeInstance> findPendingTask(Long processInstanceId);
 
     TaskAssigneeInstance insert(TaskAssigneeInstance taskAssigneeInstance);
 

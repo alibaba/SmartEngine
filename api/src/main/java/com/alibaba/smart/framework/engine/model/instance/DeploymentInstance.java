@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.model.instance;
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  10:03.
  */
-public interface  DeploymentInstance  extends  Instance{
+public interface  DeploymentInstance  extends  LifeCycleInstance{
 
     String getProcessDefinitionId();
 

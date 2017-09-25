@@ -24,7 +24,6 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.param.CreateDeploymentRequest;
-import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
 import com.alibaba.smart.framework.engine.service.param.ProcessInstanceParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;

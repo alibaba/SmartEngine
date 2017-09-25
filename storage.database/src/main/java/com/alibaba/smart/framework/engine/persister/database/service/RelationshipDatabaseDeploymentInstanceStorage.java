@@ -109,6 +109,8 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         deploymentInstance.setProcessDefinitionType(entity.getProcessDefinitionType());
         deploymentInstance.setProcessDefinitionId(entity.getProcessDefinitionId());
         deploymentInstance.setProcessDefinitionVersion(entity.getProcessDefinitionVersion());
+        deploymentInstance.setStartTime(entity.getGmtCreate());
+        deploymentInstance.setCompleteTime(entity.getGmtModified());
         return deploymentInstance;
     }
 

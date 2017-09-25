@@ -9,7 +9,7 @@ import lombok.Data;
  */
 
 @Data
-public class DefaultDeploymentInstance extends  AbstractInstance implements DeploymentInstance {
+public class DefaultDeploymentInstance extends  AbstractLifeCycleInstance implements DeploymentInstance {
 
     private  String processDefinitionId;
     private  String processDefinitionVersion;
