@@ -1,5 +1,8 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
@@ -7,9 +10,6 @@ import com.alibaba.smart.framework.engine.persister.database.dao.TaskInstanceDAO
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStorage {
@@ -30,6 +30,12 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         }
 
         return taskInstanceList;
+    }
+
+    @Override
+    public Integer count(TaskInstanceQueryParam taskInstanceQueryParam) {
+        TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
+        return taskInstanceDAO.count(taskInstanceQueryParam);
     }
 
     //@Override

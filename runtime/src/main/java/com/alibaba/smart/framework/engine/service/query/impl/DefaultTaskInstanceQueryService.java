@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.service.query.impl;
 
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
@@ -9,8 +11,6 @@ import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoi
 import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
-
-import java.util.List;
 
 /**
  * Created by 高海军 帝奇 74394 on 2016 November  22:10.
@@ -83,5 +83,13 @@ public class DefaultTaskInstanceQueryService implements TaskInstanceQueryService
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
+    }
+
+    @Override
+    public Integer count(TaskInstanceQueryParam taskInstanceQueryParam) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+
+        return taskInstanceStorage.count(taskInstanceQueryParam);
     }
 }

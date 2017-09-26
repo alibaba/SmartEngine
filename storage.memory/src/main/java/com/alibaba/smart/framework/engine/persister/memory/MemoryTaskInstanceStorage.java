@@ -1,12 +1,12 @@
 package com.alibaba.smart.framework.engine.persister.memory;
 
-import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 /**
  * 内存实例存储 Created by ettear on 16-4-13.
@@ -17,6 +17,11 @@ public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
 
     @Override
     public List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
+        return null;
+    }
+
+    @Override
+    public Integer count(TaskInstanceQueryParam taskInstanceQueryParam) {
         return null;
     }
 
