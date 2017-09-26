@@ -138,7 +138,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         if(null != request){
 
             //TODO 约定了key,其他。。。
-            String assigneeId = (String) request.get("assigneeId");
+            String assigneeId = (String) request.get("assigneeUserId");
             if(null != assigneeId){
                 taskInstance.setClaimUserId(assigneeId);
             }

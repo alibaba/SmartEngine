@@ -43,7 +43,7 @@ public class DefaultTaskInstanceQueryService implements TaskInstanceQueryService
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        taskInstanceQueryParam.setAssigneeId(userId);
+        taskInstanceQueryParam.setAssigneeUserId(userId);
         taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
         taskInstanceQueryParam.setPageOffSide(paginateRequest.getPageOffSide());
@@ -70,7 +70,7 @@ public class DefaultTaskInstanceQueryService implements TaskInstanceQueryService
 
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        taskInstanceQueryParam.setAssigneeId(userId);
+        taskInstanceQueryParam.setAssigneeUserId(userId);
         taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
 

@@ -83,7 +83,7 @@ public class MultiInstanceTest {
         submitFormRequest.put("title", "new_title");
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
-        submitFormRequest.put("assigneeId","1");
+        submitFormRequest.put("assigneeUserId","1");
 
         //6.流程流转:处理 submitTask,完成任务申请.
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);

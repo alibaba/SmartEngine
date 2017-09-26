@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.service.param.query;
 
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
 
 import lombok.Data;
@@ -19,6 +21,12 @@ public class TaskInstanceQueryParam extends PaginateRequest {
     * @see com.alibaba.smart.framework.engine.constant.TaskInstanceConstant
     */
    private String status;
-   private String assigneeId;
+   /**
+    * 任务处理者的用户Id
+    */
+   private String assigneeUserId;
+
+   private List<String> assigneeGroupIdList;
+
    private String tag;
 }

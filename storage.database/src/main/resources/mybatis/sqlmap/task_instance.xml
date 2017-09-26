@@ -45,7 +45,7 @@
     <!--</select>-->
 
     <!-- FIXME SUPPORT GROUP AND USER -->
-    <!--( ( assignee.assignee_id =  #{assigneeId} and assignee.assignee_type = 'user')  or ( assignee.assignee_id = #{assigneeId} and assignee.assignee_type = 'group')  )-->
+    <!--( ( assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user')  or ( assignee.assignee_id = #{assigneeUserId} and assignee.assignee_type = 'group')  )-->
 
 
     <select id="findTaskList" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryParam">
@@ -55,7 +55,7 @@
         <if test="status != null">  and  task.status = #{status} </if>
         <if test="activityInstanceId != null">  and  task.activity_instance_id = #{activityInstanceId} </if>
         <if test="processInstanceId != null"> and task.process_instance_id = #{processInstanceId}</if>
-        <if test="assigneeId != null"> and assignee.assignee_id =  #{assigneeId} and assignee.assignee_type = 'user' </if>
+        <if test="assigneeUserId != null"> and assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user' </if>
         order by task.gmt_modified desc
         <if test="pageOffSide != null and pageSize != null">limit #{pageOffSide},#{pageSize}</if>
 
