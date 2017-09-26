@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSess
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -53,7 +53,7 @@ public class AliPayForeignExchangeTest {
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        ExecutionInstanceQueryService executionQueryService = smartEngine.getExecutionQueryService();
+        ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
 

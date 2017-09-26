@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.service.param.ProcessInstanceParam;
 /**
  * Created by 高海军 帝奇 74394 on 2016 December  11:07.
  */
-public interface ProcessInstanceQueryService {
+public interface ProcessQueryService {
 
     ProcessInstance findOne(Long processInstanceId);
 

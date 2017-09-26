@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by 高海军 帝奇 74394 on 2016 November  22:08.
  */
-public interface ExecutionInstanceQueryService {
+public interface ExecutionQueryService {
 
     List<ExecutionInstance> findActiveExecution(Long processInstanceId);
 

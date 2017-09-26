@@ -130,7 +130,7 @@ public class UserTaskProcessTest {
 //
 //        //1st: create 1st task
 //        TaskCommandService taskCommandService =    smartEngine.getTaskCommandService();
-//        TaskInstanceQueryService taskQueryService =    smartEngine.getTaskQueryService();
+//        TaskQueryService taskQueryService =    smartEngine.getTaskQueryService();
 //
 //        String processInstanceId = processInstance.getInstanceId();
 //        List<TaskInstance> taskInstanceList =     taskQueryService.findAll(processInstanceId);

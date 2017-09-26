@@ -19,10 +19,10 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
+import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
+import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,10 +52,10 @@ public class MultiInstanceTest {
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
-        ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
-        ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
-        TaskInstanceQueryService taskQueryService = smartEngine.getTaskQueryService();
-        ExecutionInstanceQueryService executionInstanceQueryService =  smartEngine.getExecutionQueryService();
+        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
+        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
+        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
+        ExecutionQueryService executionQueryService =  smartEngine.getExecutionQueryService();
         ExecutionCommandService executionCommandService =  smartEngine.getExecutionCommandService();
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
 
@@ -90,7 +90,7 @@ public class MultiInstanceTest {
 
 
         // 驱动 ReceiverTask
-        List<ExecutionInstance> activeExecutions = executionInstanceQueryService.findActiveExecution(processInstance.getInstanceId());
+        List<ExecutionInstance> activeExecutions = executionQueryService.findActiveExecution(processInstance.getInstanceId());
         Assert.assertEquals(1,activeExecutions.size());
         executionCommandService.signal(activeExecutions.get(0).getInstanceId());
 
@@ -132,9 +132,9 @@ public class MultiInstanceTest {
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
 
-        ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
-        ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
-        TaskInstanceQueryService taskQueryService = smartEngine.getTaskQueryService();
+        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
+        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
+        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
 
 
         //3. 部署流程定义

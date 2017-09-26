@@ -12,8 +12,8 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
+import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,8 +37,8 @@ public class ReceiveTaskParallelGatewayTest {
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
-        ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
-        ExecutionInstanceQueryService executionQueryService = smartEngine.getExecutionQueryService();
+        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
+        ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
 
 
         RepositoryCommandService repositoryCommandService = smartEngine

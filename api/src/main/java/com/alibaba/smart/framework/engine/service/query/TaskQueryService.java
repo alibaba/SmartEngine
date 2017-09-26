@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
 /**
  * Created by 高海军 帝奇 74394 on 2016 November  22:08.
  */
-public interface TaskInstanceQueryService {
+public interface TaskQueryService {
 
     /**
      * 待办任务列表

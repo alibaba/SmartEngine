@@ -10,18 +10,18 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
-import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
 /**
  * Created by 高海军 帝奇 74394 on 2016 November  22:10.
  */
-public class DefaultTaskInstanceQueryService implements TaskInstanceQueryService, LifeCycleListener {
+public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
 //    private TaskInstanceStorage taskInstanceStorage;
 
 
-    public DefaultTaskInstanceQueryService(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultTaskQueryService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 

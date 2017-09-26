@@ -7,20 +7,19 @@ import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorag
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
 import com.alibaba.smart.framework.engine.service.param.ProcessInstanceParam;
-import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 
 /**
  * Created by 高海军 帝奇 74394 on 2016 November  22:10.
  */
-public class DefaultProcessInstanceQueryService implements ProcessInstanceQueryService, LifeCycleListener {
+public class DefaultProcessQueryService implements ProcessQueryService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
 //    private ProcessInstanceStorage processInstanceStorage;
 
 
-    public DefaultProcessInstanceQueryService(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultProcessQueryService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 

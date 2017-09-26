@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  17:15.
  */
-public interface DeploymentInstanceQueryService {
+public interface DeploymentQueryService {
 
     DeploymentInstance findOne(Long deploymentInstanceId);
 

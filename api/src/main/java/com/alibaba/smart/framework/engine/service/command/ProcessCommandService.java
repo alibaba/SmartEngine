@@ -12,14 +12,13 @@ import java.util.Map;
 public interface ProcessCommandService {
 
 
-    ProcessInstance start(String processId, String version, Map<String, Object> request);
+    ProcessInstance start(String processDefinitionId, String processDefinitionVersion, Map<String, Object> request);
 
-    ProcessInstance start(String processId, String version);
+    ProcessInstance start(String processDefinitionId, String processDefinitionVersion);
 
     ProcessInstance start(Long deploymentInstanceId, Map<String, Object> request);
 
     ProcessInstance start(Long deploymentInstanceId);
-
 
     void abort(Long processInstanceId);
 

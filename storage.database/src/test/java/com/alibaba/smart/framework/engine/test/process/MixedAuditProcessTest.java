@@ -12,10 +12,11 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
+import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
+import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,10 +50,10 @@ public class MixedAuditProcessTest {
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
 
-        ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
-        ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
-        ExecutionInstanceQueryService executionQueryService = smartEngine.getExecutionQueryService();
-        TaskInstanceQueryService taskQueryService = smartEngine.getTaskQueryService();
+        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
+        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
+        ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
+        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
 
 
         //3. 部署流程定义

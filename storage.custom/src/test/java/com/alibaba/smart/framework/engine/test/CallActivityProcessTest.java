@@ -17,10 +17,8 @@ import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSess
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
-import com.alibaba.smart.framework.engine.test.AliPayIdGenerator;
-import com.alibaba.smart.framework.engine.test.AliPayPersisterStrategy;
+import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
+import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -59,9 +57,9 @@ public class CallActivityProcessTest {
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        ProcessInstanceQueryService processInstanceQueryService = smartEngine.getProcessQueryService();
+        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
 
-        ExecutionInstanceQueryService executionQueryService = smartEngine.getExecutionQueryService();
+        ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
 
@@ -160,7 +158,7 @@ public class CallActivityProcessTest {
         assertTrue("end_order".equals(firstExecutionInstance.getActivityId()));
 
         //子流程结束
-        subProcessInstance=processInstanceQueryService.findOne(subProcessInstanceId);
+        subProcessInstance= processQueryService.findOne(subProcessInstanceId);
         Assert.assertEquals(InstanceStatus.completed,subProcessInstance.getStatus());
         subExecutionInstanceList = executionQueryService.findActiveExecution(subProcessInstanceId);
         assertEquals(0, subExecutionInstanceList.size());

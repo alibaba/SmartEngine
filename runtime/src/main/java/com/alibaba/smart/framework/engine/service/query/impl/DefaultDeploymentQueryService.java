@@ -7,18 +7,17 @@ import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceSto
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.param.DeploymentInstanceParam;
-import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
-import com.alibaba.smart.framework.engine.service.query.DeploymentInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  07:48.
  */
-public class DefaultDeploymentInstanceQueryService implements DeploymentInstanceQueryService {
+public class DefaultDeploymentQueryService implements DeploymentQueryService {
 
     private ExtensionPointRegistry extensionPointRegistry;
 
 
-    public DefaultDeploymentInstanceQueryService(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultDeploymentQueryService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 

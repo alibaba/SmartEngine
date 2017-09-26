@@ -13,7 +13,7 @@
 //import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 //import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 //import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-//import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
+//import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 //import com.alibaba.smart.framework.engine.test.AliPayPersisterStrategy;
 //import com.alibaba.smart.framework.engine.test.demo.dto.OrderDTO;
 //
@@ -29,7 +29,7 @@
 //public class OrderService {
 //
 //    private static ProcessCommandService processCommandService = null;
-//    private static ExecutionInstanceQueryService executionQueryService = null;
+//    private static ExecutionQueryService executionQueryService = null;
 //    private static ExecutionCommandService executionCommandService = null;
 //    private static RepositoryCommandService repositoryCommandService = null;
 //    private static ProcessDefinition processDefinition = null;

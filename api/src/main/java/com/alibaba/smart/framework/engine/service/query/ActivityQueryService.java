@@ -9,7 +9,7 @@ import java.util.List;
  *
  *
  */
-public interface ActivityInstanceQueryService {
+public interface ActivityQueryService {
 
     /**
      * 默认按照时间降序

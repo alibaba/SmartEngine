@@ -5,20 +5,20 @@ import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStora
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 
 import java.util.List;
 
 /**
  * Created by 高海军 帝奇 74394 on 2016 November  22:10.
  */
-public class DefaultActivityInstanceQueryService implements ActivityInstanceQueryService, LifeCycleListener {
+public class DefaultActivityQueryService implements ActivityQueryService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
 //    private ActivityInstanceStorage activityInstanceStorage;
 
 
-    public DefaultActivityInstanceQueryService(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultActivityQueryService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 

@@ -7,11 +7,11 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.DeploymentInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
+import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
+import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
+import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
 /**
  * @author 高海军 帝奇
@@ -38,15 +38,15 @@ public interface SmartEngine {
 
     TaskCommandService getTaskCommandService();
 
-    DeploymentInstanceQueryService getDeploymentInstanceQueryService();
+    DeploymentQueryService getDeploymentQueryService();
 
-    ProcessInstanceQueryService getProcessQueryService();
+    ProcessQueryService getProcessQueryService();
 
-    ActivityInstanceQueryService getActivityQueryService();
+    ActivityQueryService getActivityQueryService();
 
-    ExecutionInstanceQueryService getExecutionQueryService();
+    ExecutionQueryService getExecutionQueryService();
 
-    TaskInstanceQueryService getTaskQueryService();
+    TaskQueryService getTaskQueryService();
 
 
     void init(ProcessEngineConfiguration processEngineConfiguration);

@@ -9,16 +9,14 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
-import com.alibaba.smart.framework.engine.service.query.DeploymentInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 
 import java.util.Map;
 
@@ -60,7 +58,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     }
 
     @Override
-    public ProcessInstance start(String processDefinitionId, String version, Map<String, Object> request) {
+    public ProcessInstance start(String processDefinitionId, String processDefinitionVersion, Map<String, Object> request) {
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
         executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
@@ -69,7 +67,8 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         executionContext.setRequest(request);
 
 
-        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processDefinitionId, version);
+        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processDefinitionId,
+            processDefinitionVersion);
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
 
         //TODO TUNE 减少不必要的对象创建
@@ -89,14 +88,14 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     }
 
     @Override
-    public ProcessInstance start(String processDefinitionId, String version){
-        return this.start(processDefinitionId,version,null);
+    public ProcessInstance start(String processDefinitionId, String processDefinitionVersion){
+        return this.start(processDefinitionId, processDefinitionVersion,null);
     }
 
     @Override
     public ProcessInstance start(Long deploymentInstanceId, Map<String, Object> request) {
-        DeploymentInstanceQueryService deploymentInstanceQueryService = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getDeploymentInstanceQueryService();
-        DeploymentInstance deploymentInstance = deploymentInstanceQueryService.findOne(deploymentInstanceId);
+        DeploymentQueryService deploymentQueryService = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getDeploymentQueryService();
+        DeploymentInstance deploymentInstance = deploymentQueryService.findOne(deploymentInstanceId);
         ProcessInstance processInstance = this.start(deploymentInstance.getProcessDefinitionId(),
             deploymentInstance.getProcessDefinitionVersion(), request);
         return processInstance;

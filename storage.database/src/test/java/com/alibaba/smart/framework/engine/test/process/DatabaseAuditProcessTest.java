@@ -13,9 +13,10 @@ import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
+import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,9 +50,9 @@ public class DatabaseAuditProcessTest {
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
 
-        ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
-        ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
-        TaskInstanceQueryService taskQueryService = smartEngine.getTaskQueryService();
+        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
+        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
+        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
 
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
 
@@ -119,9 +120,9 @@ public class DatabaseAuditProcessTest {
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
 
-        ProcessInstanceQueryService processQueryService = smartEngine.getProcessQueryService();
-        ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
-        TaskInstanceQueryService taskQueryService = smartEngine.getTaskQueryService();
+        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
+        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
+        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
 
 
         //3. 部署流程定义
