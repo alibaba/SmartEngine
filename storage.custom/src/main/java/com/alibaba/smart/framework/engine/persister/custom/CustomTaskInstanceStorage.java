@@ -1,11 +1,11 @@
 package com.alibaba.smart.framework.engine.persister.custom;
 
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
-
-import java.util.List;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  11:54.
@@ -18,6 +18,10 @@ public class CustomTaskInstanceStorage implements TaskInstanceStorage {
         throw new EngineException("not implement intentionally");
     }
 
+    @Override
+    public Integer count(TaskInstanceQueryParam taskInstanceQueryParam) {
+        return null;
+    }
 
     @Override
     public TaskInstance insert(TaskInstance instance) {

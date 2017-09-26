@@ -1,10 +1,10 @@
 package com.alibaba.smart.framework.engine.service.query;
 
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
-
-import java.util.List;
 
 /**
  * Created by 高海军 帝奇 74394 on 2016 November  22:08.
@@ -37,5 +37,7 @@ public interface TaskInstanceQueryService {
      *
      */
     List<TaskInstance> findTask(TaskInstanceQueryParam taskInstanceQueryParam);
+
+    Integer count(TaskInstanceQueryParam taskInstanceQueryParam);
 
 }
