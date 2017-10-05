@@ -36,7 +36,7 @@ public abstract  class CommonServiceHelper {
         ProcessInstance newProcessInstance=   processInstanceStorage.insert(processInstance);
 
         persist(processInstance, request,   extensionPointRegistry);
-        processEngineConfiguration.getPersisterStrategy().insert(processInstance);
+        //processEngineConfiguration.getPersisterStrategy().insert(processInstance);
 
         return newProcessInstance;
     }
@@ -52,7 +52,7 @@ public abstract  class CommonServiceHelper {
 
         ProcessInstance newProcessInstance=   processInstanceStorage.update(processInstance);
         persist(processInstance, request,   extensionPointRegistry);
-        processEngineConfiguration.getPersisterStrategy().update(processInstance);
+        //processEngineConfiguration.getPersisterStrategy().update(processInstance);
 
         return newProcessInstance;
     }

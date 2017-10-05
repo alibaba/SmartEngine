@@ -68,10 +68,10 @@ public class ReceiveTaskParallelGatewayTest {
         assertEquals(2, executionInstanceList.size());
 
         ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
-        String firstActivityId=firstExecutionInstance.getActivityId();
+        String firstActivityId=firstExecutionInstance.getProcessDefinitionActivityId();
 
         ExecutionInstance secondExecutionInstance = executionInstanceList.get(1);
-        String secondActivityId=secondExecutionInstance.getActivityId();
+        String secondActivityId=secondExecutionInstance.getProcessDefinitionActivityId();
 
         assertTrue(("theTask1".equals(firstActivityId) && "theTask2".equals(secondActivityId)) || ("theTask1".equals(secondActivityId) && "theTask2".equals(firstActivityId)));
 
@@ -84,10 +84,10 @@ public class ReceiveTaskParallelGatewayTest {
         assertEquals(2, executionInstanceList.size());
 
         firstExecutionInstance = executionInstanceList.get(0);
-        firstActivityId=firstExecutionInstance.getActivityId();
+        firstActivityId=firstExecutionInstance.getProcessDefinitionActivityId();
 
         secondExecutionInstance = executionInstanceList.get(1);
-        secondActivityId=secondExecutionInstance.getActivityId();
+        secondActivityId=secondExecutionInstance.getProcessDefinitionActivityId();
 
         ExecutionInstance runningExecutionInstance;
         if(firstActivityId.equals("join")){
@@ -112,7 +112,7 @@ public class ReceiveTaskParallelGatewayTest {
         executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("theTask3".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("theTask3".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
         Assert.assertNotNull(processInstance.getCompleteTime());

@@ -33,7 +33,7 @@ public class BPMNDiagramParserTest {
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
-        processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
+        //processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);

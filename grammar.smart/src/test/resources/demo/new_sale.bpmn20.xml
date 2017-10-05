@@ -15,7 +15,7 @@
             </extensionElements>
         </sequenceFlow>
 
-        <receiveTask id="InstitutionAdmit" name="机构准入中">
+        <receiveTask id="InstitutionAdmit" name="机构准入中" >
             <extensionElements>
                 <smart:value name="newState" value="ADMITTING"/>
                 <smart:executionListener

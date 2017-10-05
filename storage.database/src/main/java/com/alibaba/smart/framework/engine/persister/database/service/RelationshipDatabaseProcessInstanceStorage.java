@@ -46,7 +46,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstanceEntityToBePersisted.setGmtModified(processInstance.getCompleteTime());
         processInstanceEntityToBePersisted.setParentProcessInstanceId(processInstance.getParentInstanceId());
         processInstanceEntityToBePersisted.setStatus(processInstance.getStatus().name());
-        processInstanceEntityToBePersisted.setProcessDefinitionId(processInstance.getProcessDefinitionIdAndVersion());
+        processInstanceEntityToBePersisted.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
         processInstanceEntityToBePersisted.setStartUserId(processInstance.getStartUserId());
         return processInstanceEntityToBePersisted;
     }
@@ -60,7 +60,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     }
 
     private void buildEntityToInstance(ProcessInstance processInstance, ProcessInstanceEntity processInstanceEntity1) {
-        processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity1.getProcessDefinitionId());
+        processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity1.getProcessDefinitionIdAndVersion());
         processInstance.setParentInstanceId(processInstanceEntity1.getParentProcessInstanceId());
         processInstance.setInstanceId(processInstanceEntity1.getId());
         processInstance.setStartTime(processInstanceEntity1.getGmtCreate());
@@ -84,7 +84,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         InstanceStatus processStatus = InstanceStatus.valueOf(processInstanceEntity.getStatus());
         processInstance.setStatus(processStatus);
         processInstance.setStartTime(processInstanceEntity.getGmtCreate());
-        processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity.getProcessDefinitionId());
+        processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity.getProcessDefinitionIdAndVersion());
         processInstance.setSuspend(InstanceStatus.suspended.equals(processStatus)  );
         processInstance.setStartUserId(processInstanceEntity.getStartUserId());
 

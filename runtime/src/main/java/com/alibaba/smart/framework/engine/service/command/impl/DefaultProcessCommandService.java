@@ -5,6 +5,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
@@ -69,6 +70,11 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processDefinitionId,
             processDefinitionVersion);
+
+        if(null == pvmProcessDefinition){
+            throw new EngineException("No ProcessDefinition found for processDefinitionId :"+processDefinitionId+",processDefinitionVersion" +processDefinitionVersion);
+        }
+
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
 
         //TODO TUNE 减少不必要的对象创建

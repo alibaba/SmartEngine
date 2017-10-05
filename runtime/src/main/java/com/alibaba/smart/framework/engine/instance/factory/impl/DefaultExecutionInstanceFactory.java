@@ -19,7 +19,7 @@ public class DefaultExecutionInstanceFactory implements ExecutionInstanceFactory
         DefaultExecutionInstance defaultExecutionInstance = new DefaultExecutionInstance();
         IdGenerator idGenerator = executionContext.getProcessEngineConfiguration().getIdGenerator();
         defaultExecutionInstance.setInstanceId(idGenerator.getId());
-        defaultExecutionInstance.setActivityId(activityInstance.getActivityId());
+        defaultExecutionInstance.setProcessDefinitionActivityId(activityInstance.getProcessDefinitionActivityId());
         defaultExecutionInstance.setActivityInstanceId(activityInstance.getInstanceId());
         defaultExecutionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
         defaultExecutionInstance.setProcessDefinitionIdAndVersion(activityInstance.getProcessDefinitionIdAndVersion());

@@ -4,13 +4,13 @@
 <mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.ProcessInstanceDAO">
 
     <sql id="baseColumn">
-        id, gmt_create, gmt_modified, process_definition_id,start_user_id,
+        id, gmt_create, gmt_modified, process_definition_id_and_version,start_user_id,
         status, parent_process_instance_id
     </sql>
 
     <insert id="insert" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into se_process_instance (<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{processDefinitionId},#{startUserId},
+        values (#{id}, now(), now(), #{processDefinitionIdAndVersion},#{startUserId},
         #{status}, #{parentProcessInstanceId})
     </insert>
 

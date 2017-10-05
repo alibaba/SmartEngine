@@ -5,12 +5,12 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,
-        process_instance_id,process_definition_id,process_definition_activity_id,activity_instance_id,active
+        process_instance_id,process_definition_id_and_version,process_definition_activity_id,activity_instance_id,active
     </sql>
 
     <insert id="insert" parameterType="ExecutionInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into  se_execution_instance(<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionId},
+        values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},
         #{processDefinitionActivityId}, #{activityInstanceId},#{active})
     </insert>
 

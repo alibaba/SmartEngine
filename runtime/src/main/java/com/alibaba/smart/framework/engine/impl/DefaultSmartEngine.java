@@ -95,9 +95,9 @@ public class DefaultSmartEngine implements SmartEngine {
         return this.extensionPointRegistry.getExtensionPoint(TaskQueryService.class);
     }
 
-    @Override
-    public ExtensionPointRegistry getExtensionPointRegistry() {
-        return extensionPointRegistry;
-    }
+    //@Override
+    //public ExtensionPointRegistry getExtensionPointRegistry() {
+    //    return extensionPointRegistry;
+    //}
 
 }

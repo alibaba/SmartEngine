@@ -43,7 +43,7 @@ public class InstanceSerializer {
                     if(active){
                         //注意: 这里仅保存了需要被执行的实例,历史的activityInstance在这里并没有保存。在阿里的海量数据业务中,也通常不需要。
                         stringBuilder.append(activityInstance.getInstanceId()).append(",");
-                        stringBuilder.append(activityInstance.getActivityId()).append(",");
+                        stringBuilder.append(activityInstance.getProcessDefinitionActivityId()).append(",");
                         stringBuilder.append(executionInstance.getInstanceId()).append(",");
                         stringBuilder.append(active).append(",");
 
@@ -147,7 +147,7 @@ public class InstanceSerializer {
         ActivityInstance activityInstance = new DefaultActivityInstance();
         activityInstance.setInstanceId(Long.valueOf(st1.nextToken()));
         String activityId = st1.nextToken();
-        activityInstance.setActivityId(activityId);
+        activityInstance.setProcessDefinitionActivityId(activityId);
         ExecutionInstance executionInstance = buildExecutionInstance(st1, activityId);
 
         //FIXME 有点问题、
@@ -161,7 +161,7 @@ public class InstanceSerializer {
     private static ExecutionInstance buildExecutionInstance(StringTokenizer st1, String activityId) {
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
         executionInstance.setInstanceId(Long.valueOf(st1.nextToken()));
-        executionInstance.setActivityId(activityId);
+        executionInstance.setProcessDefinitionActivityId(activityId);
         executionInstance.setActive(Boolean.valueOf(st1.nextToken()));
         return executionInstance;
     }

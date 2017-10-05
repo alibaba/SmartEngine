@@ -34,10 +34,10 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
     private ActivityInstanceEntity buildActivityInstanceEntity(ActivityInstance activityInstance) {
         ActivityInstanceEntity activityInstanceEntityToBePersisted = new ActivityInstanceEntity();
-        activityInstanceEntityToBePersisted.setProcessDefinitionId(activityInstance.getProcessDefinitionIdAndVersion());
+        activityInstanceEntityToBePersisted.setProcessDefinitionIdAndVersion(activityInstance.getProcessDefinitionIdAndVersion());
 
         //TUNE 命名不统一
-        activityInstanceEntityToBePersisted.setProcessDefinitionActivityId(activityInstance.getActivityId());
+        activityInstanceEntityToBePersisted.setProcessDefinitionActivityId(activityInstance.getProcessDefinitionActivityId());
         activityInstanceEntityToBePersisted.setProcessInstanceId(activityInstance.getProcessInstanceId());
         return activityInstanceEntityToBePersisted;
     }
@@ -57,10 +57,10 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
         ActivityInstance activityInstance  = new DefaultActivityInstance();
         activityInstance.setStartTime(activityInstanceEntity.getGmtCreate());
-        activityInstance.setProcessDefinitionIdAndVersion(activityInstanceEntity.getProcessDefinitionId());
+        activityInstance.setProcessDefinitionIdAndVersion(activityInstanceEntity.getProcessDefinitionIdAndVersion());
         activityInstance.setInstanceId(activityInstanceEntity.getId());
         activityInstance.setProcessInstanceId(activityInstanceEntity.getProcessInstanceId());
-        activityInstance.setActivityId(activityInstanceEntity.getProcessDefinitionActivityId());
+        activityInstance.setProcessDefinitionActivityId(activityInstanceEntity.getProcessDefinitionActivityId());
 
         //TUNE 意义不准确?
         activityInstance.setCompleteTime(activityInstanceEntity.getGmtModified());
@@ -89,9 +89,9 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         for (ActivityInstanceEntity activityInstanceEntity : activityInstanceEntities) {
             ActivityInstance activityInstance = new DefaultActivityInstance();
 
-            activityInstance.setProcessDefinitionIdAndVersion(activityInstanceEntity.getProcessDefinitionId());
+            activityInstance.setProcessDefinitionIdAndVersion(activityInstanceEntity.getProcessDefinitionIdAndVersion());
             activityInstance.setProcessInstanceId(processInstanceId);
-            activityInstance.setActivityId(activityInstanceEntity.getProcessDefinitionActivityId());
+            activityInstance.setProcessDefinitionActivityId(activityInstanceEntity.getProcessDefinitionActivityId());
             activityInstanceList.add(activityInstance);
         }
 

@@ -33,10 +33,10 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
     private ExecutionInstanceEntity buildExecutionInstanceEntity(ExecutionInstance executionInstance) {
         ExecutionInstanceEntity executionInstanceEntity = new ExecutionInstanceEntity();
         executionInstanceEntity.setActive(executionInstance.isActive());
-        executionInstanceEntity.setProcessDefinitionId(executionInstance.getProcessDefinitionIdAndVersion());
+        executionInstanceEntity.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
         executionInstanceEntity.setProcessInstanceId(executionInstance.getProcessInstanceId());
         executionInstanceEntity.setActivityInstanceId(executionInstance.getActivityInstanceId());
-        executionInstanceEntity.setProcessDefinitionActivityId(executionInstance.getActivityId());
+        executionInstanceEntity.setProcessDefinitionActivityId(executionInstance.getProcessDefinitionActivityId());
         return executionInstanceEntity;
     }
 
@@ -55,10 +55,10 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
 
     private ExecutionInstance buildExecutionInstance(ExecutionInstance executionInstance, ExecutionInstanceEntity executionInstanceEntity) {
         executionInstance.setInstanceId(executionInstanceEntity.getId());
-        executionInstance.setProcessDefinitionIdAndVersion(executionInstanceEntity.getProcessDefinitionId());
+        executionInstance.setProcessDefinitionIdAndVersion(executionInstanceEntity.getProcessDefinitionIdAndVersion());
         executionInstance.setProcessInstanceId(executionInstanceEntity.getProcessInstanceId());
         executionInstance.setActivityInstanceId(executionInstanceEntity.getActivityInstanceId());
-        executionInstance.setActivityId(executionInstanceEntity.getProcessDefinitionActivityId());
+        executionInstance.setProcessDefinitionActivityId(executionInstanceEntity.getProcessDefinitionActivityId());
         executionInstance.setActive(executionInstanceEntity.isActive());
         executionInstance.setStartTime(executionInstanceEntity.getGmtCreate());
         executionInstance.setCompleteTime(executionInstanceEntity.getGmtModified());

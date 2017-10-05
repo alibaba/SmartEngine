@@ -19,9 +19,9 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     void setActive(boolean active);
 
-    String getActivityId();
+    String getProcessDefinitionActivityId();
 
-    void setActivityId(String activityId);
+    void setProcessDefinitionActivityId(String processDefinitionActivityId);
 
 
     Long getActivityInstanceId();

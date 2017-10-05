@@ -57,7 +57,7 @@ public class UserTaskProcessTest {
         assertEquals(3, size);
 
         ActivityInstance lastActivityInstance = activityInstances.get(size - 1);
-        assertEquals("theTask1", lastActivityInstance.getActivityId());
+        assertEquals("theTask1", lastActivityInstance.getProcessDefinitionActivityId());
 
 
         ExecutionInstance lastExecutionInstance = lastActivityInstance.getExecutionInstanceList().get(0);
@@ -65,11 +65,11 @@ public class UserTaskProcessTest {
 
         assertEquals(processInstance.getInstanceId(), lastExecutionInstance.getProcessInstanceId());
         assertEquals(lastActivityInstance.getInstanceId(), lastExecutionInstance.getActivityInstanceId());
-        assertEquals(lastActivityInstance.getActivityId(), lastExecutionInstance.getActivityId());
+        assertEquals(lastActivityInstance.getProcessDefinitionActivityId(), lastExecutionInstance.getProcessDefinitionActivityId());
 
         TaskInstance latestTaskInstance = lastExecutionInstance.getTaskInstance();
         assertNotNull(latestTaskInstance);
-        assertEquals("theTask1", latestTaskInstance.getActivityId());
+        assertEquals("theTask1", latestTaskInstance.getProcessDefinitionActivityId());
 
 
         //1st: create 1st task

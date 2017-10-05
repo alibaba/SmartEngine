@@ -54,7 +54,7 @@ public class ReceiveTaskExclusiveGatewayTest {
         assertEquals(3, size);
 
 
-        assertEquals("theTask1", lastActivityInstance.getActivityId());
+        assertEquals("theTask1", lastActivityInstance.getProcessDefinitionActivityId());
 
 
         ExecutionInstance lastExecutionInstance = lastActivityInstance.getExecutionInstanceList().get(0);;
@@ -62,10 +62,10 @@ public class ReceiveTaskExclusiveGatewayTest {
 
         assertEquals(processInstance.getInstanceId(), lastExecutionInstance.getProcessInstanceId());
         assertEquals(lastActivityInstance.getInstanceId(), lastExecutionInstance.getActivityInstanceId());
-        assertEquals(lastActivityInstance.getActivityId(), lastExecutionInstance.getActivityId());
+        assertEquals(lastActivityInstance.getProcessDefinitionActivityId(), lastExecutionInstance.getProcessDefinitionActivityId());
 
 
-        assertEquals("theTask1", lastExecutionInstance.getActivityId());
+        assertEquals("theTask1", lastExecutionInstance.getProcessDefinitionActivityId());
 
 
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();

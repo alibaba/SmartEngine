@@ -77,7 +77,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
             for (ExecutionInstance executionInstance : executionInstanceList) {
 
-                if (executionInstance.getActivityId().equals(parallelGateway.getId())) {
+                if (executionInstance.getProcessDefinitionActivityId().equals(parallelGateway.getId())) {
                     reachedForkedSum++;
                 }
             }
@@ -92,7 +92,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
             for (ActivityInstance activityInstance : activityInstanceList) {
 
-                if(activityInstance.getActivityId().equals(pvmActivity.getModel().getId())){
+                if(activityInstance.getProcessDefinitionActivityId().equals(pvmActivity.getModel().getId())){
                     List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
                     for (ExecutionInstance executionInstance : executionInstances) {
                         MarkDoneUtil.markDone(activityInstance,executionInstance,super.getExtensionPointRegistry());

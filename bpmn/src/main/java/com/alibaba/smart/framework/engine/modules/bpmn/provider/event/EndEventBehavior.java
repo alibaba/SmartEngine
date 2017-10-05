@@ -32,8 +32,8 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
             //BE AWARE:这里重新驱动了父流程的流转,但是强烈依赖此时的线程上下文数据要变成父流程的。
             //BUT BUT BUT !!! 如果此时,子流程是全自动节点,但是父流程还没机会去完成实例化的话,下面的signal方法是拿不到数据的。
 
-            PersisterStrategy persisterStrategy = context.getProcessEngineConfiguration().getPersisterStrategy();
-            persisterStrategy.getProcessInstanceByExecutionInstanceId(parentExecutionInstanceId);
+            //PersisterStrategy persisterStrategy = context.getProcessEngineConfiguration().getPersisterStrategy();
+            //persisterStrategy.getProcessInstanceByExecutionInstanceId(parentExecutionInstanceId);
 
             SmartEngine smartEngine = context.getExtensionPointRegistry().getExtensionPoint(SmartEngine.class);
             ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();

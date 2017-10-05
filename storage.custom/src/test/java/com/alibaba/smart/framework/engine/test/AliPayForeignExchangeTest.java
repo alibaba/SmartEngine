@@ -45,7 +45,7 @@ public class AliPayForeignExchangeTest {
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
-        processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
+        //processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -89,7 +89,7 @@ public class AliPayForeignExchangeTest {
         executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("confirm_order".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("confirm_order".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         //完成下单确认,将流程驱动到等待资金到账环节。
         request.put("smartEngineAction", "go_to_pay");
@@ -100,7 +100,7 @@ public class AliPayForeignExchangeTest {
         executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("wait_money_into_account".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("wait_money_into_account".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         //完成资金到账,将流程驱动到资金交割处理环节。
         request.put("smartEngineAction", "money_into_account");
@@ -111,7 +111,7 @@ public class AliPayForeignExchangeTest {
         executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("fund_delivery".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("fund_delivery".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         //完成资金交割处理,将流程驱动到ACK确认环节。
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId());
@@ -121,7 +121,7 @@ public class AliPayForeignExchangeTest {
         executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("fund_delivery_ack".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("fund_delivery_ack".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         //完成流程驱动。
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);

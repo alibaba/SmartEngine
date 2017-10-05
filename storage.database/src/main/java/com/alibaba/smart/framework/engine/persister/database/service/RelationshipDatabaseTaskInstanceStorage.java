@@ -74,9 +74,10 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         TaskInstanceEntity taskInstanceEntity = new TaskInstanceEntity();
 
         taskInstanceEntity.setId(taskInstance.getInstanceId());
-        taskInstanceEntity.setProcessDefinitionId(taskInstance.getActivityId());
+        taskInstanceEntity.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
         taskInstanceEntity.setProcessInstanceId(taskInstance.getProcessInstanceId());
         taskInstanceEntity.setActivityInstanceId(taskInstance.getActivityInstanceId());
+        taskInstanceEntity.setProcessDefinitionActivityId(taskInstance.getProcessDefinitionActivityId());
         taskInstanceEntity.setExecutionInstanceId(taskInstance.getExecutionInstanceId());
         taskInstanceEntity.setClaimUserId(taskInstance.getClaimUserId());
         taskInstanceEntity.setClaimTime(taskInstance.getClaimTime());
@@ -110,7 +111,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         TaskInstance taskInstance = new DefaultTaskInstance();
         taskInstance.setInstanceId(taskInstanceEntity.getId());
         taskInstance.setStartTime(taskInstanceEntity.getGmtCreate());
-        taskInstance.setProcessDefinitionIdAndVersion(taskInstanceEntity.getProcessDefinitionId());
+        taskInstance.setProcessDefinitionIdAndVersion(taskInstanceEntity.getProcessDefinitionIdAndVersion());
         taskInstance.setProcessInstanceId(taskInstanceEntity.getProcessInstanceId());
         taskInstance.setActivityInstanceId(taskInstanceEntity.getActivityInstanceId());
         //TODO ADD setActivityId RONGYU

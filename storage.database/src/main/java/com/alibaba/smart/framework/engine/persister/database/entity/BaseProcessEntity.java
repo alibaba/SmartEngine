@@ -14,6 +14,6 @@ public class BaseProcessEntity {
     /**
      * 唯一主键,包含了 processDefinitionId和version
      */
-    protected String processDefinitionId;
+    protected String processDefinitionIdAndVersion;
 
 }

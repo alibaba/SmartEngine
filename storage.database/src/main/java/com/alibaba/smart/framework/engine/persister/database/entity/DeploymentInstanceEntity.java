@@ -17,6 +17,8 @@ public class DeploymentInstanceEntity extends BaseProcessEntity {
 
     private Long id;
 
+    private String processDefinitionId;
+
     private String processDefinitionVersion;
 
     private String processDefinitionType;

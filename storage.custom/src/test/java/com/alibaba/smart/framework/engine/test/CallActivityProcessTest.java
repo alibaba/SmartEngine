@@ -48,7 +48,7 @@ public class CallActivityProcessTest {
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
-        processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
+        //processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
 
 
         SmartEngine smartEngine = new DefaultSmartEngine();
@@ -102,7 +102,7 @@ public class CallActivityProcessTest {
         executionInstanceList =executionQueryService.findActiveExecution(processInstanceId);
         assertEquals(1, executionInstanceList.size());
         firstExecutionInstance = executionInstanceList.get(0);
-        assertTrue("pre_order".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("pre_order".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
         //完成预下单,将流程驱动到 下单确认环节。
         executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
 
@@ -121,13 +121,13 @@ public class CallActivityProcessTest {
         executionInstanceList =executionQueryService.findActiveExecution(processInstanceId);
         assertEquals(1, executionInstanceList.size());
         firstExecutionInstance = executionInstanceList.get(0);
-        assertTrue("callActivity".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("callActivity".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         // 子流程在debit节点
         subExecutionInstanceList = executionQueryService.findActiveExecution(subProcessInstanceId);
         assertEquals(1, subExecutionInstanceList.size());
         firstSubExecutionInstance = subExecutionInstanceList.get(0);
-        assertTrue("debit".equals(firstSubExecutionInstance.getActivityId()));
+        assertTrue("debit".equals(firstSubExecutionInstance.getProcessDefinitionActivityId()));
 
         // TODO ettear 如果这时执行主流程应该异常
         //processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
@@ -140,13 +140,13 @@ public class CallActivityProcessTest {
         executionInstanceList =executionQueryService.findActiveExecution(processInstanceId);
         assertEquals(1, executionInstanceList.size());
         firstExecutionInstance = executionInstanceList.get(0);
-        assertTrue("callActivity".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("callActivity".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         //子流程在checkDebitResult节点
         subExecutionInstanceList = executionQueryService.findActiveExecution(subProcessInstanceId);
         assertEquals(1, subExecutionInstanceList.size());
         firstSubExecutionInstance = subExecutionInstanceList.get(0);
-        assertTrue("checkDebitResult".equals(firstSubExecutionInstance.getActivityId()));
+        assertTrue("checkDebitResult".equals(firstSubExecutionInstance.getProcessDefinitionActivityId()));
 
         //完成资金到账,将流程驱动到资金交割处理环节。
         executionCommandService.signal(firstSubExecutionInstance.getInstanceId(), request);
@@ -155,7 +155,7 @@ public class CallActivityProcessTest {
         executionInstanceList = executionQueryService.findActiveExecution(processInstanceId);
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("end_order".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("end_order".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         //子流程结束
         subProcessInstance= processQueryService.findOne(subProcessInstanceId);

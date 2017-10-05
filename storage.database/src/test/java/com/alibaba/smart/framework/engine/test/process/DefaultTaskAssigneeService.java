@@ -36,7 +36,7 @@ public class DefaultTaskAssigneeService implements TaskAssigneeService {
         TaskAssigneeEntity taskAssigneeEntity = new TaskAssigneeEntity();
 
         taskAssigneeEntity.setId(taskInstance.getInstanceId());
-        taskAssigneeEntity.setProcessDefinitionId(taskInstance.getActivityId());
+        taskAssigneeEntity.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
         taskAssigneeEntity.setProcessInstanceId(taskInstance.getProcessInstanceId());
         taskAssigneeEntity.setTaskInstanceId(taskInstance.getInstanceId());
         taskAssigneeEntity.setAssigneeId(taskAssigneeInstance.getAssigneeId());

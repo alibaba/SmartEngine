@@ -19,7 +19,7 @@ public class TaskInstanceDAOTest extends BaseElementTest {
     @Before
     public void before() {
         entity = new TaskInstanceEntity();
-        entity.setProcessDefinitionId("processDefinitionId");
+        entity.setProcessDefinitionIdAndVersion("processDefinitionId");
         entity.setActivityInstanceId(11L);
         entity.setClaimUserId("assign_id");
         Date claimTime = new Date();
@@ -28,6 +28,7 @@ public class TaskInstanceDAOTest extends BaseElementTest {
         entity.setExecutionInstanceId(22L);
         entity.setPriority(333);
         entity.setStatus(TaskInstanceConstant.PENDING);
+        entity.setProcessDefinitionActivityId("userTask");
         entity.setProcessInstanceId(444L);
     }
 

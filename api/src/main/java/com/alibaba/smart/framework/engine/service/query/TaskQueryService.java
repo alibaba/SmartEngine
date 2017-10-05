@@ -7,6 +7,8 @@ import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 /**
+ * 用户任务查询服务。
+ *
  * Created by 高海军 帝奇 74394 on 2016 November  22:08.
  */
 public interface TaskQueryService {

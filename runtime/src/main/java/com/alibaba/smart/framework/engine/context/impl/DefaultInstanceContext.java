@@ -40,5 +40,9 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private PvmActivity sourcePvmActivity;
 
+    @Override
+    public Map<String, Object> getResponse() {
+        return request;
+    }
 
 }

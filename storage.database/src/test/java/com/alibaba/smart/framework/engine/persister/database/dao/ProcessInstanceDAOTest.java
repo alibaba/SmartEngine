@@ -17,7 +17,7 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
     @Before
     public void before() {
         entity = new ProcessInstanceEntity();
-        entity.setProcessDefinitionId("processDefinitionId");
+        entity.setProcessDefinitionIdAndVersion("processDefinitionId");
         entity.setStatus("running");
     }
 

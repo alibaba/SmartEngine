@@ -86,8 +86,8 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         ProcessInstance processInstance = processInstanceStorage.find(executionInstance.getProcessInstanceId());
 
         PvmProcessDefinition pvmProcessDefinition = this.processContainer.get(processInstance.getProcessDefinitionIdAndVersion());
-        String activityId = executionInstance.getActivityId();
-        PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
+        String processDefinitionActivityId = executionInstance.getProcessDefinitionActivityId();
+        PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(processDefinitionActivityId);
 
 
         ExecutionContext executionContext = this.instanceContextFactory.create();

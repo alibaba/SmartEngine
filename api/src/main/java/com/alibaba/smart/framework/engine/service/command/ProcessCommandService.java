@@ -5,6 +5,8 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import java.util.Map;
 
 /**
+ * 流程实例管理服务，不包括流程实例启动，终止等等。
+ *
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */

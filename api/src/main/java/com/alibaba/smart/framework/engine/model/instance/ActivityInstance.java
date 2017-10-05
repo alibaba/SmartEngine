@@ -19,14 +19,13 @@ public interface ActivityInstance extends Instance {
      *
      * @return 活动ID
      */
-    String getActivityId();
+    String getProcessDefinitionActivityId();
 
     /**
      * 设置活动ID
      *
-     * @param activityId 活动ID
      */
-    void setActivityId(String activityId);
+    void setProcessDefinitionActivityId(String processDefinitionActivityId);
 
     /**
      * 获取流程实例ID

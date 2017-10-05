@@ -16,7 +16,7 @@ public class DefaultActivityInstance extends AbstractLifeCycleInstance implement
 
     private static final long serialVersionUID = -3395004618384899752L;
     private String processDefinitionIdAndVersion;
-    private String activityId;
+    private String processDefinitionActivityId;
     private Long processInstanceId;
 //    private List<TransitionInstance> incomeTransitions = new ArrayList<>();
     private List<ExecutionInstance> executionInstanceList;

@@ -16,7 +16,7 @@ public class TaskInstanceQueryParam extends PaginateRequest {
 
    private Long activityInstanceId;
 
-
+   private String processDefinitionActivityId;
    /**
     * @see com.alibaba.smart.framework.engine.constant.TaskInstanceConstant
     */

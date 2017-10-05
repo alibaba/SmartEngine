@@ -18,12 +18,19 @@ public class DefaultTaskInstance extends AbstractLifeCycleInstance implements Ta
     private static final long serialVersionUID = -3920292154786127202L;
     private String processDefinitionIdAndVersion;
 
-    private String activityId;
+    private String processDefinitionActivityId;
     private Long processInstanceId;
     private Long executionInstanceId;
     private Long activityInstanceId;
 
+    /**
+     *任务认领人，也即是任务处理者。
+     */
     private String claimUserId;
+
+    private String tag;
+
+
 
     private List<TaskAssigneeInstance> taskAssigneeInstanceList;
 

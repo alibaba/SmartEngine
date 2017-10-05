@@ -24,7 +24,7 @@ public class DefaultActivityInstanceFactory implements ActivityInstanceFactory {
         activityInstance.setProcessInstanceId(context.getProcessInstance().getInstanceId());
         activityInstance.setProcessDefinitionIdAndVersion(context.getProcessInstance().getProcessDefinitionIdAndVersion());
         String activityId = activity.getId();
-        activityInstance.setActivityId(activityId);
+        activityInstance.setProcessDefinitionActivityId(activityId);
         return activityInstance;
     }
 }

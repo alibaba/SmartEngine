@@ -6,7 +6,7 @@ package com.alibaba.smart.framework.engine.constant;
 public interface RequestMapSpeicalKeyConstant {
     String PROCESS_INSTANCE_START_USER_ID = "__$$__smart_engine_start_user_id";
 
-    String TASK_INSTANCE_TAG = "__$$__smart_engine_task_instance_id";
+    String TASK_INSTANCE_TAG = "__$$__smart_engine_task_instance_tag";
 
 
 

@@ -4,14 +4,14 @@
 <mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.TaskInstanceDAO">
 
     <sql id="baseColumn">
-        id, gmt_create, gmt_modified,process_instance_id, process_definition_id,
-        activity_instance_id, execution_instance_id,claim_user_id,priority,claim_time,complete_time,status
+        id, gmt_create, gmt_modified,process_instance_id, process_definition_id_and_version,
+        activity_instance_id, process_definition_activity_id, execution_instance_id,claim_user_id,priority,claim_time,complete_time,status
     </sql>
 
     <insert id="insert" parameterType="TaskInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into se_task_instance(<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionId},
-        #{activityInstanceId}, #{executionInstanceId},#{claimUserId},#{priority},#{claimTime},#{completeTime},#{status})
+        values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},
+        #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{claimTime},#{completeTime},#{status})
     </insert>
 
     <delete id="delete" parameterType="long">
@@ -49,11 +49,12 @@
 
 
     <select id="findTaskList" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryParam">
-        select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id,
-        activity_instance_id, execution_instance_id,claim_user_id,priority,claim_time,complete_time,status
+        select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
+        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority,claim_time,complete_time,status
         from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
         <if test="status != null">  and  task.status = #{status} </if>
         <if test="activityInstanceId != null">  and  task.activity_instance_id = #{activityInstanceId} </if>
+        <if test="processDefinitionActivityId != null">  and  task.process_definition_activity_id = #{processDefinitionActivityId} </if>
         <if test="processInstanceId != null"> and task.process_instance_id = #{processInstanceId}</if>
         <if test="assigneeUserId != null"> and assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user' </if>
         order by task.gmt_modified desc
@@ -66,6 +67,7 @@
         from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
         <if test="status != null">  and  task.status = #{status} </if>
         <if test="activityInstanceId != null">  and  task.activity_instance_id = #{activityInstanceId} </if>
+        <if test="processDefinitionActivityId != null">  and  task.process_definition_activity_id = #{processDefinitionActivityId} </if>
         <if test="processInstanceId != null"> and task.process_instance_id = #{processInstanceId}</if>
         <if test="assigneeId != null"> and assignee.assignee_id =  #{assigneeId} and assignee.assignee_type = 'user' </if>
         order by task.gmt_modified desc
