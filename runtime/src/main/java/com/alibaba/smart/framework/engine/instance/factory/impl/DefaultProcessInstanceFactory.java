@@ -38,6 +38,9 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
         if(null != request){
             String startUserId = (String)request.get(RequestMapSpeicalKeyConstant.PROCESS_INSTANCE_START_USER_ID);
             defaultProcessInstance.setStartUserId(startUserId);
+
+            String processDefinitionType = (String)request.get(RequestMapSpeicalKeyConstant.PROCESS_DEFINITION_TYPE);
+            defaultProcessInstance.setProcessDefinitionType(processDefinitionType);
         }
 
         return defaultProcessInstance;

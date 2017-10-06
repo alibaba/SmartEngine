@@ -70,23 +70,6 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         return resultTaskInstance;
     }
 
-    private TaskInstanceEntity buildTaskInstanceEntity(TaskInstance taskInstance) {
-        TaskInstanceEntity taskInstanceEntity = new TaskInstanceEntity();
-
-        taskInstanceEntity.setId(taskInstance.getInstanceId());
-        taskInstanceEntity.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
-        taskInstanceEntity.setProcessInstanceId(taskInstance.getProcessInstanceId());
-        taskInstanceEntity.setActivityInstanceId(taskInstance.getActivityInstanceId());
-        taskInstanceEntity.setProcessDefinitionActivityId(taskInstance.getProcessDefinitionActivityId());
-        taskInstanceEntity.setExecutionInstanceId(taskInstance.getExecutionInstanceId());
-        taskInstanceEntity.setClaimUserId(taskInstance.getClaimUserId());
-        taskInstanceEntity.setClaimTime(taskInstance.getClaimTime());
-        taskInstanceEntity.setStatus(taskInstance.getStatus());
-        taskInstanceEntity.setCompleteTime(taskInstance.getCompleteTime());
-        taskInstanceEntity.setPriority(taskInstance.getPriority());
-        taskInstanceEntity.setGmtModified(taskInstance.getCompleteTime());
-        return taskInstanceEntity;
-    }
 
     @Override
     public TaskInstance update(TaskInstance taskInstance) {
@@ -114,15 +97,36 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstance.setProcessDefinitionIdAndVersion(taskInstanceEntity.getProcessDefinitionIdAndVersion());
         taskInstance.setProcessInstanceId(taskInstanceEntity.getProcessInstanceId());
         taskInstance.setActivityInstanceId(taskInstanceEntity.getActivityInstanceId());
-        //TODO ADD setActivityId RONGYU
-        //taskInstance.setActivityId(taskInstanceEntity.get);
+        taskInstance.setProcessDefinitionType(taskInstanceEntity.getProcessDefinitionType());
+        taskInstance.setTag(taskInstanceEntity.getTag());
+
+        taskInstance.setProcessDefinitionActivityId(taskInstanceEntity.getProcessDefinitionActivityId());
         taskInstance.setExecutionInstanceId(taskInstanceEntity.getExecutionInstanceId());
 
         taskInstance.setClaimUserId(taskInstanceEntity.getClaimUserId());
         taskInstance.setCompleteTime(taskInstanceEntity.getCompleteTime());
-        // taskInstance.setActivityId(taskInstanceEntity.get);
 
         return taskInstance;
+    }
+
+    private TaskInstanceEntity buildTaskInstanceEntity(TaskInstance taskInstance) {
+        TaskInstanceEntity taskInstanceEntity = new TaskInstanceEntity();
+
+        taskInstanceEntity.setId(taskInstance.getInstanceId());
+        taskInstanceEntity.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
+        taskInstanceEntity.setProcessInstanceId(taskInstance.getProcessInstanceId());
+        taskInstanceEntity.setActivityInstanceId(taskInstance.getActivityInstanceId());
+        taskInstanceEntity.setProcessDefinitionActivityId(taskInstance.getProcessDefinitionActivityId());
+        taskInstanceEntity.setExecutionInstanceId(taskInstance.getExecutionInstanceId());
+        taskInstanceEntity.setClaimUserId(taskInstance.getClaimUserId());
+        taskInstanceEntity.setClaimTime(taskInstance.getClaimTime());
+        taskInstanceEntity.setStatus(taskInstance.getStatus());
+        taskInstanceEntity.setCompleteTime(taskInstance.getCompleteTime());
+        taskInstanceEntity.setPriority(taskInstance.getPriority());
+        taskInstanceEntity.setTag(taskInstance.getTag());
+        taskInstanceEntity.setProcessDefinitionType(taskInstance.getProcessDefinitionType());
+        //taskInstanceEntity.setGmtModified(taskInstance.getCompleteTime());
+        return taskInstanceEntity;
     }
 
 

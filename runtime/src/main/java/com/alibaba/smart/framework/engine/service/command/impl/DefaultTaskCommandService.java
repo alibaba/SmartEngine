@@ -4,6 +4,7 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpeicalKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
@@ -61,7 +62,17 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
         TaskInstance taskInstance= taskInstanceStorage.find(taskId);
         Date currentDate = DateUtil.getCurrentDate();
         taskInstance.setCompleteTime(currentDate);
+
+        if(null == taskInstance.getClaimTime()){
+            taskInstance.setClaimTime(currentDate);
+        }
+
         taskInstance.setStatus(TaskInstanceConstant.COMPLETED);
+
+        if(null != variables){
+            String tag = (String)variables.get(RequestMapSpeicalKeyConstant.TASK_INSTANCE_TAG);
+            taskInstance.setTag(tag);
+        }
 
         taskInstanceStorage.update(taskInstance);
 

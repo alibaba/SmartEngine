@@ -33,19 +33,10 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         //TODO 命名不一致
         buildEntityToInstance(processInstance, processInstanceEntity1);
 
-        return processInstance;
-    }
+        //TUNE 不能使用下面这种方式,因为下面这张方式没有新建了ProcessInstance 对象,并没有修改原来的引用. 但是 SmartEngine 整体依赖大量的内存传参. 所以这是不能使用下面的这个 API,有点 tricky.
+        //processInstance = buildProcessInstanceFromEntity(  processInstanceEntity1);
 
-    private ProcessInstanceEntity buildProcessInstanceEntity(ProcessInstance processInstance) {
-        ProcessInstanceEntity processInstanceEntityToBePersisted = new ProcessInstanceEntity();
-        processInstanceEntityToBePersisted.setId(processInstance.getInstanceId());
-        processInstanceEntityToBePersisted.setGmtCreate(processInstance.getStartTime());
-        processInstanceEntityToBePersisted.setGmtModified(processInstance.getCompleteTime());
-        processInstanceEntityToBePersisted.setParentProcessInstanceId(processInstance.getParentInstanceId());
-        processInstanceEntityToBePersisted.setStatus(processInstance.getStatus().name());
-        processInstanceEntityToBePersisted.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
-        processInstanceEntityToBePersisted.setStartUserId(processInstance.getStartUserId());
-        return processInstanceEntityToBePersisted;
+        return processInstance;
     }
 
     @Override
@@ -56,11 +47,45 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         return processInstance;
     }
 
+
+    private ProcessInstanceEntity buildProcessInstanceEntity(ProcessInstance processInstance) {
+        ProcessInstanceEntity processInstanceEntityToBePersisted = new ProcessInstanceEntity();
+        processInstanceEntityToBePersisted.setId(processInstance.getInstanceId());
+        processInstanceEntityToBePersisted.setGmtCreate(processInstance.getStartTime());
+        processInstanceEntityToBePersisted.setGmtModified(processInstance.getCompleteTime());
+        processInstanceEntityToBePersisted.setParentProcessInstanceId(processInstance.getParentInstanceId());
+        processInstanceEntityToBePersisted.setStatus(processInstance.getStatus().name());
+        processInstanceEntityToBePersisted.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
+        processInstanceEntityToBePersisted.setStartUserId(processInstance.getStartUserId());
+        processInstanceEntityToBePersisted.setProcessDefinitionType(processInstance.getProcessDefinitionType());
+        return processInstanceEntityToBePersisted;
+    }
+
+
     private void buildEntityToInstance(ProcessInstance processInstance, ProcessInstanceEntity processInstanceEntity1) {
         processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity1.getProcessDefinitionIdAndVersion());
         processInstance.setParentInstanceId(processInstanceEntity1.getParentProcessInstanceId());
         processInstance.setInstanceId(processInstanceEntity1.getId());
         processInstance.setStartTime(processInstanceEntity1.getGmtCreate());
+        processInstance.setProcessDefinitionType(processInstanceEntity1.getProcessDefinitionType());
+    }
+
+    private ProcessInstance buildProcessInstanceFromEntity(ProcessInstanceEntity processInstanceEntity) {
+        ProcessInstance processInstance  = new DefaultProcessInstance();
+        processInstance.setParentInstanceId(processInstanceEntity.getParentProcessInstanceId());
+        InstanceStatus processStatus = InstanceStatus.valueOf(processInstanceEntity.getStatus());
+        processInstance.setStatus(processStatus);
+        processInstance.setStartTime(processInstanceEntity.getGmtCreate());
+        processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity.getProcessDefinitionIdAndVersion());
+        processInstance.setSuspend(InstanceStatus.suspended.equals(processStatus)  );
+        processInstance.setStartUserId(processInstanceEntity.getStartUserId());
+        processInstance.setProcessDefinitionType(processInstanceEntity.getProcessDefinitionType());
+
+
+        //TUNE 还是叫做更新时间比较好一点,是否完成等 还是根据status 去判断.
+        processInstance.setCompleteTime(processInstanceEntity.getGmtModified());
+        processInstance.setInstanceId(processInstanceEntity.getId());
+        return processInstance;
     }
 
     @Override
@@ -75,21 +100,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         return processInstance;
     }
 
-    private ProcessInstance buildProcessInstanceFromEntity(ProcessInstanceEntity processInstanceEntity) {
-        ProcessInstance processInstance  = new DefaultProcessInstance();
-        processInstance.setParentInstanceId(processInstanceEntity.getParentProcessInstanceId());
-        InstanceStatus processStatus = InstanceStatus.valueOf(processInstanceEntity.getStatus());
-        processInstance.setStatus(processStatus);
-        processInstance.setStartTime(processInstanceEntity.getGmtCreate());
-        processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity.getProcessDefinitionIdAndVersion());
-        processInstance.setSuspend(InstanceStatus.suspended.equals(processStatus)  );
-        processInstance.setStartUserId(processInstanceEntity.getStartUserId());
 
-        //TUNE 还是叫做更新时间比较好一点,是否完成等 还是根据status 去判断.
-        processInstance.setCompleteTime(processInstanceEntity.getGmtModified());
-        processInstance.setInstanceId(processInstanceEntity.getId());
-        return processInstance;
-    }
 
     @Override
     public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {

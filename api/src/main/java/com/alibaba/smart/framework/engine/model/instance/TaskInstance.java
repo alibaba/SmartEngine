@@ -21,6 +21,10 @@ public interface TaskInstance extends LifeCycleInstance {
 
     void setProcessDefinitionActivityId(String processDefinitionActivityId);
 
+    String getProcessDefinitionType();
+
+    void setProcessDefinitionType(String processDefinitionType);
+
     Long getExecutionInstanceId();
 
     void setExecutionInstanceId(Long executionInstanceId);
@@ -36,6 +40,10 @@ public interface TaskInstance extends LifeCycleInstance {
     String getStatus();
 
     void setStatus(String status);
+
+    String getTag();
+
+    void setTag(String tag);
 
     List<TaskAssigneeInstance> getTaskAssigneeInstanceList();
 

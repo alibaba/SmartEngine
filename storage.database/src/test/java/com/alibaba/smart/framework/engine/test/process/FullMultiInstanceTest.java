@@ -96,14 +96,24 @@ public class FullMultiInstanceTest {
 
         Map<String, Object> request = new HashMap();
         request.put(RequestMapSpeicalKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
+        request.put(RequestMapSpeicalKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+
         ProcessInstance processInstance = processCommandService.start(
             deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
               ,request  );
         Assert.assertNotNull(processInstance);
+        Assert.assertEquals("type",processInstance.getProcessDefinitionType());
+
 
         ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
         processInstanceQueryParam.setStartUserId("123");
         List<ProcessInstance> processInstanceList = processQueryService.findList(
+            processInstanceQueryParam);
+        Assert.assertNotNull(processInstanceList);
+        Assert.assertTrue(processInstanceList.size()>=1 );
+
+        processInstanceQueryParam.setProcessDefinitionType("type");
+        processInstanceList = processQueryService.findList(
             processInstanceQueryParam);
         Assert.assertNotNull(processInstanceList);
         Assert.assertTrue(processInstanceList.size()>=1 );
@@ -113,16 +123,19 @@ public class FullMultiInstanceTest {
         Assert.assertEquals(3,submitTaskInstanceList.size());
         TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
 
-        List<TaskInstance> assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"1");
-        Assert.assertEquals(1,assertedTaskInstanceList.size());
-
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
         taskInstanceQueryParam.setPageSize(2);
         taskInstanceQueryParam.setPageOffSide(0);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
         taskInstanceQueryParam.setProcessInstanceId(processInstance.getInstanceId());
-        assertedTaskInstanceList=   taskQueryService.findList(taskInstanceQueryParam);
+        List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findList(taskInstanceQueryParam);
         Assert.assertEquals(2,assertedTaskInstanceList.size());
+
+
+         assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"1");
+        Assert.assertEquals(1,assertedTaskInstanceList.size());
+
+
 
 
         //5.流程流转:构造提交申请参数
@@ -130,10 +143,14 @@ public class FullMultiInstanceTest {
         submitFormRequest.put("title", "new_title");
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
-        submitFormRequest.put("assigneeUserId","1");
+        //submitFormRequest.put("assigneeUserId","1");
+        submitFormRequest.put(RequestMapSpeicalKeyConstant.TASK_INSTANCE_TAG,"tag");
+        //submitFormRequest.put(RequestMapSpeicalKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+
+
 
         //6.流程流转:处理 submitTask,完成任务申请.
-        taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
+        taskCommandService.complete(assertedTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
 
 
         assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"1");
@@ -142,9 +159,13 @@ public class FullMultiInstanceTest {
         taskInstanceQueryParam = new TaskInstanceQueryParam();
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.COMPLETED);
         taskInstanceQueryParam.setAssigneeUserId("1");
+        taskInstanceQueryParam.setTag("tag");
+        taskInstanceQueryParam.setProcessDefinitionType("type");
         taskInstanceQueryParam.setProcessInstanceId(processInstance.getInstanceId());
+
         assertedTaskInstanceList=   taskQueryService.findList(taskInstanceQueryParam);
         Assert.assertEquals(1,assertedTaskInstanceList.size());
+        Assert.assertEquals("tag",assertedTaskInstanceList.get(0).getTag());
 
 
         // 驱动 ReceiverTask

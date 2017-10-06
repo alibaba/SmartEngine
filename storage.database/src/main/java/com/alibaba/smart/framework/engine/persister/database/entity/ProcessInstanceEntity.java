@@ -17,4 +17,7 @@ public class ProcessInstanceEntity extends BaseProcessEntity {
 
     private String status;
 
+    private String processDefinitionType;
+
+
 }

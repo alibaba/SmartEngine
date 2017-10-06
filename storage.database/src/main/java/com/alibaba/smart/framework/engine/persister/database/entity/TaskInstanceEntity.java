@@ -19,6 +19,8 @@ public class TaskInstanceEntity extends BaseProcessEntity {
 
     private Long activityInstanceId;
 
+    private  String processDefinitionType;
+
     private String  processDefinitionActivityId;
 
     private String claimUserId;
@@ -26,6 +28,8 @@ public class TaskInstanceEntity extends BaseProcessEntity {
     private Integer priority;
 
     private String status;
+
+    private  String tag;
 
     private Date claimTime;
 
