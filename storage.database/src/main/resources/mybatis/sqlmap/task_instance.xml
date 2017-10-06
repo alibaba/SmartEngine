@@ -38,7 +38,7 @@
     </select>
 
 
-    <!--<select id="findTask" resultType="TaskInstanceEntity">-->
+    <!--<select id="findList" resultType="TaskInstanceEntity">-->
         <!--select-->
         <!--<include refid="baseColumn"/>-->
         <!--from se_task_instance where process_instance_id=#{param1} and  activity_instance_id = #{param2}-->

@@ -101,7 +101,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     @Override
     public ProcessInstance start(Long deploymentInstanceId, Map<String, Object> request) {
         DeploymentQueryService deploymentQueryService = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getDeploymentQueryService();
-        DeploymentInstance deploymentInstance = deploymentQueryService.findOne(deploymentInstanceId);
+        DeploymentInstance deploymentInstance = deploymentQueryService.findById(deploymentInstanceId);
         ProcessInstance processInstance = this.start(deploymentInstance.getProcessDefinitionId(),
             deploymentInstance.getProcessDefinitionVersion(), request);
         return processInstance;

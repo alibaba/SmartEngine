@@ -10,7 +10,7 @@ public interface TaskInstanceStorage {
 
     List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam);
 
-    //List<TaskInstance> findTask(Long processInstanceId,Long activityInstanceId);
+    //List<TaskInstance> findList(Long processInstanceId,Long activityInstanceId);
     Integer count(TaskInstanceQueryParam taskInstanceQueryParam);
 
     TaskInstance insert(TaskInstance taskInstance);

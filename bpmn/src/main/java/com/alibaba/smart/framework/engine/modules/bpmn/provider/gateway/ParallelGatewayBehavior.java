@@ -159,7 +159,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 }
             }
 
-            List<ExecutionInstance> executionInstanceList = executionInstanceStorage.findActiveExecution(processInstance.getInstanceId());
+            List<ExecutionInstance> executionInstanceList = executionInstanceStorage.findActiveExecutionList(processInstance.getInstanceId());
 
             int reachedForkedSum = 0;
 

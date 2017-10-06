@@ -13,7 +13,7 @@ public interface TaskInstanceDAO {
 
      Integer count(TaskInstanceQueryParam taskInstanceQueryParam);
 
-     //List<TaskInstanceEntity> findTask(Long processInstanceId, Long activityInstanceId);
+     //List<TaskInstanceEntity> findList(Long processInstanceId, Long activityInstanceId);
 
      TaskInstanceEntity findOne(@Param("id") Long id);
 

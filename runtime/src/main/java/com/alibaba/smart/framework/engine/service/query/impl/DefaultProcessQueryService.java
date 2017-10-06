@@ -36,7 +36,7 @@ public class DefaultProcessQueryService implements ProcessQueryService, LifeCycl
     }
 
     @Override
-    public ProcessInstance findOne(Long processInstanceId) {
+    public ProcessInstance findById(Long processInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
@@ -44,7 +44,7 @@ public class DefaultProcessQueryService implements ProcessQueryService, LifeCycl
     }
 
     @Override
-    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {
+    public List<ProcessInstance> findList(ProcessInstanceQueryParam processInstanceQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 

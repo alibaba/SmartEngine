@@ -11,6 +11,6 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 
 public interface RepositoryQueryService {
 
-    ProcessDefinition getProcessDefinition(String processDefinitionId,String version);
+    ProcessDefinition getCachedProcessDefinition(String processDefinitionId, String version);
 
 }

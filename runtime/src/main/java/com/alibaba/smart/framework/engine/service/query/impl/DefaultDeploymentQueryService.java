@@ -22,7 +22,7 @@ public class DefaultDeploymentQueryService implements DeploymentQueryService {
     }
 
     @Override
-    public DeploymentInstance findOne(Long deploymentInstanceId) {
+    public DeploymentInstance findById(Long deploymentInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
@@ -32,7 +32,7 @@ public class DefaultDeploymentQueryService implements DeploymentQueryService {
     }
 
     @Override
-    public List<DeploymentInstance> findDeploymentList(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
+    public List<DeploymentInstance> findList(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
@@ -43,7 +43,7 @@ public class DefaultDeploymentQueryService implements DeploymentQueryService {
     }
 
     @Override
-    public Integer queryDeploymentInstanceCount(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
+    public Integer count(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         DeploymentInstanceStorage deploymentInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);

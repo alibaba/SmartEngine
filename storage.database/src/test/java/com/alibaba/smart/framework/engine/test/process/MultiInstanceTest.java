@@ -90,7 +90,7 @@ public class MultiInstanceTest {
 
 
         // 驱动 ReceiverTask
-        List<ExecutionInstance> activeExecutions = executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        List<ExecutionInstance> activeExecutions = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         Assert.assertEquals(1,activeExecutions.size());
         executionCommandService.signal(activeExecutions.get(0).getInstanceId());
 
@@ -109,7 +109,7 @@ public class MultiInstanceTest {
         taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
-        ProcessInstance finalProcessInstance = processQueryService.findOne(auditTaskInstance.getProcessInstanceId());
+        ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
         Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
 
@@ -176,7 +176,7 @@ public class MultiInstanceTest {
         taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
-        ProcessInstance finalProcessInstance = processQueryService.findOne(auditTaskInstance.getProcessInstanceId());
+        ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
         Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
 

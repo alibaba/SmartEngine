@@ -110,7 +110,7 @@ public class MixedAuditProcessTest {
         taskCommandService.complete(approveTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
-        ProcessInstance finalProcessInstance = processQueryService.findOne(approveTaskInstance.getProcessInstanceId());
+        ProcessInstance finalProcessInstance = processQueryService.findById(approveTaskInstance.getProcessInstanceId());
         Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
         Assert.assertNotNull(finalProcessInstance.getCompleteTime());
 

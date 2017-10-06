@@ -97,7 +97,7 @@ public class DatabaseAuditProcessTest {
         taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
-        ProcessInstance finalProcessInstance = processQueryService.findOne(auditTaskInstance.getProcessInstanceId());
+        ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
         Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
 
@@ -164,7 +164,7 @@ public class DatabaseAuditProcessTest {
         taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
-        ProcessInstance finalProcessInstance = processQueryService.findOne(auditTaskInstance.getProcessInstanceId());
+        ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
         Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
 

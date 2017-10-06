@@ -12,9 +12,9 @@ import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQue
  */
 public interface ProcessQueryService {
 
-    ProcessInstance findOne(Long processInstanceId);
+    ProcessInstance findById(Long processInstanceId);
 
-    List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam);
+    List<ProcessInstance> findList(ProcessInstanceQueryParam processInstanceQueryParam);
 
 
 

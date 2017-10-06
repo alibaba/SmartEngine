@@ -103,7 +103,7 @@ public class FullMultiInstanceTest {
 
         ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
         processInstanceQueryParam.setStartUserId("123");
-        List<ProcessInstance> processInstanceList = processQueryService.queryProcessInstanceList(
+        List<ProcessInstance> processInstanceList = processQueryService.findList(
             processInstanceQueryParam);
         Assert.assertNotNull(processInstanceList);
         Assert.assertTrue(processInstanceList.size()>=1 );
@@ -121,7 +121,7 @@ public class FullMultiInstanceTest {
         taskInstanceQueryParam.setPageOffSide(0);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
         taskInstanceQueryParam.setProcessInstanceId(processInstance.getInstanceId());
-        assertedTaskInstanceList=   taskQueryService.findTask(taskInstanceQueryParam);
+        assertedTaskInstanceList=   taskQueryService.findList(taskInstanceQueryParam);
         Assert.assertEquals(2,assertedTaskInstanceList.size());
 
 
@@ -143,12 +143,12 @@ public class FullMultiInstanceTest {
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.COMPLETED);
         taskInstanceQueryParam.setAssigneeUserId("1");
         taskInstanceQueryParam.setProcessInstanceId(processInstance.getInstanceId());
-        assertedTaskInstanceList=   taskQueryService.findTask(taskInstanceQueryParam);
+        assertedTaskInstanceList=   taskQueryService.findList(taskInstanceQueryParam);
         Assert.assertEquals(1,assertedTaskInstanceList.size());
 
 
         // 驱动 ReceiverTask
-        List<ExecutionInstance> activeExecutions = executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        List<ExecutionInstance> activeExecutions = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         Assert.assertEquals(1,activeExecutions.size());
         executionCommandService.signal(activeExecutions.get(0).getInstanceId());
 
@@ -167,7 +167,7 @@ public class FullMultiInstanceTest {
         taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
-        ProcessInstance finalProcessInstance = processQueryService.findOne(auditTaskInstance.getProcessInstanceId());
+        ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
         Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
 

@@ -64,7 +64,7 @@ public class ReceiveTaskParallelGatewayTest {
         int size = activityInstances.size();
         assertEquals(4, size);
 
-        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         assertEquals(2, executionInstanceList.size());
 
         ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
@@ -80,7 +80,7 @@ public class ReceiveTaskParallelGatewayTest {
 
         String runningActivityId=secondActivityId;
 
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         assertEquals(2, executionInstanceList.size());
 
         firstExecutionInstance = executionInstanceList.get(0);
@@ -109,7 +109,7 @@ public class ReceiveTaskParallelGatewayTest {
         request.put("input", 11);
         processInstance = executionCommandService.signal(runningExecutionInstance.getInstanceId(), request);
 
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
         assertTrue("theTask3".equals(firstExecutionInstance.getProcessDefinitionActivityId()));

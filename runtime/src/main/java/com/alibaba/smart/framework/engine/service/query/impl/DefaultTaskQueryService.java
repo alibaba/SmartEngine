@@ -78,7 +78,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     }
 
     @Override
-    public List<TaskInstance> findTask(TaskInstanceQueryParam taskInstanceQueryParam){
+    public List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam){
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 

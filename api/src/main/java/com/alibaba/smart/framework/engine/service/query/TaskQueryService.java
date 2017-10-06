@@ -38,7 +38,7 @@ public interface TaskQueryService {
      * 扩展方法，可用于典型的审批场景等等，取决于tag的值是什么。tag 任意非null值，可以为 appproved,rejected 等等。
      *
      */
-    List<TaskInstance> findTask(TaskInstanceQueryParam taskInstanceQueryParam);
+    List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam);
 
     Integer count(TaskInstanceQueryParam taskInstanceQueryParam);
 

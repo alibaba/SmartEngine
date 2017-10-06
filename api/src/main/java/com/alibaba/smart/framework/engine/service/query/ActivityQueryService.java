@@ -18,6 +18,6 @@ public interface ActivityQueryService {
      */
     List<ActivityInstance> findAll(Long processInstanceId);
 
-    List<ActivityInstance> findAll(Long processInstanceId,boolean asc);
+    List<ActivityInstance> findAll(Long processInstanceId, boolean asc);
 
 }

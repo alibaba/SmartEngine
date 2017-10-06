@@ -70,7 +70,7 @@
 //
 //        PersisterSession.currentSession().setProcessInstance(processInstance);
 //
-//        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+//        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
 //        assertEquals(1, executionInstanceList.size());
 //        ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
 //        //完成预下单,将流程驱动到 下单确认环节。

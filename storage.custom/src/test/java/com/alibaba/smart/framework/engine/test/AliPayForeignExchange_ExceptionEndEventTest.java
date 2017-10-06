@@ -77,7 +77,7 @@ public class AliPayForeignExchange_ExceptionEndEventTest {
         //在调用findActiveExecution和signal方法前调用此方法。当然,在实际场景下,persiste通常只需要调用一次;UpdateThreadLocal则很多场景下需要调用。
         persisteAndUpdateThreadLocal(orderId, processInstance);
 
-        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         assertEquals(1, executionInstanceList.size());
         ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
         //完成预下单,将流程驱动到 下单确认环节。
@@ -85,7 +85,7 @@ public class AliPayForeignExchange_ExceptionEndEventTest {
 
         //测试下是否符合预期
         persisteAndUpdateThreadLocal(orderId, processInstance);
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
         assertTrue("confirm_order".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
@@ -96,7 +96,7 @@ public class AliPayForeignExchange_ExceptionEndEventTest {
 
         //测试下是否符合预期
         persisteAndUpdateThreadLocal(orderId, processInstance);
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
         assertTrue("wait_money_into_account".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
@@ -107,7 +107,7 @@ public class AliPayForeignExchange_ExceptionEndEventTest {
 
         //测试下是否符合预期
         persisteAndUpdateThreadLocal(orderId, processInstance);
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
         assertTrue("fund_delivery".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
@@ -117,7 +117,7 @@ public class AliPayForeignExchange_ExceptionEndEventTest {
 
         //测试下是否符合预期
         persisteAndUpdateThreadLocal(orderId, processInstance);
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
         assertTrue("fund_delivery_ack".equals(firstExecutionInstance.getProcessDefinitionActivityId()));

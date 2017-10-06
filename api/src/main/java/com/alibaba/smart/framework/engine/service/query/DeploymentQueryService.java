@@ -12,9 +12,9 @@ import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstance
  */
 public interface DeploymentQueryService {
 
-    DeploymentInstance findOne(Long deploymentInstanceId);
+    DeploymentInstance findById(Long deploymentInstanceId);
 
-    List<DeploymentInstance> findDeploymentList(DeploymentInstanceQueryParam deploymentInstanceQueryParam) ;
+    List<DeploymentInstance> findList(DeploymentInstanceQueryParam deploymentInstanceQueryParam) ;
 
-    Integer queryDeploymentInstanceCount(DeploymentInstanceQueryParam deploymentInstanceQueryParam);
+    Integer count(DeploymentInstanceQueryParam deploymentInstanceQueryParam);
 }
