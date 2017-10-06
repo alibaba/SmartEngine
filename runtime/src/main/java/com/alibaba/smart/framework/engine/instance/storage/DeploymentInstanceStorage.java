@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.instance.storage;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
-import com.alibaba.smart.framework.engine.service.param.DeploymentInstanceParam;
+import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
 
 /**
  * Created by yueyu.yr on 2017/9/22.
@@ -19,9 +19,9 @@ public interface DeploymentInstanceStorage {
 
     DeploymentInstance findById(Long id);
 
-    List<DeploymentInstance> findByPage(DeploymentInstanceParam deploymentInstanceParam);
+    List<DeploymentInstance> findByPage(DeploymentInstanceQueryParam deploymentInstanceQueryParam);
 
-    int count(DeploymentInstanceParam deploymentInstanceParam);
+    int count(DeploymentInstanceQueryParam deploymentInstanceQueryParam);
 
     void remove(Long id);
 

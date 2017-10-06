@@ -1,8 +1,7 @@
-package com.alibaba.smart.framework.engine.service.param;
+package com.alibaba.smart.framework.engine.service.param.query;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * Created by yueyu.yr on 2017/9/22.
@@ -12,7 +11,7 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ProcessInstanceParam extends PaginateRequest {
+public class ProcessInstanceQueryParam extends PaginateQueryParam {
 
     private  String startUserId;
     private String  status ;

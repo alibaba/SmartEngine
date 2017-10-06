@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity;
-import com.alibaba.smart.framework.engine.service.param.DeploymentInstanceParam;
+import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -87,12 +87,12 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
         entity.setDeploymentStatus("deploymentStatus");
         entity.setLogicStatus("logicStatus");
 
-        DeploymentInstanceParam deploymentInstanceParam = new DeploymentInstanceParam();
-        deploymentInstanceParam.setDeploymentUserId("userId");
+        DeploymentInstanceQueryParam deploymentInstanceQueryParam = new DeploymentInstanceQueryParam();
+        deploymentInstanceQueryParam.setDeploymentUserId("userId");
 
         dao.insert(entity);
 
-        List<DeploymentInstanceEntity> result = dao.find(deploymentInstanceParam);
+        List<DeploymentInstanceEntity> result = dao.find(deploymentInstanceQueryParam);
         Assert.assertNotNull(result);
 
 

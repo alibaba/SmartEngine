@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.persister.database.dao.DeploymentInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
-import com.alibaba.smart.framework.engine.service.param.DeploymentInstanceParam;
+import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
 
 import org.springframework.util.CollectionUtils;
 
@@ -45,7 +45,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         if (null == id){
             return null;
         }
-        DeploymentInstanceParam param = new DeploymentInstanceParam();
+        DeploymentInstanceQueryParam param = new DeploymentInstanceQueryParam();
         param.setId(id);
         List<DeploymentInstanceEntity> deploymentInstanceEntities = deploymentnstanceDAO.find(param);
         DeploymentInstance instance = null;
@@ -56,8 +56,9 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     }
 
     @Override
-    public List<DeploymentInstance> findByPage(DeploymentInstanceParam deploymentInstanceParam) {
-        List<DeploymentInstanceEntity> deploymentInstanceEntities = deploymentnstanceDAO.find(deploymentInstanceParam);
+    public List<DeploymentInstance> findByPage(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
+        List<DeploymentInstanceEntity> deploymentInstanceEntities = deploymentnstanceDAO.find(
+            deploymentInstanceQueryParam);
         if (!CollectionUtils.isEmpty(deploymentInstanceEntities)) {
             List<DeploymentInstance> deploymentInstances = new ArrayList<DeploymentInstance>(deploymentInstanceEntities.size());
             for (DeploymentInstanceEntity entity : deploymentInstanceEntities) {
@@ -70,8 +71,8 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     }
 
     @Override
-    public int count(DeploymentInstanceParam deploymentInstanceParam) {
-        return deploymentnstanceDAO.count(deploymentInstanceParam);
+    public int count(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
+        return deploymentnstanceDAO.count(deploymentInstanceQueryParam);
     }
 
     @Override
@@ -80,8 +81,8 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     }
 
 
-    //private DeploymentInstanceParam convertParamByDeploymentInstance(DeploymentInstance deploymentInstance, Integer pageOffSide, Integer pageSize){
-    //    DeploymentInstanceParam param = new DeploymentInstanceParam();
+    //private DeploymentInstanceQueryParam convertParamByDeploymentInstance(DeploymentInstance deploymentInstance, Integer pageOffSide, Integer pageSize){
+    //    DeploymentInstanceQueryParam param = new DeploymentInstanceQueryParam();
     //    if (null != deploymentInstance) {
     //        param.setDeploymentStatus(deploymentInstance.getDeploymentStatus());
     //        param.setDeploymentUserId(deploymentInstance.getDeploymentUserId());

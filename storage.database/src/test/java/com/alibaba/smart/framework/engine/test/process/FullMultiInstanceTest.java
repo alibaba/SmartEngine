@@ -23,8 +23,8 @@ import com.alibaba.smart.framework.engine.service.command.DeploymentCommandServi
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.service.param.CreateDeploymentRequest;
-import com.alibaba.smart.framework.engine.service.param.ProcessInstanceParam;
+import com.alibaba.smart.framework.engine.service.param.command.CreateDeploymentCommand;
+import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
@@ -69,16 +69,16 @@ public class FullMultiInstanceTest {
 
 
         //3. 部署流程定义
-        CreateDeploymentRequest createDeploymentRequest  = new  CreateDeploymentRequest();
+        CreateDeploymentCommand createDeploymentCommand = new CreateDeploymentCommand();
         String content = IOUtil.readFileAsUTF8String("multi-instance-test.bpmn20.xml");
-        createDeploymentRequest.setProcessDefinitionContent(content);
-        createDeploymentRequest.setDeploymentUserId("123");
-        createDeploymentRequest.setDeploymentStatus(DeploymentStatusConstant.ACTVIE);
-        createDeploymentRequest.setProcessDefinitionDesc("desc");
-        createDeploymentRequest.setProcessDefinitionName("name");
-        createDeploymentRequest.setProcessDefinitionType("type");
+        createDeploymentCommand.setProcessDefinitionContent(content);
+        createDeploymentCommand.setDeploymentUserId("123");
+        createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTVIE);
+        createDeploymentCommand.setProcessDefinitionDesc("desc");
+        createDeploymentCommand.setProcessDefinitionName("name");
+        createDeploymentCommand.setProcessDefinitionType("type");
 
-        DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentRequest);
+        DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
 
 
         // FIXME RepositoryQueryService ,ADN TEST;.
@@ -101,9 +101,10 @@ public class FullMultiInstanceTest {
               ,request  );
         Assert.assertNotNull(processInstance);
 
-        ProcessInstanceParam processInstanceParam = new ProcessInstanceParam();
-        processInstanceParam.setStartUserId("123");
-        List<ProcessInstance> processInstanceList = processQueryService.queryProcessInstanceList(processInstanceParam);
+        ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
+        processInstanceQueryParam.setStartUserId("123");
+        List<ProcessInstance> processInstanceList = processQueryService.queryProcessInstanceList(
+            processInstanceQueryParam);
         Assert.assertNotNull(processInstanceList);
         Assert.assertTrue(processInstanceList.size()>=1 );
 

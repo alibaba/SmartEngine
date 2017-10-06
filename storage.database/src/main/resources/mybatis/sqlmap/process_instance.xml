@@ -34,7 +34,7 @@
         from se_process_instance where id=#{id}
     </select>
 
-    <select id="find" resultType="ProcessInstanceEntity" parameterType="ProcessInstanceParam">
+    <select id="find" resultType="ProcessInstanceEntity" parameterType="ProcessInstanceQueryParam">
         select
         <include refid="baseColumn"/>
         from  se_process_instance

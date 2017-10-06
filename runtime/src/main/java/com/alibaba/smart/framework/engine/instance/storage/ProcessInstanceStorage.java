@@ -1,11 +1,9 @@
 package com.alibaba.smart.framework.engine.instance.storage;
 
 import java.util.List;
-import java.util.Map;
 
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
-import com.alibaba.smart.framework.engine.service.param.ProcessInstanceParam;
+import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 
 /**
  * 流程实例存储
@@ -30,7 +28,7 @@ public interface ProcessInstanceStorage {
      */
     ProcessInstance find(Long processInstanceId);
 
-    List<ProcessInstance> queryProcessInstanceList(ProcessInstanceParam processInstanceParam);
+    List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam);
 
 
     /**

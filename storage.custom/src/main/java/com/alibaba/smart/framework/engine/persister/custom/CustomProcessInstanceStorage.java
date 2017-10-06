@@ -1,13 +1,11 @@
 package com.alibaba.smart.framework.engine.persister.custom;
 
 import java.util.List;
-import java.util.Map;
 
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
-import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
-import com.alibaba.smart.framework.engine.service.param.ProcessInstanceParam;
+import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  11:54.
@@ -33,7 +31,7 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
     }
 
     @Override
-    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceParam processInstanceParam) {
+    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {
         return null;
     }
 

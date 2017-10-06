@@ -3,8 +3,7 @@ package com.alibaba.smart.framework.engine.service.query;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
-import com.alibaba.smart.framework.engine.service.param.ProcessInstanceParam;
+import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 
 /**
  * 查询流程实例。
@@ -15,7 +14,7 @@ public interface ProcessQueryService {
 
     ProcessInstance findOne(Long processInstanceId);
 
-    List<ProcessInstance> queryProcessInstanceList(ProcessInstanceParam processInstanceParam);
+    List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam);
 
 
 

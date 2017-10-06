@@ -3,8 +3,7 @@ package com.alibaba.smart.framework.engine.service.query;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
-import com.alibaba.smart.framework.engine.service.param.DeploymentInstanceParam;
-import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
+import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
 
 /**
  * 查询流程定义的部署实例。
@@ -15,7 +14,7 @@ public interface DeploymentQueryService {
 
     DeploymentInstance findOne(Long deploymentInstanceId);
 
-    List<DeploymentInstance> findDeploymentList(DeploymentInstanceParam deploymentInstanceParam) ;
+    List<DeploymentInstance> findDeploymentList(DeploymentInstanceQueryParam deploymentInstanceQueryParam) ;
 
-    Integer queryDeploymentInstanceCount(DeploymentInstanceParam deploymentInstanceParam);
+    Integer queryDeploymentInstanceCount(DeploymentInstanceQueryParam deploymentInstanceQueryParam);
 }

@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.service.param;
+package com.alibaba.smart.framework.engine.service.param.query;
 
 import lombok.Data;
 import lombok.ToString;
@@ -11,7 +11,7 @@ import lombok.ToString;
  */
 @Data
 @ToString(callSuper = true)
-public class DeploymentInstanceParam extends PaginateRequest {
+public class DeploymentInstanceQueryParam extends PaginateQueryParam {
 
     private Long id;
 

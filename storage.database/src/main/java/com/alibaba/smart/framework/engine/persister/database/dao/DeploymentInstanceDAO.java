@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity;
-import com.alibaba.smart.framework.engine.service.param.DeploymentInstanceParam;
+import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.Param;
 public interface DeploymentInstanceDAO {
     DeploymentInstanceEntity findOne(@Param("id") Long id);
 
-    List<DeploymentInstanceEntity> find(DeploymentInstanceParam param);
+    List<DeploymentInstanceEntity> find(DeploymentInstanceQueryParam param);
 
     Long insert(DeploymentInstanceEntity deploymentInstanceEntity);
 
@@ -25,5 +25,5 @@ public interface DeploymentInstanceDAO {
     int update(DeploymentInstanceEntity taskAssigneeEntity);
 
 
-    int count(DeploymentInstanceParam param);
+    int count(DeploymentInstanceQueryParam param);
 }

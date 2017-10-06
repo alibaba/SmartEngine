@@ -6,7 +6,7 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.service.param.DeploymentInstanceParam;
+import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 
 /**
@@ -32,22 +32,23 @@ public class DefaultDeploymentQueryService implements DeploymentQueryService {
     }
 
     @Override
-    public List<DeploymentInstance> findDeploymentList(DeploymentInstanceParam deploymentInstanceParam) {
+    public List<DeploymentInstance> findDeploymentList(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
-        List<DeploymentInstance> deploymentInstanceList = deploymentInstanceStorage.findByPage(deploymentInstanceParam);
+        List<DeploymentInstance> deploymentInstanceList = deploymentInstanceStorage.findByPage(
+            deploymentInstanceQueryParam);
         return  deploymentInstanceList;
     }
 
     @Override
-    public Integer queryDeploymentInstanceCount(DeploymentInstanceParam deploymentInstanceParam) {
+    public Integer queryDeploymentInstanceCount(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         DeploymentInstanceStorage deploymentInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
-        int count = deploymentInstanceStorage.count(deploymentInstanceParam);
+        int count = deploymentInstanceStorage.count(deploymentInstanceQueryParam);
         return count;
     }
 

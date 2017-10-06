@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.service.param;
+package com.alibaba.smart.framework.engine.service.param.command;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:13.
@@ -7,9 +7,9 @@ package com.alibaba.smart.framework.engine.service.param;
 import lombok.Data;
 
 @Data
-public class UpdateDeploymentRequest {
+public class CreateDeploymentCommand {
 
-    private  Long   deployInstanceId;
+    //TODO 细化下包名,命名 整个包.
 
     private  String processDefinitionType;
     private  String processDefinitionName;
@@ -18,5 +18,4 @@ public class UpdateDeploymentRequest {
 
     private  String deploymentUserId;
     private  String deploymentStatus;
-    //private  String logicStatus;
 }

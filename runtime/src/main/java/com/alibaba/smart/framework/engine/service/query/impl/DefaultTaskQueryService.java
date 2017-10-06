@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
+import com.alibaba.smart.framework.engine.service.param.query.PaginateQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
@@ -38,7 +38,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     }
 
     @Override
-    public List<TaskInstance> findPendingTaskList(Long processInstanceId, String userId, PaginateRequest paginateRequest) {
+    public List<TaskInstance> findPendingTaskList(Long processInstanceId, String userId, PaginateQueryParam paginateQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
@@ -46,8 +46,8 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
         taskInstanceQueryParam.setAssigneeUserId(userId);
         taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
-        taskInstanceQueryParam.setPageOffSide(paginateRequest.getPageOffSide());
-        taskInstanceQueryParam.setPageSize(paginateRequest.getPageSize());
+        taskInstanceQueryParam.setPageOffSide(paginateQueryParam.getPageOffSide());
+        taskInstanceQueryParam.setPageSize(paginateQueryParam.getPageSize());
         return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
     }
 

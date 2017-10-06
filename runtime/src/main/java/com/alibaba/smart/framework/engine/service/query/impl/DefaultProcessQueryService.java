@@ -7,7 +7,7 @@ import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorag
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.service.param.ProcessInstanceParam;
+import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 
 /**
@@ -44,11 +44,11 @@ public class DefaultProcessQueryService implements ProcessQueryService, LifeCycl
     }
 
     @Override
-    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceParam processInstanceParam) {
+    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
-        return processInstanceStorage.queryProcessInstanceList(  processInstanceParam);
+        return processInstanceStorage.queryProcessInstanceList(processInstanceQueryParam);
     }
 
 

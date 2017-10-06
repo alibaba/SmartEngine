@@ -2,8 +2,7 @@ package com.alibaba.smart.framework.engine.persister.memory;
 
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.service.param.PaginateRequest;
-import com.alibaba.smart.framework.engine.service.param.ProcessInstanceParam;
+import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +35,7 @@ public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
     }
 
     @Override
-    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceParam processInstanceParam) {
+    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {
         return null;
     }
 

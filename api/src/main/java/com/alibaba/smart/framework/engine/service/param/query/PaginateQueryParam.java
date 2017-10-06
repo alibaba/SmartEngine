@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.service.param;
+package com.alibaba.smart.framework.engine.service.param.query;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2017/09/22
  */
 @Data
-public class PaginateRequest {
+public class PaginateQueryParam {
 
     private Integer pageOffSide;
     private Integer pageSize;
