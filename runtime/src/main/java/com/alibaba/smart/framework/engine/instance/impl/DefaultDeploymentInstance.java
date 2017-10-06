@@ -20,7 +20,7 @@ public class DefaultDeploymentInstance extends  AbstractLifeCycleInstance implem
 
     private  String deploymentUserId;
     private  String deploymentStatus;
-    private  String logicStatus;
+    //private  String logicStatus;
 
     //FIXME 租户。。
 

@@ -77,7 +77,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
 
     @Override
     public void remove(Long id) {
-
+        deploymentnstanceDAO.delete(id);
     }
 
 
@@ -101,7 +101,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         DeploymentInstance deploymentInstance = new DefaultDeploymentInstance();
 
         deploymentInstance.setInstanceId(entity.getId());
-        deploymentInstance.setLogicStatus(entity.getLogicStatus());
+        //deploymentInstance.setLogicStatus(entity.getLogicStatus());
         deploymentInstance.setDeploymentStatus(entity.getDeploymentStatus());
         deploymentInstance.setDeploymentUserId(entity.getDeploymentUserId());
         deploymentInstance.setProcessDefinitionContent(entity.getProcessDefinitionContent());
@@ -117,7 +117,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
 
     private DeploymentInstanceEntity convertByDeploymentInstance(DeploymentInstance deploymentInstance) {
         DeploymentInstanceEntity deploymentInstanceEntity = new DeploymentInstanceEntity();
-        deploymentInstanceEntity.setLogicStatus(deploymentInstance.getLogicStatus());
+        //deploymentInstanceEntity.setLogicStatus(deploymentInstance.getLogicStatus());
         deploymentInstanceEntity.setDeploymentStatus(deploymentInstance.getDeploymentStatus());
         deploymentInstanceEntity.setDeploymentUserId(deploymentInstance.getDeploymentUserId());
         deploymentInstanceEntity.setProcessDefinitionContent(deploymentInstance.getProcessDefinitionContent());

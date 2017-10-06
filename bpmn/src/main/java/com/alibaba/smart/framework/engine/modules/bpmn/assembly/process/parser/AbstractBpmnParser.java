@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Element;
@@ -35,7 +36,7 @@ public abstract class AbstractBpmnParser<M extends Element> extends AbstractElem
                 model.setPerformers(performers);
             }
             Performable performable = (Performable)child;
-            if (null == performable.getAction() || "".equals(performable.getAction())) {
+            if (StringUtil.isEmpty(performable.getAction() )) {
                 performable.setAction(getDefaultActionName());
             }
             performers.add(performable);

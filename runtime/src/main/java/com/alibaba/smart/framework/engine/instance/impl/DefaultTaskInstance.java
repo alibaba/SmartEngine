@@ -19,9 +19,10 @@ public class DefaultTaskInstance extends AbstractLifeCycleInstance implements Ta
     private String processDefinitionIdAndVersion;
 
     private String processDefinitionActivityId;
+
+    private Long activityInstanceId;
     private Long processInstanceId;
     private Long executionInstanceId;
-    private Long activityInstanceId;
 
     /**
      *任务认领人，也即是任务处理者。

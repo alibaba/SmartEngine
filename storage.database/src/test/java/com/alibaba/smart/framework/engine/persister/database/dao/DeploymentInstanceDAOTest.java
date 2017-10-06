@@ -28,7 +28,7 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
         entity.setProcessDefinitionContent(PROCESS_DEFINITION_CONTENT);
         entity.setDeploymentUserId("userId");
         entity.setDeploymentStatus("deploymentStatus");
-        entity.setLogicStatus("logicStatus");
+        //entity.setLogicStatus("logicStatus");
     }
 
     @Test
@@ -64,7 +64,7 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
     public void testUpdate() {
         dao.insert(entity);
 
-        entity.setLogicStatus("updated");
+        entity.setProcessDefinitionContent("abc_content");
 
         dao.update( entity);
 
@@ -72,7 +72,7 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
         Assert.assertNotNull(result);
 
 
-        Assert.assertTrue("updated".equals(result.getLogicStatus()));
+        Assert.assertTrue("abc_content".equals(result.getProcessDefinitionContent()));
     }
 
     @Test
@@ -85,7 +85,6 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
         entity.setProcessDefinitionContent(PROCESS_DEFINITION_CONTENT);
         entity.setDeploymentUserId("userId");
         entity.setDeploymentStatus("deploymentStatus");
-        entity.setLogicStatus("logicStatus");
 
         DeploymentInstanceQueryParam deploymentInstanceQueryParam = new DeploymentInstanceQueryParam();
         deploymentInstanceQueryParam.setDeploymentUserId("userId");

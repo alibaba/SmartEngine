@@ -48,7 +48,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         deploymentInstance.setDeploymentUserId(createDeploymentCommand.getDeploymentUserId());
 
         deploymentInstance.setDeploymentStatus(createDeploymentCommand.getDeploymentStatus());
-        deploymentInstance.setLogicStatus(LogicStatusConstant.VALID);
+        //deploymentInstance.setLogicStatus(LogicStatusConstant.VALID);
 
 
         deploymentInstance = deploymentInstanceStorage.insert(deploymentInstance);
@@ -83,7 +83,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         DeploymentInstance newDeploymentInstance =  this.createDeployment(createDeploymentCommand);
 
-        currentDeploymentInstance.setLogicStatus(LogicStatusConstant.DELETED);
+        //currentDeploymentInstance.setLogicStatus(LogicStatusConstant.DELETED);
         currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.INACTIVE);
         deploymentInstanceStorage.update(currentDeploymentInstance);
 
@@ -145,9 +145,9 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
             throw  new EngineException("Can't find a deploymentInstance by deployInstanceId: "+deploymentInstanceId);
         }
 
-        currentDeploymentInstance.setLogicStatus(LogicStatusConstant.DELETED);
-        currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.INACTIVE);
-        deploymentInstanceStorage.update(currentDeploymentInstance);
+        //currentDeploymentInstance.setLogicStatus(LogicStatusConstant.DELETED);
+        //currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.INACTIVE);
+        deploymentInstanceStorage.remove(deploymentInstanceId);
 
         processDefinitionContainer.uninstall(currentDeploymentInstance.getProcessDefinitionId(),currentDeploymentInstance.getProcessDefinitionVersion());
 
