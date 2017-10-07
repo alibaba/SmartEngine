@@ -1,14 +1,16 @@
-package com.alibaba.smart.framework.engine.persister.util;
+package com.alibaba.smart.framework.engine.persister.database.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Service;
 
 /**
  * @author 高海军 帝奇 Apr 19, 2015 12:40:57 PM
  */
+@Service
 public class SpringContextUtil implements ApplicationContextAware, BeanFactoryPostProcessor {
 
     private static ApplicationContext appContext;

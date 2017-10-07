@@ -1,18 +1,13 @@
 package com.alibaba.smart.framework.engine.test.process;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.persister.database.dao.TaskAssigneeDAO;
-import com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity;
-import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 January  18:03.

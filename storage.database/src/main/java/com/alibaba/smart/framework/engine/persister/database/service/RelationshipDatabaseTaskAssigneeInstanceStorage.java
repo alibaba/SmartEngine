@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.persister.database.dao.TaskAssigneeDAO
 import com.alibaba.smart.framework.engine.persister.database.dao.TaskInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
-import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
+import com.alibaba.smart.framework.engine.persister.database.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssigneeStorage {

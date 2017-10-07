@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceSto
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.persister.database.dao.DeploymentInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity;
-import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
+import com.alibaba.smart.framework.engine.persister.database.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
 
 import org.springframework.util.CollectionUtils;

@@ -5,7 +5,7 @@ import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStora
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.persister.database.dao.ActivityInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity;
-import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
+import com.alibaba.smart.framework.engine.persister.database.util.SpringContextUtil;
 
 import java.util.ArrayList;
 import java.util.List;

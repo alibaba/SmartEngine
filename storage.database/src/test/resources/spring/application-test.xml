@@ -3,14 +3,25 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:mybatis="http://www.foo.com/schema/data/mybatis"
+
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
         http://www.foo.com/schema/data/mybatis http://www.foo.com/schema/data/mybatis/spring-mybatis.xsd">
 
-    <import resource="sequence.xml"/>
+
+    <context:component-scan base-package="com.alibaba.smart.framework.engine.persister.database"/>
+
+    <!-- Mapper接口所在包名，Spring会自动查找其下的Mapper -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.alibaba.smart.framework.engine.persister.database" />
+    </bean>
 
     <bean id="dataSource" class="com.taobao.tddl.jdbc.group.TGroupDataSource" init-method="init">
         <property name="appName" value="#{datasourceProperties.tddlApp}"/>
@@ -18,47 +29,79 @@
         <property name="dataSourceType" value="DruidDataSource"/>
     </bean>
 
-    <context:component-scan base-package="com.alibaba.smart.framework.engine.persister"/>
+    <util:properties id="datasourceProperties" location="classpath:datasource.properties"/>
+
+    <bean id="abstractSequenceDao" class="com.taobao.tddl.client.sequence.impl.GroupSequenceDao" init-method="init"
+          abstract="true"
+          lazy-init="default">
+        <property name="retryTimes" value="2"/>
+        <property name="nameColumnName" value="seq_name"/>
+        <property name="valueColumnName" value="seq_value"/>
+        <property name="gmtModifiedColumnName" value="gmt_modified"/>
+        <property name="adjust" value="false"/>
+    </bean>
+
+
+    <bean id="sequenceDao" parent="abstractSequenceDao">
+        <property name="appName" value="#{datasourceProperties.tddlApp}"/>
+        <property name="tableName" value="sequence"/>
+        <property name="dscount" value="1"/>
+        <property name="dbGroupKeys">
+            <list>
+                <value>#{datasourceProperties.tddlGroup}</value>
+            </list>
+        </property>
+        <property name="innerStep" value="1000"/>
+    </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
           p:dataSource-ref="dataSource"
           p:configLocation="classpath:mybatis/mybatis-config.xml"
           p:mapperLocations="classpath:mybatis/sqlmap/*.xml"/>
 
-    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
-        <!--<property name="dataSource" ref="jdbcDataSource" />-->
-        <!--<property name="configLocation" value="classpath:batisConfig.xml" />-->
-
-        <!--&lt;!&ndash; <property name="configurationProperties"> <props> <prop key="mapUnderscoreToCamelCase">true</prop> -->
-            <!--</props> </property> &ndash;&gt;-->
-    <!--</bean>-->
-
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg index="0" ref="sqlSessionFactory"/>
     </bean>
-
-    <!-- Mapper接口所在包名，Spring会自动查找其下的Mapper -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.alibaba.smart.framework.engine.persister.database.dao" />
-    </bean>
-
-
-    <!--<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer"-->
-          <!--p:basePackage="com.alibaba.smart.framework.engine.persister.database.dao"-->
-          <!--p:markerInterface="com.alibaba.spring.data.mybatis.repository.MybatisRepository"-->
-          <!--p:sqlSessionFactoryBeanName="sqlSessionFactory"-->
-          <!--p:sqlSessionTemplateBeanName="sqlSession"/>-->
-
-
-    <!--<mybatis:repositories base-package="com.alibaba.smart.framework.engine.persister.database.dao"-->
-                          <!--sql-session-ref="sqlSession"-->
-                          <!--sequence-dao-ref="sequenceDao"/>-->
-
 
     <!-- 事务管理器 -->
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
           p:dataSource-ref="dataSource"/>
 
-    <bean id="springContextUtil" class="com.alibaba.smart.framework.engine.persister.util.SpringContextUtil" />
+
+
+    <!-- 事物传播特性 -->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="create*" propagation="REQUIRED"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+
+            <tx:method name="delete*" propagation="REQUIRED"/>
+
+            <tx:method name="modify*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="alter*" propagation="REQUIRED"/>
+            <tx:method name="reset*" propagation="REQUIRED"/>
+
+            <tx:method name="find*" propagation="REQUIRED"/>
+            <tx:method name="query*" propagation="REQUIRED"/>
+            <tx:method name="list*" propagation="REQUIRED"/>
+            <tx:method name="count*" propagation="REQUIRED"/>
+
+            <tx:method name="batchDelete*" propagation="REQUIRED"/>
+            <tx:method name="batchInsert*" propagation="REQUIRED"/>
+            <tx:method name="batchUpdate*" propagation="REQUIRED"/>
+
+            <tx:method name="assign*" propagation="REQUIRED"/>
+            <tx:method name="generate*" propagation="REQUIRED"/>
+            <tx:method name="clear*" propagation="REQUIRED"/>
+
+
+            <tx:method name="*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+
+
 
 </beans>

@@ -13,8 +13,6 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.persister.database.dao.TaskAssigneeDAO;
-import com.alibaba.smart.framework.engine.persister.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
@@ -57,7 +55,6 @@ public class MultiInstanceTest {
         TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
         ExecutionQueryService executionQueryService =  smartEngine.getExecutionQueryService();
         ExecutionCommandService executionCommandService =  smartEngine.getExecutionCommandService();
-        TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
 
 
         //3. 部署流程定义

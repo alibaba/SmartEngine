@@ -6,7 +6,9 @@ import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstance
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TaskInstanceDAO {
 
      List<TaskInstanceEntity> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam);
