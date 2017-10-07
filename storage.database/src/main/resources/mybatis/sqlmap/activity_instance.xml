@@ -38,6 +38,8 @@
         select
         <include refid="baseColumn"/>
         from  se_activity_instance where process_instance_id=#{processInstanceId}
+        order by gmt_modified desc
+
     </select>
 
 </mapper>
