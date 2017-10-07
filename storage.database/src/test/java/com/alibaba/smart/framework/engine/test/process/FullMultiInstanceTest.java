@@ -41,7 +41,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 //@Transactional
 public class FullMultiInstanceTest {
-
+    public static List<Object> trace=new ArrayList<Object>();
 
     @Test
     public void testMultiInstance() throws Exception {
@@ -150,6 +150,7 @@ public class FullMultiInstanceTest {
         submitFormRequest.put("capacity","10g");
         //submitFormRequest.put("assigneeUserId","1");
         submitFormRequest.put(RequestMapSpeicalKeyConstant.TASK_INSTANCE_TAG,"tag");
+        submitFormRequest.put("text","123");
         //submitFormRequest.put(RequestMapSpeicalKeyConstant.PROCESS_DEFINITION_TYPE,"type");
 
 
@@ -187,6 +188,8 @@ public class FullMultiInstanceTest {
         //10.
         approveFormRequest.put("approve", "agree");
         approveFormRequest.put("desc", "ok");
+        approveFormRequest.put("text","789");
+
 
         //9.审批通过,驱动流程节点到自动执行任务环节
 
@@ -196,6 +199,10 @@ public class FullMultiInstanceTest {
         ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
         Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
+        Assert.assertEquals(2,trace.size());
+
+        Assert.assertEquals("123",trace.get(0));
+        Assert.assertEquals("789",trace.get(1));
 
     }
 

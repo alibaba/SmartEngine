@@ -19,5 +19,5 @@ public interface VariableInstanceDAO  {
 
      int update(VariableInstanceEntity variableInstanceEntity);
 
-    void delete(@Param("id") Long id);
+     void delete(@Param("id") Long id);
 }

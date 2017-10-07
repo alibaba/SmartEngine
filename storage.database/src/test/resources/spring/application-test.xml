@@ -6,7 +6,6 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:mybatis="http://www.foo.com/schema/data/mybatis"
-
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context
