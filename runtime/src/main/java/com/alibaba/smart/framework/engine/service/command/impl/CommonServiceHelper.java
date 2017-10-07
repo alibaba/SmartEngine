@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -66,6 +67,7 @@ public abstract  class CommonServiceHelper {
         ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
         TaskInstanceStorage taskInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+        TaskAssigneeStorage taskAssigneeStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
 
 
         List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
@@ -79,7 +81,7 @@ public abstract  class CommonServiceHelper {
 
             if(null != executionInstanceList){
                 for (ExecutionInstance executionInstance : executionInstanceList) {
-                    buildInstance(request, processEngineConfiguration, executionInstanceStorage, taskInstanceStorage,
+                    buildInstance(request, processEngineConfiguration, executionInstanceStorage, taskInstanceStorage,taskAssigneeStorage,
                         activityInstance,
                         executionInstance);
                 }
@@ -92,7 +94,7 @@ public abstract  class CommonServiceHelper {
     private static void buildInstance(Map<String, Object> request,
                                       ProcessEngineConfiguration processEngineConfiguration,
                                       ExecutionInstanceStorage executionInstanceStorage,
-                                      TaskInstanceStorage taskInstanceStorage, ActivityInstance activityInstance,
+                                      TaskInstanceStorage taskInstanceStorage,TaskAssigneeStorage taskAssigneeStorage, ActivityInstance activityInstance,
                                       ExecutionInstance executionInstance) {
         if (null != executionInstance) {
             executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
@@ -110,14 +112,13 @@ public abstract  class CommonServiceHelper {
 
 
 
-                TaskAssigneeService taskAssigneeService = processEngineConfiguration.getTaskAssigneeService();
 
                 List<TaskAssigneeInstance>  taskAssigneeInstances =  taskInstance.getTaskAssigneeInstanceList();
 
                 if(null != taskAssigneeInstances){
                     for (TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstances) {
-                        taskAssigneeService.persistTaskAssignee(taskInstance,taskAssigneeInstance,request);
-
+                        taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
+                        taskAssigneeStorage.insert(taskAssigneeInstance);
                     }
                 }
 

@@ -13,12 +13,6 @@ import java.util.Map;
  */
 public interface TaskAssigneeService {
 
-    //TODO FIXME TUNE
-
-    void persistTaskAssignee(TaskInstance  taskInstance, TaskAssigneeInstance taskAssigneeInstance,Map<String, Object> variables);
-
-    void complete(Long taskInstanceId);
-
     List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity,Map<String,Object> request);
 
 }

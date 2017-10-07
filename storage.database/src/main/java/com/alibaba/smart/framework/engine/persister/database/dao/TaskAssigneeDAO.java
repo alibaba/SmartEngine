@@ -21,7 +21,7 @@ public interface TaskAssigneeDAO  {
      //@Options(useGeneratedKeys = true)
      void insert(  TaskAssigneeEntity taskAssigneeEntity );
 
-     int update(TaskAssigneeEntity taskAssigneeEntity);
+     int update(@Param("id") Long taskAssigneeId,@Param("assigneeId")String assigneeId);
 
-    void delete(@Param("id") Long id);
+     void delete(@Param("id") Long id);
 }

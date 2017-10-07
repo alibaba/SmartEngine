@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.test.process;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +71,7 @@ public class FullMultiInstanceTest {
 
         //3. 部署流程定义
         CreateDeploymentCommand createDeploymentCommand = new CreateDeploymentCommand();
-        String content = IOUtil.readFileAsUTF8String("multi-instance-test.bpmn20.xml");
+        String content = IOUtil.readResourceFileAsUTF8String("multi-instance-test.bpmn20.xml");
         createDeploymentCommand.setProcessDefinitionContent(content);
         createDeploymentCommand.setDeploymentUserId("123");
         createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTVIE);
@@ -128,11 +129,18 @@ public class FullMultiInstanceTest {
         taskInstanceQueryParam.setPageOffSide(0);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
         taskInstanceQueryParam.setProcessInstanceId(processInstance.getInstanceId());
+
+        taskInstanceQueryParam.setAssigneeUserId("1");
+        List<String> assigneeGroupIdList = new ArrayList<String>();
+        assigneeGroupIdList.add("a");
+        assigneeGroupIdList.add("b");
+        taskInstanceQueryParam.setAssigneeGroupIdList(assigneeGroupIdList);
+
         List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findList(taskInstanceQueryParam);
-        Assert.assertEquals(2,assertedTaskInstanceList.size());
+        Assert.assertEquals(1,assertedTaskInstanceList.size());
 
 
-         assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"1");
+        assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"1");
         Assert.assertEquals(1,assertedTaskInstanceList.size());
 
 

@@ -18,15 +18,21 @@
         delete from se_task_assignee_instance where id=#{id}
     </delete>
 
-    <update id="update" parameterType="TaskAssigneeEntity">
+    <update id="update" >
         update se_task_assignee_instance
         <set>
             gmt_modified=now()
             <if test="assigneeId != null">,assignee_id = #{assigneeId}</if>
-
+            <if test="assigneeType != null">,assignee_type = #{assigneeType}</if>
         </set>
         where id=#{id}
     </update>
+
+    <select id="findOne" resultType="TaskAssigneeEntity">
+        select
+        <include refid="baseColumn"/>
+        from se_task_assignee_instance where id=#{id}
+    </select>
 
     <!--<select id="findPendingTaskList" resultType="TaskAssigneeEntity">-->
         <!--select-->

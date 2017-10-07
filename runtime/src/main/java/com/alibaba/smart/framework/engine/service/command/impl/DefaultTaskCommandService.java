@@ -56,7 +56,6 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
     public void complete(Long taskId, Map<String, Object> variables) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         TaskInstance taskInstance= taskInstanceStorage.find(taskId);
@@ -75,13 +74,6 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
         }
 
         taskInstanceStorage.update(taskInstance);
-
-
-
-        //TaskAssigneeService taskAssigneeService = processEngineConfiguration.getTaskAssigneeService();
-        //if(null != taskAssigneeService){
-        //    taskAssigneeService.complete(taskInstance.getInstanceId());
-        //}
 
         executionCommandService.signal(taskInstance.getExecutionInstanceId(),variables);
 

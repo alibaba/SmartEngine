@@ -20,6 +20,6 @@ public class TaskAssigneeEntity extends BaseProcessEntity {
 
     private String assigneeType;
 
-    private Integer priority;
+    //private Integer priority;
 
 }

@@ -19,55 +19,9 @@ import java.util.Map;
  */
 public class DefaultTaskAssigneeService implements TaskAssigneeService {
 
-    @Override
-    public void persistTaskAssignee(TaskInstance taskInstance,TaskAssigneeInstance taskAssigneeInstance, Map<String, Object> variables) {
-        TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
-
-        //TODO 这里可以根据自己的业务, 循环 build 多个TaskAssigneeEntity。这个是简单示例。
-
-        TaskAssigneeEntity taskAssigneeEntity = buildTaskInstanceEntity(taskInstance,  taskAssigneeInstance, variables);
-        taskAssigneeEntity.setId(null);
-        taskAssigneeDAO.insert(taskAssigneeEntity);
-
-    }
 
 
-    private TaskAssigneeEntity buildTaskInstanceEntity(TaskInstance taskInstance,TaskAssigneeInstance taskAssigneeInstance, Map<String, Object> variables) {
-        TaskAssigneeEntity taskAssigneeEntity = new TaskAssigneeEntity();
 
-        taskAssigneeEntity.setId(taskInstance.getInstanceId());
-        taskAssigneeEntity.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
-        taskAssigneeEntity.setProcessInstanceId(taskInstance.getProcessInstanceId());
-        taskAssigneeEntity.setTaskInstanceId(taskInstance.getInstanceId());
-        taskAssigneeEntity.setAssigneeId(taskAssigneeInstance.getAssigneeId());
-        taskAssigneeEntity.setAssigneeType(taskAssigneeInstance.getAssigneeType());
-
-
-        //TODO 默认标题key约定
-        //if(null != variables){
-        //    //taskAssigneeEntity.setTitle((String)variables.get("title"));
-        //}
-
-
-        //taskAssigneeEntity.setClaimTime(taskInstance.getClaimTime());
-        //taskAssigneeEntity.setEndTime(taskInstance.getEndTime());
-        //taskAssigneeEntity.setPriority(taskInstance.getPriority());
-        //taskAssigneeEntity.setGmtModified(taskInstance.getEndTime());
-        return taskAssigneeEntity;
-    }
-
-
-    @Override
-    public void complete(Long taskInstanceId) {
-
-        TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
-        List<TaskAssigneeEntity>  taskAssigneeEntityList = taskAssigneeDAO.findSameTask(taskInstanceId);
-        //可以批处理删除
-        for (TaskAssigneeEntity taskAssigneeEntity : taskAssigneeEntityList) {
-            taskAssigneeDAO.delete(taskAssigneeEntity.getId());
-        }
-
-    }
 
     @Override
     public List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity,Map<String,Object> request) {

@@ -5,17 +5,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
-import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.MultiInstanceLoopCharacteristics;
@@ -63,7 +60,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
                     TaskInstance taskInstance = buildTaskInstance(context, activityInstance, executionInstanceList);
 
-                    List<TaskAssigneeInstance> taskAssigneeInstanceList = buildTaskAssigneeInstanceList(
+                    List<TaskAssigneeInstance> taskAssigneeInstanceList = buildTaskAssigneeInstanceListForMultiInstanceLoopCharacteristics( taskInstance,
                         taskAssigneeCandidateInstance);
 
                     taskInstance.setTaskAssigneeInstanceList(taskAssigneeInstanceList);
@@ -93,6 +90,10 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                     taskAssigneeInstance.setAssigneeId(taskAssigneeCandidateInstance.getAssigneeId());
                     taskAssigneeInstance.setAssigneeType(taskAssigneeCandidateInstance.getAssigneeType());
 
+                    taskAssigneeInstance.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
+                    taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
+                    taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
+
                     taskAssigneeInstanceList.add(taskAssigneeInstance);
 
                 }
@@ -109,8 +110,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
     }
 
-    private List<TaskAssigneeInstance> buildTaskAssigneeInstanceList(
-        TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
+    private List<TaskAssigneeInstance> buildTaskAssigneeInstanceListForMultiInstanceLoopCharacteristics(TaskInstance taskInstance,
+                                                                                                        TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
         List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
 
         TaskAssigneeInstance taskAssigneeInstance = new DefaultTaskAssigneeInstance();
@@ -123,6 +124,11 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         }
 
         taskAssigneeInstance.setAssigneeType(taskAssigneeCandidateInstance.getAssigneeType());
+
+        taskAssigneeInstance.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
+        taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
+        taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
+
         taskAssigneeInstanceList.add(taskAssigneeInstance);
         return taskAssigneeInstanceList;
     }

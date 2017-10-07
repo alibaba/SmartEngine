@@ -22,7 +22,7 @@ public class IOUtil {
         }
     }
 
-    public static String readFileAsUTF8String(String filePath) {
+    public static String readResourceFileAsUTF8String(String filePath) {
         File resourceFile = getResourceFile(filePath);
         byte[] buffer = new byte[(int) resourceFile.length()];
         BufferedInputStream inputStream = null;

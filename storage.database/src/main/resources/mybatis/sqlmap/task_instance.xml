@@ -40,11 +40,6 @@
     </select>
 
 
-    <!--<select id="findList" resultType="TaskInstanceEntity">-->
-        <!--select-->
-        <!--<include refid="baseColumn"/>-->
-        <!--from se_task_instance where process_instance_id=#{param1} and  activity_instance_id = #{param2}-->
-    <!--</select>-->
 
     <!-- FIXME SUPPORT GROUP AND USER -->
     <!--( ( assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user')  or ( assignee.assignee_id = #{assigneeUserId} and assignee.assignee_type = 'group')  )-->
@@ -54,31 +49,66 @@
         select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
         activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status
         from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
-        <if test="status != null">  and  task.status = #{status} </if>
-        <if test="processDefinitionType != null">  and  task.process_definition_type = #{processDefinitionType} </if>
-        <if test="tag != null">  and  task.tag = #{tag} </if>
-        <if test="activityInstanceId != null">  and  task.activity_instance_id = #{activityInstanceId} </if>
-        <if test="processDefinitionActivityId != null">  and  task.process_definition_activity_id = #{processDefinitionActivityId} </if>
-        <if test="processInstanceId != null"> and task.process_instance_id = #{processInstanceId}</if>
-        <if test="assigneeUserId != null"> and assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user' </if>
+        <include refid="where_condition"/>
+
+        <choose>
+            <when test="assigneeUserId != null and assigneeGroupIdList != null">
+                AND (      (assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user') or (assignee.assignee_id in
+                <foreach item="item" index="index" collection="assigneeGroupIdList" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+                and assignee.assignee_type = 'group')    )
+            </when>
+            <when test="assigneeUserId != null">
+                and assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user'
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+
         order by task.gmt_modified desc
         <if test="pageOffSide != null and pageSize != null">limit #{pageOffSide},#{pageSize}</if>
 
     </select>
+
 
     <select id="count" resultType="int" parameterType="TaskInstanceQueryParam">
         select  count(task.id)
         from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
+        <include refid="where_condition"/>
+
+        <choose>
+            <when test="assigneeUserId != null and assigneeGroupIdList != null">
+                AND (      (assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user') or (assignee.assignee_id in
+                <foreach item="item" index="index" collection="assigneeGroupIdList">
+                    #{item}
+                </foreach>
+                and assignee.assignee_type = 'group')    )
+            </when>
+            <when test="assigneeUserId != null">
+                and assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user'
+            </when>
+
+            <otherwise>
+
+            </otherwise>
+        </choose>
+
+
+        order by task.gmt_modified desc
+        <if test="pageOffSide != null and pageSize != null">limit #{pageOffSide},#{pageSize}</if>
+
+    </select>
+
+    <sql id="where_condition">
         <if test="status != null">  and  task.status = #{status} </if>
         <if test="processDefinitionType != null">  and  task.process_definition_type = #{processDefinitionType} </if>
         <if test="tag != null">  and  task.tag = #{tag} </if>
         <if test="activityInstanceId != null">  and  task.activity_instance_id = #{activityInstanceId} </if>
         <if test="processDefinitionActivityId != null">  and  task.process_definition_activity_id = #{processDefinitionActivityId} </if>
         <if test="processInstanceId != null"> and task.process_instance_id = #{processInstanceId}</if>
-        <if test="assigneeId != null"> and assignee.assignee_id =  #{assigneeId} and assignee.assignee_type = 'user' </if>
-        order by task.gmt_modified desc
-        <if test="pageOffSide != null and pageSize != null">limit #{pageOffSide},#{pageSize}</if>
-
-    </select>
+    </sql>
 
 </mapper>
+

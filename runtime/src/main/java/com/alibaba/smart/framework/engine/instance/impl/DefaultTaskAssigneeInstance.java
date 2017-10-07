@@ -16,7 +16,7 @@ public class DefaultTaskAssigneeInstance extends AbstractLifeCycleInstance imple
     private static final long serialVersionUID = -3920292154786127202L;
     private String processDefinitionIdAndVersion;
 
-    private String activityId;
+    //private String activityId;
     private Long processInstanceId;
     //private Long executionInstanceId;
     //private Long activityInstanceId;
