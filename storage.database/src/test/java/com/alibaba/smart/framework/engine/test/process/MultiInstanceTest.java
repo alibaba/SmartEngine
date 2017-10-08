@@ -64,7 +64,6 @@ public class MultiInstanceTest {
                 .deploy("multi-instance-test.bpmn20.xml");
         assertEquals(9, processDefinition.getProcess().getElements().size());
 
-        //FIXME 断言新的元素解析是否正确。新增的api，其他custom模式下需要增加判断。
 
         //4.启动流程实例
         ProcessInstance processInstance = processCommandService.start(

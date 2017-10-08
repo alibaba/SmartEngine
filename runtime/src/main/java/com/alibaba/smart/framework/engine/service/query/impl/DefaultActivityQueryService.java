@@ -39,19 +39,9 @@ public class DefaultActivityQueryService implements ActivityQueryService, LifeCy
     public List<ActivityInstance> findAll(Long processInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        //TUNE 顺序性问题
         ActivityInstanceStorage  activityInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
 
         return activityInstanceStorage.findAll(processInstanceId);
     }
 
-    //@Override
-    //public List<ActivityInstance> findAll(Long processInstanceId, boolean asc) {
-    //    PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-    //
-    //    //TUNE 顺序性问题
-    //    ActivityInstanceStorage  activityInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
-    //
-    //    return activityInstanceStorage.findAll(processInstanceId);
-    //}
 }

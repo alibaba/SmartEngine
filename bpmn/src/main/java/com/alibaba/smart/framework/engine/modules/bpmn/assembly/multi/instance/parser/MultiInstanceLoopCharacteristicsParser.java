@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.CompletionCondition;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
@@ -48,7 +49,7 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractStAXArtifact
             if (element instanceof CompletionCondition) {
                 multiInstanceLoopCharacteristics.setCompletionCondition((CompletionCondition)element);
             } else {
-                //TODO logger error
+                throw  new EngineException("Should be a instance of CompletionCondition :"+element.getClass());
             }
         }
 

@@ -277,7 +277,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
     //                    //如果相等,说明在同一个fork,join 环内。
     //                    //if (blockId.equals(completeActivityInstance.getBlockId())) {
     //
-    //                        //如果不为空,那么则说明当前环节已经完成。 TODO 增加activity的active状态
+    //                        //如果不为空,那么则说明当前环节已经完成。
     //                        //if (null != completeActivityInstance.getCompleteDate()) {
     //                            listIterator.remove();
     //                            break;
@@ -299,7 +299,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
     //    //            //如果相等,说明在同一个fork,join 环内。
     //    //            if (blockId.equals(completeActivityInstance.getBlockId())) {
     //    //
-    //    //                //如果不为空,那么则说明当前环节已经完成。 TODO 增加activity的active状态
+    //    //                //如果不为空,那么则说明当前环节已经完成。
     //    //                if (null != completeActivityInstance.getCompleteDate()) {
     //    //                    sum++;
     //    //                }

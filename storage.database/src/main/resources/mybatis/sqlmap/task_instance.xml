@@ -39,12 +39,6 @@
         from se_task_instance where id=#{id}
     </select>
 
-
-
-    <!-- FIXME SUPPORT GROUP AND USER -->
-    <!--( ( assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user')  or ( assignee.assignee_id = #{assigneeUserId} and assignee.assignee_type = 'group')  )-->
-
-
     <select id="findTaskList" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryParam">
         select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
         activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status

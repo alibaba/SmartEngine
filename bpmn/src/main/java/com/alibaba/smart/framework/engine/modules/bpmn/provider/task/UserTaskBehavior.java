@@ -260,7 +260,6 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
     private void updateExecution(ExecutionInstanceStorage executionInstanceStorage, TaskInstance taskInstance) {
         ExecutionInstance executionInstance=   executionInstanceStorage.find(taskInstance.getExecutionInstanceId());
         executionInstance.setActive(false);
-        //FIXME CompleteDate 和 EndDate 取一个.
         executionInstance.setCompleteTime(DateUtil.getCurrentDate());
         executionInstanceStorage.update(executionInstance);
     }

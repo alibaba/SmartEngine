@@ -83,17 +83,6 @@ public class FullMultiInstanceTest {
         DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
 
 
-        // FIXME RepositoryQueryService ,ADN TEST;.
-        //RepositoryCommandService repositoryCommandService = smartEngine
-        //        .getRepositoryCommandService();
-        //ProcessDefinition processDefinition = repositoryCommandService
-        //        .deploy("multi-instance-test.bpmn20.xml");
-        //assertEquals(9, processDefinition.getProcess().getElements().size());
-
-        //FIXME 断言新的元素解析是否正确。新增的api，其他custom模式下需要增加判断。
-
-
-
         //4.启动流程实例
 
         Map<String, Object> request = new HashMap();

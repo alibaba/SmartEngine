@@ -18,7 +18,6 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     @Override
     public ProcessInstance insert(ProcessInstance processInstance) {
 
-        //TUNE
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
 
         ProcessInstanceEntity processInstanceEntityToBePersisted = buildProcessInstanceEntity(processInstance);
@@ -30,7 +29,6 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
         ProcessInstanceEntity processInstanceEntity1 =  processInstanceDAO.findOne(processInstanceEntityToBePersisted.getId());
 
-        //TODO 命名不一致
         buildEntityToInstance(processInstance, processInstanceEntity1);
 
         //TUNE 不能使用下面这种方式,因为下面这张方式没有新建了ProcessInstance 对象,并没有修改原来的引用. 但是 SmartEngine 整体依赖大量的内存传参. 所以这是不能使用下面的这个 API,有点 tricky.

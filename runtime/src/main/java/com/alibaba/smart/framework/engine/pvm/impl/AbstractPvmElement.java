@@ -42,7 +42,7 @@ public abstract class AbstractPvmElement<M extends Element> implements PvmElemen
 
        Object result =  invokeBehavior(event, context);
 
-        //FIXME 这个逻辑不合适。
+        // TODO 这个逻辑不合适。
         if (null != this.invoker) {
             result =  this.invoker.invoke(event, context);
 

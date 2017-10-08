@@ -54,7 +54,6 @@ public class TaskInstanceDAOTest extends BaseElementTest {
         TaskInstanceEntity result = dao.findOne(entity.getId());
         Assert.assertNotNull(result);
 
-        // TODO 返回删除行数,去掉findAll 接口
         dao.delete(entity.getId());
 
         result = dao.findOne(entity.getId());

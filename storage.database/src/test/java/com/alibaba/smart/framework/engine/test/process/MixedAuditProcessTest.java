@@ -88,7 +88,7 @@ public class MixedAuditProcessTest {
         Map<String, Object> submitFormRequest = new HashMap<String, Object>();
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
-        submitFormRequest.put("assigner","leader"); //TODO 提供统一抽象和隔离,和公司账户体系集成
+        submitFormRequest.put("assigner","leader");
 
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
@@ -115,7 +115,6 @@ public class MixedAuditProcessTest {
         Assert.assertNotNull(finalProcessInstance.getCompleteTime());
 
 
-        //11. TODO 处理加签流程,任务和人关联列表,流程变量存储,索引
     }
 
 

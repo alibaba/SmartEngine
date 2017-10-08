@@ -220,7 +220,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         List<BaseElement> elements = process.getElements();
         if (null != elements && !elements.isEmpty()) {
 
-            //TODO ocp 
+            //TUNE ocp
             Map<String, PvmTransition> pvmTransitionMap = new HashMap<String, PvmTransition>();
             Map<String, PvmActivity> pvmActivityMap = new HashMap<String, PvmActivity>();
             for (BaseElement element : elements) {
@@ -234,7 +234,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
 //                    PvmProcessDefinition processDefinition = this.buildPvmProcessDefinition(subProcess, true);
 
-                    //TODO support subProcess
+                    //TUNE support subProcess
 //                    pvmActivityMap.put(processDefinition.getModel().getId(), processDefinition);
 //
 //                    if (processDefinition.getModel().isStartActivity()) {

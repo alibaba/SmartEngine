@@ -36,7 +36,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
                     if (null != tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(
                         executionInstance.getInstanceId())) {
 
-                        //FIXME check logic
+                        //TODO check logic
                         tempExecutionInstance = executionInstance;
                         //activityInstance.setExecutionInstance(executionInstance);
 

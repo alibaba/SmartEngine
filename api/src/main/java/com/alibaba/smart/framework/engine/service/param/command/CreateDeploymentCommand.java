@@ -9,8 +9,6 @@ import lombok.Data;
 @Data
 public class CreateDeploymentCommand {
 
-    //TODO 细化下包名,命名 整个包.
-
     private  String processDefinitionType;
     private  String processDefinitionName;
     private  String processDefinitionDesc;

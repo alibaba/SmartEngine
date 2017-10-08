@@ -32,7 +32,6 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         String  processDefinitionContent = createDeploymentCommand.getProcessDefinitionContent();
 
-        //FIXME 明确下是否需要在这里部署.
         ProcessDefinition processDefinition =  repositoryCommandService.deployWithUTF8Content(processDefinitionContent);
 
         DeploymentInstance deploymentInstance  = new DefaultDeploymentInstance();
@@ -48,8 +47,6 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         deploymentInstance.setDeploymentUserId(createDeploymentCommand.getDeploymentUserId());
 
         deploymentInstance.setDeploymentStatus(createDeploymentCommand.getDeploymentStatus());
-        //deploymentInstance.setLogicStatus(LogicStatusConstant.VALID);
-
 
         deploymentInstance = deploymentInstanceStorage.insert(deploymentInstance);
 
@@ -71,7 +68,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
             throw  new EngineException("Can't find a deploymentInstance by deployInstanceId: "+deployInstanceId);
         }
 
-        //1. 新增一条,删除一个, version+1(TODO), 不能存在两个活跃的 processDefinitionId 和 Version
+        //1. 新增一条,删除一个, version+1(FIXME), 不能存在两个活跃的 processDefinitionId 和 Version,其他场景也需要测试下.
         //2. 但是万一 db 写失败,有可能导致 内存的数据被清空的情况.
 
         CreateDeploymentCommand createDeploymentCommand = new CreateDeploymentCommand();
@@ -86,9 +83,6 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         //currentDeploymentInstance.setLogicStatus(LogicStatusConstant.DELETED);
         currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.INACTIVE);
         deploymentInstanceStorage.update(currentDeploymentInstance);
-
-
-        //FIXME 根据更新条件,来删除内存的状态
 
         return newDeploymentInstance;
     }
