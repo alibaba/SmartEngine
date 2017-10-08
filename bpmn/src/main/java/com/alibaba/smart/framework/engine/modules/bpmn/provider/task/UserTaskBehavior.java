@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
@@ -166,8 +167,12 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         return true;
     }
 
+
     @Override
     public boolean execute(ExecutionContext context) {
+        beforeExecute(context);
+
+
         UserTask userTask = this.getModel();
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
@@ -193,23 +198,19 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
                 //mark done other
                 for (TaskInstance taskInstance : taskInstanceList) {
-                    //if(taskInstance.getExecutionInstanceId().equals(executionInstance.getInstanceId())){
-                    //
-                    //    //FIXME  任务处理逻辑有些分散,和task不在同一处处理.
-                    //    updateExecution(executionInstanceStorage, taskInstance);
-                    //
-                    //    continue;
-                    //}
-                    // todo 把complete的逻辑挪到这里?
-                    // todo 这里产生了db 读写访问,能否优化?
+                    if(taskInstance.getExecutionInstanceId().equals(executionInstance.getInstanceId())){
+                        continue;
+                    }
 
+                    // 这里产生了db 读写访问
                     taskInstance.setStatus(TaskInstanceConstant.COMPLETED);
                     Date currentDate = DateUtil.getCurrentDate();
                     taskInstance.setCompleteTime(currentDate);
-
                     taskInstanceStorage.update(taskInstance);
 
-                    updateExecution(executionInstanceStorage, taskInstance);
+                    ExecutionInstance executionInstance1=   executionInstanceStorage.find(taskInstance.getExecutionInstanceId());
+
+                    MarkDoneUtil.markDone(executionInstance1,executionInstanceStorage);
 
                 }
 
@@ -236,8 +237,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                     return true;
                 }
 
-            }else{
-                throw new EngineException("should have ONE soultion");
+            } else {
+                throw new EngineException("should have ONE solution at least.");
             }
         } else{
             return false;

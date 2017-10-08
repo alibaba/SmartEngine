@@ -74,9 +74,6 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     }
 
     private void executeRecursively(ExecutionContext context) {
-        ExecutionInstance executionInstance=context.getExecutionInstance();
-
-        MarkDoneUtil.markDone(executionInstance);
 
         //执行每个节点的hook方法
         Map<String, PvmTransition> outcomeTransitions = this.getOutcomeTransitions();
