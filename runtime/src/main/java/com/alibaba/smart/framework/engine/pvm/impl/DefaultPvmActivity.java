@@ -9,10 +9,8 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
-import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
@@ -77,9 +75,8 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
     private void executeRecursively(ExecutionContext context) {
         ExecutionInstance executionInstance=context.getExecutionInstance();
-        ActivityInstance activityInstance=context.getActivityInstance();
 
-        MarkDoneUtil.markDone(activityInstance,executionInstance,this.extensionPointRegistry);
+        MarkDoneUtil.markDone(executionInstance);
 
         //执行每个节点的hook方法
         Map<String, PvmTransition> outcomeTransitions = this.getOutcomeTransitions();

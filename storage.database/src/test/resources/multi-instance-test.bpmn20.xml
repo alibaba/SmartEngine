@@ -18,11 +18,11 @@
             </multiInstanceLoopCharacteristics>
         </userTask>
 
-        <sequenceFlow id="flow2" sourceRef="multiUserTask" targetRef="waitState" />
+        <sequenceFlow id="flow2" sourceRef="multiUserTask" targetRef="normalReceiverTask" />
 
-        <receiveTask id="waitState" />
+        <receiveTask id="normalReceiverTask" />
 
-        <sequenceFlow id="flow3" sourceRef="waitState" targetRef="normalUserTask" />
+        <sequenceFlow id="flow3" sourceRef="normalReceiverTask" targetRef="normalUserTask" />
 
         <userTask id="normalUserTask" name="Normal User Task"  smart:class = "com.alibaba.smart.framework.engine.test.process.delegation.UserTaskTestDelegation" >
 

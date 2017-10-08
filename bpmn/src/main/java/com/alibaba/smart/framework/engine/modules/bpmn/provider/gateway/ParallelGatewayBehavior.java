@@ -39,7 +39,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             return false;
         }
 
-        //FIXME database 模式下是否有问题?
+        //FIXME database 模式下是否有问题? 早点看下全流程.
 
         context.setProcessInstance(CommonServiceHelper.insertAndPersist(context.getProcessInstance(), context.getRequest(), this.extensionPointRegistry));
 
@@ -97,7 +97,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 if(activityInstance.getProcessDefinitionActivityId().equals(pvmActivity.getModel().getId())){
                     List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
                     for (ExecutionInstance executionInstance : executionInstances) {
-                        MarkDoneUtil.markDone(activityInstance,executionInstance,super.getExtensionPointRegistry());
+                        MarkDoneUtil.markDone(executionInstance);
                     }
                 }
             }

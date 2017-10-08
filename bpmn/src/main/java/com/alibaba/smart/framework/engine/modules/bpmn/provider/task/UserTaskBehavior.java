@@ -139,24 +139,12 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
         TaskInstance taskInstance = super.taskInstanceFactory.create(this.getModel(), executionInstance, context);
 
-        Map<String, Object> request = context.getRequest();
-
-        if(null != request){
-
-            //TODO 约定了key,其他。。。
-            String assigneeId = (String) request.get("assigneeUserId");
-            if(null != assigneeId){
-                taskInstance.setClaimUserId(assigneeId);
-            }
-
-        }
-
         executionInstance.setTaskInstance(taskInstance);
         executionInstanceList.add(executionInstance);
         activityInstance.setExecutionInstanceList(executionInstanceList);
 
-        //FIXME 在这里LOOP执行setExecutionInstance，没什么意义。 并且和并行网关集成起来，可能会有问题。
-        context.setExecutionInstance(executionInstance);
+        //因为这段代码是在 UserTask 的 beforeEnter 阶段执行的,执行完这段代码会基本完成本次 signal 的执行. 所以在这里LOOP执行setExecutionInstance，没什么意义。
+        //context.setExecutionInstance(executionInstance);
         return taskInstance;
     }
 
@@ -194,7 +182,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         if(null!= multiInstanceLoopCharacteristics)  {
             ExecutionInstance executionInstance =    context.getExecutionInstance();
 
-            //FIXME ADD INDEX
+            //TODO ADD INDEX
             TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
             taskInstanceQueryParam.setProcessInstanceId(executionInstance.getProcessInstanceId());
             taskInstanceQueryParam.setActivityInstanceId(executionInstance.getActivityInstanceId());
