@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
-import com.alibaba.smart.framework.engine.common.persister.PersisterStrategy;
+import com.alibaba.smart.framework.engine.configuration.PersisterStrategy;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
 /**

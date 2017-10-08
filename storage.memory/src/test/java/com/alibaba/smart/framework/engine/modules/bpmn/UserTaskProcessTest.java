@@ -31,7 +31,7 @@ public class UserTaskProcessTest {
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
         SmartEngine smartEngine = new DefaultSmartEngine();
-        processEngineConfiguration.setTaskAssigneeService(new DefaultTaskAssigneeService());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
 
         smartEngine.init(processEngineConfiguration);
 

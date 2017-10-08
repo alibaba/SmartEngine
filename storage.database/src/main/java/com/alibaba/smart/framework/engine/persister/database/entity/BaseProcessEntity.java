@@ -6,14 +6,12 @@ import java.util.Date;
 
 @Data
 public class BaseProcessEntity {
+    protected Long id;
 
     protected Date gmtCreate;
 
     protected Date gmtModified;
 
-    /**
-     * 唯一主键,包含了 processDefinitionId和version
-     */
-    protected String processDefinitionIdAndVersion;
+
 
 }

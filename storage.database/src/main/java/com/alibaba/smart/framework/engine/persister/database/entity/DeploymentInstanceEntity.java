@@ -15,8 +15,6 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class DeploymentInstanceEntity extends BaseProcessEntity {
 
-    private Long id;
-
     private String processDefinitionId;
 
     private String processDefinitionVersion;

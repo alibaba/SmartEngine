@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.common.persister;
+package com.alibaba.smart.framework.engine.configuration;
 
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 

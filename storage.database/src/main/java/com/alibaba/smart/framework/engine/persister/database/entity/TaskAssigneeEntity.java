@@ -9,8 +9,6 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class TaskAssigneeEntity extends BaseProcessEntity {
 
-    private Long id;
-
     private Long processInstanceId;
 
     private Long taskInstanceId;

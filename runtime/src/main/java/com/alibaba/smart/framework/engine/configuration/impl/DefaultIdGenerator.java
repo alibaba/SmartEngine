@@ -1,7 +1,7 @@
-package com.alibaba.smart.framework.engine.instance.util;
+package com.alibaba.smart.framework.engine.configuration.impl;
 
 
-import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 
 import java.util.concurrent.atomic.AtomicLong;
 

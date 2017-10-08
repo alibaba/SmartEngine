@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
+import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
@@ -162,13 +162,13 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
     private List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstances(ExecutionContext context,
                                                                                   UserTask userTask) {
-        TaskAssigneeService taskAssigneeService = context.getProcessEngineConfiguration().getTaskAssigneeService();
+        TaskAssigneeDispatcher taskAssigneeDispatcher = context.getProcessEngineConfiguration().getTaskAssigneeDispatcher();
 
-        if(null == taskAssigneeService){
+        if(null == taskAssigneeDispatcher){
             throw  new EngineException("The taskAssigneeService can't be null for MultiInstanceLoopCharacteristics feature");
         }
 
-        return taskAssigneeService.getTaskAssigneeCandidateInstance(userTask,context.getRequest());
+        return taskAssigneeDispatcher.getTaskAssigneeCandidateInstance(userTask,context.getRequest());
     }
 
     @Override

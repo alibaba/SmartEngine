@@ -4,14 +4,14 @@
 <mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.VariableInstanceDAO">
 
     <sql id="baseColumn">
-        id, gmt_create, gmt_modified,type,process_instance_id,
-         execution_instance_id,task_instance_id,double_field,long_field,string_field
+        id, gmt_create, gmt_modified,process_instance_id,
+         execution_instance_id,field_key,field_type,field_long_value,field_double_value,field_string_value
     </sql>
 
     <insert id="insert" parameterType="VariableInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into se_variable_instance(<include refid="baseColumn"/>)
+        insert into se_variable_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{executionInstanceId},
-        #{taskInstanceId},#{doubleField},#{longField},#{stringField}
+        #{fieldKey},#{fieldType},#{fieldLongValue},#{fieldDoubleValue},#{fieldStringValue} )
     </insert>
 
     <delete id="delete" parameterType="long">
@@ -22,6 +22,9 @@
         update se_variable_instance
         <set>
             gmt_modified=now()
+            <if test="fieldLongValue != null">,field_long_value = #{fieldLongValue}</if>
+            <if test="fieldDoubleValue != null">,field_double_value = #{fieldDoubleValue}</if>
+            <if test="fieldStringValue != null">,field_string_value = #{fieldStringValue}</if>
         </set>
         where id=#{id}
     </update>
@@ -32,11 +35,18 @@
         from se_variable_instance where id=#{id}
     </select>
 
-    <!--<select id="findPendingTaskList" resultType="VariableInstanceEntity">-->
-        <!--select-->
-        <!--<include refid="baseColumn"/>-->
-        <!--from se_variable_instance where execution_instance_id=#{processInstanceId}-->
-    <!--</select>-->
+    <select id="findList" resultType="VariableInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from  se_variable_instance
+        <include refid="condition"/>
+    </select>
 
+    <sql id="condition">
+        <where>
+            <if test="processInstanceId != null">and process_instance_id = #{processInstanceId}</if>
+            <if test="executionInstanceId != null">and execution_instance_id = #{executionInstanceId}</if>
+        </where>
+    </sql>
 
 </mapper>

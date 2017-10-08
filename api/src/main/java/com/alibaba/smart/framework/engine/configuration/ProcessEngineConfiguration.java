@@ -1,10 +1,5 @@
 package com.alibaba.smart.framework.engine.configuration;
 
-import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
-import com.alibaba.smart.framework.engine.common.persister.PersisterStrategy;
-import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
-import com.alibaba.smart.framework.engine.common.service.InstanceAccessService;
-import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 
 /**
@@ -30,12 +25,12 @@ public interface ProcessEngineConfiguration {
      * 在生产环境下必须设置。
      * 在系统集成中，SmartEngine 为了和外部系统方便的交互，则必须要提供相应的机制来获取外部服务对象。
      * 该机制主要用于 smart:class 机制。
-     * @param instanceAccessService
+     * @param instanceAccessor
      *
      */
-    void setInstanceAccessService(InstanceAccessService instanceAccessService);
+    void setInstanceAccessor(InstanceAccessor instanceAccessor);
 
-    InstanceAccessService getInstanceAccessService();
+    InstanceAccessor getInstanceAccessor();
 
     /**
      * 主要用于外部扩展。
@@ -53,11 +48,15 @@ public interface ProcessEngineConfiguration {
      * 可选扩展。
      * 设计目的是用来处理任务的处理者。
      * 该扩展主要用于 database模式下的 userTask 场景。
-     * @param taskAssigneeService
+     * @param taskAssigneeDispatcher
      */
-    void setTaskAssigneeService(TaskAssigneeService taskAssigneeService);
+    void setTaskAssigneeDispatcher(TaskAssigneeDispatcher taskAssigneeDispatcher);
 
-    TaskAssigneeService getTaskAssigneeService();
+    TaskAssigneeDispatcher getTaskAssigneeDispatcher();
+
+    void setVariablePersister(VariablePersister variablePersister);
+
+    VariablePersister getVariablePersister();
 
     /**
      * 内部执行需要，不需要客户端 API 感知。
@@ -66,6 +65,8 @@ public interface ProcessEngineConfiguration {
     void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
 
     ExtensionPointRegistry getExtensionPointRegistry();
+
+
 
 
     // 是否要干掉 用于配置扩展,默认可以为空。设计目的是根据自己的业务需求,来自定义存储(该机制会绕过引擎自带的各种Storage机制,powerful and a little UnSafe)。。

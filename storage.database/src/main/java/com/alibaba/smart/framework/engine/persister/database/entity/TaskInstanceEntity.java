@@ -11,9 +11,10 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class TaskInstanceEntity extends BaseProcessEntity {
 
-    private Long id;
 
     private Long processInstanceId;
+
+    private String processDefinitionIdAndVersion;
 
     private Long executionInstanceId;
 

@@ -9,10 +9,9 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class ActivityInstanceEntity extends BaseProcessEntity {
 
-    private Long id;
-
     private Long processInstanceId;
 
     private String processDefinitionActivityId;
 
+    private String processDefinitionIdAndVersion;
 }

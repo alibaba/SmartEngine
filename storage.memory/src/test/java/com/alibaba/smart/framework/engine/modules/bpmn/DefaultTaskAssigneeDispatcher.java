@@ -1,10 +1,10 @@
-package com.alibaba.smart.framework.engine.test.process;
+package com.alibaba.smart.framework.engine.modules.bpmn;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
+import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
@@ -12,14 +12,11 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateIn
 /**
  * Created by 高海军 帝奇 74394 on 2017 January  18:03.
  */
-public class DefaultTaskAssigneeService implements TaskAssigneeService {
-
-
-
-
+public class DefaultTaskAssigneeDispatcher implements TaskAssigneeDispatcher {
 
     @Override
     public List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity,Map<String,Object> request) {
+
         List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList= new ArrayList();
 
         TaskAssigneeCandidateInstance taskAssigneeCandidateInstance = new TaskAssigneeCandidateInstance();

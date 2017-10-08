@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.smart.provider.performer;
 
-import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
-import com.alibaba.smart.framework.engine.common.service.InstanceAccessService;
+import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
+import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
@@ -32,9 +32,9 @@ public class JavaPerformer implements Performer {
         ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
         ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();
 
-        InstanceAccessService instanceAccessService = processEngineConfiguration
-            .getInstanceAccessService();
-        Object delegation = instanceAccessService.access(this.className);
+        InstanceAccessor instanceAccessor = processEngineConfiguration
+            .getInstanceAccessor();
+        Object delegation = instanceAccessor.access(this.className);
 
 
         if (delegation instanceof JavaDelegation) {

@@ -39,7 +39,6 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
     private TaskAssigneeEntity buildTaskInstanceEntity(TaskAssigneeInstance taskAssigneeInstance) {
         TaskAssigneeEntity taskAssigneeEntity = new TaskAssigneeEntity();
 
-        taskAssigneeEntity.setProcessDefinitionIdAndVersion(taskAssigneeInstance.getProcessDefinitionIdAndVersion());
         taskAssigneeEntity.setProcessInstanceId(taskAssigneeInstance.getProcessInstanceId());
         taskAssigneeEntity.setTaskInstanceId(taskAssigneeInstance.getTaskInstanceId());
         taskAssigneeEntity.setAssigneeId(taskAssigneeInstance.getAssigneeId());
@@ -75,7 +74,6 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
         taskAssigneeInstance.setProcessInstanceId(taskAssigneeEntity.getProcessInstanceId());
         taskAssigneeInstance.setTaskInstanceId(taskAssigneeEntity.getTaskInstanceId());
 
-        taskAssigneeInstance.setProcessDefinitionIdAndVersion(taskAssigneeEntity.getProcessDefinitionIdAndVersion());
 
         taskAssigneeInstance.setAssigneeId(taskAssigneeEntity.getAssigneeId());
         taskAssigneeInstance.setAssigneeType(taskAssigneeEntity.getAssigneeType());

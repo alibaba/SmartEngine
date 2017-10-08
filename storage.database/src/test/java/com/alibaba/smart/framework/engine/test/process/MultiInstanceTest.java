@@ -42,7 +42,7 @@ public class MultiInstanceTest {
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
-        processEngineConfiguration.setTaskAssigneeService(new DefaultTaskAssigneeService());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 
@@ -119,7 +119,7 @@ public class MultiInstanceTest {
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
-        processEngineConfiguration.setTaskAssigneeService(new DefaultTaskAssigneeService());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);

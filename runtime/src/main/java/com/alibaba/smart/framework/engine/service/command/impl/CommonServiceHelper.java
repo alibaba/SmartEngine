@@ -1,23 +1,28 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  20:38.
@@ -27,24 +32,58 @@ public abstract  class CommonServiceHelper {
     public static ProcessInstance insertAndPersist(ProcessInstance processInstance,Map<String, Object> request,ExtensionPointRegistry extensionPointRegistry) {
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
         ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
+        ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance);
 
-        ProcessInstance newProcessInstance=   processInstanceStorage.insert(processInstance);
+        persisteVariableInstanceIfPossible(request, processEngineConfiguration, persisterFactoryExtensionPoint,
+            newProcessInstance,0L);
 
-        persist(processInstance, request,   extensionPointRegistry);
-        //processEngineConfiguration.getPersisterStrategy().insert(processInstance);
+        persist(newProcessInstance,    extensionPointRegistry);
 
         return newProcessInstance;
     }
 
-    public static  ProcessInstance updateAndPersist(ProcessInstance processInstance,Map<String, Object> request,ExtensionPointRegistry extensionPointRegistry) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+    private static void persisteVariableInstanceIfPossible(Map<String, Object> request,
+                                                           ProcessEngineConfiguration processEngineConfiguration,
+                                                           PersisterFactoryExtensionPoint
+                                                               persisterFactoryExtensionPoint,
+                                                           ProcessInstance newProcessInstance,Long executionInstanceId) {
+        VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
+        if( variablePersister.isPersisteVariableInstanceEnabled() && null!= request ){
+            VariableInstanceStorage variableInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(VariableInstanceStorage.class);
+            for (Entry<String, Object> entry : request.entrySet()) {
+                String key = entry.getKey();
 
+                Set<String> blackList = variablePersister.getBlackList();
+                if(null!= blackList && blackList.contains(key)){
+                    continue;
+                }
+                
+                
+                Object value = entry.getValue();
+                Class type = value.getClass();
+
+                VariableInstance variableInstance = new DefaultVariableInstance();
+                variableInstance.setProcessInstanceId(newProcessInstance.getInstanceId());
+                variableInstance.setExecutionInstanceId(executionInstanceId);
+                variableInstance.setFieldKey(key);
+                variableInstance.setFieldType(type);
+                variableInstance.setFieldValue(value);
+
+                variableInstanceStorage.insert(  variablePersister,variableInstance);
+
+            }
+
+        }
+    }
+
+    public static  ProcessInstance updateAndPersist(Long executionInstanceId,ProcessInstance processInstance,Map<String, Object> request,ExtensionPointRegistry extensionPointRegistry) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
@@ -52,16 +91,18 @@ public abstract  class CommonServiceHelper {
         ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
         ProcessInstance newProcessInstance=   processInstanceStorage.update(processInstance);
-        persist(processInstance, request,   extensionPointRegistry);
-        //processEngineConfiguration.getPersisterStrategy().update(processInstance);
+
+        persisteVariableInstanceIfPossible(request, processEngineConfiguration, persisterFactoryExtensionPoint,
+            newProcessInstance,executionInstanceId);
+
+        persist(processInstance,    extensionPointRegistry);
 
         return newProcessInstance;
     }
 
 
 
-    private static void persist(ProcessInstance processInstance, Map<String, Object> request, ExtensionPointRegistry extensionPointRegistry) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+    private static void persist(ProcessInstance processInstance,  ExtensionPointRegistry extensionPointRegistry) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
@@ -81,7 +122,7 @@ public abstract  class CommonServiceHelper {
 
             if(null != executionInstanceList){
                 for (ExecutionInstance executionInstance : executionInstanceList) {
-                    buildInstance(request, processEngineConfiguration, executionInstanceStorage, taskInstanceStorage,taskAssigneeStorage,
+                    buildInstance( executionInstanceStorage, taskInstanceStorage,taskAssigneeStorage,
                         activityInstance,
                         executionInstance);
                 }
@@ -91,9 +132,8 @@ public abstract  class CommonServiceHelper {
 
     }
 
-    private static void buildInstance(Map<String, Object> request,
-                                      ProcessEngineConfiguration processEngineConfiguration,
-                                      ExecutionInstanceStorage executionInstanceStorage,
+    //TUNE too many args
+    private static void buildInstance(ExecutionInstanceStorage executionInstanceStorage,
                                       TaskInstanceStorage taskInstanceStorage,TaskAssigneeStorage taskAssigneeStorage, ActivityInstance activityInstance,
                                       ExecutionInstance executionInstance) {
         if (null != executionInstance) {
@@ -110,9 +150,6 @@ public abstract  class CommonServiceHelper {
                 //reAssign
                 taskInstance = taskInstanceStorage.insert(taskInstance);
 
-
-
-
                 List<TaskAssigneeInstance>  taskAssigneeInstances =  taskInstance.getTaskAssigneeInstanceList();
 
                 if(null != taskAssigneeInstances){
@@ -121,7 +158,6 @@ public abstract  class CommonServiceHelper {
                         taskAssigneeStorage.insert(taskAssigneeInstance);
                     }
                 }
-
 
                 executionInstance.setTaskInstance(taskInstance);
             }

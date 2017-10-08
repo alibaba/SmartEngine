@@ -10,9 +10,9 @@ import lombok.ToString;
 public class ExecutionInstanceEntity extends BaseProcessEntity {
 
 
-    private Long id;
-
     private Long processInstanceId;
+
+    private String processDefinitionIdAndVersion;
 
     private String processDefinitionActivityId;
 

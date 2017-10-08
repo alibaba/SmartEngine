@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -93,6 +94,11 @@ public class DefaultSmartEngine implements SmartEngine {
     @Override
     public TaskQueryService getTaskQueryService() {
         return this.extensionPointRegistry.getExtensionPoint(TaskQueryService.class);
+    }
+
+    @Override
+    public VariableQueryService getVariableQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(VariableQueryService.class);
     }
 
     //@Override

@@ -106,7 +106,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
-        CommonServiceHelper.updateAndPersist(newProcessInstance,  request,extensionPointRegistry);
+        CommonServiceHelper.updateAndPersist(  executionInstanceId,newProcessInstance,  request,extensionPointRegistry);
 
         return newProcessInstance;
     }

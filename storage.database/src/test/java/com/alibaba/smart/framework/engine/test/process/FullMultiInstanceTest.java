@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
-import com.alibaba.smart.framework.engine.constant.RequestMapSpeicalKeyConstant;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
@@ -18,6 +18,7 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
@@ -30,6 +31,7 @@ import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,7 +51,8 @@ public class FullMultiInstanceTest {
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
-        processEngineConfiguration.setTaskAssigneeService(new DefaultTaskAssigneeService());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
+        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 
@@ -63,6 +66,7 @@ public class FullMultiInstanceTest {
         ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
         TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
         ExecutionQueryService executionQueryService =  smartEngine.getExecutionQueryService();
+        VariableQueryService variableQueryService = smartEngine.getVariableQueryService();
         ExecutionCommandService executionCommandService =  smartEngine.getExecutionCommandService();
 
 
@@ -93,8 +97,10 @@ public class FullMultiInstanceTest {
         //4.启动流程实例
 
         Map<String, Object> request = new HashMap();
-        request.put(RequestMapSpeicalKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
-        request.put(RequestMapSpeicalKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        request.put("processVariable","processVariableValue");
+
 
         ProcessInstance processInstance = processCommandService.start(
             deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
@@ -149,9 +155,9 @@ public class FullMultiInstanceTest {
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
         //submitFormRequest.put("assigneeUserId","1");
-        submitFormRequest.put(RequestMapSpeicalKeyConstant.TASK_INSTANCE_TAG,"tag");
+        submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG,"tag");
         submitFormRequest.put("text","123");
-        //submitFormRequest.put(RequestMapSpeicalKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        //submitFormRequest.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
 
 
 
@@ -190,10 +196,31 @@ public class FullMultiInstanceTest {
         approveFormRequest.put("desc", "ok");
         approveFormRequest.put("text","789");
 
+        approveFormRequest.put("boolean",true);
+
+
+        approveFormRequest.put("double",11.22d);
+        approveFormRequest.put("float",22.33f);
+
+        approveFormRequest.put("long",5566L);
+        approveFormRequest.put("short",123);
+        approveFormRequest.put("integer",102400);
+        approveFormRequest.put("user",new TestUser("userName","passWord"));
+
+        List<VariableInstance> processInstanceVariableList = variableQueryService.findProcessInstanceVariableList(processInstance.getInstanceId());
+        Assert.assertNotNull(processInstanceVariableList);
+        Assert.assertEquals(1,processInstanceVariableList.size());
+
+
+
 
         //9.审批通过,驱动流程节点到自动执行任务环节
 
         taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
+
+        List<VariableInstance> processInstanceVariableList1 = variableQueryService.findList(processInstance.getInstanceId(),auditTaskInstance.getExecutionInstanceId());
+        Assert.assertNotNull(processInstanceVariableList1);
+
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());

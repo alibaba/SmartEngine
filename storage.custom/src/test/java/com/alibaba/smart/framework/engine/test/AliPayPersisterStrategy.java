@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.test;//package com.alibaba.smart.framework.engine.persister.util;
 
-import com.alibaba.smart.framework.engine.common.persister.PersisterStrategy;
+import com.alibaba.smart.framework.engine.configuration.PersisterStrategy;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;

@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.common.service;
+package com.alibaba.smart.framework.engine.configuration;
 
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by 高海军 帝奇 74394 on 2017 January  11:13.
  */
-public interface TaskAssigneeService {
+public interface TaskAssigneeDispatcher {
 
     List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity,Map<String,Object> request);
 

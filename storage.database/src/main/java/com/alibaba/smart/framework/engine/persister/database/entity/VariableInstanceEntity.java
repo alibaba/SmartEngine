@@ -9,18 +9,18 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class VariableInstanceEntity extends BaseProcessEntity {
 
-    private Long id;
-
-    private String type;
-
     private Long processInstanceId;
 
     private Long executionInstanceId;
 
-    private Long taskInstanceId;
+    private String fieldKey;
 
-    private String assigneeId;
+    private String fieldType;
 
-    private Integer priority;
+    private Long fieldLongValue;
+
+    private Double fieldDoubleValue;
+
+    private String fieldStringValue;
 
 }

@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
 
 /**
  * @author 高海军 帝奇
@@ -48,6 +49,8 @@ public interface SmartEngine {
     ExecutionQueryService getExecutionQueryService();
 
     TaskQueryService getTaskQueryService();
+
+    VariableQueryService getVariableQueryService();
 
 
     void init(ProcessEngineConfiguration processEngineConfiguration);

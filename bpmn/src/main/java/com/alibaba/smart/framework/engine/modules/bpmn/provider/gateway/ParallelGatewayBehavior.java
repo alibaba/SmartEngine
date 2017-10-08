@@ -39,6 +39,8 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             return false;
         }
 
+        //FIXME database 模式下是否有问题?
+
         context.setProcessInstance(CommonServiceHelper.insertAndPersist(context.getProcessInstance(), context.getRequest(), this.extensionPointRegistry));
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = super.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);

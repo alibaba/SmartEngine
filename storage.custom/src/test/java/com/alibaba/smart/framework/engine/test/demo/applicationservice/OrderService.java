@@ -1,7 +1,7 @@
 //package com.alibaba.smart.framework.engine.test.demo.applicationservice;
 //
 //import com.alibaba.smart.framework.engine.SmartEngine;
-//import com.alibaba.smart.framework.engine.common.persister.PersisterStrategy;
+//import com.alibaba.smart.framework.engine.configuration.PersisterStrategy;
 //import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 //import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 //import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;

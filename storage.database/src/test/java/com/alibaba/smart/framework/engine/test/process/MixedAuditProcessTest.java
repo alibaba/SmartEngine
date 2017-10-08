@@ -39,7 +39,7 @@ public class MixedAuditProcessTest {
 
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setTaskAssigneeService(new DefaultTaskAssigneeService());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
 
         SmartEngine smartEngine = new DefaultSmartEngine();
 

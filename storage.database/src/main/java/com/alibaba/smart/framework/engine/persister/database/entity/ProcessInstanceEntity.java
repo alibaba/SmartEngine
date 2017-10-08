@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class ProcessInstanceEntity extends BaseProcessEntity {
 
-    private Long id;
+    private String processDefinitionIdAndVersion;
 
     private  String startUserId;
 

@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.test.process;
 
-import com.alibaba.smart.framework.engine.common.processor.ExceptionProcessor;
+import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
