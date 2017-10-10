@@ -18,7 +18,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
     @Override
-    public ProcessInstance create( ExecutionContext executionContext) {
+    public ProcessInstance create(ExecutionContext executionContext) {
         PvmProcessDefinition pvmProcessDefinition = executionContext.getPvmProcessDefinition();
         DefaultProcessInstance defaultProcessInstance = new DefaultProcessInstance();
         IdGenerator idGenerator = executionContext.getProcessEngineConfiguration().getIdGenerator();
@@ -32,18 +32,18 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
         defaultProcessInstance.setProcessDefinitionVersion(pvmProcessDefinition.getVersion());
 
         Map<String, Object> request = executionContext.getRequest();
-        if(null != request){
+        if (null != request) {
             String startUserId = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID);
             defaultProcessInstance.setStartUserId(startUserId);
 
             String processDefinitionType = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE);
             defaultProcessInstance.setProcessDefinitionType(processDefinitionType);
+
+            String bizUniqueId = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_BIZ_UNIQUE_ID);
+            defaultProcessInstance.setBizUniqueId(bizUniqueId);
         }
 
         return defaultProcessInstance;
     }
-
-
-
 
 }

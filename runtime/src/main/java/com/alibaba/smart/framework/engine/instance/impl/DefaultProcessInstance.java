@@ -27,6 +27,10 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
 
 
     private  String startUserId;
+    /**
+     * 业务唯一标识
+     */
+    private String bizUniqueId;
 
     private Long parentInstanceId;
     private Long parentExecutionInstanceId;
@@ -54,6 +58,5 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     public List<ActivityInstance> getNewActivityInstances(){
         return activityInstances;
     }
-
 
 }
