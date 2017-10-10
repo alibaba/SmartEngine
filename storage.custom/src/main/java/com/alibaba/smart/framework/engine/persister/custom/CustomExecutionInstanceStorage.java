@@ -23,38 +23,38 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
     @Override
     public ExecutionInstance update(ExecutionInstance executionInstance) {
-        Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
-
-        boolean matched= false;
-
-        for (ProcessInstance processInstance : processInstances) {
-            List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
-
-            for (ActivityInstance activityInstance : activityInstances) {
-                List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
-                for (ExecutionInstance tempExecutionInstance : executionInstances) {
-                    if (null != tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(
-                        executionInstance.getInstanceId())) {
-
-                        //TODO check logic
-                        tempExecutionInstance = executionInstance;
-                        //activityInstance.setExecutionInstance(executionInstance);
-
-                        matched = true;
-                        break;
-
-                    }
-                }
-
-            }
-            if (matched) {
-                break;
-            }
-        }
-
-        if(!matched){
-            throw new EngineException("No ExecutionInstance found : "+executionInstance);
-        }
+        //Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
+        //
+        //boolean matched= false;
+        //
+        //for (ProcessInstance processInstance : processInstances) {
+        //    List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
+        //
+        //    for (ActivityInstance activityInstance : activityInstances) {
+        //        List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+        //        for (ExecutionInstance tempExecutionInstance : executionInstances) {
+        //            if (null != tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(
+        //                executionInstance.getInstanceId())) {
+        //
+        //                //TODO check logic
+        //                tempExecutionInstance = executionInstance;
+        //                //activityInstance.setExecutionInstance(executionInstance);
+        //
+        //                matched = true;
+        //                break;
+        //
+        //            }
+        //        }
+        //
+        //    }
+        //    if (matched) {
+        //        break;
+        //    }
+        //}
+        //
+        //if(!matched){
+        //    throw new EngineException("No ExecutionInstance found : "+executionInstance);
+        //}
 
         return executionInstance;
     }

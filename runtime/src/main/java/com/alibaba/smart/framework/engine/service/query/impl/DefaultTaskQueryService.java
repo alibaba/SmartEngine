@@ -90,6 +90,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
+
         return taskInstanceStorage.count(taskInstanceQueryParam);
     }
 }

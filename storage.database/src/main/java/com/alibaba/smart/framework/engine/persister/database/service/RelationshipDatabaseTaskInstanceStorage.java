@@ -34,7 +34,8 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     @Override
     public Integer count(TaskInstanceQueryParam taskInstanceQueryParam) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
-        return taskInstanceDAO.count(taskInstanceQueryParam);
+        Integer count = taskInstanceDAO.count(taskInstanceQueryParam);
+        return  count  == null? 0:count;
     }
 
     //@Override

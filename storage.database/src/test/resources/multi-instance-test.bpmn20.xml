@@ -13,8 +13,10 @@
                   alibaba:approvalRole="USER" alibaba:approvalUser="3400633088,3400620217"
                   alibaba:approvalType="anyone" smart:class = "com.alibaba.smart.framework.engine.test.process.delegation.UserTaskTestDelegation" >
 
+            <!--${nrOfCompletedInstances/nrOfInstances >= 0.6 }-->
+
             <multiInstanceLoopCharacteristics isSequential="false">
-                <completionCondition>${nrOfCompletedInstances/nrOfInstances >= 0.6 }</completionCondition>
+                <completionCondition><![CDATA[nrOfCompletedInstances >=1]]></completionCondition>
             </multiInstanceLoopCharacteristics>
         </userTask>
 

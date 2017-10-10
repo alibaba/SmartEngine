@@ -15,6 +15,7 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -68,6 +69,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
         if(null != variables){
             String tag = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG);
             taskInstance.setTag(tag);
+
+            String claimUserId = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID);
+            taskInstance.setClaimUserId(claimUserId);
         }
 
         taskInstanceStorage.update(taskInstance);
@@ -77,12 +81,19 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
     }
 
     @Override
-    public void complete(Long taskId, Long userId, Map<String, Object> variables) {
+    public void complete(Long taskId, String userId, Map<String, Object> variables) {
+        if(null != variables){
+            variables = new HashMap<String, Object>();
+        }
+        variables.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,userId);
 
+        //TODO check priviage
+
+        complete(  taskId, variables);
     }
 
     @Override
-    public void claim(Long taskId, Long userId, Map<String, Object> variables) {
+    public void claim(Long taskId, String userId, Map<String, Object> variables) {
 
     }
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -80,6 +81,8 @@ public class MultiInstanceTest {
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
         submitFormRequest.put("assigneeUserId","1");
+        submitFormRequest.put("action", "agree");
+        submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG,FullMultiInstanceTest.AGREE);
 
         //6.流程流转:处理 submitTask,完成任务申请.
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
@@ -97,7 +100,7 @@ public class MultiInstanceTest {
         Map<String, Object> approveFormRequest = new HashMap<String, Object>();
 
         //10.
-        approveFormRequest.put("approve", "agree");
+        approveFormRequest.put("action", "agree");
         approveFormRequest.put("desc", "ok");
 
         //9.审批通过,驱动流程节点到自动执行任务环节

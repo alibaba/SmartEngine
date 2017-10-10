@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
@@ -19,6 +20,7 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -99,9 +101,16 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     }
 
     @Override
-    public ProcessInstance start(Long deploymentInstanceId, Map<String, Object> request) {
+    public ProcessInstance start(Long deploymentInstanceId, String userId, Map<String, Object> request) {
         DeploymentQueryService deploymentQueryService = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getDeploymentQueryService();
         DeploymentInstance deploymentInstance = deploymentQueryService.findById(deploymentInstanceId);
+
+        if(null == request){
+            request = new HashMap<String, Object>();
+        }
+
+        request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,userId);
+
         ProcessInstance processInstance = this.start(deploymentInstance.getProcessDefinitionId(),
             deploymentInstance.getProcessDefinitionVersion(), request);
         return processInstance;
@@ -109,7 +118,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     @Override
     public ProcessInstance start(Long deploymentInstanceId) {
-        return start(deploymentInstanceId,null);
+        return start(deploymentInstanceId,null, null);
     }
 
     @Override

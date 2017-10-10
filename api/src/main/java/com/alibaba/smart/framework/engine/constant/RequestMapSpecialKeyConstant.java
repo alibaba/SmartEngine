@@ -15,6 +15,8 @@ public class RequestMapSpecialKeyConstant {
 
     public static final  String TASK_INSTANCE_TAG = $_SMART_ENGINE_$_PREFIX + "task_instance_tag";
 
+    public static final  String TASK_INSTANCE_CLAIM_USER_ID = $_SMART_ENGINE_$_PREFIX + "TASK_INSTANCE_CLAIM_USER_ID";
+
     public static final  String PROCESS_BIZ_UNIQUE_ID = $_SMART_ENGINE_$_PREFIX + "biz_unique_id";
 
 }
