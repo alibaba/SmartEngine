@@ -8,9 +8,9 @@ import java.util.Date;
  */
 public interface TaskAssigneeInstance extends LifeCycleInstance {
 
-    String getProcessDefinitionIdAndVersion();
-
-    void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
+    //String getProcessDefinitionIdAndVersion();
+    //
+    //void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
 
 
     //String getActivityId();

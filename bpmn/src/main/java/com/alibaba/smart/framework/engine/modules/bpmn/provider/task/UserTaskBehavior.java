@@ -2,9 +2,12 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.expression.evaluator.MvelExpressionEvaluator;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
@@ -27,6 +30,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
@@ -91,9 +95,9 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                     taskAssigneeInstance.setAssigneeId(taskAssigneeCandidateInstance.getAssigneeId());
                     taskAssigneeInstance.setAssigneeType(taskAssigneeCandidateInstance.getAssigneeType());
 
-                    taskAssigneeInstance.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
-                    taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
-                    taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
+                    //taskAssigneeInstance.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
+                    //taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
+                    //taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
 
                     taskAssigneeInstanceList.add(taskAssigneeInstance);
 
@@ -126,9 +130,9 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
         taskAssigneeInstance.setAssigneeType(taskAssigneeCandidateInstance.getAssigneeType());
 
-        taskAssigneeInstance.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
-        taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
-        taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
+        //taskAssigneeInstance.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
+        //taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
+        //taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
 
         taskAssigneeInstanceList.add(taskAssigneeInstance);
         return taskAssigneeInstanceList;
@@ -170,12 +174,17 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
     @Override
     public boolean execute(ExecutionContext context) {
+        //重要. 在这个方法里面统一完成了当前 ExecutionInstance 的持久化. 所以后面只需要关注处理好本领域相关的事情.
         beforeExecute(context);
 
 
         UserTask userTask = this.getModel();
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskAssigneeDispatcher taskAssigneeDispatcher = context.getProcessEngineConfiguration().getTaskAssigneeDispatcher();
+        
+        SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
+        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
 
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
         TaskInstanceStorage taskInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
@@ -194,62 +203,130 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             List<TaskInstance> taskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam);
 
 
-            if(userTask.getProperties().get("approvalType").equals("anyone")){
+            String expressionContent = multiInstanceLoopCharacteristics.getCompletionCondition().getExpressionContent();
 
-                //mark done other
-                for (TaskInstance taskInstance : taskInstanceList) {
-                    if(taskInstance.getExecutionInstanceId().equals(executionInstance.getInstanceId())){
-                        continue;
-                    }
-
-                    // 这里产生了db 读写访问
-                    taskInstance.setStatus(TaskInstanceConstant.COMPLETED);
-                    Date currentDate = DateUtil.getCurrentDate();
-                    taskInstance.setCompleteTime(currentDate);
-                    taskInstanceStorage.update(taskInstance);
-
-                    ExecutionInstance executionInstance1=   executionInstanceStorage.find(taskInstance.getExecutionInstanceId());
-
-                    MarkDoneUtil.markDone(executionInstance1,executionInstanceStorage);
-
-                }
+            Integer completedAndPassedThroughTaskInstanceNumber = taskAssigneeDispatcher.acquireCompletedAndPassedThroughTaskInstanceNumber(executionInstance.getProcessInstanceId(),executionInstance.getActivityInstanceId(),context.getRequest(),smartEngine);
 
 
+            Map<String, Object> vars = new HashMap<String, Object>(4);
+            vars.put("nrOfCompletedInstances",completedAndPassedThroughTaskInstanceNumber);
+            vars.put("nrOfInstances",taskInstanceList.size());
+            boolean canPassThough = MvelExpressionEvaluator.staticEval(expressionContent,vars);
 
-                return false;
+            boolean needPause = !canPassThough;
 
-            }else if(userTask.getProperties().get("approvalType").equals("all")){
 
-                // Am I the last one? yes return false,no return true.
+            for (TaskInstance taskInstance : taskInstanceList) {
 
-                boolean allWeDone = true;
-                for (TaskInstance taskInstance : taskInstanceList) {
+                            if(taskInstance.getExecutionInstanceId().equals(executionInstance.getInstanceId())){
+                                continue;
+                            }
 
-                    if(!TaskInstanceConstant.COMPLETED.equals(taskInstance.getStatus())){
-                        allWeDone = false;
-                        break;
-                    }
-                }
+                            if(TaskInstanceConstant.COMPLETED .equals(taskInstance.getStatus())){
+                                continue;
+                            }
 
-                if(allWeDone){
-                    return false;
-                }else {
-                    return true;
-                }
+                            // 这里产生了db 读写访问
+                            taskInstance.setStatus(TaskInstanceConstant.COMPLETED);
+                            Date currentDate = DateUtil.getCurrentDate();
+                            taskInstance.setCompleteTime(currentDate);
+                            taskInstanceStorage.update(taskInstance);
 
-            } else {
-                throw new EngineException("should have ONE solution at least.");
+                            ExecutionInstance executionInstance1=   executionInstanceStorage.find(taskInstance.getExecutionInstanceId());
+
+                            MarkDoneUtil.markDone(executionInstance1,executionInstanceStorage);
             }
+
+            return needPause;
+
+
+
+
+
+
+
+            //// TODO 不够通用,需要扩展
+            //if(userTask.getProperties().get("approvalType").equals("anyone") ){
+            //
+            //    //任何一个任务通过,那么将其他任务取消掉.
+            //    if(taskAssigneeDispatcher.canPassThrough(userTask,context.getRequest())){
+            //        //mark done other
+            //            for (TaskInstance taskInstance : taskInstanceList) {
+            //
+            //            if(taskInstance.getExecutionInstanceId().equals(executionInstance.getInstanceId())){
+            //                continue;
+            //            }
+            //
+            //            // 这里产生了db 读写访问
+            //            taskInstance.setStatus(TaskInstanceConstant.COMPLETED);
+            //            Date currentDate = DateUtil.getCurrentDate();
+            //            taskInstance.setCompleteTime(currentDate);
+            //            taskInstanceStorage.update(taskInstance);
+            //
+            //            ExecutionInstance executionInstance1=   executionInstanceStorage.find(taskInstance.getExecutionInstanceId());
+            //
+            //            MarkDoneUtil.markDone(executionInstance1,executionInstanceStorage);
+            //
+            //        }
+            //
+            //        needPause = false;
+            //    } else {
+            //        //所有任务都未通过,那么将流程实例关掉,其他活跃的实例,任务也都关闭掉. 并行网关下可能由其他活跃的实例,所以需要全局关闭.
+            //        boolean allTaskInstanceCompleted = isAllTaskInstanceCompleted(taskInstanceList);
+            //        if(allTaskInstanceCompleted){
+            //            processCommandService.abort(executionInstance.getProcessInstanceId());
+            //            needPause = true;
+            //
+            //        }else{
+            //            needPause = true;
+            //
+            //        }
+            //    }
+            //
+            //
+            //
+            //
+            //    return needPause;
+            //
+            //} else if(userTask.getProperties().get("approvalType").equals("all")){
+            //
+            //    // Am I the last one? yes return false,no return true.
+            //
+            //    boolean allWeDone = isAllTaskInstanceCompleted(taskInstanceList);
+            //
+            //    if(allWeDone){
+            //        return false;
+            //    }else {
+            //        return true;
+            //    }
+            //
+            //} else {
+            //    throw new EngineException("should have ONE solution at least.");
+            //}
+
+
+
+
+
+
+
+
         } else{
             return false;
         }
 
     }
 
-    private void updateExecution(ExecutionInstanceStorage executionInstanceStorage, TaskInstance taskInstance) {
-        ExecutionInstance executionInstance=   executionInstanceStorage.find(taskInstance.getExecutionInstanceId());
-        executionInstance.setActive(false);
-        executionInstance.setCompleteTime(DateUtil.getCurrentDate());
-        executionInstanceStorage.update(executionInstance);
+    private boolean isAllTaskInstanceCompleted(List<TaskInstance> taskInstanceList) {
+        boolean allWeDone = true;
+        for (TaskInstance taskInstance : taskInstanceList) {
+
+            if(!TaskInstanceConstant.COMPLETED.equals(taskInstance.getStatus())){
+                allWeDone = false;
+                break;
+            }
+        }
+        return allWeDone;
     }
+
 }

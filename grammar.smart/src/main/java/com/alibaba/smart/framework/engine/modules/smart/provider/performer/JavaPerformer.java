@@ -41,8 +41,7 @@ public class JavaPerformer implements Performer {
             JavaDelegation javaDelegation = (JavaDelegation)delegation;
             return javaDelegation.execute(context);
 
-        }
-        if (delegation instanceof TccDelegation) {
+        }else if (delegation instanceof TccDelegation) {
             //TODO TCC只实现了try,rewview by ettear
             TccDelegation tccDelegation = (TccDelegation)delegation;
 

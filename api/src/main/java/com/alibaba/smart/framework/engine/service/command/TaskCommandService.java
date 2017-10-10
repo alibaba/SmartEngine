@@ -12,8 +12,8 @@ public interface TaskCommandService {
 
     void complete(Long taskId,Map<String, Object> variables);
 
-    void complete(Long taskId,Long userId, Map<String, Object> variables);
+    void complete(Long taskId, String userId, Map<String, Object> variables);
 
-    void claim(Long taskId,Long userId, Map<String, Object> variables);
+    void claim(Long taskId, String userId, Map<String, Object> variables);
 
 }

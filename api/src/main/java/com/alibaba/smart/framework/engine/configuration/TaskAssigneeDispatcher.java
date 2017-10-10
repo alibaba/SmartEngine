@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.configuration;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
@@ -15,4 +16,7 @@ public interface TaskAssigneeDispatcher {
 
     List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity,Map<String,Object> request);
 
+    boolean canPassThrough(Activity activity,Map<String,Object> request);
+
+    Integer acquireCompletedAndPassedThroughTaskInstanceNumber(Long processInstanceId, Long activityInstanceId,Map<String, Object> request,SmartEngine smartEngine);
 }

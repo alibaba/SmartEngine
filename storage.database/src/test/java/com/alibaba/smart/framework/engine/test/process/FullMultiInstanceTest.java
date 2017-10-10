@@ -43,6 +43,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 //@Transactional
 public class FullMultiInstanceTest {
+    public static final String AGREE = "agee";
     public static List<Object> trace=new ArrayList<Object>();
 
     @Test
@@ -144,8 +145,9 @@ public class FullMultiInstanceTest {
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
         //submitFormRequest.put("assigneeUserId","1");
-        submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG,"tag");
+        submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG,AGREE);
         submitFormRequest.put("text","123");
+
         //submitFormRequest.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
 
 
@@ -160,13 +162,13 @@ public class FullMultiInstanceTest {
         taskInstanceQueryParam = new TaskInstanceQueryParam();
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.COMPLETED);
         taskInstanceQueryParam.setAssigneeUserId("1");
-        taskInstanceQueryParam.setTag("tag");
+        taskInstanceQueryParam.setTag(AGREE);
         taskInstanceQueryParam.setProcessDefinitionType("type");
         taskInstanceQueryParam.setProcessInstanceId(processInstance.getInstanceId());
 
         assertedTaskInstanceList=   taskQueryService.findList(taskInstanceQueryParam);
         Assert.assertEquals(1,assertedTaskInstanceList.size());
-        Assert.assertEquals("tag",assertedTaskInstanceList.get(0).getTag());
+        Assert.assertEquals(AGREE,assertedTaskInstanceList.get(0).getTag());
 
 
         // 驱动 ReceiverTask
@@ -181,7 +183,7 @@ public class FullMultiInstanceTest {
         Map<String, Object> approveFormRequest = new HashMap<String, Object>();
 
         //10.
-        approveFormRequest.put("approve", "agree");
+        approveFormRequest.put("action", AGREE);
         approveFormRequest.put("desc", "ok");
         approveFormRequest.put("text","789");
 

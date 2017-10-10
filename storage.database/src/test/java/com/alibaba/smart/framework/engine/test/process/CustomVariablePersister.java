@@ -17,27 +17,25 @@ import org.slf4j.LoggerFactory;
 public class CustomVariablePersister implements VariablePersister {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomVariablePersister.class);
 
-
     private static  Set<String> hashSet = new HashSet();
 
    static {
 
        try {
-           RequestMapSpecialKeyConstant constant =  RequestMapSpecialKeyConstant.class.newInstance();
            Field[] declaredFields = RequestMapSpecialKeyConstant.class.getDeclaredFields();
            for (Field declaredField : declaredFields) {
                String key= (String)declaredField.get(declaredField.getName());
                hashSet.add(key);
            }
-       } catch (InstantiationException e) {
-           LOGGER.error(e.getMessage(),e);
        } catch (IllegalAccessException e) {
            LOGGER.error(e.getMessage(),e);
        }
 
         //do something else.
-       //hashSet.add("text");
+       hashSet.add("text");
    }
+
+
 
     @Override
     public boolean isPersisteVariableInstanceEnabled() {

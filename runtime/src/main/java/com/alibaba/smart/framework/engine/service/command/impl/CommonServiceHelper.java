@@ -155,6 +155,7 @@ public abstract  class CommonServiceHelper {
                 if(null != taskAssigneeInstances){
                     for (TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstances) {
                         taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
+                        taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
                         taskAssigneeStorage.insert(taskAssigneeInstance);
                     }
                 }

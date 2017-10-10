@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
@@ -36,6 +37,18 @@ public class DefaultTaskAssigneeDispatcher implements TaskAssigneeDispatcher {
         taskAssigneeCandidateInstanceList.add(taskAssigneeCandidateInstance2);
 
         return taskAssigneeCandidateInstanceList;
+    }
+
+    @Override
+    public boolean canPassThrough(Activity activity, Map<String, Object> request) {
+        return false;
+    }
+
+    @Override
+    public Integer acquireCompletedAndPassedThroughTaskInstanceNumber(Long processInstanceId, Long activityInstanceId,
+                                                                      Map<String, Object> request,
+                                                                      SmartEngine smartEngine) {
+        return null;
     }
 
 }
