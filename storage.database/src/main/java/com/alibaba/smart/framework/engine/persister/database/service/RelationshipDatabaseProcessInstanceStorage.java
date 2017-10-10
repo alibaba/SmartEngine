@@ -56,6 +56,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstanceEntityToBePersisted.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
         processInstanceEntityToBePersisted.setStartUserId(processInstance.getStartUserId());
         processInstanceEntityToBePersisted.setProcessDefinitionType(processInstance.getProcessDefinitionType());
+        processInstanceEntityToBePersisted.setBizUniqueId(processInstance.getBizUniqueId());
         return processInstanceEntityToBePersisted;
     }
 
@@ -66,6 +67,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstance.setInstanceId(processInstanceEntity1.getId());
         processInstance.setStartTime(processInstanceEntity1.getGmtCreate());
         processInstance.setProcessDefinitionType(processInstanceEntity1.getProcessDefinitionType());
+        processInstance.setBizUniqueId(processInstanceEntity1.getBizUniqueId());
     }
 
     private ProcessInstance buildProcessInstanceFromEntity(ProcessInstanceEntity processInstanceEntity) {

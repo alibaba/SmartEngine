@@ -19,5 +19,8 @@ public class ProcessInstanceEntity extends BaseProcessEntity {
 
     private String processDefinitionType;
 
+    private String bizUniqueId;
+
+
 
 }
