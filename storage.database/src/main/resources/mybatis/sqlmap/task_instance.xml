@@ -45,21 +45,7 @@
         from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
         <include refid="where_condition"/>
 
-        <choose>
-            <when test="assigneeUserId != null and assigneeGroupIdList != null">
-                AND (      (assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user') or (assignee.assignee_id in
-                <foreach item="item" index="index" collection="assigneeGroupIdList" open="(" separator="," close=")" >
-                    #{item}
-                </foreach>
-                and assignee.assignee_type = 'group')    )
-            </when>
-            <when test="assigneeUserId != null">
-                and assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user'
-            </when>
-            <otherwise>
-
-            </otherwise>
-        </choose>
+        <include refid="task_assignee_choose_sql"/>
 
         order by task.gmt_modified desc
         <if test="pageOffSide != null and pageSize != null">limit #{pageOffSide},#{pageSize}</if>
@@ -72,10 +58,18 @@
         from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
         <include refid="where_condition"/>
 
+        <include refid="task_assignee_choose_sql"/>
+
+        order by task.gmt_modified desc
+        <if test="pageOffSide != null and pageSize != null">limit #{pageOffSide},#{pageSize}</if>
+
+    </select>
+    
+    <sql id="task_assignee_choose_sql">
         <choose>
             <when test="assigneeUserId != null and assigneeGroupIdList != null">
-                AND (      (assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user') or (assignee.assignee_id in
-                <foreach item="item" index="index" collection="assigneeGroupIdList">
+                and (      (assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user') or (assignee.assignee_id in
+                <foreach item="item" index="index" separator="," open="(" close=")"  collection="assigneeGroupIdList">
                     #{item}
                 </foreach>
                 and assignee.assignee_type = 'group')    )
@@ -84,16 +78,20 @@
                 and assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user'
             </when>
 
+            <when test="assigneeGroupIdList != null">
+                and assignee.assignee_id in
+                <foreach item="item" index="index" separator="," open="(" close=")"  collection="assigneeGroupIdList">
+                    #{item}
+                </foreach>
+                and assignee.assignee_type = 'group'
+            </when>
+
             <otherwise>
 
             </otherwise>
         </choose>
 
-
-        order by task.gmt_modified desc
-        <if test="pageOffSide != null and pageSize != null">limit #{pageOffSide},#{pageSize}</if>
-
-    </select>
+    </sql>
 
     <sql id="where_condition">
         <if test="status != null">  and  task.status = #{status} </if>
