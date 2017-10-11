@@ -215,6 +215,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
             boolean needPause = !canPassThough;
 
+            //针对 all 模式，可以做 fail fast。
+
 
             for (TaskInstance taskInstance : taskInstanceList) {
 

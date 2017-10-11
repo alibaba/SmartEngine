@@ -40,6 +40,7 @@ public class DefaultTaskAssigneeDispatcher implements TaskAssigneeDispatcher {
         taskAssigneeCandidateInstance2.setAssigneeType(AssigneeTypeConstant.USER);
         taskAssigneeCandidateInstanceList.add(taskAssigneeCandidateInstance2);
 
+
         return taskAssigneeCandidateInstanceList;
     }
 

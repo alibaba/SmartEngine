@@ -1,6 +1,8 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task;
 
 import com.alibaba.smart.framework.engine.constant.BpmnNameSpaceConstant;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTask;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

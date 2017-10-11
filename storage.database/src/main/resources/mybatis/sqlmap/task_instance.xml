@@ -60,7 +60,6 @@
 
         <include refid="task_assignee_choose_sql"/>
 
-        order by task.gmt_modified desc
         <if test="pageOffSide != null and pageSize != null">limit #{pageOffSide},#{pageSize}</if>
 
     </select>
