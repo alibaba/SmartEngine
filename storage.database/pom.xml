@@ -146,5 +146,11 @@
 
         <!-- spring AOP 包 end -->
 
+        <dependency>
+            <groupId>com.taobao.metaq.final</groupId>
+            <artifactId>metaq-client</artifactId>
+        </dependency>
+
+
     </dependencies>
 </project>

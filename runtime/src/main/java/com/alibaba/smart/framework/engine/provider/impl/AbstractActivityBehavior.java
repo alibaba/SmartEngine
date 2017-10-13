@@ -87,6 +87,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     @Override
     public boolean execute(ExecutionContext context) {
+        //TODO 重新看下。
         beforeExecute(context);
         return false;
     }

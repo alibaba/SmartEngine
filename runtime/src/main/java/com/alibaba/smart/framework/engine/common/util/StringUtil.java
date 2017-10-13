@@ -19,5 +19,9 @@ public abstract  class StringUtil {
 
         return false;
     }
+
+    public static boolean isNotEmpty(String value) {
+        return !isEmpty(value);
+    }
 }
 

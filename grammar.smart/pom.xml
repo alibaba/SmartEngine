@@ -26,6 +26,10 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.taobao.metaq.final</groupId>
+            <artifactId>metaq-client</artifactId>
+        </dependency>
 
     </dependencies>
 </project>

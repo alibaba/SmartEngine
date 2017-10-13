@@ -14,6 +14,7 @@ public class DefaultDeploymentInstance extends  AbstractLifeCycleInstance implem
     private  String processDefinitionId;
     private  String processDefinitionVersion;
     private  String processDefinitionType;
+    private  String processDefinitionCode;
     private  String processDefinitionName;
     private  String processDefinitionDesc;
     private  String processDefinitionContent;

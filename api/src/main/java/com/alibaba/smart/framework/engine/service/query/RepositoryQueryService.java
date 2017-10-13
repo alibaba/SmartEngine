@@ -13,4 +13,7 @@ public interface RepositoryQueryService {
 
     ProcessDefinition getCachedProcessDefinition(String processDefinitionId, String version);
 
+    ProcessDefinition getCachedProcessDefinition(String processDefinitionIdAndversion);
+
+
 }
