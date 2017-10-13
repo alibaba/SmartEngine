@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
@@ -11,6 +10,7 @@ import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
+import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
 
@@ -31,6 +31,8 @@ public interface SmartEngine {
     //ExtensionPointRegistry getExtensionPointRegistry();
 
     RepositoryCommandService getRepositoryCommandService();
+
+    RepositoryQueryService getRepositoryQueryService();
 
     DeploymentCommandService getDeploymentCommandService();
 

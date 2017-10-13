@@ -13,6 +13,7 @@ import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
+import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
 
@@ -49,6 +50,11 @@ public class DefaultSmartEngine implements SmartEngine {
     @Override
     public RepositoryCommandService getRepositoryCommandService() {
         return this.extensionPointRegistry.getExtensionPoint(RepositoryCommandService.class);
+    }
+
+    @Override
+    public RepositoryQueryService getRepositoryQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(RepositoryQueryService.class);
     }
 
     @Override
