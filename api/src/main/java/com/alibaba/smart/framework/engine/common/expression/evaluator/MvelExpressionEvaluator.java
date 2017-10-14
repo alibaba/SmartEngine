@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
+
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  15:51.
  */
@@ -49,6 +51,11 @@ public class MvelExpressionEvaluator implements ExpressionEvaluator {
      */
     private static Serializable compileExp(String expression) {
         String processedExp = expression.trim();
+
+        // 兼容Activiti ${nrOfCompletedInstances >= 1} 这种 JUEL 表达式;通过下面的调用去掉首尾.
+        processedExp =  StringUtil.removeStart(processedExp.trim(),"${");
+        processedExp =  StringUtil.removeEnd(processedExp.trim(),"}");
+
 
         //首先从缓存里取，取不到则新编译。
         Serializable compiledExp = expCache.get(processedExp);

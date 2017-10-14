@@ -124,7 +124,8 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
 
 
         List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"1");
-        Assert.assertEquals(0,assertedTaskInstanceList.size());
+        Assert.assertEquals(1,assertedTaskInstanceList.size());
+        Assert.assertEquals("userTask1",assertedTaskInstanceList.get(0).getProcessDefinitionActivityId());
 
 
         List<ExecutionInstance> activeExecutions = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
@@ -141,64 +142,32 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
 
         //至此,上面3个节点都应该被完成了. 此时会进入新的会签节点.
         submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
-        Assert.assertEquals(1,submitTaskInstanceList.size());
-        Assert.assertEquals("UserTask_1hk2kee",submitTaskInstanceList.get(0).getProcessDefinitionActivityId());
+        Assert.assertEquals(3,submitTaskInstanceList.size());
+        Assert.assertEquals("userTask2",submitTaskInstanceList.get(0).getProcessDefinitionActivityId());
 
-        taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
+        Order order = new Order();
+        order.setYzje(101L);
+        submitFormRequest.put("order",order);
+        taskCommandService.complete(submitTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
+
+        //根据网关选择,此时会进入新的会签节点.
+        submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
+        Assert.assertEquals(3,submitTaskInstanceList.size());
+        Assert.assertEquals("userTask3",submitTaskInstanceList.get(0).getProcessDefinitionActivityId());
+
+        taskCommandService.complete(submitTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
 
         //此时会进入新的会签节点.
         submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
-        Assert.assertEquals(1,submitTaskInstanceList.size());
-        Assert.assertEquals("UserTask_060k64w",submitTaskInstanceList.get(0).getProcessDefinitionActivityId());
+        Assert.assertEquals(3,submitTaskInstanceList.size());
+        Assert.assertEquals("UserTask_0ixdrmt",submitTaskInstanceList.get(0).getProcessDefinitionActivityId());
 
-
-
-
-        //7. 获取当前待处理任务.
-        List<TaskInstance>   auditTaskInstanceList = taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
-        TaskInstance auditTaskInstance = auditTaskInstanceList.get(0);
-        Map<String, Object> approveFormRequest = new HashMap<String, Object>();
-
-        //10.
-        approveFormRequest.put("action", AGREE);
-        approveFormRequest.put("desc", "ok");
-        approveFormRequest.put("text","789");
-
-        approveFormRequest.put("boolean",true);
-
-
-        approveFormRequest.put("double",11.22d);
-        approveFormRequest.put("float",22.33f);
-
-        approveFormRequest.put("long",5566L);
-        approveFormRequest.put("short",123);
-        approveFormRequest.put("integer",102400);
-        approveFormRequest.put("user",new TestUser("userName","passWord"));
-
-        List<VariableInstance> processInstanceVariableList = variableQueryService.findProcessInstanceVariableList(processInstance.getInstanceId());
-        Assert.assertNotNull(processInstanceVariableList);
-        Assert.assertEquals(1,processInstanceVariableList.size());
-
-
-
-
-        //9.审批通过,驱动流程节点到自动执行任务环节
-
-        taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
-
-        List<VariableInstance> processInstanceVariableList1 = variableQueryService.findList(processInstance.getInstanceId(),auditTaskInstance.getExecutionInstanceId());
-        Assert.assertNotNull(processInstanceVariableList1);
+        taskCommandService.complete(submitTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
 
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
-        ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
+        ProcessInstance finalProcessInstance = processQueryService.findById(processInstance.getInstanceId());
         Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
-
-        Assert.assertEquals(2,trace.size());
-
-        Assert.assertEquals("123",trace.get(0));
-        Assert.assertEquals("789",trace.get(1));
-
     }
 
 

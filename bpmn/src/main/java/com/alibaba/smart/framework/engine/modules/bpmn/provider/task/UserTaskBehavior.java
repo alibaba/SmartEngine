@@ -223,6 +223,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 // 不是 all 模式
                 String passedConditionExpressionContent = completionCondition.getExpressionContent();
 
+
+
                 Number passedThresholdValue=  MvelExpressionEvaluator.getRightValueForBinaryOperationExpression(passedConditionExpressionContent);
 
                 Double rejectedThresholdValue= 1- passedThresholdValue.doubleValue();

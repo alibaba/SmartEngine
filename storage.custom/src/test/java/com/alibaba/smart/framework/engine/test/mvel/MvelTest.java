@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.mvel2.MVEL;
 import org.mvel2.ast.ASTNode;
 import org.mvel2.ast.BinaryOperation;
+import org.mvel2.compiler.CompiledExpression;
 import org.mvel2.compiler.ExecutableAccessor;
 
 import static org.junit.Assert.assertEquals;
@@ -49,4 +50,12 @@ public class MvelTest {
     }
 
 
+    @Test
+    public void test1() throws Exception {
+        String conditionText = "${nrOfCompletedInstances >= 1} ".trim();
+        Serializable serializable =  MVEL.compileExpression(conditionText);
+
+        CompiledExpression executableAccessor = (CompiledExpression)serializable;
+        Assert.assertNotNull(executableAccessor);
+    }
 }
