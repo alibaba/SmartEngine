@@ -62,7 +62,7 @@ public class AliPayPersisterStrategy implements PersisterStrategy {
 
             ProcessInstance processInstance= InstanceSerializerFacade.deserializeAll(str);
 
-            List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
+            List<ActivityInstance> activityInstances =  processInstance.getActivityInstances();
 
 
             if(null == activityInstances ||activityInstances.isEmpty() ){

@@ -20,8 +20,8 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.model.assembly.CompletionCondition;
-import com.alibaba.smart.framework.engine.model.assembly.MultiInstanceLoopCharacteristics;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -42,21 +42,22 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         super(extensionPointRegistry, runtimeActivity);
     }
 
-    @Override
     protected void beforeEnter(ExecutionContext context) {
         ProcessInstance processInstance = context.getProcessInstance();
 
         UserTask userTask = this.getModel();
 
-        ActivityInstance activityInstance = this.activityInstanceFactory.create(userTask, context);
-        processInstance.addNewActivityInstance(activityInstance);
-        context.setActivityInstance(activityInstance);
+
 
 
 
         MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = userTask
             .getMultiInstanceLoopCharacteristics();
-        if(null!= multiInstanceLoopCharacteristics)  {
+        if(null!= multiInstanceLoopCharacteristics)  {//TODO ettear move to MultiInstanceLoopCharacteristicsBehavior
+            ActivityInstance activityInstance = this.activityInstanceFactory.create(userTask, context);
+            processInstance.addActivityInstance(activityInstance);
+            context.setActivityInstance(activityInstance);
+
             List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = getTaskAssigneeCandidateInstances(
                 context, userTask);
 
@@ -81,6 +82,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
 
         } else {
+            ActivityInstance activityInstance=context.getActivityInstance();
 
             List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = getTaskAssigneeCandidateInstances(
                 context, userTask);
@@ -170,7 +172,6 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
     @Override
     public boolean enter(ExecutionContext context) {
         beforeEnter(context);
-
         return true;
     }
 

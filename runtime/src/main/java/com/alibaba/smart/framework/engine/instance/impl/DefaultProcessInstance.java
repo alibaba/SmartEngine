@@ -50,12 +50,12 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
 
 
     @Override
-    public void addNewActivityInstance(ActivityInstance activityInstance) {
+    public void addActivityInstance(ActivityInstance activityInstance) {
         this.activityInstances.add(activityInstance);
     }
 
     @Override
-    public List<ActivityInstance> getNewActivityInstances(){
+    public List<ActivityInstance> getActivityInstances(){
         return activityInstances;
     }
 

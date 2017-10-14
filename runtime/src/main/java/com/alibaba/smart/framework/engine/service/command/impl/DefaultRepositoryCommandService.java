@@ -23,16 +23,19 @@ import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.model.assembly.Extensions;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
+import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.provider.Invoker;
 import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
+import com.alibaba.smart.framework.engine.provider.factory.ExecutePolicyProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.InvokerProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
@@ -74,6 +77,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     private AssemblyParserExtensionPoint assemblyParserExtensionPoint;
     private ProviderFactoryExtensionPoint providerFactoryExtensionPoint;
     private ProcessDefinitionContainer processContainer;
+    private ExecutePolicyBehavior defaultExecutePolicyBehavior;
 
     public DefaultRepositoryCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -126,6 +130,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         this.assemblyParserExtensionPoint = extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
         this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
         this.processContainer = extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
+        this.defaultExecutePolicyBehavior=extensionPointRegistry.getExtensionPoint(ExecutePolicyBehavior.class);
     }
 
     @Override
@@ -319,13 +324,29 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
                 this.initElement(runtimeActivity);
 
-                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModel().getClass());
+                Activity activity=runtimeActivity.getModel();
+                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(activity.getClass());
 
                 if (null == providerFactory) {
-                    throw new RuntimeException("No factory found for " + runtimeActivity.getModel().getClass());
+                    throw new RuntimeException("No factory found for " + activity.getClass());
                 }
 
                 runtimeActivity.setBehavior(providerFactory.createActivityProvider(runtimeActivity));
+
+                ExecutePolicy executePolicy=activity.getExecutePolicy();
+                ExecutePolicyBehavior executePolicyBehavior=null;
+                if(null!=executePolicy) {
+                    ExecutePolicyProviderFactory executePolicyProviderFactory
+                        = (ExecutePolicyProviderFactory)this.providerFactoryExtensionPoint.getProviderFactory(
+                        activity.getExecutePolicy().getClass());
+                    if(null!=executePolicyProviderFactory){
+                        executePolicyBehavior=executePolicyProviderFactory.createExecutePolicyBehavior(executePolicy);
+                    }
+                }
+                if(null==executePolicyBehavior){
+                    executePolicyBehavior=this.defaultExecutePolicyBehavior;
+                }
+                runtimeActivity.setExecutePolicyBehavior(executePolicyBehavior);
             }
 
             pvmProcessDefinition.setActivities(pvmActivityMap);

@@ -6,12 +6,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.model.assembly.CompletionCondition;
-import com.alibaba.smart.framework.engine.model.assembly.Extension;
-import com.alibaba.smart.framework.engine.model.assembly.MultiInstanceLoopCharacteristics;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.ExtensionElements;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;

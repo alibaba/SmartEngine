@@ -44,6 +44,8 @@ CREATE TABLE `se_execution_instance` (
   `process_definition_id_and_version` varchar(255) NOT NULL COMMENT '流程定义id和 version',
   `process_definition_activity_id` varchar(255) NOT NULL COMMENT '流程定义里面定义的流程节点(活动)id',
   `activity_instance_id` bigint(20) unsigned NOT NULL COMMENT '活动实例id',
+  -- `income_transition_id` varchar(255) DEFAULT NULL COMMENT '流程定义里面TransitionId,当前Instance的来源',
+  -- `income_activity_instance_id` bigint(20) unsigned DEFAULT NULL COMMENT '当前Instance的来源Activity实例',
   `active` tinyint(4) NOT NULL COMMENT '枚举 1:活跃 0:非活跃',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=331459 DEFAULT CHARSET=utf8 COMMENT='流程引擎-执行实例'

@@ -29,9 +29,6 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
 
     @Override
     public boolean enter(ExecutionContext context) {
-        beforeEnter(context);
-
-
         CallActivity callActivity = this.getModel();
         String processDefinitionId =  callActivity.getCalledElement();
         String processDefinitionVersion = callActivity.getCalledElementVersion();

@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression;
 
 import com.alibaba.smart.framework.engine.model.assembly.Condition;
-import com.alibaba.smart.framework.engine.constant.BpmnNameSpaceConstant;
+import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

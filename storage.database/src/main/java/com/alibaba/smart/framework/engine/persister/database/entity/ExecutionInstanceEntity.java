@@ -18,5 +18,9 @@ public class ExecutionInstanceEntity extends BaseProcessEntity {
 
     private Long activityInstanceId;
 
+    private String incomeTransitionId;
+
+    private Long incomeActivityInstanceId;
+
     private boolean active;
 }

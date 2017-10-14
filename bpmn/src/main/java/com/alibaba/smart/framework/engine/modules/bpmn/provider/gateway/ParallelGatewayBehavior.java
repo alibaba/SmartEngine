@@ -27,9 +27,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
     @Override
     public boolean enter(ExecutionContext context) {
-        beforeEnter(context);
-
-
         ParallelGateway parallelGateway = this.getModel();
         PvmActivity pvmActivity = this.getPvmActivity();
 

@@ -111,7 +111,7 @@ public abstract  class CommonServiceHelper {
         TaskAssigneeStorage taskAssigneeStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
 
 
-        List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
+        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
         for (ActivityInstance activityInstance : activityInstances) {
 
             //TUNE 这里重新赋值了,id还是统一由数据库分配.

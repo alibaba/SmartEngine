@@ -21,7 +21,7 @@ public class CreateOrderDelegation implements TccDelegation{
 
     @Override
     public TccResult tryExecute(ExecutionContext executionContext) {
-        List<ActivityInstance> activityInstances = executionContext.getProcessInstance().getNewActivityInstances();
+        List<ActivityInstance> activityInstances = executionContext.getProcessInstance().getActivityInstances();
         LOGGER.info("TCC executing: invoke some hsf code stuff" +executionContext.getRequest());
         counter.addAndGet(1);
         return TccResult.buildSucessfulResult(null);

@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.constant;
+package com.alibaba.smart.framework.engine.modules.bpmn.constant;
 
 public interface BpmnNameSpaceConstant {
 

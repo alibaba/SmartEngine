@@ -13,11 +13,6 @@ public class DefaultTransitionInstanceFactory implements TransitionInstanceFacto
 
     @Override
     public TransitionInstance create(ExecutionContext executionContext) {
-        DefaultTransitionInstance defaultTransitionInstance = new DefaultTransitionInstance();
-
-        IdGenerator idGenerator = executionContext.getProcessEngineConfiguration().getIdGenerator();
-
-        defaultTransitionInstance.setInstanceId(idGenerator.getId());
-        return defaultTransitionInstance;
+        return new DefaultTransitionInstance();
     }
 }

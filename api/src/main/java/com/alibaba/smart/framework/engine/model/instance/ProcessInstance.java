@@ -66,9 +66,9 @@ public interface ProcessInstance extends LifeCycleInstance {
 //    void setParentActivityInstanceId(Long parentActivityInstanceId);
 
     // should used  internally
-    void addNewActivityInstance(ActivityInstance activityInstance);
+    void addActivityInstance(ActivityInstance activityInstance);
 
-    List<ActivityInstance> getNewActivityInstances();
+    List<ActivityInstance> getActivityInstances();
 
 
     String getBizUniqueId();

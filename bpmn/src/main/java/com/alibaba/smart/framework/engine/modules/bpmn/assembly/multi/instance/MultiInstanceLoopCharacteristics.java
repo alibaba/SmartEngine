@@ -1,8 +1,9 @@
-package com.alibaba.smart.framework.engine.model.assembly;
+package com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.constant.BpmnNameSpaceConstant;
+import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
+import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractElement;
 
 import lombok.Data;
@@ -12,7 +13,7 @@ import lombok.Data;
  */
 
 @Data
-public class MultiInstanceLoopCharacteristics extends AbstractElement {
+public class MultiInstanceLoopCharacteristics extends AbstractElement implements ExecutePolicy{
 
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "multiInstanceLoopCharacteristics");
 

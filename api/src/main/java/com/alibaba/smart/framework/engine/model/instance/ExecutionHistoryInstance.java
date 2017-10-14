@@ -1,10 +1,20 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
+import java.util.List;
+
 /**
- * @author 高海军 帝奇  2016.11.11
- * @author ettear 2016.04.13
+ * @author ettear
+ * Created by ettear on 18/08/2017.
  */
-public interface ExecutionInstance extends LifeCycleInstance {
+public interface ExecutionHistoryInstance extends LifeCycleInstance {
+    Long getParentProcessInstanceId();
+
+    void setParentProcessInstanceId(Long parentProcessInstanceId);
+
+
+    Long getParentExecutionInstanceId();
+
+    void setParentExecutionInstanceId(Long parentExecutionInstanceId);
 
     String getProcessDefinitionIdAndVersion();
 
@@ -15,36 +25,26 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     void setProcessInstanceId(Long processInstanceId);
 
-    boolean isActive();
-
-    void setActive(boolean active);
-
     String getProcessDefinitionActivityId();
 
-    void setProcessDefinitionActivityId(String processDefinitionActivityId);
+    void setProcessDefinitionActivityId(String activityId);
 
 
     Long getActivityInstanceId();
 
     void setActivityInstanceId(Long activityInstanceId);
 
-
-    //TUNE 这种对象关联需要在service处理,感觉有点不太好.
-    void setTaskInstance(TaskInstance taskInstance);
-
-    TaskInstance getTaskInstance();
-
     /**
      * 获取进入活动的关联
      *
      * @return 进入活动的关联
      */
-    TransitionInstance getIncomeTransition();
+    List<TransitionInstance> getIncomeTransitions();
 
     /**
-     * 设置进入活动的关联
+     * 添加进入活动的关联
      *
      * @param transitionInstance 进入活动的关联
      */
-    void setIncomeTransition(TransitionInstance transitionInstance);
+    void addIncomeTransition(TransitionInstance transitionInstance);
 }

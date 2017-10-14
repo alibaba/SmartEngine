@@ -1,8 +1,8 @@
-package com.alibaba.smart.framework.engine.model.assembly;
+package com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.constant.BpmnNameSpaceConstant;
+import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractElement;
 
 import lombok.Data;

@@ -45,7 +45,7 @@ public class ReceiveTaskExclusiveGatewayTest {
                 request);
 
         Assert.assertNotNull(processInstance);
-        List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
+        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
 
         Assert.assertNotNull(activityInstances);
         int size = activityInstances.size();
@@ -72,7 +72,7 @@ public class ReceiveTaskExclusiveGatewayTest {
 
 
         processInstance = executionCommandService.signal(lastExecutionInstance.getInstanceId(), null);
-        activityInstances = processInstance.getNewActivityInstances();
+        activityInstances = processInstance.getActivityInstances();
 
         Assert.assertNotNull(activityInstances);
         size = activityInstances.size();

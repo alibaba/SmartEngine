@@ -28,7 +28,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
         //boolean matched= false;
         //
         //for (ProcessInstance processInstance : processInstances) {
-        //    List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
+        //    List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
         //
         //    for (ActivityInstance activityInstance : activityInstances) {
         //        List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
@@ -70,7 +70,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
         for (ProcessInstance processInstance : processInstances) {
 
-            List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
+            List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
 
             if (null == activityInstances || activityInstances.isEmpty()) {
 
@@ -118,7 +118,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
         if(null==processInstance){
             return null;
         }
-        List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
+        List<ActivityInstance> activityInstances =  processInstance.getActivityInstances();
         if(null==activityInstances){
             return null;
         }

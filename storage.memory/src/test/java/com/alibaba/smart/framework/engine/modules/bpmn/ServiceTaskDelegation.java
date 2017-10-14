@@ -23,7 +23,7 @@ public class ServiceTaskDelegation implements TccDelegation{
     public TccResult tryExecute(ExecutionContext executionContext) {
 //         LOGGER.info(executionContext.getRequest().toString());
 //         LOGGER.info("TCC executing: "+executionContext.getCurrentExecution().toString());
-        List<ActivityInstance> activityInstances = executionContext.getProcessInstance().getNewActivityInstances();
+        List<ActivityInstance> activityInstances = executionContext.getProcessInstance().getActivityInstances();
         LOGGER.info("TCC executing: " + activityInstances.get(activityInstances.size() - 1));
         counter.addAndGet(1);
         return null;

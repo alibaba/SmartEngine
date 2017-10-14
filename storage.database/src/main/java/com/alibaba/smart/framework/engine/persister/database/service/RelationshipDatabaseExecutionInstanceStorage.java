@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultTransitionInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 import com.alibaba.smart.framework.engine.persister.database.dao.ExecutionInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.database.util.SpringContextUtil;
@@ -36,6 +38,13 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
         executionInstanceEntity.setProcessInstanceId(executionInstance.getProcessInstanceId());
         executionInstanceEntity.setActivityInstanceId(executionInstance.getActivityInstanceId());
         executionInstanceEntity.setProcessDefinitionActivityId(executionInstance.getProcessDefinitionActivityId());
+        TransitionInstance incomeTransition=executionInstance.getIncomeTransition();
+        if(null!=incomeTransition){
+            executionInstanceEntity.setIncomeTransitionId(incomeTransition.getTransitionId());
+            executionInstanceEntity.setIncomeActivityInstanceId(incomeTransition.getSourceActivityInstanceId());
+
+
+        }
         return executionInstanceEntity;
     }
 
@@ -62,6 +71,14 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
         executionInstance.setStartTime(executionInstanceEntity.getGmtCreate());
         executionInstance.setCompleteTime(executionInstanceEntity.getGmtModified());
 
+        String incomeTransitionId=executionInstanceEntity.getIncomeTransitionId();
+        Long incomeActivityInstanceId=executionInstanceEntity.getIncomeActivityInstanceId();
+        if(null!=incomeTransitionId || null!=incomeActivityInstanceId){
+            TransitionInstance incomeTransition= new DefaultTransitionInstance();
+            incomeTransition.setTransitionId(incomeTransitionId);
+            incomeTransition.setSourceActivityInstanceId(incomeActivityInstanceId);
+            executionInstance.setIncomeTransition(incomeTransition);
+        }
         return executionInstance;
     }
 

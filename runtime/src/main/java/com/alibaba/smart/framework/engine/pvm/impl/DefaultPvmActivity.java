@@ -11,6 +11,8 @@ import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFacto
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
@@ -28,6 +30,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
     protected ActivityInstanceFactory activityInstanceFactory;
     protected ExecutionInstanceFactory executionInstanceFactory;
+    private ExecutePolicyBehavior executePolicyBehavior;
 
     public DefaultPvmActivity(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -38,7 +41,8 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         @Override
     public void enter(ExecutionContext context) {
         this.buildInstanceRelationShip(context);
-        this.invoke(PvmEventConstant.ACTIVITY_START.name(), context);
+        this.executePolicyBehavior.enter(this,context);
+
         if (context.isNeedPause()) {
             context.setNeedPause(false);
             // break;
@@ -50,7 +54,8 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
     @Override
     public void execute(ExecutionContext context) {
-        this.invoke(PvmEventConstant.ACTIVITY_EXECUTE.name(), context);
+        this.executePolicyBehavior.execute(this,context);
+
         if (context.isNeedPause()) {
             context.setNeedPause(false);
             // break;
@@ -61,16 +66,16 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     }
 
     private void buildInstanceRelationShip(ExecutionContext context){
-        //ProcessInstance processInstance = context.getProcessInstance();
-        //
-        //ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
+        ProcessInstance processInstance = context.getProcessInstance();
+
+        ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
         //ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance,  context);
         //
         //activityInstance.setExecutionInstance(executionInstance);
-        //processInstance.addNewActivityInstance(activityInstance);
+        processInstance.addActivityInstance(activityInstance);
         //
         //context.setExecutionInstance(executionInstance);
-        //context.setActivityInstance(activityInstance);
+        context.setActivityInstance(activityInstance);
     }
 
     private void executeRecursively(ExecutionContext context) {

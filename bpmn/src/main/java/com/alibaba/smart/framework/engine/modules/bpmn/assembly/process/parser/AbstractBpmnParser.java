@@ -8,9 +8,7 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Element;
 import com.alibaba.smart.framework.engine.model.assembly.Extensions;
-import com.alibaba.smart.framework.engine.model.assembly.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTask;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
@@ -25,9 +23,7 @@ public abstract class AbstractBpmnParser<M extends Element> extends AbstractElem
 
     @Override
     protected void parseChild(M model, BaseElement child) throws ParseException {
-        if (child instanceof MultiInstanceLoopCharacteristics) {
-            ((AbstractTask) model).setMultiInstanceLoopCharacteristics((MultiInstanceLoopCharacteristics)child);
-        } else if (child instanceof Extensions) {
+        if (child instanceof Extensions) {
             model.setExtensions((Extensions) child);
         } else if (child instanceof Performable) {
             List<Performable> performers = model.getPerformers();

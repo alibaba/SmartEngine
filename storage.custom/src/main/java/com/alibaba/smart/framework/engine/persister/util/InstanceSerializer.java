@@ -31,7 +31,7 @@ public class InstanceSerializer {
 
         //----分割线--- 上部分完成流程实例的序列化,下部分完成活动实例和执行实例的序列化。
 
-        List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
+        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
         for (ActivityInstance activityInstance : activityInstances) {
 
 
@@ -137,7 +137,7 @@ public class InstanceSerializer {
         while (st.hasMoreTokens()) {
             ActivityInstance activityInstance = buildActivityInstanceAndExecutionInstance(st);
 
-            processInstance.getNewActivityInstances().add(activityInstance);
+            processInstance.getActivityInstances().add(activityInstance);
         }
     }
 

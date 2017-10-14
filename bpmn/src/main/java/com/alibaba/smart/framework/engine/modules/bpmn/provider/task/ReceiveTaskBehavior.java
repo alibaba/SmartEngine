@@ -14,10 +14,6 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
 
     @Override
     public boolean enter(ExecutionContext context) {
-
-        //TUNE 不太合理
-        beforeEnter(context);
-
         return true;
     }
 

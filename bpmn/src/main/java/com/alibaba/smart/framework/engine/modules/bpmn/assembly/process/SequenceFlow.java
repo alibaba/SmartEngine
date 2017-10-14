@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process;
 
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTransition;
-import com.alibaba.smart.framework.engine.constant.BpmnNameSpaceConstant;
+import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 
 import lombok.Data;

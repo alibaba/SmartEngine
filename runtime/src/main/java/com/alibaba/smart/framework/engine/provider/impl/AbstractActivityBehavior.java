@@ -52,24 +52,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         return pvmActivity;
     }
 
-    protected void beforeEnter(ExecutionContext context) {
-        ProcessInstance processInstance = context.getProcessInstance();
-
-        ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
-        ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance,  context);
-
-        List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(2);
-        executionInstanceList.add(executionInstance);
-        activityInstance.setExecutionInstanceList(executionInstanceList);
-        processInstance.addNewActivityInstance(activityInstance);
-
-        context.setExecutionInstance(executionInstance);
-        context.setActivityInstance(activityInstance);
-    }
-
     @Override
     public boolean enter(ExecutionContext context) {
-        beforeEnter(context);
         return false;
     }
 

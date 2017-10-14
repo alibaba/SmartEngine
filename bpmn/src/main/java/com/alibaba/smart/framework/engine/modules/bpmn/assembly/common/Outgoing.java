@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.common;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.constant.BpmnNameSpaceConstant;
+import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractProcess;
 
 /**

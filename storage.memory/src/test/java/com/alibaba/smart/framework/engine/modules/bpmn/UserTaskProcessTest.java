@@ -49,7 +49,7 @@
 //                request);
 //
 //        Assert.assertNotNull(processInstance);
-//        List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
+//        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
 //
 //        Assert.assertNotNull(activityInstances);
 //
