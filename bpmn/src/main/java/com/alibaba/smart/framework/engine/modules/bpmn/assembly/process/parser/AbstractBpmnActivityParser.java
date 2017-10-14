@@ -23,10 +23,6 @@ public abstract class AbstractBpmnActivityParser<M extends AbstractActivity> ext
     protected void parseChild(M model, BaseElement child) throws ParseException {
         if (child instanceof ExecutePolicy) {
             model.setExecutePolicy((ExecutePolicy)child);
-            //TODO ettear remove
-            if(child instanceof MultiInstanceLoopCharacteristics) {
-                ((AbstractTask)model).setMultiInstanceLoopCharacteristics((MultiInstanceLoopCharacteristics)child);
-            }
         }else {
             super.parseChild(model, child);
         }

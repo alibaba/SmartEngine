@@ -14,6 +14,9 @@ public interface ExecutionInstanceDAO  {
 
     List<ExecutionInstanceEntity> findAllExecutionList(Long processInstanceId);
 
+    List<ExecutionInstanceEntity> findByActivityInstanceId(@Param("processInstanceId") Long processInstanceId,@Param("activityInstanceId") Long activityInstanceId);
+
+
     ExecutionInstanceEntity findOne(@Param("id") Long id);
 
 

@@ -117,4 +117,22 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
 
         return executionInstanceList;
     }
+
+    @Override
+    public List<ExecutionInstance> findByActivityInstanceId(Long processInstanceId,Long activityInstanceId) {
+        ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
+        List<ExecutionInstanceEntity> executionInstanceEntities=  executionInstanceDAO.findByActivityInstanceId(processInstanceId,activityInstanceId);
+
+        List<ExecutionInstance>  executionInstanceList = null;
+        if(null != executionInstanceEntities){
+            executionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceEntities.size());
+            for (ExecutionInstanceEntity executionInstanceEntity : executionInstanceEntities) {
+                ExecutionInstance executionInstance = new DefaultExecutionInstance();
+                buildExecutionInstance(executionInstance, executionInstanceEntity);
+                executionInstanceList.add(executionInstance);
+            }
+        }
+
+        return executionInstanceList;
+    }
 }

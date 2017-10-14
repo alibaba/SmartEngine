@@ -57,7 +57,6 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
 
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
-
         TaskInstance taskInstance = MarkDoneUtil.markDoneTaskInstance(taskId, variables, taskInstanceStorage);
 
         executionCommandService.signal(taskInstance.getExecutionInstanceId(),variables);

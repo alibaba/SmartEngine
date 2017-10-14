@@ -20,7 +20,7 @@ public class MultiInstanceLoopCharacteristicsBehaviorFactory implements ExecuteP
 
     @Override
     public ExecutePolicyBehavior createExecutePolicyBehavior(MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics) {
-        return new MultiInstanceLoopCharacteristicsBehavior(this.extensionPointRegistry);
+        return new MultiInstanceLoopCharacteristicsBehavior(this.extensionPointRegistry,multiInstanceLoopCharacteristics);
     }
 
     @Override

@@ -8,11 +8,10 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.MvelExpressionEvaluator;
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
-import com.alibaba.smart.framework.engine.common.util.DateUtil;
-import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -20,15 +19,14 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
@@ -42,17 +40,14 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         super(extensionPointRegistry, runtimeActivity);
     }
 
+    /*
     protected void beforeEnter(ExecutionContext context) {
         ProcessInstance processInstance = context.getProcessInstance();
 
         UserTask userTask = this.getModel();
 
-
-
-
-
-        MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = userTask
-            .getMultiInstanceLoopCharacteristics();
+        MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = (MultiInstanceLoopCharacteristics)userTask
+            .getExecutePolicy();
         if(null!= multiInstanceLoopCharacteristics)  {//TODO ettear move to MultiInstanceLoopCharacteristicsBehavior
             ActivityInstance activityInstance = this.activityInstanceFactory.create(userTask, context);
             processInstance.addActivityInstance(activityInstance);
@@ -157,7 +152,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         //context.setExecutionInstance(executionInstance);
         return taskInstance;
     }
-
+*/
     private List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstances(ExecutionContext context,
                                                                                   UserTask userTask) {
         TaskAssigneeDispatcher taskAssigneeDispatcher = context.getProcessEngineConfiguration().getTaskAssigneeDispatcher();
@@ -171,16 +166,42 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
     @Override
     public boolean enter(ExecutionContext context) {
-        beforeEnter(context);
+        //beforeEnter(context);
+        UserTask userTask = this.getModel();
+
+        List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList= null;
+        if(null!=context.getRequest()) {
+            taskAssigneeCandidateInstanceList=(List<TaskAssigneeCandidateInstance>)context.getRequest().get("assignee");
+        }
+        if (null == taskAssigneeCandidateInstanceList) {
+            taskAssigneeCandidateInstanceList = getTaskAssigneeCandidateInstances(context, userTask);
+        }
+        if (null != taskAssigneeCandidateInstanceList) {
+            ActivityInstance activityInstance = context.getActivityInstance();
+
+            List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(2);
+
+            //TaskInstance taskInstance = buildTaskInstance(context, activityInstance, executionInstanceList);
+            ExecutionInstance executionInstance = context.getExecutionInstance();
+
+            TaskInstance taskInstance = super.taskInstanceFactory.create(this.getModel(), executionInstance, context);
+
+            List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
+
+            for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : taskAssigneeCandidateInstanceList) {
+                TaskAssigneeInstance taskAssigneeInstance = new DefaultTaskAssigneeInstance();
+                taskAssigneeInstance.setAssigneeId(taskAssigneeCandidateInstance.getAssigneeId());
+                taskAssigneeInstance.setAssigneeType(taskAssigneeCandidateInstance.getAssigneeType());
+                taskAssigneeInstanceList.add(taskAssigneeInstance);
+            }
+            taskInstance.setTaskAssigneeInstanceList(taskAssigneeInstanceList);
+            executionInstance.setTaskInstance(taskInstance);
+        }
         return true;
     }
 
 
-    @Override
-    public boolean execute(ExecutionContext context) {
-        //重要. 在这个方法里面统一完成了当前 ExecutionInstance 的持久化. 所以后面只需要关注处理好本领域相关的事情.
-        beforeExecute(context);
-
+    public boolean execute2(ExecutionContext context) {
 
         UserTask userTask = this.getModel();
 
@@ -195,9 +216,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
         TaskInstanceStorage taskInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
-
-        MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = userTask
-            .getMultiInstanceLoopCharacteristics();
+        MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = (MultiInstanceLoopCharacteristics)userTask
+            .getExecutePolicy();
 
         if(null!= multiInstanceLoopCharacteristics)  {
             ExecutionInstance executionInstance =    context.getExecutionInstance();

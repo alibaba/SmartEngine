@@ -138,4 +138,24 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
 
      }
+
+    @Override
+    public List<ExecutionInstance> findByActivityInstanceId(Long processInstanceId, Long activityInstanceId) {
+        ProcessInstance processInstance = PersisterSession.currentSession().getProcessInstance(processInstanceId);
+        if (null == processInstance) {
+            return null;
+        }
+        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
+        if (null == activityInstances) {
+            return null;
+        }
+        //TUNE 扩容
+        List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
+        for (ActivityInstance activityInstance : activityInstances) {
+            if (activityInstance.getInstanceId().equals(activityInstanceId)) {
+                return activityInstance.getExecutionInstanceList();
+            }
+        }
+        return null;
+    }
 }

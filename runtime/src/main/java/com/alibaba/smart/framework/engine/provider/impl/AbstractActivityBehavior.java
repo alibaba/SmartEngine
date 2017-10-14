@@ -57,22 +57,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         return false;
     }
 
-    protected void beforeExecute(ExecutionContext context) {
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-
-        ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
-
-        ExecutionInstance executionInstance=context.getExecutionInstance();
-
-        //只负责完成当前executionInstance的状态更新,此时产生了 DB 写.
-        MarkDoneUtil.markDone(executionInstance,executionInstanceStorage);
-    }
-
-
     @Override
     public boolean execute(ExecutionContext context) {
-        //TODO 重新看下。
-        beforeExecute(context);
         return false;
     }
 

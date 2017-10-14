@@ -17,5 +17,9 @@ public class MultiInstanceLoopCharacteristics extends AbstractElement implements
 
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "multiInstanceLoopCharacteristics");
 
+    private String elementVariable;
+
+    private boolean isSequential;
+
     private  CompletionCondition completionCondition;
 }

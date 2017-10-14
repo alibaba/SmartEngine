@@ -205,7 +205,7 @@ public class FullMultiInstanceTest {
 
         List<VariableInstance> processInstanceVariableList = variableQueryService.findProcessInstanceVariableList(processInstance.getInstanceId());
         Assert.assertNotNull(processInstanceVariableList);
-        Assert.assertEquals(1,processInstanceVariableList.size());
+        Assert.assertEquals(2,processInstanceVariableList.size());
 
 
 

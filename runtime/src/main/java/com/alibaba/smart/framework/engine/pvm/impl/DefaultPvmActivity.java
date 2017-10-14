@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -48,7 +46,9 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
             // break;
             return;
         }
-        execute(context);
+
+            //TODO ettear 以下逻辑待迁移到ExecutionPolicy中去
+            this.execute(context);
     }
 
 
@@ -61,6 +61,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
             // break;
             return;
         }
+        //TODO ettear 以下逻辑待迁移到ExecutionPolicy中去
         this.invoke(PvmEventConstant.ACTIVITY_END.name(), context);
         this.executeRecursively(context);
     }
