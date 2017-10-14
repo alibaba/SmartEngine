@@ -18,6 +18,10 @@ public interface  DeploymentInstance  extends  LifeCycleInstance{
 
     void setProcessDefinitionType(String processDefinitionType);
 
+    String getProcessDefinitionCode();
+
+    void setProcessDefinitionCode(String processDefinitionCode);
+
     String getProcessDefinitionName();
 
     void setProcessDefinitionName(String processDefinitionName);

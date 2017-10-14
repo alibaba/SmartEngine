@@ -11,9 +11,8 @@ import org.apache.ibatis.annotations.Param;
 
 public interface TaskAssigneeDAO  {
 
-     List<TaskAssigneeEntity> findPendingTask(String  assigneeId);
 
-     List<TaskAssigneeEntity> findSameTask(Long  taskInstanceId);
+     List<TaskAssigneeEntity> findList(Long  taskInstanceId);
 
      TaskAssigneeEntity findOne(@Param("id") Long id);
 

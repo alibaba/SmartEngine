@@ -1,20 +1,19 @@
 package com.alibaba.smart.framework.engine.instance.storage;
 
-import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-
 import java.util.List;
+
+import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 
 
 public interface TaskAssigneeStorage {
 
-    List<TaskAssigneeInstance> findPendingTask(Long processInstanceId);
+    List<TaskAssigneeInstance> findList(Long  taskInstanceId);
 
     TaskAssigneeInstance insert( TaskAssigneeInstance taskAssigneeInstance);
 
     TaskAssigneeInstance update(Long taskAssigneeId,String assigneeId);
 
-    TaskAssigneeInstance find(Long taskAssigneeId);
+    TaskAssigneeInstance findOne(Long taskAssigneeId);
 
     void remove(Long taskAssigneeId);
 

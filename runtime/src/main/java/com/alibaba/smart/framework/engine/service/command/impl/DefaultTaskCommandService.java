@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -56,29 +57,14 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
 
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
-        TaskInstance taskInstance= taskInstanceStorage.find(taskId);
-        Date currentDate = DateUtil.getCurrentDate();
-        taskInstance.setCompleteTime(currentDate);
 
-        if(null == taskInstance.getClaimTime()){
-            taskInstance.setClaimTime(currentDate);
-        }
-
-        taskInstance.setStatus(TaskInstanceConstant.COMPLETED);
-
-        if(null != variables){
-            String tag = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG);
-            taskInstance.setTag(tag);
-
-            String claimUserId = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID);
-            taskInstance.setClaimUserId(claimUserId);
-        }
-
-        taskInstanceStorage.update(taskInstance);
+        TaskInstance taskInstance = MarkDoneUtil.markDoneTaskInstance(taskId, variables, taskInstanceStorage);
 
         executionCommandService.signal(taskInstance.getExecutionInstanceId(),variables);
 
     }
+
+
 
     @Override
     public void complete(Long taskId, String userId, Map<String, Object> variables) {
@@ -92,8 +78,8 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
         complete(  taskId, variables);
     }
 
-    @Override
-    public void claim(Long taskId, String userId, Map<String, Object> variables) {
-
-    }
+    //@Override
+    //public void claim(Long taskId, String userId, Map<String, Object> variables) {
+    //
+    //}
 }

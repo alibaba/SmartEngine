@@ -58,7 +58,6 @@ public interface SmartEngine {
     TaskAssigneeQueryService getTaskAssigneeQueryService();
 
 
-
     void init(ProcessEngineConfiguration processEngineConfiguration);
 
     void destroy();

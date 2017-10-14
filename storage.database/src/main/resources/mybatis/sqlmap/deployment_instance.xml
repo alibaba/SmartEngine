@@ -5,7 +5,7 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,process_definition_id,process_definition_version,
-        process_definition_type,process_definition_name,process_definition_desc,process_definition_content,
+        process_definition_type,process_definition_code,process_definition_name,process_definition_desc,process_definition_content,
         deployment_user_id,deployment_status
     </sql>
 
@@ -14,6 +14,7 @@
             <if test="id != null">and id = #{id}</if>
             <if test="processDefinitionVersion != null">and process_definition_version = #{processDefinitionVersion}</if>
             <if test="processDefinitionType != null">and process_definition_type = #{processDefinitionType}</if>
+            <if test="processDefinitionCode != null">and process_definition_code = #{processDefinitionCode}</if>
             <if test="processDefinitionName != null">and process_definition_name = #{processDefinitionName}</if>
             <if test="deploymentUserId != null">and deployment_user_id = #{deploymentUserId}</if>
             <if test="deploymentStatus != null">and deployment_status = #{deploymentStatus}</if>
@@ -22,7 +23,7 @@
 
     <insert id="insert" parameterType="DeploymentInstanceEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into  se_deployment_instance(<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{processDefinitionId}, #{processDefinitionVersion},#{processDefinitionType},
+        values (#{id}, now(), now(), #{processDefinitionId}, #{processDefinitionVersion},#{processDefinitionType},#{processDefinitionCode},
         #{processDefinitionName},#{processDefinitionDesc},#{processDefinitionContent},
         #{deploymentUserId},#{deploymentStatus} )
     </insert>
@@ -37,6 +38,7 @@
         <if test="processDefinitionId != null"> ,process_definition_id = #{processDefinitionId}</if>
         <if test="processDefinitionVersion != null"> ,process_definition_version = #{processDefinitionVersion}</if>
         <if test="processDefinitionType != null"> ,process_definition_type = #{processDefinitionType}</if>
+        <if test="processDefinitionCode != null"> , process_definition_code = #{processDefinitionCode}</if>
         <if test="processDefinitionName != null"> ,process_definition_name = #{processDefinitionName}</if>
         <if test="processDefinitionDesc != null"> ,process_definition_desc = #{processDefinitionDesc}</if>
         <if test="processDefinitionContent != null"> ,process_definition_content = #{processDefinitionContent}</if>

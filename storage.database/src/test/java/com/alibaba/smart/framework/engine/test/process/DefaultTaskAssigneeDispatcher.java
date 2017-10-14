@@ -5,13 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
@@ -42,24 +39,6 @@ public class DefaultTaskAssigneeDispatcher implements TaskAssigneeDispatcher {
 
 
         return taskAssigneeCandidateInstanceList;
-    }
-
-    @Override
-    public boolean canPassThrough(Activity activity, Map<String, Object> request) {
-        return "agree".equals(request.get("action"));
-    }
-
-
-    public Integer acquireCompletedAndPassedThroughTaskInstanceNumber(Long processInstanceId, Long activityInstanceId,Map<String, Object> request,SmartEngine smartEngine) {
-      TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
-
-        TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
-        taskInstanceQueryParam.setActivityInstanceId(activityInstanceId);
-        taskInstanceQueryParam.setTag(FullMultiInstanceTest.AGREE);
-        Integer count  = taskQueryService.count(taskInstanceQueryParam);
-        return  count;
-
     }
 
 

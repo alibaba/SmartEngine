@@ -14,6 +14,10 @@ public class DefaultDeploymentInstance extends  AbstractLifeCycleInstance implem
     private  String processDefinitionId;
     private  String processDefinitionVersion;
     private  String processDefinitionType;
+
+    /**
+     * 这个 processDefinitionCode 主要用于显示用,有些业务场景觉得仅仅processDefinitionName不足够的. 该字段仅用于显示,不用于其他逻辑.
+     */
     private  String processDefinitionCode;
     private  String processDefinitionName;
     private  String processDefinitionDesc;

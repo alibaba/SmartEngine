@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.configuration.impl;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
+import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
@@ -36,6 +37,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
     private TaskAssigneeDispatcher taskAssigneeDispatcher;
 
     private VariablePersister variablePersister;
+
+    private MultiInstanceCounter multiInstanceCounter;
 
     //protected boolean persisteVariableInstanceEnabled = false;
 

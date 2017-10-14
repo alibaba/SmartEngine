@@ -10,6 +10,7 @@ import lombok.Data;
 public class CreateDeploymentCommand {
 
     private  String processDefinitionType;
+    private  String processDefinitionCode;
     private  String processDefinitionName;
     private  String processDefinitionDesc;
     private  String processDefinitionContent;

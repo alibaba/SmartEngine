@@ -108,6 +108,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         deploymentInstance.setProcessDefinitionDesc(entity.getProcessDefinitionDesc());
         deploymentInstance.setProcessDefinitionName(entity.getProcessDefinitionName());
         deploymentInstance.setProcessDefinitionType(entity.getProcessDefinitionType());
+        deploymentInstance.setProcessDefinitionCode(entity.getProcessDefinitionCode());
         deploymentInstance.setProcessDefinitionId(entity.getProcessDefinitionId());
         deploymentInstance.setProcessDefinitionVersion(entity.getProcessDefinitionVersion());
         deploymentInstance.setStartTime(entity.getGmtCreate());
@@ -124,6 +125,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         deploymentInstanceEntity.setProcessDefinitionDesc(deploymentInstance.getProcessDefinitionDesc());
         deploymentInstanceEntity.setProcessDefinitionName(deploymentInstance.getProcessDefinitionName());
         deploymentInstanceEntity.setProcessDefinitionType(deploymentInstance.getProcessDefinitionType());
+        deploymentInstanceEntity.setProcessDefinitionCode(deploymentInstance.getProcessDefinitionCode());
         deploymentInstanceEntity.setProcessDefinitionId(deploymentInstance.getProcessDefinitionId());
         deploymentInstanceEntity.setProcessDefinitionVersion(deploymentInstance.getProcessDefinitionVersion());
         return deploymentInstanceEntity;

@@ -110,7 +110,7 @@ public class DefaultSmartEngine implements SmartEngine {
 
     @Override
     public TaskAssigneeQueryService getTaskAssigneeQueryService() {
-        return  null;
+        return  this.extensionPointRegistry.getExtensionPoint(TaskAssigneeQueryService.class);
     }
 
     //@Override

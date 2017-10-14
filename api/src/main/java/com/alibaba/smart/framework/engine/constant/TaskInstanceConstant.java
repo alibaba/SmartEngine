@@ -9,4 +9,8 @@ public interface TaskInstanceConstant {
 
     String COMPLETED = "completed";
 
+    String ABORTED = "aborted";
+
+    String CANCELED = "canceled";
+
 }

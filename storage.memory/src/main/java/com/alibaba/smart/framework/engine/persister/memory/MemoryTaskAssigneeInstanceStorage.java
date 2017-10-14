@@ -8,8 +8,8 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 public class MemoryTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
     @Override
-    public List<TaskAssigneeInstance> findPendingTask(Long processInstanceId) {
-        return null;
+    public List<TaskAssigneeInstance> findList(Long taskInstanceId) {
+        return  null;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class MemoryTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
     }
 
     @Override
-    public TaskAssigneeInstance find(Long taskAssigneeId) {
+    public TaskAssigneeInstance findOne(Long taskAssigneeId) {
         return null;
     }
 

@@ -9,6 +9,7 @@ import java.util.Map;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.MvelExpressionEvaluator;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
@@ -19,9 +20,11 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
+import com.alibaba.smart.framework.engine.model.assembly.CompletionCondition;
 import com.alibaba.smart.framework.engine.model.assembly.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
@@ -77,7 +80,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             }
 
 
-        }else{
+        } else {
 
             List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = getTaskAssigneeCandidateInstances(
                 context, userTask);
@@ -182,7 +185,9 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskAssigneeDispatcher taskAssigneeDispatcher = context.getProcessEngineConfiguration().getTaskAssigneeDispatcher();
-        
+        MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration().getMultiInstanceCounter();
+
+
         SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
 
@@ -200,48 +205,96 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
             taskInstanceQueryParam.setProcessInstanceId(executionInstance.getProcessInstanceId());
             taskInstanceQueryParam.setActivityInstanceId(executionInstance.getActivityInstanceId());
-            List<TaskInstance> taskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam);
+            List<TaskInstance> allTaskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam);
+
+            CompletionCondition completionCondition = multiInstanceLoopCharacteristics.getCompletionCondition();
+
+            Integer passedTaskInstanceNumber = multiInstanceCounter.countPassedTaskInstanceNumber(executionInstance.getProcessInstanceId(),executionInstance.getActivityInstanceId(),
+
+                smartEngine);
+
+            Integer rejectedTaskInstanceNumber = multiInstanceCounter.countRejectedTaskInstanceNumber(executionInstance.getProcessInstanceId(),executionInstance.getActivityInstanceId(),
+
+                smartEngine);
 
 
-            String expressionContent = multiInstanceLoopCharacteristics.getCompletionCondition().getExpressionContent();
+            boolean isCounterSignSucceeded = false;
+            if(null != completionCondition){
+                // 不是 all 模式
+                String passedConditionExpressionContent = completionCondition.getExpressionContent();
 
-            Integer completedAndPassedThroughTaskInstanceNumber = taskAssigneeDispatcher.acquireCompletedAndPassedThroughTaskInstanceNumber(executionInstance.getProcessInstanceId(),executionInstance.getActivityInstanceId(),context.getRequest(),smartEngine);
+                Number passedThresholdValue=  MvelExpressionEvaluator.getRightValueForBinaryOperationExpression(passedConditionExpressionContent);
+
+                Double rejectedThresholdValue= 1- passedThresholdValue.doubleValue();
+
+                String rejectConditionExpression = " nrOfRejectedInstance /nrOfCompletedInstances > " +rejectedThresholdValue;
+
+                Map<String, Object> vars = new HashMap<String, Object>(4);
+                // 此变量nrOfCompletedInstances命名并不合适,但是为了兼容 Activiti 不得不这样做.
+                vars.put("nrOfCompletedInstances",passedTaskInstanceNumber);
+                vars.put("nrOfRejectedInstance",rejectedTaskInstanceNumber);
+                vars.put("nrOfInstances",allTaskInstanceList.size());
+
+                boolean isCounterSignFailed  = MvelExpressionEvaluator.staticEval(rejectConditionExpression,vars);
+
+                if(isCounterSignFailed){
+                    processCommandService.abort(executionInstance.getProcessInstanceId(), InstanceStatus.aborted.name());
+                    //会签失败,需要暂停
+                    return  true;
+
+                }
 
 
-            Map<String, Object> vars = new HashMap<String, Object>(4);
-            vars.put("nrOfCompletedInstances",completedAndPassedThroughTaskInstanceNumber);
-            vars.put("nrOfInstances",taskInstanceList.size());
-            boolean canPassThough = MvelExpressionEvaluator.staticEval(expressionContent,vars);
+                isCounterSignSucceeded = MvelExpressionEvaluator.staticEval(passedConditionExpressionContent,vars);
 
-            boolean needPause = !canPassThough;
+                 if(isCounterSignSucceeded){
 
-            //针对 all 模式，可以做 fail fast。
+                     for (TaskInstance taskInstance : allTaskInstanceList) {
 
+                         if(taskInstance.getExecutionInstanceId().equals(executionInstance.getInstanceId())){
+                             continue;
+                         }
 
-            for (TaskInstance taskInstance : taskInstanceList) {
+                         if(TaskInstanceConstant.COMPLETED .equals(taskInstance.getStatus())){
+                             continue;
+                         }
 
-                            if(taskInstance.getExecutionInstanceId().equals(executionInstance.getInstanceId())){
-                                continue;
-                            }
+                         // 这里产生了db 读写访问,
+                         taskInstance.setStatus(TaskInstanceConstant.CANCELED);
+                         Date currentDate = DateUtil.getCurrentDate();
+                         taskInstance.setCompleteTime(currentDate);
+                         taskInstanceStorage.update(taskInstance);
 
-                            if(TaskInstanceConstant.COMPLETED .equals(taskInstance.getStatus())){
-                                continue;
-                            }
+                         ExecutionInstance executionInstance1=   executionInstanceStorage.find(taskInstance.getExecutionInstanceId());
 
-                            // 这里产生了db 读写访问
-                            taskInstance.setStatus(TaskInstanceConstant.COMPLETED);
-                            Date currentDate = DateUtil.getCurrentDate();
-                            taskInstance.setCompleteTime(currentDate);
-                            taskInstanceStorage.update(taskInstance);
+                         MarkDoneUtil.markDone(executionInstance1,executionInstanceStorage);
+                     }
 
-                            ExecutionInstance executionInstance1=   executionInstanceStorage.find(taskInstance.getExecutionInstanceId());
+                     // 会签完成,不需要暂停.
+                     return  false;
+                 } else{
+                     //会签未完成,需要暂停
+                     return true;
+                 }
+            } else {
+                //  all 模式 ; 只要一个失败,那么理解 reject. fail fast
+                // 只要一个失败,那么理解 reject. fail fast
+                if(rejectedTaskInstanceNumber >=1){
+                    // 整个会签任务失败,订单终止.abort 所有关联的 ei 和 ti.
+                    processCommandService.abort(executionInstance.getProcessInstanceId(), InstanceStatus.aborted.name());
+                    //会签失败,需要暂停
+                    return  true;
+                }
 
-                            MarkDoneUtil.markDone(executionInstance1,executionInstanceStorage);
+                //TODO 需要结合锁机制.
+                if(passedTaskInstanceNumber.equals(allTaskInstanceList.size())){
+                    // 会签完成,不需要暂停.
+                    return  false;
+                }else{
+                    //会签未完成,需要暂停
+                    return true;
+                }
             }
-
-            return needPause;
-
-
 
 
 
@@ -253,7 +306,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             //    //任何一个任务通过,那么将其他任务取消掉.
             //    if(taskAssigneeDispatcher.canPassThrough(userTask,context.getRequest())){
             //        //mark done other
-            //            for (TaskInstance taskInstance : taskInstanceList) {
+            //            for (TaskInstance taskInstance : allTaskInstanceList) {
             //
             //            if(taskInstance.getExecutionInstanceId().equals(executionInstance.getInstanceId())){
             //                continue;
@@ -274,7 +327,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             //        needPause = false;
             //    } else {
             //        //所有任务都未通过,那么将流程实例关掉,其他活跃的实例,任务也都关闭掉. 并行网关下可能由其他活跃的实例,所以需要全局关闭.
-            //        boolean allTaskInstanceCompleted = isAllTaskInstanceCompleted(taskInstanceList);
+            //        boolean allTaskInstanceCompleted = isAllTaskInstanceCompleted(allTaskInstanceList);
             //        if(allTaskInstanceCompleted){
             //            processCommandService.abort(executionInstance.getProcessInstanceId());
             //            needPause = true;
@@ -294,7 +347,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             //
             //    // Am I the last one? yes return false,no return true.
             //
-            //    boolean allWeDone = isAllTaskInstanceCompleted(taskInstanceList);
+            //    boolean allWeDone = isAllTaskInstanceCompleted(allTaskInstanceList);
             //
             //    if(allWeDone){
             //        return false;

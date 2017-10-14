@@ -43,6 +43,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         deploymentInstance.setProcessDefinitionName(createDeploymentCommand.getProcessDefinitionName());
         deploymentInstance.setProcessDefinitionDesc(createDeploymentCommand.getProcessDefinitionDesc());
         deploymentInstance.setProcessDefinitionType(createDeploymentCommand.getProcessDefinitionType());
+        deploymentInstance.setProcessDefinitionCode(createDeploymentCommand.getProcessDefinitionCode());
 
         deploymentInstance.setDeploymentUserId(createDeploymentCommand.getDeploymentUserId());
 

@@ -19,6 +19,8 @@ public class DeploymentInstanceQueryParam extends PaginateQueryParam {
 
     private String processDefinitionType;
 
+    private String processDefinitionCode;
+
     private String processDefinitionName;
 
     private String deploymentUserId;

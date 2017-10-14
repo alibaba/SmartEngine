@@ -59,6 +59,14 @@ public interface ProcessEngineConfiguration {
     VariablePersister getVariablePersister();
 
     /**
+     *
+     * @param multiInstanceCounter
+     */
+    void setMultiInstanceCounter(MultiInstanceCounter multiInstanceCounter);
+
+    MultiInstanceCounter getMultiInstanceCounter();
+
+    /**
      * 内部执行需要，不需要客户端 API 感知。
      * @param extensionPointRegistry
      */

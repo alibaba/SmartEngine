@@ -42,11 +42,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 //@Transactional
-public class FullMultiInstanceTest {
+public class CompatibleActivitiAndCustomExtensionProcessTest {
     public static final String AGREE = "agree";
-
-    public static final String DISAGREE = "disagree";
-
     public static List<Object> trace=new ArrayList<Object>();
 
     @Test
@@ -56,8 +53,9 @@ public class FullMultiInstanceTest {
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
-        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
         processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
+        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
+
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 
@@ -67,8 +65,6 @@ public class FullMultiInstanceTest {
         DeploymentCommandService deploymentCommandService = smartEngine.getDeploymentCommandService();
         TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
         ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
-        DeploymentQueryService deploymentQueryService =  smartEngine.getDeploymentQueryService();
-        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
         TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
         ExecutionQueryService executionQueryService =  smartEngine.getExecutionQueryService();
         VariableQueryService variableQueryService = smartEngine.getVariableQueryService();
@@ -77,14 +73,14 @@ public class FullMultiInstanceTest {
 
         //3. 部署流程定义
         CreateDeploymentCommand createDeploymentCommand = new CreateDeploymentCommand();
-        String content = IOUtil.readResourceFileAsUTF8String("multi-instance-test.bpmn20.xml");
+        String content = IOUtil.readResourceFileAsUTF8String(
+            "compatible-activiti-and-custom-extension-process-test.bpmn20.xml");
         createDeploymentCommand.setProcessDefinitionContent(content);
         createDeploymentCommand.setDeploymentUserId("123");
         createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTVIE);
         createDeploymentCommand.setProcessDefinitionDesc("desc");
         createDeploymentCommand.setProcessDefinitionName("name");
         createDeploymentCommand.setProcessDefinitionType("type");
-        createDeploymentCommand.setProcessDefinitionCode("code");
 
         DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
 
@@ -104,43 +100,9 @@ public class FullMultiInstanceTest {
         Assert.assertEquals("type",processInstance.getProcessDefinitionType());
 
 
-        ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
-        processInstanceQueryParam.setStartUserId("123");
-        List<ProcessInstance> processInstanceList = processQueryService.findList(
-            processInstanceQueryParam);
-        Assert.assertNotNull(processInstanceList);
-        Assert.assertTrue(processInstanceList.size()>=1 );
-
-        processInstanceQueryParam.setProcessDefinitionType("type");
-        processInstanceList = processQueryService.findList(
-            processInstanceQueryParam);
-        Assert.assertNotNull(processInstanceList);
-        Assert.assertTrue(processInstanceList.size()>=1 );
-
-
         List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         Assert.assertEquals(3,submitTaskInstanceList.size());
         TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
-
-        TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        taskInstanceQueryParam.setPageSize(2);
-        taskInstanceQueryParam.setPageOffSide(0);
-        taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
-        taskInstanceQueryParam.setProcessInstanceId(processInstance.getInstanceId());
-
-        taskInstanceQueryParam.setAssigneeUserId("1");
-        List<String> assigneeGroupIdList = new ArrayList<String>();
-        assigneeGroupIdList.add("a");
-        assigneeGroupIdList.add("b");
-        taskInstanceQueryParam.setAssigneeGroupIdList(assigneeGroupIdList);
-
-        List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findList(taskInstanceQueryParam);
-        Assert.assertEquals(1,assertedTaskInstanceList.size());
-
-
-        assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"1");
-        Assert.assertEquals(1,assertedTaskInstanceList.size());
-
 
 
 
@@ -158,28 +120,38 @@ public class FullMultiInstanceTest {
 
 
         //6.流程流转:处理 submitTask,完成任务申请.
-        taskCommandService.complete(assertedTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
+        taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
 
-        assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"1");
+        List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"1");
         Assert.assertEquals(0,assertedTaskInstanceList.size());
 
-        taskInstanceQueryParam = new TaskInstanceQueryParam();
-        taskInstanceQueryParam.setStatus(TaskInstanceConstant.COMPLETED);
-        taskInstanceQueryParam.setAssigneeUserId("1");
-        taskInstanceQueryParam.setTag(AGREE);
-        taskInstanceQueryParam.setProcessDefinitionType("type");
-        taskInstanceQueryParam.setProcessInstanceId(processInstance.getInstanceId());
 
-        assertedTaskInstanceList=   taskQueryService.findList(taskInstanceQueryParam);
-        Assert.assertEquals(1,assertedTaskInstanceList.size());
-        Assert.assertEquals(AGREE,assertedTaskInstanceList.get(0).getTag());
-
-
-        // 驱动 ReceiverTask
         List<ExecutionInstance> activeExecutions = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        Assert.assertEquals(2,activeExecutions.size());
+        submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
+        Assert.assertEquals(2,submitTaskInstanceList.size());
+        taskCommandService.complete(submitTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
+
+        activeExecutions = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         Assert.assertEquals(1,activeExecutions.size());
-        executionCommandService.signal(activeExecutions.get(0).getInstanceId());
+        submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
+        Assert.assertEquals(1,submitTaskInstanceList.size());
+        taskCommandService.complete(submitTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
+
+        //至此,上面3个节点都应该被完成了. 此时会进入新的会签节点.
+        submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
+        Assert.assertEquals(1,submitTaskInstanceList.size());
+        Assert.assertEquals("UserTask_1hk2kee",submitTaskInstanceList.get(0).getProcessDefinitionActivityId());
+
+        taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
+
+        //此时会进入新的会签节点.
+        submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
+        Assert.assertEquals(1,submitTaskInstanceList.size());
+        Assert.assertEquals("UserTask_060k64w",submitTaskInstanceList.get(0).getProcessDefinitionActivityId());
+
+
 
 
         //7. 获取当前待处理任务.
