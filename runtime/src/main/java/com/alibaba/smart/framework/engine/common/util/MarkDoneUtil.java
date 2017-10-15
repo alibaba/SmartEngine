@@ -23,9 +23,8 @@ public class MarkDoneUtil {
         return  executionInstance;
     }
 
-    public static TaskInstance markDoneTaskInstance(Long taskId, Map<String, Object> variables,
+    public static TaskInstance markDoneTaskInstance(TaskInstance taskInstance, String targetStatus,Map<String, Object> variables,
                                               TaskInstanceStorage taskInstanceStorage) {
-        TaskInstance taskInstance= taskInstanceStorage.find(taskId);
         Date currentDate = DateUtil.getCurrentDate();
         taskInstance.setCompleteTime(currentDate);
 
@@ -33,7 +32,7 @@ public class MarkDoneUtil {
             taskInstance.setClaimTime(currentDate);
         }
 
-        taskInstance.setStatus(TaskInstanceConstant.COMPLETED);
+        taskInstance.setStatus(targetStatus);
 
         if(null != variables){
             String tag = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG);

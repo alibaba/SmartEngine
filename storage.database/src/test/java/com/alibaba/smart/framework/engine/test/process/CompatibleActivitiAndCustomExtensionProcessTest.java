@@ -43,7 +43,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 //@Transactional
 public class CompatibleActivitiAndCustomExtensionProcessTest {
-    public static final String AGREE = "agree";
+
+
     public static List<Object> trace=new ArrayList<Object>();
 
     @Test
@@ -112,7 +113,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
         //submitFormRequest.put("assigneeUserId","1");
-        submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG,AGREE);
+        submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG,FullMultiInstanceTest.AGREE);
         submitFormRequest.put("text","123");
 
         //submitFormRequest.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
@@ -168,6 +169,87 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findById(processInstance.getInstanceId());
         Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
+    }
+
+
+    @Test
+    public void testCouterSign_Fail_All_modle() throws Exception {
+
+        //1.初始化
+        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
+        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
+        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
+
+        SmartEngine smartEngine = new DefaultSmartEngine();
+        smartEngine.init(processEngineConfiguration);
+
+
+        //2.获得常用服务
+        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
+        DeploymentCommandService deploymentCommandService = smartEngine.getDeploymentCommandService();
+        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
+        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
+        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
+        ExecutionQueryService executionQueryService =  smartEngine.getExecutionQueryService();
+        VariableQueryService variableQueryService = smartEngine.getVariableQueryService();
+        ExecutionCommandService executionCommandService =  smartEngine.getExecutionCommandService();
+
+
+        //3. 部署流程定义
+        CreateDeploymentCommand createDeploymentCommand = new CreateDeploymentCommand();
+        String content = IOUtil.readResourceFileAsUTF8String(
+            "compatible-activiti-and-custom-extension-process-test.bpmn20.xml");
+        createDeploymentCommand.setProcessDefinitionContent(content);
+        createDeploymentCommand.setDeploymentUserId("123");
+        createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTVIE);
+        createDeploymentCommand.setProcessDefinitionDesc("desc");
+        createDeploymentCommand.setProcessDefinitionName("name");
+        createDeploymentCommand.setProcessDefinitionType("type");
+
+        DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
+
+
+        //4.启动流程实例
+
+        Map<String, Object> request = new HashMap();
+        request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        request.put("processVariable","processVariableValue");
+
+
+        ProcessInstance processInstance = processCommandService.start(
+            deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
+            ,request  );
+        Assert.assertNotNull(processInstance);
+        Assert.assertEquals("type",processInstance.getProcessDefinitionType());
+
+
+        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
+        Assert.assertEquals(3,submitTaskInstanceList.size());
+        TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
+
+
+
+        //5.流程流转:构造提交申请参数
+        Map<String, Object> submitFormRequest = new HashMap<String, Object>();
+        submitFormRequest.put("title", "new_title");
+        submitFormRequest.put("qps", "300");
+        submitFormRequest.put("capacity","10g");
+        //submitFormRequest.put("assigneeUserId","1");
+        submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG,FullMultiInstanceTest.DISAGREE);
+        submitFormRequest.put("text","123");
+
+        //submitFormRequest.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+
+
+
+        //6.流程流转:处理 submitTask,完成任务申请.
+
+        //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
+        ProcessInstance finalProcessInstance = processQueryService.findById(processInstance.getInstanceId());
+        Assert.assertEquals(InstanceStatus.aborted,finalProcessInstance.getStatus());
     }
 
 

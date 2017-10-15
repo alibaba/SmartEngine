@@ -19,11 +19,13 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
@@ -281,7 +283,9 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
             // 只要一个失败,那么理解 reject. fail fast
             if (rejectedTaskInstanceNumber >= 1) {
                 // 整个会签任务失败,订单终止.abort 所有关联的 ei 和 ti.
-                processCommandService.abort(executionInstance.getProcessInstanceId(), InstanceStatus.aborted.name());
+                // TUNE 改成内存模式,这里会产生 db 写.是不合适的. 因为最好还是会触发 统一的 db 写逻辑. 存在多次的更新操作,产生性能额外开销.
+                 context.getProcessInstance().setStatus(InstanceStatus.aborted);
+                 processCommandService.abort(executionInstance.getProcessInstanceId(), InstanceStatus.aborted.name());
                 //会签失败,需要暂停
                 return true;
             }
@@ -296,4 +300,5 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
             }
         }
     }
+
 }

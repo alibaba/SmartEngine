@@ -22,7 +22,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
 
-          TaskInstance taskInstance= buildTaskInstance(taskInstanceEntity);
+          TaskInstance taskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
 
           taskInstanceList.add(taskInstance);
 
@@ -64,7 +64,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstanceEntity = taskInstanceDAO.findOne(taskInstanceEntity.getId());
 
         //reAssign
-        TaskInstance   resultTaskInstance= buildTaskInstance(taskInstanceEntity);
+        TaskInstance   resultTaskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
         resultTaskInstance.setTaskAssigneeInstanceList(taskInstance.getTaskAssigneeInstanceList());
 
         return resultTaskInstance;
@@ -86,11 +86,11 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         TaskInstanceEntity taskInstanceEntity =  taskInstanceDAO.findOne(instanceId);
 
-        TaskInstance taskInstance= buildTaskInstance(taskInstanceEntity);
+        TaskInstance taskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
         return  taskInstance;
     }
 
-    private TaskInstance buildTaskInstance(TaskInstanceEntity taskInstanceEntity) {
+    private TaskInstance buildTaskInstanceFromEntity(TaskInstanceEntity taskInstanceEntity) {
         TaskInstance taskInstance = new DefaultTaskInstance();
         taskInstance.setInstanceId(taskInstanceEntity.getId());
         taskInstance.setStartTime(taskInstanceEntity.getGmtCreate());
@@ -99,6 +99,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstance.setActivityInstanceId(taskInstanceEntity.getActivityInstanceId());
         taskInstance.setProcessDefinitionType(taskInstanceEntity.getProcessDefinitionType());
         taskInstance.setTag(taskInstanceEntity.getTag());
+        taskInstance.setStatus(taskInstanceEntity.getStatus());
 
         taskInstance.setProcessDefinitionActivityId(taskInstanceEntity.getProcessDefinitionActivityId());
         taskInstance.setExecutionInstanceId(taskInstanceEntity.getExecutionInstanceId());
