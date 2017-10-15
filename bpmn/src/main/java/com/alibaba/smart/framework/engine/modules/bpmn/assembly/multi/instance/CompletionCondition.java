@@ -2,10 +2,9 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBaseElement;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractElement;
 
 import lombok.Data;
 
@@ -14,11 +13,7 @@ import lombok.Data;
  */
 
 @Data
-public class CompletionCondition extends AbstractBaseElement implements Performable {
+public class CompletionCondition extends AbstractBaseElement {
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "completionCondition");
-
-    private String action;
-    private String expressionContent;
-
-
+    private ConditionExpression expression;
 }

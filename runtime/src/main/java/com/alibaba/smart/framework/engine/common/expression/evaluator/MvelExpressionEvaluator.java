@@ -24,13 +24,11 @@ public class MvelExpressionEvaluator implements ExpressionEvaluator {
                                 new ConcurrentHashMap<String, Serializable>(defaultCacheSize);
 
     @Override
-    public boolean eval(String expression, Map<String, Object> vars) {
+    public Object eval(String expression, Map<String, Object> vars) {
         //编译表达式
         Serializable compiledExp = compileExp(expression);
         //执行表达式
-        Boolean result = (Boolean) MVEL.executeExpression(compiledExp, vars);
-
-        return  result.booleanValue();
+        return MVEL.executeExpression(compiledExp, vars);
     }
 
 

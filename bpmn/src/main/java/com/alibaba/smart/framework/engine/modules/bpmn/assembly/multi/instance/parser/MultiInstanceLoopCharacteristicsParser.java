@@ -7,14 +7,15 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CollectionCondition;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCheckPrepare;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionChecker;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopCollection;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:01.
@@ -40,42 +41,22 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
     protected MultiInstanceLoopCharacteristics parseModel(XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = new MultiInstanceLoopCharacteristics();
-        Boolean isSequential=this.getBoolean(reader,"isSequential");
-        if(null!=isSequential){
-            multiInstanceLoopCharacteristics.setSequential(isSequential);
-        }else{
-            multiInstanceLoopCharacteristics.setSequential(false);
-        }
-        multiInstanceLoopCharacteristics.setElementVariable(this.getString(reader,"elementVariable"));
-
+        multiInstanceLoopCharacteristics.setSequential(this.getBoolean(reader, "isSequential", false));
         return multiInstanceLoopCharacteristics;
     }
 
     @Override
     protected void parseChild(MultiInstanceLoopCharacteristics model, BaseElement child) throws ParseException {
-        if (child instanceof CollectionCondition) {
-            model.setCollectionCondition((CollectionCondition)child);
+        if (child instanceof LoopCollection) {
+            model.setLoopCollection((LoopCollection)child);
         } else if (child instanceof CompletionCondition) {
-            model.setCompletionCondition((CompletionCondition)child);
-        } else {
+            CompletionChecker completionChecker = new CompletionChecker();
+            completionChecker.setCompletionCheckPerformable(((CompletionCondition)child).getExpression());
+            model.setCompletionChecker(completionChecker);
+        }else if (child instanceof CompletionCheckPrepare) {
+            model.setCompletionCheckPrepare((CompletionCheckPrepare)child);
+        }else {
             throw  new EngineException("Should be a instance of CompletionCondition :"+child.getClass());
         }
-    }
-
-    @Override
-    public MultiInstanceLoopCharacteristics parse(XMLStreamReader reader, ParseContext context)
-        throws ParseException, XMLStreamException {
-        MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = new MultiInstanceLoopCharacteristics();
-
-        while (this.nextChildElement(reader)) {
-            Object element = this.readElement(reader, context);
-            if (element instanceof CompletionCondition) {
-                multiInstanceLoopCharacteristics.setCompletionCondition((CompletionCondition)element);
-            } else {
-                throw  new EngineException("Should be a instance of CompletionCondition :"+element.getClass());
-            }
-        }
-
-        return multiInstanceLoopCharacteristics;
     }
 }

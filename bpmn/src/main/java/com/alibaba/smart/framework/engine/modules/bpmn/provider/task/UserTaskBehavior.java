@@ -1,38 +1,20 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.common.expression.evaluator.MvelExpressionEvaluator;
-import com.alibaba.smart.framework.engine.common.util.DateUtil;
-import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
-import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
-import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
-import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
-import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
-import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 

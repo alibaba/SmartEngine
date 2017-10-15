@@ -23,26 +23,34 @@ public abstract class AbstractBpmnParser<M extends Element> extends AbstractElem
 
     @Override
     protected void parseChild(M model, BaseElement child) throws ParseException {
-        if (child instanceof Extensions) {
-            model.setExtensions((Extensions) child);
-        } else if (child instanceof Performable) {
-            List<Performable> performers = model.getPerformers();
-            if (null == performers) {
-                performers = new ArrayList<Performable>();
-                model.setPerformers(performers);
+        if(!this.parseModelChild(model, child)) {
+            if (child instanceof Extensions) {
+                model.setExtensions((Extensions)child);
+            } else if (child instanceof Performable) {
+                List<Performable> performers = model.getPerformers();
+                if (null == performers) {
+                    performers = new ArrayList<Performable>();
+                    model.setPerformers(performers);
+                }
+                Performable performable = (Performable)child;
+                if (StringUtil.isEmpty(performable.getAction())) {
+                    performable.setAction(getDefaultActionName());
+                }
+                performers.add(performable);
             }
-            Performable performable = (Performable)child;
-            if (StringUtil.isEmpty(performable.getAction() )) {
-                performable.setAction(getDefaultActionName());
-            }
-            performers.add(performable);
-        } else {
-            this.parseModelChild(model, child);
         }
     }
 
     protected abstract String getDefaultActionName();
-    protected void parseModelChild(M model, BaseElement child) throws ParseException {
 
+    /**
+     *
+     * @param model model
+     * @param child child
+     * @return circuit
+     * @throws ParseException ParseException
+     */
+    protected boolean parseModelChild(M model, BaseElement child) throws ParseException {
+        return false;
     }
 }

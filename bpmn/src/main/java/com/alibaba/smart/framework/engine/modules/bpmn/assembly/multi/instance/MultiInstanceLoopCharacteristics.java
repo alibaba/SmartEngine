@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance;
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
+import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
@@ -17,11 +18,12 @@ public class MultiInstanceLoopCharacteristics extends AbstractElement implements
 
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "multiInstanceLoopCharacteristics");
 
-    private String elementVariable;
 
     private boolean isSequential;
 
-    private CompletionCondition completionCondition;
+    private LoopCollection loopCollection;
 
-    private CollectionCondition collectionCondition;
+    private CompletionChecker completionChecker;
+    private Performable completionCheckPrepare;
+
 }

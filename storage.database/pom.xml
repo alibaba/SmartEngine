@@ -57,19 +57,6 @@
             <artifactId>engine.runtime</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- add default dependency :bpmn,smart , for the purpose of  simplity  start-->
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>engine.bpmn</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>engine.grammar.smart</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
 
         <dependency>
             <groupId>com.taobao.tddl</groupId>
@@ -151,6 +138,26 @@
             <artifactId>metaq-client</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>engine.bpmn</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>engine.grammar.smart</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>engine.compatible.activiti</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 </project>

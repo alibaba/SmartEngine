@@ -35,6 +35,10 @@ public interface ExecutionContext {
 
     void setRequest(Map<String, Object> request);
 
+    Map<String, Object> getPrivateContext();
+
+    void setPrivateContext(Map<String, Object> request);
+
     /**
      * 该方法主要是用于给用户设置返回值的。
      * 考虑到没必要新开一个对象属性，这样会导致额外占用多余内存，所以在底层内仍然是共用了 request 这个属性。

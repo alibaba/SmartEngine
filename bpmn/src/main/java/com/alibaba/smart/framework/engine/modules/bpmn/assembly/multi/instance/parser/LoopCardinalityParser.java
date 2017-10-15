@@ -6,36 +6,39 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopCardinality;
+import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
 
 /**
- * Created by 高海军 帝奇 74394 on 2017 September  21:26.
+ * @author ettear
+ * Created by ettear on 15/10/2017.
  */
-public class CompletionConditionParser extends AbstractStAXArtifactParser<CompletionCondition>
-    implements StAXArtifactParser<CompletionCondition> {
+public class LoopCardinalityParser extends AbstractStAXArtifactParser<LoopCardinality>
+    implements StAXArtifactParser<LoopCardinality> {
+    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "loopCardinality");
 
-    public CompletionConditionParser(ExtensionPointRegistry extensionPointRegistry) {
+    public LoopCardinalityParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
     public QName getArtifactType() {
-        return CompletionCondition.type;
+        return LoopCardinality.type;
     }
 
     @Override
-    public Class<CompletionCondition> getModelType() {
-        return CompletionCondition.class;
+    public Class<LoopCardinality> getModelType() {
+        return LoopCardinality.class;
     }
 
     @Override
-    public CompletionCondition parse(XMLStreamReader reader, ParseContext context)
+    public LoopCardinality parse(XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
-        CompletionCondition completionCondition = new CompletionCondition();
+        LoopCardinality loopCardinality = new LoopCardinality();
 
         String expressionType = this.getString(reader, "type");
         String content = reader.getElementText();
@@ -43,8 +46,8 @@ public class CompletionConditionParser extends AbstractStAXArtifactParser<Comple
             ConditionExpression expression = new ConditionExpression();
             expression.setExpressionContent(content);
             expression.setExpressionType(expressionType);
-            completionCondition.setExpression(expression);
+            loopCardinality.setCardinalityExpression(expression);
         }
-        return completionCondition;
+        return loopCardinality;
     }
 }

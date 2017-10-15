@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions id="test-exclusive" version="1.0.0"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-             xmlns:smart="http://smart.alibaba-inc.com/schema/process"  xmlns:alibaba="http://smart.alibaba-inc.com/schema/alibaba"
+             xmlns:smart="http://smart.alibaba-inc.com/schema/process"  xmlns:activiti="http://activiti.org/bpmn" xmlns:alibaba="http://smart.alibaba-inc.com/schema/alibaba"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="Examples">
 
     <process id="multi-instance-user-task">
@@ -15,7 +15,7 @@
 
             <!--${nrOfCompletedInstances/nrOfInstances >= 0.6 }-->
 
-            <multiInstanceLoopCharacteristics isSequential="false">
+            <multiInstanceLoopCharacteristics activiti:collection="" activiti:elementVariable="assignee" isSequential="false">
                 <completionCondition><![CDATA[nrOfCompletedInstances >=1]]></completionCondition>
             </multiInstanceLoopCharacteristics>
         </userTask>

@@ -45,7 +45,7 @@
         <module>storage.memory</module>
         <module>storage.custom</module>
         <module>compatible.activiti</module>
-
+        <module>aggregation.database</module>
     </modules>
 
     <dependencies>
