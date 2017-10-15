@@ -166,7 +166,6 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
     @Override
     public boolean enter(ExecutionContext context) {
-        //beforeEnter(context);
         UserTask userTask = this.getModel();
 
         List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList= null;
@@ -177,11 +176,6 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             taskAssigneeCandidateInstanceList = getTaskAssigneeCandidateInstances(context, userTask);
         }
         if (null != taskAssigneeCandidateInstanceList) {
-            ActivityInstance activityInstance = context.getActivityInstance();
-
-            List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(2);
-
-            //TaskInstance taskInstance = buildTaskInstance(context, activityInstance, executionInstanceList);
             ExecutionInstance executionInstance = context.getExecutionInstance();
 
             TaskInstance taskInstance = super.taskInstanceFactory.create(this.getModel(), executionInstance, context);
@@ -200,6 +194,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         return true;
     }
 
+    /*
 
     public boolean execute2(ExecutionContext context) {
 
@@ -406,5 +401,6 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         }
         return allWeDone;
     }
+    */
 
 }

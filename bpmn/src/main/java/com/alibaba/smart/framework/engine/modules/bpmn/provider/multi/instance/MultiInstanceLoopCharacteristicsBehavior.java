@@ -19,13 +19,11 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
-import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
@@ -147,11 +145,6 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
                     Date currentDate = DateUtil.getCurrentDate();
                     taskInstance.setCompleteTime(currentDate);
                     taskInstanceStorage.update(taskInstance);
-
-                    //ExecutionInstance executionInstance1=   executionInstanceStorage.find(taskInstance
-                    // .getExecutionInstanceId());
-
-                    //MarkDoneUtil.markDone(executionInstance1,executionInstanceStorage);
                 }
             }
         }

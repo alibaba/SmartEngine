@@ -3,8 +3,8 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance;
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
-import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractElement;
+import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;
 
@@ -21,5 +21,7 @@ public class MultiInstanceLoopCharacteristics extends AbstractElement implements
 
     private boolean isSequential;
 
-    private  CompletionCondition completionCondition;
+    private CompletionCondition completionCondition;
+
+    private CollectionCondition collectionCondition;
 }

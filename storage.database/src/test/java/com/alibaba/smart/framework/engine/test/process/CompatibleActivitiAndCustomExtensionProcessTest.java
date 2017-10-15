@@ -243,6 +243,8 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
 
         //submitFormRequest.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
 
+        taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
+
 
 
         //6.流程流转:处理 submitTask,完成任务申请.

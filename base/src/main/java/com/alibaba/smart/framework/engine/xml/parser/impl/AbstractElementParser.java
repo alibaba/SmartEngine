@@ -25,6 +25,7 @@ public abstract class AbstractElementParser<M extends BaseElement> extends Abstr
     @Override
     public M parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         M model=this.parseModel(reader,context);
+        context=context.evolve(model);
         this.parseAttribute(model,reader,context);
         this.parseChildren(model,reader,context);
         return model;
