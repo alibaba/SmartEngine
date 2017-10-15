@@ -23,6 +23,8 @@ public class MultiInstanceLoopCharacteristics extends AbstractElement implements
 
     private LoopCollection loopCollection;
 
+    private String inputDataItemName;
+
     private CompletionChecker completionChecker;
     private Performable completionCheckPrepare;
 

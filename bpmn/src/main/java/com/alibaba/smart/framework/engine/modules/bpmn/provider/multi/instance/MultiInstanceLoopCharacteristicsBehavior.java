@@ -65,9 +65,10 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
         ProviderFactoryExtensionPoint providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(
             ProviderFactoryExtensionPoint.class);
 
+        this.collectionItemName = multiInstanceLoopCharacteristics.getInputDataItemName();
+
         LoopCollection loopCollection = multiInstanceLoopCharacteristics.getLoopCollection();
         if (null != loopCollection) {
-            this.collectionItemName = loopCollection.getItemName();
             LoopCollectionProviderFactory loopCollectionProviderFactory
                 = (LoopCollectionProviderFactory)providerFactoryExtensionPoint
                 .getProviderFactory(loopCollection.getClass());

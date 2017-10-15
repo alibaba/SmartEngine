@@ -15,7 +15,8 @@
 
             <!--${nrOfCompletedInstances/nrOfInstances >= 0.6 }-->
 
-            <multiInstanceLoopCharacteristics activiti:collection="" activiti:elementVariable="assignee" isSequential="false">
+            <multiInstanceLoopCharacteristics activiti:collection="" isSequential="false">
+                <inputDataItem name="assignee" />
                 <completionCondition><![CDATA[nrOfCompletedInstances >=1]]></completionCondition>
             </multiInstanceLoopCharacteristics>
         </userTask>

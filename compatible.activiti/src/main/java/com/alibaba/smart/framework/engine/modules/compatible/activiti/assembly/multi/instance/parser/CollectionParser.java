@@ -35,11 +35,11 @@ public class CollectionParser extends AbstractStAXArtifactParser<Collection> imp
     public Collection parse(QName attributeName, XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         Collection collection = new Collection();
-        collection.setItemName(this.getString(reader, "elementVariable"));
 
         Object element=context.getCurrentElement();
         if(null!=element && element instanceof MultiInstanceLoopCharacteristics){
             MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics=(MultiInstanceLoopCharacteristics)element;
+
             multiInstanceLoopCharacteristics.setCompletionCheckPrepare(new CompletionCheckPreparePerformable());
 
             //创建一个All模式的Checker，不是All模式会被覆盖

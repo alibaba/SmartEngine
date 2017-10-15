@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCheckPrepare;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionChecker;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.InputDataItem;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopCollection;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -49,6 +50,8 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
     protected void parseChild(MultiInstanceLoopCharacteristics model, BaseElement child) throws ParseException {
         if (child instanceof LoopCollection) {
             model.setLoopCollection((LoopCollection)child);
+        } else if (child instanceof InputDataItem) {
+            model.setInputDataItemName(((InputDataItem)child).getName());
         } else if (child instanceof CompletionCondition) {
             CompletionChecker completionChecker = new CompletionChecker();
             completionChecker.setCompletionCheckPerformable(((CompletionCondition)child).getExpression());

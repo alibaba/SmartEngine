@@ -19,7 +19,6 @@ import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactPa
  */
 public class LoopCardinalityParser extends AbstractStAXArtifactParser<LoopCardinality>
     implements StAXArtifactParser<LoopCardinality> {
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "loopCardinality");
 
     public LoopCardinalityParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
