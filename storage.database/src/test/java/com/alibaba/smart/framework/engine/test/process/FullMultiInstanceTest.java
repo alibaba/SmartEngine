@@ -80,7 +80,7 @@ public class FullMultiInstanceTest {
         String content = IOUtil.readResourceFileAsUTF8String("multi-instance-test.bpmn20.xml");
         createDeploymentCommand.setProcessDefinitionContent(content);
         createDeploymentCommand.setDeploymentUserId("123");
-        createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTVIE);
+        createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         createDeploymentCommand.setProcessDefinitionDesc("desc");
         createDeploymentCommand.setProcessDefinitionName("name");
         createDeploymentCommand.setProcessDefinitionType("type");

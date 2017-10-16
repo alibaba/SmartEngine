@@ -6,8 +6,11 @@ package com.alibaba.smart.framework.engine.constant;
 public interface DeploymentStatusConstant {
 
 
-    String ACTVIE = "active";
+    String ACTIVE = "active";
 
     String INACTIVE = "inactive";
+
+    String DELETED = "deleted";
+
 
 }

@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
-import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -121,7 +120,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
             throw  new EngineException("Can't find a deploymentInstance by deployInstanceId: "+deploymentInstanceId);
         }
 
-        currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.ACTVIE);
+        currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         deploymentInstanceStorage.update(currentDeploymentInstance);
 
         repositoryCommandService.deployWithUTF8Content(currentDeploymentInstance.getProcessDefinitionContent());

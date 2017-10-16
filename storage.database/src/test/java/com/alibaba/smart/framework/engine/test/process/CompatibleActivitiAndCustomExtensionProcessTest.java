@@ -10,7 +10,6 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
-import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
@@ -18,16 +17,11 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.param.command.CreateDeploymentCommand;
-import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
-import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
-import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
-import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
@@ -78,7 +72,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
             "compatible-activiti-and-custom-extension-process-test.bpmn20.xml");
         createDeploymentCommand.setProcessDefinitionContent(content);
         createDeploymentCommand.setDeploymentUserId("123");
-        createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTVIE);
+        createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         createDeploymentCommand.setProcessDefinitionDesc("desc");
         createDeploymentCommand.setProcessDefinitionName("name");
         createDeploymentCommand.setProcessDefinitionType("type");
@@ -101,8 +95,8 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
         Assert.assertEquals("type",processInstance.getProcessDefinitionType());
 
 
-        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
-        Assert.assertEquals(3,submitTaskInstanceList.size());
+        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"5");
+        Assert.assertEquals(1,submitTaskInstanceList.size());
         TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
 
 
@@ -114,6 +108,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
         submitFormRequest.put("capacity","10g");
         //submitFormRequest.put("assigneeUserId","1");
         submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG,FullMultiInstanceTest.AGREE);
+        submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,"5");
         submitFormRequest.put("text","123");
 
         //submitFormRequest.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
@@ -123,8 +118,10 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
         //6.流程流转:处理 submitTask,完成任务申请.
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
+        TaskInstance taskInstance =  taskQueryService.findOne(submitTaskInstance.getInstanceId());
 
-        List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"1");
+
+        List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"3");
         Assert.assertEquals(1,assertedTaskInstanceList.size());
         Assert.assertEquals("userTask1",assertedTaskInstanceList.get(0).getProcessDefinitionActivityId());
 
@@ -203,7 +200,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
             "compatible-activiti-and-custom-extension-process-test.bpmn20.xml");
         createDeploymentCommand.setProcessDefinitionContent(content);
         createDeploymentCommand.setDeploymentUserId("123");
-        createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTVIE);
+        createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         createDeploymentCommand.setProcessDefinitionDesc("desc");
         createDeploymentCommand.setProcessDefinitionName("name");
         createDeploymentCommand.setProcessDefinitionType("type");
