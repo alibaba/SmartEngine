@@ -1,7 +1,9 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
+import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -58,7 +60,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
+        DeploymentInstanceStorage deploymentInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
 
         Long   deployInstanceId =  updateDeploymentCommand.getDeployInstanceId();
@@ -68,23 +70,19 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
             throw  new EngineException("Can't find a deploymentInstance by deployInstanceId: "+deployInstanceId);
         }
 
-        //1. 新增一条,删除一个, version+1(FIXME), 不能存在两个活跃的 processDefinitionId 和 Version,其他场景也需要测试下.
-        //2. 但是万一 db 写失败,有可能导致 内存的数据被清空的情况.
-
-        CreateDeploymentCommand createDeploymentCommand = new CreateDeploymentCommand();
-        createDeploymentCommand.setProcessDefinitionType(updateDeploymentCommand.getProcessDefinitionType());
-        createDeploymentCommand.setProcessDefinitionName(updateDeploymentCommand.getProcessDefinitionName());
-        createDeploymentCommand.setProcessDefinitionDesc(updateDeploymentCommand.getProcessDefinitionDesc());
-        createDeploymentCommand.setDeploymentStatus(updateDeploymentCommand.getDeploymentStatus());
-        createDeploymentCommand.setProcessDefinitionContent(updateDeploymentCommand.getProcessDefinitionContent());
-
-        DeploymentInstance newDeploymentInstance =  this.createDeployment(createDeploymentCommand);
-
-        //currentDeploymentInstance.setLogicStatus(LogicStatusConstant.DELETED);
-        currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.INACTIVE);
         deploymentInstanceStorage.update(currentDeploymentInstance);
 
-        return newDeploymentInstance;
+        if(DeploymentStatusConstant.ACTIVE.equals(currentDeploymentInstance.getDeploymentStatus())){
+            String processDefinitionContent = updateDeploymentCommand.getProcessDefinitionContent();
+            if(StringUtil.isNotEmpty(processDefinitionContent)){
+                SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
+                RepositoryCommandService repositoryCommandService =  smartEngine.getRepositoryCommandService();
+                repositoryCommandService.deployWithUTF8Content(processDefinitionContent);
+
+            }
+        }
+
+        return currentDeploymentInstance;
     }
 
 
@@ -139,9 +137,9 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
             throw  new EngineException("Can't find a deploymentInstance by deployInstanceId: "+deploymentInstanceId);
         }
 
-        //currentDeploymentInstance.setLogicStatus(LogicStatusConstant.DELETED);
-        //currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.INACTIVE);
-        deploymentInstanceStorage.remove(deploymentInstanceId);
+        currentDeploymentInstance.setLogicStatus(LogicStatusConstant.DELETED);
+        currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.DELETED);
+        deploymentInstanceStorage.update(currentDeploymentInstance);
 
         processDefinitionContainer.uninstall(currentDeploymentInstance.getProcessDefinitionId(),currentDeploymentInstance.getProcessDefinitionVersion());
 

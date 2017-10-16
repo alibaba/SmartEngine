@@ -28,7 +28,7 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
         entity.setProcessDefinitionContent(PROCESS_DEFINITION_CONTENT);
         entity.setDeploymentUserId("userId");
         entity.setDeploymentStatus("deploymentStatus");
-        //entity.setLogicStatus("logicStatus");
+        entity.setLogicStatus("logicStatus");
     }
 
     @Test

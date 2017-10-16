@@ -9,7 +9,7 @@
         <version>1.3.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>engine.aggregation.database</artifactId>
+    <artifactId>smart-engine-bpmn-database-aggregation</artifactId>
     <name>Smart Engine Modules - Aggregation Database</name>
 
     <dependencies>

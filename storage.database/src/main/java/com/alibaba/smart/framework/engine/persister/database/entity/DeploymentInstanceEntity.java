@@ -33,7 +33,7 @@ public class DeploymentInstanceEntity extends BaseProcessEntity {
 
     private String deploymentStatus;
 
-    //private String logicStatus;
+    private String logicStatus;
 
 
 }

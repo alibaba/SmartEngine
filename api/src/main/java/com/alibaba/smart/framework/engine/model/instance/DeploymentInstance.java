@@ -43,9 +43,9 @@ public interface  DeploymentInstance  extends  LifeCycleInstance{
 
     void setDeploymentStatus(String  deploymentStatus);
 
-    //String getLogicStatus();
-    //
-    //void setLogicStatus(String logicStatus);
+    String getLogicStatus();
+
+    void setLogicStatus(String logicStatus);
 
 
 }

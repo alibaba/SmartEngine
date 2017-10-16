@@ -17,6 +17,5 @@ public class UpdateDeploymentCommand {
     private  String processDefinitionContent;
 
     private  String deploymentUserId;
-    private  String deploymentStatus;
-    //private  String logicStatus;
+    //private  String deploymentStatus;
 }
