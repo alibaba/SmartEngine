@@ -40,6 +40,9 @@ public interface TaskQueryService {
      */
     List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam);
 
+    TaskInstance findOne(Long taskInstanceId );
+
+
     Integer count(TaskInstanceQueryParam taskInstanceQueryParam);
 
 }

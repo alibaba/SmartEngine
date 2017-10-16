@@ -12,7 +12,6 @@ import com.alibaba.smart.framework.engine.service.param.command.UpdateDeployment
  */
 public interface DeploymentCommandService {
 
-
     DeploymentInstance createDeployment(CreateDeploymentCommand createDeploymentCommand) ;
 
     DeploymentInstance updateDeployment(UpdateDeploymentCommand updateDeploymentCommand) ;

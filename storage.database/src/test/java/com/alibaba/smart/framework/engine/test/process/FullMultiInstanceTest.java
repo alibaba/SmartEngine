@@ -88,6 +88,7 @@ public class FullMultiInstanceTest {
 
         DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
 
+        Assert.assertEquals("code",deploymentInstance.getProcessDefinitionCode());
 
         //4.启动流程实例
 

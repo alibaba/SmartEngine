@@ -86,10 +86,17 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     }
 
     @Override
+    public TaskInstance findOne(Long taskInstanceId) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+        TaskInstance taskInstance = taskInstanceStorage.find(taskInstanceId);
+        return taskInstance;
+    }
+
+    @Override
     public Integer count(TaskInstanceQueryParam taskInstanceQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
-
 
         return taskInstanceStorage.count(taskInstanceQueryParam);
     }

@@ -32,14 +32,14 @@ public class MvelExpressionEvaluator implements ExpressionEvaluator {
     }
 
 
-    public static boolean staticEval(String expression, Map<String, Object> vars) {
-        //编译表达式
-        Serializable compiledExp = compileExp(expression);
-        //执行表达式
-        Boolean result = (Boolean) MVEL.executeExpression(compiledExp, vars);
-
-        return  result.booleanValue();
-    }
+    //public static boolean staticEval(String expression, Map<String, Object> vars) {
+    //    //编译表达式
+    //    Serializable compiledExp = compileExp(expression);
+    //    //执行表达式
+    //    Boolean result = (Boolean) MVEL.executeExpression(compiledExp, vars);
+    //
+    //    return  result.booleanValue();
+    //}
 
     /**
      * 编译表达式。

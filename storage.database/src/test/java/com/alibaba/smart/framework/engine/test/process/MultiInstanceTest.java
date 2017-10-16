@@ -82,12 +82,15 @@ public class MultiInstanceTest {
         submitFormRequest.put("title", "new_title");
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
-        submitFormRequest.put("assigneeUserId","1");
+        submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,"1");
         submitFormRequest.put("action", "agree");
         submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG,FullMultiInstanceTest.AGREE);
 
         //6.流程流转:处理 submitTask,完成任务申请.
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
+
+       TaskInstance taskInstance = taskQueryService.findOne(submitTaskInstance.getInstanceId());
+        Assert.assertEquals("1",taskInstance.getClaimUserId());
 
 
         // 驱动 ReceiverTask
