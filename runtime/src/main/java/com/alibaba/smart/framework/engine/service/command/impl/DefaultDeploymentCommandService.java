@@ -65,6 +65,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         Long   deployInstanceId =  updateDeploymentCommand.getDeployInstanceId();
         DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deployInstanceId);
+        setUpdateValue(currentDeploymentInstance,updateDeploymentCommand);
 
         if(null == currentDeploymentInstance){
             throw  new EngineException("Can't find a deploymentInstance by deployInstanceId: "+deployInstanceId);
@@ -85,6 +86,24 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         return currentDeploymentInstance;
     }
 
+    private void setUpdateValue(DeploymentInstance currentDeploymentInstance,
+                                UpdateDeploymentCommand updateDeploymentCommand) {
+        if (updateDeploymentCommand.getProcessDefinitionContent() != null) {
+            currentDeploymentInstance.setProcessDefinitionContent(updateDeploymentCommand.getProcessDefinitionContent());
+        }
+        if (updateDeploymentCommand.getProcessDefinitionDesc() != null) {
+            currentDeploymentInstance.setProcessDefinitionDesc(updateDeploymentCommand.getProcessDefinitionDesc());
+        }
+        if (updateDeploymentCommand.getDeploymentUserId() != null) {
+            currentDeploymentInstance.setDeploymentUserId(updateDeploymentCommand.getDeploymentUserId());
+        }
+        if (updateDeploymentCommand.getProcessDefinitionName() != null) {
+            currentDeploymentInstance.setProcessDefinitionName(updateDeploymentCommand.getProcessDefinitionName());
+        }
+        if (updateDeploymentCommand.getProcessDefinitionType() != null) {
+            currentDeploymentInstance.setProcessDefinitionType(updateDeploymentCommand.getProcessDefinitionType());
+        }
+    }
 
     @Override
     public void inactivateDeploymentInstance(Long deploymentInstanceId) {
