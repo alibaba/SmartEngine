@@ -128,6 +128,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         deploymentInstanceEntity.setProcessDefinitionCode(deploymentInstance.getProcessDefinitionCode());
         deploymentInstanceEntity.setProcessDefinitionId(deploymentInstance.getProcessDefinitionId());
         deploymentInstanceEntity.setProcessDefinitionVersion(deploymentInstance.getProcessDefinitionVersion());
+        deploymentInstanceEntity.setId(deploymentInstance.getInstanceId());
         return deploymentInstanceEntity;
     }
 }

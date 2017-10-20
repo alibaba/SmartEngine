@@ -21,7 +21,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
 
         ProcessInstanceEntity processInstanceEntityToBePersisted = buildProcessInstanceEntity(processInstance);
-        processInstanceEntityToBePersisted.setId(null);
+        //processInstanceEntityToBePersisted.setId(null);
 
 
 

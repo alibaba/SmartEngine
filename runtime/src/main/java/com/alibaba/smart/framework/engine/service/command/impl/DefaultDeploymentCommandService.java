@@ -49,6 +49,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         deploymentInstance.setDeploymentUserId(createDeploymentCommand.getDeploymentUserId());
 
         deploymentInstance.setDeploymentStatus(createDeploymentCommand.getDeploymentStatus());
+        deploymentInstance.setLogicStatus(LogicStatusConstant.VALID);
 
         deploymentInstance = deploymentInstanceStorage.insert(deploymentInstance);
 

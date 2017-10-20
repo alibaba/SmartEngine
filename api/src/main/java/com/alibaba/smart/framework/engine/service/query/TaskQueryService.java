@@ -16,7 +16,9 @@ public interface TaskQueryService {
     /**
      * 待办任务列表
      */
-    List<TaskInstance> findPendingTaskList(Long processInstanceId, String userId, PaginateQueryParam paginateQueryParam);
+    List<TaskInstance> findPendingTaskList( String userId, PaginateQueryParam paginateQueryParam);
+
+    List<TaskInstance> countPendingTaskList(String userId, PaginateQueryParam paginateQueryParam);
 
     /**
      * 不分页查询，大数据量下慎用。
@@ -33,6 +35,7 @@ public interface TaskQueryService {
      * @return
      */
     List<TaskInstance> findAllPendingTaskList(Long processInstanceId, String userId);
+
 
     /**
      * 扩展方法，可用于典型的审批场景等等，取决于tag的值是什么。tag 任意非null值，可以为 appproved,rejected 等等。

@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -115,10 +116,8 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
 
 
 
-        //6.流程流转:处理 submitTask,完成任务申请.
+        //6.流程流转:处理 submitTask,完成任务申请. 完成userTask1 节点的第一个任务
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
-
-        TaskInstance taskInstance =  taskQueryService.findOne(submitTaskInstance.getInstanceId());
 
 
         List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"3");
@@ -130,12 +129,14 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
         Assert.assertEquals(2,activeExecutions.size());
         submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         Assert.assertEquals(2,submitTaskInstanceList.size());
+        //完成userTask1 节点的第二个任务
         taskCommandService.complete(submitTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
 
         activeExecutions = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         Assert.assertEquals(1,activeExecutions.size());
         submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         Assert.assertEquals(1,submitTaskInstanceList.size());
+        //完成userTask1 节点的第三个任务
         taskCommandService.complete(submitTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
 
         //至此,上面3个节点都应该被完成了. 此时会进入新的会签节点.
@@ -146,6 +147,8 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
         Order order = new Order();
         order.setYzje(101L);
         submitFormRequest.put("order",order);
+
+        // 由于userTask2 这个节点的 completionCondition 为 null，所以会是 all 模式。此任务完成后，会进入下一个环节。
         taskCommandService.complete(submitTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
 
         //根据网关选择,此时会进入新的会签节点.

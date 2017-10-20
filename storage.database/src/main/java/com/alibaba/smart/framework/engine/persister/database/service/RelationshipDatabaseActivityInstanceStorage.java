@@ -20,7 +20,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
 
         ActivityInstanceEntity activityInstanceEntityToBePersisted = buildActivityInstanceEntity(activityInstance);
-        activityInstanceEntityToBePersisted.setId(null);
+        //activityInstanceEntityToBePersisted.setId(null);
 
         activityInstanceDAO.insert(activityInstanceEntityToBePersisted);
 
@@ -39,6 +39,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         //TUNE 命名不统一
         activityInstanceEntityToBePersisted.setProcessDefinitionActivityId(activityInstance.getProcessDefinitionActivityId());
         activityInstanceEntityToBePersisted.setProcessInstanceId(activityInstance.getProcessInstanceId());
+        activityInstanceEntityToBePersisted.setId(activityInstance.getInstanceId());
         return activityInstanceEntityToBePersisted;
     }
 

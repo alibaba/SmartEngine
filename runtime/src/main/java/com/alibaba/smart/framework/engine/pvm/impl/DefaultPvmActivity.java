@@ -42,6 +42,8 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         this.executePolicyBehavior.enter(this,context);
 
         if (context.isNeedPause()) {
+
+            //FIXME why ??
             context.setNeedPause(false);
             // break;
             return;

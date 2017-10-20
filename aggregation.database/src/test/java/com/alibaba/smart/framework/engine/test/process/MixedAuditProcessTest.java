@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-//@Transactional
+@Transactional
 public class MixedAuditProcessTest {
 
 

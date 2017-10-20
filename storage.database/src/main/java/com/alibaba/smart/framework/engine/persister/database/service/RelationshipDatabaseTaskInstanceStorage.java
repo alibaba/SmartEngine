@@ -58,7 +58,6 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
 
         TaskInstanceEntity taskInstanceEntity = buildTaskInstanceEntity(taskInstance);
-        taskInstanceEntity.setId(null);
         taskInstanceDAO.insert(taskInstanceEntity);
 
         taskInstanceEntity = taskInstanceDAO.findOne(taskInstanceEntity.getId());

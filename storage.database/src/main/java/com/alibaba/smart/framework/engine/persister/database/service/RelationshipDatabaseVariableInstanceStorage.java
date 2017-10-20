@@ -29,6 +29,7 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
         VariableInstanceDAO variableInstanceDAO = (VariableInstanceDAO)SpringContextUtil.getBean("variableInstanceDAO");
 
         VariableInstanceEntity variableInstanceEntity = new VariableInstanceEntity();
+        variableInstanceEntity.setId(variableInstance.getInstanceId());
         variableInstanceEntity.setExecutionInstanceId(variableInstance.getExecutionInstanceId());
         variableInstanceEntity.setFieldKey(variableInstance.getFieldKey());
         variableInstanceEntity.setProcessInstanceId(variableInstance.getProcessInstanceId());

@@ -38,18 +38,34 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     }
 
     @Override
-    public List<TaskInstance> findPendingTaskList(Long processInstanceId, String userId, PaginateQueryParam paginateQueryParam) {
+    public List<TaskInstance> findPendingTaskList( String userId, PaginateQueryParam paginateQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
+
+        TaskInstanceQueryParam taskInstanceQueryParam = buildPendingTaskQueryParam(userId, paginateQueryParam);
+        return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
+    }
+
+    @Override
+    public List<TaskInstance> countPendingTaskList( String userId, PaginateQueryParam paginateQueryParam) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+        TaskInstanceQueryParam taskInstanceQueryParam = buildPendingTaskQueryParam(userId, paginateQueryParam);
+
+        return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
+    }
+
+    private TaskInstanceQueryParam buildPendingTaskQueryParam(String userId, PaginateQueryParam paginateQueryParam) {
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
         taskInstanceQueryParam.setAssigneeUserId(userId);
-        taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
         taskInstanceQueryParam.setPageOffSide(paginateQueryParam.getPageOffSide());
         taskInstanceQueryParam.setPageSize(paginateQueryParam.getPageSize());
-        return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
+        return taskInstanceQueryParam;
     }
+
+
 
     @Override
     public List<TaskInstance> findAllPendingTaskList(Long processInstanceId) {
