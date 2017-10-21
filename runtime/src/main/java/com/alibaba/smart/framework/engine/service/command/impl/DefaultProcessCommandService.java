@@ -16,7 +16,6 @@ import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactor
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -82,7 +81,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         executionContext.setRequest(request);
 
 
-        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processDefinitionId,
+        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.getPvmProcessDefinition(processDefinitionId,
             processDefinitionVersion);
 
         if(null == pvmProcessDefinition){
@@ -143,8 +142,9 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
-        ProcessInstance processInstance = processInstanceStorage.find(processInstanceId);
+        ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId);
         processInstance.setStatus(InstanceStatus.aborted);
+        processInstance.setReason(reason);
         processInstanceStorage.update(processInstance);
 
         ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);

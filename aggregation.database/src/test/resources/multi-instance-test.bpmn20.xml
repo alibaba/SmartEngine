@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions id="test-exclusive" version="1.0.0"
+<definitions id="test-multi-instance-user-task" version="1.0.1"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
              xmlns:smart="http://smart.alibaba-inc.com/schema/process"  xmlns:activiti="http://activiti.org/bpmn" xmlns:alibaba="http://smart.alibaba-inc.com/schema/alibaba"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="Examples">

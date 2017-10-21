@@ -83,9 +83,9 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         //BE AWARE: 注意:针对TP,AliPay场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
         ActivityInstance activityInstance= activityInstanceStorage.find(executionInstance.getActivityInstanceId());
 
-        ProcessInstance processInstance = processInstanceStorage.find(executionInstance.getProcessInstanceId());
+        ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId());
 
-        PvmProcessDefinition pvmProcessDefinition = this.processContainer.get(processInstance.getProcessDefinitionIdAndVersion());
+        PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(processInstance.getProcessDefinitionIdAndVersion());
         String processDefinitionActivityId = executionInstance.getProcessDefinitionActivityId();
         PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(processDefinitionActivityId);
 

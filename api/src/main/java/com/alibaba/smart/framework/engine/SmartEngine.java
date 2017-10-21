@@ -29,8 +29,6 @@ public interface SmartEngine {
 
     void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration);
 
-    //ExtensionPointRegistry getExtensionPointRegistry();
-
     RepositoryCommandService getRepositoryCommandService();
 
     RepositoryQueryService getRepositoryQueryService();

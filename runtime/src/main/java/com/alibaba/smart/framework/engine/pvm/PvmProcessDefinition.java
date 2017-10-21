@@ -22,23 +22,6 @@ public interface PvmProcessDefinition {
 
     Process getModel();
 
-//    /**
-//     * 运行流程
-//     *
-//     * @param context 实例上下文
-//     * @return 是否暂停
-//     */
-//    void run(ExecutionContext context);
-//
-//    /**
-//     * 继续执行流程
-//     *
-//     * @param context 实例上下文
-//     * @return 是否暂停
-//     */
-//    void resume(ExecutionContext context);
-
-
     Map<String, PvmActivity> getActivities();
 
 }

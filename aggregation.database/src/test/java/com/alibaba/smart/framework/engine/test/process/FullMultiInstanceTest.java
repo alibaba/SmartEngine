@@ -126,7 +126,7 @@ public class FullMultiInstanceTest {
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
         taskInstanceQueryParam.setPageSize(2);
-        taskInstanceQueryParam.setPageOffSide(0);
+        taskInstanceQueryParam.setPageOffset(0);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
         taskInstanceQueryParam.setProcessInstanceId(processInstance.getInstanceId());
 

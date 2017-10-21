@@ -1,5 +1,8 @@
 package com.alibaba.smart.framework.engine.deployment;
 
+import java.util.Map;
+
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 
 /**
@@ -8,12 +11,18 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
  */
 public interface ProcessDefinitionContainer {
 
+    Map<String, PvmProcessDefinition> getPvmProcessDefinitionConcurrentHashMap();
+
+    Map<String, ProcessDefinition> getProcessDefinitionConcurrentHashMap();
+
+
     /**
      * 安装流程
      *
      * @param pvmProcessDefinition 流程
+     * @param processDefinition
      */
-    void install(PvmProcessDefinition pvmProcessDefinition);
+    void install(PvmProcessDefinition pvmProcessDefinition, ProcessDefinition processDefinition);
 
     /**
      * @param processDefinitionId
@@ -24,11 +33,11 @@ public interface ProcessDefinitionContainer {
     /**
      * 获取流程
      *
-     * @param processId 流程ID
+     * @param processDefinitionId 流程ID
      * @param version   版本
      * @return 流程
      */
-    PvmProcessDefinition get(String processId, String version);
+    PvmProcessDefinition getPvmProcessDefinition(String processDefinitionId, String version);
 
     /**
      * 获取流程
@@ -36,5 +45,10 @@ public interface ProcessDefinitionContainer {
      * @param uri 流程URI
      * @return 流程
      */
-    PvmProcessDefinition get(String uri);
+    PvmProcessDefinition getPvmProcessDefinition(String uri);
+
+
+    ProcessDefinition getProcessDefinition(String processDefinitionId, String version);
+
+    ProcessDefinition getProcessDefinition(String uri);
 }

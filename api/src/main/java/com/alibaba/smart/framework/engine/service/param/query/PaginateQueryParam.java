@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class PaginateQueryParam {
 
-    private Integer pageOffSide;
-    private Integer pageSize;
+    protected Integer pageOffset;
+    protected Integer pageSize;
 
 }

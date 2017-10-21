@@ -25,7 +25,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
 
     @Override
     public DeploymentInstance insert(DeploymentInstance deploymentInstance) {
-        DeploymentInstanceEntity entity = convertByDeploymentInstance(deploymentInstance);
+        DeploymentInstanceEntity entity = convertByInstance(deploymentInstance);
         deploymentnstanceDAO.insert(entity);
 
         deploymentInstance = findById(entity.getId());
@@ -35,8 +35,9 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
 
     @Override
     public DeploymentInstance update(DeploymentInstance deploymentInstance) {
-        DeploymentInstanceEntity entity = convertByDeploymentInstance(deploymentInstance);
+        DeploymentInstanceEntity entity = convertByInstance(deploymentInstance);
         deploymentnstanceDAO.update(entity);
+        deploymentInstance = findById(entity.getId());
         return deploymentInstance;
     }
 
@@ -45,24 +46,21 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         if (null == id){
             return null;
         }
-        DeploymentInstanceQueryParam param = new DeploymentInstanceQueryParam();
-        param.setId(id);
-        List<DeploymentInstanceEntity> deploymentInstanceEntities = deploymentnstanceDAO.find(param);
-        DeploymentInstance instance = null;
-        if (!CollectionUtils.isEmpty(deploymentInstanceEntities)) {
-            instance = convertByDeploymentInstanceEntity(deploymentInstanceEntities.get(0));
-        }
-        return instance;
+
+        DeploymentInstanceEntity entity = deploymentnstanceDAO.findOne(id);
+        DeploymentInstance deploymentInstance = convertByEntity(entity);
+
+        return deploymentInstance;
     }
 
     @Override
     public List<DeploymentInstance> findByPage(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
-        List<DeploymentInstanceEntity> deploymentInstanceEntities = deploymentnstanceDAO.find(
+        List<DeploymentInstanceEntity> deploymentInstanceEntities = deploymentnstanceDAO.findByPage(
             deploymentInstanceQueryParam);
         if (!CollectionUtils.isEmpty(deploymentInstanceEntities)) {
             List<DeploymentInstance> deploymentInstances = new ArrayList<DeploymentInstance>(deploymentInstanceEntities.size());
             for (DeploymentInstanceEntity entity : deploymentInstanceEntities) {
-                DeploymentInstance instance = convertByDeploymentInstanceEntity(entity);
+                DeploymentInstance instance = convertByEntity(entity);
                 deploymentInstances.add(instance);
             }
             return deploymentInstances;
@@ -81,7 +79,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     }
 
 
-    //private DeploymentInstanceQueryParam convertParamByDeploymentInstance(DeploymentInstance deploymentInstance, Integer pageOffSide, Integer pageSize){
+    //private DeploymentInstanceQueryParam convertParamByDeploymentInstance(DeploymentInstance deploymentInstance, Integer pageOffset, Integer pageSize){
     //    DeploymentInstanceQueryParam param = new DeploymentInstanceQueryParam();
     //    if (null != deploymentInstance) {
     //        param.setDeploymentStatus(deploymentInstance.getDeploymentStatus());
@@ -92,16 +90,16 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     //        param.setProcessDefinitionVersion(deploymentInstance.getProcessDefinitionVersion());
     //        param.setId(deploymentInstance.getInstanceId());
     //    }
-    //    param.setPageOffSide(pageOffSide);
+    //    param.setPageOffset(pageOffset);
     //    param.setPageSize(pageSize);
     //    return param;
     //}
 
-    private DeploymentInstance convertByDeploymentInstanceEntity(DeploymentInstanceEntity entity) {
+    private DeploymentInstance convertByEntity(DeploymentInstanceEntity entity) {
         DeploymentInstance deploymentInstance = new DefaultDeploymentInstance();
 
         deploymentInstance.setInstanceId(entity.getId());
-        //deploymentInstance.setLogicStatus(entity.getLogicStatus());
+        deploymentInstance.setLogicStatus(entity.getLogicStatus());
         deploymentInstance.setDeploymentStatus(entity.getDeploymentStatus());
         deploymentInstance.setDeploymentUserId(entity.getDeploymentUserId());
         deploymentInstance.setProcessDefinitionContent(entity.getProcessDefinitionContent());
@@ -116,9 +114,9 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         return deploymentInstance;
     }
 
-    private DeploymentInstanceEntity convertByDeploymentInstance(DeploymentInstance deploymentInstance) {
+    private DeploymentInstanceEntity convertByInstance(DeploymentInstance deploymentInstance) {
         DeploymentInstanceEntity deploymentInstanceEntity = new DeploymentInstanceEntity();
-        //deploymentInstanceEntity.setLogicStatus(deploymentInstance.getLogicStatus());
+        deploymentInstanceEntity.setLogicStatus(deploymentInstance.getLogicStatus());
         deploymentInstanceEntity.setDeploymentStatus(deploymentInstance.getDeploymentStatus());
         deploymentInstanceEntity.setDeploymentUserId(deploymentInstance.getDeploymentUserId());
         deploymentInstanceEntity.setProcessDefinitionContent(deploymentInstance.getProcessDefinitionContent());

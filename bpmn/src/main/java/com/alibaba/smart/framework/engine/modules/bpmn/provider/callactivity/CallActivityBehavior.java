@@ -50,7 +50,7 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
         executionContext.setRequest(request);
 
         PvmProcessDefinition pvmProcessDefinition = this.extensionPointRegistry.getExtensionPoint(
-            ProcessDefinitionContainer.class).get(processDefinitionId, version);
+            ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinitionId, version);
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
 
         // TUNE 减少不必要的对象创建

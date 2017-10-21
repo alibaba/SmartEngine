@@ -6,7 +6,7 @@
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,process_definition_id,process_definition_version,
         process_definition_type,process_definition_code,process_definition_name,process_definition_desc,process_definition_content,
-        deployment_user_id,deployment_status
+        deployment_user_id,deployment_status,logic_status
     </sql>
 
     <sql id="condition">
@@ -18,6 +18,8 @@
             <if test="processDefinitionName != null">and process_definition_name = #{processDefinitionName}</if>
             <if test="deploymentUserId != null">and deployment_user_id = #{deploymentUserId}</if>
             <if test="deploymentStatus != null">and deployment_status = #{deploymentStatus}</if>
+            <if test="logicStatus != null">and logic_status = #{logicStatus}</if>
+
         </where>
     </sql>
 
@@ -25,7 +27,7 @@
         insert into  se_deployment_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionId}, #{processDefinitionVersion},#{processDefinitionType},#{processDefinitionCode},
         #{processDefinitionName},#{processDefinitionDesc},#{processDefinitionContent},
-        #{deploymentUserId},#{deploymentStatus} )
+        #{deploymentUserId},#{deploymentStatus} , #{logicStatus})
     </insert>
 
     <delete id="delete" parameterType="long">
@@ -44,6 +46,8 @@
         <if test="processDefinitionContent != null"> ,process_definition_content = #{processDefinitionContent}</if>
         <if test="deploymentUserId != null"> ,deployment_user_id = #{deploymentUserId}</if>
         <if test="deploymentStatus != null"> ,deployment_status = #{deploymentStatus}</if>
+        <if test="logicStatus != null"> ,logic_status = #{logicStatus}</if>
+
         where id=#{id}
     </update>
 
@@ -54,18 +58,18 @@
     </select>
 
 
-    <select id="find" resultType="DeploymentInstanceEntity" parameterType="DeploymentInstanceQueryParam">
+    <select id="findByPage" resultType="DeploymentInstanceEntity" parameterType="DeploymentInstanceQueryParam">
         select
         <include refid="baseColumn"/>
         from  se_deployment_instance
         <include refid="condition"/>
         order by gmt_modified desc
-        <if test="pageOffSide != null and pageSize != null">limit #{pageOffSide},#{pageSize}</if>
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
 
     </select>
 
     <select id="count" resultType="int" parameterType="DeploymentInstanceQueryParam">
-        select count(1) from  se_deployment_instance  <include refid="condition"/> <if test="pageOffSide != null and pageSize != null">limit #{pageOffSide},#{pageSize}</if>
+        select count(1) from  se_deployment_instance  <include refid="condition"/> <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
     </select>
 
 

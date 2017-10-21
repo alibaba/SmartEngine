@@ -1,5 +1,8 @@
 package com.alibaba.smart.framework.engine.service.query;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 
 /**
@@ -14,5 +17,8 @@ public interface RepositoryQueryService {
     ProcessDefinition getCachedProcessDefinition(String processDefinitionId, String version);
 
     ProcessDefinition getCachedProcessDefinition(String processDefinitionIdAndVersion);
+
+    Collection<ProcessDefinition> getAllCachedProcessDefinition();
+
 
 }

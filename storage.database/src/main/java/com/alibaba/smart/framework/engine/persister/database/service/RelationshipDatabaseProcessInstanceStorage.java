@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -57,17 +58,19 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstanceEntityToBePersisted.setStartUserId(processInstance.getStartUserId());
         processInstanceEntityToBePersisted.setProcessDefinitionType(processInstance.getProcessDefinitionType());
         processInstanceEntityToBePersisted.setBizUniqueId(processInstance.getBizUniqueId());
+        processInstanceEntityToBePersisted.setReason(processInstance.getReason());
         return processInstanceEntityToBePersisted;
     }
 
 
-    private void buildEntityToInstance(ProcessInstance processInstance, ProcessInstanceEntity processInstanceEntity1) {
-        processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity1.getProcessDefinitionIdAndVersion());
-        processInstance.setParentInstanceId(processInstanceEntity1.getParentProcessInstanceId());
-        processInstance.setInstanceId(processInstanceEntity1.getId());
-        processInstance.setStartTime(processInstanceEntity1.getGmtCreate());
-        processInstance.setProcessDefinitionType(processInstanceEntity1.getProcessDefinitionType());
-        processInstance.setBizUniqueId(processInstanceEntity1.getBizUniqueId());
+    private void buildEntityToInstance(ProcessInstance processInstance, ProcessInstanceEntity processInstanceEntity) {
+        processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity.getProcessDefinitionIdAndVersion());
+        processInstance.setParentInstanceId(processInstanceEntity.getParentProcessInstanceId());
+        processInstance.setInstanceId(processInstanceEntity.getId());
+        processInstance.setStartTime(processInstanceEntity.getGmtCreate());
+        processInstance.setProcessDefinitionType(processInstanceEntity.getProcessDefinitionType());
+        processInstance.setBizUniqueId(processInstanceEntity.getBizUniqueId());
+        processInstance.setReason(processInstanceEntity.getReason());
     }
 
     private ProcessInstance buildProcessInstanceFromEntity(ProcessInstanceEntity processInstanceEntity) {
@@ -76,10 +79,14 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         InstanceStatus processStatus = InstanceStatus.valueOf(processInstanceEntity.getStatus());
         processInstance.setStatus(processStatus);
         processInstance.setStartTime(processInstanceEntity.getGmtCreate());
-        processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity.getProcessDefinitionIdAndVersion());
+        String processDefinitionIdAndVersion = processInstanceEntity.getProcessDefinitionIdAndVersion();
+        processInstance.setProcessDefinitionIdAndVersion(processDefinitionIdAndVersion);
+        processInstance.setProcessDefinitionId(StringUtil.substringBefore(processDefinitionIdAndVersion,":"));
+        processInstance.setProcessDefinitionVersion(StringUtil.substringAfter(processDefinitionIdAndVersion,":"));
         processInstance.setSuspend(InstanceStatus.suspended.equals(processStatus)  );
         processInstance.setStartUserId(processInstanceEntity.getStartUserId());
         processInstance.setProcessDefinitionType(processInstanceEntity.getProcessDefinitionType());
+        processInstance.setReason(processInstanceEntity.getReason());
 
 
         //TUNE 还是叫做更新时间比较好一点,是否完成等 还是根据status 去判断.
@@ -89,7 +96,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     }
 
     @Override
-    public ProcessInstance find(Long instanceId) {
+    public ProcessInstance findOne(Long instanceId) {
         //TUNE :解决系统服务初始化依赖问题,避免每次获取该dao
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
 

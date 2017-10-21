@@ -37,6 +37,9 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
 
     private boolean suspend;
 
+    private String reason;
+
+
     @Setter
     private InstanceStatus status = InstanceStatus.running;
 

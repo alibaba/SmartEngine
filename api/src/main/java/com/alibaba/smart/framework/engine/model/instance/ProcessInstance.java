@@ -75,5 +75,8 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     void setBizUniqueId(String bizUniqueId);
 
+    String getReason();
+
+    void setReason(String reason);
 
 }

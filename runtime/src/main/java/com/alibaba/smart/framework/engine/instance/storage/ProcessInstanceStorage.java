@@ -26,7 +26,7 @@ public interface ProcessInstanceStorage {
      * @param processInstanceId 流程实例ID
      * @return 实例
      */
-    ProcessInstance find(Long processInstanceId);
+    ProcessInstance findOne(Long processInstanceId);
 
     List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam);
 

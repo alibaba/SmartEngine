@@ -12,7 +12,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
@@ -68,10 +67,6 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRepositoryCommandService.class);
 
 
-    /**
-     * 扩展点注册器
-     */
-    private SmartEngine smartEngine;
     private ExtensionPointRegistry extensionPointRegistry;
 
     private AssemblyParserExtensionPoint assemblyParserExtensionPoint;
@@ -89,7 +84,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
        ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
 
         ProcessDefinition definition = this.parse(classLoader, classPathUri);
-        install( definition);
+        putIntoContainer( definition);
 
         return definition;
     }
@@ -98,7 +93,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     public ProcessDefinition deploy(InputStream inputStream) {
         try {
             ProcessDefinition processDefinition = parseStream(inputStream);
-            install( processDefinition);
+            putIntoContainer( processDefinition);
 
             return processDefinition;
         } catch (Exception e) {
@@ -126,7 +121,6 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     @Override
     public void start() {
 
-        this.smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
         this.assemblyParserExtensionPoint = extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
         this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
         this.processContainer = extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
@@ -183,26 +177,25 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @SuppressWarnings("rawtypes")
-    private ProcessDefinitionContainer install(ProcessDefinition processDefinition) {
+    private void putIntoContainer(ProcessDefinition processDefinition) {
 
         if (null == processDefinition) {
             throw new EngineException("null processDefinition found");
         }
 
-        String processId = processDefinition.getId();
+        String processDefinitionId = processDefinition.getId();
         String version = processDefinition.getVersion();
 
 
 
-        if (StringUtil.isEmpty(processId) || StringUtil.isEmpty(version)) {
-            throw new EngineException("empty processId or version");
+        if (StringUtil.isEmpty(processDefinitionId) || StringUtil.isEmpty(version)) {
+            throw new EngineException("empty processDefinitionId or version");
         }
 
 
         PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(processDefinition, false);
 
-        this.processContainer.install(pvmProcessDefinition);
-        return processContainer;
+        this.processContainer.install(pvmProcessDefinition, processDefinition);
     }
 
     @SuppressWarnings("rawtypes")

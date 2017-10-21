@@ -2,8 +2,13 @@ package com.alibaba.smart.framework.engine.common.util;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  10:23.
+ *
+ * reduced from apache StringUtils
  */
 public abstract  class StringUtil {
+
+    public static final String EMPTY = "";
+    public static final int INDEX_NOT_FOUND = -1;
 
     public static boolean equals(String a, String b) {
         if (a == null) {
@@ -41,6 +46,35 @@ public abstract  class StringUtil {
             return str.substring(remove.length());
         }
         return str;
+    }
+
+    public static String substringBefore(String str, String separator) {
+        if (isEmpty(str) || separator == null) {
+            return str;
+        }
+        if (separator.length() == 0) {
+            return EMPTY;
+        }
+        int pos = str.indexOf(separator);
+        if (pos == INDEX_NOT_FOUND) {
+            return str;
+        }
+        return str.substring(0, pos);
+    }
+
+
+    public static String substringAfter(String str, String separator) {
+        if (isEmpty(str)) {
+            return str;
+        }
+        if (separator == null) {
+            return EMPTY;
+        }
+        int pos = str.indexOf(separator);
+        if (pos == INDEX_NOT_FOUND) {
+            return EMPTY;
+        }
+        return str.substring(pos + separator.length());
     }
 }
 

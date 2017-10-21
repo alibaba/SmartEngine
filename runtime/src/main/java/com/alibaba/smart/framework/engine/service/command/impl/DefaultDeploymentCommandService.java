@@ -66,15 +66,16 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         Long   deployInstanceId =  updateDeploymentCommand.getDeployInstanceId();
         DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deployInstanceId);
+
         setUpdateValue(currentDeploymentInstance,updateDeploymentCommand);
 
         if(null == currentDeploymentInstance){
             throw  new EngineException("Can't find a deploymentInstance by deployInstanceId: "+deployInstanceId);
         }
 
-        deploymentInstanceStorage.update(currentDeploymentInstance);
+        DeploymentInstance deploymentInstance =  deploymentInstanceStorage.update(currentDeploymentInstance);
 
-        if(DeploymentStatusConstant.ACTIVE.equals(currentDeploymentInstance.getDeploymentStatus())){
+        if(DeploymentStatusConstant.ACTIVE.equals(deploymentInstance.getDeploymentStatus())){
             String processDefinitionContent = updateDeploymentCommand.getProcessDefinitionContent();
             if(StringUtil.isNotEmpty(processDefinitionContent)){
                 SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
@@ -84,7 +85,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
             }
         }
 
-        return currentDeploymentInstance;
+        return deploymentInstance;
     }
 
     private void setUpdateValue(DeploymentInstance currentDeploymentInstance,

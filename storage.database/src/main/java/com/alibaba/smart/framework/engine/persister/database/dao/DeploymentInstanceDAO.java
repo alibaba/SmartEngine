@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.Param;
 public interface DeploymentInstanceDAO {
     DeploymentInstanceEntity findOne(@Param("id") Long id);
 
-    List<DeploymentInstanceEntity> find(DeploymentInstanceQueryParam param);
+    List<DeploymentInstanceEntity> findByPage(DeploymentInstanceQueryParam param);
 
     Long insert(DeploymentInstanceEntity deploymentInstanceEntity);
 

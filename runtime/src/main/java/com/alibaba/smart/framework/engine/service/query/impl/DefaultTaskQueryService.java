@@ -60,7 +60,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
         taskInstanceQueryParam.setAssigneeUserId(userId);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
-        taskInstanceQueryParam.setPageOffSide(paginateQueryParam.getPageOffSide());
+        taskInstanceQueryParam.setPageOffset(paginateQueryParam.getPageOffset());
         taskInstanceQueryParam.setPageSize(paginateQueryParam.getPageSize());
         return taskInstanceQueryParam;
     }

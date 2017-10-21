@@ -30,7 +30,7 @@ public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
     }
 
     @Override
-    public ProcessInstance find(Long instanceId) {
+    public ProcessInstance findOne(Long instanceId) {
         return this.instances.get(instanceId);
     }
 

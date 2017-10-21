@@ -11,7 +11,7 @@ public class ProcessInstanceEntity extends BaseProcessEntity {
 
     private String processDefinitionIdAndVersion;
 
-    private  String startUserId;
+    private String startUserId;
 
     private Long parentProcessInstanceId;
 
@@ -21,6 +21,6 @@ public class ProcessInstanceEntity extends BaseProcessEntity {
 
     private String bizUniqueId;
 
-
+    private String reason;
 
 }
