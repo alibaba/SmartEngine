@@ -12,8 +12,8 @@ import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFact
  * Created by ettear on 15/10/2017.
  */
 public class CompletionCheckerProvider {
-    private Performer completionCheckPerformer;
-    private Performer abortCheckPerformer;
+    protected Performer completionCheckPerformer;
+    protected Performer abortCheckPerformer;
 
     CompletionCheckerProvider(ExtensionPointRegistry extensionPointRegistry, CompletionChecker completionChecker) {
         ProviderFactoryExtensionPoint providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(

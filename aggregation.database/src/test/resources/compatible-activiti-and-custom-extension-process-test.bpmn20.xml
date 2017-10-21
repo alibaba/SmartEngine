@@ -30,7 +30,7 @@
             <bpmn2:outgoing>SequenceFlow_0vhfbz6</bpmn2:outgoing>
             <bpmn2:multiInstanceLoopCharacteristics activiti:collection="${assignmentService.findUsers(execution)}"
                                                     activiti:elementVariable="assignee">
-                <!--<bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression"><![CDATA[${nrOfCompletedInstances + 1 >= 2 }]]></bpmn2:completionCondition>-->
+                <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression"><![CDATA[${nrOfCompletedInstances + 1 >= 2 }]]></bpmn2:completionCondition>
             </bpmn2:multiInstanceLoopCharacteristics>
         </bpmn2:userTask>
 

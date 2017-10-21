@@ -42,10 +42,11 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
  */
 public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBehavior {
     private ExtensionPointRegistry extensionPointRegistry;
+    private ProcessCommandService processCommandService;
+
     private ExecutionInstanceFactory executionInstanceFactory;
     private TaskInstanceStorage taskInstanceStorage;
 
-    private ProcessCommandService processCommandService;
 
     private CompletionCheckerProvider completionCheckerProvider;
     private Performer completionCheckPrepareProvider;
@@ -114,6 +115,8 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
 
         if (null == collection) {
             collection = new ArrayList<Object>(1);
+            //FIXME WHY?
+
             collection.add(0);
         }
 
@@ -166,15 +169,13 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
             //check
             boolean needAbort = false, needComplete = false;
 
-            //存在检查器，使用检查器进行判断
-            if (null != this.completionCheckerProvider) {
+            //使用检查器进行判断
 
                 Performer abortCheckPerformer = this.completionCheckerProvider.getAbortCheckPerformer();
                 needAbort = this.check(abortCheckPerformer, context);
 
                 //不需要中断，判断是否需要完成
 
-            }
             //不需要中断
             if (!needAbort) {
                 //检查是否所有的ExecutionInstance都已完成

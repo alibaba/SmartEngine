@@ -67,7 +67,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
 
     @Override
     public void complete(Long taskId, String userId, Map<String, Object> variables) {
-        if(null != variables){
+        if(null == variables){
             variables = new HashMap<String, Object>();
         }
         variables.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,userId);

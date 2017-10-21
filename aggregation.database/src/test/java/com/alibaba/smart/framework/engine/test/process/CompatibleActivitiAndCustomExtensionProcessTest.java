@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-//@Transactional
+@Transactional
 public class CompatibleActivitiAndCustomExtensionProcessTest {
 
 
