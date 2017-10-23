@@ -21,4 +21,11 @@ public class PendingTaskQueryParam {
 
     private Long processInstanceId;
 
+    //fixme
+    private String status;
+
+    private Integer pageOffset;
+    private Integer pageSize;
+
+
 }

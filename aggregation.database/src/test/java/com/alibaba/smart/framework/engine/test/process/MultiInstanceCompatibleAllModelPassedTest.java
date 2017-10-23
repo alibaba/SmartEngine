@@ -16,6 +16,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
@@ -90,6 +91,15 @@ public class MultiInstanceCompatibleAllModelPassedTest {
 
         submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         Assert.assertEquals(1,submitTaskInstanceList.size());
+
+        PendingTaskQueryParam pendingTaskQueryParam = new PendingTaskQueryParam();
+        pendingTaskQueryParam.setAssigneeUserId("1");
+        pendingTaskQueryParam.setProcessDefinitionType("aaa");
+        List<TaskInstance>  taskInstances = taskQueryService.findPendingTaskList( pendingTaskQueryParam,null);
+
+
+
+
         taskCommandService.complete(submitTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
 
         submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
