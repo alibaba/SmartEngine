@@ -64,7 +64,7 @@ public class DefaultExecutePolicyBehavior implements ExecutePolicyBehavior, Life
         if (!context.isNeedPause()) {
             ExecutionInstance executionInstance = context.getExecutionInstance();
             //只负责完成当前executionInstance的状态更新,此时产生了 DB 写.
-            MarkDoneUtil.markDone(executionInstance, this.executionInstanceStorage);
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage);
         }
     }
 }

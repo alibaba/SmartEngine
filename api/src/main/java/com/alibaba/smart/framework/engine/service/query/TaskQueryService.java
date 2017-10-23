@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.engine.service.query;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.service.param.query.PaginateQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
@@ -17,18 +16,9 @@ public interface TaskQueryService {
     /**
      * 待办任务列表
      */
-    List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
-                                           PaginateQueryParam paginateQueryParam);
+    List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam);
 
     Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam);
-
-    /**
-     * FIXME 测试完
-     * 不分页查询，大数据量下慎用。
-     * @param processInstanceId
-     * @return
-     */
-    List<TaskInstance> findAllPendingTaskList(Long processInstanceId, PendingTaskQueryParam pendingTaskQueryParam);
 
     /**
      * 不分页查询，大数据量下慎用。

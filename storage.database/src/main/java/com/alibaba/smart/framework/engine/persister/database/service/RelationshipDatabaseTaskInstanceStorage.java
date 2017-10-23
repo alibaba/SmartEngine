@@ -9,15 +9,16 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.database.dao.TaskInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.database.util.SpringContextUtil;
+import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 
 public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStorage {
 
     @Override
-    public List<TaskInstance> findPendingTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
+    public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
-        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findPendingTaskList(taskInstanceQueryParam.getPendingTaskQueryParam());
+        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findPendingTaskList(pendingTaskQueryParam);
 
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
@@ -32,9 +33,9 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     }
 
     @Override
-    public Integer countPendingTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
+    public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
-        Integer count = taskInstanceDAO.countPendingTaskList(taskInstanceQueryParam.getPendingTaskQueryParam());
+        Integer count = taskInstanceDAO.countPendingTaskList(pendingTaskQueryParam);
         return  count  == null? 0:count;
     }
 

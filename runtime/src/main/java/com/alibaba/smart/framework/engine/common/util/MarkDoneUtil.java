@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
-import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -15,7 +14,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
  */
 public class MarkDoneUtil {
 
-    public   static  ExecutionInstance markDone(ExecutionInstance executionInstance,ExecutionInstanceStorage executionInstanceStorage) {
+    public   static  ExecutionInstance markDoneExecutionInstance(ExecutionInstance executionInstance, ExecutionInstanceStorage executionInstanceStorage) {
         Date completeDate = DateUtil.getCurrentDate();
         executionInstance.setCompleteTime(completeDate);
         executionInstance.setActive(false);

@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.instance.storage;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 
@@ -10,9 +11,9 @@ public interface TaskInstanceStorage {
 
     List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam);
 
-    List<TaskInstance> findPendingTaskList(TaskInstanceQueryParam taskInstanceQueryParam);
+    List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam);
 
-    Integer countPendingTaskList(TaskInstanceQueryParam taskInstanceQueryParam);
+    Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam);
 
     List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam);
 

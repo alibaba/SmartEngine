@@ -5,13 +5,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.common.expression.evaluator.MvelExpressionEvaluator;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
-import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -23,7 +19,6 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopCollection;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
@@ -154,7 +149,7 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
         if (!context.isNeedPause()) {
             ExecutionInstance executionInstance = context.getExecutionInstance();
             //只负责完成当前executionInstance的状态更新,此时产生了 DB 写.
-            MarkDoneUtil.markDone(executionInstance, this.executionInstanceStorage);
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage);
 
             ActivityInstance activityInstance = context.getActivityInstance();
 
@@ -222,7 +217,7 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
                 // Complete all execution
                 for (ExecutionInstance instance : executionInstances) {
                     if (instance.isActive()) {
-                        MarkDoneUtil.markDone(instance, this.executionInstanceStorage);
+                        MarkDoneUtil.markDoneExecutionInstance(instance, this.executionInstanceStorage);
                     }
                 }
 

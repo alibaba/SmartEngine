@@ -65,7 +65,7 @@
 
     <select id="countPendingTaskList" resultType="int" parameterType="PendingTaskQueryParam">
         select  count(task.id)
-        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
+        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id  and  task.status = 'pending'
         <include refid="pending_where_condition"/>
 
         <include refid="pending_task_assignee_choose_sql"/>
@@ -103,7 +103,6 @@
     </sql>
 
     <sql id="pending_where_condition">
-        <if test="status != null">  and  task.status = #{status} </if>
         <if test="processDefinitionType != null">  and  task.process_definition_type = #{processDefinitionType} </if>
         <if test="processInstanceId != null"> and task.process_instance_id = #{processInstanceId}</if>
     </sql>

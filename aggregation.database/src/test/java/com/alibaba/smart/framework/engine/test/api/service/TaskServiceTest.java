@@ -1,17 +1,12 @@
 package com.alibaba.smart.framework.engine.test.api.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
@@ -74,7 +69,7 @@ public class TaskServiceTest {
 
         PendingTaskQueryParam pendingTaskQueryParam = new PendingTaskQueryParam();
         pendingTaskQueryParam.setAssigneeUserId("1");
-        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),pendingTaskQueryParam);
+        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findPendingTaskList(pendingTaskQueryParam);
         Assert.assertEquals(1,submitTaskInstanceList.size());
 
          submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
@@ -88,13 +83,13 @@ public class TaskServiceTest {
 
 
 
-        submitTaskInstanceList=  taskQueryService.findPendingTaskList(pendingTaskQueryParam,null);
+        submitTaskInstanceList=  taskQueryService.findPendingTaskList(pendingTaskQueryParam);
         Assert.assertEquals(1,submitTaskInstanceList.size());
 
         PaginateQueryParam paginateQueryParam = new PaginateQueryParam();
         paginateQueryParam.setPageOffset(0);
         paginateQueryParam.setPageSize(10);
-        submitTaskInstanceList=  taskQueryService.findPendingTaskList(pendingTaskQueryParam,paginateQueryParam);
+        submitTaskInstanceList=  taskQueryService.findPendingTaskList(pendingTaskQueryParam);
         Assert.assertEquals(1,submitTaskInstanceList.size());
 
         Integer count =  taskQueryService.countPendingTaskList(pendingTaskQueryParam);

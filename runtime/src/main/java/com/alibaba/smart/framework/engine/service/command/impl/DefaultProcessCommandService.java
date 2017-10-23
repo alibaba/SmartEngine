@@ -161,7 +161,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         if(null != executionInstanceList){
             for (ExecutionInstance executionInstance : executionInstanceList) {
-                MarkDoneUtil.markDone(executionInstance,executionInstanceStorage);
+                MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
             }
         }
 

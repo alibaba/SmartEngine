@@ -8,7 +8,7 @@ import lombok.Data;
  * Created by 高海军 帝奇 74394 on 2017 October  11:23.
  */
 @Data
-public class PendingTaskQueryParam {
+public class PendingTaskQueryParam extends PaginateQueryParam{
 
     /**
      * 任务处理者的用户Id
@@ -20,12 +20,4 @@ public class PendingTaskQueryParam {
     private String processDefinitionType;
 
     private Long processInstanceId;
-
-    //fixme
-    private String status;
-
-    private Integer pageOffset;
-    private Integer pageSize;
-
-
 }

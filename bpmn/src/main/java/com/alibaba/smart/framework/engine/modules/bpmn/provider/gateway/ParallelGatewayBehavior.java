@@ -94,7 +94,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 if(activityInstance.getProcessDefinitionActivityId().equals(pvmActivity.getModel().getId())){
                     List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
                     for (ExecutionInstance executionInstance : executionInstances) {
-                        MarkDoneUtil.markDone(executionInstance,executionInstanceStorage);
+                        MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
                     }
                 }
             }

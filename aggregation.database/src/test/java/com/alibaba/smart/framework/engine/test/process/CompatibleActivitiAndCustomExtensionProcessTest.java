@@ -101,7 +101,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
         //FIXME
         PendingTaskQueryParam pendingTaskQueryParam = new PendingTaskQueryParam();
         pendingTaskQueryParam.setAssigneeUserId("5");
-        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),pendingTaskQueryParam);
+        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         Assert.assertEquals(3,submitTaskInstanceList.size());
         TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
 
@@ -126,7 +126,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
 
 
         pendingTaskQueryParam.setAssigneeUserId("3");
-        List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),pendingTaskQueryParam);
+        List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         Assert.assertEquals(2,assertedTaskInstanceList.size());
         Assert.assertEquals("userTask1",assertedTaskInstanceList.get(0).getProcessDefinitionActivityId());
 
