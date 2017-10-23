@@ -48,20 +48,24 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     }
 
     @Override
-    public List<TaskInstance> countPendingTaskList( String userId, PaginateQueryParam paginateQueryParam) {
+    public Integer countPendingTaskList(String userId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
-        TaskInstanceQueryParam taskInstanceQueryParam = buildPendingTaskQueryParam(userId, paginateQueryParam);
+        TaskInstanceQueryParam taskInstanceQueryParam = buildPendingTaskQueryParam(userId, null);
 
-        return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
+        return taskInstanceStorage.count(taskInstanceQueryParam);
     }
 
     private TaskInstanceQueryParam buildPendingTaskQueryParam(String userId, PaginateQueryParam paginateQueryParam) {
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
         taskInstanceQueryParam.setAssigneeUserId(userId);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
-        taskInstanceQueryParam.setPageOffset(paginateQueryParam.getPageOffset());
-        taskInstanceQueryParam.setPageSize(paginateQueryParam.getPageSize());
+
+        if(null!= paginateQueryParam){
+            taskInstanceQueryParam.setPageOffset(paginateQueryParam.getPageOffset());
+            taskInstanceQueryParam.setPageSize(paginateQueryParam.getPageSize());
+        }
+
         return taskInstanceQueryParam;
     }
 

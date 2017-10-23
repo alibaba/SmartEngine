@@ -11,6 +11,8 @@ CREATE TABLE `se_deployment_instance` (
   `process_definition_content` mediumtext NOT NULL COMMENT '流程定义文本内容',
   `deployment_user_id` varchar(128) NOT NULL COMMENT '流程定义部署人 id\\n',
   `deployment_status` varchar(64) NOT NULL COMMENT '部署状态',
+  `logic_status` varchar(64) NOT NULL COMMENT '逻辑删除状态',
+
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='SmartEngine 部署实例'
 
@@ -24,6 +26,7 @@ CREATE TABLE `se_process_instance` (
   `parent_process_instance_id` bigint(20) unsigned DEFAULT NULL COMMENT '父流程实例id',
   `start_user_id` varchar(128) DEFAULT NULL COMMENT '启动流程的用户id',
   `biz_unique_id` varchar(255) DEFAULT NULL COMMENT '业务实例 id',
+  `reason` varchar(255) DEFAULT NULL COMMENT '原因,可用于描述终止原因等',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='流程引擎-流程实例'
 

@@ -120,11 +120,20 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
             request = new HashMap<String, Object>();
         }
 
-        request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,userId);
+        if(null != userId){
+            request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,userId);
+        }
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,deploymentInstance.getProcessDefinitionType());
+
 
         ProcessInstance processInstance = this.start(deploymentInstance.getProcessDefinitionId(),
             deploymentInstance.getProcessDefinitionVersion(), request);
         return processInstance;
+    }
+
+    @Override
+    public ProcessInstance start(Long deploymentInstanceId, Map<String, Object> request) {
+        return start(deploymentInstanceId,null, request);
     }
 
     @Override

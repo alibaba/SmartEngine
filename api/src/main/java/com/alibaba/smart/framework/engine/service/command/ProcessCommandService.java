@@ -20,6 +20,8 @@ public interface ProcessCommandService {
 
     ProcessInstance start(Long deploymentInstanceId, String userId, Map<String, Object> request);
 
+    ProcessInstance start(Long deploymentInstanceId, Map<String, Object> request);
+
     ProcessInstance start(Long deploymentInstanceId);
 
     /**

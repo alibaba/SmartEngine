@@ -38,7 +38,6 @@ import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
 import com.alibaba.smart.framework.engine.test.process.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.CustomVariablePersister;
 import com.alibaba.smart.framework.engine.test.process.DefaultMultiInstanceCounter;
-import com.alibaba.smart.framework.engine.test.process.DefaultTaskAssigneeDispatcher;
 
 import org.junit.Assert;
 import org.junit.Test;

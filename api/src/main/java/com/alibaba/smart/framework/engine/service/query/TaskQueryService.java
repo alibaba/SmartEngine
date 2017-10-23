@@ -18,7 +18,7 @@ public interface TaskQueryService {
      */
     List<TaskInstance> findPendingTaskList( String userId, PaginateQueryParam paginateQueryParam);
 
-    List<TaskInstance> countPendingTaskList(String userId, PaginateQueryParam paginateQueryParam);
+    Integer countPendingTaskList(String userId);
 
     /**
      * 不分页查询，大数据量下慎用。

@@ -62,6 +62,7 @@
                         alibaba:approvalUser="151926005" alibaba:approvalRole="POSITION"
                         alibaba:approvalJobDatas="{'jobId':151926005,'jobName':'主管1235'}"
                         alibaba:departmentType="ownDepartment">
+            <bpmn2:documentation>ds</bpmn2:documentation>
             <bpmn2:multiInstanceLoopCharacteristics activiti:collection="${assignmentService.findUsers(execution)}"
                                                     activiti:elementVariable="assignee">
                 <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression">${nrOfCompletedInstances >= 1}
