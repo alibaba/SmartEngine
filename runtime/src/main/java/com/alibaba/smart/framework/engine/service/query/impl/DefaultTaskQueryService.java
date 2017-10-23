@@ -43,8 +43,6 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
-
-        //TaskInstanceQueryParam taskInstanceQueryParam = buildPendingTaskQueryParam(pendingTaskQueryParam);
         return taskInstanceStorage.findPendingTaskList(pendingTaskQueryParam);
     }
 
@@ -52,27 +50,9 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
-        //TaskInstanceQueryParam taskInstanceQueryParam = buildPendingTaskQueryParam(pendingTaskQueryParam, null);
 
         return taskInstanceStorage.countPendingTaskList(pendingTaskQueryParam);
     }
-
-    //private TaskInstanceQueryParam buildPendingTaskQueryParam(PendingTaskQueryParam pendingTaskQueryParam, PaginateQueryParam paginateQueryParam) {
-    //    TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-    //    taskInstanceQueryParam.setPendingTaskQueryParam(pendingTaskQueryParam);
-    //    taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
-    //
-    //
-    //    if(null!= paginateQueryParam){
-    //        taskInstanceQueryParam.setPageOffset(paginateQueryParam.getPageOffset());
-    //        taskInstanceQueryParam.setPageSize(paginateQueryParam.getPageSize());
-    //        pendingTaskQueryParam.setPageOffset(paginateQueryParam.getPageOffset());
-    //        pendingTaskQueryParam.setPageSize(paginateQueryParam.getPageSize());
-    //    }
-    //
-    //    return taskInstanceQueryParam;
-    //}
-
 
 
     @Override
@@ -86,21 +66,6 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
 
         return taskInstanceStorage.findTaskByProcessInstanceIdAndStatus(taskInstanceQueryParam);
     }
-
-    //@Override
-    //public List<TaskInstance> findAllPendingTaskList(Long processInstanceId, PendingTaskQueryParam pendingTaskQueryParam) {
-    //    PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-    //    TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
-    //
-    //
-    //    TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-    //    taskInstanceQueryParam.setPendingTaskQueryParam(pendingTaskQueryParam);
-    //    taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
-    //    taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
-    //
-    //    return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
-    //}
-
 
     @Override
     public TaskInstance findOne(Long taskInstanceId) {
