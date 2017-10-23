@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngin
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
@@ -15,6 +16,7 @@ import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.param.query.PaginateQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
+import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.test.process.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.DefaultMultiInstanceCounter;
@@ -51,6 +53,7 @@ public class TaskServiceTest {
         TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
         ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
         TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
+        TaskAssigneeQueryService taskAssigneeQueryService = smartEngine.getTaskAssigneeQueryService();
 
 
         //3. 部署流程定义
@@ -92,6 +95,9 @@ public class TaskServiceTest {
 
         Integer count =  taskQueryService.countPendingTaskList(pendingTaskQueryParam);
         Assert.assertEquals(1L,count.longValue());
+
+        List<TaskAssigneeInstance> taskAssigneeInstanceList =   taskAssigneeQueryService.findList(submitTaskInstanceList.get(0).getInstanceId());
+        Assert.assertEquals(5,taskAssigneeInstanceList.size());
 
 
         ////taskQueryService.findList()

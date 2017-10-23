@@ -9,6 +9,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
@@ -157,6 +158,8 @@ public class MultiInstanceCompatibleAllModelPassedTest {
         taskInstanceQueryParam.setClaimUserId("1");
         taskInstanceQueryParam.setProcessDefinitionType("type");
         taskInstanceQueryParam.setTag(FullMultiInstanceTest.AGREE);
+        taskInstanceQueryParam.setProcessInstanceId(processInstance.getInstanceId());
+        taskInstanceQueryParam.setStatus(TaskInstanceConstant.COMPLETED);
 
         taskInstanceQueryParam.setPageSize(10);
         taskInstanceQueryParam.setPageOffset(0);
