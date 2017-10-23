@@ -12,6 +12,22 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
  */
 public class CustomTaskInstanceStorage implements TaskInstanceStorage {
 
+    @Override
+    public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam) {
+        return  null;
+    }
+
+    @Override
+    public List<TaskInstance> findPendingTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
+        return  null;
+
+    }
+
+    @Override
+    public Integer countPendingTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
+        return  null;
+
+    }
 
     @Override
     public List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {

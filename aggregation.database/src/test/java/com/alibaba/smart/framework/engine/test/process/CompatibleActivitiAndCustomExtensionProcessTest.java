@@ -22,6 +22,7 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.param.command.CreateDeploymentCommand;
+import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
@@ -97,8 +98,11 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
         Assert.assertEquals("type",processInstance.getProcessDefinitionType());
 
 
-        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"5");
-        Assert.assertEquals(1,submitTaskInstanceList.size());
+        //FIXME
+        PendingTaskQueryParam pendingTaskQueryParam = new PendingTaskQueryParam();
+        pendingTaskQueryParam.setAssigneeUserId("5");
+        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),pendingTaskQueryParam);
+        Assert.assertEquals(3,submitTaskInstanceList.size());
         TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
 
 
@@ -121,8 +125,9 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
 
-        List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),"3");
-        Assert.assertEquals(1,assertedTaskInstanceList.size());
+        pendingTaskQueryParam.setAssigneeUserId("3");
+        List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),pendingTaskQueryParam);
+        Assert.assertEquals(2,assertedTaskInstanceList.size());
         Assert.assertEquals("userTask1",assertedTaskInstanceList.get(0).getProcessDefinitionActivityId());
 
 

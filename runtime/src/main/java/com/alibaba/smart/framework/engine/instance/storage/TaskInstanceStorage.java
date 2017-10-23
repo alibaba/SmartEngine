@@ -8,6 +8,12 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
 
 public interface TaskInstanceStorage {
 
+    List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam);
+
+    List<TaskInstance> findPendingTaskList(TaskInstanceQueryParam taskInstanceQueryParam);
+
+    Integer countPendingTaskList(TaskInstanceQueryParam taskInstanceQueryParam);
+
     List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam);
 
     Integer count(TaskInstanceQueryParam taskInstanceQueryParam);

@@ -9,6 +9,7 @@ import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.param.query.PaginateQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
@@ -38,27 +39,28 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     }
 
     @Override
-    public List<TaskInstance> findPendingTaskList( String userId, PaginateQueryParam paginateQueryParam) {
+    public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
+                                                  PaginateQueryParam paginateQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
 
-        TaskInstanceQueryParam taskInstanceQueryParam = buildPendingTaskQueryParam(userId, paginateQueryParam);
+        TaskInstanceQueryParam taskInstanceQueryParam = buildPendingTaskQueryParam(pendingTaskQueryParam, paginateQueryParam);
         return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
     }
 
     @Override
-    public Integer countPendingTaskList(String userId) {
+    public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
-        TaskInstanceQueryParam taskInstanceQueryParam = buildPendingTaskQueryParam(userId, null);
+        TaskInstanceQueryParam taskInstanceQueryParam = buildPendingTaskQueryParam(pendingTaskQueryParam, null);
 
         return taskInstanceStorage.count(taskInstanceQueryParam);
     }
 
-    private TaskInstanceQueryParam buildPendingTaskQueryParam(String userId, PaginateQueryParam paginateQueryParam) {
+    private TaskInstanceQueryParam buildPendingTaskQueryParam(PendingTaskQueryParam pendingTaskQueryParam, PaginateQueryParam paginateQueryParam) {
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        taskInstanceQueryParam.setAssigneeUserId(userId);
+        taskInstanceQueryParam.setPendingTaskQueryParam(pendingTaskQueryParam);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
 
         if(null!= paginateQueryParam){
@@ -80,21 +82,30 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
         taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
 
-        return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
+        return taskInstanceStorage.findTaskByProcessInstanceIdAndStatus(taskInstanceQueryParam);
     }
 
     @Override
-    public List<TaskInstance> findAllPendingTaskList(Long processInstanceId, String userId) {
+    public List<TaskInstance> findAllPendingTaskList(Long processInstanceId, PendingTaskQueryParam pendingTaskQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        taskInstanceQueryParam.setAssigneeUserId(userId);
+        taskInstanceQueryParam.setPendingTaskQueryParam(pendingTaskQueryParam);
         taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
 
         return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
+    }
+
+
+    @Override
+    public TaskInstance findOne(Long taskInstanceId) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+        TaskInstance taskInstance = taskInstanceStorage.find(taskInstanceId);
+        return taskInstance;
     }
 
     @Override
@@ -103,14 +114,6 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         return taskInstanceStorage.findTaskList(taskInstanceQueryParam);
-    }
-
-    @Override
-    public TaskInstance findOne(Long taskInstanceId) {
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
-        TaskInstance taskInstance = taskInstanceStorage.find(taskInstanceId);
-        return taskInstance;
     }
 
     @Override

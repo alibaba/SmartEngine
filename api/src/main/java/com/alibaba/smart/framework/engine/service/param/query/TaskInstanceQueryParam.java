@@ -21,12 +21,10 @@ public class TaskInstanceQueryParam extends PaginateQueryParam {
     * @see com.alibaba.smart.framework.engine.constant.TaskInstanceConstant
     */
    private String status;
-   /**
-    * 任务处理者的用户Id
-    */
-   private String assigneeUserId;
 
-   private List<String> assigneeGroupIdList;
+   private String claimUserId;
 
    private String tag;
+
+   private  PendingTaskQueryParam pendingTaskQueryParam;
 }

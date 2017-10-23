@@ -16,6 +16,23 @@ public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
     private Map<Long, TaskInstance> instances = new ConcurrentHashMap<Long, TaskInstance>();
 
     @Override
+    public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam) {
+        return  null;
+    }
+
+    @Override
+    public List<TaskInstance> findPendingTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
+        return  null;
+
+    }
+
+    @Override
+    public Integer countPendingTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
+        return  null;
+
+    }
+
+    @Override
     public List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
         return null;
     }

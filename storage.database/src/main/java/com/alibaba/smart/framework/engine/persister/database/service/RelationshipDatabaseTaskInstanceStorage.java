@@ -15,6 +15,51 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
 public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStorage {
 
     @Override
+    public List<TaskInstance> findPendingTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
+        TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
+        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findPendingTaskList(taskInstanceQueryParam.getPendingTaskQueryParam());
+
+        List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
+        for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
+
+            TaskInstance taskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
+
+            taskInstanceList.add(taskInstance);
+
+        }
+
+        return taskInstanceList;
+    }
+
+    @Override
+    public Integer countPendingTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
+        TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
+        Integer count = taskInstanceDAO.countPendingTaskList(taskInstanceQueryParam.getPendingTaskQueryParam());
+        return  count  == null? 0:count;
+    }
+
+
+
+    @Override
+    public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam) {
+        TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
+        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskByProcessInstanceIdAndStatus(taskInstanceQueryParam);
+
+        List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
+        for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
+
+            TaskInstance taskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
+
+            taskInstanceList.add(taskInstance);
+
+        }
+
+        return taskInstanceList;
+    }
+
+
+
+    @Override
     public List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskList(taskInstanceQueryParam);
