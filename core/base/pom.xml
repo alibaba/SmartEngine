@@ -5,7 +5,7 @@
   <parent> 
     <groupId>com.alibaba.smart.framework</groupId>  
     <artifactId>engine.core</artifactId>  
-    <version>1.0.17</version> 
+    <version>1.0.17-TP3</version> 
   </parent>  
   <artifactId>engine.core.base</artifactId>  
   <name>Smart Engine Core - Base</name>  
