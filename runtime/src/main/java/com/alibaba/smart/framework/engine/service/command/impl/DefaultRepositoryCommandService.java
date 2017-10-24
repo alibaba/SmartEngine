@@ -313,18 +313,19 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             }
 
             // Create Invoker for Activity
-            for (Map.Entry<String, PvmActivity> runtimeActivityEntry : pvmActivityMap.entrySet()) {
-                PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
-                this.initElement(runtimeActivity);
+            for (Map.Entry<String, PvmActivity> pvmActivityEntry : pvmActivityMap.entrySet()) {
+                PvmActivity pvmActivity = pvmActivityEntry.getValue();
 
-                Activity activity=runtimeActivity.getModel();
+                this.initElement(pvmActivity);
+
+                Activity activity=pvmActivity.getModel();
                 ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(activity.getClass());
 
                 if (null == providerFactory) {
                     throw new RuntimeException("No factory found for " + activity.getClass());
                 }
 
-                runtimeActivity.setBehavior(providerFactory.createActivityProvider(runtimeActivity));
+                pvmActivity.setBehavior(providerFactory.createActivityProvider(pvmActivity));
 
                 ExecutePolicy executePolicy=activity.getExecutePolicy();
                 ExecutePolicyBehavior executePolicyBehavior=null;
@@ -339,7 +340,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 if(null==executePolicyBehavior){
                     executePolicyBehavior=this.defaultExecutePolicyBehavior;
                 }
-                runtimeActivity.setExecutePolicyBehavior(executePolicyBehavior);
+                pvmActivity.setExecutePolicyBehavior(executePolicyBehavior);
             }
 
             pvmProcessDefinition.setActivities(pvmActivityMap);

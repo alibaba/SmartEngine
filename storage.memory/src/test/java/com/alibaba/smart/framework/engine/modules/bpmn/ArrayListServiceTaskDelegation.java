@@ -1,27 +1,23 @@
 package com.alibaba.smart.framework.engine.modules.bpmn;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import com.alibaba.smart.framework.engine.delegation.TccDelegation;
 import com.alibaba.smart.framework.engine.delegation.TccResult;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+public class ArrayListServiceTaskDelegation implements TccDelegation{
 
-
-public class ServiceTaskDelegation implements TccDelegation{
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceTaskDelegation.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArrayListServiceTaskDelegation.class);
 
     @Getter
-    private static List<String> arrayList = new ArrayList<String>();
+    private  static  List<String> arrayList = new ArrayList<String>();
 
 
 

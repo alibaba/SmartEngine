@@ -19,12 +19,12 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-engine-storage-memory</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>${project.groupId}</groupId>-->
+            <!--<artifactId>smart-engine-storage-memory</artifactId>-->
+            <!--<version>${project.version}</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>com.taobao.metaq.final</groupId>

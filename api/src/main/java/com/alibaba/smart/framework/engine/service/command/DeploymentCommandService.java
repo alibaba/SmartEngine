@@ -30,10 +30,22 @@ public interface DeploymentCommandService {
      */
     DeploymentInstance updateDeployment(UpdateDeploymentCommand updateDeploymentCommand) ;
 
+    /**
+     * 将DeploymentInstance的状态置为 inactive, 关联的流程定义的仍然在内存里面.
+     * @param deploymentInstanceId
+     */
     void inactivateDeploymentInstance(Long deploymentInstanceId);
 
+    /**
+     * 将DeploymentInstance的状态置为 active, 将关联的流程定义的重新加载到内存里面.
+     * @param deploymentInstanceId
+     */
     void activateDeploymentInstance(Long deploymentInstanceId);
 
+    /**
+     * 逻辑删除DeploymentInstance
+     * @param deploymentInstanceId
+     */
     void deleteDeploymentInstanceLogically(Long deploymentInstanceId);
 
 }
