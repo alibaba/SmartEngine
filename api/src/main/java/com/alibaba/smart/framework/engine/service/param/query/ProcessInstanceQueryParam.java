@@ -17,6 +17,6 @@ public class ProcessInstanceQueryParam extends PaginateQueryParam {
     private String  status ;
     private String processDefinitionType;
     private String bizUniqueId;
-
+    private String processDefinitionIdAndVersion;
 
 }

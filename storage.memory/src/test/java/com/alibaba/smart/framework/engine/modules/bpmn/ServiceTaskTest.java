@@ -13,11 +13,19 @@ import com.alibaba.smart.framework.engine.service.command.RepositoryCommandServi
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@ContextConfiguration("/spring/spring.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
+@Service
 public class ServiceTaskTest {
 
     @After
@@ -25,27 +33,20 @@ public class ServiceTaskTest {
         ArrayListServiceTaskDelegation.getArrayList().clear();
     }
 
-
+    @Autowired
+    private SmartEngine smartEngine;
 
     @Test
 	public void testExclusive() throws Exception {
-	    ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
 
-		SmartEngine smartEngine = new DefaultSmartEngine();
-		smartEngine.init(processEngineConfiguration);
 
-		RepositoryCommandService repositoryService = smartEngine
-				.getRepositoryCommandService();
-		ProcessDefinition processDefinition = repositoryService
-				.deploy("test-servicetask-exclusive.bpmn20.xml");
-        Assert.assertEquals(25, processDefinition.getProcess().getElements().size());
 
 		ProcessCommandService processService = smartEngine.getProcessCommandService();
 		Map<String, Object> request = new HashMap<String, Object>();
 		request.put("input", 2);
 
 		ProcessInstance processInstance = processService.start(
-				processDefinition.getId(), processDefinition.getVersion(),
+				"test-exclusive", "1.0.0",
 				request);
 
         request.get("result");

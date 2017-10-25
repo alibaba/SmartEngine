@@ -49,6 +49,7 @@
     <sql id="condition">
         <where>
             <if test="processDefinitionType != null">and process_definition_type = #{processDefinitionType}</if>
+            <if test="processDefinitionIdAndVersion != null">and process_definition_id_and_version = #{processDefinitionIdAndVersion}</if>
             <if test="status != null">and status = #{status}</if>
             <if test="startUserId != null"> and start_user_id = #{startUserId}</if>
             <if test="bizUniqueId != null"> and biz_unique_id = #{bizUniqueId}</if>

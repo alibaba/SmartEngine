@@ -195,13 +195,15 @@ public class ProcessServiceTest {
         processInstanceQueryParam.setProcessDefinitionType("type");
         processInstanceQueryParam.setStatus(InstanceStatus.running.name());
         processInstanceQueryParam.setStartUserId("123");
+        processInstanceQueryParam.setProcessDefinitionIdAndVersion("compatible-any-passed-process:1.0.0");
+
+
         //processInstanceQueryParam.setBizUniqueId("uniqueId");
-        processInstanceQueryParam.setPageOffset(4);
+        processInstanceQueryParam.setPageOffset(0);
         processInstanceQueryParam.setPageSize(10);
 
         List<ProcessInstance> processInstanceList = processQueryService.findList(processInstanceQueryParam);
-        Assert.assertEquals(1,processInstanceList.size());
-
+        Assert.assertEquals(5,processInstanceList.size());
 
         processInstanceQueryParam.setBizUniqueId("uniqueId");
         processInstanceQueryParam.setPageOffset(0);
