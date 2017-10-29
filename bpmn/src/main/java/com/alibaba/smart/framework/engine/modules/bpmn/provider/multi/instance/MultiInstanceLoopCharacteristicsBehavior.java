@@ -224,7 +224,9 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
                 // Find all task
                 //TODO ADD INDEX
                 TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-                taskInstanceQueryParam.setProcessInstanceId(executionInstance.getProcessInstanceId());
+                List<Long> processInstanceIdList = new ArrayList<Long>(2);
+                processInstanceIdList.add(executionInstance.getProcessInstanceId());
+                taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
                 taskInstanceQueryParam.setActivityInstanceId(executionInstance.getActivityInstanceId());
                 List<TaskInstance> allTaskInstanceList = this.taskInstanceStorage.findTaskList(taskInstanceQueryParam);
 

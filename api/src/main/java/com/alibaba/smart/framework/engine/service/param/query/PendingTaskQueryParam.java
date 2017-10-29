@@ -19,5 +19,5 @@ public class PendingTaskQueryParam extends PaginateQueryParam{
 
     private String processDefinitionType;
 
-    private Long processInstanceId;
+    private List<Long> processInstanceIdList;
 }

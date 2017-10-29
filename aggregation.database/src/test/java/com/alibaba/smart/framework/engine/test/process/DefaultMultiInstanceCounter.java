@@ -24,7 +24,9 @@ public class DefaultMultiInstanceCounter implements MultiInstanceCounter {
       TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
+        List<Long> processInstanceIdList = new ArrayList<Long>(2);
+        processInstanceIdList.add(processInstanceId);
+        taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setActivityInstanceId(activityInstanceId);
         taskInstanceQueryParam.setTag(FullMultiInstanceTest.AGREE);
         Integer count  = taskQueryService.count(taskInstanceQueryParam);
@@ -38,7 +40,9 @@ public class DefaultMultiInstanceCounter implements MultiInstanceCounter {
         TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
+        List<Long> processInstanceIdList = new ArrayList<Long>(2);
+        processInstanceIdList.add(processInstanceId);
+        taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setActivityInstanceId(activityInstanceId);
         taskInstanceQueryParam.setTag(FullMultiInstanceTest.DISAGREE);
         Integer count  = taskQueryService.count(taskInstanceQueryParam);

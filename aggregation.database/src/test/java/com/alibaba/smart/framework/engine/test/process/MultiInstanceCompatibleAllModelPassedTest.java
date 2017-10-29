@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.test.process;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -158,7 +159,10 @@ public class MultiInstanceCompatibleAllModelPassedTest {
         taskInstanceQueryParam.setClaimUserId("1");
         taskInstanceQueryParam.setProcessDefinitionType("type");
         taskInstanceQueryParam.setTag(FullMultiInstanceTest.AGREE);
-        taskInstanceQueryParam.setProcessInstanceId(processInstance.getInstanceId());
+
+        List<Long> processInstanceIdList = new ArrayList<Long>(2);
+        processInstanceIdList.add(processInstance.getInstanceId());
+        taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.COMPLETED);
 
         taskInstanceQueryParam.setPageSize(10);

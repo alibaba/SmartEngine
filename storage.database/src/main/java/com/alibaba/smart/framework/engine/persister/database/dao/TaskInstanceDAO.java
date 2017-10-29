@@ -24,7 +24,7 @@ public interface TaskInstanceDAO {
 
      Integer count(TaskInstanceQueryParam taskInstanceQueryParam);
 
-    List<TaskInstanceEntity> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam);
+    List<TaskInstanceEntity> findTaskByProcessInstanceIdAndStatus(Long processInstanceId,String status);
 
 
 

@@ -30,6 +30,7 @@ import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -168,7 +169,9 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
+        List<Long> processInstanceIdList = new ArrayList<Long>(2);
+        processInstanceIdList.add(processInstanceId);
+        taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         List<TaskInstance> taskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam);
         if(null!=taskInstanceList){
             for (TaskInstance taskInstance : taskInstanceList) {

@@ -44,7 +44,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     @Override
     public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
-        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskByProcessInstanceIdAndStatus(taskInstanceQueryParam);
+        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskByProcessInstanceIdAndStatus(taskInstanceQueryParam.getProcessInstanceIdList().get(0),taskInstanceQueryParam.getStatus());
 
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {

@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.service.query.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
@@ -61,7 +62,9 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        taskInstanceQueryParam.setProcessInstanceId(processInstanceId);
+        List<Long> processInstanceIdList = new ArrayList<Long>(2);
+        processInstanceIdList.add(processInstanceId);
+        taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
 
         return taskInstanceStorage.findTaskByProcessInstanceIdAndStatus(taskInstanceQueryParam);

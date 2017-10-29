@@ -39,10 +39,10 @@
         from se_task_instance where id=#{id}
     </select>
 
-    <select id="findTaskByProcessInstanceIdAndStatus" resultType="TaskInstanceEntity"  parameterType="TaskInstanceQueryParam">
+    <select id="findTaskByProcessInstanceIdAndStatus" resultType="TaskInstanceEntity" >
         select
         <include refid="baseColumn"/>
-        from se_task_instance where process_instance_id = #{processInstanceId} and status = #{status}
+        from se_task_instance where process_instance_id = #{param1} and status = #{param2}
     </select>
 
 
@@ -104,7 +104,12 @@
 
     <sql id="pending_where_condition">
         <if test="processDefinitionType != null">  and  task.process_definition_type = #{processDefinitionType} </if>
-        <if test="processInstanceId != null"> and task.process_instance_id = #{processInstanceId}</if>
+        <if test="processInstanceIdList != null">
+            and task.process_instance_id in
+            <foreach item="item" index="index" separator="," open="(" close=")"  collection="processInstanceIdList">
+                #{item}
+            </foreach>
+        </if>
     </sql>
 
 
@@ -138,7 +143,12 @@
         <if test="tag != null">  and  task.tag = #{tag} </if>
         <if test="activityInstanceId != null">  and  task.activity_instance_id = #{activityInstanceId} </if>
         <if test="processDefinitionActivityId != null">  and  task.process_definition_activity_id = #{processDefinitionActivityId} </if>
-        <if test="processInstanceId != null"> and task.process_instance_id = #{processInstanceId}</if>
+        <if test="processInstanceIdList != null">
+            and task.process_instance_id in
+            <foreach item="item" index="index" separator="," open="(" close=")"  collection="processInstanceIdList">
+                #{item}
+            </foreach>
+        </if>
     </sql>
 
 </mapper>

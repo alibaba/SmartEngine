@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class TaskInstanceQueryParam extends PaginateQueryParam {
 
-   private Long processInstanceId;
+   private List<Long> processInstanceIdList;
 
    private Long activityInstanceId;
 
