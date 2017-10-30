@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
@@ -36,7 +37,9 @@ public interface TaskInstanceDAO {
      //@Options(useGeneratedKeys = true)
      void insert(  TaskInstanceEntity taskInstanceEntity );
 
-     int update(TaskInstanceEntity taskInstanceEntity);
+     int update(@Param("taskInstanceEntity") TaskInstanceEntity taskInstanceEntity);
+
+     int updateFromStatus(@Param("taskInstanceEntity") TaskInstanceEntity taskInstanceEntity,@Param("fromStatus") String fromStatus);
 
      void delete(@Param("id") Long id);
 

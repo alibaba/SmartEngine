@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -14,26 +15,28 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
  */
 public class MarkDoneUtil {
 
-    public   static  ExecutionInstance markDoneExecutionInstance(ExecutionInstance executionInstance, ExecutionInstanceStorage executionInstanceStorage) {
+    public static ExecutionInstance markDoneExecutionInstance(ExecutionInstance executionInstance,
+                                                              ExecutionInstanceStorage executionInstanceStorage) {
         Date completeDate = DateUtil.getCurrentDate();
         executionInstance.setCompleteTime(completeDate);
         executionInstance.setActive(false);
         executionInstanceStorage.update(executionInstance);
-        return  executionInstance;
+        return executionInstance;
     }
 
-    public static TaskInstance markDoneTaskInstance(TaskInstance taskInstance, String targetStatus,Map<String, Object> variables,
-                                              TaskInstanceStorage taskInstanceStorage) {
+    public static TaskInstance markDoneTaskInstance(TaskInstance taskInstance, String targetStatus,String sourceStatus,
+                                                    Map<String, Object> variables,
+                                                    TaskInstanceStorage taskInstanceStorage) {
         Date currentDate = DateUtil.getCurrentDate();
         taskInstance.setCompleteTime(currentDate);
 
-        if(null == taskInstance.getClaimTime()){
+        if (null == taskInstance.getClaimTime()) {
             taskInstance.setClaimTime(currentDate);
         }
 
         taskInstance.setStatus(targetStatus);
 
-        if(null != variables){
+        if (null != variables) {
             String tag = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG);
             taskInstance.setTag(tag);
 
@@ -41,7 +44,12 @@ public class MarkDoneUtil {
             taskInstance.setClaimUserId(claimUserId);
         }
 
-        taskInstanceStorage.update(taskInstance);
+        int updateCount = taskInstanceStorage.updateFromStatus(taskInstance, sourceStatus);
+        if (updateCount != 1) {
+            throw new RuntimeException(String
+                .format("更新任务状态失败 任务id=%s 期望从状态[%s]变更为[%s]", taskInstance.getInstanceId(), sourceStatus,
+                    taskInstance.getStatus()));
+        }
         return taskInstance;
     }
 

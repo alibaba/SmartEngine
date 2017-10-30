@@ -15,17 +15,17 @@ public class CustomTaskInstanceStorage implements TaskInstanceStorage {
 
     @Override
     public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam) {
-        return  null;
+        return null;
     }
 
     @Override
     public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
-        return  null;
+        return null;
     }
 
     @Override
     public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
-        return  null;
+        return null;
     }
 
     @Override
@@ -45,6 +45,11 @@ public class CustomTaskInstanceStorage implements TaskInstanceStorage {
 
     @Override
     public TaskInstance update(TaskInstance instance) {
+        throw new EngineException("not implement intentionally");
+    }
+
+    @Override
+    public int updateFromStatus(TaskInstance taskInstance, String fromStatus) {
         throw new EngineException("not implement intentionally");
     }
 

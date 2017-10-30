@@ -96,19 +96,22 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
         ProcessInstance processInstance = processInstanceFactory.create(executionContext);
+        try {
+            //!!! 重要
+            tryInsertProcessInstanceAndLock(processEngineConfiguration, processInstance);
 
-        //!!! 重要
-        tryInsertProcessInstanceAndLock(processEngineConfiguration, processInstance);
+            executionContext.setProcessInstance(processInstance);
 
+            processInstance = pvmProcessInstance.start(executionContext);
 
-        executionContext.setProcessInstance(processInstance);
-
-        processInstance = pvmProcessInstance.start(executionContext);
-
-        processInstance = CommonServiceHelper.insertAndPersist(processInstance, request,  extensionPointRegistry);
-
-        return processInstance;
-
+            processInstance = CommonServiceHelper.insertAndPersist(processInstance, request, extensionPointRegistry);
+            return processInstance;
+        } finally {
+            LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
+            if (null != lockStrategy) {
+                lockStrategy.unLock(processInstance.getInstanceId());
+            }
+        }
     }
 
     private void tryInsertProcessInstanceAndLock(ProcessEngineConfiguration processEngineConfiguration,
@@ -197,7 +200,8 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
                 if(TaskInstanceConstant.COMPLETED.equals(taskInstance.getStatus()) || TaskInstanceConstant.CANCELED.equals(taskInstance.getStatus())){
                     continue;
                 }
-                MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.ABORTED,null,taskInstanceStorage);
+                MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.ABORTED,TaskInstanceConstant.PENDING, null,
+                    taskInstanceStorage);
 
             }
         }

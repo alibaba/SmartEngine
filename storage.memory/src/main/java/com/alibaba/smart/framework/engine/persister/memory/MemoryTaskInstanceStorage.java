@@ -57,6 +57,12 @@ public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
     }
 
     @Override
+    public int updateFromStatus(TaskInstance taskInstance, String fromStatus) {
+        this.instances.put(taskInstance.getInstanceId(), taskInstance);
+        return 1;
+    }
+
+    @Override
     public TaskInstance find(Long instanceId) {
         return this.instances.get(instanceId);
     }

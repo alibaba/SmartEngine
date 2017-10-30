@@ -18,20 +18,32 @@
         delete from se_task_instance where id=#{id}
     </delete>
 
-    <update id="update" parameterType="TaskInstanceEntity">
-        update se_task_instance
+    <sql id="update_sql">
         <set>
             gmt_modified=now()
-            <if test="claimUserId != null">,claim_user_id = #{claimUserId}</if>
-            <if test="priority != null">,priority = #{priority}</if>
-            <if test="claimTime != null">,claim_time = #{claimTime}</if>
-            <if test="completeTime != null">,complete_time = #{completeTime}</if>
-            <if test="status != null">,status = #{status}</if>
-            <if test="tag != null">, tag = #{tag} </if>
+            <if test="taskInstanceEntity.claimUserId != null">,claim_user_id = #{taskInstanceEntity.claimUserId}</if>
+            <if test="taskInstanceEntity.priority != null">,priority = #{taskInstanceEntity.priority}</if>
+            <if test="taskInstanceEntity.claimTime != null">,claim_time = #{taskInstanceEntity.claimTime}</if>
+            <if test="taskInstanceEntity.completeTime != null">,complete_time = #{taskInstanceEntity.completeTime}</if>
+            <if test="taskInstanceEntity.status != null">,status = #{taskInstanceEntity.status}</if>
+            <if test="taskInstanceEntity.tag != null">, tag = #{taskInstanceEntity.tag} </if>
 
         </set>
-        where id=#{id}
+    </sql>
+
+    <update id="update" parameterType="TaskInstanceEntity">
+        update se_task_instance
+       <include refid="update_sql"/>
+        where id=#{taskInstanceEntity.id}
     </update>
+
+    <update id="updateFromStatus">
+        update se_task_instance
+        <include refid="update_sql"/>
+        where id=#{taskInstanceEntity.id} and status = #{fromStatus}
+    </update>
+
+
 
     <select id="findOne" resultType="TaskInstanceEntity">
         select
