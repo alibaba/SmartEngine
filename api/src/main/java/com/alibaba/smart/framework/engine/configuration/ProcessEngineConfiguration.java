@@ -66,6 +66,10 @@ public interface ProcessEngineConfiguration {
 
     MultiInstanceCounter getMultiInstanceCounter();
 
+    void setLockStrategy(LockStrategy lockStrategy);
+
+    LockStrategy getLockStrategy();
+
     /**
      * 内部执行需要，不需要客户端 API 感知。
      * @param extensionPointRegistry

@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
@@ -96,6 +97,9 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         ProcessInstance processInstance = processInstanceFactory.create(executionContext);
 
+        //!!! 重要
+        tryInsertProcessInstanceAndLock(processEngineConfiguration, processInstance);
+
 
         executionContext.setProcessInstance(processInstance);
 
@@ -105,6 +109,21 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         return processInstance;
 
+    }
+
+    private void tryInsertProcessInstanceAndLock(ProcessEngineConfiguration processEngineConfiguration,
+                                                 ProcessInstance processInstance) {
+        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
+        if(null != lockStrategy){
+
+            PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+            ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
+
+            ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance);
+
+            lockStrategy.tryLock(newProcessInstance.getInstanceId());
+        }
     }
 
     @Override

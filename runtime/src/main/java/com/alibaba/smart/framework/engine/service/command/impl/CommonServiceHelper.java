@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -13,6 +14,7 @@ import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
@@ -35,10 +37,23 @@ public abstract  class CommonServiceHelper {
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
+        ProcessInstance newProcessInstance = null;
+
         //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
         ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
-        ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance);
+        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
+        if(null != lockStrategy){
+            // 这个时候，流程实例可能已经完成或者终止。
+            if(!InstanceStatus.running.equals(processInstance.getStatus())){
+                newProcessInstance =  processInstanceStorage.update(processInstance);
+            }else {
+                newProcessInstance = processInstance;
+            }
+        }else{
+             newProcessInstance =  processInstanceStorage.insert(processInstance);
+        }
+
 
         persisteVariableInstanceIfPossible(request, processEngineConfiguration, persisterFactoryExtensionPoint,
             newProcessInstance,0L);

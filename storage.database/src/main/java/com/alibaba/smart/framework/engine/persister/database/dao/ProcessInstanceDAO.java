@@ -20,4 +20,6 @@ public interface ProcessInstanceDAO {
     int update(ProcessInstanceEntity processInstanceEntity);
 
     void delete(@Param("id") Long id);
+
+    void tryLock(Long id);
 }

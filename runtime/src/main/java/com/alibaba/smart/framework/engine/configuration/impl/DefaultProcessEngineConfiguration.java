@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.configuration.impl;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
+import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -40,6 +41,7 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private MultiInstanceCounter multiInstanceCounter;
 
+    private LockStrategy lockStrategy;
     //protected boolean persisteVariableInstanceEnabled = false;
 
     public DefaultProcessEngineConfiguration() {

@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
@@ -59,6 +60,8 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
     @Override
     public ProcessInstance signal(Long executionInstanceId, Map<String, Object> request) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
@@ -77,8 +80,10 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         }
 
-        //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
+        //!!! 重要
+        tryLock(processEngineConfiguration,executionInstance.getProcessInstanceId());
 
+        //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
 
         //BE AWARE: 注意:针对TP,AliPay场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
         ActivityInstance activityInstance= activityInstanceStorage.find(executionInstance.getActivityInstanceId());
@@ -92,7 +97,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
         executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         executionContext.setProcessEngineConfiguration(processEngineConfiguration);
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
         executionContext.setProcessInstance(processInstance);
@@ -111,13 +115,21 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         return newProcessInstance;
     }
 
+
+
     @Override
     public ProcessInstance signal(Long executionInstanceId) {
         return signal( executionInstanceId, null);
     }
 
 
-
+    private void tryLock(ProcessEngineConfiguration processEngineConfiguration,
+                                                 Long processInstanceId) {
+        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
+        if(null != lockStrategy){
+            lockStrategy.tryLock(processInstanceId);
+        }
+    }
 
 
 
