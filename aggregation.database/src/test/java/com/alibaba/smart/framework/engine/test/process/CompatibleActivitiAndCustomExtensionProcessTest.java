@@ -151,7 +151,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
         Assert.assertEquals("userTask2",submitTaskInstanceList.get(0).getProcessDefinitionActivityId());
 
         Order order = new Order();
-        order.setYzje(101L);
+        order.setYzje(101.02);
         submitFormRequest.put("order",order);
 
         // 由于userTask2 这个节点的 completionCondition 为 null，所以会是 all 模式。此任务完成后，会进入下一个环节。

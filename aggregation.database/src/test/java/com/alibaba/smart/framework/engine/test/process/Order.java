@@ -39,6 +39,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class Order {
 
 
-    private Long yzje;
+    private Double yzje;
 
 }

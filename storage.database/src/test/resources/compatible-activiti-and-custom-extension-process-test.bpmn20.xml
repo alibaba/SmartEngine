@@ -48,7 +48,7 @@
                             alibaba:conditiontype1="order.yzje" alibaba:computetype1="&#62;" alibaba:comparevalue1="100"
                             alibaba:conditionFlagCollection="1">
             <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">
-                <![CDATA[${order.yzje>100}]]></bpmn2:conditionExpression>
+                <![CDATA[${order.yzje>100.1}]]></bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
         <bpmn2:sequenceFlow id="SequenceFlow_1pshchp" sourceRef="ExclusiveGateway_0pjsqqm" targetRef="UserTask_1y14uzz"
                             alibaba:conditiontype1="order.yzje" alibaba:computetype1="&#60;" alibaba:comparevalue1="100"
