@@ -37,13 +37,6 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
         if (null != processComponent.getProcess()) {
             this.install(uri, processComponent.getProcess());
         }
-        if (null != processComponent.getProcesses() && !processComponent.getProcesses().isEmpty()) {
-            for (Map.Entry<String, PvmProcessDefinition> processEntry : processComponent.getProcesses().entrySet()) {
-                PvmProcessDefinition subProcess = processEntry.getValue();
-                String subUri = uri + "/" + subProcess.getModel().getId();
-                this.install(subUri, subProcess);
-            }
-        }
     }
 
     @Override
