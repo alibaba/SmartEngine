@@ -87,6 +87,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstance.setStartUserId(processInstanceEntity.getStartUserId());
         processInstance.setProcessDefinitionType(processInstanceEntity.getProcessDefinitionType());
         processInstance.setReason(processInstanceEntity.getReason());
+        processInstance.setBizUniqueId(processInstanceEntity.getBizUniqueId());
 
 
         //TUNE 还是叫做更新时间比较好一点,是否完成等 还是根据status 去判断.
