@@ -17,9 +17,6 @@ public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
     @Override
     public ProcessInstance save(ProcessInstance instance) {
         this.instances.put(instance.getInstanceId(), instance);
-        if (null != instance.getParentActivityInstanceId()) {
-            this.subProcessInstances.put(instance.getParentActivityInstanceId(), instance);
-        }
         return instance;
     }
 
