@@ -72,6 +72,9 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
     @Override
     public ProcessInstance start(String processId, String version, Map<String, Object> request) {
         PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(processId, version);
+        if (null == pvmProcessDefinition) {
+            throw new EngineException("can not find process defiation");
+        }
 
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
@@ -150,6 +153,9 @@ public class DefaultProcessService implements ProcessService, LifeCycleListener 
         try {
             PvmProcessInstance pvmProcess = new DefaultPvmProcessInstance();
             PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.get(definition.getId(), definition.getVersion());
+            if (null == pvmProcessDefinition) {
+                throw new EngineException("can not find process defiation");
+            }
             ExecutionInstance chosenExecution  = null;
             if (processInstance.getExecutions().size() == 1) {
                 for (ExecutionInstance executionInstance : processInstance.getExecutions().values()) {
