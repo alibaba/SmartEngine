@@ -238,6 +238,7 @@ public class DeploymentServiceTest {
         deploymentInstanceQueryParam = new DeploymentInstanceQueryParam();
         deploymentInstanceQueryParam.setDeploymentUserId("123");
         deploymentInstanceQueryParam.setLogicStatus(LogicStatusConstant.VALID);
+        deploymentInstanceQueryParam.setProcessDefinitionCode(code);
         deploymentInstanceList = deploymentQueryService.findList(deploymentInstanceQueryParam);
         Assert.assertEquals(8,deploymentInstanceList.size());
 

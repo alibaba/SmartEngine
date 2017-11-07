@@ -117,7 +117,6 @@ public class TaskServiceTest {
         submitTaskInstanceList =    taskQueryService.findList(taskInstanceQueryParam);
         Assert.assertEquals(1,submitTaskInstanceList.size());
 
-
         List<TaskAssigneeInstance> taskAssigneeInstanceList =   taskAssigneeQueryService.findList(submitTaskInstanceList.get(0).getInstanceId());
         Assert.assertEquals(5,taskAssigneeInstanceList.size());
 
