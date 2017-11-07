@@ -41,10 +41,12 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> impleme
     }
 
     @Override
-    protected void parseModelChild(SequenceFlow model, BaseElement child) {
+    protected boolean parseModelChild(SequenceFlow model, BaseElement child) {
         if (child instanceof ConditionExpression) {
             model.setConditionExpression((ConditionExpression)child);
+            return true;
         }
+        return false;
     }
 
     @Override

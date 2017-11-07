@@ -47,7 +47,7 @@ public class MemoryExecutionInstanceStorage implements ExecutionInstanceStorage 
 
         List<ExecutionInstance> resultList = new ArrayList(tempList.size());
         for (ExecutionInstance executionInstance : tempList) {
-            if(executionInstance.isActive()){
+            if(processInstanceId.equals(executionInstance.getProcessInstanceId())&& executionInstance.isActive()){
                 resultList.add(executionInstance);
             }
         }
@@ -55,4 +55,19 @@ public class MemoryExecutionInstanceStorage implements ExecutionInstanceStorage 
         return resultList;
 
      }
+
+    @Override
+    public List<ExecutionInstance> findByActivityInstanceId(Long processInstanceId, Long activityInstanceId) {
+        ExecutionInstance[] activityInstances = instances.values().toArray(new ExecutionInstance[]{});
+        List<ExecutionInstance> tempList =  Arrays.asList(activityInstances);
+
+        List<ExecutionInstance> resultList = new ArrayList(tempList.size());
+        for (ExecutionInstance executionInstance : tempList) {
+            if(processInstanceId.equals(executionInstance.getProcessInstanceId())&& activityInstanceId.equals(executionInstance.getActivityInstanceId())){
+                resultList.add(executionInstance);
+            }
+        }
+
+        return resultList;
+    }
 }

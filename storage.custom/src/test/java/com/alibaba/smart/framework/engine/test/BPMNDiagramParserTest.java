@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSess
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 
 import org.junit.After;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class BPMNDiagramParserTest {
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
-        processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
+        //processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -41,7 +41,7 @@ public class BPMNDiagramParserTest {
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        ExecutionInstanceQueryService executionQueryService = smartEngine.getExecutionQueryService();
+        ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
 

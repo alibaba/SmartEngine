@@ -37,7 +37,7 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
                 ExtensionPointRegistry extensionPointRegistry = (ExtensionPointRegistry) extensionPoint;
                 extensionPointRegistry.register();
             } else {
-                LOGGER.debug(extensionPoint.getClass() + " is not a ExtensionPointRegistry,so igonred.");
+                LOGGER.debug(extensionPoint.getClass() + " is not a ExtensionPointRegistry,so ignored.");
             }
         }
     }

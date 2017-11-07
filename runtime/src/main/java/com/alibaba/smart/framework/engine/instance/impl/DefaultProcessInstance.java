@@ -22,12 +22,22 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     private String processDefinitionIdAndVersion;
     private String processDefinitionId;
     private String processDefinitionVersion;
+    private String processDefinitionType;
+
+
+
+    private  String startUserId;
+    /**
+     * 业务唯一标识
+     */
+    private String bizUniqueId;
 
     private Long parentInstanceId;
     private Long parentExecutionInstanceId;
-//    private Long parentActivityInstanceId;
 
     private boolean suspend;
+
+    private String reason;
 
 
     @Setter
@@ -43,14 +53,13 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
 
 
     @Override
-    public void addNewActivityInstance(ActivityInstance activityInstance) {
+    public void addActivityInstance(ActivityInstance activityInstance) {
         this.activityInstances.add(activityInstance);
     }
 
     @Override
-    public List<ActivityInstance> getNewActivityInstances(){
+    public List<ActivityInstance> getActivityInstances(){
         return activityInstances;
     }
-
 
 }

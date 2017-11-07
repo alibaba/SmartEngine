@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.test;//package com.alibaba.smart.framework.engine.persister.util;
 
-import com.alibaba.smart.framework.engine.common.persister.PersisterStrategy;
+import com.alibaba.smart.framework.engine.configuration.PersisterStrategy;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -62,7 +62,7 @@ public class AliPayPersisterStrategy implements PersisterStrategy {
 
             ProcessInstance processInstance= InstanceSerializerFacade.deserializeAll(str);
 
-            List<ActivityInstance> activityInstances =  processInstance.getNewActivityInstances();
+            List<ActivityInstance> activityInstances =  processInstance.getActivityInstances();
 
 
             if(null == activityInstances ||activityInstances.isEmpty() ){
@@ -70,15 +70,23 @@ public class AliPayPersisterStrategy implements PersisterStrategy {
                 continue;
             }else{
                 int size = activityInstances.size();
+
+                //TODO DUPLICATED CODE
+
                 for (int i = size-1; i>=0;i--) {
                     ActivityInstance activityInstance = activityInstances.get(i);
-                    ExecutionInstance tempExecutionInstance = activityInstance.getExecutionInstance();
-                    if(null!= tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(executionInstanceId)){
-                        machedProcessInstance = processInstance;
-                        matched = true;
-                        break;
 
+                    List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+                    for (ExecutionInstance tempExecutionInstance : executionInstances) {
+                        if(null!= tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(executionInstanceId)){
+                            machedProcessInstance = processInstance;
+                            matched = true;
+                            break;
+
+                        }
                     }
+
+
                 }
 
             }

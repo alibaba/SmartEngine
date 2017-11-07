@@ -8,4 +8,8 @@ public interface Activity extends Element {
 
     boolean isStartActivity();
 
+    ExecutePolicy getExecutePolicy();
+
+    void setExecutePolicy(ExecutePolicy executePolicy);
+
 }

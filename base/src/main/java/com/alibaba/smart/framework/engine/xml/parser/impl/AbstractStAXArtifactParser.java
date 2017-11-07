@@ -54,12 +54,16 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
     }
 
     protected boolean getBoolean(XMLStreamReader reader, String name) {
+        return getBoolean(reader,name,false);
+    }
+
+    protected boolean getBoolean(XMLStreamReader reader, String name,boolean defaultValue) {
         String value = reader.getAttributeValue((String) null, name);
         Boolean attr = value == null ? null : Boolean.valueOf(value);
         if (attr == null) {
-            return false;
+            return defaultValue;
         } else {
-            return attr.booleanValue();
+            return attr;
         }
     }
 

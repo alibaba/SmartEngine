@@ -2,6 +2,8 @@ package com.alibaba.smart.framework.engine.instance.impl;
 
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,14 +19,11 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
     private Long processInstanceId;
     private Long activityInstanceId;
 
-    private String activityId;
+    private String processDefinitionActivityId;
     private boolean active;
 
     private TaskInstance taskInstance;
 
-
-
-
-
+    private TransitionInstance incomeTransition;
 
 }

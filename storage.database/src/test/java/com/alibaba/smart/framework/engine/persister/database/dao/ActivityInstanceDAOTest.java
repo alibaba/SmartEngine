@@ -17,10 +17,10 @@ public class ActivityInstanceDAOTest extends BaseElementTest {
     @Before
     public void before() {
         entity = new ActivityInstanceEntity();
-        entity.setProcessDefinitionId("processDefinitionId");
+        entity.setProcessDefinitionIdAndVersion("processDefinitionId");
 //        entity.setExecutionInstanceId(11L);
         entity.setProcessDefinitionActivityId("ProcessDefinitionActivityId");
-        entity.setProcessDefinitionId("processDefinitionId");
+        //entity.setProcessDefinitionId("processDefinitionId");
         entity.setProcessInstanceId(22L);
 //        entity.setTaskInstanceId(33L);
     }
@@ -28,8 +28,8 @@ public class ActivityInstanceDAOTest extends BaseElementTest {
     @Test
     public void testInsert() {
 
-        ActivityInstanceEntity result = dao.insert(entity);
-        Assert.assertNotNull(result);
+       Object o =  dao.insert(entity);
+        Assert.assertNotNull(entity);
     }
 
     @Test

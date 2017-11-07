@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.test;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.common.persister.PersisterStrategy;
+import com.alibaba.smart.framework.engine.configuration.PersisterStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSess
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -45,7 +45,7 @@ public class AliPayForeignExchangeTest {
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
-        processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
+        //processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -53,7 +53,7 @@ public class AliPayForeignExchangeTest {
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        ExecutionInstanceQueryService executionQueryService = smartEngine.getExecutionQueryService();
+        ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
 
@@ -78,7 +78,7 @@ public class AliPayForeignExchangeTest {
         //在调用findActiveExecution和signal方法前调用此方法。当然,在实际场景下,persiste通常只需要调用一次;UpdateThreadLocal则很多场景下需要调用。
         persisteAndUpdateThreadLocal(orderId, processInstance);
 
-        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         assertEquals(1, executionInstanceList.size());
         ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
         //完成预下单,将流程驱动到 下单确认环节。
@@ -86,10 +86,10 @@ public class AliPayForeignExchangeTest {
 
         //测试下是否符合预期
         persisteAndUpdateThreadLocal(orderId, processInstance);
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("confirm_order".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("confirm_order".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         //完成下单确认,将流程驱动到等待资金到账环节。
         request.put("smartEngineAction", "go_to_pay");
@@ -97,10 +97,10 @@ public class AliPayForeignExchangeTest {
 
         //测试下是否符合预期
         persisteAndUpdateThreadLocal(orderId, processInstance);
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("wait_money_into_account".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("wait_money_into_account".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         //完成资金到账,将流程驱动到资金交割处理环节。
         request.put("smartEngineAction", "money_into_account");
@@ -108,20 +108,20 @@ public class AliPayForeignExchangeTest {
 
         //测试下是否符合预期
         persisteAndUpdateThreadLocal(orderId, processInstance);
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("fund_delivery".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("fund_delivery".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         //完成资金交割处理,将流程驱动到ACK确认环节。
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId());
 
         //测试下是否符合预期
         persisteAndUpdateThreadLocal(orderId, processInstance);
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("fund_delivery_ack".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("fund_delivery_ack".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         //完成流程驱动。
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);

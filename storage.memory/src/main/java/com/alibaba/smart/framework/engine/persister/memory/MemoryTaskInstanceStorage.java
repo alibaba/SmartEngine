@@ -1,11 +1,13 @@
 package com.alibaba.smart.framework.engine.persister.memory;
 
-import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 /**
  * 内存实例存储 Created by ettear on 16-4-13.
@@ -15,7 +17,27 @@ public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
     private Map<Long, TaskInstance> instances = new ConcurrentHashMap<Long, TaskInstance>();
 
     @Override
-    public List<TaskInstance> findPendingTask(Long processInstanceId) {
+    public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam) {
+        return  null;
+    }
+
+    @Override
+    public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
+        return  null;
+    }
+
+    @Override
+    public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
+        return  null;
+    }
+
+    @Override
+    public List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
+        return null;
+    }
+
+    @Override
+    public Integer count(TaskInstanceQueryParam taskInstanceQueryParam) {
         return null;
     }
 
@@ -32,6 +54,12 @@ public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
         this.instances.put(instance.getInstanceId(), instance);
 
         return instance;
+    }
+
+    @Override
+    public int updateFromStatus(TaskInstance taskInstance, String fromStatus) {
+        this.instances.put(taskInstance.getInstanceId(), taskInstance);
+        return 1;
     }
 
     @Override

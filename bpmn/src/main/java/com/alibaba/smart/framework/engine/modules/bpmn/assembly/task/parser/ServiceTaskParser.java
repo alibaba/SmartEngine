@@ -38,15 +38,16 @@ public class ServiceTaskParser extends AbstractBpmnActivityParser<ServiceTask> i
     }
 
     @Override
-    protected void parseModelChild(ServiceTask model, BaseElement child) {
+    protected boolean parseModelChild(ServiceTask model, BaseElement child) {
         if (child instanceof Action) {
             model.setAction((Action) child);
+            return true;
         }
         if (child instanceof ProcessEvents) {
             model.setEvents((ProcessEvents) child);
+            return true;
         }
-
+        return false;
     }
-
 
 }

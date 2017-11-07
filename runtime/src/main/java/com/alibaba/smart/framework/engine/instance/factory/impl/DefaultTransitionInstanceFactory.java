@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.factory.impl;
 
-import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.instance.factory.TransitionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTransitionInstance;
@@ -13,11 +13,6 @@ public class DefaultTransitionInstanceFactory implements TransitionInstanceFacto
 
     @Override
     public TransitionInstance create(ExecutionContext executionContext) {
-        DefaultTransitionInstance defaultTransitionInstance = new DefaultTransitionInstance();
-
-        IdGenerator idGenerator = executionContext.getProcessEngineConfiguration().getIdGenerator();
-
-        defaultTransitionInstance.setInstanceId(idGenerator.getId());
-        return defaultTransitionInstance;
+        return new DefaultTransitionInstance();
     }
 }

@@ -1,7 +1,10 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression;
 
 import com.alibaba.smart.framework.engine.model.assembly.Condition;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnNameSpaceConstant;
+import com.alibaba.smart.framework.engine.model.assembly.Performable;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractPerformable;
+import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,7 +15,7 @@ import javax.xml.namespace.QName;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ConditionExpression extends Condition {
+public class ConditionExpression extends AbstractPerformable implements Performable {
 
     private static final long serialVersionUID = -6152070683207905381L;
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "conditionExpression");

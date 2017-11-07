@@ -30,16 +30,13 @@ public class DefaultPvmTransition extends AbstractPvmElement<Transition> impleme
 
     @Override
     public boolean match(ExecutionContext context) {
-        Object result = this.invoke(PvmEventConstant.TRANSITION_START.name(), context);
-        if (null == result) {
-            return true;
-        }
-        return (Boolean)result;
+        return this.behavior.match(context);
     }
 
     @Override
     public void execute(ExecutionContext context) {
         this.invoke(PvmEventConstant.TRANSITION_EXECUTE.name(), context);
+
         PvmActivity targetPvmActivity = this.getTarget();
         context.setSourcePvmActivity(this.getSource());
         //重要: 执行当前节点,会触发当前节点的行为执行
@@ -48,12 +45,11 @@ public class DefaultPvmTransition extends AbstractPvmElement<Transition> impleme
 
     @Override
     protected Object invokeBehavior(String event, ExecutionContext context) {
-        if (PvmEventConstant.TRANSITION_START.name().equals(event)) {
-            return this.behavior.match(context);
-        } else if (PvmEventConstant.TRANSITION_EXECUTE.name().equals(event)) {
-            return this.behavior.execute(context);
+        if (PvmEventConstant.TRANSITION_EXECUTE.name().equals(event)) {
+             return this.behavior.execute(context);
         }
-        return null;
+        // TUNE XXX
+        return  null;
     }
 
     @Override

@@ -12,8 +12,8 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
+import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,8 +37,8 @@ public class ReceiveTaskParallelGatewayTest {
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
-        ActivityInstanceQueryService activityQueryService = smartEngine.getActivityQueryService();
-        ExecutionInstanceQueryService executionQueryService = smartEngine.getExecutionQueryService();
+        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
+        ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
 
 
         RepositoryCommandService repositoryCommandService = smartEngine
@@ -64,14 +64,14 @@ public class ReceiveTaskParallelGatewayTest {
         int size = activityInstances.size();
         assertEquals(4, size);
 
-        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         assertEquals(2, executionInstanceList.size());
 
         ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
-        String firstActivityId=firstExecutionInstance.getActivityId();
+        String firstActivityId=firstExecutionInstance.getProcessDefinitionActivityId();
 
         ExecutionInstance secondExecutionInstance = executionInstanceList.get(1);
-        String secondActivityId=secondExecutionInstance.getActivityId();
+        String secondActivityId=secondExecutionInstance.getProcessDefinitionActivityId();
 
         assertTrue(("theTask1".equals(firstActivityId) && "theTask2".equals(secondActivityId)) || ("theTask1".equals(secondActivityId) && "theTask2".equals(firstActivityId)));
 
@@ -80,14 +80,14 @@ public class ReceiveTaskParallelGatewayTest {
 
         String runningActivityId=secondActivityId;
 
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         assertEquals(2, executionInstanceList.size());
 
         firstExecutionInstance = executionInstanceList.get(0);
-        firstActivityId=firstExecutionInstance.getActivityId();
+        firstActivityId=firstExecutionInstance.getProcessDefinitionActivityId();
 
         secondExecutionInstance = executionInstanceList.get(1);
-        secondActivityId=secondExecutionInstance.getActivityId();
+        secondActivityId=secondExecutionInstance.getProcessDefinitionActivityId();
 
         ExecutionInstance runningExecutionInstance;
         if(firstActivityId.equals("join")){
@@ -109,13 +109,13 @@ public class ReceiveTaskParallelGatewayTest {
         request.put("input", 11);
         processInstance = executionCommandService.signal(runningExecutionInstance.getInstanceId(), request);
 
-        executionInstanceList =executionQueryService.findActiveExecution(processInstance.getInstanceId());
+        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("theTask3".equals(firstExecutionInstance.getActivityId()));
+        assertTrue("theTask3".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
-        Assert.assertNotNull(processInstance.getCompleteDate());
+        Assert.assertNotNull(processInstance.getCompleteTime());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
 

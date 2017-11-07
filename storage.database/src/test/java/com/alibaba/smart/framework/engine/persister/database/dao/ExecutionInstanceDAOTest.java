@@ -17,7 +17,7 @@ public class ExecutionInstanceDAOTest extends BaseElementTest {
     @Before
     public void before() {
         entity = new ExecutionInstanceEntity();
-        entity.setProcessDefinitionId("processDefinitionId");
+        entity.setProcessDefinitionIdAndVersion("processDefinitionId");
         entity.setActivityInstanceId(11L);
         entity.setProcessInstanceId(444L);
         entity.setActive(false);
@@ -28,8 +28,8 @@ public class ExecutionInstanceDAOTest extends BaseElementTest {
     @Test
     public void testInsert() {
 
-        ExecutionInstanceEntity result = dao.insert(entity);
-        Assert.assertNotNull(result);
+        dao.insert(entity);
+        Assert.assertNotNull(entity);
     }
 
     @Test

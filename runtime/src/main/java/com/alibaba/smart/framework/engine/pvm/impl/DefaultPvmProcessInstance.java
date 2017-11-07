@@ -16,20 +16,20 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
     public ProcessInstance start(ExecutionContext executionContext) {
 
         PvmProcessDefinition pvmProcessDefinition = executionContext.getPvmProcessDefinition();
-        PvmActivity startActivity = pvmProcessDefinition.getStartActivity();
+        PvmActivity pvmActivity = pvmProcessDefinition.getStartActivity();
 
-        startActivity.enter( executionContext);
+        // execute ENTER method
+        pvmActivity.enter( executionContext);
 
         return executionContext.getProcessInstance();
 
     }
 
 
-
-
     @Override
     public ProcessInstance signal(PvmActivity pvmActivity, ExecutionContext executionContext) {
 
+        // execute EXECUTE method
         pvmActivity.execute( executionContext);
 
         return executionContext.getProcessInstance();

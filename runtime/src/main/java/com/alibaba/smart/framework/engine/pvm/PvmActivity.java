@@ -5,6 +5,7 @@ import java.util.Map;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
+import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.provider.Invoker;
 
 /**
@@ -27,6 +28,8 @@ public interface PvmActivity extends PvmElement<Activity> {
     void execute(ExecutionContext context);
 
     void setBehavior(ActivityBehavior activityBehavior);
+
+    void setExecutePolicyBehavior(ExecutePolicyBehavior executePolicyBehavior);
 
 
 }

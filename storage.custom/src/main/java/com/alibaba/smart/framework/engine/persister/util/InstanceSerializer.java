@@ -31,25 +31,29 @@ public class InstanceSerializer {
 
         //----分割线--- 上部分完成流程实例的序列化,下部分完成活动实例和执行实例的序列化。
 
-        List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
+        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
         for (ActivityInstance activityInstance : activityInstances) {
 
 
-            ExecutionInstance executionInstance = activityInstance.getExecutionInstance();
-            if (null != executionInstance) {
-                boolean active = executionInstance.isActive();
+            List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+            for (ExecutionInstance executionInstance : executionInstances) {
+                if (null != executionInstance) {
+                    boolean active = executionInstance.isActive();
 
-                if(active){
-                    //注意: 这里仅保存了需要被执行的实例,历史的activityInstance在这里并没有保存。在阿里的海量数据业务中,也通常不需要。
-                    stringBuilder.append(activityInstance.getInstanceId()).append(",");
-                    stringBuilder.append(activityInstance.getActivityId()).append(",");
-                    stringBuilder.append(executionInstance.getInstanceId()).append(",");
-                    stringBuilder.append(active).append(",");
+                    if(active){
+                        //注意: 这里仅保存了需要被执行的实例,历史的activityInstance在这里并没有保存。在阿里的海量数据业务中,也通常不需要。
+                        stringBuilder.append(activityInstance.getInstanceId()).append(",");
+                        stringBuilder.append(activityInstance.getProcessDefinitionActivityId()).append(",");
+                        stringBuilder.append(executionInstance.getInstanceId()).append(",");
+                        stringBuilder.append(active).append(",");
 
-                    stringBuilder.append("|");
+                        stringBuilder.append("|");
+                    }
+
                 }
-
             }
+
+
 
 
         }
@@ -114,13 +118,18 @@ public class InstanceSerializer {
 
         List<ActivityInstance>  activityInstances  = deserializeActivityInstances(serializeString);
 
-        List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
+        List<ExecutionInstance> executionInstances1 = new ArrayList<ExecutionInstance>(activityInstances.size());
         for (ActivityInstance activityInstance : activityInstances) {
-            ExecutionInstance executionInstance =   activityInstance.getExecutionInstance();
-            executionInstances.add(executionInstance);
+
+            List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+            for (ExecutionInstance executionInstance : executionInstances) {
+                executionInstances1.add(executionInstance);
+
+            }
+
         }
 
-        return executionInstances;
+        return executionInstances1;
 
     }
 
@@ -128,7 +137,7 @@ public class InstanceSerializer {
         while (st.hasMoreTokens()) {
             ActivityInstance activityInstance = buildActivityInstanceAndExecutionInstance(st);
 
-            processInstance.getNewActivityInstances().add(activityInstance);
+            processInstance.getActivityInstances().add(activityInstance);
         }
     }
 
@@ -138,16 +147,21 @@ public class InstanceSerializer {
         ActivityInstance activityInstance = new DefaultActivityInstance();
         activityInstance.setInstanceId(Long.valueOf(st1.nextToken()));
         String activityId = st1.nextToken();
-        activityInstance.setActivityId(activityId);
+        activityInstance.setProcessDefinitionActivityId(activityId);
         ExecutionInstance executionInstance = buildExecutionInstance(st1, activityId);
-        activityInstance.setExecutionInstance(executionInstance);
+
+        //TODO 有点问题、
+        List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(2);
+        executionInstanceList.add(executionInstance);
+        activityInstance.setExecutionInstanceList(executionInstanceList);
+
         return activityInstance;
     }
 
     private static ExecutionInstance buildExecutionInstance(StringTokenizer st1, String activityId) {
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
         executionInstance.setInstanceId(Long.valueOf(st1.nextToken()));
-        executionInstance.setActivityId(activityId);
+        executionInstance.setProcessDefinitionActivityId(activityId);
         executionInstance.setActive(Boolean.valueOf(st1.nextToken()));
         return executionInstance;
     }

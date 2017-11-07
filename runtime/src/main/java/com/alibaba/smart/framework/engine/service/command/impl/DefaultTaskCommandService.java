@@ -1,9 +1,9 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.common.service.TaskAssigneeService;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
@@ -16,12 +16,13 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author 高海军 帝奇  2016.11.11
  */
-public class DefaultTaskCommandService implements TaskCommandService , LifeCycleListener {
+public class DefaultTaskCommandService implements TaskCommandService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
 
@@ -52,29 +53,35 @@ public class DefaultTaskCommandService implements TaskCommandService , LifeCycle
 
     @Override
     public void complete(Long taskId, Map<String, Object> variables) {
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(
+            PersisterFactoryExtensionPoint.class);
 
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
-        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(
+            TaskInstanceStorage.class);
+        TaskInstance taskInstance = taskInstanceStorage.find(taskId);
+        MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
+            variables, taskInstanceStorage);
 
-        TaskInstance taskInstance= taskInstanceStorage.find(taskId);
-        Date currentDate = DateUtil.getCurrentDate();
-        taskInstance.setCompleteDate(currentDate);
-        taskInstance.setEndTime(currentDate);
-        taskInstanceStorage.update(taskInstance);
-
-
-
-        TaskAssigneeService taskAssigneeService = processEngineConfiguration.getTaskAssigneeService();
-        if(null != taskAssigneeService){
-            taskAssigneeService.complete(taskInstance.getInstanceId());
-        }
-
-
-
-        executionCommandService.signal(taskInstance.getExecutionInstanceId(),variables);
+        executionCommandService.signal(taskInstance.getExecutionInstanceId(), variables);
 
     }
 
 
+
+    @Override
+    public void complete(Long taskId, String userId, Map<String, Object> variables) {
+        if(null == variables){
+            variables = new HashMap<String, Object>();
+        }
+        variables.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,userId);
+
+        //TODO check priviage
+
+        complete(  taskId, variables);
+    }
+
+    //@Override
+    //public void claim(Long taskId, String userId, Map<String, Object> variables) {
+    //
+    //}
 }

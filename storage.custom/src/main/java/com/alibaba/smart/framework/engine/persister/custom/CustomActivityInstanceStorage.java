@@ -33,7 +33,7 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
         ActivityInstance matchedActivityInstance = null;
 
         for (ProcessInstance processInstance : processInstances) {
-            List<ActivityInstance> activityInstances = processInstance.getNewActivityInstances();
+            List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
 
             for (ActivityInstance activityInstance : activityInstances) {
                 if (activityInstance.getInstanceId().equals(activityInstanceId)) {
@@ -63,6 +63,6 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
     @Override
     public List<ActivityInstance> findAll(Long processInstanceId) {
         ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance(processInstanceId);
-        return null == processInstance ? null : processInstance.getNewActivityInstances();
+        return null == processInstance ? null : processInstance.getActivityInstances();
     }
 }

@@ -4,44 +4,164 @@
 <mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.TaskInstanceDAO">
 
     <sql id="baseColumn">
-        id, gmt_create, gmt_modified,process_instance_id, process_definition_id,
-        activity_instance_id, execution_instance_id,assignee_id,priority,claim_time,end_time
+        id, gmt_create, gmt_modified,process_instance_id, process_definition_id_and_version,process_definition_type,
+        activity_instance_id, process_definition_activity_id, execution_instance_id,claim_user_id,priority,tag,claim_time,complete_time,status
     </sql>
 
-    <insert id="insert" parameterType="TaskInstanceEntity">
-        insert into task_instance(<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionId},
-        #{activityInstanceId}, #{executionInstanceId},#{assigneeId},#{priority},#{claimTime},#{endTime})
+    <insert id="insert" parameterType="TaskInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into se_task_instance(<include refid="baseColumn"/>)
+        values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},#{processDefinitionType},
+        #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status})
     </insert>
 
     <delete id="delete" parameterType="long">
-        delete from task_instance where id=#{id}
+        delete from se_task_instance where id=#{id}
     </delete>
 
-    <update id="update" parameterType="TaskInstanceEntity">
-        update task_instance
+    <sql id="update_sql">
         <set>
             gmt_modified=now()
-            <if test="assigneeId != null">,assignee_id = #{assigneeId}</if>
-            <if test="priority != null">,priority = #{priority}</if>
-            <if test="claimTime != null">,claim_time = #{claimTime}</if>
-            <if test="endTime != null">,end_time = #{endTime}</if>
+            <if test="taskInstanceEntity.claimUserId != null">,claim_user_id = #{taskInstanceEntity.claimUserId}</if>
+            <if test="taskInstanceEntity.priority != null">,priority = #{taskInstanceEntity.priority}</if>
+            <if test="taskInstanceEntity.claimTime != null">,claim_time = #{taskInstanceEntity.claimTime}</if>
+            <if test="taskInstanceEntity.completeTime != null">,complete_time = #{taskInstanceEntity.completeTime}</if>
+            <if test="taskInstanceEntity.status != null">,status = #{taskInstanceEntity.status}</if>
+            <if test="taskInstanceEntity.tag != null">, tag = #{taskInstanceEntity.tag} </if>
 
         </set>
-        where id=#{id}
+    </sql>
+
+    <update id="update" parameterType="TaskInstanceEntity">
+        update se_task_instance
+       <include refid="update_sql"/>
+        where id=#{taskInstanceEntity.id}
     </update>
+
+    <update id="updateFromStatus">
+        update se_task_instance
+        <include refid="update_sql"/>
+        where id=#{taskInstanceEntity.id} and status = #{fromStatus}
+    </update>
+
+
 
     <select id="findOne" resultType="TaskInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from task_instance where id=#{id}
+        from se_task_instance where id=#{id}
     </select>
 
-    <select id="findPendingTask" resultType="TaskInstanceEntity">
+    <select id="findTaskByProcessInstanceIdAndStatus" resultType="TaskInstanceEntity" >
         select
         <include refid="baseColumn"/>
-        from task_instance where process_instance_id=#{processInstanceId}
+        from se_task_instance where process_instance_id = #{param1} and status = #{param2}
     </select>
 
 
+
+
+
+    <select id="findPendingTaskList" resultType="TaskInstanceEntity" parameterType="PendingTaskQueryParam">
+        select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
+        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status
+        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id  and  task.status = 'pending'
+        <include refid="pending_where_condition"/>
+
+        <include refid="pending_task_assignee_choose_sql"/>
+
+        order by task.gmt_modified desc
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+
+    </select>
+
+
+    <select id="countPendingTaskList" resultType="int" parameterType="PendingTaskQueryParam">
+        select  count(task.id)
+        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id  and  task.status = 'pending'
+        <include refid="pending_where_condition"/>
+
+        <include refid="pending_task_assignee_choose_sql"/>
+
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+
+    </select>
+
+    <sql id="pending_task_assignee_choose_sql">
+        <choose>
+            <when test="assigneeUserId != null and assigneeGroupIdList != null">
+                and (      (assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user') or (assignee.assignee_id in
+                <foreach item="item" index="index" separator="," open="(" close=")"  collection="assigneeGroupIdList">
+                    #{item}
+                </foreach>
+                and assignee.assignee_type = 'group')    )
+            </when>
+            <when test="assigneeUserId != null">
+                and assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user'
+            </when>
+
+            <when test="assigneeGroupIdList != null">
+                and assignee.assignee_id in
+                <foreach item="item" index="index" separator="," open="(" close=")"  collection="assigneeGroupIdList">
+                    #{item}
+                </foreach>
+                and assignee.assignee_type = 'group'
+            </when>
+
+            <otherwise>
+
+            </otherwise>
+        </choose>
+
+    </sql>
+
+    <sql id="pending_where_condition">
+        <if test="processDefinitionType != null">  and  task.process_definition_type = #{processDefinitionType} </if>
+        <if test="processInstanceIdList != null">
+            and task.process_instance_id in
+            <foreach item="item" index="index" separator="," open="(" close=")"  collection="processInstanceIdList">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+
+
+    <select id="findTaskList" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryParam">
+        select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
+        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status
+        from  se_task_instance task  where 1=1
+        <include refid="where_condition"/>
+
+        order by task.gmt_modified desc
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+
+    </select>
+
+
+    <select id="count" resultType="int" parameterType="TaskInstanceQueryParam">
+        select  count(task.id)
+        from  se_task_instance task where 1=1
+        <include refid="where_condition"/>
+
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+
+    </select>
+
+
+    <sql id="where_condition">
+        <if test="status != null">  and task.status = #{status} </if>
+        <if test="processDefinitionType != null">  and  task.process_definition_type = #{processDefinitionType} </if>
+        <if test="claimUserId != null">  and  task.claim_user_id = #{claimUserId} </if>
+        <if test="tag != null">  and  task.tag = #{tag} </if>
+        <if test="activityInstanceId != null">  and  task.activity_instance_id = #{activityInstanceId} </if>
+        <if test="processDefinitionActivityId != null">  and  task.process_definition_activity_id = #{processDefinitionActivityId} </if>
+        <if test="processInstanceIdList != null">
+            and task.process_instance_id in
+            <foreach item="item" index="index" separator="," open="(" close=")"  collection="processInstanceIdList">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
 </mapper>
+

@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -28,15 +27,16 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
     @Override
     public boolean enter(ExecutionContext context) {
-
         ParallelGateway parallelGateway = this.getModel();
-        PvmActivity pvmActivity = this.getRuntimeActivity();
+        PvmActivity pvmActivity = this.getPvmActivity();
 
         Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();
 
         if(incomeTransitions.size()==1){
             return false;
         }
+
+        //FIXME database 模式下是否有问题? 早点看下全流程.
 
         context.setProcessInstance(CommonServiceHelper.insertAndPersist(context.getProcessInstance(), context.getRequest(), this.extensionPointRegistry));
 
@@ -76,7 +76,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
             for (ExecutionInstance executionInstance : executionInstanceList) {
 
-                if (executionInstance.getActivityId().equals(parallelGateway.getId())) {
+                if (executionInstance.getProcessDefinitionActivityId().equals(parallelGateway.getId())) {
                     reachedForkedSum++;
                 }
             }
@@ -91,8 +91,11 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
             for (ActivityInstance activityInstance : activityInstanceList) {
 
-                if(activityInstance.getActivityId().equals(pvmActivity.getModel().getId())){
-                    MarkDoneUtil.markDone(activityInstance,activityInstance.getExecutionInstance(),super.getExtensionPointRegistry());
+                if(activityInstance.getProcessDefinitionActivityId().equals(pvmActivity.getModel().getId())){
+                    List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+                    for (ExecutionInstance executionInstance : executionInstances) {
+                        MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
+                    }
                 }
             }
             return false;
@@ -112,7 +115,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         // 重要:在流程定义解析时,需要判断如果是 fork,则 outcome >=2, income=1; 类似的,如果是 join,则 outcome = 1,income>=2
 
         ParallelGateway parallelGateway = this.getModel();
-        PvmActivity pvmActivity = this.getRuntimeActivity();
+        PvmActivity pvmActivity = this.getPvmActivity();
 
         ProcessInstance processInstance = context.getProcessInstance();
 
@@ -155,7 +158,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 }
             }
 
-            List<ExecutionInstance> executionInstanceList = executionInstanceStorage.findActiveExecution(processInstance.getInstanceId());
+            List<ExecutionInstance> executionInstanceList = executionInstanceStorage.findActiveExecutionList(processInstance.getInstanceId());
 
             int reachedForkedSum = 0;
 
@@ -271,7 +274,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
     //                    //如果相等,说明在同一个fork,join 环内。
     //                    //if (blockId.equals(completeActivityInstance.getBlockId())) {
     //
-    //                        //如果不为空,那么则说明当前环节已经完成。 TODO 增加activity的active状态
+    //                        //如果不为空,那么则说明当前环节已经完成。
     //                        //if (null != completeActivityInstance.getCompleteDate()) {
     //                            listIterator.remove();
     //                            break;
@@ -293,7 +296,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
     //    //            //如果相等,说明在同一个fork,join 环内。
     //    //            if (blockId.equals(completeActivityInstance.getBlockId())) {
     //    //
-    //    //                //如果不为空,那么则说明当前环节已经完成。 TODO 增加activity的active状态
+    //    //                //如果不为空,那么则说明当前环节已经完成。
     //    //                if (null != completeActivityInstance.getCompleteDate()) {
     //    //                    sum++;
     //    //                }

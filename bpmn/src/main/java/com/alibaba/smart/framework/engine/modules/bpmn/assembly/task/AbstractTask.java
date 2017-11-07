@@ -1,6 +1,10 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task;
 
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.AbstractBpmnActivity;
+import java.util.Map;
+
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,11 +13,14 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public abstract class AbstractTask extends AbstractBpmnActivity {
+public abstract class AbstractTask extends AbstractActivity {
 
     /**
      *
      */
     private static final long serialVersionUID = 5042056118774610434L;
-    private boolean isAsync;
+
+    private Map<String,String> properties;
+
+
 }

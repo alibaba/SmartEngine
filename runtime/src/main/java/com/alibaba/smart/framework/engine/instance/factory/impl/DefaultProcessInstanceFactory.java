@@ -1,14 +1,13 @@
 package com.alibaba.smart.framework.engine.instance.factory.impl;
 
-import java.util.List;
+import java.util.Map;
 
-import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -19,22 +18,32 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
     @Override
-    public ProcessInstance create( ExecutionContext executionContext) {
+    public ProcessInstance create(ExecutionContext executionContext) {
         PvmProcessDefinition pvmProcessDefinition = executionContext.getPvmProcessDefinition();
         DefaultProcessInstance defaultProcessInstance = new DefaultProcessInstance();
         IdGenerator idGenerator = executionContext.getProcessEngineConfiguration().getIdGenerator();
 
         defaultProcessInstance.setInstanceId(idGenerator.getId());
         defaultProcessInstance.setStatus(InstanceStatus.running);
-        defaultProcessInstance.setStartDate(DateUtil.getCurrentDate());
+        defaultProcessInstance.setStartTime(DateUtil.getCurrentDate());
+
         defaultProcessInstance.setProcessDefinitionIdAndVersion(pvmProcessDefinition.getUri());
         defaultProcessInstance.setProcessDefinitionId(pvmProcessDefinition.getId());
         defaultProcessInstance.setProcessDefinitionVersion(pvmProcessDefinition.getVersion());
 
+        Map<String, Object> request = executionContext.getRequest();
+        if (null != request) {
+            String startUserId = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID);
+            defaultProcessInstance.setStartUserId(startUserId);
+
+            String processDefinitionType = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE);
+            defaultProcessInstance.setProcessDefinitionType(processDefinitionType);
+
+            String bizUniqueId = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_BIZ_UNIQUE_ID);
+            defaultProcessInstance.setBizUniqueId(bizUniqueId);
+        }
+
         return defaultProcessInstance;
     }
-
-
-
 
 }

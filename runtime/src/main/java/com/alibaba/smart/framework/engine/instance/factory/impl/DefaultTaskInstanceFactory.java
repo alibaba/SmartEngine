@@ -1,12 +1,14 @@
 package com.alibaba.smart.framework.engine.instance.factory.impl;
 
-import com.alibaba.smart.framework.engine.common.id.generator.IdGenerator;
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 
 /**
@@ -23,10 +25,16 @@ public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
         taskInstance.setInstanceId(idGenerator.getId());
         taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
         taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
-        taskInstance.setActivityId(activity.getId());
+        taskInstance.setProcessDefinitionActivityId(activity.getId());
         taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
         taskInstance.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
-        taskInstance.setStartDate(DateUtil.getCurrentDate());
+        taskInstance.setStartTime(DateUtil.getCurrentDate());
+        taskInstance.setStatus(TaskInstanceConstant.PENDING);
+
+
+        ProcessInstance processInstance = context.getProcessInstance();
+        taskInstance.setProcessDefinitionType(processInstance.getProcessDefinitionType());
+
 
         return taskInstance;
     }

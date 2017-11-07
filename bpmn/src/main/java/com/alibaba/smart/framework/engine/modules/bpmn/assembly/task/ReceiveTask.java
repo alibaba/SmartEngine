@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task;
 
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.BpmnNameSpaceConstant;
+import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,8 +18,6 @@ public class ReceiveTask extends AbstractTask {
 
 
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "receiveTask");
-
-    private String className;
 
     @Override
     public String toString() {
