@@ -124,16 +124,19 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
 
     protected Object readElement(XMLStreamReader reader, ParseContext context) throws ParseException,
             XMLStreamException {
-        return this.getAssemblyParserExtensionPoint().parse(reader, context);
+        AssemblyParserExtensionPoint assemblyParserExtensionPoint = this.getAssemblyParserExtensionPoint();
+        return assemblyParserExtensionPoint.parse(reader, context);
     }
 
     protected void resolveElement(Object model, ParseContext context) throws ResolveException {
-        this.getAssemblyParserExtensionPoint().resolve(model, context);
+        AssemblyParserExtensionPoint assemblyParserExtensionPoint = this.getAssemblyParserExtensionPoint();
+        assemblyParserExtensionPoint.resolve(model, context);
     }
 
     protected Object readAttribute(QName attributeName,XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {
-        return this.getAssemblyParserExtensionPoint().readAttribute(attributeName,reader, context);
+        AssemblyParserExtensionPoint assemblyParserExtensionPoint = this.getAssemblyParserExtensionPoint();
+        return assemblyParserExtensionPoint.readAttribute(attributeName,reader, context);
     }
 
     // GETTER & SETTER
