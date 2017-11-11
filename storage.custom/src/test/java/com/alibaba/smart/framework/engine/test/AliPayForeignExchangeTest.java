@@ -130,7 +130,7 @@ public class AliPayForeignExchangeTest {
         persisteAndUpdateThreadLocal(orderId, processInstance);
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
-        PersisterSession.destroySession();
+//        PersisterSession.destroySession();
 
 
     }

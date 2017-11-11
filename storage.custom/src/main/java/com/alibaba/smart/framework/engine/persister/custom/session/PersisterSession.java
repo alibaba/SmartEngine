@@ -4,10 +4,11 @@
  */
 package com.alibaba.smart.framework.engine.persister.custom.session;
 
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import java.util.Stack;
 
 /**
  * @author xuantian 2017-02-08 5:50 xuantian
@@ -18,7 +19,7 @@ public class PersisterSession {
     /**
      * The Session Thread Local.
      */
-    private static ThreadLocal<PersisterSession> sessionThreadLocal = new ThreadLocal<PersisterSession>();
+    private static ThreadLocal<Stack<PersisterSession>> sessionThreadLocal = new ThreadLocal<Stack<PersisterSession>>();
 
     private Map<Long, ProcessInstance> processInstances = new HashMap<Long, ProcessInstance>(4);
 
@@ -26,6 +27,15 @@ public class PersisterSession {
         PersisterSession session = new PersisterSession();
         session.store();
         return session;
+    }
+
+    protected static <T> Stack<T> getStack(ThreadLocal<Stack<T>> threadLocal) {
+        Stack<T> stack = threadLocal.get();
+        if (stack==null) {
+            stack = new Stack<T>();
+            threadLocal.set(stack);
+        }
+        return stack;
     }
 
     /**
@@ -39,36 +49,32 @@ public class PersisterSession {
      * store to the thread local.
      */
     public void store() {
-        if (null != sessionThreadLocal.get()) {
-            throw new RuntimeException("Session existed in the ThreadLocal. A new session can't be created.");
-        }
-        sessionThreadLocal.set(this);
+        getStack(sessionThreadLocal).push(this);
     }
 
     /**
      * destroy from the thread local.
      */
     public void destroy() {
-        sessionThreadLocal.set(null);
+        getStack(sessionThreadLocal).pop();
     }
 
     /**
      * @return the BizSession got from the thread local.
      */
     public static PersisterSession currentSession() {
-        return  sessionThreadLocal.get();
+        Stack<PersisterSession> sessions = getStack(sessionThreadLocal);
+        if (sessions.isEmpty()) {
+            return null;
+        }
+        return sessions.peek();
     }
 
     /**
      * the static method for destroy session for easy using.
      */
     public static void destroySession() {
-        PersisterSession session = sessionThreadLocal.get();
-        if (null != session) {
-            session.destroy();
-        }
-
-        sessionThreadLocal.set(null);
+        getStack(sessionThreadLocal).pop();
     }
 
     public Map<Long, ProcessInstance> getProcessInstances() {

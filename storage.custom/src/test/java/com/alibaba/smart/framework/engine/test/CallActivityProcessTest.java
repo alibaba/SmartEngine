@@ -172,7 +172,7 @@ public class CallActivityProcessTest {
 
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
-        PersisterSession.destroySession();
+//        PersisterSession.destroySession();
 
 
     }

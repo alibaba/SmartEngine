@@ -52,7 +52,7 @@ public class BPMNDiagramParserTest {
             .deploy("BPMNDiagramParserTest.bpmn.xml");
         assertEquals(5, processDefinition.getProcess().getElements().size());
 
-        PersisterSession.destroySession();
+//        PersisterSession.destroySession();
 
     }
 }
