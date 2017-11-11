@@ -135,7 +135,7 @@ public class AliPayForeignExchange_ExceptionEndEventTest {
         //persisteAndUpdateThreadLocal(orderId, processInstance);
         //assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
-        PersisterSession.destroySession();
+//        PersisterSession.destroySession();
 
 
     }

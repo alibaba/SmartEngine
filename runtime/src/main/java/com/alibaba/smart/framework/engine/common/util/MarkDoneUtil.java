@@ -4,8 +4,7 @@ import java.util.Date;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
-import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
-import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.exception.ConcurrentException;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -47,7 +46,7 @@ public class MarkDoneUtil {
 
         int updateCount = taskInstanceStorage.updateFromStatus(taskInstance, sourceStatus);
         if (updateCount != 1) {
-            throw new EngineException(String
+            throw new ConcurrentException(String
                 .format("update_task_status_fail task_id=%s expect_from_[%s]_to_[%s]", taskInstance.getInstanceId(), sourceStatus,
                     taskInstance.getStatus()));
         }

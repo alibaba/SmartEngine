@@ -114,7 +114,7 @@ public class OfcMarketPlaceTest {
         persisteAndUpdateThreadLocal(orderId, processInstance);
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
-        PersisterSession.destroySession();
+//        PersisterSession.destroySession();
 
     }
 
