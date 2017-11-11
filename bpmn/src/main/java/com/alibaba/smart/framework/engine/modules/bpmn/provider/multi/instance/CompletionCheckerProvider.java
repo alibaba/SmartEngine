@@ -25,7 +25,7 @@ public class CompletionCheckerProvider {
             PerformerProviderFactory completionPerformerProviderFactory
                 = (PerformerProviderFactory)providerFactoryExtensionPoint
                 .getProviderFactory(completionPerformable.getClass());
-            this.completionCheckPerformer = completionPerformerProviderFactory.createPerformer(completionPerformable);
+            this.completionCheckPerformer = completionPerformerProviderFactory.createPerformer(null, completionPerformable);
         }
 
         Performable abortPerformable = completionChecker.getAbortCheckPerformable();
@@ -34,7 +34,7 @@ public class CompletionCheckerProvider {
             PerformerProviderFactory abortPerformerProviderFactory
                 = (PerformerProviderFactory)providerFactoryExtensionPoint
                 .getProviderFactory(abortPerformable.getClass());
-            this.abortCheckPerformer = abortPerformerProviderFactory.createPerformer(abortPerformable);
+            this.abortCheckPerformer = abortPerformerProviderFactory.createPerformer(null, abortPerformable);
         }
     }
 

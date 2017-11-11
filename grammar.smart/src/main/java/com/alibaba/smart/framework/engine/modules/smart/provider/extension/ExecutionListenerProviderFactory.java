@@ -29,7 +29,7 @@ public class ExecutionListenerProviderFactory implements
         Performable performable = executionListener.getPerformable();
         PerformerProviderFactory providerFactory = (PerformerProviderFactory)this.providerFactoryExtensionPoint
             .getProviderFactory(performable.getClass());
-        Performer performer = providerFactory.createPerformer(performable);
+        Performer performer = providerFactory.createPerformer(null, performable);
         return new ExecutionListenerInvoker(this.extensionPointRegistry, executionListener, performer);
     }
 

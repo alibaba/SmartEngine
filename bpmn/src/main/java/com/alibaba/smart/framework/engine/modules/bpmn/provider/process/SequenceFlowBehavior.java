@@ -1,10 +1,8 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.process;
 
-import com.alibaba.smart.framework.engine.common.expression.ExpressionPerformer;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
@@ -26,7 +24,7 @@ public class SequenceFlowBehavior extends AbstractTransitionBehavior<SequenceFlo
             PerformerProviderFactory matchPerformerProviderFactory
                 = (PerformerProviderFactory)providerFactoryExtensionPoint
                 .getProviderFactory(matchPerformable.getClass());
-            this.matchPerformer = matchPerformerProviderFactory.createPerformer(matchPerformable);
+            this.matchPerformer = matchPerformerProviderFactory.createPerformer(null, matchPerformable);
         }
     }
 

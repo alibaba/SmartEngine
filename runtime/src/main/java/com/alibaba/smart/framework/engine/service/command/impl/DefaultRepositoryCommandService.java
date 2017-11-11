@@ -386,7 +386,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             for (Performable performable : performers) {
                 PerformerProviderFactory providerFactory = (PerformerProviderFactory)this.providerFactoryExtensionPoint
                     .getProviderFactory(performable.getClass());
-                Performer performer = providerFactory.createPerformer(performable);
+                Performer performer = providerFactory.createPerformer(pvmElement, performable);
                 invoker.addPerformer(performable.getAction(), performer);
             }
             pvmElement.setInvoker(invoker);

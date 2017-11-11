@@ -1,5 +1,11 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamReader;
+
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
@@ -7,6 +13,7 @@ import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.AbstractTask;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
 /**
@@ -31,5 +38,31 @@ public abstract class AbstractBpmnActivityParser<M extends AbstractActivity> ext
     @Override
     protected String getDefaultActionName() {
         return DEFAULT_ACTION;
+    }
+
+    protected Map<String, String> parseExtendedProperties(XMLStreamReader reader, ParseContext context) {
+
+        Map<String,String> userTaskProperties = new HashMap();
+
+        int attributeCount=reader.getAttributeCount();
+        if(attributeCount>0){
+            for (int i = 0; i < attributeCount; i++) {
+                QName attributeName=reader.getAttributeName(i);
+
+                String localPart = attributeName.getLocalPart();
+
+                if("id".equals(localPart)||"name".equals(localPart)){
+                    continue;
+                }
+
+                Object value=reader.getAttributeValue(attributeName.getNamespaceURI(), localPart);
+                userTaskProperties.put(localPart,(String)value);
+
+
+            }
+        }
+
+
+        return userTaskProperties;
     }
 }

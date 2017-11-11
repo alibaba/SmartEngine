@@ -77,7 +77,7 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
             PerformerProviderFactory completionPrepareCheckPerformerProviderFactory
                 = (PerformerProviderFactory)providerFactoryExtensionPoint
                 .getProviderFactory(completionPrepareCheckPerformable.getClass());
-            this.completionCheckPrepareProvider = completionPrepareCheckPerformerProviderFactory.createPerformer(
+            this.completionCheckPrepareProvider = completionPrepareCheckPerformerProviderFactory.createPerformer(null,
                 completionPrepareCheckPerformable);
         }
 

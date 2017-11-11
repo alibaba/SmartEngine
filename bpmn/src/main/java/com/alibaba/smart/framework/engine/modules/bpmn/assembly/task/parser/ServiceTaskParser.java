@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.parser;
 
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -34,6 +36,10 @@ public class ServiceTaskParser extends AbstractBpmnActivityParser<ServiceTask> i
     public ServiceTask parseModel(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         ServiceTask serviceTask = new ServiceTask();
         serviceTask.setId(this.getString(reader, "id"));
+
+        Map<String, String> userTaskProperties = super.parseExtendedProperties(reader,  context);
+        serviceTask.setProperties(userTaskProperties);
+
         return serviceTask;
     }
 

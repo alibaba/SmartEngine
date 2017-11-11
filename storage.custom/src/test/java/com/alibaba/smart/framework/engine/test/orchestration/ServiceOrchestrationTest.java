@@ -1,17 +1,18 @@
-package com.alibaba.smart.framework.engine.modules.bpmn;
+package com.alibaba.smart.framework.engine.test.orchestration;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
-import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-@ContextConfiguration("/spring/spring.xml")
+@ContextConfiguration("/spring/service-orchestration-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Service
-public class ServiceTaskTest {
+public class ServiceOrchestrationTest {
 
-    @After
+    @Before
     public void before(){
-        ArrayListServiceTaskDelegation.getArrayList().clear();
+        ServiceOrchestrationJavaDelegation.getArrayList().clear();
     }
 
     @Autowired
@@ -45,14 +42,21 @@ public class ServiceTaskTest {
 		Map<String, Object> request = new HashMap<String, Object>();
 		request.put("input", 2);
 
-		ProcessInstance processInstance = processService.start(
-				"test-exclusive", "1.0.0",
-				request);
+        ProcessInstance processInstance = null;
+        try{
+            PersisterSession.create();
+             processInstance = processService.start(
+                "ServiceOrchestrationTest", "1.0.0",
+                request);
+        }finally {
+            PersisterSession.destroySession();
 
-        request.get("result");
+        }
+
+
 
 		Assert.assertNotNull(processInstance);
-        List<String> arrayList = 	ArrayListServiceTaskDelegation.getArrayList();
+        List<String> arrayList = 	ServiceOrchestrationJavaDelegation.getArrayList();
         Assert.assertEquals(3,arrayList.size());
         Assert.assertEquals("2",arrayList.get(0));
         Assert.assertEquals("2",arrayList.get(1));
@@ -73,7 +77,7 @@ public class ServiceTaskTest {
 
     @After
     public void tearDown(){
-        ArrayListServiceTaskDelegation.getArrayList().clear();
+        ServiceOrchestrationJavaDelegation.getArrayList().clear();
     }
 
 

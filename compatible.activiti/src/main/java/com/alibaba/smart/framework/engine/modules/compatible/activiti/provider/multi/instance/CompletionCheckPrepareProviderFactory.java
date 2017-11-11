@@ -5,6 +5,7 @@ import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.m
     .CompletionCheckPreparePerformable;
 import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFactory;
+import com.alibaba.smart.framework.engine.pvm.PvmElement;
 
 /**
  * @author ettear
@@ -19,7 +20,7 @@ public class CompletionCheckPrepareProviderFactory
     }
 
     @Override
-    public Performer createPerformer(CompletionCheckPreparePerformable performable) {
+    public Performer createPerformer(PvmElement pvmElement, CompletionCheckPreparePerformable performable) {
         return new CompletionCheckPrepareProvider(this.extensionPointRegistry);
     }
 

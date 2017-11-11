@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions id="test-exclusive" version="1.0.0"
+<definitions id="ServiceOrchestrationTest" version="1.0.0"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
              xmlns:smart="http://smart.alibaba-inc.com/schema/process"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="Examples">
@@ -32,25 +32,25 @@
         </sequenceFlow>
 
         <serviceTask id="theTask1" name="Task 1"
-                     smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ArrayListServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.orchestration.ServiceOrchestrationJavaDelegation">
         </serviceTask>
 
         <sequenceFlow id="flow5" sourceRef="theTask1" targetRef="selectTask"/>
 
         <serviceTask id="theTask2" name="Task 2"
-                     smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ArrayListServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.orchestration.ServiceOrchestrationJavaDelegation">
         </serviceTask>
 
         <sequenceFlow id="flow6" sourceRef="theTask2" targetRef="selectTask"/>
 
         <serviceTask id="theTask3" name="Task 3"
-                     smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ArrayListServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.orchestration.ServiceOrchestrationJavaDelegation">
         </serviceTask>
 
         <sequenceFlow id="flow7" sourceRef="theTask3" targetRef="selectTask"/>
 
         <serviceTask id="selectTask" name="Select Task"
-                     smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ArrayListServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.orchestration.ServiceOrchestrationJavaDelegation">
         </serviceTask>
 
         <sequenceFlow id="flow8" sourceRef="selectTask"
@@ -77,19 +77,19 @@
         </sequenceFlow>
 
         <serviceTask id="theTask4" name="Task 4"
-                     smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ArrayListServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.orchestration.ServiceOrchestrationJavaDelegation">
         </serviceTask>
 
         <sequenceFlow id="flow12" sourceRef="theTask4" targetRef="theEnd"/>
 
         <serviceTask id="theTask5" name="Task 5"
-                     smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ArrayListServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.orchestration.ServiceOrchestrationJavaDelegation">
         </serviceTask>
 
         <sequenceFlow id="flow13" sourceRef="theTask5" targetRef="theEnd"/>
 
         <serviceTask id="theTask6" name="Task 6"
-                     smart:class="com.alibaba.smart.framework.engine.modules.bpmn.ArrayListServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.orchestration.ServiceOrchestrationJavaDelegation">
         </serviceTask>
 
         <sequenceFlow id="flow14" sourceRef="theTask6" targetRef="theEnd"/>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="lazada" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smart.alibaba-inc.com/schema/process" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" targetNamespace="Examples">
+  <process id="Process_1" isExecutable="false">
+    <startEvent id="StartEvent_1" />
+    <endEvent id="EndEvent_1imw0ds" />
+
+
+    <serviceTask id="CreateOrderActivity" name="CreateOrderActivity" smart:class="com.alibaba.smart.framework.engine.test.orchestration.ServiceOrchestrationJavaDelegation" />
+    <serviceTask id="CreatePaymentOrderActivity" name="CreatePaymentOrderActivity" smart:class="com.alibaba.smart.framework.engine.test.orchestration.ServiceOrchestrationJavaDelegation" />
+
+    <receiveTask id="WaitPayCallBackActivity" name="PaySuccessCallBackActivity" smart:class="com.alibaba.smart.framework.engine.test.retry.delegation.PaymentMQRetryJavaDelegation" />
+    <receiveTask id="SecurityCheckActivity" name="SecurityCheckActivity" smart:needListenerNormalMQMessage="no"  smart:class="com.alibaba.smart.framework.engine.test.retry.delegation.SecurityMQRetryJavaDelegation" />
+
+
+    <serviceTask id="CreateDeliveryOrderActivity" name="CreateDeliveryOrderActivity" smart:class="com.alibaba.smart.framework.engine.test.orchestration.ServiceOrchestrationJavaDelegation" />
+    <receiveTask id="WaitPeopleCheckActivity" name="WaitPeopleCheckActivity" smart:class="com.alibaba.smart.framework.engine.test.orchestration.ServiceOrchestrationJavaDelegation" />
+
+    <sequenceFlow id="SequenceFlow_12oxmfc" sourceRef="SecurityResultCheck" targetRef="WaitPeopleCheckActivity">
+      <conditionExpression type="mvel"><![CDATA[securityStatus == "WAIT_PEOPLE_CHECK"]]></conditionExpression>
+    </sequenceFlow>
+
+    <sequenceFlow id="SequenceFlow_1a1v3nb" sourceRef="SecurityResultCheck" targetRef="CreateDeliveryOrderActivity">
+      <conditionExpression type="mvel"><![CDATA[securityStatus == "PASS"]]></conditionExpression>
+    </sequenceFlow>
+
+
+    <sequenceFlow id="SequenceFlow_1xmdhvu" sourceRef="StartEvent_1" targetRef="CreateOrderActivity" />
+    <sequenceFlow id="SequenceFlow_0gxvkkh" sourceRef="CreateOrderActivity" targetRef="CreatePaymentOrderActivity" />
+    <sequenceFlow id="SequenceFlow_0mempsy" sourceRef="CreatePaymentOrderActivity" targetRef="WaitPayCallBackActivity" />
+    <exclusiveGateway id="SecurityResultCheck" name="SecurityResultCheck" />
+
+    <sequenceFlow id="SequenceFlow_1wca03x" sourceRef="WaitPayCallBackActivity" targetRef="SecurityCheckActivity" />
+
+    <sequenceFlow id="SequenceFlow_06n67gr" sourceRef="CreateDeliveryOrderActivity" targetRef="EndEvent_1imw0ds" />
+
+    <sequenceFlow id="SequenceFlow_0wqsily" sourceRef="WaitPeopleCheckActivity" targetRef="CreateDeliveryOrderActivity" />
+    <sequenceFlow id="SequenceFlow_0iipsza" sourceRef="SecurityCheckActivity" targetRef="SecurityResultCheck" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="80" y="240" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_11vim7z_di" bpmnElement="CreateOrderActivity">
+        <dc:Bounds x="48" y="332" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1qwc9cx_di" bpmnElement="CreatePaymentOrderActivity">
+        <dc:Bounds x="254" y="332" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_1lp4l73_di" bpmnElement="WaitPayCallBackActivity">
+        <dc:Bounds x="474" y="332" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1xmdhvu_di" bpmnElement="SequenceFlow_1xmdhvu">
+        <di:waypoint type="dc:Point" x="98" y="276" />
+        <di:waypoint type="dc:Point" x="98" y="332" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="113" y="297.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0gxvkkh_di" bpmnElement="SequenceFlow_0gxvkkh">
+        <di:waypoint type="dc:Point" x="148" y="372" />
+        <di:waypoint type="dc:Point" x="201" y="372" />
+        <di:waypoint type="dc:Point" x="201" y="372" />
+        <di:waypoint type="dc:Point" x="254" y="372" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="216" y="365.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0mempsy_di" bpmnElement="SequenceFlow_0mempsy">
+        <di:waypoint type="dc:Point" x="354" y="372" />
+        <di:waypoint type="dc:Point" x="474" y="372" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="414" y="350.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_1gko8im_di" bpmnElement="SecurityResultCheck" isMarkerVisible="true">
+        <dc:Bounds x="710" y="485" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="693" y="538" width="85" height="25" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0cc1bry_di" bpmnElement="CreateDeliveryOrderActivity">
+        <dc:Bounds x="254" y="470" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveTask_0ii4mai_di" bpmnElement="WaitPeopleCheckActivity">
+        <dc:Bounds x="474" y="470" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1wca03x_di" bpmnElement="SequenceFlow_1wca03x">
+        <di:waypoint type="dc:Point" x="574" y="372" />
+        <di:waypoint type="dc:Point" x="614" y="372" />
+        <di:waypoint type="dc:Point" x="685" y="372" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="594" y="350.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_1imw0ds_di" bpmnElement="EndEvent_1imw0ds">
+        <dc:Bounds x="80" y="852" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="98" y="891" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_06n67gr_di" bpmnElement="SequenceFlow_06n67gr">
+        <di:waypoint type="dc:Point" x="254" y="510" />
+        <di:waypoint type="dc:Point" x="98" y="510" />
+        <di:waypoint type="dc:Point" x="98" y="852" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="176" y="488.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_12oxmfc_di" bpmnElement="SequenceFlow_12oxmfc">
+        <di:waypoint type="dc:Point" x="710" y="510" />
+        <di:waypoint type="dc:Point" x="574" y="510" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="642" y="488.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1a1v3nb_di" bpmnElement="SequenceFlow_1a1v3nb">
+        <di:waypoint type="dc:Point" x="735" y="535" />
+        <di:waypoint type="dc:Point" x="735" y="633" />
+        <di:waypoint type="dc:Point" x="304" y="633" />
+        <di:waypoint type="dc:Point" x="304" y="550" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="519.5" y="611.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0wqsily_di" bpmnElement="SequenceFlow_0wqsily">
+        <di:waypoint type="dc:Point" x="474" y="510" />
+        <di:waypoint type="dc:Point" x="354" y="510" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="414" y="488.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="SecurityCheckActivity_di" bpmnElement="SecurityCheckActivity">
+        <dc:Bounds x="684.8142011834319" y="332" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_14yd7nd_di" bpmnElement="SequenceFlow_14yd7nd">
+        <di:waypoint type="dc:Point" x="574" y="372" />
+        <di:waypoint type="dc:Point" x="685" y="372" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="629.5" y="350.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0iipsza_di" bpmnElement="SequenceFlow_0iipsza">
+        <di:waypoint type="dc:Point" x="735" y="412" />
+        <di:waypoint type="dc:Point" x="735" y="485" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="750" y="442" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1lvcaa9_di" bpmnElement="SequenceFlow_1lvcaa9">
+        <di:waypoint type="dc:Point" x="735" y="412" />
+        <di:waypoint type="dc:Point" x="735" y="485" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="750" y="442" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

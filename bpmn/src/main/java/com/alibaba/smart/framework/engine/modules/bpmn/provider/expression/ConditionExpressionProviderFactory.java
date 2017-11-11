@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.expression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFactory;
+import com.alibaba.smart.framework.engine.pvm.PvmElement;
 
 /**
  * @author ettear
@@ -10,7 +11,7 @@ import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFact
  */
 public class ConditionExpressionProviderFactory implements PerformerProviderFactory<ConditionExpression> {
     @Override
-    public Performer createPerformer(ConditionExpression conditionExpression) {
+    public Performer createPerformer(PvmElement pvmElement, ConditionExpression conditionExpression) {
         return new ConditionExpressionProvider(conditionExpression);
     }
 

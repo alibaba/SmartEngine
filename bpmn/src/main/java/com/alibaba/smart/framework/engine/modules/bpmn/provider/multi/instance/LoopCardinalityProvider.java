@@ -32,7 +32,7 @@ public class LoopCardinalityProvider implements LoopCollectionProvider {
             PerformerProviderFactory cardinalityExpressionProviderFactory
                 = (PerformerProviderFactory)providerFactoryExtensionPoint
                 .getProviderFactory(cardinalityExpression.getClass());
-            this.cardinalityExpressionPerformer = cardinalityExpressionProviderFactory.createPerformer(
+            this.cardinalityExpressionPerformer = cardinalityExpressionProviderFactory.createPerformer(null,
                 cardinalityExpression);
         }
     }

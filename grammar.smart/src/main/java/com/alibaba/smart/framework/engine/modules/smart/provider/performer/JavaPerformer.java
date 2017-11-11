@@ -4,12 +4,14 @@ import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.delegation.ContextBoundedJavaDelegation;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import com.alibaba.smart.framework.engine.delegation.TccDelegation;
 import com.alibaba.smart.framework.engine.delegation.TccResult;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.provider.Performer;
+import com.alibaba.smart.framework.engine.pvm.PvmElement;
 
 /**
  * @author ettear
@@ -17,9 +19,13 @@ import com.alibaba.smart.framework.engine.provider.Performer;
  */
 public class JavaPerformer implements Performer {
     private String className;
+    private PvmElement pvmElement;
+    private ExtensionPointRegistry extensionPointRegistry;
 
-    public JavaPerformer(ExtensionPointRegistry extensionPointRegistry, String className) {
+    public JavaPerformer(PvmElement pvmElement, String className,ExtensionPointRegistry extensionPointRegistry) {
+        this.pvmElement = pvmElement;
         this.className = className;
+        this.extensionPointRegistry = extensionPointRegistry;
     }
 
     /**
@@ -37,7 +43,15 @@ public class JavaPerformer implements Performer {
         Object delegation = instanceAccessor.access(this.className);
 
 
-        if (delegation instanceof JavaDelegation) {
+        if (delegation instanceof ContextBoundedJavaDelegation) {
+            ContextBoundedJavaDelegation contextBoundedJavaDelegation = (ContextBoundedJavaDelegation)delegation;
+            contextBoundedJavaDelegation.setClassName(className);
+            contextBoundedJavaDelegation.setExtensionPointRegistry(extensionPointRegistry);
+            contextBoundedJavaDelegation.setPvmElement(pvmElement);
+
+            return contextBoundedJavaDelegation.execute(context);
+
+        } else if (delegation instanceof JavaDelegation) {
             JavaDelegation javaDelegation = (JavaDelegation)delegation;
             return javaDelegation.execute(context);
 

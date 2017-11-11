@@ -4,6 +4,7 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance.AbortCheckPerformable;
 import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFactory;
+import com.alibaba.smart.framework.engine.pvm.PvmElement;
 
 /**
  * @author ettear
@@ -18,7 +19,7 @@ public class AbortCheckProviderFactory
     }
 
     @Override
-    public Performer createPerformer(AbortCheckPerformable performable) {
+    public Performer createPerformer(PvmElement pvmElement, AbortCheckPerformable performable) {
         return new AbortCheckProvider(this.extensionPointRegistry);
     }
 
