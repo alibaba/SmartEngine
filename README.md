@@ -26,7 +26,7 @@ SmartEngine是一个开放性的，以社区化方式运作的流程引擎，目
 
 ## SmartEngine社区钉钉群
 
-![LOGO](http://gitlab.alibaba-inc.com/smart-framework/smart-engine/tree/master/SmartEngineUserGroupInDingDing.jpg)
+![LOGO](http://ata2-img.cn-hangzhou.img-pub.aliyun-inc.com/0a210adab32244295eefba2a9e5b46c4.png)
 
 
 ## 注意事项
