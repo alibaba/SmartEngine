@@ -29,8 +29,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
         int count = processInstanceDAO.insertIgnore(processInstanceEntityToBePersisted);
         if (count == 0) {
-            throw new ConcurrentException(String.format("the process already exists. bizUniqueId=[%s]",
-                processInstanceEntityToBePersisted.getBizUniqueId()));
+            throw new ConcurrentException(String.format("the process already exists. processInstanceId=[%s], bizUniqueId=[%s]",
+                processInstanceEntityToBePersisted.getId(), processInstanceEntityToBePersisted.getBizUniqueId()));
         }
 
         ProcessInstanceEntity processInstanceEntity1 =  processInstanceDAO.findOne(processInstanceEntityToBePersisted.getId());
