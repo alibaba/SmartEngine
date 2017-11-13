@@ -20,6 +20,8 @@ public class MarkDoneUtil {
         Date completeDate = DateUtil.getCurrentDate();
         executionInstance.setCompleteTime(completeDate);
         executionInstance.setActive(false);
+
+        //产生了 DB 写，是否需要干掉。
         executionInstanceStorage.update(executionInstance);
         return executionInstance;
     }
