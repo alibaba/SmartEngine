@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.provider.factory;
 
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.provider.Performer;
+import com.alibaba.smart.framework.engine.pvm.PvmElement;
 
 /**
  * @author ettear
@@ -11,8 +12,10 @@ public interface PerformerProviderFactory<M extends Performable> extends Provide
     /**
      * Create Performer
      *
+     *
+     * @param pvmElement
      * @param performable Performable
      * @return Performer
      */
-    Performer createPerformer(M performable);
+    Performer createPerformer(PvmElement pvmElement, M performable);
 }

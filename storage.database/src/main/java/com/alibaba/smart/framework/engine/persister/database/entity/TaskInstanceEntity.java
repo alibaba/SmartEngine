@@ -1,34 +1,38 @@
 package com.alibaba.smart.framework.engine.persister.database.entity;
 
-import com.alibaba.spring.data.mybatis.repository.annotation.Sequence;
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
-
-import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class TaskInstanceEntity extends BaseProcessEntity {
 
-    @Id
-    @Sequence("task_instance")
-    private Long id;
 
     private Long processInstanceId;
+
+    private String processDefinitionIdAndVersion;
 
     private Long executionInstanceId;
 
     private Long activityInstanceId;
 
-    private String assigneeId;
+    private  String processDefinitionType;
+
+    private String  processDefinitionActivityId;
+
+    private String claimUserId;
 
     private Integer priority;
 
+    private String status;
+
+    private  String tag;
 
     private Date claimTime;
 
-    private Date endTime;
+    private Date completeTime;
 }

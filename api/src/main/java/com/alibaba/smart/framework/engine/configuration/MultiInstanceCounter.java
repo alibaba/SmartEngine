@@ -1,0 +1,18 @@
+package com.alibaba.smart.framework.engine.configuration;
+
+import java.util.Set;
+
+import com.alibaba.smart.framework.engine.SmartEngine;
+
+/**
+ * Created by 高海军 帝奇 74394 on 2017 October.14  10:41.
+ */
+public interface MultiInstanceCounter {
+
+    Integer countPassedTaskInstanceNumber(Long processInstanceId, Long activityInstanceId,
+                                          SmartEngine smartEngine);
+
+    Integer countRejectedTaskInstanceNumber(Long processInstanceId, Long activityInstanceId,
+                                            SmartEngine smartEngine);
+
+}

@@ -11,11 +11,10 @@ public interface ActivityInstanceStorage {
 
     ActivityInstance update(ActivityInstance activityInstance);
 
-
     ActivityInstance find(Long activityInstanceId);
 
     void remove(Long activityInstanceId);
 
-     List<ActivityInstance> findAll(Long processInstanceId);
+    List<ActivityInstance> findAll(Long processInstanceId);
 
 }

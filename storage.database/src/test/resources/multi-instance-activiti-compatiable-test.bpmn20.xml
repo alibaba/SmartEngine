@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                   xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                   xmlns:alibaba="http://alibaba.org/bpmn" xmlns:activiti="http://activiti.org/bpmn"
+                   id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+    <bpmn2:process id="Process_1">
+        <bpmn2:startEvent id="StartEvent_0lw4uvt">
+            <bpmn2:outgoing>SequenceFlow_01cnb8t</bpmn2:outgoing>
+        </bpmn2:startEvent>
+        <bpmn2:endEvent id="EndEvent_1d5s0ih">
+            <bpmn2:incoming>SequenceFlow_1hff5pg</bpmn2:incoming>
+            <bpmn2:incoming>SequenceFlow_00hvx4o</bpmn2:incoming>
+        </bpmn2:endEvent>
+        <bpmn2:exclusiveGateway id="ExclusiveGateway_04aw86h">
+            <bpmn2:incoming>SequenceFlow_0g0hl2f</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_1txi5ha</bpmn2:outgoing>
+            <bpmn2:outgoing>SequenceFlow_133v8vm</bpmn2:outgoing>
+        </bpmn2:exclusiveGateway>
+        <bpmn2:userTask activiti:assignee="${assignee}" id="UserTask_19nz0zz"
+                        name="ssss"
+                        alibaba:approvalUserDatas="{'accountId':3400633088,'userId':3400633088,'userName':'dongyulong','deptName':'es_财务科','dutyName':'主管1235','roleName':'1688客服'}|{'accountId':3400620217,'userId':3400620217,'userName':'赋祎','deptName':'部门31','dutyName':'','roleName':''}"
+                        alibaba:approvalRole="USER" alibaba:approvalUser="3400633088,3400620217"
+                        alibaba:approvalType="anyone">
+            <bpmn2:incoming>SequenceFlow_01cnb8t</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_0g0hl2f</bpmn2:outgoing>
+            <bpmn2:multiInstanceLoopCharacteristics
+                    activiti:collection="${assignmentService.findUsers(execution)}"
+                    activiti:elementVariable="assignee">
+                <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression">${nrOfCompletedInstances
+					>= 1}</bpmn2:completionCondition>
+            </bpmn2:multiInstanceLoopCharacteristics>
+        </bpmn2:userTask>
+        <bpmn2:sequenceFlow id="SequenceFlow_01cnb8t"
+                            sourceRef="StartEvent_0lw4uvt" targetRef="UserTask_19nz0zz" />
+        <bpmn2:sequenceFlow id="SequenceFlow_0g0hl2f"
+                            sourceRef="UserTask_19nz0zz" targetRef="ExclusiveGateway_04aw86h" />
+        <bpmn2:userTask activiti:assignee="${assignee}" id="UserTask_0jwhdhm"
+                        name="fff" alibaba:approvalUser="151866002,151926005"
+                        alibaba:approvalRole="POSITION"
+                        alibaba:approvalJobDatas="{'jobId':151866002,'jobName':'主管'}|{'jobId':151926005,'jobName':'主管1235'}"
+                        alibaba:departmentType="ownDepartment">
+            <bpmn2:incoming>SequenceFlow_1txi5ha</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_1hff5pg</bpmn2:outgoing>
+            <bpmn2:multiInstanceLoopCharacteristics
+                    activiti:collection="${assignmentService.findUsers(execution)}"
+                    activiti:elementVariable="assignee"></bpmn2:multiInstanceLoopCharacteristics>
+        </bpmn2:userTask>
+        <bpmn2:sequenceFlow id="SequenceFlow_1txi5ha"
+                            sourceRef="ExclusiveGateway_04aw86h" targetRef="UserTask_0jwhdhm" />
+        <bpmn2:userTask activiti:assignee="${assignee}" id="UserTask_0quhcno"
+                        name="diqi_test" alibaba:isOwnDepartment="true">
+            <bpmn2:incoming>SequenceFlow_133v8vm</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_00hvx4o</bpmn2:outgoing>
+            <bpmn2:multiInstanceLoopCharacteristics
+                    activiti:collection="${assignmentService.findUsers(execution)}"
+                    activiti:elementVariable="assignee"></bpmn2:multiInstanceLoopCharacteristics>
+        </bpmn2:userTask>
+        <bpmn2:sequenceFlow id="SequenceFlow_133v8vm"
+                            sourceRef="ExclusiveGateway_04aw86h" targetRef="UserTask_0quhcno" />
+        <bpmn2:sequenceFlow id="SequenceFlow_1hff5pg"
+                            sourceRef="UserTask_0jwhdhm" targetRef="EndEvent_1d5s0ih" />
+        <bpmn2:sequenceFlow id="SequenceFlow_00hvx4o"
+                            sourceRef="UserTask_0quhcno" targetRef="EndEvent_1d5s0ih" />
+    </bpmn2:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2">
+                <dc:Bounds x="412" y="240" width="36" height="36" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="StartEvent_0lw4uvt_di"
+                              bpmnElement="StartEvent_0lw4uvt">
+                <dc:Bounds x="107" y="176" width="36" height="36" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="80" y="212" width="90" height="20" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="EndEvent_1d5s0ih_di"
+                              bpmnElement="EndEvent_1d5s0ih">
+                <dc:Bounds x="690" y="135" width="36" height="36" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="663" y="171" width="90" height="20" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="ExclusiveGateway_04aw86h_di"
+                              bpmnElement="ExclusiveGateway_04aw86h" isMarkerVisible="true">
+                <dc:Bounds x="451" y="150" width="50" height="50" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="431" y="200" width="90" height="20" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="UserTask_19nz0zz_di"
+                              bpmnElement="UserTask_19nz0zz">
+                <dc:Bounds x="261" y="154" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_01cnb8t_di"
+                             bpmnElement="SequenceFlow_01cnb8t">
+                <di:waypoint xsi:type="dc:Point" x="143" y="194" />
+                <di:waypoint xsi:type="dc:Point" x="261" y="194" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="157" y="184" width="90" height="20" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="SequenceFlow_0g0hl2f_di"
+                             bpmnElement="SequenceFlow_0g0hl2f">
+                <di:waypoint xsi:type="dc:Point" x="361" y="194" />
+                <di:waypoint xsi:type="dc:Point" x="406" y="194" />
+                <di:waypoint xsi:type="dc:Point" x="406" y="175" />
+                <di:waypoint xsi:type="dc:Point" x="451" y="175" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="361" y="174.5" width="90" height="20" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="UserTask_0jwhdhm_di"
+                              bpmnElement="UserTask_0jwhdhm">
+                <dc:Bounds x="542" y="57" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_1txi5ha_di"
+                             bpmnElement="SequenceFlow_1txi5ha">
+                <di:waypoint xsi:type="dc:Point" x="476" y="150" />
+                <di:waypoint xsi:type="dc:Point" x="476" y="97" />
+                <di:waypoint xsi:type="dc:Point" x="542" y="97" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="431" y="111" width="90" height="20" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="UserTask_0quhcno_di"
+                              bpmnElement="UserTask_0quhcno">
+                <dc:Bounds x="542" y="205" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_133v8vm_di"
+                             bpmnElement="SequenceFlow_133v8vm">
+                <di:waypoint xsi:type="dc:Point" x="476" y="200" />
+                <di:waypoint xsi:type="dc:Point" x="476" y="245" />
+                <di:waypoint xsi:type="dc:Point" x="542" y="245" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="431" y="212.5" width="90" height="20" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="SequenceFlow_1hff5pg_di"
+                             bpmnElement="SequenceFlow_1hff5pg">
+                <di:waypoint xsi:type="dc:Point" x="642" y="97" />
+                <di:waypoint xsi:type="dc:Point" x="666" y="97" />
+                <di:waypoint xsi:type="dc:Point" x="666" y="153" />
+                <di:waypoint xsi:type="dc:Point" x="690" y="153" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="621" y="115" width="90" height="20" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="SequenceFlow_00hvx4o_di"
+                             bpmnElement="SequenceFlow_00hvx4o">
+                <di:waypoint xsi:type="dc:Point" x="642" y="245" />
+                <di:waypoint xsi:type="dc:Point" x="666" y="245" />
+                <di:waypoint xsi:type="dc:Point" x="666" y="153" />
+                <di:waypoint xsi:type="dc:Point" x="690" y="153" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="621" y="189" width="90" height="20" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

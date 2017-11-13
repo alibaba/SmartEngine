@@ -2,7 +2,9 @@ package com.alibaba.smart.framework.engine.persister.memory;
 
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -28,8 +30,13 @@ public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
     }
 
     @Override
-    public ProcessInstance find(Long instanceId) {
+    public ProcessInstance findOne(Long instanceId) {
         return this.instances.get(instanceId);
+    }
+
+    @Override
+    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {
+        return null;
     }
 
 

@@ -30,12 +30,14 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
 
     @Override
     public void start() {
+
         for (StAXArtifactParser stAXArtifactParser : artifactParsers.values()) {
             stAXArtifactParser.start();
         }
         for (StAXAttributeParser stAXAttributeParser : attributeParsers.values()) {
             stAXAttributeParser.start();
         }
+
     }
 
     @Override

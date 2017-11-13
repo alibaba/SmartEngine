@@ -1,12 +1,21 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
@@ -16,7 +25,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
  */
 public abstract class AbstractActivityBehavior<T extends Activity> implements ActivityBehavior {
 
-    private PvmActivity runtimeActivity;
+    private PvmActivity pvmActivity;
 
     protected ExtensionPointRegistry extensionPointRegistry;
 
@@ -26,7 +35,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     protected TaskInstanceFactory taskInstanceFactory;
 
     public AbstractActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity pvmActivity) {
-        this.runtimeActivity = pvmActivity;
+        this.pvmActivity = pvmActivity;
         this.extensionPointRegistry = extensionPointRegistry;
         this.processInstanceFactory = extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
         this.executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
@@ -39,8 +48,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     }
 
 
-    protected PvmActivity getRuntimeActivity() {
-        return runtimeActivity;
+    protected PvmActivity getPvmActivity() {
+        return pvmActivity;
     }
 
     @Override
@@ -59,6 +68,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     }
 
     protected T getModel() {
-        return (T)this.runtimeActivity.getModel();
+        return (T)this.pvmActivity.getModel();
     }
 }

@@ -1,36 +1,58 @@
 package com.alibaba.smart.framework.engine.common.util;
 
 import java.util.Date;
+import java.util.Map;
 
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
+import com.alibaba.smart.framework.engine.exception.ConcurrentException;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 June  10:35.
  */
 public class MarkDoneUtil {
 
-    public   static  void markDone(ActivityInstance activityInstance, ExecutionInstance executionInstance,ExtensionPointRegistry extensionPointRegistry) {
+    public static ExecutionInstance markDoneExecutionInstance(ExecutionInstance executionInstance,
+                                                              ExecutionInstanceStorage executionInstanceStorage) {
         Date completeDate = DateUtil.getCurrentDate();
-        executionInstance.setCompleteDate(completeDate);
+        executionInstance.setCompleteTime(completeDate);
         executionInstance.setActive(false);
-        if(null != activityInstance){
-            activityInstance.setCompleteDate(completeDate);
-            //TODO
-            //activityInstance.setActive(false);
+
+        //产生了 DB 写，是否需要干掉。
+        executionInstanceStorage.update(executionInstance);
+        return executionInstance;
+    }
+
+    public static TaskInstance markDoneTaskInstance(TaskInstance taskInstance, String targetStatus,String sourceStatus,
+                                                    Map<String, Object> variables,
+                                                    TaskInstanceStorage taskInstanceStorage) {
+        Date currentDate = DateUtil.getCurrentDate();
+        taskInstance.setCompleteTime(currentDate);
+
+        if (null == taskInstance.getClaimTime()) {
+            taskInstance.setClaimTime(currentDate);
         }
 
-        //TODO 这里可以把需要更新的对象放到另外一个队列中去,后面再统一更新。 需要结合 CustomExecutionInstanceStorage#Update 一起看下。 ettear
-        /*
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-        ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
+        taskInstance.setStatus(targetStatus);
 
-        executionInstanceStorage.update(executionInstance);
-        */
+        if (null != variables) {
+            String tag = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG);
+            taskInstance.setTag(tag);
 
+            String claimUserId = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID);
+            taskInstance.setClaimUserId(claimUserId);
+        }
+
+        int updateCount = taskInstanceStorage.updateFromStatus(taskInstance, sourceStatus);
+        if (updateCount != 1) {
+            throw new ConcurrentException(String
+                .format("update_task_status_fail task_id=%s expect_from_[%s]_to_[%s]", taskInstance.getInstanceId(), sourceStatus,
+                    taskInstance.getStatus()));
+        }
+        return taskInstance;
     }
 
 }

@@ -4,14 +4,20 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.service.query.ActivityInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.ProcessInstanceQueryService;
-import com.alibaba.smart.framework.engine.service.query.TaskInstanceQueryService;
+import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
+import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
+import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
+import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
+import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
+import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,13 +34,15 @@ public class DefaultSmartEngine implements SmartEngine {
     @Setter
     private ProcessEngineConfiguration processEngineConfiguration;
 
-
     @Override
     public void init(ProcessEngineConfiguration processEngineConfiguration) {
         this.setProcessEngineConfiguration(processEngineConfiguration);
+
         this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
         this.extensionPointRegistry.register();
         this.extensionPointRegistry.start();
+
+        processEngineConfiguration.setExtensionPointRegistry(extensionPointRegistry);
     }
 
     @Override
@@ -46,6 +54,16 @@ public class DefaultSmartEngine implements SmartEngine {
     @Override
     public RepositoryCommandService getRepositoryCommandService() {
         return this.extensionPointRegistry.getExtensionPoint(RepositoryCommandService.class);
+    }
+
+    @Override
+    public RepositoryQueryService getRepositoryQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(RepositoryQueryService.class);
+    }
+
+    @Override
+    public DeploymentCommandService getDeploymentCommandService() {
+        return this.extensionPointRegistry.getExtensionPoint(DeploymentCommandService.class);
     }
 
     @Override
@@ -64,27 +82,38 @@ public class DefaultSmartEngine implements SmartEngine {
     }
 
     @Override
-    public ProcessInstanceQueryService getProcessQueryService() {
-        return this.extensionPointRegistry.getExtensionPoint(ProcessInstanceQueryService.class);
+    public DeploymentQueryService getDeploymentQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(DeploymentQueryService.class);
     }
 
     @Override
-    public ActivityInstanceQueryService getActivityQueryService() {
-        return this.extensionPointRegistry.getExtensionPoint(ActivityInstanceQueryService.class);
+    public ProcessQueryService getProcessQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(ProcessQueryService.class);
     }
 
     @Override
-    public ExecutionInstanceQueryService getExecutionQueryService() {
-        return this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceQueryService.class);
+    public ActivityQueryService getActivityQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(ActivityQueryService.class);
     }
 
     @Override
-    public TaskInstanceQueryService getTaskQueryService() {
-        return this.extensionPointRegistry.getExtensionPoint(TaskInstanceQueryService.class);
+    public ExecutionQueryService getExecutionQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(ExecutionQueryService.class);
     }
 
-    public ExtensionPointRegistry getExtensionPointRegistry() {
-        return extensionPointRegistry;
+    @Override
+    public TaskQueryService getTaskQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(TaskQueryService.class);
+    }
+
+    @Override
+    public VariableQueryService getVariableQueryService() {
+        return this.extensionPointRegistry.getExtensionPoint(VariableQueryService.class);
+    }
+
+    @Override
+    public TaskAssigneeQueryService getTaskAssigneeQueryService() {
+        return  this.extensionPointRegistry.getExtensionPoint(TaskAssigneeQueryService.class);
     }
 
 }

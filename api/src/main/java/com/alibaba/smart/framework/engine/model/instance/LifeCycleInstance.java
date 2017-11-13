@@ -11,13 +11,13 @@ public interface LifeCycleInstance extends Instance {
 //
 //    void setStatus(InstanceStatus status);
 
-    Date getStartDate();
+    Date getStartTime();
 
-    void setStartDate(Date startDate);
+    void setStartTime(Date startDate);
 
-    Date getCompleteDate();
+    Date getCompleteTime();
 
-    void setCompleteDate(Date completeDate);
+    void setCompleteTime(Date completeTime);
 
 
 

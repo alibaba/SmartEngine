@@ -4,18 +4,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.alibaba.smart.framework</groupId>
-        <artifactId>engine</artifactId>
-        <version>1.2.22</version>
+        <artifactId>smart-engine</artifactId>
+        <version>1.3.7-SNAPSHOT</version>
     </parent>
 
-    <artifactId>engine.runtime</artifactId>
+    <artifactId>smart-engine-runtime</artifactId>
     <name>Smart Engine Runtime</name>
 
     <dependencies>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>engine.base</artifactId>
+            <artifactId>smart-engine-base</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -32,11 +32,11 @@
             </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>com.esotericsoftware</groupId>
-            <artifactId>kryo-shaded</artifactId>
-            <version>4.0.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.esotericsoftware</groupId>-->
+            <!--<artifactId>kryo-shaded</artifactId>-->
+            <!--<version>4.0.0</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
@@ -52,6 +52,7 @@
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <artifactSet>
                         <includes>
+                            <!-- 重要:!!!! 千万记得这个 artifact 的scope 不要设置为provided了,已经浪费至少2个小时了!!!!!-->
                             <include>com.esotericsoftware:reflectasm:shaded</include>
                         </includes>
                     </artifactSet>

@@ -1,6 +1,8 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +12,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
@@ -21,17 +22,19 @@ import com.alibaba.smart.framework.engine.instance.util.IOUtil;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.model.assembly.Extensions;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionDeployment;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
+import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.provider.Invoker;
 import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
+import com.alibaba.smart.framework.engine.provider.factory.ExecutePolicyProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.InvokerProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
@@ -48,6 +51,9 @@ import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoin
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
@@ -58,15 +64,15 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
  */
 public class DefaultRepositoryCommandService implements RepositoryCommandService, LifeCycleListener {
 
-    /**
-     * 扩展点注册器
-     */
-    private SmartEngine smartEngine;
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRepositoryCommandService.class);
+
+
     private ExtensionPointRegistry extensionPointRegistry;
 
     private AssemblyParserExtensionPoint assemblyParserExtensionPoint;
     private ProviderFactoryExtensionPoint providerFactoryExtensionPoint;
     private ProcessDefinitionContainer processContainer;
+    private ExecutePolicyBehavior defaultExecutePolicyBehavior;
 
     public DefaultRepositoryCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -78,7 +84,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
        ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
 
         ProcessDefinition definition = this.parse(classLoader, classPathUri);
-        install( definition);
+        putIntoContainer( definition);
 
         return definition;
     }
@@ -87,7 +93,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     public ProcessDefinition deploy(InputStream inputStream) {
         try {
             ProcessDefinition processDefinition = parseStream(inputStream);
-            install( processDefinition);
+            putIntoContainer( processDefinition);
 
             return processDefinition;
         } catch (Exception e) {
@@ -98,37 +104,27 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @Override
-    public ProcessDefinitionDeployment createDeployment(InputStream inputStream) {
-        return null;
-    }
-
-    @Override
-    public void inactivateDeployment(Long id) {
-
-    }
-
-    @Override
-    public void activateDeployment(Long id) {
-
-    }
-
-    @Override
-    public void inactivateProcessDefinitionById(String processDefinitionId, String version) {
-
-    }
-
-    @Override
-    public void activateProcessDefinitionById(String processDefinitionId, String version) {
+    public ProcessDefinition deployWithUTF8Content(String uTF8ProcessDefinitionContent) {
+        byte[] bytes ;
+        try {
+            bytes = uTF8ProcessDefinitionContent.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.error(e.getMessage(),e);
+            throw new EngineException(e);
+        }
+        InputStream stream = new ByteArrayInputStream(bytes);
+        ProcessDefinition processDefinition =  this.deploy(stream);
+        return  processDefinition;
 
     }
 
     @Override
     public void start() {
 
-        this.smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
         this.assemblyParserExtensionPoint = extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
         this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
         this.processContainer = extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
+        this.defaultExecutePolicyBehavior=extensionPointRegistry.getExtensionPoint(ExecutePolicyBehavior.class);
     }
 
     @Override
@@ -181,24 +177,25 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @SuppressWarnings("rawtypes")
-    private ProcessDefinitionContainer install(ProcessDefinition processDefinition) {
+    private void putIntoContainer(ProcessDefinition processDefinition) {
 
         if (null == processDefinition) {
             throw new EngineException("null processDefinition found");
         }
 
-        String processId = processDefinition.getId();
+        String processDefinitionId = processDefinition.getId();
         String version = processDefinition.getVersion();
 
-        if (StringUtil.isEmpty(processId) || StringUtil.isEmpty(version)) {
-            throw new EngineException("empty processId or version");
+
+
+        if (StringUtil.isEmpty(processDefinitionId) || StringUtil.isEmpty(version)) {
+            throw new EngineException("empty processDefinitionId or version");
         }
 
 
         PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(processDefinition, false);
 
-        this.processContainer.install(pvmProcessDefinition);
-        return processContainer;
+        this.processContainer.install(pvmProcessDefinition, processDefinition);
     }
 
     @SuppressWarnings("rawtypes")
@@ -223,7 +220,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         List<BaseElement> elements = process.getElements();
         if (null != elements && !elements.isEmpty()) {
 
-            //TODO ocp 
+            //TUNE ocp
             Map<String, PvmTransition> pvmTransitionMap = new HashMap<String, PvmTransition>();
             Map<String, PvmActivity> pvmActivityMap = new HashMap<String, PvmActivity>();
             for (BaseElement element : elements) {
@@ -237,7 +234,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
 //                    PvmProcessDefinition processDefinition = this.buildPvmProcessDefinition(subProcess, true);
 
-                    //TODO support subProcess
+                    //TUNE support subProcess
 //                    pvmActivityMap.put(processDefinition.getModel().getId(), processDefinition);
 //
 //                    if (processDefinition.getModel().isStartActivity()) {
@@ -316,17 +313,34 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             }
 
             // Create Invoker for Activity
-            for (Map.Entry<String, PvmActivity> runtimeActivityEntry : pvmActivityMap.entrySet()) {
-                PvmActivity runtimeActivity = runtimeActivityEntry.getValue();
-                this.initElement(runtimeActivity);
+            for (Map.Entry<String, PvmActivity> pvmActivityEntry : pvmActivityMap.entrySet()) {
+                PvmActivity pvmActivity = pvmActivityEntry.getValue();
 
-                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeActivity.getModel().getClass());
+                this.initElement(pvmActivity);
+
+                Activity activity=pvmActivity.getModel();
+                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(activity.getClass());
 
                 if (null == providerFactory) {
-                    throw new RuntimeException("No factory found for " + runtimeActivity.getModel().getClass());
+                    throw new RuntimeException("No factory found for " + activity.getClass());
                 }
 
-                runtimeActivity.setBehavior(providerFactory.createActivityProvider(runtimeActivity));
+                pvmActivity.setBehavior(providerFactory.createActivityProvider(pvmActivity));
+
+                ExecutePolicy executePolicy=activity.getExecutePolicy();
+                ExecutePolicyBehavior executePolicyBehavior=null;
+                if(null!=executePolicy) {
+                    ExecutePolicyProviderFactory executePolicyProviderFactory
+                        = (ExecutePolicyProviderFactory)this.providerFactoryExtensionPoint.getProviderFactory(
+                        activity.getExecutePolicy().getClass());
+                    if(null!=executePolicyProviderFactory){
+                        executePolicyBehavior=executePolicyProviderFactory.createExecutePolicyBehavior(executePolicy);
+                    }
+                }
+                if(null==executePolicyBehavior){
+                    executePolicyBehavior=this.defaultExecutePolicyBehavior;
+                }
+                pvmActivity.setExecutePolicyBehavior(executePolicyBehavior);
             }
 
             pvmProcessDefinition.setActivities(pvmActivityMap);
@@ -361,8 +375,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                         extensionInvokers.add(extensionInvoker);
                     }
                 }
-                pvmElement.setPrepareExtensions(prepareExtensionInvokers);
-                pvmElement.setExtensions(extensionInvokers);
+                pvmElement.setPrepareExtensionInvokers(prepareExtensionInvokers);
+                pvmElement.setExtensionInvokers(extensionInvokers);
             }
         }
 
@@ -372,7 +386,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             for (Performable performable : performers) {
                 PerformerProviderFactory providerFactory = (PerformerProviderFactory)this.providerFactoryExtensionPoint
                     .getProviderFactory(performable.getClass());
-                Performer performer = providerFactory.createPerformer(performable);
+                Performer performer = providerFactory.createPerformer(pvmElement, performable);
                 invoker.addPerformer(performable.getAction(), performer);
             }
             pvmElement.setInvoker(invoker);

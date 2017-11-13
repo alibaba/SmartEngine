@@ -32,6 +32,14 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
 
+    String getProcessDefinitionType();
+
+    void setProcessDefinitionType(String processDefinitionType);
+
+    String getStartUserId();
+
+    void setStartUserId(String startUserId);
+
     Long getParentInstanceId();
 
     void setParentInstanceId(Long parentInstanceId);
@@ -58,9 +66,17 @@ public interface ProcessInstance extends LifeCycleInstance {
 //    void setParentActivityInstanceId(Long parentActivityInstanceId);
 
     // should used  internally
-    void addNewActivityInstance(ActivityInstance activityInstance);
+    void addActivityInstance(ActivityInstance activityInstance);
 
-    List<ActivityInstance> getNewActivityInstances();
+    List<ActivityInstance> getActivityInstances();
 
+
+    String getBizUniqueId();
+
+    void setBizUniqueId(String bizUniqueId);
+
+    String getReason();
+
+    void setReason(String reason);
 
 }

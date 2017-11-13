@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,6 +31,8 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private Map<String, Object> request;
 
+    private Map<String, Object> privateContext=new HashMap<String, Object>();
+
     private boolean needPause;
 
     private boolean nested;
@@ -40,5 +43,9 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private PvmActivity sourcePvmActivity;
 
+    @Override
+    public Map<String, Object> getResponse() {
+        return request;
+    }
 
 }

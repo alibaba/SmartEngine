@@ -17,15 +17,15 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
     @Before
     public void before() {
         entity = new ProcessInstanceEntity();
-        entity.setProcessDefinitionId("processDefinitionId");
+        entity.setProcessDefinitionIdAndVersion("processDefinitionId");
         entity.setStatus("running");
     }
 
     @Test
     public void testInsert() {
 
-        ProcessInstanceEntity result = dao.insert(entity);
-        Assert.assertNotNull(result);
+        dao.insert(entity);
+        Assert.assertNotNull(entity);
     }
 
     @Test

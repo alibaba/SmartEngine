@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
-import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
@@ -30,6 +28,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
     protected ActivityInstanceFactory activityInstanceFactory;
     protected ExecutionInstanceFactory executionInstanceFactory;
+    private ExecutePolicyBehavior executePolicyBehavior;
 
     public DefaultPvmActivity(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -40,24 +39,31 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         @Override
     public void enter(ExecutionContext context) {
         this.buildInstanceRelationShip(context);
-        this.invoke(PvmEventConstant.ACTIVITY_START.name(), context);
+        this.executePolicyBehavior.enter(this,context);
+
         if (context.isNeedPause()) {
+
+            //FIXME why ??
             context.setNeedPause(false);
             // break;
             return;
         }
-        execute(context);
+
+            //TODO ettear 以下逻辑待迁移到ExecutionPolicy中去
+            this.execute(context);
     }
 
 
     @Override
     public void execute(ExecutionContext context) {
-        this.invoke(PvmEventConstant.ACTIVITY_EXECUTE.name(), context);
+        this.executePolicyBehavior.execute(this,context);
+
         if (context.isNeedPause()) {
             context.setNeedPause(false);
             // break;
             return;
         }
+        //TODO ettear 以下逻辑待迁移到ExecutionPolicy中去
         this.invoke(PvmEventConstant.ACTIVITY_END.name(), context);
         this.executeRecursively(context);
     }
@@ -66,20 +72,16 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         ProcessInstance processInstance = context.getProcessInstance();
 
         ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
-        ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance,  context);
-
-        activityInstance.setExecutionInstance(executionInstance);
-        processInstance.addNewActivityInstance(activityInstance);
-
-        context.setExecutionInstance(executionInstance);
+        //ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance,  context);
+        //
+        //activityInstance.setExecutionInstance(executionInstance);
+        processInstance.addActivityInstance(activityInstance);
+        //
+        //context.setExecutionInstance(executionInstance);
         context.setActivityInstance(activityInstance);
     }
 
     private void executeRecursively(ExecutionContext context) {
-        ExecutionInstance executionInstance=context.getExecutionInstance();
-        ActivityInstance activityInstance=context.getActivityInstance();
-
-        MarkDoneUtil.markDone(activityInstance,executionInstance,this.extensionPointRegistry);
 
         //执行每个节点的hook方法
         Map<String, PvmTransition> outcomeTransitions = this.getOutcomeTransitions();

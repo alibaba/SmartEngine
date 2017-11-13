@@ -1,20 +1,24 @@
 package com.alibaba.smart.framework.engine.service.query;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionDeployment;
 
 /**
+ * 获取内存中的流程定义。
+ *
  * Created by 高海军 帝奇 74394 on 2017 June  14:38.
+ *
  */
+
 public interface RepositoryQueryService {
 
-    ProcessDefinition getProcessDefinition(String processDefinitionId,String version);
+    ProcessDefinition getCachedProcessDefinition(String processDefinitionId, String version);
 
-    ProcessDefinitionDeployment findOne(Long deploymentId);
+    ProcessDefinition getCachedProcessDefinition(String processDefinitionIdAndVersion);
 
-    ProcessDefinitionDeployment findOne(String processDefinitionId,String version);
-
-    ProcessDefinitionDeployment findAllActiveDeployments();
+    Collection<ProcessDefinition> getAllCachedProcessDefinition();
 
 
 }

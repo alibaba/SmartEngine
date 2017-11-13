@@ -1,38 +1,43 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.parser;
 
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.ExtensionElements;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 /**
  * Extension Elements Parser Created by ettear on 16-4-14.
  */
-public class ExtensionElementsParser extends AbstractStAXArtifactParser<ExtensionElements> implements StAXArtifactParser<ExtensionElements> {
+public class ExtensionElementsParser extends AbstractElementParser<ExtensionElements> implements StAXArtifactParser<ExtensionElements> {
+
 
     public ExtensionElementsParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    public ExtensionElements parse(XMLStreamReader reader, ParseContext context) throws ParseException,
-            XMLStreamException {
-        ExtensionElements extensionElements = new ExtensionElements();
+    protected ExtensionElements parseModel(XMLStreamReader reader, ParseContext context)
+        throws ParseException, XMLStreamException {
+        return new ExtensionElements();
+    }
 
-        while (this.nextChildElement(reader)) {
-            Object element = this.readElement(reader, context);
-            if (element instanceof Extension) {
-                extensionElements.addExtension((Extension) element);
-            }
+    @Override
+    protected void parseChild(ExtensionElements model, BaseElement child) throws ParseException {
+        if (child instanceof Extension) {
+            model.addExtension((Extension) child);
+        } else {
+            throw  new EngineException("Should be a instance of Extension :"+child.getClass());
         }
-        return extensionElements;
     }
 
     // @Override

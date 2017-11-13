@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import lombok.Data;
@@ -14,10 +16,10 @@ public class DefaultActivityInstance extends AbstractLifeCycleInstance implement
 
     private static final long serialVersionUID = -3395004618384899752L;
     private String processDefinitionIdAndVersion;
-    private String activityId;
+    private String processDefinitionActivityId;
     private Long processInstanceId;
 //    private List<TransitionInstance> incomeTransitions = new ArrayList<>();
-    private ExecutionInstance executionInstance;
+    private List<ExecutionInstance> executionInstanceList;
 
     private Long blockId;
 
