@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
+import com.alibaba.smart.framework.engine.exception.ConcurrentException;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -26,7 +27,11 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
 
 
-        processInstanceDAO.insert(processInstanceEntityToBePersisted);
+        int count = processInstanceDAO.insertIgnore(processInstanceEntityToBePersisted);
+        if (count == 0) {
+            throw new ConcurrentException(String.format("the process already exists. bizUniqueId=[%s]",
+                processInstanceEntityToBePersisted.getBizUniqueId()));
+        }
 
         ProcessInstanceEntity processInstanceEntity1 =  processInstanceDAO.findOne(processInstanceEntityToBePersisted.getId());
 

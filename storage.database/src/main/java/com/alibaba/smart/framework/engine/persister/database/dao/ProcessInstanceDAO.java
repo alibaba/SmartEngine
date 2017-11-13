@@ -17,6 +17,9 @@ public interface ProcessInstanceDAO {
     //@Options(useGeneratedKeys = true)
     void insert(  ProcessInstanceEntity processInstanceEntity );
 
+    //@Options(useGeneratedKeys = true)
+    int insertIgnore(  ProcessInstanceEntity processInstanceEntity );
+
     int update(ProcessInstanceEntity processInstanceEntity);
 
     void delete(@Param("id") Long id);

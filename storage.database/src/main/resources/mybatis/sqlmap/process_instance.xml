@@ -14,6 +14,13 @@
         #{status}, #{parentProcessInstanceId}, #{reason},#{bizUniqueId})
     </insert>
 
+    <insert id="insertIgnore" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert ignore into se_process_instance (<include refid="baseColumn"/>)
+        values (#{id}, now(), now(), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
+        #{status}, #{parentProcessInstanceId}, #{reason},#{bizUniqueId})
+    </insert>
+
+
     <delete id="delete" parameterType="long">
         delete from se_process_instance where id=#{id}
     </delete>
