@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
+import com.alibaba.smart.framework.engine.exception.ConcurrentException;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
@@ -76,7 +77,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
 
         if(!executionInstance.isActive()){
-            throw new EngineException("The status of signaled executionInstance should be active");
+            throw new ConcurrentException("The status of signaled executionInstance should be active");
 
         }
         try {
