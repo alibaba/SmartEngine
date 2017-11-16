@@ -94,7 +94,6 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstance.setReason(processInstanceEntity.getReason());
         processInstance.setBizUniqueId(processInstanceEntity.getBizUniqueId());
 
-
         //TUNE 还是叫做更新时间比较好一点,是否完成等 还是根据status 去判断.
         processInstance.setCompleteTime(processInstanceEntity.getGmtModified());
         processInstance.setInstanceId(processInstanceEntity.getId());
@@ -112,8 +111,6 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
         return processInstance;
     }
-
-
 
     @Override
     public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {
@@ -134,6 +131,12 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         return processInstanceList;
     }
 
+    @Override
+    public Long count(ProcessInstanceQueryParam processInstanceQueryParam) {
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+        Long processCount = processInstanceDAO.count(processInstanceQueryParam);
+        return processCount;
+    }
 
 
     @Override

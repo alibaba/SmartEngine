@@ -13,6 +13,7 @@ public interface ProcessInstanceDAO {
 
     List<ProcessInstanceEntity> find(ProcessInstanceQueryParam processInstanceQueryParam);
 
+    Long count(ProcessInstanceQueryParam processInstanceQueryParam);
 
     //@Options(useGeneratedKeys = true)
     void insert(  ProcessInstanceEntity processInstanceEntity );

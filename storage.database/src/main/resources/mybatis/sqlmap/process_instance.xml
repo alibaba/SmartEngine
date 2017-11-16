@@ -11,13 +11,13 @@
     <insert id="insert" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into se_process_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
-        #{status}, #{parentProcessInstanceId}, #{reason},#{bizUniqueId})
+        #{status}, #{parentProcessInstanceId}, #{reason}, #{bizUniqueId})
     </insert>
 
     <insert id="insertIgnore" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert ignore into se_process_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
-        #{status}, #{parentProcessInstanceId}, #{reason},#{bizUniqueId})
+        #{status}, #{parentProcessInstanceId}, #{reason}, #{bizUniqueId})
     </insert>
 
 
@@ -57,6 +57,13 @@
         <include refid="condition"/>
         order by gmt_modified desc
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+
+    </select>
+
+    <select id="count" resultType="long" parameterType="ProcessInstanceQueryParam">
+        select count(*)
+        from  se_process_instance
+        <include refid="condition"/>
 
     </select>
 

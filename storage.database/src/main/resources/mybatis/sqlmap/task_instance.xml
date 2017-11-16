@@ -57,14 +57,10 @@
         from se_task_instance where process_instance_id = #{param1} and status = #{param2}
     </select>
 
-
-
-
-
-    <select id="findPendingTaskList" resultType="TaskInstanceEntity" parameterType="PendingTaskQueryParam">
-        select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
+    <select id="findTaskByAssignee" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryByAssigneeParam">
+        select distinct task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
         activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status
-        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id  and  task.status = 'pending'
+        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id and task.status = #{status}
         <include refid="pending_where_condition"/>
 
         <include refid="pending_task_assignee_choose_sql"/>
@@ -75,9 +71,9 @@
     </select>
 
 
-    <select id="countPendingTaskList" resultType="int" parameterType="PendingTaskQueryParam">
-        select  count(task.id)
-        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id  and  task.status = 'pending'
+    <select id="countTaskByAssignee" resultType="int" parameterType="TaskInstanceQueryByAssigneeParam">
+        select  count(distinct task.id)
+        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id  and  task.status = #{status}
         <include refid="pending_where_condition"/>
 
         <include refid="pending_task_assignee_choose_sql"/>

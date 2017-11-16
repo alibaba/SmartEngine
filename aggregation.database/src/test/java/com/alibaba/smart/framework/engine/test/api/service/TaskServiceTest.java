@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.test.api.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
@@ -74,6 +75,7 @@ public class TaskServiceTest {
 
         PendingTaskQueryParam pendingTaskQueryParam = new PendingTaskQueryParam();
         pendingTaskQueryParam.setAssigneeUserId("1");
+        pendingTaskQueryParam.setAssigneeGroupIdList(Arrays.asList("11"));
         List<TaskInstance> submitTaskInstanceList=  taskQueryService.findPendingTaskList(pendingTaskQueryParam);
         Assert.assertEquals(1,submitTaskInstanceList.size());
 

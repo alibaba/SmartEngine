@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.service.query.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -42,6 +43,13 @@ public class DefaultTaskAssigneeQueryService implements TaskAssigneeQueryService
         TaskAssigneeStorage taskAssigneeStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
         List<TaskAssigneeInstance>  taskAssigneeStorageList =  taskAssigneeStorage.findList(taskInstanceId);
         return taskAssigneeStorageList;
+    }
+
+    @Override
+    public Map<Long, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<Long> taskInstanceIdList) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskAssigneeStorage taskAssigneeStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
+        return taskAssigneeStorage.findAssigneeOfInstanceList(taskInstanceIdList);
     }
 }
 
