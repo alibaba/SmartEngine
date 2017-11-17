@@ -79,6 +79,9 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     }
 
     private ProcessInstance buildProcessInstanceFromEntity(ProcessInstanceEntity processInstanceEntity) {
+        if (processInstanceEntity == null) {
+            return null;
+        }
         ProcessInstance processInstance  = new DefaultProcessInstance();
         processInstance.setParentInstanceId(processInstanceEntity.getParentProcessInstanceId());
         InstanceStatus processStatus = InstanceStatus.valueOf(processInstanceEntity.getStatus());

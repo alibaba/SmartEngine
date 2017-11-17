@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
@@ -17,8 +18,6 @@ import org.springframework.beans.BeanUtils;
 
 public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStorage {
 
-    public static final String TASK_PENDING_STATUS = "pending";
-
     @Override
     public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
         return findTaskListByAssignee(convertToTaskInstanceQueryByAssigneeParam(pendingTaskQueryParam));
@@ -27,7 +26,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     private TaskInstanceQueryByAssigneeParam convertToTaskInstanceQueryByAssigneeParam(PendingTaskQueryParam pendingTaskQueryParam) {
         TaskInstanceQueryByAssigneeParam taskInstanceQueryByAssigneeParam = new TaskInstanceQueryByAssigneeParam();
         BeanUtils.copyProperties(pendingTaskQueryParam, taskInstanceQueryByAssigneeParam);
-        taskInstanceQueryByAssigneeParam.setStatus(TASK_PENDING_STATUS);
+        taskInstanceQueryByAssigneeParam.setStatus(TaskInstanceConstant.PENDING);
         return taskInstanceQueryByAssigneeParam;
     }
 
