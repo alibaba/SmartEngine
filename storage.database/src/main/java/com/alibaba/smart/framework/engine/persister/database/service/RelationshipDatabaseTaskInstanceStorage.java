@@ -195,6 +195,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstanceEntity.setPriority(taskInstance.getPriority());
         taskInstanceEntity.setTag(taskInstance.getTag());
         taskInstanceEntity.setProcessDefinitionType(taskInstance.getProcessDefinitionType());
+        taskInstanceEntity.setClaimTime(taskInstance.getClaimTime());
         //taskInstanceEntity.setGmtModified(taskInstance.getCompleteTime());
         return taskInstanceEntity;
     }
