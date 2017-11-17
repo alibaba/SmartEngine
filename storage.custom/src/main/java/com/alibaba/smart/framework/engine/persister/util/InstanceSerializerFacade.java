@@ -32,18 +32,25 @@ public class InstanceSerializerFacade {
         }
     }
 
-    public static ProcessInstance mockSimpleProcessInstance( String  processDefinitionIdAndVersion,InstanceStatus instanceStatus,String processDefinitionActivityId ) {
+    public static ProcessInstance mockSimpleProcessInstance( String  processDefinitionId,String version,InstanceStatus instanceStatus,String processDefinitionActivityId ) {
         ProcessInstance processInstance = new DefaultProcessInstance();
-        processInstance.setProcessDefinitionIdAndVersion(processDefinitionIdAndVersion);
+        processInstance.setProcessDefinitionIdAndVersion(processDefinitionId+":"+version);
+        processInstance.setProcessDefinitionId(processDefinitionId);
+        processInstance.setProcessDefinitionVersion(version);
         processInstance.setStatus(instanceStatus);
         processInstance.setInstanceId(1L);
 
         ActivityInstance activityInstance = new DefaultActivityInstance();
         activityInstance.setProcessDefinitionActivityId(processDefinitionActivityId);
+        activityInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
+        activityInstance.setProcessInstanceId(processInstance.getInstanceId());
         activityInstance.setInstanceId(1L);
 
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
+        executionInstance.setProcessInstanceId(processInstance.getInstanceId());
+        executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
         executionInstance.setProcessDefinitionActivityId(processDefinitionActivityId);
+        executionInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
         executionInstance.setInstanceId(1L);
         executionInstance.setActive(true);
 

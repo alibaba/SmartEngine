@@ -44,7 +44,7 @@ public class MockProcessInstanceTest {
         PersisterSession.create();
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
+        //processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -73,7 +73,7 @@ public class MockProcessInstanceTest {
         );
         Assert.assertNotNull(processInstance);
 
-        persisteAndUpdateThreadLocal( InstanceStatus.running, "createOrder" );
+        processInstance =     persisteAndUpdateThreadLocal( InstanceStatus.running, "createOrder" );
 
 
         List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
@@ -84,7 +84,7 @@ public class MockProcessInstanceTest {
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
 
 
-        persisteAndUpdateThreadLocal( InstanceStatus.running, "completeOrder" );
+        processInstance =    persisteAndUpdateThreadLocal( InstanceStatus.running, "completeOrder" );
 
 
         executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
@@ -95,6 +95,7 @@ public class MockProcessInstanceTest {
 
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
 
+        processInstance =    persisteAndUpdateThreadLocal( InstanceStatus.completed, "endEvent" );
 
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
@@ -102,16 +103,18 @@ public class MockProcessInstanceTest {
 
     }
 
-    private void persisteAndUpdateThreadLocal( InstanceStatus instanceStatus, String processDefinitionActivityId ) {
+    private ProcessInstance persisteAndUpdateThreadLocal( InstanceStatus instanceStatus, String processDefinitionActivityId ) {
 
-        ProcessInstance processInstance = InstanceSerializerFacade.mockSimpleProcessInstance("mock_trade_process_test:1.0.0",instanceStatus,processDefinitionActivityId);
+        ProcessInstance processInstance = InstanceSerializerFacade.mockSimpleProcessInstance("mock_trade_process_test","1.0.0",instanceStatus,processDefinitionActivityId);
         PersisterSession.currentSession().putProcessInstance(processInstance);
+        return processInstance;
     }
 
-    private void persisteAndUpdateThreadLocal(String  processDefinitionIdAndVersion, InstanceStatus instanceStatus, String processDefinitionActivityId ) {
+    private ProcessInstance persisteAndUpdateThreadLocal(String  processDefinitionId,String version, InstanceStatus instanceStatus, String processDefinitionActivityId ) {
 
-        ProcessInstance processInstance = InstanceSerializerFacade.mockSimpleProcessInstance(processDefinitionIdAndVersion,instanceStatus,processDefinitionActivityId);
+        ProcessInstance processInstance = InstanceSerializerFacade.mockSimpleProcessInstance(processDefinitionId,version,instanceStatus,processDefinitionActivityId);
         PersisterSession.currentSession().putProcessInstance(processInstance);
+        return processInstance;
     }
 
 
