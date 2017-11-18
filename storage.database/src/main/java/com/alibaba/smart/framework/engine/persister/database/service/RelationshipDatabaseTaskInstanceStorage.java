@@ -174,6 +174,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
 
         taskInstance.setClaimUserId(taskInstanceEntity.getClaimUserId());
         taskInstance.setCompleteTime(taskInstanceEntity.getCompleteTime());
+        taskInstance.setClaimTime(taskInstanceEntity.getClaimTime());
 
         return taskInstance;
     }

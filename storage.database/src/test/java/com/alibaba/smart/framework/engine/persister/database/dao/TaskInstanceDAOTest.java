@@ -45,6 +45,7 @@ public class TaskInstanceDAOTest extends BaseElementTest {
 
         TaskInstanceEntity result = dao.findOne(entity.getId());
         Assert.assertNotNull(result);
+        Assert.assertNotNull(result.getClaimTime());
     }
 
     @Test
