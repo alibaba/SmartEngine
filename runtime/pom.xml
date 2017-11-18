@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.alibaba.smart.framework</groupId>
         <artifactId>smart-engine</artifactId>
-        <version>1.3.8-SNAOSHOT</version>
+        <version>1.3.8-TA-SNAPSHOT</version>
     </parent>
 
     <artifactId>smart-engine-runtime</artifactId>
