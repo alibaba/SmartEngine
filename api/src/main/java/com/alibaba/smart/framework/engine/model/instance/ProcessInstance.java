@@ -79,4 +79,7 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     void setReason(String reason);
 
+    String getTag();
+
+    void setTag(String tag);
 }
