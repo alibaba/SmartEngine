@@ -82,4 +82,8 @@ public interface ProcessInstance extends LifeCycleInstance {
     String getTag();
 
     void setTag(String tag);
+
+    String getTitle();
+
+    void setTitle(String title);
 }

@@ -42,4 +42,14 @@ public class DefaultTaskInstance extends AbstractLifeCycleInstance implements Ta
 
     private String status;
 
+    /**
+     * 备注(处理意见)
+     */
+    private String comment;
+
+    /**
+     * 扩展字段(完全由使用方控制)
+     */
+    private String extension;
+
 }

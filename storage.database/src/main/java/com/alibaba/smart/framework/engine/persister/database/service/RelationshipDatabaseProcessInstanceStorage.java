@@ -64,6 +64,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstanceEntityToBePersisted.setProcessDefinitionType(processInstance.getProcessDefinitionType());
         processInstanceEntityToBePersisted.setBizUniqueId(processInstance.getBizUniqueId());
         processInstanceEntityToBePersisted.setReason(processInstance.getReason());
+        processInstanceEntityToBePersisted.setTitle(processInstance.getTitle());
+        processInstanceEntityToBePersisted.setTag(processInstance.getTag());
         return processInstanceEntityToBePersisted;
     }
 
@@ -76,6 +78,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstance.setProcessDefinitionType(processInstanceEntity.getProcessDefinitionType());
         processInstance.setBizUniqueId(processInstanceEntity.getBizUniqueId());
         processInstance.setReason(processInstanceEntity.getReason());
+        processInstance.setTitle(processInstanceEntity.getTitle());
+        processInstance.setTag(processInstanceEntity.getTag());
     }
 
     private ProcessInstance buildProcessInstanceFromEntity(ProcessInstanceEntity processInstanceEntity) {
@@ -100,6 +104,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         //TUNE 还是叫做更新时间比较好一点,是否完成等 还是根据status 去判断.
         processInstance.setCompleteTime(processInstanceEntity.getGmtModified());
         processInstance.setInstanceId(processInstanceEntity.getId());
+        processInstance.setTag(processInstanceEntity.getTag());
+        processInstance.setTitle(processInstanceEntity.getTitle());
         return processInstance;
     }
 

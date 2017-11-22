@@ -30,6 +30,8 @@ public class TaskInstanceDAOTest extends BaseElementTest {
         entity.setStatus(TaskInstanceConstant.PENDING);
         entity.setProcessDefinitionActivityId("userTask");
         entity.setProcessInstanceId(444L);
+        entity.setComment("comment");
+        entity.setExtension("extension");
     }
 
     @Test
@@ -46,6 +48,8 @@ public class TaskInstanceDAOTest extends BaseElementTest {
         TaskInstanceEntity result = dao.findOne(entity.getId());
         Assert.assertNotNull(result);
         Assert.assertNotNull(result.getClaimTime());
+        Assert.assertEquals("comment",result.getComment());
+        Assert.assertEquals("extension",result.getExtension());
     }
 
     @Test

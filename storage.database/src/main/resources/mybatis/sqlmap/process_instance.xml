@@ -5,19 +5,19 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified, process_definition_id_and_version,process_definition_type,start_user_id,
-        status, parent_process_instance_id, reason, biz_unique_id
+        status, parent_process_instance_id, reason, biz_unique_id, title,tag
     </sql>
 
     <insert id="insert" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into se_process_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
-        #{status}, #{parentProcessInstanceId}, #{reason}, #{bizUniqueId})
+        #{status}, #{parentProcessInstanceId}, #{reason}, #{bizUniqueId}, #{title}, #{tag})
     </insert>
 
     <insert id="insertIgnore" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert ignore into se_process_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
-        #{status}, #{parentProcessInstanceId}, #{reason}, #{bizUniqueId})
+        #{status}, #{parentProcessInstanceId}, #{reason}, #{bizUniqueId}, #{title}, #{tag})
     </insert>
 
 
@@ -32,6 +32,7 @@
             <if test="status != null">,status = #{status}</if>
             <if test="parentProcessInstanceId != null">,parent_process_instance_id = #{parentProcessInstanceId}</if>
             <if test="reason != null">,reason = #{reason}</if>
+            <if test="tag != null">,tag = #{tag}</if>
 
         </set>
         where id=#{id}

@@ -21,4 +21,6 @@ public class RequestMapSpecialKeyConstant {
 
     public static final  String PROCESS_BIZ_UNIQUE_ID = $_SMART_ENGINE_$_PREFIX + "biz_unique_id";
 
+    public static final  String PROCESS_TITLE = $_SMART_ENGINE_$_PREFIX + "PROCESS_TITLE";
+
 }

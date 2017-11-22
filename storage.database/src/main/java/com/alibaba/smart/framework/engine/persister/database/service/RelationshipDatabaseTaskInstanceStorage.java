@@ -175,7 +175,8 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstance.setClaimUserId(taskInstanceEntity.getClaimUserId());
         taskInstance.setCompleteTime(taskInstanceEntity.getCompleteTime());
         taskInstance.setClaimTime(taskInstanceEntity.getClaimTime());
-
+        taskInstance.setComment(taskInstanceEntity.getComment());
+        taskInstance.setExtension(taskInstanceEntity.getExtension());
         return taskInstance;
     }
 
@@ -196,6 +197,8 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstanceEntity.setTag(taskInstance.getTag());
         taskInstanceEntity.setProcessDefinitionType(taskInstance.getProcessDefinitionType());
         taskInstanceEntity.setClaimTime(taskInstance.getClaimTime());
+        taskInstanceEntity.setComment(taskInstance.getComment());
+        taskInstanceEntity.setExtension(taskInstance.getExtension());
         //taskInstanceEntity.setGmtModified(taskInstance.getCompleteTime());
         return taskInstanceEntity;
     }

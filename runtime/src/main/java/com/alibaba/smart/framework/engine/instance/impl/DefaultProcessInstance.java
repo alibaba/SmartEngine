@@ -41,7 +41,7 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
 
     private String tag;
 
-
+    private String title;
 
 
     @Setter

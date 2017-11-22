@@ -21,6 +21,10 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
         entity = new ProcessInstanceEntity();
         entity.setProcessDefinitionIdAndVersion("processDefinitionId");
         entity.setStatus("running");
+        Long id = System.currentTimeMillis();
+        entity.setBizUniqueId(String.valueOf(id * 1000 + new Random().nextInt(1000)) );
+        entity.setTitle("title");
+        entity.setTag("tag");
     }
 
     @Test
@@ -44,6 +48,8 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
         entity.setBizUniqueId(String.valueOf(id));
         entity.setReason("111");
         entity.setId(id);
+        entity.setTitle("title");
+        entity.setTag("tag");
         entity.setGmtCreate(new Date());
         entity.setGmtModified(new Date());
         int count = dao.insertIgnore(entity);
@@ -61,6 +67,8 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
         dao.insert(entity);
 
         ProcessInstanceEntity result = dao.findOne(entity.getId());
+        Assert.assertEquals("title",result.getTitle());
+        Assert.assertEquals("tag",result.getTag());
         Assert.assertNotNull(result);
     }
 
@@ -84,12 +92,14 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
 
         entity.setStatus("test_status");
         entity.setParentProcessInstanceId(222222L);
+        entity.setTag("newTag");
         dao.update(entity);
 
         ProcessInstanceEntity result = dao.findOne(entity.getId());
         Assert.assertNotNull(result);
         Assert.assertEquals("test_status", entity.getStatus());
         Assert.assertEquals(222222L, entity.getParentProcessInstanceId().longValue());
+        Assert.assertEquals("newTag", entity.getTag());
 
     }
 }
