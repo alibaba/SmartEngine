@@ -54,6 +54,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
         processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
 
+
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 

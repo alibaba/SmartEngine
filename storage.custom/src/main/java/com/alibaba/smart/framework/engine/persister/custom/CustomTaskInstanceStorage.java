@@ -41,7 +41,7 @@ public class CustomTaskInstanceStorage implements TaskInstanceStorage {
 
     @Override
     public List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
-        throw new EngineException("not implement intentionally");
+        return null;
     }
 
     @Override
