@@ -6,10 +6,8 @@ import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import com.alibaba.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import com.alibaba.rocketmq.common.message.MessageExt;
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.ContextBoundedJavaDelegation;
-import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 
 import com.taobao.metaq.client.MetaPushConsumer;
 import org.slf4j.Logger;
@@ -19,9 +17,9 @@ import org.springframework.beans.factory.InitializingBean;
 /**
  * @author 帝奇
  */
-public abstract   class MessageQueueReceiveTaskDelegation extends ContextBoundedJavaDelegation implements MessageListenerConcurrently,InitializingBean {
+public abstract   class MQReceiveTaskDelegation extends ContextBoundedJavaDelegation implements MessageListenerConcurrently,InitializingBean {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageQueueReceiveTaskDelegation.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MQReceiveTaskDelegation.class);
 
     private void buildConsumer(String group,String topic,String tag) {
 
@@ -33,7 +31,7 @@ public abstract   class MessageQueueReceiveTaskDelegation extends ContextBounded
                 consumer.start();
                 LOGGER.info("buildMetaConsumer success.");
             } catch (Exception e) {
-                LOGGER.error("buildMetaConsumer error:" + e.getMessage(), e);
+                throw new EngineException(e);
             }
     }
 
@@ -51,7 +49,9 @@ public abstract   class MessageQueueReceiveTaskDelegation extends ContextBounded
                 //do business
 
 
-                //smartEngine.getExecutionCommandService().signal();
+                //ProcessInstance xx = smartEngine.getExecutionCommandService().signal();
+
+                //persist
 
             } catch (Throwable throwable) {
                 LOGGER.error(throwable.getMessage(),throwable);
@@ -61,6 +61,7 @@ public abstract   class MessageQueueReceiveTaskDelegation extends ContextBounded
         }
         return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
     }
+
 
     @Override
     public  void afterPropertiesSet() throws Exception{

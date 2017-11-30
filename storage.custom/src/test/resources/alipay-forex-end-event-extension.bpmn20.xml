@@ -41,7 +41,7 @@
 
         <receiveTask id="fund_delivery" name="资金交割" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
 
-        <receiveTask id="fund_delivery_ack" name="回执确认" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="fund_delivery_ack" name="回执确认" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation" ></receiveTask>
         <sequenceFlow id="flow22" sourceRef="fund_delivery" targetRef="fund_delivery_ack"></sequenceFlow>
         <sequenceFlow id="flow23" sourceRef="pre_order" targetRef="confirm_order"></sequenceFlow>
         <sequenceFlow id="flow24" sourceRef="confirm_order" targetRef="exclusivegateway2"></sequenceFlow>

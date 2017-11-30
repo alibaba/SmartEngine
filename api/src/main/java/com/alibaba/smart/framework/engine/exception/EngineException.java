@@ -13,7 +13,7 @@ public class EngineException extends RuntimeException {
     }
 
     public EngineException( Exception e) {
-        super("EngineException", e);
+        super(e.getMessage(), e);
     }
 
     public EngineException(String message, Exception e) {
