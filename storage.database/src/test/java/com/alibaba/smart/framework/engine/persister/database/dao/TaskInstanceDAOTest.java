@@ -76,6 +76,8 @@ public class TaskInstanceDAOTest extends BaseElementTest {
         Date endTime = new Date(claimTime.getTime() + 1000000);
         entity.setCompleteTime(endTime);
         entity.setPriority(333444);
+        entity.setComment("new_comment");
+        entity.setExtension("new_extension");
         dao.update(entity);
 
         TaskInstanceEntity result = dao.findOne(entity.getId());
@@ -84,6 +86,8 @@ public class TaskInstanceDAOTest extends BaseElementTest {
         Assert.assertEquals(claimTime, entity.getClaimTime());
         Assert.assertEquals(endTime, entity.getCompleteTime());
         Assert.assertEquals(333444, entity.getPriority().intValue());
+        Assert.assertEquals("new_comment", result.getComment());
+        Assert.assertEquals("new_extension", result.getExtension());
 
     }
 }

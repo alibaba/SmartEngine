@@ -29,8 +29,8 @@
             <if test="taskInstanceEntity.completeTime != null">,complete_time = #{taskInstanceEntity.completeTime}</if>
             <if test="taskInstanceEntity.status != null">,status = #{taskInstanceEntity.status}</if>
             <if test="taskInstanceEntity.tag != null">, tag = #{taskInstanceEntity.tag} </if>
-            <if test="taskInstanceEntity.comment != null">, tag = #{taskInstanceEntity.comment} </if>
-            <if test="taskInstanceEntity.extension != null">, tag = #{taskInstanceEntity.extension} </if>
+            <if test="taskInstanceEntity.comment != null">, comment = #{taskInstanceEntity.comment} </if>
+            <if test="taskInstanceEntity.extension != null">, extension = #{taskInstanceEntity.extension} </if>
 
         </set>
     </sql>
