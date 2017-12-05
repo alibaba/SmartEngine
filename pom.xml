@@ -46,6 +46,7 @@
         <module>storage.custom</module>
         <module>compatible.activiti</module>
         <module>aggregation.database</module>
+        <module>aggregation.custom</module>
     </modules>
 
     <dependencies>
