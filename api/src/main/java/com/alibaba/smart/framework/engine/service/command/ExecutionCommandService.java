@@ -20,8 +20,9 @@ public interface ExecutionCommandService {
      * 驱动流程转向自由节点
      *
      * @param executionInstanceId
+     * @param activityId
      * @param request
      * @return
      */
-    ProcessInstance jump(Long executionInstanceId, Map<String, Object> request, String activityId);
+    ProcessInstance jump(Long executionInstanceId, String activityId, Map<String, Object> request);
 }
