@@ -18,20 +18,6 @@
             <artifactId>smart-engine-runtime</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <!-- add default dependency :bpmn,smart , for the purpose of  simplity  start
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-engine-bpmn</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-engine-grammar-smart</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        -->
     </dependencies>
 
     <dependencyManagement>

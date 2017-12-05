@@ -87,7 +87,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
             processDefinitionVersion);
 
         if(null == pvmProcessDefinition){
-            throw new EngineException("No ProcessDefinition found for processDefinitionId :"+processDefinitionId+",processDefinitionVersion" +processDefinitionVersion);
+            throw new EngineException("No ProcessDefinition found for processDefinitionId : "+processDefinitionId+",processDefinitionVersion : " +processDefinitionVersion);
         }
 
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
