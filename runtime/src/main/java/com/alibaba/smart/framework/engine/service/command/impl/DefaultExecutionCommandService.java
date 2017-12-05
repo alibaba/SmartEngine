@@ -129,7 +129,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     @Override
-    public ProcessInstance jump(Long executionInstanceId, Map<String, Object> request, String activityId) {
+    public ProcessInstance jump(Long executionInstanceId, String activityId, Map<String, Object> request) {
         if (StringUtil.isEmpty(activityId)){
             return signal(executionInstanceId, request);
         }
