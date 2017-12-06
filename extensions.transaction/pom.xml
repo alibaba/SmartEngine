@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>smart-engine-extensions-transaction</artifactId>
+    <name>Smart Engine Extensions-Transaction</name>
 
     <dependencies>
         <dependency>
