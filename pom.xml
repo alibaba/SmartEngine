@@ -46,6 +46,7 @@
         <module>storage.custom</module>
         <module>compatible.activiti</module>
         <module>aggregation.database</module>
+        <module>extensions.transaction</module>
     </modules>
 
     <dependencies>
