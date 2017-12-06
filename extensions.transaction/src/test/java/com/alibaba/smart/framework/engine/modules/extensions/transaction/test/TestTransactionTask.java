@@ -29,6 +29,9 @@ public class TestTransactionTask {
     }
 
 
+    /**
+     * 正常的订单创建流程
+     */
     @Test
     public void testNormalWorkFlow() {
         Map<String, Object> request = new HashMap<String, Object>();
@@ -90,6 +93,9 @@ public class TestTransactionTask {
     }
 
 
+    /**
+     * 等待Metaq消息回传回来
+     */
     private void waitForMsg() {
         try {
             while (true) {
