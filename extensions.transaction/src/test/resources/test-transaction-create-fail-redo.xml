@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="alipay-forex" version="1.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:smart="http://smart.alibaba-inc.com/schema/process"
+             xmlns:smartext="http://smart.alibaba-inc.com/schema/ext"
+             targetNamespace="Examples">
+
+    <process id="scm-cross-docking" isExecutable="true">
+
+        <startEvent id="theStart"></startEvent>
+
+        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="createOrders"></sequenceFlow>
+
+        <smartext:transactionTask meta-group="smart-engine-transaction-group" meta-topic="smart-engine-transaction" mode="metaq" id="createOrders" errorStrategy="empty">
+
+            <smartext:singleTask id="saveOrder" errorStrategy="redo"
+                                 bean="mockSaveOrderAction"></smartext:singleTask>
+            <smartext:singleTask id="createOrder" errorStrategy="redo"
+                                 bean="mockCreateOrderFailAction"></smartext:singleTask>
+
+        </smartext:transactionTask>
+
+        <sequenceFlow id="flow2" sourceRef="createOrders" targetRef="end"></sequenceFlow>
+
+        <endEvent id="end" name="End"></endEvent>
+    </process>
+
+</definitions>

@@ -2,6 +2,8 @@ package com.alibaba.smart.framework.engine.modules.extensions.transaction.storag
 
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 import java.util.List;
 
@@ -11,8 +13,29 @@ import java.util.List;
  * @see
  */
 public class EmptyTaskInstanceStorage implements TaskInstanceStorage {
+
     @Override
-    public List<TaskInstance> findPendingTask(Long processInstanceId) {
+    public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam) {
+        return null;
+    }
+
+    @Override
+    public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
+        return null;
+    }
+
+    @Override
+    public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
+        return null;
+    }
+
+    @Override
+    public List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
+        return null;
+    }
+
+    @Override
+    public Integer count(TaskInstanceQueryParam taskInstanceQueryParam) {
         return null;
     }
 
@@ -24,6 +47,11 @@ public class EmptyTaskInstanceStorage implements TaskInstanceStorage {
     @Override
     public TaskInstance update(TaskInstance taskInstance) {
         return null;
+    }
+
+    @Override
+    public int updateFromStatus(TaskInstance taskInstance, String fromStatus) {
+        return 0;
     }
 
     @Override

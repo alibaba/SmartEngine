@@ -21,7 +21,7 @@ public class TransactionTaskProviderFactory implements ActivityProviderFactory<T
     }
 
     @Override
-    public ActivityBehavior<TransactionTask> createActivityProvider(PvmActivity pvmActivity) {
+    public ActivityBehavior createActivityProvider(PvmActivity pvmActivity) {
         return new TransactionTaskBehavior(extensionPointRegistry, pvmActivity);
     }
 

@@ -24,7 +24,7 @@ public class SingleTaskParser extends AbstractBpmnActivityParser<SingleTask> imp
     }
 
     @Override
-    public SingleTask parse(XMLStreamReader xmlStreamReader, ParseContext parseContext) throws ParseException, XMLStreamException {
+    public SingleTask parseModel(XMLStreamReader xmlStreamReader, ParseContext parseContext) throws ParseException, XMLStreamException {
 
         SingleTask task = new SingleTask();
 
@@ -49,6 +49,7 @@ public class SingleTaskParser extends AbstractBpmnActivityParser<SingleTask> imp
 
         return task;
     }
+
 
     @Override
     public QName getArtifactType() {

@@ -20,8 +20,6 @@ public abstract class AbstractElementParser<M extends BaseElement> extends Abstr
         super(extensionPointRegistry);
     }
 
-
-
     @Override
     public M parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         M model=this.parseModel(reader,context);

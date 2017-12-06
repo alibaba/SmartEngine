@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.extensions.transaction.node;
 
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.AbstractBpmnActivity;
+
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -11,14 +12,18 @@ import java.util.List;
  * @description
  * @see
  */
-public class TransactionTask extends AbstractBpmnActivity {
+public class TransactionTask extends AbstractActivity {
 
     private static final long serialVersionUID = -1l;
-
 
     public final static QName artifactType = new QName(SmartExtBase.SMART_EXT_NS, "transactionTask");
 
     private ErrorStrategy errorStrategy;
+
+    private String metaTopic;
+    private String metaGroup;
+
+    private String mode;
 
     private int maxRedoCount = 10;
 
@@ -50,5 +55,27 @@ public class TransactionTask extends AbstractBpmnActivity {
         this.errorStrategy = errorStrategy;
     }
 
+    public String getMetaTopic() {
+        return metaTopic;
+    }
 
+    public void setMetaTopic(String metaTopic) {
+        this.metaTopic = metaTopic;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
+    public String getMetaGroup() {
+        return metaGroup;
+    }
+
+    public void setMetaGroup(String metaGroup) {
+        this.metaGroup = metaGroup;
+    }
 }

@@ -35,4 +35,9 @@ public class EmptyExecutionInstanceStorage implements ExecutionInstanceStorage {
     public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
         return null;
     }
+
+    @Override
+    public List<ExecutionInstance> findByActivityInstanceId(Long processInstanceId, Long activityInstanceId) {
+        return null;
+    }
 }

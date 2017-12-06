@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.extensions.transaction.node;
 
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.AbstractBpmnActivity;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
 import com.alibaba.smart.framework.engine.modules.extensions.transaction.action.SingleTaskAction;
 import com.alibaba.smart.framework.engine.modules.extensions.transaction.util.SpringContextUtil;
 
@@ -11,7 +11,7 @@ import javax.xml.namespace.QName;
  * @description
  * @see
  */
-public class SingleTask extends AbstractBpmnActivity {
+public class SingleTask extends AbstractActivity {
 
     private static final long serialVersionUID = -1l;
 

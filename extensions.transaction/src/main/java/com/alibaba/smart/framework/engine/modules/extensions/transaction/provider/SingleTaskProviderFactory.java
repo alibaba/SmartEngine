@@ -22,7 +22,7 @@ public class SingleTaskProviderFactory implements ActivityProviderFactory<Single
     }
 
     @Override
-    public ActivityBehavior<SingleTask> createActivityProvider(PvmActivity activity) {
+    public ActivityBehavior createActivityProvider(PvmActivity activity) {
         return new SingleTaskBehavior(extensionPointRegistry, activity);
     }
 

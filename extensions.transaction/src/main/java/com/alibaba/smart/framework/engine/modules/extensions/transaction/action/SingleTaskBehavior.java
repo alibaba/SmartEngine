@@ -12,14 +12,14 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
  * @description
  * @see
  */
-public class SingleTaskBehavior  extends AbstractActivityBehavior<SingleTask> implements ActivityBehavior<SingleTask> {
+public class SingleTaskBehavior  extends AbstractActivityBehavior<SingleTask> implements ActivityBehavior {
 
     public SingleTaskBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity pvmActivity) {
         super(extensionPointRegistry, pvmActivity);
     }
 
-    @Override
-    protected void buildInstanceRelationShip(PvmActivity runtimeActivity, ExecutionContext context) {
-
-    }
+//    @Override
+//    protected void buildInstanceRelationShip(PvmActivity runtimeActivity, ExecutionContext context) {
+//
+//    }
 }

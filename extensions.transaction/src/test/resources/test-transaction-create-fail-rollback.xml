@@ -11,12 +11,12 @@
 
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="createOrders"></sequenceFlow>
 
-        <smartext:transactionTask id="createOrders" errorStrategy="empty">
+        <smartext:transactionTask meta-group="smart-engine-transaction-group" meta-topic="smart-engine-transaction" mode="metaq" id="createOrders" errorStrategy="empty">
 
-            <smartext:singleTask id="createInOrder" errorStrategy="rollback"
-                                 bean="scmCreateCrossDockingInOrderAction"></smartext:singleTask>
-            <smartext:singleTask id="createTransferOrder" errorStrategy="rollback"
-                                 bean="scmCreateTransferOrderAction"></smartext:singleTask>
+            <smartext:singleTask id="saveOrder" errorStrategy="rollback"
+                                 bean="mockSaveOrderAction"></smartext:singleTask>
+            <smartext:singleTask id="createOrder" errorStrategy="rollback"
+                                 bean="mockCreateOrderFailAction"></smartext:singleTask>
 
         </smartext:transactionTask>
 

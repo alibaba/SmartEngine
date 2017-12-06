@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.modules.extensions.transaction.node.Si
 import com.alibaba.smart.framework.engine.modules.extensions.transaction.node.TransactionTask;
 import com.alibaba.smart.framework.engine.modules.extensions.transaction.transaction.TransactionProcessContext;
 import com.alibaba.smart.framework.engine.modules.extensions.transaction.transaction.TransactionProcessor;
-import com.alibaba.smart.framework.engine.modules.extensions.transaction.transaction.TransactionProcessorUtil;
+import com.alibaba.smart.framework.engine.modules.extensions.transaction.transaction.TransactionProcessorHolder;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -28,7 +28,7 @@ import java.util.Map;
  * @description
  * @see
  */
-public class TransactionTaskBehavior extends AbstractActivityBehavior<TransactionTask> implements ActivityBehavior<TransactionTask> {
+public class TransactionTaskBehavior extends AbstractActivityBehavior<TransactionTask> implements ActivityBehavior {
 
     private final static Logger logger = LoggerFactory.getLogger(TransactionTaskBehavior.class);
 
@@ -37,16 +37,16 @@ public class TransactionTaskBehavior extends AbstractActivityBehavior<Transactio
     }
 
     @Override
-    protected void buildInstanceRelationShip(PvmActivity pvmActivity, ExecutionContext executionContext) {
+    public void leave(ExecutionContext executionContext) {
 
         ProcessInstance processInstance = executionContext.getProcessInstance();
-        ActivityInstance activityInstance = super.activityInstanceFactory.create(pvmActivity, executionContext);
+        ActivityInstance activityInstance = super.activityInstanceFactory.create(getModel(), executionContext);
 
         ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance, executionContext);
         activityInstance.setExecutionInstanceList(Lists.newArrayList(executionInstance));
         processInstance.addActivityInstance(activityInstance);
 
-        TransactionTask task = (TransactionTask) pvmActivity.getModel();
+        TransactionTask task = getModel();
         List<SingleTask> childTasks = task.getChildTasks();
 
         Map<String, Object> request = executionContext.getRequest();
@@ -63,7 +63,7 @@ public class TransactionTaskBehavior extends AbstractActivityBehavior<Transactio
 
                 String id = childTask.getId();
 
-                logger.info("execute " + singleTaskAction.getClass().getName());
+                logger.info("execute action:" + singleTaskAction.getClass().getName());
                 ActionResult result = singleTaskAction.invoke(request, childTask);
 
                 if (result == null) {
@@ -72,20 +72,24 @@ public class TransactionTaskBehavior extends AbstractActivityBehavior<Transactio
 
 
                 if (!result.isSuccess()) {
-                    throw new Exception(result.getEroMsg());
+                    throw new RuntimeException("run task fail :"+result.getEroMsg());
                 }
 
+                // need to break current process
                 if (result.isBreakCurrentProcess()) {
-//                    request.put(CrossDockingConstants.RESPONSE_ERO_MSG, result.getEroMsg());
                     break out;
                 }
 
 
             } catch (Exception e) {
 
-                logger.error("执行流程异常", e);
+                logger.error("execute transaction task fail: ", e);
 
-                TransactionProcessor processor = TransactionProcessorUtil.getProcessor();
+                TransactionProcessor processor = TransactionProcessorHolder.getProcessor();
+                if (processor == null) {
+                    logger.error("transaction processor null, ignore any rollback or redo strategy");
+                    break out;
+                }
 
                 TransactionProcessContext context = new TransactionProcessContext();
                 context.setErrorChildIndex(i);
@@ -117,6 +121,7 @@ public class TransactionTaskBehavior extends AbstractActivityBehavior<Transactio
                         break out;
                     case EMPTY:
 
+                        logger.error("execute action fail , action index:"+i+", error strategy is empty, so do nothing about it");
                         // nothing
                         break out;
                 }

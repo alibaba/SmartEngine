@@ -11,7 +11,6 @@ public interface TransactionProcessor {
 
     void saveForRedo(TransactionProcessContext context);
 
-
     boolean rollback(TransactionProcessContext context);
 
     boolean redo(TransactionProcessContext context);
