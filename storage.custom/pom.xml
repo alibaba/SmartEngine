@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.alibaba.smart.framework</groupId>
         <artifactId>smart-engine</artifactId>
-        <version>1.3.8-TA-SNAPSHOT</version>
+        <version>1.5.1</version>
     </parent>
 
     <artifactId>smart-engine-storage-custom</artifactId>
