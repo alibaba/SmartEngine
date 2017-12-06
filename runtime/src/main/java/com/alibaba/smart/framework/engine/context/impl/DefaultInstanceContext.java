@@ -19,6 +19,8 @@ import java.util.Map;
 @Data
 public class DefaultInstanceContext implements ExecutionContext {
 
+    private ExecutionContext parent;
+
     private ProcessInstance processInstance;
 
     private ExecutionInstance executionInstance;

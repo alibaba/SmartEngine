@@ -36,7 +36,7 @@ import static org.junit.Assert.assertEquals;
 
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-//@Transactional
+@Transactional
 public class ParaGatewayUserTaskProcessTest {
 
 
