@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.exception.ConcurrentException;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 
 /**
@@ -20,6 +21,7 @@ public class MarkDoneUtil {
         Date completeDate = DateUtil.getCurrentDate();
         executionInstance.setCompleteTime(completeDate);
         executionInstance.setActive(false);
+        executionInstance.setStatus(InstanceStatus.completed);
 
         //产生了 DB 写，是否需要干掉。
         executionInstanceStorage.update(executionInstance);

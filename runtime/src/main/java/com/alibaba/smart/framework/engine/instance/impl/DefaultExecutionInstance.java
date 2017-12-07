@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 
@@ -25,5 +26,8 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
     private TaskInstance taskInstance;
 
     private TransitionInstance incomeTransition;
+
+    private InstanceStatus status;
+
 
 }

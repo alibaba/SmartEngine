@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:smart="http://smart.alibaba-inc.com/schema/process" id="custom-properties" targetNamespace="smart">
+  <process id="Process_1" isExecutable="false">
+    <startEvent id="StartEvent_1" />
+    <serviceTask id="serviceTask" smart:abc="abc" />
+    <sequenceFlow id="SequenceFlow_01ueswe"  sourceRef="StartEvent_1" targetRef="serviceTask" />
+    <serviceTask id="userTask" smart:def="def"/>
+    <sequenceFlow id="SequenceFlow_1borlkx" sourceRef="serviceTask" targetRef="userTask" />
+    <receiveTask id="receiveTask" smart:hij="hij" />
+    <sequenceFlow id="SequenceFlow_0ezdah5" sourceRef="userTask" targetRef="receiveTask" />
+    <endEvent id="end" />
+    <sequenceFlow id="SequenceFlow_1jp6b5l" sourceRef="receiveTask" targetRef="end" />
+  </process>
+
+</definitions>

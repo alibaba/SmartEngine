@@ -15,4 +15,14 @@ public interface ExecutionCommandService {
     ProcessInstance signal(Long executionInstanceId, Map<String, Object> request);
 
     ProcessInstance signal(Long executionInstanceId);
+
+    /**
+     * 驱动流程转向自由节点
+     *
+     * @param executionInstanceId
+     * @param activityId
+     * @param request
+     * @return
+     */
+    ProcessInstance jump(Long executionInstanceId, String activityId, Map<String, Object> request);
 }
