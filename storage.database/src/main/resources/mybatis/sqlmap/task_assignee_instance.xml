@@ -40,5 +40,13 @@
         from se_task_assignee_instance where task_instance_id=#{taskInstanceId}
     </select>
 
+    <select id="findListForInstanceList" parameterType="java.util.List" resultType="TaskAssigneeEntity">
+        select
+        <include refid="baseColumn"/>
+        from se_task_assignee_instance where task_instance_id in
+        <foreach item="item" index="index" separator="," open="(" close=")"  collection="list">
+            #{item}
+        </foreach>
+    </select>
 
 </mapper>

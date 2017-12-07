@@ -30,6 +30,7 @@ public interface ProcessInstanceStorage {
 
     List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam);
 
+    Long count(ProcessInstanceQueryParam processInstanceQueryParam);
 
     /**
      * 删除流程实例

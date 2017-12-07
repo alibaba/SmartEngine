@@ -1,6 +1,10 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.event;
 
+import java.util.Map;
+
+
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
@@ -25,6 +29,17 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
         ProcessInstance processInstance = context.getProcessInstance();
         processInstance.setStatus(InstanceStatus.completed);
         processInstance.setCompleteTime(DateUtil.getCurrentDate());
+        Map<String, Object> request = context.getRequest();
+
+        if(null != request){
+            Object taskInstanceTag = request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG);
+            //processInstance的tag使用的是最后一个完成的任务的tag
+            if (taskInstanceTag != null) {
+                processInstance.setTag(taskInstanceTag.toString());
+            }
+        }
+
+
 
         //==== 子流程结束，执行父流程 ====
         //子流程结束时,才会进入到该环节里面来。需要找出父流程的执行实例id,然后继续执行父流程的后续节点。

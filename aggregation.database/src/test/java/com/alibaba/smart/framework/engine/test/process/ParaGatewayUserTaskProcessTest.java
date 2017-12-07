@@ -79,20 +79,21 @@ public class ParaGatewayUserTaskProcessTest {
         Map<String, Object> submitFormRequest = new HashMap<String, Object>();
 
         //完成支付或者发货
-        taskCommandService.complete(submitTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
+        TaskInstance firstTaskInstance = submitTaskInstanceList.get(0);
+        taskCommandService.complete(firstTaskInstance.getInstanceId(),submitFormRequest);
 
         submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         Assert.assertEquals(1,submitTaskInstanceList.size());
-
-
-        taskCommandService.complete(submitTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
+        TaskInstance secondTaskInstance = submitTaskInstanceList.get(0);
+        taskCommandService.complete(secondTaskInstance.getInstanceId(),submitFormRequest);
 
 
 
         submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         Assert.assertEquals(1,submitTaskInstanceList.size());
+        TaskInstance thirdTaskInstance = submitTaskInstanceList.get(0);
 
-        taskCommandService.complete(submitTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
+        taskCommandService.complete(thirdTaskInstance.getInstanceId(),submitFormRequest);
 
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.

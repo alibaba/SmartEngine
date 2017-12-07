@@ -46,6 +46,10 @@ public class MarkDoneUtil {
 
             String claimUserId = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID);
             taskInstance.setClaimUserId(claimUserId);
+            String comment = variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT) == null?null:String.valueOf(variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT));
+            taskInstance.setClaimUserId(claimUserId);
+            taskInstance.setComment(comment);
+
         }
 
         int updateCount = taskInstanceStorage.updateFromStatus(taskInstance, sourceStatus);

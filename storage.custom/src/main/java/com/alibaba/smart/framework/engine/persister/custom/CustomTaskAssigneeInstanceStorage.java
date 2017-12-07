@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.persister.custom;
 
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
@@ -9,6 +10,11 @@ public class CustomTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
     @Override
     public List<TaskAssigneeInstance> findList(Long taskInstanceId) {
+        return null;
+    }
+
+    @Override
+    public Map<Long, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<Long> taskInstanceIdList) {
         return null;
     }
 

@@ -22,7 +22,6 @@ public class DefaultTaskInstance extends AbstractLifeCycleInstance implements Ta
 
     private  String processDefinitionType;
 
-
     private Long activityInstanceId;
     private Long processInstanceId;
     private Long executionInstanceId;
@@ -42,5 +41,15 @@ public class DefaultTaskInstance extends AbstractLifeCycleInstance implements Ta
     private Date claimTime;
 
     private String status;
+
+    /**
+     * 备注(处理意见)
+     */
+    private String comment;
+
+    /**
+     * 扩展字段(完全由使用方控制)
+     */
+    private String extension;
 
 }
