@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.extensions.transaction.node;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
 import com.alibaba.smart.framework.engine.modules.extensions.transaction.action.SingleTaskAction;
 import com.alibaba.smart.framework.engine.modules.extensions.transaction.util.SpringContextUtil;
+import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 
 import javax.xml.namespace.QName;
 
@@ -16,7 +17,7 @@ public class SingleTask extends AbstractActivity {
     private static final long serialVersionUID = -1l;
 
 
-    public final static QName artifactType = new QName(SmartExtBase.SMART_EXT_NS, "singleTask");
+    public final static QName artifactType = new QName(SmartBase.SMART_NS, "singleTask");
 
     private String actionBeanName;
     private ErrorStrategy errorStrategy;
