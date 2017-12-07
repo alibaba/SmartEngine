@@ -3,11 +3,14 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
+import com.alibaba.smart.framework.engine.exception.ConcurrentException;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
@@ -76,7 +79,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
 
         if(!executionInstance.isActive()){
-            throw new EngineException("The status of signaled executionInstance should be active");
+            throw new ConcurrentException("The status of signaled executionInstance should be active");
 
         }
         try {
@@ -124,6 +127,71 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     @Override
     public ProcessInstance signal(Long executionInstanceId) {
         return signal(executionInstanceId, null);
+    }
+
+    @Override
+    public ProcessInstance jump(Long executionInstanceId, String activityId, Map<String, Object> request) {
+        if (StringUtil.isEmpty(activityId)){
+            return signal(executionInstanceId, request);
+        }
+
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+        //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
+        ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
+        ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
+        ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
+
+        ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId);
+
+        if(null == executionInstance){
+            throw new EngineException("No executionInstance found for id "+executionInstanceId);
+        }
+
+        if(!executionInstance.isActive()){
+            throw new EngineException("The status of signaled executionInstance should be active");
+        }
+
+        try {
+            //!!! 重要
+            tryLock(processEngineConfiguration, executionInstance.getProcessInstanceId());
+
+            //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
+
+            //BE AWARE: 注意:针对TP,AliPay场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
+            ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId());
+
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage);
+            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId());
+
+            PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(
+                processInstance.getProcessDefinitionIdAndVersion());
+
+            PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
+
+            ExecutionContext executionContext = this.instanceContextFactory.create();
+            executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
+            executionContext.setProcessEngineConfiguration(processEngineConfiguration);
+            executionContext.setPvmProcessDefinition(pvmProcessDefinition);
+            executionContext.setProcessInstance(processInstance);
+            executionContext.setExecutionInstance(executionInstance);
+            executionContext.setActivityInstance(activityInstance);
+            executionContext.setRequest(request);
+
+            // TUNE 减少不必要的对象创建
+            PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
+
+            ProcessInstance newProcessInstance = pvmProcessInstance.enter(pvmActivity, executionContext);
+
+            CommonServiceHelper.updateAndPersist(executionInstanceId, newProcessInstance, request,
+                extensionPointRegistry);
+
+            return newProcessInstance;
+        } finally {
+            unLock(processEngineConfiguration, executionInstance.getProcessInstanceId());
+        }
     }
 
     private void tryLock(ProcessEngineConfiguration processEngineConfiguration,

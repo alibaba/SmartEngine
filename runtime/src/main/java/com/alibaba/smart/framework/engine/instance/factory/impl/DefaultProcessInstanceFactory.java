@@ -41,6 +41,9 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
             String bizUniqueId = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_BIZ_UNIQUE_ID);
             defaultProcessInstance.setBizUniqueId(bizUniqueId);
+
+            String title = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_TITLE);
+            defaultProcessInstance.setTitle(title);
         }
 
         return defaultProcessInstance;

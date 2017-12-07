@@ -15,6 +15,11 @@ import java.util.Map;
  */
 public interface ExecutionContext {
 
+    ExecutionContext getParent();
+
+    void setParent(ExecutionContext parent);
+
+
     ProcessInstance getProcessInstance();
 
     void setProcessInstance(ProcessInstance processInstance);

@@ -135,6 +135,7 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
             pvmActivity.invoke(PvmEventConstant.ACTIVITY_START.name(), context);
             if (context.isNeedPause()) {
                 needPause = true;
+                executionInstance.setStatus(InstanceStatus.suspended);
             }
         }
 
@@ -250,6 +251,9 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
             } else {
                 context.setNeedPause(true);
             }
+        }else{
+            ExecutionInstance executionInstance = context.getExecutionInstance();
+            executionInstance.setStatus(InstanceStatus.suspended);
         }
     }
 

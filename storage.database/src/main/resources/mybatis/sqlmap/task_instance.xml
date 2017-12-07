@@ -5,13 +5,15 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,process_instance_id, process_definition_id_and_version,process_definition_type,
-        activity_instance_id, process_definition_activity_id, execution_instance_id,claim_user_id,priority,tag,claim_time,complete_time,status
+        activity_instance_id, process_definition_activity_id, execution_instance_id,claim_user_id,priority,tag,claim_time,complete_time,status,comment,extension
     </sql>
+
+
 
     <insert id="insert" parameterType="TaskInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into se_task_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},#{processDefinitionType},
-        #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status})
+        #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status},#{comment},#{extension})
     </insert>
 
     <delete id="delete" parameterType="long">
@@ -27,6 +29,8 @@
             <if test="taskInstanceEntity.completeTime != null">,complete_time = #{taskInstanceEntity.completeTime}</if>
             <if test="taskInstanceEntity.status != null">,status = #{taskInstanceEntity.status}</if>
             <if test="taskInstanceEntity.tag != null">, tag = #{taskInstanceEntity.tag} </if>
+            <if test="taskInstanceEntity.comment != null">, comment = #{taskInstanceEntity.comment} </if>
+            <if test="taskInstanceEntity.extension != null">, extension = #{taskInstanceEntity.extension} </if>
 
         </set>
     </sql>
@@ -57,27 +61,30 @@
         from se_task_instance where process_instance_id = #{param1} and status = #{param2}
     </select>
 
+    <select id="findTaskByAssignee" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryByAssigneeParam">
+        select distinct task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
+        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension
+        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
 
+        <if test = "status != null" > and task.status = #{status} </if>
 
-
-
-    <select id="findPendingTaskList" resultType="TaskInstanceEntity" parameterType="PendingTaskQueryParam">
-        select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
-        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status
-        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id  and  task.status = 'pending'
         <include refid="pending_where_condition"/>
 
         <include refid="pending_task_assignee_choose_sql"/>
 
         order by task.gmt_modified desc
+
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
 
     </select>
 
 
-    <select id="countPendingTaskList" resultType="int" parameterType="PendingTaskQueryParam">
-        select  count(task.id)
-        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id  and  task.status = 'pending'
+    <select id="countTaskByAssignee" resultType="int" parameterType="TaskInstanceQueryByAssigneeParam">
+        select  count(distinct task.id)
+        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
+
+        <if test = "status != null" > and task.status = #{status} </if>
+
         <include refid="pending_where_condition"/>
 
         <include refid="pending_task_assignee_choose_sql"/>
@@ -128,7 +135,7 @@
 
     <select id="findTaskList" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryParam">
         select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
-        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status
+        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension
         from  se_task_instance task  where 1=1
         <include refid="where_condition"/>
 

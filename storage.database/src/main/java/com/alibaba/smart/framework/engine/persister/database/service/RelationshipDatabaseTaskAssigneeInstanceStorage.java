@@ -1,7 +1,9 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
@@ -27,6 +29,26 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
         }
 
         return taskAssigneeInstanceList;
+    }
+
+    @Override
+    public Map<Long, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<Long> taskInstanceIdList) {
+        TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
+        List<TaskAssigneeEntity> taskAssigneeEntityList =  taskAssigneeDAO.findListForInstanceList(taskInstanceIdList);
+
+        Map<Long, List<TaskAssigneeInstance>> assigneeMap = new HashMap<Long, List<TaskAssigneeInstance>>();
+        if (taskAssigneeEntityList != null) {
+            for (TaskAssigneeEntity entity: taskAssigneeEntityList) {
+                TaskAssigneeInstance taskAssigneeInstance = buildTaskAssigneeInstance(entity);
+                List<TaskAssigneeInstance> assigneeListForTaskInstance = assigneeMap.get(entity.getTaskInstanceId());
+                if (assigneeListForTaskInstance == null) {
+                    assigneeListForTaskInstance = new ArrayList<TaskAssigneeInstance>();
+                    assigneeMap.put(entity.getTaskInstanceId(), assigneeListForTaskInstance);
+                }
+                assigneeListForTaskInstance.add(taskAssigneeInstance);
+            }
+         }
+         return assigneeMap;
     }
 
     @Override

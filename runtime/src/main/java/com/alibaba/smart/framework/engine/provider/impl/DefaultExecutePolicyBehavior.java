@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStor
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -55,6 +56,9 @@ public class DefaultExecutePolicyBehavior implements ExecutePolicyBehavior, Life
         context.setExecutionInstance(executionInstance);
 
         pvmActivity.invoke(PvmEventConstant.ACTIVITY_START.name(), context);
+        if (context.isNeedPause()) {
+            executionInstance.setStatus(InstanceStatus.suspended);
+        }
 
     }
 
@@ -65,6 +69,9 @@ public class DefaultExecutePolicyBehavior implements ExecutePolicyBehavior, Life
             ExecutionInstance executionInstance = context.getExecutionInstance();
             //只负责完成当前executionInstance的状态更新,此时产生了 DB 写.
             MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage);
+        }else{
+            ExecutionInstance executionInstance = context.getExecutionInstance();
+            executionInstance.setStatus(InstanceStatus.suspended);
         }
     }
 }

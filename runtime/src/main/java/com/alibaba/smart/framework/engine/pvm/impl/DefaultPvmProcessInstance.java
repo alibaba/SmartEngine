@@ -36,4 +36,10 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
 
     }
 
+    @Override
+    public ProcessInstance enter(PvmActivity pvmActivity, ExecutionContext executionContext) {
+        pvmActivity.enter(executionContext);
+        return executionContext.getProcessInstance();
+    }
+
 }

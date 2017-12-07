@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
@@ -36,35 +38,14 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             return false;
         }
 
-        //FIXME database 模式下是否有问题? 早点看下全流程.
-
-        context.setProcessInstance(CommonServiceHelper.insertAndPersist(context.getProcessInstance(), context.getRequest(), this.extensionPointRegistry));
-
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = super.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
 
         Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
 
-
-        /*
-        String sourcePvmActivityId = context.getSourcePvmActivity().getModel().getId();
-
-        for (PvmTransition pvmTransition : inComingPvmTransitions) {
-            String pvmTransitionSourceActivityId = pvmTransition.getSource().getModel().getId();
-            boolean equals1 = pvmTransitionSourceActivityId.equals(sourcePvmActivityId);
-            if (equals1) {
-                ActivityInstance activityInstance = super.activityInstanceFactory.create(parallelGateway, context);
-
-                ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance,  context);
-
-                activityInstance.setExecutionInstance(executionInstance);
-
-                context.getProcessInstance().addNewActivityInstance(activityInstance);
-            }
-        }
-        */
 
         ProcessInstance processInstance = context.getProcessInstance();
 
@@ -82,22 +63,48 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             }
         }
 
-        //如果已经完成
-        if(reachedForkedSum == inComingPvmTransitions.size()){
+        //由于 SmartEngine的设计理念是尽量在后期去持久化，减少事务的开启时间。 所以比如在 database 模式下，这里的很多访问 db 方法 只能获取上一次写进 DB 的数据。
+        //但是由于进入到这里的代码，肯定有一个新的节点完成了，但是这个状态并没有写进 DB。所以
+        int tunedTotalReachedForkedSum = reachedForkedSum + 1;
+        if(tunedTotalReachedForkedSum == inComingPvmTransitions.size() ){
             //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
             ActivityInstanceStorage activityInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
+
+
+            ExecutionInstance executionInstance1 = context.getExecutionInstance();
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance1,executionInstanceStorage);
+
+            //TODO ActivityInstance 的完成时间没有 更新
 
             List<ActivityInstance> activityInstanceList = activityInstanceStorage.findAll(processInstance.getInstanceId());
 
             for (ActivityInstance activityInstance : activityInstanceList) {
-
+                //把 join 网关对应的执行执行完成掉。
                 if(activityInstance.getProcessDefinitionActivityId().equals(pvmActivity.getModel().getId())){
+                    //TODO 针对 custom，memory 模式，这里activityInstance.getExecutionInstanceList() 这个才不会为null； database模式下都是null
                     List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
-                    for (ExecutionInstance executionInstance : executionInstances) {
-                        MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
+                    if(null != executionInstances){
+                        for (ExecutionInstance executionInstance : executionInstances) {
+                            if(executionInstance != null){
+                                MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            //check again,有优化的空间，也可以把executionInstance给activityInstance.getExecutionInstanceList()
+            List<ExecutionInstance> executionInstanceList1 =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId());
+
+            if(null != executionInstanceList1){
+                for (ExecutionInstance executionInstance : executionInstanceList1) {
+                    if(executionInstance.getProcessDefinitionActivityId().equals(pvmActivity.getModel().getId())){
+                      MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
                     }
                 }
             }
+
             return false;
 
         }else{

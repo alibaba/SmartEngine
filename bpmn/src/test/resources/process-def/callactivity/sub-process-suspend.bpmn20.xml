@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="sub-process-suspend" version="1.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             targetNamespace="Examples">
+
+
+    <process id="sub-process-suspend" isExecutable="true">
+        <startEvent id="start"/>
+
+        <sequenceFlow id="flow1" sourceRef="start" targetRef="task"/>
+
+        <receiveTask id="task"/>
+
+        <sequenceFlow id="flow2" sourceRef="task" targetRef="end"/>
+
+        <endEvent id="end" name="End"/>
+    </process>
+
+</definitions>

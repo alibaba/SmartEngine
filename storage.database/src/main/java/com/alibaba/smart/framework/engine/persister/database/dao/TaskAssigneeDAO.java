@@ -12,15 +12,17 @@ import org.apache.ibatis.annotations.Param;
 public interface TaskAssigneeDAO  {
 
 
-     List<TaskAssigneeEntity> findList(Long  taskInstanceId);
+    List<TaskAssigneeEntity> findList(Long  taskInstanceId);
 
-     TaskAssigneeEntity findOne(@Param("id") Long id);
+    List<TaskAssigneeEntity> findListForInstanceList(List<Long> taskInstanceIdList);
+
+    TaskAssigneeEntity findOne(@Param("id") Long id);
 
 
-     //@Options(useGeneratedKeys = true)
-     void insert(  TaskAssigneeEntity taskAssigneeEntity );
+    //@Options(useGeneratedKeys = true)
+    void insert(  TaskAssigneeEntity taskAssigneeEntity );
 
-     int update(@Param("id") Long taskAssigneeId,@Param("assigneeId")String assigneeId);
+    int update(@Param("id") Long taskAssigneeId,@Param("assigneeId")String assigneeId);
 
-     void delete(@Param("id") Long id);
+    void delete(@Param("id") Long id);
 }

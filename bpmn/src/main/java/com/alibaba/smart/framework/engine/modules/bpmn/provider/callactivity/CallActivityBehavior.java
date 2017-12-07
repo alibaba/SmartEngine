@@ -34,37 +34,39 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
         String processDefinitionVersion = callActivity.getCalledElementVersion();
 
         return this.call(context.getProcessInstance().getInstanceId(), context.getExecutionInstance().getInstanceId(),
-            processDefinitionId, processDefinitionVersion, context.getRequest());
+            processDefinitionId, processDefinitionVersion, context);
     }
 
     //TODO ettear 与DefaultProcessCommandService的逻辑合并
     private boolean call(Long parentInstanceId, Long parentExecutionInstanceId, String processDefinitionId,
-                         String version, Map<String, Object> request) {
+                         String version, ExecutionContext context) {
 
-        ExecutionContext executionContext = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class)
+        ExecutionContext subProcessExecutionContext = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class)
             .create();
-        executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
+        subProcessExecutionContext.setParent(context);
+        subProcessExecutionContext.setExtensionPointRegistry(this.extensionPointRegistry);
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
             SmartEngine.class).getProcessEngineConfiguration();
-        executionContext.setProcessEngineConfiguration(processEngineConfiguration);
-        executionContext.setRequest(request);
+        subProcessExecutionContext.setProcessEngineConfiguration(processEngineConfiguration);
+        //TODO ettear 改成clone模式
+        subProcessExecutionContext.setRequest(context.getRequest());
 
         PvmProcessDefinition pvmProcessDefinition = this.extensionPointRegistry.getExtensionPoint(
             ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinitionId, version);
-        executionContext.setPvmProcessDefinition(pvmProcessDefinition);
+        subProcessExecutionContext.setPvmProcessDefinition(pvmProcessDefinition);
 
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
-        ProcessInstance processInstance = processInstanceFactory.create(executionContext);
+        ProcessInstance processInstance = processInstanceFactory.create(subProcessExecutionContext);
         processInstance.setParentInstanceId(parentInstanceId);
         processInstance.setParentExecutionInstanceId(parentExecutionInstanceId);
 
-        executionContext.setProcessInstance(processInstance);
+        subProcessExecutionContext.setProcessInstance(processInstance);
 
-        processInstance = pvmProcessInstance.start(executionContext);
+        processInstance = pvmProcessInstance.start(subProcessExecutionContext);
 
-        processInstance = CommonServiceHelper.insertAndPersist(processInstance, request, extensionPointRegistry);
+        processInstance = CommonServiceHelper.insertAndPersist(processInstance, context.getRequest(), extensionPointRegistry);
 
         return InstanceStatus.completed!=processInstance.getStatus();
     }

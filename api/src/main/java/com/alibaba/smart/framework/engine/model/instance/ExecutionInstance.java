@@ -47,4 +47,8 @@ public interface ExecutionInstance extends LifeCycleInstance {
      * @param transitionInstance 进入活动的关联
      */
     void setIncomeTransition(TransitionInstance transitionInstance);
+
+    InstanceStatus getStatus();
+
+    void setStatus(InstanceStatus status);
 }
