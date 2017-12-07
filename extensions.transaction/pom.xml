@@ -44,8 +44,6 @@
     <dependency> 
       <groupId>com.taobao.metaq.final</groupId>  
       <artifactId>metaq-client</artifactId>  
-      <version>3.6.2.Final</version>  
-      <scope>provided</scope> 
     </dependency>
 
   </dependencies>  
