@@ -1,8 +1,12 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
+import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
+
+import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,6 +73,17 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
         ProcessInstanceEntity result = dao.findOne(entity.getId());
         Assert.assertEquals("title",result.getTitle());
         Assert.assertEquals("tag",result.getTag());
+        Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void testFindByProcessInstanceIdList() {
+        dao.insert(entity);
+        ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
+        processInstanceQueryParam.setProcessInstanceIdList(Lists.newArrayList(entity.getId()));
+        List<ProcessInstanceEntity> result = dao.find(processInstanceQueryParam);
+        Assert.assertEquals("title",result.get(0).getTitle());
+        Assert.assertEquals("tag",result.get(0).getTag());
         Assert.assertNotNull(result);
     }
 
