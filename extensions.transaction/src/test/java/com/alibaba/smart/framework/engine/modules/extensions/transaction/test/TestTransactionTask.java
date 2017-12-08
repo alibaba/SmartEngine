@@ -99,7 +99,7 @@ public class TestTransactionTask {
      */
     private void waitForMsg() {
         try {
-                Thread.sleep(200000l);
+                Thread.sleep(1000l);
         } catch (Exception e) {
         }
 
