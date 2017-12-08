@@ -45,4 +45,9 @@ public class TaskInstanceEntity extends BaseProcessEntity {
      * 扩展字段(完全由使用方控制)
      */
     private String extension;
+
+    /**
+     * 任务标题
+     */
+    private String title;
 }

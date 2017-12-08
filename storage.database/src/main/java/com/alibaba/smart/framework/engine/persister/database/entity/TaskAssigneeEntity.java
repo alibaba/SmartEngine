@@ -20,4 +20,5 @@ public class TaskAssigneeEntity extends BaseProcessEntity {
 
     //private Integer priority;
 
+
 }

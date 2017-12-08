@@ -44,6 +44,9 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
             String title = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_TITLE);
             defaultProcessInstance.setTitle(title);
+
+            String comment = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_COMMENT);
+            defaultProcessInstance.setComment(comment);
         }
 
         return defaultProcessInstance;
