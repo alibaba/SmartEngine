@@ -32,7 +32,7 @@ public class SpringContextUtil implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (context != null) {
-            throw new RuntimeException("should not init more than once");
+            return;
         }
 
         context = applicationContext;
