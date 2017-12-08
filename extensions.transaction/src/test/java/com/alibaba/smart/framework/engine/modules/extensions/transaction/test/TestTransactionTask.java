@@ -26,6 +26,7 @@ public class TestTransactionTask {
     @Before
     public void init() {
         new ClassPathXmlApplicationContext("application-context-test.xml");
+        System.setProperty("smart.engine.extensions.transaction.max.retry", "0");
     }
 
 
@@ -98,11 +99,8 @@ public class TestTransactionTask {
      */
     private void waitForMsg() {
         try {
-            while (true) {
-                Thread.sleep(5000l);
-            }
+                Thread.sleep(200000l);
         } catch (Exception e) {
-
         }
 
     }

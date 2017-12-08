@@ -123,7 +123,6 @@ public class TransactionTaskParser extends AbstractBpmnActivityParser<Transactio
     }
 
 
-
     @Override
     public QName getArtifactType() {
         return TransactionTask.artifactType;
@@ -135,7 +134,7 @@ public class TransactionTaskParser extends AbstractBpmnActivityParser<Transactio
     }
 
 
-    private void initMetaConsumer(String metaGroup, String metaTopic,final TransactionProcessor transactionProcessor) throws MQClientException {
+    private void initMetaConsumer(String metaGroup, String metaTopic, final TransactionProcessor transactionProcessor) throws MQClientException {
         MetaPushConsumer metaPushConsumer = new MetaPushConsumer(metaGroup);
         metaPushConsumer.subscribe(metaTopic, "*");
         metaPushConsumer.setConsumeMessageBatchMaxSize(1);
@@ -173,8 +172,17 @@ public class TransactionTaskParser extends AbstractBpmnActivityParser<Transactio
         metaPushConsumer.start();
     }
 
-    private final static int MAX_RETRY_COUNT = 20;
+    private static int MAX_RETRY_COUNT = 20;
 
+    static {
+        String maxRetry = System.getProperty("smart.engine.extensions.transaction.max.retry");
+        if (maxRetry != null) {
+            try {
+                MAX_RETRY_COUNT = Integer.parseInt(maxRetry);
+            } catch (Exception e) {
+            }
+        }
+    }
 
     private final static String MODE_LOCAL = "local";
     private final static String MODE_METAQ = "metaq";
