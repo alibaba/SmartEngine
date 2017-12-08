@@ -19,7 +19,7 @@
     <artifactId>smart-engine</artifactId>
     <!--  mvn versions:set -DnewVersion=1.2.7 -DgenerateBackupPoms=false  -->
     <!--  mvn versions:set -DnewVersion=1.3.3-SNAPSHOT -DgenerateBackupPoms=false  -->
-    <version>1.3.7-SNAPSHOT</version>
+    <version>1.5.2-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
@@ -46,6 +46,7 @@
         <module>storage.custom</module>
         <module>compatible.activiti</module>
         <module>aggregation.database</module>
+        <module>aggregation.custom</module>
         <module>extensions.transaction</module>
     </modules>
 

@@ -12,4 +12,13 @@ public interface PvmProcessInstance {
     ProcessInstance start(ExecutionContext executionContext);
 
     ProcessInstance signal(PvmActivity pvmActivity, ExecutionContext executionContext);
+
+    /**
+     * 进入节点
+     *
+     * @param pvmActivity
+     * @param executionContext
+     * @return
+     */
+    ProcessInstance enter(PvmActivity pvmActivity, ExecutionContext executionContext);
 }

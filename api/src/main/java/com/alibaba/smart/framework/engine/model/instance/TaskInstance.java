@@ -47,7 +47,7 @@ public interface TaskInstance extends LifeCycleInstance {
 
     List<TaskAssigneeInstance> getTaskAssigneeInstanceList();
 
-    void setTaskAssigneeInstanceList(List<TaskAssigneeInstance> taskAssigneeInstanceList );
+    void setTaskAssigneeInstanceList(List<TaskAssigneeInstance> taskAssigneeInstanceList);
 
     Integer getPriority();
 
@@ -60,5 +60,13 @@ public interface TaskInstance extends LifeCycleInstance {
     //Date getEndTime();
     //
     //void setEndTime(Date endTime);
+
+    String getComment();
+
+    void setComment(String comment);
+
+    String getExtension();
+
+    void setExtension(String extension);
 
 }

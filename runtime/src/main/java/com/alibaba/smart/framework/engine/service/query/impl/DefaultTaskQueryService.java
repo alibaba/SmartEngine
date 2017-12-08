@@ -11,7 +11,9 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.param.query.PaginateQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
+import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
 /**
@@ -55,6 +57,19 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
         return taskInstanceStorage.countPendingTaskList(pendingTaskQueryParam);
     }
 
+    @Override
+    public List<TaskInstance> findTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+        return taskInstanceStorage.findTaskListByAssignee(param);
+    }
+
+    @Override
+    public Integer countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+        return taskInstanceStorage.countTaskListByAssignee(param);
+    }
 
     @Override
     public List<TaskInstance> findAllPendingTaskList(Long processInstanceId) {

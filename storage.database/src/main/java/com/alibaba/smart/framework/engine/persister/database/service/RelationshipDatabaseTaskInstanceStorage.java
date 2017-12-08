@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
@@ -10,16 +11,34 @@ import com.alibaba.smart.framework.engine.persister.database.dao.TaskInstanceDAO
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.database.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
+import org.springframework.beans.BeanUtils;
 
 
 public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStorage {
 
     @Override
     public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
-        TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
-        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findPendingTaskList(pendingTaskQueryParam);
+        return findTaskListByAssignee(convertToTaskInstanceQueryByAssigneeParam(pendingTaskQueryParam));
+    }
 
+    private TaskInstanceQueryByAssigneeParam convertToTaskInstanceQueryByAssigneeParam(PendingTaskQueryParam pendingTaskQueryParam) {
+        TaskInstanceQueryByAssigneeParam taskInstanceQueryByAssigneeParam = new TaskInstanceQueryByAssigneeParam();
+        BeanUtils.copyProperties(pendingTaskQueryParam, taskInstanceQueryByAssigneeParam);
+        taskInstanceQueryByAssigneeParam.setStatus(TaskInstanceConstant.PENDING);
+        return taskInstanceQueryByAssigneeParam;
+    }
+
+    @Override
+    public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
+        return countTaskListByAssignee(convertToTaskInstanceQueryByAssigneeParam(pendingTaskQueryParam));
+    }
+
+    @Override
+    public List<TaskInstance> findTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
+        TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
+        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskByAssignee(param);
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
 
@@ -28,18 +47,15 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
             taskInstanceList.add(taskInstance);
 
         }
-
         return taskInstanceList;
     }
 
     @Override
-    public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
+    public Integer countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
-        Integer count = taskInstanceDAO.countPendingTaskList(pendingTaskQueryParam);
+        Integer count = taskInstanceDAO.countTaskByAssignee(param);
         return  count  == null? 0:count;
     }
-
-
 
     @Override
     public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam) {
@@ -158,7 +174,9 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
 
         taskInstance.setClaimUserId(taskInstanceEntity.getClaimUserId());
         taskInstance.setCompleteTime(taskInstanceEntity.getCompleteTime());
-
+        taskInstance.setClaimTime(taskInstanceEntity.getClaimTime());
+        taskInstance.setComment(taskInstanceEntity.getComment());
+        taskInstance.setExtension(taskInstanceEntity.getExtension());
         return taskInstance;
     }
 
@@ -178,6 +196,9 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstanceEntity.setPriority(taskInstance.getPriority());
         taskInstanceEntity.setTag(taskInstance.getTag());
         taskInstanceEntity.setProcessDefinitionType(taskInstance.getProcessDefinitionType());
+        taskInstanceEntity.setClaimTime(taskInstance.getClaimTime());
+        taskInstanceEntity.setComment(taskInstance.getComment());
+        taskInstanceEntity.setExtension(taskInstance.getExtension());
         //taskInstanceEntity.setGmtModified(taskInstance.getCompleteTime());
         return taskInstanceEntity;
     }

@@ -14,16 +14,16 @@ import org.slf4j.LoggerFactory;
  * Created by 高海军 帝奇 74394 on 2017 October  15:59.
  */
 @Data
-public class MessageQueueReceiveTask extends AbstractActivity {
+public class MQReceiveTask extends AbstractActivity {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageQueueReceiveTask.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MQReceiveTask.class);
 
-    public final static QName type = new QName(SmartBase.SMART_NS, "messageQueueReceiveTask");
+    public final static QName type = new QName(SmartBase.SMART_NS, "mqReceiveTask");
 
 
-    private MetaPushConsumer consumer = null;
+    //private MetaPushConsumer consumer = null;
 
-    private String consumerGroup;
+    private String group;
 
     private String topic;
 

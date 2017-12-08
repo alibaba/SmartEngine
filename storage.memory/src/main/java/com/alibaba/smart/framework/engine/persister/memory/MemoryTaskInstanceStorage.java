@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 /**
@@ -29,6 +30,16 @@ public class MemoryTaskInstanceStorage implements TaskInstanceStorage {
     @Override
     public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
         return  null;
+    }
+
+    @Override
+    public List<TaskInstance> findTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
+        return null;
+    }
+
+    @Override
+    public Integer countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
+        return null;
     }
 
     @Override

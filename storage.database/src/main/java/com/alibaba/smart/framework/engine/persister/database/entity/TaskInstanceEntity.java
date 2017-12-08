@@ -35,4 +35,14 @@ public class TaskInstanceEntity extends BaseProcessEntity {
     private Date claimTime;
 
     private Date completeTime;
+
+    /**
+     * 备注(处理意见)
+     */
+    private String comment;
+
+    /**
+     * 扩展字段(完全由使用方控制)
+     */
+    private String extension;
 }

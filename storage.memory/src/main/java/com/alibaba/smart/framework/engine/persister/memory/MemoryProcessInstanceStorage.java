@@ -39,6 +39,10 @@ public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
         return null;
     }
 
+    @Override
+    public Long count(ProcessInstanceQueryParam processInstanceQueryParam) {
+        return null;
+    }
 
     @Override
     public void remove(Long instanceId) {

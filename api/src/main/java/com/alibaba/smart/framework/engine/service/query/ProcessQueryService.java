@@ -16,7 +16,6 @@ public interface ProcessQueryService {
 
     List<ProcessInstance> findList(ProcessInstanceQueryParam processInstanceQueryParam);
 
-
-
+    Long count(ProcessInstanceQueryParam processInstanceQueryParam);
 
 }

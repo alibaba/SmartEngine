@@ -4,7 +4,7 @@
   <parent> 
     <artifactId>smart-engine</artifactId>  
     <groupId>com.alibaba.smart.framework</groupId>  
-    <version>1.3.7-SNAPSHOT</version>  
+    <version>1.5.2-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
@@ -30,22 +30,22 @@
       <groupId>com.alibaba.smart.framework</groupId>  
       <artifactId>smart-engine-storage-custom</artifactId>  
       <version>${project.version}</version> 
-    </dependency>  
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.smart.framework</groupId>
+      <artifactId>smart-engine-grammar-smart</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency> 
       <groupId>org.springframework</groupId>  
       <artifactId>spring-context</artifactId> 
     </dependency>  
-    <dependency> 
-      <groupId>com.google.guava</groupId>  
-      <artifactId>guava</artifactId>  
-      <version>23.0</version> 
-    </dependency>  
+
     <dependency> 
       <groupId>com.taobao.metaq.final</groupId>  
       <artifactId>metaq-client</artifactId>  
-      <version>3.6.2.Final</version>  
-      <scope>provided</scope> 
-    </dependency> 
+    </dependency>
+
   </dependencies>  
   <contributors><contributor><properties><provider>jianshan.yy@alibaba-inc.com</provider><codeName>null</codeName><codeUrl>git@gitlab.alibaba-inc.com:smart-framework/smart-engine.git commit:967577ca</codeUrl><description>contributors added by SCM Plugin, please don't modify it!</description></properties></contributor></contributors>
 </project>

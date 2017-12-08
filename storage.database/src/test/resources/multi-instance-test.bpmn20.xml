@@ -9,7 +9,7 @@
         <startEvent id="theStart" />
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="multiUserTask" />
 
-        <userTask id="multiUserTask" name="My User Task"  alibaba:approvalUserDatas="{'accountId':3400633088,'userId':3400633088,'userName':'dongyulong','deptName':'es_财务科','dutyName':'主管1235','roleName':'1688客服'}|{'accountId':3400620217,'userId':3400620217,'userName':'赋祎','deptName':'部门31','dutyName':'','roleName':''}"
+        <userTask id="multiUserTask" name="My User Task" activiti:assignee="${assignee}" alibaba:approvalUserDatas="{'accountId':3400633088,'userId':3400633088,'userName':'dongyulong','deptName':'es_财务科','dutyName':'主管1235','roleName':'1688客服'}|{'accountId':3400620217,'userId':3400620217,'userName':'赋祎','deptName':'部门31','dutyName':'','roleName':''}"
                   alibaba:approvalRole="USER" alibaba:approvalUser="3400633088,3400620217"
                   alibaba:approvalType="anyone" smart:class = "com.alibaba.smart.framework.engine.test.process.delegation.UserTaskTestDelegation" >
 

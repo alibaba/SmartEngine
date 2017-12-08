@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 /**
@@ -19,6 +20,10 @@ public interface TaskQueryService {
     List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam);
 
     Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam);
+
+    List<TaskInstance> findTaskListByAssignee(TaskInstanceQueryByAssigneeParam param);
+
+    Integer countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param);
 
     /**
      * 不分页查询，大数据量下慎用。

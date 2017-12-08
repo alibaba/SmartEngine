@@ -13,8 +13,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class ProcessInstanceQueryParam extends PaginateQueryParam {
 
-    private  String startUserId;
-    private String  status ;
+    private String startUserId;
+    private String status ;
     private String processDefinitionType;
     private String bizUniqueId;
     private String processDefinitionIdAndVersion;

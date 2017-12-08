@@ -16,10 +16,10 @@ import com.alibaba.smart.framework.engine.modules.extensions.transaction.transac
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +43,10 @@ public class TransactionTaskBehavior extends AbstractActivityBehavior<Transactio
         ActivityInstance activityInstance = super.activityInstanceFactory.create(getModel(), executionContext);
 
         ExecutionInstance executionInstance = super.executionInstanceFactory.create(activityInstance, executionContext);
-        activityInstance.setExecutionInstanceList(Lists.newArrayList(executionInstance));
+
+        List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>();
+        executionInstanceList.add(executionInstance);
+        activityInstance.setExecutionInstanceList(executionInstanceList);
         processInstance.addActivityInstance(activityInstance);
 
         TransactionTask task = getModel();

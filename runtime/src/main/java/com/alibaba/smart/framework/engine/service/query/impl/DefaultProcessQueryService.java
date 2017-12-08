@@ -51,5 +51,11 @@ public class DefaultProcessQueryService implements ProcessQueryService, LifeCycl
         return processInstanceStorage.queryProcessInstanceList(processInstanceQueryParam);
     }
 
+    @Override
+    public Long count(ProcessInstanceQueryParam processInstanceQueryParam) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
+        return processInstanceStorage.count(processInstanceQueryParam);
+    }
 }

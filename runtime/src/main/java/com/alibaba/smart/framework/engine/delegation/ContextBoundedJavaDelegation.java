@@ -14,13 +14,13 @@ public abstract class ContextBoundedJavaDelegation implements JavaDelegation {
 
     @Getter
     @Setter
-    private String className;
+    protected String className;
     @Getter
     @Setter
-    private PvmElement pvmElement;
+    protected PvmElement pvmElement;
     @Getter
     @Setter
-    private ExtensionPointRegistry extensionPointRegistry;
+    protected ExtensionPointRegistry extensionPointRegistry;
 
 
 }

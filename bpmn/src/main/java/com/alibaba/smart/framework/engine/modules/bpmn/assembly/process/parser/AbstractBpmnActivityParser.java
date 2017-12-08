@@ -42,7 +42,7 @@ public abstract class AbstractBpmnActivityParser<M extends AbstractActivity> ext
 
     protected Map<String, String> parseExtendedProperties(XMLStreamReader reader, ParseContext context) {
 
-        Map<String,String> userTaskProperties = new HashMap();
+        Map<String,String> properties = new HashMap();
 
         int attributeCount=reader.getAttributeCount();
         if(attributeCount>0){
@@ -56,13 +56,13 @@ public abstract class AbstractBpmnActivityParser<M extends AbstractActivity> ext
                 }
 
                 Object value=reader.getAttributeValue(attributeName.getNamespaceURI(), localPart);
-                userTaskProperties.put(localPart,(String)value);
+                properties.put(localPart,(String)value);
 
 
             }
         }
 
 
-        return userTaskProperties;
+        return properties;
     }
 }

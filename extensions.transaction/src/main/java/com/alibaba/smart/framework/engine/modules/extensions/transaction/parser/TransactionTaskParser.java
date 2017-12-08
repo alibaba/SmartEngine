@@ -5,6 +5,7 @@ import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import com.alibaba.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import com.alibaba.rocketmq.client.exception.MQClientException;
 import com.alibaba.rocketmq.common.message.MessageExt;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
@@ -17,7 +18,6 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.taobao.metaq.client.MetaPushConsumer;
-import jdk.nashorn.internal.runtime.ParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,19 +66,19 @@ public class TransactionTaskParser extends AbstractBpmnActivityParser<Transactio
         }
 
         if (!mode.equals(MODE_LOCAL) && !mode.equals(MODE_METAQ)) {
-            throw new ParserException("illegal mode name:" + mode);
+            throw new EngineException("illegal mode name:" + mode);
         }
         task.setMode(mode);
 
         String metaGroup = getString(xmlStreamReader, "meta-group");
         if (metaGroup == null) {
-            throw new ParserException("group can not be null");
+            throw new EngineException("group can not be null");
         }
         task.setMetaGroup(metaGroup);
 
         String metaTopic = getString(xmlStreamReader, "meta-topic");
         if (metaTopic == null) {
-            throw new ParserException("topic can not be null");
+            throw new EngineException("topic can not be null");
         }
         task.setMetaTopic(metaTopic);
 

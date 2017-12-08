@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
+import com.alibaba.smart.framework.engine.exception.ConcurrentException;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -26,7 +27,11 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
 
 
-        processInstanceDAO.insert(processInstanceEntityToBePersisted);
+        int count = processInstanceDAO.insertIgnore(processInstanceEntityToBePersisted);
+        if (count == 0) {
+            throw new ConcurrentException(String.format("the process already exists. processInstanceId=[%s], bizUniqueId=[%s]",
+                processInstanceEntityToBePersisted.getId(), processInstanceEntityToBePersisted.getBizUniqueId()));
+        }
 
         ProcessInstanceEntity processInstanceEntity1 =  processInstanceDAO.findOne(processInstanceEntityToBePersisted.getId());
 
@@ -59,6 +64,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstanceEntityToBePersisted.setProcessDefinitionType(processInstance.getProcessDefinitionType());
         processInstanceEntityToBePersisted.setBizUniqueId(processInstance.getBizUniqueId());
         processInstanceEntityToBePersisted.setReason(processInstance.getReason());
+        processInstanceEntityToBePersisted.setTitle(processInstance.getTitle());
+        processInstanceEntityToBePersisted.setTag(processInstance.getTag());
         return processInstanceEntityToBePersisted;
     }
 
@@ -71,9 +78,14 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstance.setProcessDefinitionType(processInstanceEntity.getProcessDefinitionType());
         processInstance.setBizUniqueId(processInstanceEntity.getBizUniqueId());
         processInstance.setReason(processInstanceEntity.getReason());
+        processInstance.setTitle(processInstanceEntity.getTitle());
+        processInstance.setTag(processInstanceEntity.getTag());
     }
 
     private ProcessInstance buildProcessInstanceFromEntity(ProcessInstanceEntity processInstanceEntity) {
+        if (processInstanceEntity == null) {
+            return null;
+        }
         ProcessInstance processInstance  = new DefaultProcessInstance();
         processInstance.setParentInstanceId(processInstanceEntity.getParentProcessInstanceId());
         InstanceStatus processStatus = InstanceStatus.valueOf(processInstanceEntity.getStatus());
@@ -89,10 +101,11 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstance.setReason(processInstanceEntity.getReason());
         processInstance.setBizUniqueId(processInstanceEntity.getBizUniqueId());
 
-
         //TUNE 还是叫做更新时间比较好一点,是否完成等 还是根据status 去判断.
         processInstance.setCompleteTime(processInstanceEntity.getGmtModified());
         processInstance.setInstanceId(processInstanceEntity.getId());
+        processInstance.setTag(processInstanceEntity.getTag());
+        processInstance.setTitle(processInstanceEntity.getTitle());
         return processInstance;
     }
 
@@ -107,8 +120,6 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
         return processInstance;
     }
-
-
 
     @Override
     public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {
@@ -129,6 +140,12 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         return processInstanceList;
     }
 
+    @Override
+    public Long count(ProcessInstanceQueryParam processInstanceQueryParam) {
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+        Long processCount = processInstanceDAO.count(processInstanceQueryParam);
+        return processCount;
+    }
 
 
     @Override
