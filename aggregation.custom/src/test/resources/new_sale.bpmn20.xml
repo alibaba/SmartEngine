@@ -9,7 +9,7 @@
         <sequenceFlow id="SequenceFlow_16ifyt3" name="提交机构准入" sourceRef="StartEvent_1" targetRef="InstitutionAdmit">
             <extensionElements>
                 <smart:executionListener
-                        class="com.alibaba.smart.framework.engine.modules.smart.TccTracker"
+                        class="com.alibaba.smart.framework.engine.test.TccTracker"
                         event="TRANSITION_EXECUTE">
                 </smart:executionListener>
             </extensionElements>
@@ -19,7 +19,7 @@
             <extensionElements>
                 <smart:value name="newState" value="ADMITTING"/>
                 <smart:executionListener
-                        class="com.alibaba.smart.framework.engine.modules.smart.TccTracker"
+                        class="com.alibaba.smart.framework.engine.test.TccTracker"
                         event="ACTIVITY_START">
                 </smart:executionListener>
             </extensionElements>

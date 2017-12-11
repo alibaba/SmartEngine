@@ -6,7 +6,7 @@
 
     <process id="demo" version="1.0.0" name="Process Demo">
 
-        <task id="theStart" isStart="true" smart:class="com.alibaba.smart.framework.engine.modules.smart.TccTracker"/>
+        <task id="theStart" isStart="true" smart:class="com.alibaba.smart.framework.engine.test.TccTracker"/>
 
 
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="create"/>
@@ -15,17 +15,17 @@
         <task id="create" name="Create">
             <extensionElements>
                 <value name="text" value="Create task"/>
-                <executionListener event="ACTIVITY_START,ACTIVITY_END" class="com.alibaba.smart.framework.engine.modules.smart.Listener"/>
+                <executionListener event="ACTIVITY_START,ACTIVITY_END" class="com.alibaba.smart.framework.engine.test.Listener"/>
             </extensionElements>
-            <java action="ACTIVITY_END" class="com.alibaba.smart.framework.engine.modules.smart.Tracker"/>
+            <java action="ACTIVITY_END" class="com.alibaba.smart.framework.engine.test.Tracker"/>
         </task>
 
         <sequenceFlow id="flow2" sourceRef="create" targetRef="pay"/>
 
-        <task id="pay" name="Pay" class="com.alibaba.smart.framework.engine.modules.smart.Tracker">
+        <task id="pay" name="Pay" class="com.alibaba.smart.framework.engine.test.Tracker">
             <extensionElements>
                 <value name="text" value="Pay task"/>
-                <smart:executionListener class="com.alibaba.smart.framework.engine.modules.smart.Listener"/>
+                <smart:executionListener class="com.alibaba.smart.framework.engine.test.Listener"/>
             </extensionElements>
         </task>
 

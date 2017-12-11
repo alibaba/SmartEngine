@@ -35,6 +35,7 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> impleme
         throws ParseException, XMLStreamException {
         SequenceFlow sequenceFlow = new SequenceFlow();
         sequenceFlow.setId(this.getString(reader, "id"));
+        sequenceFlow.setName(this.getString(reader, "name"));
         sequenceFlow.setSourceRef(this.getString(reader, "sourceRef"));
         sequenceFlow.setTargetRef(this.getString(reader, "targetRef"));
         return sequenceFlow;
