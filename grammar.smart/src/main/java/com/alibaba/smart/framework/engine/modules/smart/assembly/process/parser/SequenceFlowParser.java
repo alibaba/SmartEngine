@@ -30,6 +30,8 @@ public class SequenceFlowParser extends AbstractElementParser<SequenceFlow> {
     protected SequenceFlow parseModel(XMLStreamReader reader, ParseContext context) {
         SequenceFlow sequenceFlow = new SequenceFlow();
         sequenceFlow.setId(this.getString(reader, "id"));
+        sequenceFlow.setName(this.getString(reader, "name"));
+
         sequenceFlow.setSourceRef(this.getString(reader, "sourceRef"));
         sequenceFlow.setTargetRef(this.getString(reader, "targetRef"));
         return sequenceFlow;
