@@ -51,6 +51,12 @@
         from se_process_instance where id=#{id} for update
     </select>
 
+    <select id="findOneForUpdate" resultType="ProcessInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from se_process_instance where id=#{id} for update
+    </select>
+
 
     <select id="find" resultType="ProcessInstanceEntity" parameterType="ProcessInstanceQueryParam">
         select

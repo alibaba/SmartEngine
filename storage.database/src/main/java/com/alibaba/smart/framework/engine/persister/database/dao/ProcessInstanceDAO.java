@@ -11,6 +11,8 @@ public interface ProcessInstanceDAO {
 
     ProcessInstanceEntity findOne(@Param("id") Long id);
 
+    ProcessInstanceEntity findOneForUpdate(@Param("id") Long id);
+
     List<ProcessInstanceEntity> find(ProcessInstanceQueryParam processInstanceQueryParam);
 
     Long count(ProcessInstanceQueryParam processInstanceQueryParam);

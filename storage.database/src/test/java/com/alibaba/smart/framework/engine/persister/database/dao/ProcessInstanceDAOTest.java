@@ -102,6 +102,9 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
 
         result = dao.findOne(entity.getId());
         Assert.assertNull(result);
+
+        result = dao.findOneForUpdate(entity.getId());
+        Assert.assertNull(result);
     }
 
     @Test
