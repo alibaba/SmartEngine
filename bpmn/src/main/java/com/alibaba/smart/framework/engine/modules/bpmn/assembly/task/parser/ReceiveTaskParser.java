@@ -34,6 +34,8 @@ public class ReceiveTaskParser extends AbstractBpmnActivityParser<ReceiveTask> i
         throws ParseException, XMLStreamException {
         ReceiveTask receiveTask = new ReceiveTask();
         receiveTask.setId(this.getString(reader, "id"));
+        receiveTask.setName(this.getString(reader, "name"));
+
 
         Map<String, String> userTaskProperties = super.parseExtendedProperties(reader,  context);
         receiveTask.setProperties(userTaskProperties);
