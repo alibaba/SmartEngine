@@ -35,6 +35,11 @@ public class MemoryProcessInstanceStorage implements ProcessInstanceStorage {
     }
 
     @Override
+    public ProcessInstance findOneForUpdate(Long instanceId) {
+        return this.instances.get(instanceId);
+    }
+
+    @Override
     public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {
         return null;
     }

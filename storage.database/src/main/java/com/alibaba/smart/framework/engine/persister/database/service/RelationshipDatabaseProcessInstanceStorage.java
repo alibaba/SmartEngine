@@ -124,6 +124,20 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         return processInstance;
     }
 
+
+
+    @Override
+    public ProcessInstance findOneForUpdate(Long instanceId) {
+        //TUNE :解决系统服务初始化依赖问题,避免每次获取该dao
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+
+        ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOneForUpdate(instanceId);
+
+        ProcessInstance processInstance = buildProcessInstanceFromEntity(processInstanceEntity);
+
+        return processInstance;
+    }
+
     @Override
     public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {
 
