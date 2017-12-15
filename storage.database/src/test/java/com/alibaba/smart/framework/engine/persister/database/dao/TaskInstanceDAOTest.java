@@ -32,6 +32,7 @@ public class TaskInstanceDAOTest extends BaseElementTest {
         entity.setProcessInstanceId(444L);
         entity.setComment("comment");
         entity.setExtension("extension");
+        entity.setTitle("title");
     }
 
     @Test
@@ -69,6 +70,11 @@ public class TaskInstanceDAOTest extends BaseElementTest {
     public void testUpdate() {
         dao.insert(entity);
 
+        TaskInstanceEntity result = dao.findOne(entity.getId());
+
+        Assert.assertEquals("title", result.getTitle());
+
+
         entity.setClaimUserId("assign_id_new");
         Date claimTime = new Date();
 
@@ -78,9 +84,10 @@ public class TaskInstanceDAOTest extends BaseElementTest {
         entity.setPriority(333444);
         entity.setComment("new_comment");
         entity.setExtension("new_extension");
+        entity.setTitle("new_title");
         dao.update(entity);
 
-        TaskInstanceEntity result = dao.findOne(entity.getId());
+        result = dao.findOne(entity.getId());
         Assert.assertNotNull(result);
         Assert.assertEquals("assign_id_new", entity.getClaimUserId());
         Assert.assertEquals(claimTime, entity.getClaimTime());
@@ -88,6 +95,7 @@ public class TaskInstanceDAOTest extends BaseElementTest {
         Assert.assertEquals(333444, entity.getPriority().intValue());
         Assert.assertEquals("new_comment", result.getComment());
         Assert.assertEquals("new_extension", result.getExtension());
+        Assert.assertEquals("new_title", result.getTitle());
 
     }
 }

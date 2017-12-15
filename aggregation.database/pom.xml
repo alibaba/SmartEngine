@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.alibaba.smart.framework</groupId>
         <artifactId>smart-engine</artifactId>
-        <version>1.5.3</version>
+        <version>1.5.4</version>
     </parent>
 
     <artifactId>smart-engine-bpmn-database-aggregation</artifactId>

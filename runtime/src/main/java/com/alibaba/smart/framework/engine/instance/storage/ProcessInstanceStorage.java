@@ -28,6 +28,13 @@ public interface ProcessInstanceStorage {
      */
     ProcessInstance findOne(Long processInstanceId);
 
+    /**
+     * 查询流程实例
+     * @param instanceId
+     * @return
+     */
+    ProcessInstance findOneForUpdate(Long instanceId);
+
     List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam);
 
     Long count(ProcessInstanceQueryParam processInstanceQueryParam);

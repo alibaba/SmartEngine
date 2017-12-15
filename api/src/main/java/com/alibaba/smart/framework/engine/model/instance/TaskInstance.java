@@ -69,4 +69,9 @@ public interface TaskInstance extends LifeCycleInstance {
 
     void setExtension(String extension);
 
+
+    String getTitle();
+
+    void setTitle(String title);
+
 }

@@ -65,6 +65,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstanceEntityToBePersisted.setBizUniqueId(processInstance.getBizUniqueId());
         processInstanceEntityToBePersisted.setReason(processInstance.getReason());
         processInstanceEntityToBePersisted.setTitle(processInstance.getTitle());
+        processInstanceEntityToBePersisted.setComment(processInstance.getComment());
         processInstanceEntityToBePersisted.setTag(processInstance.getTag());
         return processInstanceEntityToBePersisted;
     }
@@ -80,6 +81,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstance.setReason(processInstanceEntity.getReason());
         processInstance.setTitle(processInstanceEntity.getTitle());
         processInstance.setTag(processInstanceEntity.getTag());
+        processInstance.setComment(processInstanceEntity.getComment());
     }
 
     private ProcessInstance buildProcessInstanceFromEntity(ProcessInstanceEntity processInstanceEntity) {
@@ -106,6 +108,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstance.setInstanceId(processInstanceEntity.getId());
         processInstance.setTag(processInstanceEntity.getTag());
         processInstance.setTitle(processInstanceEntity.getTitle());
+        processInstance.setComment(processInstanceEntity.getComment());
         return processInstance;
     }
 
@@ -115,6 +118,20 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
 
         ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOne(instanceId);
+
+        ProcessInstance processInstance = buildProcessInstanceFromEntity(processInstanceEntity);
+
+        return processInstance;
+    }
+
+
+
+    @Override
+    public ProcessInstance findOneForUpdate(Long instanceId) {
+        //TUNE :解决系统服务初始化依赖问题,避免每次获取该dao
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+
+        ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOneForUpdate(instanceId);
 
         ProcessInstance processInstance = buildProcessInstanceFromEntity(processInstanceEntity);
 

@@ -19,3 +19,11 @@ add column `extension` varchar(1000) comment '用户自定义扩展字段';
 * ProcessInstance表上的tag字段会再流程完结的时候设置成最后一个task的tag值，代表流程最终的结果
 
 ===================================================
+
+
+### 2017.12.08 add by zaimang.tj
+* ProcessInstance add title and comment
+```
+alter table `se_process_instance`
+add column `comment` varchar(255) comment '流程实例的备注'
+```

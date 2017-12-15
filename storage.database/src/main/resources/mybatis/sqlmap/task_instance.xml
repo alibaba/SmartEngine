@@ -5,7 +5,7 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,process_instance_id, process_definition_id_and_version,process_definition_type,
-        activity_instance_id, process_definition_activity_id, execution_instance_id,claim_user_id,priority,tag,claim_time,complete_time,status,comment,extension
+        activity_instance_id, process_definition_activity_id, execution_instance_id,claim_user_id,priority,tag,claim_time,complete_time,status,comment,extension,title
     </sql>
 
 
@@ -13,7 +13,7 @@
     <insert id="insert" parameterType="TaskInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into se_task_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},#{processDefinitionType},
-        #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status},#{comment},#{extension})
+        #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status},#{comment},#{extension},#{title})
     </insert>
 
     <delete id="delete" parameterType="long">
@@ -31,6 +31,7 @@
             <if test="taskInstanceEntity.tag != null">, tag = #{taskInstanceEntity.tag} </if>
             <if test="taskInstanceEntity.comment != null">, comment = #{taskInstanceEntity.comment} </if>
             <if test="taskInstanceEntity.extension != null">, extension = #{taskInstanceEntity.extension} </if>
+            <if test="taskInstanceEntity.title != null">, title = #{taskInstanceEntity.title} </if>
 
         </set>
     </sql>
@@ -63,7 +64,7 @@
 
     <select id="findTaskByAssignee" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryByAssigneeParam">
         select distinct task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
-        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension
+        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
         from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
 
         <if test = "status != null" > and task.status = #{status} </if>
@@ -135,7 +136,7 @@
 
     <select id="findTaskList" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryParam">
         select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
-        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension
+        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
         from  se_task_instance task  where 1=1
         <include refid="where_condition"/>
 

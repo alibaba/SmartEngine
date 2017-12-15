@@ -1,7 +1,10 @@
 package com.alibaba.smart.framework.engine.instance.factory.impl;
 
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
@@ -30,8 +33,11 @@ public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
         taskInstance.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
         taskInstance.setStartTime(DateUtil.getCurrentDate());
         taskInstance.setStatus(TaskInstanceConstant.PENDING);
-
-
+        Map<String, Object> request = context.getRequest();
+        if (null != request) {
+            String title = (String)request.get(RequestMapSpecialKeyConstant.TASK_TITLE);
+            taskInstance.setTitle(title);
+        }
         ProcessInstance processInstance = context.getProcessInstance();
         taskInstance.setProcessDefinitionType(processInstance.getProcessDefinitionType());
 

@@ -31,6 +31,11 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
     }
 
     @Override
+    public ProcessInstance findOneForUpdate(Long instanceId) {
+        return  PersisterSession.currentSession().getProcessInstance(instanceId);
+    }
+
+    @Override
     public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {
         return null;
     }

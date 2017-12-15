@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.service.param.query;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,5 +20,8 @@ public class ProcessInstanceQueryParam extends PaginateQueryParam {
     private String processDefinitionType;
     private String bizUniqueId;
     private String processDefinitionIdAndVersion;
-
+    /**
+     * 流程引擎实例id列表
+     */
+    private List<Long> processInstanceIdList;
 }

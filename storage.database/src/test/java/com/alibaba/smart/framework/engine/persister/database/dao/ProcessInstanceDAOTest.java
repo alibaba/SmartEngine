@@ -1,8 +1,12 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
+import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
+
+import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +28,9 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
         Long id = System.currentTimeMillis();
         entity.setBizUniqueId(String.valueOf(id * 1000 + new Random().nextInt(1000)) );
         entity.setTitle("title");
+        entity.setStartUserId("234");
         entity.setTag("tag");
+        entity.setComment("comment");
     }
 
     @Test
@@ -49,6 +55,7 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
         entity.setReason("111");
         entity.setId(id);
         entity.setTitle("title");
+        entity.setStartUserId(user);
         entity.setTag("tag");
         entity.setGmtCreate(new Date());
         entity.setGmtModified(new Date());
@@ -73,6 +80,17 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
     }
 
     @Test
+    public void testFindByProcessInstanceIdList() {
+        dao.insert(entity);
+        ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
+        processInstanceQueryParam.setProcessInstanceIdList(Lists.newArrayList(entity.getId()));
+        List<ProcessInstanceEntity> result = dao.find(processInstanceQueryParam);
+        Assert.assertEquals("title",result.get(0).getTitle());
+        Assert.assertEquals("tag",result.get(0).getTag());
+        Assert.assertNotNull(result);
+    }
+
+    @Test
     public void testDelete() {
         dao.insert(entity);
 
@@ -84,22 +102,30 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
 
         result = dao.findOne(entity.getId());
         Assert.assertNull(result);
+
+        result = dao.findOneForUpdate(entity.getId());
+        Assert.assertNull(result);
     }
 
     @Test
     public void testUpdate() {
         dao.insert(entity);
+        ProcessInstanceEntity result = dao.findOne(entity.getId());
+
+        Assert.assertEquals("comment",result.getComment());
 
         entity.setStatus("test_status");
         entity.setParentProcessInstanceId(222222L);
         entity.setTag("newTag");
+        entity.setComment("new comment");
         dao.update(entity);
 
-        ProcessInstanceEntity result = dao.findOne(entity.getId());
+        result = dao.findOne(entity.getId());
         Assert.assertNotNull(result);
         Assert.assertEquals("test_status", entity.getStatus());
         Assert.assertEquals(222222L, entity.getParentProcessInstanceId().longValue());
         Assert.assertEquals("newTag", entity.getTag());
+        Assert.assertEquals("new comment", entity.getComment());
 
     }
 }
