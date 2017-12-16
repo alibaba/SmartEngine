@@ -14,6 +14,9 @@ public interface TaskAssigneeStorage {
 
     TaskAssigneeInstance insert( TaskAssigneeInstance taskAssigneeInstance);
 
+    void batchInsert(List<TaskAssigneeInstance> taskAssigneeInstanceList);
+
+
     TaskAssigneeInstance update(Long taskAssigneeId,String assigneeId);
 
     TaskAssigneeInstance findOne(Long taskAssigneeId);

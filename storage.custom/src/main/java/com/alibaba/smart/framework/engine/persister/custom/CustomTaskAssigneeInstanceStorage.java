@@ -24,6 +24,11 @@ public class CustomTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
     }
 
     @Override
+    public void batchInsert(List<TaskAssigneeInstance> taskAssigneeInstanceList) {
+
+    }
+
+    @Override
     public TaskAssigneeInstance update(Long taskAssigneeId, String assigneeId) {
         return null;
     }

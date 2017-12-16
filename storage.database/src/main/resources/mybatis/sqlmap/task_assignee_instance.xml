@@ -14,6 +14,15 @@
         #{taskInstanceId},#{assigneeId},#{assigneeType})
     </insert>
 
+    <insert id ="batchInsert">
+        insert into se_task_assignee_instance(<include refid="baseColumn"/>)
+        values
+        <foreach collection ="taskAssigneeEntityList" item="item" index= "index" separator =",">
+            (#{item.id}, now(), now(), #{item.processInstanceId},
+            #{item.taskInstanceId},#{item.assigneeId},#{item.assigneeType})
+        </foreach >
+    </insert >
+
     <delete id="delete" parameterType="long">
         delete from se_task_assignee_instance where id=#{id}
     </delete>

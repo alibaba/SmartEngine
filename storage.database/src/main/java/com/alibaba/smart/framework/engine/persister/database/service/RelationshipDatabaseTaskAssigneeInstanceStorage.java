@@ -12,6 +12,8 @@ import com.alibaba.smart.framework.engine.persister.database.dao.TaskAssigneeDAO
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity;
 import com.alibaba.smart.framework.engine.persister.database.util.SpringContextUtil;
 
+import com.google.common.collect.Lists;
+
 public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
     @Override
@@ -61,6 +63,17 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
 
         TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(taskAssigneeEntity.getId());
         return resultTaskAssigneeInstance;
+    }
+
+    @Override
+    public void batchInsert(List<TaskAssigneeInstance> taskAssigneeInstanceList) {
+        TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
+        List<TaskAssigneeEntity> taskAssigneeEntityList = Lists.newArrayList();
+        for(TaskAssigneeInstance taskAssigneeInstance :taskAssigneeInstanceList){
+            TaskAssigneeEntity taskAssigneeEntity = buildTaskInstanceEntity(  taskAssigneeInstance);
+            taskAssigneeEntityList.add(taskAssigneeEntity);
+        }
+        taskAssigneeDAO.batchInsert(taskAssigneeEntityList);
     }
 
     private TaskAssigneeEntity buildTaskInstanceEntity(TaskAssigneeInstance taskAssigneeInstance) {
@@ -116,4 +129,6 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
         taskAssigneeDAO.delete(taskAssigneeInstanceId);
 
     }
+
+
 }

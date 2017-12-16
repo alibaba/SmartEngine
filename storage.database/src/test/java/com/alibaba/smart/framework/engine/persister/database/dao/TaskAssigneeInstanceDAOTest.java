@@ -1,8 +1,11 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
+
+import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,6 +59,20 @@ public class TaskAssigneeInstanceDAOTest extends BaseElementTest {
 
         Assert.assertNotNull(entityOne);
     }
+
+    @Test
+    public void testBatchInsert1() {
+        List<TaskAssigneeEntity> taskAssigneeEntityList = Lists.newArrayList(entityOne,entityTwo);
+        taskAssigneeDAO.batchInsert(taskAssigneeEntityList);
+        for(TaskAssigneeEntity taskAssigneeEntity : taskAssigneeEntityList){
+            Assert.assertNotNull(taskAssigneeEntity.getId());
+            TaskAssigneeEntity taskAssigneeEntityInDb = taskAssigneeDAO.findOne(taskAssigneeEntity.getId());
+            Assert.assertNotNull(taskAssigneeEntity.getAssigneeId(),taskAssigneeEntityInDb.getAssigneeId());
+            taskAssigneeDAO.delete(taskAssigneeEntity.getId());
+        }
+    }
+
+
 
     @Test
     public void testFindOne() {
