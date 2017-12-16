@@ -40,6 +40,30 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
         Assert.assertNotNull(entity);
     }
 
+
+    @Test
+    public void testFind() {
+
+        dao.insert(entity);
+        ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
+        processInstanceQueryParam.setProcessInstanceIdList(Lists.newArrayList(entity.getId()));
+        List<ProcessInstanceEntity> processInstanceEntityList = dao.find(processInstanceQueryParam);
+        Assert.assertNotNull(processInstanceEntityList);
+        Assert.assertEquals(1,processInstanceEntityList.size());
+    }
+
+    @Test
+    public void testFindWithOrder() {
+        dao.insert(entity);
+        ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
+        processInstanceQueryParam.setProcessInstanceIdList(Lists.newArrayList(entity.getId()));
+        processInstanceQueryParam.setOrderByKey("gmt_create");
+        processInstanceQueryParam.setOrderByDirection("desc");
+        List<ProcessInstanceEntity> processInstanceEntityList = dao.find(processInstanceQueryParam);
+        Assert.assertNotNull(processInstanceEntityList);
+        Assert.assertEquals(1,processInstanceEntityList.size());
+    }
+
     @Test
     public void insertIgnore() {
         Long id = System.currentTimeMillis();

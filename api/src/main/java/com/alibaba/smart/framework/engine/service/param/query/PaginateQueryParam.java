@@ -14,4 +14,13 @@ public class PaginateQueryParam {
     protected Integer pageOffset;
     protected Integer pageSize;
 
+    /**
+     * 排序的key
+     */
+    protected String orderByKey;
+    /**
+     * 排序的方向
+     */
+    protected String orderByDirection;
+
 }

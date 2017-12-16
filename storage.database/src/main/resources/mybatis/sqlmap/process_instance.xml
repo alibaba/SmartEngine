@@ -63,7 +63,14 @@
         <include refid="baseColumn"/>
         from  se_process_instance
         <include refid="condition"/>
-        order by gmt_modified desc
+        <choose>
+            <when test="orderByKey != null and orderByDirection != null">
+                order by #{orderByKey} #{orderByDirection}
+            </when>
+            <otherwise>
+                order by gmt_modified desc
+            </otherwise>
+        </choose>
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
 
     </select>
