@@ -10,7 +10,7 @@
 
 
 
-    <insert id="insert" parameterType="TaskInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="insert" parameterType="TaskInstanceEntity"  useGeneratedKeys="true" keyProperty="id">
         insert into se_task_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},#{processDefinitionType},
         #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status},#{comment},#{extension},#{title})

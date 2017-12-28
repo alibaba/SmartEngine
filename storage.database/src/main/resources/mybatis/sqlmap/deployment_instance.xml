@@ -23,7 +23,7 @@
         </where>
     </sql>
 
-    <insert id="insert" parameterType="DeploymentInstanceEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="insert" parameterType="DeploymentInstanceEntity" useGeneratedKeys="true" keyProperty="id">
         insert into  se_deployment_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionId}, #{processDefinitionVersion},#{processDefinitionType},#{processDefinitionCode},
         #{processDefinitionName},#{processDefinitionDesc},#{processDefinitionContent},
