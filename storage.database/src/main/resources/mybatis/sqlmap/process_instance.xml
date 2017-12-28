@@ -8,13 +8,13 @@
         status, parent_process_instance_id, reason, biz_unique_id, title,tag,comment
     </sql>
 
-    <insert id="insert" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="insert" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id">
         insert into se_process_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
         #{status}, #{parentProcessInstanceId}, #{reason}, #{bizUniqueId}, #{title}, #{tag},#{comment})
     </insert>
 
-    <insert id="insertIgnore" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="insertIgnore" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id">
         insert ignore into se_process_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
         #{status}, #{parentProcessInstanceId}, #{reason}, #{bizUniqueId}, #{title}, #{tag},#{comment})

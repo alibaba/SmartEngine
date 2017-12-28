@@ -8,7 +8,7 @@
         process_instance_id,process_definition_id_and_version,process_definition_activity_id
     </sql>
 
-    <insert id="insert" parameterType="ActivityInstanceEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="insert" parameterType="ActivityInstanceEntity" useGeneratedKeys="true" keyProperty="id">
         insert into  se_activity_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},
         #{processDefinitionActivityId})
