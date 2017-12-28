@@ -17,9 +17,9 @@
     </parent>
     <groupId>com.alibaba.smart.framework</groupId>
     <artifactId>smart-engine</artifactId>
-    <!--  mvn versions:set -DnewVersion=1.2.7 -DgenerateBackupPoms=false  -->
-    <!--  mvn versions:set -DnewVersion=1.3.3-SNAPSHOT -DgenerateBackupPoms=false  -->
-    <version>1.5.4</version>
+    <!--  mvn versions:set -DnewVersion=1.5.5 -DgenerateBackupPoms=false  -->
+    <!--  mvn versions:set -DnewVersion=1.5.5-SNAPSHOT -DgenerateBackupPoms=false  -->
+    <version>1.5.5</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
