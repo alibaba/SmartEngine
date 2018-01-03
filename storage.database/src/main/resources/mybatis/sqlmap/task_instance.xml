@@ -130,6 +130,12 @@
                 #{item}
             </foreach>
         </if>
+        <if test="processDefinitionTypeList != null">
+            and task.process_definition_type in
+            <foreach item="item" index="index" separator="," open="(" close=")"  collection="processDefinitionTypeList">
+                #{item}
+            </foreach>
+        </if>
     </sql>
 
 

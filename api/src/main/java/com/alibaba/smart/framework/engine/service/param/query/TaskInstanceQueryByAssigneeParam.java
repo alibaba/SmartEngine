@@ -16,6 +16,12 @@ public class TaskInstanceQueryByAssigneeParam extends PaginateQueryParam {
 
     private String processDefinitionType;
 
+    /**
+     * 流程类型
+     * 平台中:processDefinitionId == processDefinitionType
+     */
+    private List<String> processDefinitionTypeList;
+
     private List<Long> processInstanceIdList;
 
     private String status;
