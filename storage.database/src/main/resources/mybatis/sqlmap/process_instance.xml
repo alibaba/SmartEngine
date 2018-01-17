@@ -95,6 +95,12 @@
                     #{item}
                 </foreach>
             </if>
+            <if test="bizUniqueIdList != null">
+                and biz_unique_id in
+                <foreach item="item" index="index" separator="," open="(" close=")"  collection="bizUniqueIdList">
+                    #{item}
+                </foreach>
+            </if>
         </where>
     </sql>
 

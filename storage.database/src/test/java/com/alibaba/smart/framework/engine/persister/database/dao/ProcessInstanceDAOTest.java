@@ -115,6 +115,17 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
     }
 
     @Test
+    public void testFindByBizUniqIdList() {
+        dao.insert(entity);
+        ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
+        processInstanceQueryParam.setBizUniqueIdList(Lists.newArrayList(entity.getBizUniqueId()));
+        List<ProcessInstanceEntity> result = dao.find(processInstanceQueryParam);
+        Assert.assertEquals("title",result.get(0).getTitle());
+        Assert.assertEquals("tag",result.get(0).getTag());
+        Assert.assertNotNull(result);
+    }
+
+    @Test
     public void testDelete() {
         dao.insert(entity);
 
