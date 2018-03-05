@@ -73,7 +73,7 @@
 
         <include refid="pending_task_assignee_choose_sql"/>
 
-        order by task.gmt_modified desc
+        order by task.process_definition_type,task.gmt_modified desc
 
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
 

@@ -19,6 +19,7 @@ public class ProcessInstanceQueryParam extends PaginateQueryParam {
     private String status ;
     private String processDefinitionType;
     private String bizUniqueId;
+    private List<String> bizUniqueIdList;
     private String processDefinitionIdAndVersion;
     /**
      * 流程引擎实例id列表

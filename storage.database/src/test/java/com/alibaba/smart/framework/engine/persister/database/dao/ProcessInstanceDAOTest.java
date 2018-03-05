@@ -46,6 +46,8 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
 
         dao.insert(entity);
         ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
+        processInstanceQueryParam.setOrderByKey("gmt_create");
+        processInstanceQueryParam.setOrderByDirection("desc");
         processInstanceQueryParam.setProcessInstanceIdList(Lists.newArrayList(entity.getId()));
         List<ProcessInstanceEntity> processInstanceEntityList = dao.find(processInstanceQueryParam);
         Assert.assertNotNull(processInstanceEntityList);

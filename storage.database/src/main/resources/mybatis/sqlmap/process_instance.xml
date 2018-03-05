@@ -64,8 +64,8 @@
         from  se_process_instance
         <include refid="condition"/>
         <choose>
-            <when test="orderByKey != null and orderByDirection != null">
-                order by #{orderByKey} #{orderByDirection}
+            <when test="orderByKey == 'gmt_create' and orderByDirection == 'desc'">
+                order by gmt_create desc
             </when>
             <otherwise>
                 order by gmt_modified desc

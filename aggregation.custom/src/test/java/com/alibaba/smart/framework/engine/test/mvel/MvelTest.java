@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.expression.evaluator.MvelExpressionEvaluator;
 import com.alibaba.smart.framework.engine.configuration.PersisterStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
@@ -58,4 +59,5 @@ public class MvelTest {
         CompiledExpression executableAccessor = (CompiledExpression)serializable;
         Assert.assertNotNull(executableAccessor);
     }
+
 }
