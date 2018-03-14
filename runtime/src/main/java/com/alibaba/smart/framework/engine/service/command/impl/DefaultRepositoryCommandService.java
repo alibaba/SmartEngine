@@ -119,6 +119,25 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @Override
+    public ProcessDefinition checkWithUTF8Content(String uTF8ProcessDefinitionContent) {
+        byte[] bytes;
+        try {
+            bytes = uTF8ProcessDefinitionContent.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new EngineException(e);
+        }
+        InputStream stream = new ByteArrayInputStream(bytes);
+        try {
+            return parseStream(stream);
+        } catch (Exception e) {
+            throw new DeployException("Parse process definition file failure!", e);
+        } finally {
+            IOUtil.closeQuietly(stream);
+        }
+    }
+
+    @Override
     public void start() {
 
         this.assemblyParserExtensionPoint = extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
