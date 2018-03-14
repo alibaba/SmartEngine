@@ -119,7 +119,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @Override
-    public ProcessDefinition checkWithUTF8Content(String uTF8ProcessDefinitionContent) {
+    public ProcessDefinition checkWithUTF8Content(String processDefinitionId, String processDefinitionVersion,String uTF8ProcessDefinitionContent) {
         byte[] bytes;
         try {
             bytes = uTF8ProcessDefinitionContent.getBytes("UTF-8");
@@ -129,7 +129,12 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         }
         InputStream stream = new ByteArrayInputStream(bytes);
         try {
-            return parseStream(stream);
+            ProcessDefinition processDefinition = parseStream(stream);
+            if (!processDefinitionId.equals(processDefinition.getId())
+                || !processDefinitionVersion.equals(processDefinition.getVersion())) {
+                throw new DeployException("process's id and version not match");
+            }
+            return processDefinition;
         } catch (Exception e) {
             throw new DeployException("Parse process definition file failure!", e);
         } finally {
