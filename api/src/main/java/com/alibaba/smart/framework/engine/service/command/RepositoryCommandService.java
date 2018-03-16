@@ -19,7 +19,7 @@ public interface RepositoryCommandService {
 
     ProcessDefinition deployWithUTF8Content(String uTF8ProcessDefinitionContent) ;
 
-    ProcessDefinition checkWithUTF8Content(String uTF8ProcessDefinitionContent) ;
+    ProcessDefinition checkWithUTF8Content(String processDefinitionId, String processDefinitionVersion, String uTF8ProcessDefinitionContent) ;
 
 
 }
