@@ -1,5 +1,12 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.parser;
 
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.condition.SequenceFlowCondition;
+import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
@@ -7,10 +14,6 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 public class ConditionExpressionParser extends AbstractStAXArtifactParser<ConditionExpression> implements StAXArtifactParser<ConditionExpression> {
 
@@ -55,6 +58,12 @@ public class ConditionExpressionParser extends AbstractStAXArtifactParser<Condit
             conditionExpression.setExpressionType(type2);
         }
 
+        if(conditionExpression.getExpressionType().equals("condition")){
+            SmartEngine smartEngine = getExtensionPointRegistry().getExtensionPoint(SmartEngine.class);
+            InstanceAccessor instanceAccessor = smartEngine.getProcessEngineConfiguration().getInstanceAccessor();
+            SequenceFlowCondition condition = (SequenceFlowCondition)instanceAccessor.access(conditionExpression.getExpressionContent());
+            conditionExpression.setCondition(condition);
+        }
 
         String finalExpressionType = conditionExpression.getExpressionType();
         if(null == finalExpressionType){

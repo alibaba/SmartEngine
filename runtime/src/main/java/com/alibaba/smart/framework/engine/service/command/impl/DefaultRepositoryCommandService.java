@@ -269,6 +269,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                     DefaultPvmActivity pvmActivity = new DefaultPvmActivity(this.extensionPointRegistry);
                     pvmActivity.setModel(activity);
+                    pvmActivity.setType(activity.getClass().getSimpleName());
 
                     String id = pvmActivity.getModel().getId();
 

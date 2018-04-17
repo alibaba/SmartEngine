@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -29,6 +29,8 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     protected ActivityInstanceFactory activityInstanceFactory;
     protected ExecutionInstanceFactory executionInstanceFactory;
     private ExecutePolicyBehavior executePolicyBehavior;
+    //class full name
+    private String type;
 
     public DefaultPvmActivity(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -87,7 +89,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         Map<String, PvmTransition> outcomeTransitions = this.getOutcomeTransitions();
 
         if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
-            List<PvmTransition> matchedTransitions = new ArrayList<PvmTransition>(outcomeTransitions.size());
+            Set<PvmTransition> matchedTransitions = new TreeSet<PvmTransition>();
             for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
                 PvmTransition pendingTransition = transitionEntry.getValue();
                 boolean matched = pendingTransition.match(context);
@@ -99,9 +101,23 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
             }
             //TODO 针对互斥和并行网关的线要检验,返回值只有一个或者多个。如果无则抛异常。
 
+            //这里由于没有办法拿到排他网关这个类,只能通过初始化的时候,将类名传入到PvmActivity里,然后在这里取出
+            boolean exclusive = false;
+            if("ExclusiveGateway".equals(this.type)){
+                exclusive = true;
+            }
+            if(exclusive && matchedTransitions.isEmpty()){
+                //throw new Exception();
+                throw new RuntimeException();
+            }
+
             for (PvmTransition matchedTransition : matchedTransitions) {
                 matchedTransition.execute(context);
+                if(exclusive){
+                    break;
+                }
             }
+
         }
     }
 
@@ -121,4 +137,5 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     public void stop() {
 
     }
+
 }

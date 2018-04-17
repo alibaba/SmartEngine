@@ -1,14 +1,14 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression;
 
-import com.alibaba.smart.framework.engine.model.assembly.Condition;
+import javax.xml.namespace.QName;
+
+import com.alibaba.smart.framework.engine.condition.SequenceFlowCondition;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractPerformable;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.xml.namespace.QName;
 
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
@@ -22,4 +22,5 @@ public class ConditionExpression extends AbstractPerformable implements Performa
 
     private String expressionType;
     private String expressionContent;
+    private SequenceFlowCondition condition;
 }

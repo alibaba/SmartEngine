@@ -9,8 +9,8 @@
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="exclusivegateway1"></sequenceFlow>
         <exclusiveGateway id="exclusivegateway1" name="exclusivegateway1"></exclusiveGateway>
 
-        <sequenceFlow id="flow2" sourceRef="exclusivegateway1" targetRef="pre_order">
-            <conditionExpression type="custom"><![CDATA[smartEngineAction == "pre_order"]]></conditionExpression>
+        <sequenceFlow id="flow2" sourceRef="exclusivegateway1" targetRef="pre_order" priority="10">
+            <conditionExpression type="condition"><![CDATA[com.alibaba.smart.framework.engine.test.condition.TestCondition]]></conditionExpression>
         </sequenceFlow>
         <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="formal_order">
             <conditionExpression type="mvel"><![CDATA[smartEngineAction == "formal_order"]]></conditionExpression>
@@ -41,7 +41,8 @@
 
         <receiveTask id="fund_delivery" name="资金交割" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
 
-        <receiveTask id="fund_delivery_ack" name="回执确认" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="fund_delivery_ack" name="回执确认" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation">
+        </receiveTask>
         <sequenceFlow id="flow22" sourceRef="fund_delivery" targetRef="fund_delivery_ack"></sequenceFlow>
         <sequenceFlow id="flow23" sourceRef="pre_order" targetRef="confirm_order"></sequenceFlow>
         <sequenceFlow id="flow24" sourceRef="confirm_order" targetRef="exclusivegateway2"></sequenceFlow>

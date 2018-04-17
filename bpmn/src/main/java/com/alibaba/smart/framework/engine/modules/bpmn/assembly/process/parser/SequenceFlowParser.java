@@ -38,6 +38,15 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> impleme
         sequenceFlow.setName(this.getString(reader, "name"));
         sequenceFlow.setSourceRef(this.getString(reader, "sourceRef"));
         sequenceFlow.setTargetRef(this.getString(reader, "targetRef"));
+        String priority = this.getString(reader, "priority");
+        if(priority != null && !"".equals(priority)){
+            int p = 0;
+            try{
+                p = Integer.parseInt(priority);
+            }catch (Exception e){
+            }
+            sequenceFlow.setPriority(p);
+        }
         return sequenceFlow;
     }
 

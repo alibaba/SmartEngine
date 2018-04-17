@@ -22,6 +22,9 @@ public class ConditionExpressionProvider implements Performer {
             String type = this.conditionExpression.getExpressionType();
 
             if (null != type) {
+                if("condition".equals(type)){
+                    return this.conditionExpression.getCondition().check(context);
+                }
                 int expressionTypeSplitIndex = type.indexOf(":");
                 if (expressionTypeSplitIndex >= 0) {
                     type = type.substring(expressionTypeSplitIndex + 1);
