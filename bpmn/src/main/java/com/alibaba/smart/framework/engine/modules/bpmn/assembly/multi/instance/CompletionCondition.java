@@ -14,6 +14,10 @@ import lombok.Data;
 
 @Data
 public class CompletionCondition extends AbstractBaseElement {
+    public final static String ACTION_ABORT="abort";
+    public final static String ACTION_CONTINUE="continue";
+
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "completionCondition");
+    private String action;
     private ConditionExpression expression;
 }

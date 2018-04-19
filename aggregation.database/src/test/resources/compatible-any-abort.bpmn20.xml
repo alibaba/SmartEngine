@@ -17,7 +17,8 @@
                         alibaba:approvalRole="USER" alibaba:approvalUser="3447310055">
             <bpmn2:multiInstanceLoopCharacteristics activiti:collection="${assignmentService.findUsers(execution)}"
                                                     activiti:elementVariable="assignee">
-                <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression"><![CDATA[${nrOfCompletedInstances  >= 1]]></bpmn2:completionCondition>
+                <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression"><![CDATA[${nrOfCompletedInstances  >= 2]]></bpmn2:completionCondition>
+                <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression" action="abort"><![CDATA[${nrOfRejectedInstance  >= 1 ]]></bpmn2:completionCondition>
             </bpmn2:multiInstanceLoopCharacteristics>
         </bpmn2:userTask>
 
