@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
@@ -38,6 +39,11 @@ public class CompletionConditionParser extends AbstractStAXArtifactParser<Comple
         CompletionCondition completionCondition = new CompletionCondition();
 
         String expressionType = this.getString(reader, "type");
+        String action = this.getString(reader, "action");
+        if(null==action || "".equals(action)){
+            action=CompletionCondition.ACTION_CONTINUE;
+        }
+        completionCondition.setAction(action);
         String content = reader.getElementText();
         if (null != content) {
             ConditionExpression expression = new ConditionExpression();

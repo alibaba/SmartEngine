@@ -12,6 +12,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CompletionChecker extends AbstractBaseElement {
+    private boolean custom;
+
     private Performable completionCheckPerformable;
 
     private Performable abortCheckPerformable;

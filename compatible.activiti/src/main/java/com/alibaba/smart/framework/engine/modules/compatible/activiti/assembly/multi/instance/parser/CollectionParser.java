@@ -44,6 +44,7 @@ public class CollectionParser extends AbstractStAXArtifactParser<Collection> imp
 
             //创建一个All模式的Checker，不是All模式会被覆盖
             CompletionChecker completionChecker=new CompletionChecker();
+            completionChecker.setCustom(false);
             completionChecker.setAbortCheckPerformable(new AbortCheckPerformable());
             completionChecker.setCompletionCheckPerformable(new CompletionCheckPerformable());
             multiInstanceLoopCharacteristics.setCompletionChecker(completionChecker);

@@ -7,6 +7,7 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCheckPrepare;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionChecker;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
@@ -53,8 +54,19 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
         } else if (child instanceof InputDataItem) {
             model.setInputDataItemName(((InputDataItem)child).getName());
         } else if (child instanceof CompletionCondition) {
-            CompletionChecker completionChecker = new CompletionChecker();
-            completionChecker.setCompletionCheckPerformable(((CompletionCondition)child).getExpression());
+            CompletionCondition completionCondition=(CompletionCondition)child;
+            CompletionChecker completionChecker=model.getCompletionChecker();
+
+            if(null==completionChecker || !completionChecker.isCustom()){
+                completionChecker = new CompletionChecker();
+                completionChecker.setCustom(true);
+            }
+
+            if(CompletionCondition.ACTION_ABORT.equals(completionCondition.getAction())){
+                completionChecker.setAbortCheckPerformable(((CompletionCondition)child).getExpression());
+            }else if(CompletionCondition.ACTION_CONTINUE.equals(completionCondition.getAction())){
+                completionChecker.setCompletionCheckPerformable(((CompletionCondition)child).getExpression());
+            }
             model.setCompletionChecker(completionChecker);
         }else if (child instanceof CompletionCheckPrepare) {
             model.setCompletionCheckPrepare((CompletionCheckPrepare)child);
