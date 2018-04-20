@@ -16,4 +16,5 @@ public abstract class AbstractTransition extends AbstractElement implements Tran
     private static final long serialVersionUID = -3833522271165082836L;
     private String sourceRef;
     private String targetRef;
+    private int priority;
 }

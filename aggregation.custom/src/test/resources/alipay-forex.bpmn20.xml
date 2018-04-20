@@ -10,7 +10,7 @@
         <exclusiveGateway id="exclusivegateway1" name="exclusivegateway1"></exclusiveGateway>
 
         <sequenceFlow id="flow2" sourceRef="exclusivegateway1" targetRef="pre_order" priority="10">
-            <conditionExpression type="condition"><![CDATA[com.alibaba.smart.framework.engine.test.condition.TestCondition]]></conditionExpression>
+            <conditionExpression type="condition"><![CDATA[com.alibaba.smart.framework.engine.test.newFeatures.condition.TestCondition]]></conditionExpression>
         </sequenceFlow>
         <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="formal_order">
             <conditionExpression type="mvel"><![CDATA[smartEngineAction == "formal_order"]]></conditionExpression>

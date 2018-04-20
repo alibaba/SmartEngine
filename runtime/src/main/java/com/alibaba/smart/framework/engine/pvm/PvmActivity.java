@@ -6,7 +6,6 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
-import com.alibaba.smart.framework.engine.provider.Invoker;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -30,6 +29,8 @@ public interface PvmActivity extends PvmElement<Activity> {
     void setBehavior(ActivityBehavior activityBehavior);
 
     void setExecutePolicyBehavior(ExecutePolicyBehavior executePolicyBehavior);
+
+    void setSync(boolean sync);
 
 
 }

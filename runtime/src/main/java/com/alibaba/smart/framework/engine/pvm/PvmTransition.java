@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public interface PvmTransition extends PvmElement<Transition> {
+public interface PvmTransition extends PvmElement<Transition>,Comparable<PvmTransition> {
 
     PvmActivity getSource();
 
@@ -20,4 +20,5 @@ public interface PvmTransition extends PvmElement<Transition> {
 
     void setBehavior(TransitionBehavior transitionBehavior);
 
+    int getPriority();
 }

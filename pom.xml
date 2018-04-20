@@ -19,7 +19,7 @@
     <artifactId>smart-engine</artifactId>
     <!--  mvn versions:set -DnewVersion=1.5.5 -DgenerateBackupPoms=false  -->
     <!--  mvn versions:set -DnewVersion=1.5.5-SNAPSHOT -DgenerateBackupPoms=false  -->
-    <version>1.5.5</version>
+    <version>1.5.5-LAZADA-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>

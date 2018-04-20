@@ -24,7 +24,6 @@ public class SequenceFlow extends AbstractTransition {
 
     private ConditionExpression conditionExpression;
 
-    private int priority;
 
 
     @Override

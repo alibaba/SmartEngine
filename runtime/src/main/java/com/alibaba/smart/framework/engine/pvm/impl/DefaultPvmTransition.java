@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DefaultPvmTransition extends AbstractPvmElement<Transition> implements PvmTransition,Comparable<DefaultPvmTransition> {
+public class DefaultPvmTransition extends AbstractPvmElement<Transition> implements PvmTransition {
 
     private PvmActivity source;
     private PvmActivity target;
@@ -64,8 +64,8 @@ public class DefaultPvmTransition extends AbstractPvmElement<Transition> impleme
     }
 
     @Override
-    public int compareTo(DefaultPvmTransition o) {
-        return o.priority > this.priority ? 1 : -1;
+    public int compareTo(PvmTransition o) {
+        return o.getPriority() > this.getPriority() ? 1 : -1;
     }
 
     @Override

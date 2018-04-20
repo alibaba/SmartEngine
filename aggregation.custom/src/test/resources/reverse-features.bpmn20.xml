@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="alipay-forex" version="1.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:smart="http://smart.alibaba-inc.com/schema/process"
+             targetNamespace="Examples">
+
+    <process id="lazada-reverse-features" isExecutable="true">
+        <startEvent id="theStart" />
+        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="exclusivegateway1"></sequenceFlow>
+        <exclusiveGateway id="exclusivegateway1" name="exclusivegateway1"></exclusiveGateway>
+
+        <sequenceFlow id="flow2" sourceRef="exclusivegateway1" targetRef="inclusiveGateway1" priority="10">
+            <conditionExpression type="condition"><![CDATA[com.alibaba.smart.framework.engine.test.newFeatures.condition.TestCondition]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="endevent4" priority="5">
+            <conditionExpression type="condition"><![CDATA[com.alibaba.smart.framework.engine.test.newFeatures.condition.TestCondition]]></conditionExpression>
+        </sequenceFlow>
+
+        <inclusiveGateway id="inclusiveGateway1" sync="false"/>
+
+        <sequenceFlow id="flow4" sourceRef="inclusiveGateway1" targetRef="s1" priority="8">
+            <conditionExpression type="condition"><![CDATA[com.alibaba.smart.framework.engine.test.newFeatures.condition.TestCondition]]></conditionExpression>
+        </sequenceFlow>
+        <serviceTask id="s1" smart:class="com.alibaba.smart.framework.engine.test.newFeatures.activity.Activity1" />
+        <sequenceFlow id="flow5" sourceRef="inclusiveGateway1" targetRef="s2" priority="9">
+            <conditionExpression type="condition"><![CDATA[com.alibaba.smart.framework.engine.test.newFeatures.condition.TestCondition]]></conditionExpression>
+        </sequenceFlow>
+        <serviceTask id="s2" smart:class="com.alibaba.smart.framework.engine.test.newFeatures.activity.Activity2" />
+        <endEvent id="endevent4" name="End" />
+    </process>
+
+</definitions>

@@ -250,6 +250,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                     DefaultPvmTransition pvmTransition = new DefaultPvmTransition(this.extensionPointRegistry);
                     pvmTransition.setModel(transition);
+                    pvmTransition.setPriority(transition.getPriority());
 
                     String id = pvmTransition.getModel().getId();
 
@@ -270,6 +271,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     DefaultPvmActivity pvmActivity = new DefaultPvmActivity(this.extensionPointRegistry);
                     pvmActivity.setModel(activity);
                     pvmActivity.setType(activity.getClass().getSimpleName());
+                    pvmActivity.setSync(activity.isSync());
 
                     String id = pvmActivity.getModel().getId();
 

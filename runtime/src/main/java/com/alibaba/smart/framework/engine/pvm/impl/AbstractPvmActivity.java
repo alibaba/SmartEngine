@@ -7,7 +7,6 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
-import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
@@ -27,6 +26,8 @@ public abstract class AbstractPvmActivity extends AbstractPvmElement<Activity> i
     private Map<String, PvmTransition> outcomeTransitions = new ConcurrentHashMap<String, PvmTransition>();
 
     private ActivityBehavior behavior;
+
+    protected boolean sync;
 
     protected AbstractPvmActivity(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

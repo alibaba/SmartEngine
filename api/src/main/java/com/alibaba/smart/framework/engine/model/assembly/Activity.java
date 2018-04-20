@@ -12,4 +12,8 @@ public interface Activity extends Element {
 
     void setExecutePolicy(ExecutePolicy executePolicy);
 
+    boolean isSync();
+
+    void setSync(boolean sync);
+
 }

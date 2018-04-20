@@ -15,6 +15,8 @@ public abstract class AbstractActivity extends AbstractElement implements Activi
 
     private ExecutePolicy executePolicy;
 
+    private boolean sync = true;
+
     @Override
     public boolean isStartActivity() {
         return startActivity;
@@ -32,5 +34,15 @@ public abstract class AbstractActivity extends AbstractElement implements Activi
     @Override
     public void setExecutePolicy(ExecutePolicy executePolicy) {
         this.executePolicy = executePolicy;
+    }
+
+    @Override
+    public boolean isSync() {
+        return sync;
+    }
+
+    @Override
+    public void setSync(boolean sync) {
+        this.sync = sync;
     }
 }

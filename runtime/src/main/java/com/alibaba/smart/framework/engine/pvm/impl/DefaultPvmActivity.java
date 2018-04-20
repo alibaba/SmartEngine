@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.exception.NoSatisfyTargetInExclusiveGatewayException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
@@ -14,6 +15,7 @@ import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import com.alibaba.smart.framework.engine.service.async.AsyncTaskExecutor;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -101,27 +103,52 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
             }
             //TODO 针对互斥和并行网关的线要检验,返回值只有一个或者多个。如果无则抛异常。
 
-            //这里由于没有办法拿到排他网关这个类,只能通过初始化的时候,将类名传入到PvmActivity里,然后在这里取出
-            boolean exclusive = false;
-            if("ExclusiveGateway".equals(this.type)){
-                exclusive = true;
-            }
-            if(exclusive && matchedTransitions.isEmpty()){
-                //throw new Exception();
-                throw new RuntimeException();
-            }
-
-            for (PvmTransition matchedTransition : matchedTransitions) {
-                matchedTransition.execute(context);
-                if(exclusive){
-                    break;
-                }
-            }
+           executeNext(matchedTransitions,context);
 
         }
     }
 
+    private void executeNext(Set<PvmTransition> transitions,ExecutionContext context){
+        if("ExclusiveGateway".equals(this.type)){
+            if(transitions.isEmpty()){
+                executeForExclusiveGateway(null,context);
+            }else {
+                for (PvmTransition transition : transitions) {
+                    executeForExclusiveGateway(transition, context);
+                    break;
+                }
+            }
+        }else if("InclusiveGateway".equals(this.type)){
+            executeForInclusiveGateway(transitions,context);
+        }else{
+            executeInNormalWay(transitions,context);
+        }
+    }
 
+    private void executeForExclusiveGateway(PvmTransition transition,ExecutionContext context) {
+        if(transition == null){
+            throw new NoSatisfyTargetInExclusiveGatewayException();
+        }
+        transition.execute(context);
+    }
+
+    private void executeForInclusiveGateway(Set<PvmTransition> transitions,ExecutionContext context){
+        if(sync){
+            for(PvmTransition transition : transitions){
+                transition.execute(context);
+            }
+        }else{
+            for (PvmTransition transition : transitions) {
+                AsyncTaskExecutor.submit(transition,context);
+            }
+        }
+    }
+
+    private void executeInNormalWay(Set<PvmTransition> transitions,ExecutionContext context){
+        for(PvmTransition transition : transitions){
+            transition.execute(context);
+        }
+    }
 
     @Override
     public String toString() {
