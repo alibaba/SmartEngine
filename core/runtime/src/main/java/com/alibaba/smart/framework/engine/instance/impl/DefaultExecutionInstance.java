@@ -22,6 +22,7 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
     private ActivityInstance  activity;
     private boolean           fault;
     private boolean           isAbort = false;
+    private boolean isEnd = false;
     private long id = 1L;
 
 
@@ -46,6 +47,11 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
     @Override
     public void abort() {
         isAbort = true;
+    }
+
+    @Override
+    public void end() {
+        isEnd = true;
     }
 
     @Override

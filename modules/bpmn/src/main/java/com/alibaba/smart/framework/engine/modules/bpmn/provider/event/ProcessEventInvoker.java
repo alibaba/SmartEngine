@@ -6,6 +6,7 @@ import com.alibaba.smart.framework.engine.invocation.Invoker;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.invocation.message.impl.SubsbandMessage;
 import com.alibaba.smart.framework.engine.invocation.signal.AbortSignal;
+import com.alibaba.smart.framework.engine.invocation.signal.EndSingal;
 import com.alibaba.smart.framework.engine.invocation.signal.Signal;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvents;
@@ -36,7 +37,8 @@ public class ProcessEventInvoker implements Invoker {
         ProcessEvents events = serviceTask.getEvents();
         ParamChecker.notNull(events,"this activity is does not have event !");
         List<ProcessEvent> eventList =  events.getEvents();
-        if (eventList == null || eventList.isEmpty() || eventList.stream().noneMatch(processEvent -> processEvent.getId().equals(assigineEvent))) {
+        if (eventList == null || eventList.isEmpty() ||
+                eventList.stream().noneMatch(processEvent -> processEvent.getId().equals(assigineEvent))) {
            throw new EngineException("this activity is not allow this event !");
         }
 
@@ -45,8 +47,15 @@ public class ProcessEventInvoker implements Invoker {
                 SpringAction springAction = new SpringAction(event.getBean(),event.getMethod(),executionContext.getRequest());
                 springAction.execute();
                 if (StringUtils.equalsIgnoreCase(event.getSignal(),"abort")) {
-                    throw new AbortSignal("event :"+event.getId()+" method: "+event.getMethod()+" will be abort processInstance after execute");
+                    throw new AbortSignal("event :"+event.getId()+" method: "+
+                            event.getMethod()+" will be abort processInstance after execute");
                 }
+
+                if (StringUtils.equalsIgnoreCase(event.getSignal(),"end")) {
+                    throw new EndSingal("event :"+event.getId()+" method: "+
+                            event.getMethod()+" will be end processInstance after execute");
+                }
+
             }
         }
 

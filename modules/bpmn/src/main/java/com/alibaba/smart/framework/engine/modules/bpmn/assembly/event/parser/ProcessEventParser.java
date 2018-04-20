@@ -40,7 +40,7 @@ public class ProcessEventParser extends AbstractStAXArtifactParser<ProcessEvent>
         event.setMethod(this.getStringThrowException(reader,"method"));
         String signal =  this.getString(reader,"signal");
         //todo 目前只支持abort 信号 后续再加
-        if (null != signal && !signal.equals("abort")) {
+        if (null != signal && (!signal.equals("abort") || !signal.equals("end"))) {
             throw new ParseException("id : "+event.getId()+" can not have this signal: "+signal+" !");
         }
         event.setSignal(signal);

@@ -12,7 +12,7 @@
 
 
         <serviceTask id="createOrder" name="create"  >
-            <action type="spring" id="createOrder" bean="createOrder" method="create" />
+            <action type="spring" id="createOrder" bean="createOrder" method="create" single="end" />
         </serviceTask>
 
         <sequenceFlow id="flow2" sourceRef="createOrder" targetRef="theTask2"/>

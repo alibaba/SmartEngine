@@ -26,5 +26,11 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     void abort();
 
+
+    void end();
+
     boolean isAbort();
+
+
+    boolean isEnd();
 }

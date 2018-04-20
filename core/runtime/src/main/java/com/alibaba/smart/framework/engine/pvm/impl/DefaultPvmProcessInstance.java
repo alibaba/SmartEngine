@@ -7,6 +7,8 @@ import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFacto
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.invocation.message.Message;
 import com.alibaba.smart.framework.engine.invocation.message.impl.DefaultMessage;
+import com.alibaba.smart.framework.engine.invocation.signal.AbortSignal;
+import com.alibaba.smart.framework.engine.invocation.signal.EndSingal;
 import com.alibaba.smart.framework.engine.invocation.signal.Signal;
 import com.alibaba.smart.framework.engine.model.instance.*;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -77,7 +79,12 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance{
             this.runProcess(activityMap.get(context.getCurrentExecution().getActivity().getActivityId()),context);
 
         }catch (Signal signal) {
-            context.getCurrentExecution().abort();
+            if (signal instanceof AbortSignal) {
+                context.getCurrentExecution().abort();
+            }else if (signal instanceof EndSingal) {
+                context.getCurrentExecution().end();
+            }
+
         }
 
     }

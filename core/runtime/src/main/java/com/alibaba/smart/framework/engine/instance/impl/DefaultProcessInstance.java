@@ -65,6 +65,8 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
 
             if (executionInstance.isAbort()) {
                 data.append("abort");
+            }else if (executionInstance.isEnd()) {
+                data.append("end");
             }else {
                 data.append(executionInstance.toDatabase());
             }
