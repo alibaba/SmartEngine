@@ -21,7 +21,7 @@
 
         <serviceTask id="theTask2" name="createOutDeliveryOrder"  >
             <events>
-                <event type="spring"  id="modifyFee" method="modify" bean="modifyFee" />
+                <event type="spring"  id="modifyFee" method="modify" bean="modifyFee" single="end" />
             </events>
         </serviceTask>
 
