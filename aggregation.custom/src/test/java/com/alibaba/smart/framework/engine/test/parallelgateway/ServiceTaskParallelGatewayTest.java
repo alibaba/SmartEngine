@@ -1,30 +1,45 @@
-package com.alibaba.smart.framework.engine.modules.bpmn;
+package com.alibaba.smart.framework.engine.test.parallelgateway;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
+import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
-import org.junit.Assert;
-import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ReceiveTaskParallelGatewayTest {
+public class ServiceTaskParallelGatewayTest {
+    @After
+    public void clear(){
+        PersisterSession.destroySession();
+    }
+
+    @Before
+    public void init(){
+        PersisterSession.create();
+    }
+
+    private long orderId = 123456L;
+
 
     @Test
     public void testParallelGateway() throws Exception {
@@ -37,14 +52,13 @@ public class ReceiveTaskParallelGatewayTest {
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
-        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
         ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
 
 
         RepositoryCommandService repositoryCommandService = smartEngine
                 .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("test-receivetask-parallel-gateway.bpmn20.xml");
+                .deploy("test-servicetask-parallel-gateway.bpmn20.xml");
         assertEquals(14, processDefinition.getProcess().getElements().size());
 
 
@@ -55,14 +69,11 @@ public class ReceiveTaskParallelGatewayTest {
                 processDefinition.getId(), processDefinition.getVersion(),
                 request);
 
-
+        persisteAndUpdateThreadLocal(orderId,processInstance);
 
         // 流程启动后,正确状态断言
         Assert.assertNotNull(processInstance);
-        List<ActivityInstance>  activityInstances =  activityQueryService.findAll(processInstance.getInstanceId());
-        Assert.assertNotNull(activityInstances);
-        int size = activityInstances.size();
-        assertEquals(4, size);
+
 
         List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         assertEquals(2, executionInstanceList.size());
@@ -77,6 +88,9 @@ public class ReceiveTaskParallelGatewayTest {
 
         //完成两个任务节点创建,已经进入fork节点后面的数据。完成其中一个节点的驱动。
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
+
+        processInstance =   persisteAndUpdateThreadLocal(orderId,processInstance);
+
 
         String runningActivityId=secondActivityId;
 
@@ -98,15 +112,14 @@ public class ReceiveTaskParallelGatewayTest {
             runningExecutionInstance=firstExecutionInstance;
         }
 
-        activityInstances =  activityQueryService.findAll(processInstance.getInstanceId());
-        Assert.assertNotNull(activityInstances);
-        size = activityInstances.size();
-        assertEquals(5, size);
-
 
 
         //完成后面一个节点的驱动。
         request.put("input", 11);
+
+        processInstance =   persisteAndUpdateThreadLocal(orderId,processInstance);
+
+        //完成两个任务节点，完成并行网关的计算。
         processInstance = executionCommandService.signal(runningExecutionInstance.getInstanceId(), request);
 
         executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
@@ -114,12 +127,26 @@ public class ReceiveTaskParallelGatewayTest {
         assertEquals(1, executionInstanceList.size());
         assertTrue("theTask3".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
+
+        processInstance =   persisteAndUpdateThreadLocal(orderId,processInstance);
+
+
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
         Assert.assertNotNull(processInstance.getCompleteTime());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
 
     }
+
+    private ProcessInstance  persisteAndUpdateThreadLocal(long orderId, ProcessInstance processInstance) {
+        String serializedProcessInstance = InstanceSerializerFacade.serialize(processInstance);
+        processInstance = InstanceSerializerFacade.deserializeAll(serializedProcessInstance);
+
+        PersisterSession.currentSession().putProcessInstance(processInstance);
+        return processInstance;
+    }
+
+
 
 
 }

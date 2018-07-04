@@ -65,7 +65,8 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         //由于 SmartEngine的设计理念是尽量在后期去持久化，减少事务的开启时间。 所以比如在 database 模式下，这里的很多访问 db 方法 只能获取上一次写进 DB 的数据。
         //但是由于进入到这里的代码，肯定有一个新的节点完成了，但是这个状态并没有写进 DB。所以
-        int tunedTotalReachedForkedSum = reachedForkedSum + 1;
+        //FIXME
+        int tunedTotalReachedForkedSum = reachedForkedSum;
         if(tunedTotalReachedForkedSum == inComingPvmTransitions.size() ){
             //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
             ActivityInstanceStorage activityInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
