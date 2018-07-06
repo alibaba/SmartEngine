@@ -33,5 +33,6 @@ public interface ProcessCommandService {
 
     void abort(Long processInstanceId,String reason);
 
+    void abort(Long processInstanceId,  Map<String, Object> request);
 
 }

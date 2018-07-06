@@ -99,8 +99,8 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
             }
             //TODO 针对互斥和并行网关的线要检验,返回值只有一个或者多个。如果无则抛异常。
 
-            for (PvmTransition matchedTransition : matchedTransitions) {
-                matchedTransition.execute(context);
+            for (PvmTransition matchedPvmTransition : matchedTransitions) {
+                matchedPvmTransition.execute(context);
             }
         }
     }
