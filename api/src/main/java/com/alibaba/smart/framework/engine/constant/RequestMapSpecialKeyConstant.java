@@ -27,6 +27,7 @@ public class RequestMapSpecialKeyConstant {
 
     public static final  String PROCESS_INSTANCE_COMMENT = $_SMART_ENGINE_$_PREFIX + "PROCESS_INSTANCE_COMMENT";
 
+    public static final  String PROCESS_INSTANCE_ABORT_REASON = $_SMART_ENGINE_$_PREFIX + "PROCESS_INSTANCE_ABORT_REASON";
 
 
 }

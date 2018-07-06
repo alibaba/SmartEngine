@@ -166,16 +166,28 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     @Override
     public void abort(Long processInstanceId) {
-        this.abort(processInstanceId,null);
+        this.abort(processInstanceId,"");
     }
 
     @Override
     public void abort(Long processInstanceId,String reason){
+        Map<String, Object> request = new HashMap<String, Object>(2);
+        request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_ABORT_REASON,reason);
+        abort(processInstanceId,request);
 
+    }
+
+    @Override
+    public void abort(Long processInstanceId, Map<String, Object> request) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
         ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId);
         processInstance.setStatus(InstanceStatus.aborted);
+        String  reason = null;
+        if (null != request){
+            reason =   String.valueOf(request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_ABORT_REASON)) ;
+        }
+
         processInstance.setReason(reason);
         processInstanceStorage.update(processInstance);
 
@@ -200,16 +212,12 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
                 if(TaskInstanceConstant.COMPLETED.equals(taskInstance.getStatus()) || TaskInstanceConstant.CANCELED.equals(taskInstance.getStatus())){
                     continue;
                 }
-                MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.ABORTED,TaskInstanceConstant.PENDING, null,
+                MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.ABORTED,TaskInstanceConstant.PENDING, request,
                     taskInstanceStorage);
 
             }
         }
 
-
-
-
     }
-
 
 }
