@@ -5,7 +5,7 @@
   <parent> 
     <groupId>com.alibaba.smart.framework</groupId>  
     <artifactId>engine.modules</artifactId>  
-    <version>1.0.18-TP3-SNAPSHOT</version> 
+    <version>1.0.18-TP3</version> 
   </parent>  
   <artifactId>engine.modules.storage.memory</artifactId>  
   <name>Smart Engine Modules - Memory Storage</name>  
