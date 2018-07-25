@@ -25,7 +25,7 @@ public class CompletionCheckPrepareProvider implements Performer {
         SmartEngine smartEngine = this.extensionPointRegistry.getExtensionPoint(SmartEngine.class);
 
         ActivityInstance activityInstance = context.getActivityInstance();
-        MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration().getMultiInstanceCounter();
+        MultiInstanceCounter multiInstanceCounter = this.extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration().getMultiInstanceCounter();
         Integer completedInstanceCount = multiInstanceCounter.countPassedTaskInstanceNumber(
             activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
 
@@ -36,7 +36,7 @@ public class CompletionCheckPrepareProvider implements Performer {
 
             smartEngine);
 
-        Integer instanceCount = null;
+        Integer instanceCount;
         if (null != activityInstance.getExecutionInstanceList()) {
             instanceCount = activityInstance.getExecutionInstanceList().size();
         } else {

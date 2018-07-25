@@ -1,5 +1,10 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
@@ -11,8 +16,6 @@ import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
-import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
@@ -31,11 +34,6 @@ import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -44,15 +42,9 @@ import java.util.Map;
 public class DefaultProcessCommandService implements ProcessCommandService, LifeCycleListener {
 
     private ExtensionPointRegistry extensionPointRegistry;
-
     private ProcessDefinitionContainer processDefinitionContainer;
-
     private InstanceContextFactory instanceContextFactory;
     private ProcessInstanceFactory processInstanceFactory;
-    private ExecutionInstanceFactory executionInstanceFactory;
-    private ActivityInstanceFactory activityInstanceFactory;
-
-
 
     public DefaultProcessCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -63,8 +55,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         this.processDefinitionContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
         this.processInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
-        this.executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
-        this.activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
     }
 
@@ -77,9 +67,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     public ProcessInstance start(String processDefinitionId, String processDefinitionVersion, Map<String, Object> request) {
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
-        executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
-        executionContext.setProcessEngineConfiguration(processEngineConfiguration);
         executionContext.setRequest(request);
 
 
@@ -148,10 +136,8 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         }
         request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,deploymentInstance.getProcessDefinitionType());
 
-
-        ProcessInstance processInstance = this.start(deploymentInstance.getProcessDefinitionId(),
+        return this.start(deploymentInstance.getProcessDefinitionId(),
             deploymentInstance.getProcessDefinitionVersion(), request);
-        return processInstance;
     }
 
     @Override

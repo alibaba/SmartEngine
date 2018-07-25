@@ -10,13 +10,13 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     /**
      * get ProcessDefinitionId and ProcessDefinitionVersion
-     * @return
+     * @return ProcessDefinitionId and ProcessDefinitionVersion
      */
     String getProcessDefinitionIdAndVersion();
 
     /**
      * get ProcessDefinitionId
-     * @return
+     * @return ProcessDefinitionId
      */
     String getProcessDefinitionId();
 
@@ -26,7 +26,7 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     /**
      * get ProcessDefinitionVersion
-     * @return
+     * @return ProcessDefinitionVersion
      */
     String getProcessDefinitionVersion();
 
@@ -56,14 +56,6 @@ public interface ProcessInstance extends LifeCycleInstance {
     boolean isSuspend();
 
     void setSuspend(boolean suspend);
-
-//    Long getParentExecutionInstanceId();
-//
-//    void setParentExecutionInstanceId(Long parentExecutionInstanceId);
-//
-//    Long getParentActivityInstanceId();
-//
-//    void setParentActivityInstanceId(Long parentActivityInstanceId);
 
     // should used  internally
     void addActivityInstance(ActivityInstance activityInstance);

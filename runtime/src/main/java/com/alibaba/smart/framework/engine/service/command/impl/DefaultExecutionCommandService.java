@@ -100,8 +100,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(processDefinitionActivityId);
 
             ExecutionContext executionContext = this.instanceContextFactory.create();
-            executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
-            executionContext.setProcessEngineConfiguration(processEngineConfiguration);
             executionContext.setPvmProcessDefinition(pvmProcessDefinition);
             executionContext.setProcessInstance(processInstance);
             executionContext.setExecutionInstance(executionInstance);
@@ -172,8 +170,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
 
             ExecutionContext executionContext = this.instanceContextFactory.create();
-            executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
-            executionContext.setProcessEngineConfiguration(processEngineConfiguration);
             executionContext.setPvmProcessDefinition(pvmProcessDefinition);
             executionContext.setProcessInstance(processInstance);
             executionContext.setExecutionInstance(executionInstance);

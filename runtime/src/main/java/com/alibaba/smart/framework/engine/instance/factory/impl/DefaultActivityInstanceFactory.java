@@ -1,8 +1,10 @@
 package com.alibaba.smart.framework.engine.instance.factory.impl;
 
-import com.alibaba.smart.framework.engine.configuration.IdGenerator;
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
@@ -13,12 +15,18 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
  */
 public class DefaultActivityInstanceFactory implements ActivityInstanceFactory {
 
+    private ExtensionPointRegistry extensionPointRegistry;
+
+    public DefaultActivityInstanceFactory(ExtensionPointRegistry extensionPointRegistry) {
+        this.extensionPointRegistry = extensionPointRegistry;
+    }
 
     @Override
     public ActivityInstance create(Activity activity, ExecutionContext context) {
         DefaultActivityInstance activityInstance = new DefaultActivityInstance();
 
-        IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
+        IdGenerator idGenerator = this.extensionPointRegistry.getExtensionPoint(SmartEngine.class)
+            .getProcessEngineConfiguration().getIdGenerator();
         activityInstance.setInstanceId(idGenerator.getId());
         activityInstance.setStartTime(DateUtil.getCurrentDate());
         activityInstance.setProcessInstanceId(context.getProcessInstance().getInstanceId());

@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.compatible.activiti.provider.
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -30,7 +31,7 @@ public class CollectionProvider implements LoopCollectionProvider {
     @Override
     public java.util.Collection<Object> getCollection(ExecutionContext context,
                                                        PvmActivity activity) {
-        TaskAssigneeDispatcher taskAssigneeDispatcher = context.getProcessEngineConfiguration()
+        TaskAssigneeDispatcher taskAssigneeDispatcher = this.extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration()
             .getTaskAssigneeDispatcher();
 
         if (null == taskAssigneeDispatcher) {

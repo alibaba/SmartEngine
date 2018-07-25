@@ -2,11 +2,13 @@ package com.alibaba.smart.framework.engine.instance.factory.impl;
 
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.configuration.IdGenerator;
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
@@ -19,11 +21,18 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
  */
 public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
 
+    private ExtensionPointRegistry extensionPointRegistry;
+
+    public DefaultTaskInstanceFactory(ExtensionPointRegistry extensionPointRegistry) {
+        this.extensionPointRegistry = extensionPointRegistry;
+    }
+
     @Override
     public TaskInstance create(Activity activity, ExecutionInstance executionInstance, ExecutionContext context) {
         TaskInstance taskInstance = new DefaultTaskInstance();
 
-        IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
+        IdGenerator idGenerator = this.extensionPointRegistry.getExtensionPoint(SmartEngine.class)
+            .getProcessEngineConfiguration().getIdGenerator();
 
         taskInstance.setInstanceId(idGenerator.getId());
         taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());

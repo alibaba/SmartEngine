@@ -2,10 +2,12 @@ package com.alibaba.smart.framework.engine.instance.factory.impl;
 
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.configuration.IdGenerator;
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -17,11 +19,18 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
  */
 public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
+    private ExtensionPointRegistry extensionPointRegistry;
+
+    public DefaultProcessInstanceFactory(ExtensionPointRegistry extensionPointRegistry) {
+        this.extensionPointRegistry = extensionPointRegistry;
+    }
+
     @Override
     public ProcessInstance create(ExecutionContext executionContext) {
         PvmProcessDefinition pvmProcessDefinition = executionContext.getPvmProcessDefinition();
         DefaultProcessInstance defaultProcessInstance = new DefaultProcessInstance();
-        IdGenerator idGenerator = executionContext.getProcessEngineConfiguration().getIdGenerator();
+        IdGenerator idGenerator = this.extensionPointRegistry.getExtensionPoint(SmartEngine.class)
+            .getProcessEngineConfiguration().getIdGenerator();
 
         defaultProcessInstance.setInstanceId(idGenerator.getId());
         defaultProcessInstance.setStatus(InstanceStatus.running);

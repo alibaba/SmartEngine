@@ -1,15 +1,12 @@
 package com.alibaba.smart.framework.engine.common.expression.evaluator;
 
-import org.mvel2.MVEL;
-import org.mvel2.ast.ASTNode;
-import org.mvel2.ast.BinaryOperation;
-import org.mvel2.compiler.ExecutableAccessor;
-
 import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
+
+import org.mvel2.MVEL;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  15:51.
@@ -66,6 +63,7 @@ public class MvelExpressionEvaluator implements ExpressionEvaluator {
         return compiledExp;
     }
 
+    /*
     public static Number getRightValueForBinaryOperationExpression(String expression) {
         Serializable serializable= compileExp(expression);
         ExecutableAccessor executableAccessor = (ExecutableAccessor)serializable;
@@ -74,4 +72,5 @@ public class MvelExpressionEvaluator implements ExpressionEvaluator {
         Number rightValue = (Number)right.getLiteralValue();
         return rightValue;
     }
+    */
 }

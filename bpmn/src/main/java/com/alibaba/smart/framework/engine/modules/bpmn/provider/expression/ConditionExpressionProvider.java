@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.expression;
 
 import com.alibaba.smart.framework.engine.common.expression.ExpressionPerformer;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.provider.Performer;
 
@@ -10,9 +11,11 @@ import com.alibaba.smart.framework.engine.provider.Performer;
  * Created by ettear on 15/10/2017.
  */
 public class ConditionExpressionProvider implements Performer {
+    private ExtensionPointRegistry extensionPointRegistry;
     private ConditionExpression conditionExpression;
 
-    ConditionExpressionProvider(ConditionExpression conditionExpression) {
+    ConditionExpressionProvider(ExtensionPointRegistry extensionPointRegistry, ConditionExpression conditionExpression) {
+        this.extensionPointRegistry=extensionPointRegistry;
         this.conditionExpression = conditionExpression;
     }
 
@@ -30,7 +33,7 @@ public class ConditionExpressionProvider implements Performer {
                 type = "mvel";
             }
 
-            return ExpressionPerformer.eval(type,
+            return ExpressionPerformer.eval(this.extensionPointRegistry,type,
                 this.conditionExpression.getExpressionContent(), context);
         }
         return null;

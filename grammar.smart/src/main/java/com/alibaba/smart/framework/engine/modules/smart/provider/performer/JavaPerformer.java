@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.smart.provider.performer;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -22,7 +23,7 @@ public class JavaPerformer implements Performer {
     private PvmElement pvmElement;
     private ExtensionPointRegistry extensionPointRegistry;
 
-    public JavaPerformer(PvmElement pvmElement, String className,ExtensionPointRegistry extensionPointRegistry) {
+    JavaPerformer(PvmElement pvmElement, String className,ExtensionPointRegistry extensionPointRegistry) {
         this.pvmElement = pvmElement;
         this.className = className;
         this.extensionPointRegistry = extensionPointRegistry;
@@ -35,7 +36,7 @@ public class JavaPerformer implements Performer {
     @Override
     public Object perform(ExecutionContext context) {
 
-        ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();
 
         InstanceAccessor instanceAccessor = processEngineConfiguration

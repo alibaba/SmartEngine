@@ -1,9 +1,5 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.callactivity;
 
-import java.util.Map;
-
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
@@ -23,7 +19,7 @@ import com.alibaba.smart.framework.engine.service.command.impl.CommonServiceHelp
  */
 public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity> {
 
-    public CallActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    CallActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 
@@ -44,10 +40,6 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
         ExecutionContext subProcessExecutionContext = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class)
             .create();
         subProcessExecutionContext.setParent(context);
-        subProcessExecutionContext.setExtensionPointRegistry(this.extensionPointRegistry);
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
-            SmartEngine.class).getProcessEngineConfiguration();
-        subProcessExecutionContext.setProcessEngineConfiguration(processEngineConfiguration);
         //TODO ettear 改成clone模式
         subProcessExecutionContext.setRequest(context.getRequest());
 

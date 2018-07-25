@@ -29,8 +29,6 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private PvmProcessDefinition pvmProcessDefinition;
 
-    private ProcessEngineConfiguration processEngineConfiguration;
-
     private Map<String, Object> request;
 
     private Map<String, Object> privateContext=new HashMap<String, Object>();
@@ -39,15 +37,8 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private boolean nested;
 
-    private ExtensionPointRegistry extensionPointRegistry;
-
     private Long blockId;
 
     private PvmActivity sourcePvmActivity;
-
-    @Override
-    public Map<String, Object> getResponse() {
-        return request;
-    }
 
 }

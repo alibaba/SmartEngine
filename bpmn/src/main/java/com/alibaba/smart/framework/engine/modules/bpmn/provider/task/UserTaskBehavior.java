@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -18,7 +19,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
-    public UserTaskBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    UserTaskBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
 
@@ -137,7 +138,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 */
     private List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstances(ExecutionContext context,
                                                                                   UserTask userTask) {
-        TaskAssigneeDispatcher taskAssigneeDispatcher = context.getProcessEngineConfiguration().getTaskAssigneeDispatcher();
+        TaskAssigneeDispatcher taskAssigneeDispatcher = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration().getTaskAssigneeDispatcher();
 
         if(null == taskAssigneeDispatcher){
             throw  new EngineException("The taskAssigneeService can't be null for MultiInstanceLoopCharacteristics feature");
@@ -147,6 +148,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean enter(ExecutionContext context) {
         UserTask userTask = this.getModel();
 
