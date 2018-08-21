@@ -42,12 +42,10 @@
         <module>bpmn</module>
         <module>grammar.smart</module>
         <module>storage.database</module>
-        <module>storage.memory</module>
         <module>storage.custom</module>
         <module>compatible.activiti</module>
         <module>aggregation.database</module>
         <module>aggregation.custom</module>
-        <module>extensions.transaction</module>
     </modules>
 
     <dependencies>

@@ -41,7 +41,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = super.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
-        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
 
         Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
