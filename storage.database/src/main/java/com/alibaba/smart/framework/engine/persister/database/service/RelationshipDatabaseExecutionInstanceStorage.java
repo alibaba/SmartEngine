@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
@@ -106,7 +107,7 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
         List<ExecutionInstanceEntity> executionInstanceEntities=  executionInstanceDAO.findActiveExecution(processInstanceId);
 
-        List<ExecutionInstance>  executionInstanceList = null;
+        List<ExecutionInstance>  executionInstanceList = Collections.emptyList();
         if(null != executionInstanceEntities){
             executionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceEntities.size());
             for (ExecutionInstanceEntity executionInstanceEntity : executionInstanceEntities) {
