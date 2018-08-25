@@ -19,6 +19,8 @@ public interface DeploymentInstanceStorage {
 
     DeploymentInstance findById(Long id);
 
+    DeploymentInstance findByDefinitionIdAndVersion(String definitionId, String version);
+
     List<DeploymentInstance> findByPage(DeploymentInstanceQueryParam deploymentInstanceQueryParam);
 
     int count(DeploymentInstanceQueryParam deploymentInstanceQueryParam);

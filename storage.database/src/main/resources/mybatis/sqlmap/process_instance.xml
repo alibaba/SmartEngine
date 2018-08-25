@@ -2,19 +2,35 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.ProcessInstanceDAO">
-
+    <resultMap id="BaseResultMap"
+               type="com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="process_definition_id_and_version" jdbcType="VARCHAR" property="processDefinitionIdAndVersion"/>
+        <result column="process_definition_type" jdbcType="VARCHAR" property="processDefinitionType"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="parent_process_instance_id" jdbcType="BIGINT" property="parentProcessInstanceId"/>
+        <result column="start_user_id" jdbcType="VARCHAR" property="startUserId"/>
+        <result column="biz_unique_id" jdbcType="VARCHAR" property="bizUniqueId"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+    </resultMap>
     <sql id="baseColumn">
         id, gmt_create, gmt_modified, process_definition_id_and_version,process_definition_type,start_user_id,
         status, parent_process_instance_id, reason, biz_unique_id, title,tag,comment
     </sql>
 
-    <insert id="insert" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert"
+            parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert into se_process_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
         #{status}, #{parentProcessInstanceId}, #{reason}, #{bizUniqueId}, #{title}, #{tag},#{comment})
     </insert>
 
-    <insert id="insertIgnore" parameterType="ProcessInstanceEntity"  useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertIgnore"
+            parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert ignore into se_process_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
         #{status}, #{parentProcessInstanceId}, #{reason}, #{bizUniqueId}, #{title}, #{tag},#{comment})
@@ -25,7 +41,8 @@
         delete from se_process_instance where id=#{id}
     </delete>
 
-    <update id="update" parameterType="ProcessInstanceEntity">
+    <update id="update"
+            parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity">
         update se_process_instance
         <set>
             gmt_modified=now()
@@ -34,64 +51,60 @@
             <if test="reason != null">,reason = #{reason}</if>
             <if test="tag != null">,tag = #{tag}</if>
             <if test="comment != null">,comment = #{comment}</if>
-
         </set>
         where id=#{id}
     </update>
 
-    <select id="findOne" resultType="ProcessInstanceEntity">
+    <select id="findOne" resultMap="BaseResultMap">
         select
         <include refid="baseColumn"/>
         from se_process_instance where id=#{id}
     </select>
 
-    <select id="tryLock" resultType="ProcessInstanceEntity">
+    <select id="tryLock" resultMap="BaseResultMap">
         select
         <include refid="baseColumn"/>
         from se_process_instance where id=#{id} for update
     </select>
 
-    <select id="findOneForUpdate" resultType="ProcessInstanceEntity">
+    <select id="findOneForUpdate" resultMap="BaseResultMap">
         select
         <include refid="baseColumn"/>
         from se_process_instance where id=#{id} for update
     </select>
 
-
-    <select id="find" resultType="ProcessInstanceEntity" parameterType="ProcessInstanceQueryParam">
+    <select id="find" resultMap="BaseResultMap"
+            parameterType="com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam">
         select
         <include refid="baseColumn"/>
-        from  se_process_instance
+        from se_process_instance
         <include refid="condition"/>
         order by gmt_modified desc
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
-
     </select>
 
-    <select id="count" resultType="long" parameterType="ProcessInstanceQueryParam">
+    <select id="count" resultType="long"
+            parameterType="com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam">
         select count(*)
-        from  se_process_instance
+        from se_process_instance
         <include refid="condition"/>
-
     </select>
 
     <sql id="condition">
         <where>
             <if test="processDefinitionType != null">and process_definition_type = #{processDefinitionType}</if>
-            <if test="processDefinitionIdAndVersion != null">and process_definition_id_and_version = #{processDefinitionIdAndVersion}</if>
+            <if test="processDefinitionIdAndVersion != null">and process_definition_id_and_version =
+                #{processDefinitionIdAndVersion}
+            </if>
             <if test="status != null">and status = #{status}</if>
-            <if test="startUserId != null"> and start_user_id = #{startUserId}</if>
-            <if test="bizUniqueId != null"> and biz_unique_id = #{bizUniqueId}</if>
+            <if test="startUserId != null">and start_user_id = #{startUserId}</if>
+            <if test="bizUniqueId != null">and biz_unique_id = #{bizUniqueId}</if>
             <if test="processInstanceIdList != null">
                 and id in
-                <foreach item="item" index="index" separator="," open="(" close=")"  collection="processInstanceIdList">
+                <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
                     #{item}
                 </foreach>
             </if>
         </where>
     </sql>
-
-
-
-
 </mapper>

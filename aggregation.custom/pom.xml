@@ -1,54 +1,47 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="utf-8"?>
 
-    <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>com.alibaba.smart.framework</groupId>
-        <artifactId>smart-engine</artifactId>
-        <version>1.5.7</version>
-    </parent>
-
-    <artifactId>smart-engine-bpmn-custom-aggregation</artifactId>
-    <name>Smart Engine Modules - Aggregation Custom</name>
-
-    <dependencies>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-engine-storage-custom</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-engine-bpmn</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-engine-grammar-smart</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.alibaba.rocketmq</groupId>
-            <artifactId>rocketmq-client</artifactId>
-            <version>3.6.2.Final</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.taobao.metaq.final</groupId>
-            <artifactId>metaq-client</artifactId>
-            <version>3.6.2.Final</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  
+  <modelVersion>4.0.0</modelVersion>  
+  <parent> 
+    <groupId>com.alibaba.smart.framework</groupId>  
+    <artifactId>smart-engine</artifactId>  
+    <version>1.5.6.xbpm-SNAPSHOT</version> 
+  </parent>  
+  <artifactId>smart-engine-bpmn-custom-aggregation</artifactId>  
+  <name>Smart Engine Modules - Aggregation Custom</name>  
+  <dependencies> 
+    <dependency> 
+      <groupId>${project.groupId}</groupId>  
+      <artifactId>smart-engine-storage-custom</artifactId>  
+      <version>${project.version}</version> 
+    </dependency>  
+    <dependency> 
+      <groupId>${project.groupId}</groupId>  
+      <artifactId>smart-engine-bpmn</artifactId>  
+      <version>${project.version}</version> 
+    </dependency>  
+    <dependency> 
+      <groupId>${project.groupId}</groupId>  
+      <artifactId>smart-engine-grammar-smart</artifactId>  
+      <version>${project.version}</version> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.springframework</groupId>  
+      <artifactId>spring-context</artifactId>  
+      <scope>test</scope> 
+    </dependency>  
+    <dependency> 
+      <groupId>com.alibaba.rocketmq</groupId>  
+      <artifactId>rocketmq-client</artifactId>  
+      <version>3.6.2.Final</version>  
+      <scope>test</scope> 
+    </dependency>  
+    <dependency> 
+      <groupId>com.taobao.metaq.final</groupId>  
+      <artifactId>metaq-client</artifactId>  
+      <version>3.6.2.Final</version>  
+      <scope>test</scope> 
+    </dependency> 
+  </dependencies>  
+  <contributors><contributor><properties><provider>zhengzheng.hzz@alibaba-inc.com</provider><codeName>null</codeName><codeUrl>git@gitlab.alibaba-inc.com:smart-framework/smart-engine.git commit:73e0574c</codeUrl><description>contributors added by SCM Plugin, please don't modify it!</description></properties></contributor></contributors>
 </project>

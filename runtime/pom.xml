@@ -1,81 +1,71 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="utf-8"?>
 
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.alibaba.smart.framework</groupId>
-        <artifactId>smart-engine</artifactId>
-        <version>1.5.7</version>
-    </parent>
-
-    <artifactId>smart-engine-runtime</artifactId>
-    <name>Smart Engine Runtime</name>
-
-    <dependencies>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-engine-base</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.esotericsoftware</groupId>
-            <artifactId>reflectasm</artifactId>
-            <version>1.11.3</version>
-            <classifier>shaded</classifier>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.ow2.asm</groupId>
-                    <artifactId>asm</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>com.esotericsoftware</groupId>-->
-            <!--<artifactId>kryo-shaded</artifactId>-->
-            <!--<version>4.0.0</version>-->
-        <!--</dependency>-->
-    </dependencies>
-
-    <build>
-        <plugins>
-           <plugin>
-                <!-- COPY FROM https://github.com/EsotericSoftware/kryo/blob/master/pom-shaded.xml -->
-
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.1</version>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <shadedArtifactAttached>false</shadedArtifactAttached>
-                    <artifactSet>
-                        <includes>
-                            <!-- 重要:!!!! 千万记得这个 artifact 的scope 不要设置为provided了,已经浪费至少2个小时了!!!!!-->
-                            <include>com.esotericsoftware:reflectasm:shaded</include>
-                        </includes>
-                    </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>com.esotericsoftware.reflectasm</pattern>
-                            <shadedPattern>com.alibaba.smart.framework.engine.shaded.com.esotericsoftware.reflectasm</shadedPattern>
-                        </relocation>
-                    </relocations>
-
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-
-            <!--
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  
+  <modelVersion>4.0.0</modelVersion>  
+  <parent> 
+    <groupId>com.alibaba.smart.framework</groupId>  
+    <artifactId>smart-engine</artifactId>  
+    <version>1.5.6.xbpm-SNAPSHOT</version> 
+  </parent>  
+  <artifactId>smart-engine-runtime</artifactId>  
+  <name>Smart Engine Runtime</name>  
+  <dependencies> 
+    <dependency> 
+      <groupId>${project.groupId}</groupId>  
+      <artifactId>smart-engine-base</artifactId>  
+      <version>${project.version}</version> 
+    </dependency>  
+    <dependency> 
+      <groupId>com.esotericsoftware</groupId>  
+      <artifactId>reflectasm</artifactId>  
+      <version>1.11.3</version>  
+      <classifier>shaded</classifier>  
+      <exclusions> 
+        <exclusion> 
+          <groupId>org.ow2.asm</groupId>  
+          <artifactId>asm</artifactId> 
+        </exclusion> 
+      </exclusions> 
+    </dependency>  
+    <!--<dependency>-->  
+    <!--<groupId>com.esotericsoftware</groupId>-->  
+    <!--<artifactId>kryo-shaded</artifactId>-->  
+    <!--<version>4.0.0</version>-->  
+    <!--</dependency>--> 
+  </dependencies>  
+  <build> 
+    <plugins> 
+      <plugin> 
+        <!-- COPY FROM https://github.com/EsotericSoftware/kryo/blob/master/pom-shaded.xml -->  
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-shade-plugin</artifactId>  
+        <version>2.4.1</version>  
+        <configuration> 
+          <createDependencyReducedPom>false</createDependencyReducedPom>  
+          <shadedArtifactAttached>false</shadedArtifactAttached>  
+          <artifactSet> 
+            <includes> 
+              <!-- 重要:!!!! 千万记得这个 artifact 的scope 不要设置为provided了,已经浪费至少2个小时了!!!!!-->  
+              <include>com.esotericsoftware:reflectasm:shaded</include> 
+            </includes> 
+          </artifactSet>  
+          <relocations> 
+            <relocation> 
+              <pattern>com.esotericsoftware.reflectasm</pattern>  
+              <shadedPattern>com.alibaba.smart.framework.engine.shaded.com.esotericsoftware.reflectasm</shadedPattern> 
+            </relocation> 
+          </relocations> 
+        </configuration>  
+        <executions> 
+          <execution> 
+            <phase>package</phase>  
+            <goals> 
+              <goal>shade</goal> 
+            </goals> 
+          </execution> 
+        </executions> 
+      </plugin>  
+      <!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
@@ -121,7 +111,8 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
-        </plugins>
-    </build>
+            --> 
+    </plugins> 
+  </build>  
+  <contributors><contributor><properties><provider>zhengzheng.hzz@alibaba-inc.com</provider><codeName>null</codeName><codeUrl>git@gitlab.alibaba-inc.com:smart-framework/smart-engine.git commit:73e0574c</codeUrl><description>contributors added by SCM Plugin, please don't modify it!</description></properties></contributor></contributors>
 </project>

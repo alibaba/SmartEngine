@@ -1,58 +1,53 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="utf-8"?>
 
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.alibaba.smart.framework</groupId>
-        <artifactId>smart-engine</artifactId>
-        <version>1.5.7</version>
-    </parent>
-
-    <artifactId>smart-engine-api</artifactId>
-    <name>Smart Engine API</name>
-    <dependencies>
-        <dependency>
-            <groupId>org.mvel</groupId>
-            <artifactId>mvel2</artifactId>
-        </dependency>
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <!-- COPY FROM https://github.com/EsotericSoftware/kryo/blob/master/pom-shaded.xml -->
-
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.1</version>
-
-
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-
-                    </execution>
-                </executions>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <shadedArtifactAttached>false</shadedArtifactAttached>
-                    <artifactSet>
-                        <includes>
-                            <!-- 重要:!!!! 千万记得这个 artifact 的scope 不要设置为provided了,已经浪费至少2个小时了!!!!!-->
-                            <include>org.mvel:mvel2</include>
-                        </includes>
-                    </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.mvel2</pattern>
-                            <shadedPattern>com.alibaba.smart.framework.engine.org.mvel2</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  
+  <modelVersion>4.0.0</modelVersion>  
+  <parent> 
+    <groupId>com.alibaba.smart.framework</groupId>  
+    <artifactId>smart-engine</artifactId>  
+    <version>1.5.6.xbpm-SNAPSHOT</version> 
+  </parent>  
+  <artifactId>smart-engine-api</artifactId>  
+  <name>Smart Engine API</name>  
+  <dependencies> 
+    <dependency> 
+      <groupId>org.mvel</groupId>  
+      <artifactId>mvel2</artifactId> 
+    </dependency> 
+  </dependencies>  
+  <build> 
+    <plugins> 
+      <plugin> 
+        <!-- COPY FROM https://github.com/EsotericSoftware/kryo/blob/master/pom-shaded.xml -->  
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-shade-plugin</artifactId>  
+        <version>2.4.1</version>  
+        <executions> 
+          <execution> 
+            <phase>package</phase>  
+            <goals> 
+              <goal>shade</goal> 
+            </goals> 
+          </execution> 
+        </executions>  
+        <configuration> 
+          <createDependencyReducedPom>false</createDependencyReducedPom>  
+          <shadedArtifactAttached>false</shadedArtifactAttached>  
+          <artifactSet> 
+            <includes> 
+              <!-- 重要:!!!! 千万记得这个 artifact 的scope 不要设置为provided了,已经浪费至少2个小时了!!!!!-->  
+              <include>org.mvel:mvel2</include> 
+            </includes> 
+          </artifactSet>  
+          <relocations> 
+            <relocation> 
+              <pattern>org.mvel2</pattern>  
+              <shadedPattern>com.alibaba.smart.framework.engine.org.mvel2</shadedPattern> 
+            </relocation> 
+          </relocations> 
+        </configuration> 
+      </plugin> 
+    </plugins> 
+  </build>  
+  <contributors><contributor><properties><provider>zhengzheng.hzz@alibaba-inc.com</provider><codeName>null</codeName><codeUrl>git@gitlab.alibaba-inc.com:smart-framework/smart-engine.git commit:73e0574c</codeUrl><description>contributors added by SCM Plugin, please don't modify it!</description></properties></contributor></contributors>
 </project>

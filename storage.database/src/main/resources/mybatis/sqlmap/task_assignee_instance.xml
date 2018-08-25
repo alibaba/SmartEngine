@@ -2,13 +2,23 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.TaskAssigneeDAO">
-
+    <resultMap id="BaseResultMap"
+               type="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="process_instance_id" jdbcType="BIGINT" property="processInstanceId"/>
+        <result column="task_instance_id" jdbcType="BIGINT" property="taskInstanceId"/>
+        <result column="assignee_id" jdbcType="VARCHAR" property="assigneeId"/>
+        <result column="assignee_type" jdbcType="VARCHAR" property="assigneeType"/>
+    </resultMap>
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,process_instance_id,
         task_instance_id,assignee_id,assignee_type
     </sql>
 
-    <insert id="insert" parameterType="TaskAssigneeEntity"  useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert into se_task_assignee_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId},
         #{taskInstanceId},#{assigneeId},#{assigneeType})
@@ -18,7 +28,7 @@
         delete from se_task_assignee_instance where id=#{id}
     </delete>
 
-    <update id="update" >
+    <update id="update">
         update se_task_assignee_instance
         <set>
             gmt_modified=now()
@@ -28,23 +38,23 @@
         where id=#{id}
     </update>
 
-    <select id="findOne" resultType="TaskAssigneeEntity">
+    <select id="findOne" resultMap="BaseResultMap">
         select
         <include refid="baseColumn"/>
         from se_task_assignee_instance where id=#{id}
     </select>
 
-    <select id="findList" resultType="TaskAssigneeEntity">
+    <select id="findList" resultMap="BaseResultMap">
         select
         <include refid="baseColumn"/>
         from se_task_assignee_instance where task_instance_id=#{taskInstanceId}
     </select>
 
-    <select id="findListForInstanceList" parameterType="java.util.List" resultType="TaskAssigneeEntity">
+    <select id="findListForInstanceList" parameterType="java.util.List" resultMap="BaseResultMap">
         select
         <include refid="baseColumn"/>
         from se_task_assignee_instance where task_instance_id in
-        <foreach item="item" index="index" separator="," open="(" close=")"  collection="list">
+        <foreach item="item" index="index" separator="," open="(" close=")" collection="list">
             #{item}
         </foreach>
     </select>

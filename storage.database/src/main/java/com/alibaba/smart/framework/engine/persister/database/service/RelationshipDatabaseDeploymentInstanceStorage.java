@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.persister.database.util.SpringContextU
 import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
 
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * Created by yueyu.yr on 2017/9/22.
@@ -21,7 +22,8 @@ import org.springframework.util.CollectionUtils;
  */
 public class RelationshipDatabaseDeploymentInstanceStorage implements DeploymentInstanceStorage {
 
-    DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)SpringContextUtil.getBean("deploymentInstanceDAO");
+    DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)SpringContextUtil.getBean(
+        "deploymentInstanceDAO");
 
     @Override
     public DeploymentInstance insert(DeploymentInstance deploymentInstance) {
@@ -43,7 +45,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
 
     @Override
     public DeploymentInstance findById(Long id) {
-        if (null == id){
+        if (null == id) {
             return null;
         }
 
@@ -54,11 +56,22 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     }
 
     @Override
+    public DeploymentInstance findByDefinitionIdAndVersion(String definitionId, String version) {
+        if (StringUtils.isEmpty(definitionId) || StringUtils.isEmpty(version)) {
+            return null;
+        }
+        DeploymentInstanceEntity entity = deploymentnstanceDAO.findByDefinitionIdAndVersion(definitionId, version);
+        DeploymentInstance deploymentInstance = convertByEntity(entity);
+        return deploymentInstance;
+    }
+
+    @Override
     public List<DeploymentInstance> findByPage(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
         List<DeploymentInstanceEntity> deploymentInstanceEntities = deploymentnstanceDAO.findByPage(
             deploymentInstanceQueryParam);
         if (!CollectionUtils.isEmpty(deploymentInstanceEntities)) {
-            List<DeploymentInstance> deploymentInstances = new ArrayList<DeploymentInstance>(deploymentInstanceEntities.size());
+            List<DeploymentInstance> deploymentInstances = new ArrayList<DeploymentInstance>(
+                deploymentInstanceEntities.size());
             for (DeploymentInstanceEntity entity : deploymentInstanceEntities) {
                 DeploymentInstance instance = convertByEntity(entity);
                 deploymentInstances.add(instance);
@@ -78,8 +91,8 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         deploymentnstanceDAO.delete(id);
     }
 
-
-    //private DeploymentInstanceQueryParam convertParamByDeploymentInstance(DeploymentInstance deploymentInstance, Integer pageOffset, Integer pageSize){
+    //private DeploymentInstanceQueryParam convertParamByDeploymentInstance(DeploymentInstance deploymentInstance,
+    // Integer pageOffset, Integer pageSize){
     //    DeploymentInstanceQueryParam param = new DeploymentInstanceQueryParam();
     //    if (null != deploymentInstance) {
     //        param.setDeploymentStatus(deploymentInstance.getDeploymentStatus());

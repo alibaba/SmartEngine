@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.factory.impl.DeploymentInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
@@ -36,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sun.corba.se.impl.orbutil.RepositoryIdFactory;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -52,20 +54,18 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     private ExecutionInstanceFactory executionInstanceFactory;
     private ActivityInstanceFactory activityInstanceFactory;
 
-
-
     public DefaultProcessCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 
     @Override
     public void start() {
-        this.processDefinitionContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
+        this.processDefinitionContainer = this.extensionPointRegistry.getExtensionPoint(
+            ProcessDefinitionContainer.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
         this.processInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
         this.executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
         this.activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
-
     }
 
     @Override
@@ -74,20 +74,28 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     }
 
     @Override
-    public ProcessInstance start(String processDefinitionId, String processDefinitionVersion, Map<String, Object> request) {
+    public ProcessInstance start(String processDefinitionId, String processDefinitionVersion,
+                                 Map<String, Object> request) {
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
         executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
+            SmartEngine.class).getProcessEngineConfiguration();
         executionContext.setProcessEngineConfiguration(processEngineConfiguration);
         executionContext.setRequest(request);
 
+        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.getPvmProcessDefinition(
+            processDefinitionId, processDefinitionVersion);
+        if (null == pvmProcessDefinition) {
+            extensionPointRegistry.getExtensionPoint(SmartEngine.class).getRepositoryCommandService().deploy(
+                processDefinitionId, processDefinitionVersion);
+            pvmProcessDefinition = this.processDefinitionContainer.getPvmProcessDefinition(
+                processDefinitionId, processDefinitionVersion);
+        }
 
-        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.getPvmProcessDefinition(processDefinitionId,
-            processDefinitionVersion);
-
-        if(null == pvmProcessDefinition){
-            throw new EngineException("No ProcessDefinition found for processDefinitionId : "+processDefinitionId+",processDefinitionVersion : " +processDefinitionVersion);
+        if (null == pvmProcessDefinition) {
+            throw new EngineException("No ProcessDefinition found for processDefinitionId : " + processDefinitionId
+                + ",processDefinitionVersion : " + processDefinitionVersion);
         }
 
         executionContext.setPvmProcessDefinition(pvmProcessDefinition);
@@ -117,37 +125,40 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     private void tryInsertProcessInstanceAndLock(ProcessEngineConfiguration processEngineConfiguration,
                                                  ProcessInstance processInstance) {
         LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
-        if(null != lockStrategy){
+        if (null != lockStrategy) {
 
-            PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+            PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(
+                PersisterFactoryExtensionPoint.class);
 
-            ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
+            ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(
+                ProcessInstanceStorage.class);
 
-            ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance);
+            ProcessInstance newProcessInstance = processInstanceStorage.insert(processInstance);
 
             lockStrategy.tryLock(newProcessInstance.getInstanceId());
         }
     }
 
     @Override
-    public ProcessInstance start(String processDefinitionId, String processDefinitionVersion){
-        return this.start(processDefinitionId, processDefinitionVersion,null);
+    public ProcessInstance start(String processDefinitionId, String processDefinitionVersion) {
+        return this.start(processDefinitionId, processDefinitionVersion, null);
     }
 
     @Override
     public ProcessInstance start(Long deploymentInstanceId, String userId, Map<String, Object> request) {
-        DeploymentQueryService deploymentQueryService = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getDeploymentQueryService();
+        DeploymentQueryService deploymentQueryService = extensionPointRegistry.getExtensionPoint(SmartEngine.class)
+            .getDeploymentQueryService();
         DeploymentInstance deploymentInstance = deploymentQueryService.findById(deploymentInstanceId);
 
-        if(null == request){
+        if (null == request) {
             request = new HashMap<String, Object>();
         }
 
-        if(null != userId){
-            request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,userId);
+        if (null != userId) {
+            request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID, userId);
         }
-        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,deploymentInstance.getProcessDefinitionType());
-
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,
+            deploymentInstance.getProcessDefinitionType());
 
         ProcessInstance processInstance = this.start(deploymentInstance.getProcessDefinitionId(),
             deploymentInstance.getProcessDefinitionVersion(), request);
@@ -156,63 +167,69 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     @Override
     public ProcessInstance start(Long deploymentInstanceId, Map<String, Object> request) {
-        return start(deploymentInstanceId,null, request);
+        return start(deploymentInstanceId, null, request);
     }
 
     @Override
     public ProcessInstance start(Long deploymentInstanceId) {
-        return start(deploymentInstanceId,null, null);
+        return start(deploymentInstanceId, null, null);
     }
 
     @Override
     public void abort(Long processInstanceId) {
-        this.abort(processInstanceId,"");
+        this.abort(processInstanceId, "");
     }
 
     @Override
-    public void abort(Long processInstanceId,String reason){
+    public void abort(Long processInstanceId, String reason) {
         Map<String, Object> request = new HashMap<String, Object>(2);
-        request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_ABORT_REASON,reason);
-        abort(processInstanceId,request);
+        request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_ABORT_REASON, reason);
+        abort(processInstanceId, request);
 
     }
 
     @Override
     public void abort(Long processInstanceId, Map<String, Object> request) {
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-        ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(
+            PersisterFactoryExtensionPoint.class);
+        ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(
+            ProcessInstanceStorage.class);
         ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId);
         processInstance.setStatus(InstanceStatus.aborted);
-        String  reason = null;
-        if (null != request){
-            reason =   String.valueOf(request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_ABORT_REASON)) ;
+        String reason = null;
+        if (null != request) {
+            reason = String.valueOf(request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_ABORT_REASON));
         }
 
         processInstance.setReason(reason);
         processInstanceStorage.update(processInstance);
 
-        ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
+        ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(
+            ExecutionInstanceStorage.class);
         List<ExecutionInstance> executionInstanceList = executionInstanceStorage.findActiveExecution(processInstanceId);
 
-        if(null != executionInstanceList){
+        if (null != executionInstanceList) {
             for (ExecutionInstance executionInstance : executionInstanceList) {
-                MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
+                MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage);
             }
         }
 
-        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(
+            TaskInstanceStorage.class);
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
         List<Long> processInstanceIdList = new ArrayList<Long>(2);
         processInstanceIdList.add(processInstanceId);
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         List<TaskInstance> taskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam);
-        if(null!=taskInstanceList){
+        if (null != taskInstanceList) {
             for (TaskInstance taskInstance : taskInstanceList) {
-                if(TaskInstanceConstant.COMPLETED.equals(taskInstance.getStatus()) || TaskInstanceConstant.CANCELED.equals(taskInstance.getStatus())){
+                if (TaskInstanceConstant.COMPLETED.equals(taskInstance.getStatus()) || TaskInstanceConstant.CANCELED
+                    .equals(taskInstance.getStatus())) {
                     continue;
                 }
-                MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.ABORTED,TaskInstanceConstant.PENDING, request,
+                MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.ABORTED,
+                    TaskInstanceConstant.PENDING, request,
                     taskInstanceStorage);
 
             }

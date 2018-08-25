@@ -16,6 +16,9 @@ import org.apache.ibatis.annotations.Param;
 public interface DeploymentInstanceDAO {
     DeploymentInstanceEntity findOne(@Param("id") Long id);
 
+    DeploymentInstanceEntity findByDefinitionIdAndVersion(@Param("definitionId") String definitionId,
+                                                  @Param("version") String version);
+
     List<DeploymentInstanceEntity> findByPage(DeploymentInstanceQueryParam param);
 
     Long insert(DeploymentInstanceEntity deploymentInstanceEntity);
@@ -23,7 +26,6 @@ public interface DeploymentInstanceDAO {
     int delete(Long id);
 
     int update(DeploymentInstanceEntity taskAssigneeEntity);
-
 
     int count(DeploymentInstanceQueryParam param);
 }

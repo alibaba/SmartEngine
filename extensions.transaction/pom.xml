@@ -4,7 +4,7 @@
   <parent> 
     <artifactId>smart-engine</artifactId>  
     <groupId>com.alibaba.smart.framework</groupId>  
-    <version>1.5.7</version>
+    <version>1.5.6.xbpm-SNAPSHOT</version>  
     <relativePath>../pom.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
@@ -30,22 +30,20 @@
       <groupId>com.alibaba.smart.framework</groupId>  
       <artifactId>smart-engine-storage-custom</artifactId>  
       <version>${project.version}</version> 
-    </dependency>
-    <dependency>
-      <groupId>com.alibaba.smart.framework</groupId>
-      <artifactId>smart-engine-grammar-smart</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+    </dependency>  
+    <dependency> 
+      <groupId>com.alibaba.smart.framework</groupId>  
+      <artifactId>smart-engine-grammar-smart</artifactId>  
+      <version>${project.version}</version> 
+    </dependency>  
     <dependency> 
       <groupId>org.springframework</groupId>  
       <artifactId>spring-context</artifactId> 
     </dependency>  
-
     <dependency> 
       <groupId>com.taobao.metaq.final</groupId>  
-      <artifactId>metaq-client</artifactId>  
-    </dependency>
-
+      <artifactId>metaq-client</artifactId> 
+    </dependency> 
   </dependencies>  
-  <contributors><contributor><properties><provider>jianshan.yy@alibaba-inc.com</provider><codeName>null</codeName><codeUrl>git@gitlab.alibaba-inc.com:smart-framework/smart-engine.git commit:967577ca</codeUrl><description>contributors added by SCM Plugin, please don't modify it!</description></properties></contributor></contributors>
+  <contributors><contributor><properties><provider>zhengzheng.hzz@alibaba-inc.com</provider><codeName>null</codeName><codeUrl>git@gitlab.alibaba-inc.com:smart-framework/smart-engine.git commit:73e0574c</codeUrl><description>contributors added by SCM Plugin, please don't modify it!</description></properties></contributor></contributors>
 </project>
