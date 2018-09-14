@@ -28,6 +28,16 @@ public class MarkDoneUtil {
         return executionInstance;
     }
 
+    public static ExecutionInstance markDoneExecutionInstance(ExecutionInstance executionInstance) {
+        Date completeDate = DateUtil.getCurrentDate();
+        executionInstance.setCompleteTime(completeDate);
+        executionInstance.setActive(false);
+        executionInstance.setStatus(InstanceStatus.completed);
+
+
+        return executionInstance;
+    }
+
     public static TaskInstance markDoneTaskInstance(TaskInstance taskInstance, String targetStatus,String sourceStatus,
                                                     Map<String, Object> variables,
                                                     TaskInstanceStorage taskInstanceStorage) {

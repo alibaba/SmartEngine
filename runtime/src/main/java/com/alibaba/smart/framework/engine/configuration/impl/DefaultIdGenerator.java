@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class DefaultIdGenerator implements IdGenerator{
 
-    private static AtomicLong executionId = new AtomicLong(10000000000L);
+    private static AtomicLong executionId = new AtomicLong(20000000000L);
 
     //TODO 尽量做到不重复
     @Override

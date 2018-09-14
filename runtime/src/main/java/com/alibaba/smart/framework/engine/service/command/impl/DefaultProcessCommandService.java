@@ -196,6 +196,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         if(null != executionInstanceList){
             for (ExecutionInstance executionInstance : executionInstanceList) {
+                //TUNE 有点违反在最后去写 DB 的原则。 不过由于这个是终态了，应该不会产生问题。
                 MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
             }
         }

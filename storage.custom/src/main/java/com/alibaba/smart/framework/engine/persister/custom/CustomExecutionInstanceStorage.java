@@ -2,8 +2,10 @@ package com.alibaba.smart.framework.engine.persister.custom;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
@@ -116,26 +118,10 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
     public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
         ProcessInstance processInstance = PersisterSession.currentSession().getProcessInstance(processInstanceId);
         if(null==processInstance){
-            return null;
-        }
-        List<ActivityInstance> activityInstances =  processInstance.getActivityInstances();
-        if(null==activityInstances){
-            return null;
-        }
-        //TUNE 扩容
-        List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
-        for (ActivityInstance activityInstance : activityInstances) {
-            List<ExecutionInstance> executionInstances1 =    activityInstance.getExecutionInstanceList();
-            for (ExecutionInstance executionInstance : executionInstances1) {
-                if(null != executionInstance && executionInstance.isActive()){
-                    executionInstances.add(executionInstance);
-                }
-            }
-
+            return Collections.emptyList();
         }
 
-        return executionInstances;
-
+        return  InstanceUtil.findActiveExecution(processInstance);
 
      }
 

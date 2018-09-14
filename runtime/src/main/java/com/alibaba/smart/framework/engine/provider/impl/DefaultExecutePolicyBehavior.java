@@ -67,8 +67,7 @@ public class DefaultExecutePolicyBehavior implements ExecutePolicyBehavior, Life
         pvmActivity.invoke(PvmEventConstant.ACTIVITY_EXECUTE.name(), context);
         if (!context.isNeedPause()) {
             ExecutionInstance executionInstance = context.getExecutionInstance();
-            //只负责完成当前executionInstance的状态更新,此时产生了 DB 写.
-            MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage);
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
         }else{
             ExecutionInstance executionInstance = context.getExecutionInstance();
             executionInstance.setStatus(InstanceStatus.suspended);

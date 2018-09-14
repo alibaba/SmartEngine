@@ -19,7 +19,7 @@
     <artifactId>smart-engine</artifactId>
     <!--  mvn versions:set -DnewVersion=1.5.7 -DgenerateBackupPoms=false  -->
     <!--  mvn versions:set -DnewVersion=1.5.6-SNAPSHOT -DgenerateBackupPoms=false  -->
-    <version>1.5.7</version>
+    <version>1.5.9</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
@@ -42,12 +42,10 @@
         <module>bpmn</module>
         <module>grammar.smart</module>
         <module>storage.database</module>
-        <module>storage.memory</module>
         <module>storage.custom</module>
         <module>compatible.activiti</module>
         <module>aggregation.database</module>
         <module>aggregation.custom</module>
-        <module>extensions.transaction</module>
     </modules>
 
     <dependencies>
