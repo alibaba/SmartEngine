@@ -57,6 +57,11 @@ public class MemoryExecutionInstanceStorage implements ExecutionInstanceStorage 
      }
 
     @Override
+    public List<ExecutionInstance> findAllActiveExecution(Long processInstanceId) {
+        return null;
+    }
+
+    @Override
     public List<ExecutionInstance> findByActivityInstanceId(Long processInstanceId, Long activityInstanceId) {
         ExecutionInstance[] activityInstances = instances.values().toArray(new ExecutionInstance[]{});
         List<ExecutionInstance> tempList =  Arrays.asList(activityInstances);

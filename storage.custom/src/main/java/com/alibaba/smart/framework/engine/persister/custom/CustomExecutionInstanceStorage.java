@@ -140,6 +140,11 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
      }
 
     @Override
+    public List<ExecutionInstance> findAllActiveExecution(Long processInstanceId) {
+        return null;
+    }
+
+    @Override
     public List<ExecutionInstance> findByActivityInstanceId(Long processInstanceId, Long activityInstanceId) {
         ProcessInstance processInstance = PersisterSession.currentSession().getProcessInstance(processInstanceId);
         if (null == processInstance) {

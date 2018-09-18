@@ -18,6 +18,8 @@ public interface ExecutionInstanceStorage {
 
     List<ExecutionInstance> findActiveExecution(Long processInstanceId);
 
+    List<ExecutionInstance> findAllActiveExecution(Long processInstanceId);
+
     List<ExecutionInstance> findByActivityInstanceId(Long processInstanceId,Long activityInstanceId);
 
 }
