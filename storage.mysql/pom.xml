@@ -9,7 +9,7 @@
         <version>1.5.9</version>
     </parent>
 
-    <artifactId>smart-engine-storage-database</artifactId>
+    <artifactId>smart-engine-storage-mysql</artifactId>
     <name>Smart Engine Modules - Database Storage</name>
 
 

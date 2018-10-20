@@ -27,6 +27,10 @@ CREATE TABLE `se_process_instance` (
   `start_user_id` varchar(128) DEFAULT NULL COMMENT '启动流程的用户id',
   `biz_unique_id` varchar(255) DEFAULT NULL COMMENT '业务实例 id',
   `reason` varchar(255) DEFAULT NULL COMMENT '原因,可用于描述终止原因等',
+  `comment` varchar(255) DEFAULT NULL COMMENT '备注',
+  `title` varchar(255) DEFAULT NULL COMMENT '标题',
+  `tag` varchar(255) DEFAULT NULL COMMENT '标签',
+
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='流程引擎-流程实例'
 
@@ -57,6 +61,9 @@ CREATE TABLE `se_task_instance` (
   `claim_time` datetime DEFAULT NULL COMMENT '任务认领时间,预留字段.',
   `complete_time` datetime DEFAULT NULL COMMENT '任务结束时间',
   `status` varchar(255) NOT NULL COMMENT '任务状态 ',
+  `comment` varchar(255) NOT NULL COMMENT '备注 ',
+  `extension` varchar(255) NOT NULL COMMENT '扩展字段，可自由使用',
+
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='流程引擎-任务实例'
 

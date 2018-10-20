@@ -17,8 +17,8 @@
     </parent>
     <groupId>com.alibaba.smart.framework</groupId>
     <artifactId>smart-engine</artifactId>
-    <!--  mvn versions:set -DnewVersion=1.5.7 -DgenerateBackupPoms=false  -->
-    <!--  mvn versions:set -DnewVersion=1.5.6-SNAPSHOT -DgenerateBackupPoms=false  -->
+    <!--  mvn versions:set -DnewVersion=1.6.0 - DgenerateBackupPoms=false  -->
+    <!--  mvn versions:set -DnewVersion=1.6.0-SNAPSHOT -DgenerateBackupPoms=false  -->
     <version>1.5.9</version>
 
     <packaging>pom</packaging>
@@ -41,10 +41,10 @@
         <module>runtime</module>
         <module>bpmn</module>
         <module>grammar.smart</module>
-        <module>storage.database</module>
+        <module>storage.mysql</module>
         <module>storage.custom</module>
         <module>compatible.activiti</module>
-        <module>aggregation.database</module>
+        <module>aggregation.mysql</module>
         <module>aggregation.custom</module>
     </modules>
 
@@ -212,12 +212,7 @@
                 <version>1.7.4</version>
                 <scope>provided</scope>
             </dependency>
-            <dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib</artifactId>
-                <version>2.2.2</version>
-                <scope>provided</scope>
-            </dependency>
+
 
             <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
             <dependency>

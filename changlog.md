@@ -1,6 +1,17 @@
 ## ChangeLog
 
+### version 1.6.0 by diqi
+
+
+1. Add MongoDB integration
+    * 修改maven gav : smart-engine-storage-database 为 smart-engine-storage-mysql
+    * 
+2. 修复表结构字段缺少的问题
+3. 
+
+
 ===================================================
+
 
 
 ### version 1.5.5 by 彬灵

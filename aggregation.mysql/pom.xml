@@ -16,7 +16,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>smart-engine-storage-database</artifactId>
+            <artifactId>smart-engine-storage-mysql</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
