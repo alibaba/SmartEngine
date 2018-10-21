@@ -46,6 +46,7 @@
         <module>compatible.activiti</module>
         <module>aggregation.mysql</module>
         <module>aggregation.custom</module>
+        <module>storage.mongodb</module>
     </modules>
 
     <dependencies>
@@ -244,6 +245,16 @@
                 <version>5.1.17</version>
                 <scope>provided</scope>
             </dependency>
+
+
+
+            <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>mongo-java-driver</artifactId>
+                <version>3.5.0</version>
+                <scope>provided</scope>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
