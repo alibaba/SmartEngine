@@ -19,12 +19,12 @@ import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 public class DefaultMultiInstanceCounter implements MultiInstanceCounter {
 
 
-    public Integer countPassedTaskInstanceNumber(Long processInstanceId, Long activityInstanceId,
+    public Integer countPassedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
                                                  SmartEngine smartEngine) {
       TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        List<Long> processInstanceIdList = new ArrayList<Long>(2);
+        List<String> processInstanceIdList = new ArrayList<String>(2);
         processInstanceIdList.add(processInstanceId);
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setActivityInstanceId(activityInstanceId);
@@ -35,12 +35,12 @@ public class DefaultMultiInstanceCounter implements MultiInstanceCounter {
     }
 
     @Override
-    public Integer countRejectedTaskInstanceNumber(Long processInstanceId, Long activityInstanceId,
+    public Integer countRejectedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
                                                    SmartEngine smartEngine) {
         TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        List<Long> processInstanceIdList = new ArrayList<Long>(2);
+        List<String> processInstanceIdList = new ArrayList<String>(2);
         processInstanceIdList.add(processInstanceId);
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setActivityInstanceId(activityInstanceId);

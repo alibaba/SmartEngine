@@ -72,12 +72,12 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     }
 
     @Override
-    public List<TaskInstance> findAllPendingTaskList(Long processInstanceId) {
+    public List<TaskInstance> findAllPendingTaskList(String processInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        List<Long> processInstanceIdList = new ArrayList<Long>(2);
+        List<String> processInstanceIdList = new ArrayList<String>(2);
         processInstanceIdList.add(processInstanceId);
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
@@ -86,7 +86,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     }
 
     @Override
-    public TaskInstance findOne(Long taskInstanceId) {
+    public TaskInstance findOne(String taskInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
         TaskInstance taskInstance = taskInstanceStorage.find(taskInstanceId);

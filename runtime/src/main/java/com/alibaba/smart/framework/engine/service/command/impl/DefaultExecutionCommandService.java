@@ -62,7 +62,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     @Override
-    public ProcessInstance signal(Long executionInstanceId, Map<String, Object> request) {
+    public ProcessInstance signal(String executionInstanceId, Map<String, Object> request) {
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
@@ -125,12 +125,12 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
 
     @Override
-    public ProcessInstance signal(Long executionInstanceId) {
+    public ProcessInstance signal(String executionInstanceId) {
         return signal(executionInstanceId, null);
     }
 
     @Override
-    public ProcessInstance jump(Long executionInstanceId, String activityId, Map<String, Object> request) {
+    public ProcessInstance jump(String executionInstanceId, String activityId, Map<String, Object> request) {
         if (StringUtil.isEmpty(activityId)){
             return signal(executionInstanceId, request);
         }
@@ -195,7 +195,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     private void tryLock(ProcessEngineConfiguration processEngineConfiguration,
-                         Long processInstanceId) {
+                         String processInstanceId) {
         LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
         if (null != lockStrategy) {
             lockStrategy.tryLock(processInstanceId);
@@ -203,7 +203,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     private void unLock(ProcessEngineConfiguration processEngineConfiguration,
-                        Long processInstanceId) {
+                        String processInstanceId) {
         LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
         if (null != lockStrategy) {
             lockStrategy.unLock(processInstanceId);

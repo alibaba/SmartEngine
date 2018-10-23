@@ -12,7 +12,8 @@ public class AliPayIdGenerator implements IdGenerator {
     private AtomicLong atomicLong = new AtomicLong(233L);
 
     @Override
-    public Long getId() {
-        return atomicLong.addAndGet(100L);
+    public String getId() {
+        long l = atomicLong.addAndGet(100L);
+        return l+"";
     }
 }

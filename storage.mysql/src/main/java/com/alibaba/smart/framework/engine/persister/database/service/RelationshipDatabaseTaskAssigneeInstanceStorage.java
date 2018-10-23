@@ -15,9 +15,9 @@ import com.alibaba.smart.framework.engine.persister.database.util.SpringContextU
 public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
     @Override
-    public List<TaskAssigneeInstance> findList(Long taskInstanceId) {
+    public List<TaskAssigneeInstance> findList(String taskInstanceId) {
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
-        List<TaskAssigneeEntity> taskAssigneeEntityList =  taskAssigneeDAO.findList(taskInstanceId);
+        List<TaskAssigneeEntity> taskAssigneeEntityList =  taskAssigneeDAO.findList(Long.valueOf(taskInstanceId));
 
         List<TaskAssigneeInstance> taskAssigneeInstanceList= null;
         if(null != taskAssigneeEntityList){
@@ -32,18 +32,28 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
     }
 
     @Override
-    public Map<Long, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<Long> taskInstanceIdList) {
+    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList) {
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
-        List<TaskAssigneeEntity> taskAssigneeEntityList =  taskAssigneeDAO.findListForInstanceList(taskInstanceIdList);
 
-        Map<Long, List<TaskAssigneeInstance>> assigneeMap = new HashMap<Long, List<TaskAssigneeInstance>>();
-        if (taskAssigneeEntityList != null) {
+        Map<String, List<TaskAssigneeInstance>> assigneeMap = null;
+        if (taskInstanceIdList != null) {
+
+            assigneeMap = new HashMap<String, List<TaskAssigneeInstance>>();
+
+            List<Long> longList = new ArrayList<Long>(taskInstanceIdList.size());
+            for (String s : taskInstanceIdList) {
+                longList.add(Long.valueOf(s));
+            }
+
+            List<TaskAssigneeEntity> taskAssigneeEntityList =  taskAssigneeDAO.findListForInstanceList(longList);
+
+
             for (TaskAssigneeEntity entity: taskAssigneeEntityList) {
                 TaskAssigneeInstance taskAssigneeInstance = buildTaskAssigneeInstance(entity);
                 List<TaskAssigneeInstance> assigneeListForTaskInstance = assigneeMap.get(entity.getTaskInstanceId());
                 if (assigneeListForTaskInstance == null) {
                     assigneeListForTaskInstance = new ArrayList<TaskAssigneeInstance>();
-                    assigneeMap.put(entity.getTaskInstanceId(), assigneeListForTaskInstance);
+                    assigneeMap.put(entity.getTaskInstanceId().toString(), assigneeListForTaskInstance);
                 }
                 assigneeListForTaskInstance.add(taskAssigneeInstance);
             }
@@ -59,35 +69,38 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
         //taskAssigneeEntity.setId(null);
         taskAssigneeDAO.insert(taskAssigneeEntity);
 
-        TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(taskAssigneeEntity.getId());
+        TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(taskAssigneeEntity.getId().toString());
         return resultTaskAssigneeInstance;
     }
 
     private TaskAssigneeEntity buildTaskInstanceEntity(TaskAssigneeInstance taskAssigneeInstance) {
         TaskAssigneeEntity taskAssigneeEntity = new TaskAssigneeEntity();
 
-        taskAssigneeEntity.setProcessInstanceId(taskAssigneeInstance.getProcessInstanceId());
-        taskAssigneeEntity.setTaskInstanceId(taskAssigneeInstance.getTaskInstanceId());
+        taskAssigneeEntity.setProcessInstanceId(Long.valueOf(taskAssigneeInstance.getProcessInstanceId()));
+        taskAssigneeEntity.setTaskInstanceId(Long.valueOf(taskAssigneeInstance.getTaskInstanceId()));
         taskAssigneeEntity.setAssigneeId(taskAssigneeInstance.getAssigneeId());
         taskAssigneeEntity.setAssigneeType(taskAssigneeInstance.getAssigneeType());
-        taskAssigneeEntity.setId(taskAssigneeInstance.getInstanceId());
+        String taskAssigneeInstanceId = taskAssigneeInstance.getInstanceId();
+        if(null != taskAssigneeInstanceId){
+            taskAssigneeEntity.setId(Long.valueOf(taskAssigneeInstanceId));
+        }
         return taskAssigneeEntity;
     }
 
 
     @Override
-    public TaskAssigneeInstance update(Long taskAssigneeInstanceId,String assigneeId) {
+    public TaskAssigneeInstance update(String taskAssigneeInstanceId, String assigneeId) {
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
-        taskAssigneeDAO.update(  taskAssigneeInstanceId,  assigneeId);
+        taskAssigneeDAO.update(  Long.valueOf(taskAssigneeInstanceId), Long.valueOf( assigneeId));
         TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(taskAssigneeInstanceId);
         return resultTaskAssigneeInstance;
     }
 
     @Override
-    public TaskAssigneeInstance findOne(Long taskAssigneeInstanceId) {
+    public TaskAssigneeInstance findOne(String taskAssigneeInstanceId) {
 
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
-        TaskAssigneeEntity taskAssigneeEntity =  taskAssigneeDAO.findOne(taskAssigneeInstanceId);
+        TaskAssigneeEntity taskAssigneeEntity =  taskAssigneeDAO.findOne(Long.valueOf(taskAssigneeInstanceId));
 
         TaskAssigneeInstance taskAssigneeInstance = buildTaskAssigneeInstance(taskAssigneeEntity);
 
@@ -97,9 +110,9 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
     private TaskAssigneeInstance buildTaskAssigneeInstance(TaskAssigneeEntity taskAssigneeEntity) {
         TaskAssigneeInstance taskAssigneeInstance = new DefaultTaskAssigneeInstance();
 
-        taskAssigneeInstance.setInstanceId(taskAssigneeEntity.getId());
-        taskAssigneeInstance.setProcessInstanceId(taskAssigneeEntity.getProcessInstanceId());
-        taskAssigneeInstance.setTaskInstanceId(taskAssigneeEntity.getTaskInstanceId());
+        taskAssigneeInstance.setInstanceId(taskAssigneeEntity.getId().toString());
+        taskAssigneeInstance.setProcessInstanceId(taskAssigneeEntity.getProcessInstanceId().toString());
+        taskAssigneeInstance.setTaskInstanceId(taskAssigneeEntity.getTaskInstanceId().toString());
 
 
         taskAssigneeInstance.setAssigneeId(taskAssigneeEntity.getAssigneeId());
@@ -111,9 +124,9 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
     }
 
     @Override
-    public void remove(Long taskAssigneeInstanceId) {
+    public void remove(String taskAssigneeInstanceId) {
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
-        taskAssigneeDAO.delete(taskAssigneeInstanceId);
+        taskAssigneeDAO.delete(Long.valueOf(taskAssigneeInstanceId));
 
     }
 }

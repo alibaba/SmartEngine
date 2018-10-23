@@ -31,14 +31,14 @@ public interface TaskQueryService {
      * @param processInstanceId
      * @return
      */
-    List<TaskInstance> findAllPendingTaskList(Long processInstanceId);
+    List<TaskInstance> findAllPendingTaskList(String processInstanceId);
 
 
 
 
 
 
-    TaskInstance findOne(Long taskInstanceId );
+    TaskInstance findOne(String taskInstanceId );
 
 
     /**

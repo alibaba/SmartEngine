@@ -26,7 +26,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
         ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(activityInstanceEntityToBePersisted.getId());
 
-        activityInstance.setInstanceId(activityInstanceEntity.getId());
+        activityInstance.setInstanceId(activityInstanceEntity.getId().toString());
         activityInstance.setStartTime(activityInstanceEntity.getGmtCreate());
 
         return activityInstance;
@@ -38,8 +38,8 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
         //TUNE 命名不统一
         activityInstanceEntityToBePersisted.setProcessDefinitionActivityId(activityInstance.getProcessDefinitionActivityId());
-        activityInstanceEntityToBePersisted.setProcessInstanceId(activityInstance.getProcessInstanceId());
-        activityInstanceEntityToBePersisted.setId(activityInstance.getInstanceId());
+        activityInstanceEntityToBePersisted.setProcessInstanceId(Long.valueOf(activityInstance.getProcessInstanceId()));
+        activityInstanceEntityToBePersisted.setId(Long.valueOf(activityInstance.getInstanceId()));
         return activityInstanceEntityToBePersisted;
     }
 
@@ -52,15 +52,15 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         return activityInstance;    }
 
     @Override
-    public ActivityInstance find(Long instanceId) {
+    public ActivityInstance find(String instanceId) {
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
-        ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(instanceId);
+        ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(Long.valueOf(instanceId));
 
         ActivityInstance activityInstance  = new DefaultActivityInstance();
         activityInstance.setStartTime(activityInstanceEntity.getGmtCreate());
         activityInstance.setProcessDefinitionIdAndVersion(activityInstanceEntity.getProcessDefinitionIdAndVersion());
-        activityInstance.setInstanceId(activityInstanceEntity.getId());
-        activityInstance.setProcessInstanceId(activityInstanceEntity.getProcessInstanceId());
+        activityInstance.setInstanceId(activityInstanceEntity.getId().toString());
+        activityInstance.setProcessInstanceId(activityInstanceEntity.getProcessInstanceId().toString());
         activityInstance.setProcessDefinitionActivityId(activityInstanceEntity.getProcessDefinitionActivityId());
 
         //TUNE 意义不准确?
@@ -73,17 +73,17 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
 
     @Override
-    public void remove(Long instanceId) {
+    public void remove(String instanceId) {
 
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
-        activityInstanceDAO.delete(instanceId);
+        activityInstanceDAO.delete(Long.valueOf(instanceId));
 
     }
 
     @Override
-    public List<ActivityInstance> findAll(Long processInstanceId) {
+    public List<ActivityInstance> findAll(String processInstanceId) {
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
-        List<ActivityInstanceEntity> activityInstanceEntities  = activityInstanceDAO.findAllActivity(processInstanceId);
+        List<ActivityInstanceEntity> activityInstanceEntities  = activityInstanceDAO.findAllActivity(Long.valueOf(processInstanceId));
 
         List<ActivityInstance> activityInstanceList= new ArrayList<ActivityInstance>();
 

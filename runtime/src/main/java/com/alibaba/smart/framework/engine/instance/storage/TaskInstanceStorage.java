@@ -30,8 +30,8 @@ public interface TaskInstanceStorage {
 
     int updateFromStatus(TaskInstance taskInstance,String fromStatus);
 
-    TaskInstance find(Long taskInstanceId);
+    TaskInstance find(String taskInstanceId);
 
-    void remove(Long taskInstanceId);
+    void remove(String taskInstanceId);
 
 }

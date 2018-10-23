@@ -96,7 +96,7 @@ public class MultiInstanceCompatibleAllModelPassedTest {
 
 
         //4.启动流程实例
-        ProcessInstance processInstance = processCommandService.start(deploymentInstance.getInstanceId()
+        ProcessInstance processInstance = processCommandService.startWith(deploymentInstance.getInstanceId()
                 );
         Assert.assertNotNull(processInstance);
 
@@ -160,7 +160,7 @@ public class MultiInstanceCompatibleAllModelPassedTest {
         taskInstanceQueryParam.setProcessDefinitionType("type");
         taskInstanceQueryParam.setTag(FullMultiInstanceTest.AGREE);
 
-        List<Long> processInstanceIdList = new ArrayList<Long>(2);
+        List<String> processInstanceIdList = new ArrayList<String>(2);
         processInstanceIdList.add(processInstance.getInstanceId());
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.COMPLETED);

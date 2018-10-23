@@ -5,6 +5,7 @@ import java.util.List;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
+import com.alibaba.smart.framework.engine.constant.AdHocConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
@@ -34,11 +35,11 @@ public class DefaultVariableQueryService implements VariableQueryService , LifeC
     }
 
     @Override
-    public List<VariableInstance> findProcessInstanceVariableList(Long processInstanceId) {
-        return findList(  processInstanceId,0L );}
+    public List<VariableInstance> findProcessInstanceVariableList(String processInstanceId) {
+        return findList(  processInstanceId, AdHocConstant.DEFAULT_ZERO_VALUE );}
 
     @Override
-    public List<VariableInstance> findList(Long processInstanceId, Long executionInstanceId) {
+    public List<VariableInstance> findList(String processInstanceId, String executionInstanceId) {
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         VariableInstanceStorage variableInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(VariableInstanceStorage.class);

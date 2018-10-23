@@ -17,14 +17,14 @@ public class DefaultTaskAssigneeInstance extends AbstractLifeCycleInstance imple
     //private String processDefinitionIdAndVersion;
 
     //private String activityId;
-    private Long processInstanceId;
+    private String processInstanceId;
     //private Long executionInstanceId;
     //private Long activityInstanceId;
     //
     //private String title;
     private String assigneeId;
     private String assigneeType;
-    private Long taskInstanceId;
+    private String taskInstanceId;
 
 
     //private Integer priority;

@@ -36,7 +36,7 @@ public class DefaultActivityQueryService implements ActivityQueryService, LifeCy
 
 
     @Override
-    public List<ActivityInstance> findAll(Long processInstanceId) {
+    public List<ActivityInstance> findAll(String processInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         ActivityInstanceStorage  activityInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);

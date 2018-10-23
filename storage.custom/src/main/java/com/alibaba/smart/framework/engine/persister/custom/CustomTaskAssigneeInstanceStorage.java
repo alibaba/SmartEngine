@@ -9,12 +9,12 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 public class CustomTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
     @Override
-    public List<TaskAssigneeInstance> findList(Long taskInstanceId) {
+    public List<TaskAssigneeInstance> findList(String taskInstanceId) {
         return null;
     }
 
     @Override
-    public Map<Long, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<Long> taskInstanceIdList) {
+    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList) {
         return null;
     }
 
@@ -24,17 +24,17 @@ public class CustomTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
     }
 
     @Override
-    public TaskAssigneeInstance update(Long taskAssigneeId, String assigneeId) {
+    public TaskAssigneeInstance update(String taskAssigneeId, String assigneeId) {
         return null;
     }
 
     @Override
-    public TaskAssigneeInstance findOne(Long taskAssigneeId) {
+    public TaskAssigneeInstance findOne(String taskAssigneeId) {
         return null;
     }
 
     @Override
-    public void remove(Long taskAssigneeId) {
+    public void remove(String taskAssigneeId) {
 
     }
 }

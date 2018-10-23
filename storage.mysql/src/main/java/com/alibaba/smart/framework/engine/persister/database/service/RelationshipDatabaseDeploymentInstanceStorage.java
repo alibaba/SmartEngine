@@ -28,7 +28,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         DeploymentInstanceEntity entity = convertByInstance(deploymentInstance);
         deploymentnstanceDAO.insert(entity);
 
-        deploymentInstance = findById(entity.getId());
+        deploymentInstance = findById(entity.getId().toString());
 
         return deploymentInstance;
     }
@@ -37,17 +37,17 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     public DeploymentInstance update(DeploymentInstance deploymentInstance) {
         DeploymentInstanceEntity entity = convertByInstance(deploymentInstance);
         deploymentnstanceDAO.update(entity);
-        deploymentInstance = findById(entity.getId());
+        deploymentInstance = findById(entity.getId().toString());
         return deploymentInstance;
     }
 
     @Override
-    public DeploymentInstance findById(Long id) {
+    public DeploymentInstance findById(String id) {
         if (null == id){
             return null;
         }
 
-        DeploymentInstanceEntity entity = deploymentnstanceDAO.findOne(id);
+        DeploymentInstanceEntity entity = deploymentnstanceDAO.findOne(Long.valueOf(id));
         DeploymentInstance deploymentInstance = convertByEntity(entity);
 
         return deploymentInstance;
@@ -74,8 +74,8 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     }
 
     @Override
-    public void remove(Long id) {
-        deploymentnstanceDAO.delete(id);
+    public void remove(String id) {
+        deploymentnstanceDAO.delete(Long.valueOf(id));
     }
 
 
@@ -98,7 +98,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     private DeploymentInstance convertByEntity(DeploymentInstanceEntity entity) {
         DeploymentInstance deploymentInstance = new DefaultDeploymentInstance();
 
-        deploymentInstance.setInstanceId(entity.getId());
+        deploymentInstance.setInstanceId(entity.getId().toString());
         deploymentInstance.setLogicStatus(entity.getLogicStatus());
         deploymentInstance.setDeploymentStatus(entity.getDeploymentStatus());
         deploymentInstance.setDeploymentUserId(entity.getDeploymentUserId());
@@ -126,7 +126,12 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         deploymentInstanceEntity.setProcessDefinitionCode(deploymentInstance.getProcessDefinitionCode());
         deploymentInstanceEntity.setProcessDefinitionId(deploymentInstance.getProcessDefinitionId());
         deploymentInstanceEntity.setProcessDefinitionVersion(deploymentInstance.getProcessDefinitionVersion());
-        deploymentInstanceEntity.setId(deploymentInstance.getInstanceId());
+        String deploymentInstanceInstanceId = deploymentInstance.getInstanceId();
+
+        if(null != deploymentInstanceInstanceId){
+            deploymentInstanceEntity.setId(Long.valueOf(deploymentInstanceInstanceId));
+        }
+
         return deploymentInstanceEntity;
     }
 }

@@ -26,7 +26,7 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
     }
 
     @Override
-    public ActivityInstance find(Long activityInstanceId) {
+    public ActivityInstance find(String activityInstanceId) {
         Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
 
         boolean matched = false;
@@ -56,12 +56,12 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
 
 
     @Override
-    public void remove(Long instanceId) {
+    public void remove(String instanceId) {
         throw new EngineException("not implement intentionally");
     }
 
     @Override
-    public List<ActivityInstance> findAll(Long processInstanceId) {
+    public List<ActivityInstance> findAll(String processInstanceId) {
         ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance(processInstanceId);
         return null == processInstance ? null : processInstance.getActivityInstances();
     }

@@ -26,12 +26,12 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
     }
 
     @Override
-    public ProcessInstance findOne(Long instanceId) {
+    public ProcessInstance findOne(String instanceId) {
         return  PersisterSession.currentSession().getProcessInstance(instanceId);
     }
 
     @Override
-    public ProcessInstance findOneForUpdate(Long instanceId) {
+    public ProcessInstance findOneForUpdate(String instanceId) {
         return  PersisterSession.currentSession().getProcessInstance(instanceId);
     }
 
@@ -47,7 +47,7 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
 
 
     @Override
-    public void remove(Long instanceId) {
+    public void remove(String instanceId) {
         PersisterSession.currentSession().getProcessInstances().remove(instanceId);
     }
 }

@@ -38,7 +38,7 @@ public class DefaultTaskAssigneeQueryService implements TaskAssigneeQueryService
     }
 
     @Override
-    public List<TaskAssigneeInstance> findList(Long taskInstanceId) {
+    public List<TaskAssigneeInstance> findList(String taskInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskAssigneeStorage taskAssigneeStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
         List<TaskAssigneeInstance>  taskAssigneeStorageList =  taskAssigneeStorage.findList(taskInstanceId);
@@ -46,7 +46,7 @@ public class DefaultTaskAssigneeQueryService implements TaskAssigneeQueryService
     }
 
     @Override
-    public Map<Long, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<Long> taskInstanceIdList) {
+    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskAssigneeStorage taskAssigneeStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
         return taskAssigneeStorage.findAssigneeOfInstanceList(taskInstanceIdList);

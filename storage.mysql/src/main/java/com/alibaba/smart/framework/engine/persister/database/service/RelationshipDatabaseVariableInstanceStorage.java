@@ -29,10 +29,13 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
         VariableInstanceDAO variableInstanceDAO = (VariableInstanceDAO)SpringContextUtil.getBean("variableInstanceDAO");
 
         VariableInstanceEntity variableInstanceEntity = new VariableInstanceEntity();
-        variableInstanceEntity.setId(variableInstance.getInstanceId());
-        variableInstanceEntity.setExecutionInstanceId(variableInstance.getExecutionInstanceId());
+        String variableInstanceInstanceId = variableInstance.getInstanceId();
+        if(null != variableInstanceInstanceId){
+            variableInstanceEntity.setId(Long.valueOf(variableInstanceInstanceId));
+        }
+        variableInstanceEntity.setExecutionInstanceId((Long.valueOf(variableInstance.getExecutionInstanceId())));
         variableInstanceEntity.setFieldKey(variableInstance.getFieldKey());
-        variableInstanceEntity.setProcessInstanceId(variableInstance.getProcessInstanceId());
+        variableInstanceEntity.setProcessInstanceId((Long.valueOf(variableInstance.getProcessInstanceId())));
         Class fieldType = variableInstance.getFieldType();
         variableInstanceEntity.setFieldType(fieldType.getName());
 
@@ -65,20 +68,20 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
     }
 
     @Override
-    public List<VariableInstance> findList(Long processInstanceId, Long executionInstanceId,
+    public List<VariableInstance> findList(String processInstanceId, String executionInstanceId,
                                            VariablePersister variablePersister) {
         VariableInstanceDAO variableInstanceDAO = (VariableInstanceDAO)SpringContextUtil.getBean("variableInstanceDAO");
         List<VariableInstance> variableInstanceList = null;
-        List<VariableInstanceEntity> list = variableInstanceDAO.findList(processInstanceId, executionInstanceId);
+        List<VariableInstanceEntity> list = variableInstanceDAO.findList(Long.valueOf(processInstanceId), Long.valueOf(executionInstanceId));
         if (null != list) {
             variableInstanceList = new ArrayList<VariableInstance>(list.size());
             for (VariableInstanceEntity variableInstanceEntity : list) {
                 VariableInstance variableInstance = new DefaultVariableInstance();
-                variableInstance.setInstanceId(variableInstanceEntity.getId());
+                variableInstance.setInstanceId(variableInstanceEntity.getId().toString());
                 variableInstance.setStartTime(variableInstanceEntity.getGmtCreate());
                 variableInstance.setCompleteTime(variableInstanceEntity.getGmtModified());
-                variableInstance.setProcessInstanceId(variableInstanceEntity.getProcessInstanceId());
-                variableInstance.setExecutionInstanceId(variableInstanceEntity.getExecutionInstanceId());
+                variableInstance.setProcessInstanceId(variableInstanceEntity.getProcessInstanceId().toString());
+                variableInstance.setExecutionInstanceId(variableInstanceEntity.getExecutionInstanceId().toString());
 
                 variableInstance.setFieldKey(variableInstanceEntity.getFieldKey());
                 String fieldType1 = variableInstanceEntity.getFieldType();

@@ -22,7 +22,7 @@ public class DefaultDeploymentQueryService implements DeploymentQueryService {
     }
 
     @Override
-    public DeploymentInstance findById(Long deploymentInstanceId) {
+    public DeploymentInstance findById(String deploymentInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);

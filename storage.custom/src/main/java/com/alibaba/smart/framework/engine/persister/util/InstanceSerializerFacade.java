@@ -38,20 +38,20 @@ public class InstanceSerializerFacade {
         processInstance.setProcessDefinitionId(processDefinitionId);
         processInstance.setProcessDefinitionVersion(version);
         processInstance.setStatus(instanceStatus);
-        processInstance.setInstanceId(1L);
+        processInstance.setInstanceId("1");
 
         ActivityInstance activityInstance = new DefaultActivityInstance();
         activityInstance.setProcessDefinitionActivityId(processDefinitionActivityId);
         activityInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
-        activityInstance.setInstanceId(1L);
+        activityInstance.setInstanceId("1");
 
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
         executionInstance.setProcessInstanceId(processInstance.getInstanceId());
         executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
         executionInstance.setProcessDefinitionActivityId(processDefinitionActivityId);
         executionInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
-        executionInstance.setInstanceId(1L);
+        executionInstance.setInstanceId("1");
         executionInstance.setActive(true);
 
         List<ExecutionInstance>  executionInstanceList = new ArrayList<ExecutionInstance>();

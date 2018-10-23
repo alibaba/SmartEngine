@@ -103,7 +103,7 @@ public class TaskServiceTest {
         PendingTaskQueryParam  pendingTaskQueryParam1 = new PendingTaskQueryParam();
         pendingTaskQueryParam1.setPageOffset(0);
         pendingTaskQueryParam1.setPageSize(10);
-        List<Long> processInstanceIdList = new ArrayList<Long>(2);
+        List<String> processInstanceIdList = new ArrayList<String>(2);
         processInstanceIdList.add(processInstance.getInstanceId());
         pendingTaskQueryParam1.setProcessInstanceIdList(processInstanceIdList);
         submitTaskInstanceList=  taskQueryService.findPendingTaskList(pendingTaskQueryParam);
@@ -113,7 +113,7 @@ public class TaskServiceTest {
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam ();
         taskInstanceQueryParam.setPageOffset(0);
         taskInstanceQueryParam.setPageSize(10);
-        List<Long> processInstanceIdList111 = new ArrayList<Long>(2);
+        List<String> processInstanceIdList111 = new ArrayList<String>(2);
         processInstanceIdList111.add(processInstance.getInstanceId());
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList111);
         submitTaskInstanceList =    taskQueryService.findList(taskInstanceQueryParam);

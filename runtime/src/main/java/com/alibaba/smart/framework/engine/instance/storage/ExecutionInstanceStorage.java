@@ -12,12 +12,12 @@ public interface ExecutionInstanceStorage {
     ExecutionInstance update(ExecutionInstance executionInstance);
 
 
-    ExecutionInstance find(Long executionInstanceId);
+    ExecutionInstance find(String executionInstanceId);
 
-    void remove(Long executionInstanceId);
+    void remove(String executionInstanceId);
 
-    List<ExecutionInstance> findActiveExecution(Long processInstanceId);
+    List<ExecutionInstance> findActiveExecution(String processInstanceId);
 
-    List<ExecutionInstance> findByActivityInstanceId(Long processInstanceId,Long activityInstanceId);
+    List<ExecutionInstance> findByActivityInstanceId(String processInstanceId,String activityInstanceId);
 
 }

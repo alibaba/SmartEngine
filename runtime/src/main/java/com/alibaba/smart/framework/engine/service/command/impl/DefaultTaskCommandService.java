@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
-import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
@@ -15,7 +14,6 @@ import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoi
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,7 +50,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
 
 
     @Override
-    public void complete(Long taskId, Map<String, Object> variables) {
+    public void complete(String taskId, Map<String, Object> variables) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(
             PersisterFactoryExtensionPoint.class);
 
@@ -69,7 +67,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
 
 
     @Override
-    public void complete(Long taskId, String userId, Map<String, Object> variables) {
+    public void complete(String taskId, String userId, Map<String, Object> variables) {
         if(null == variables){
             variables = new HashMap<String, Object>();
         }

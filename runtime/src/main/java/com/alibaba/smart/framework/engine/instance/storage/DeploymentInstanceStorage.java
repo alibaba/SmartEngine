@@ -17,12 +17,12 @@ public interface DeploymentInstanceStorage {
 
     DeploymentInstance update(DeploymentInstance deploymentInstance);
 
-    DeploymentInstance findById(Long id);
+    DeploymentInstance findById(String id);
 
     List<DeploymentInstance> findByPage(DeploymentInstanceQueryParam deploymentInstanceQueryParam);
 
     int count(DeploymentInstanceQueryParam deploymentInstanceQueryParam);
 
-    void remove(Long id);
+    void remove(String id);
 
 }

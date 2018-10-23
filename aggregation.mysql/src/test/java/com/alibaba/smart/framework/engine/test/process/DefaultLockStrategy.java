@@ -29,7 +29,7 @@ public class DefaultLockStrategy implements LockStrategy {
     private  SmartEngine smartEngine;
 
     @Override
-    public void tryLock(Long processInstanceId) throws LockException {
+    public void tryLock(String processInstanceId) throws LockException {
         //ExtensionPointRegistry extensionPointRegistry = smartEngine.getProcessEngineConfiguration()
         //    .getExtensionPointRegistry();
         //PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
@@ -40,13 +40,13 @@ public class DefaultLockStrategy implements LockStrategy {
 
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
 
-        processInstanceDAO.tryLock(processInstanceId);
+        processInstanceDAO.tryLock(Long.valueOf(processInstanceId));
 
         //可以是设置 db uniqueKey 唯一索引； 或者在插入后直接再锁上； 或者使用其他中间件。
     }
 
     @Override
-    public void unLock(Long processInstanceId) throws LockException {
+    public void unLock(String processInstanceId) throws LockException {
         //do nothing
     }
 }

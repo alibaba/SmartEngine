@@ -60,7 +60,9 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     @Override
     public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
-        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskByProcessInstanceIdAndStatus(taskInstanceQueryParam.getProcessInstanceIdList().get(0),taskInstanceQueryParam.getStatus());
+        String processInstanceId = taskInstanceQueryParam.getProcessInstanceIdList().get(0);
+        List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskByProcessInstanceIdAndStatus(
+            Long.valueOf(processInstanceId),taskInstanceQueryParam.getStatus());
 
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
@@ -150,9 +152,9 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     }
 
     @Override
-    public TaskInstance find(Long instanceId) {
+    public TaskInstance find(String instanceId) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
-        TaskInstanceEntity taskInstanceEntity =  taskInstanceDAO.findOne(instanceId);
+        TaskInstanceEntity taskInstanceEntity =  taskInstanceDAO.findOne(Long.valueOf(instanceId));
 
         TaskInstance taskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
         return  taskInstance;
@@ -160,17 +162,17 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
 
     private TaskInstance buildTaskInstanceFromEntity(TaskInstanceEntity taskInstanceEntity) {
         TaskInstance taskInstance = new DefaultTaskInstance();
-        taskInstance.setInstanceId(taskInstanceEntity.getId());
+        taskInstance.setInstanceId(taskInstanceEntity.getId().toString());
         taskInstance.setStartTime(taskInstanceEntity.getGmtCreate());
         taskInstance.setProcessDefinitionIdAndVersion(taskInstanceEntity.getProcessDefinitionIdAndVersion());
-        taskInstance.setProcessInstanceId(taskInstanceEntity.getProcessInstanceId());
-        taskInstance.setActivityInstanceId(taskInstanceEntity.getActivityInstanceId());
+        taskInstance.setProcessInstanceId(taskInstanceEntity.getProcessInstanceId().toString());
+        taskInstance.setActivityInstanceId(taskInstanceEntity.getActivityInstanceId().toString());
         taskInstance.setProcessDefinitionType(taskInstanceEntity.getProcessDefinitionType());
         taskInstance.setTag(taskInstanceEntity.getTag());
         taskInstance.setStatus(taskInstanceEntity.getStatus());
 
         taskInstance.setProcessDefinitionActivityId(taskInstanceEntity.getProcessDefinitionActivityId());
-        taskInstance.setExecutionInstanceId(taskInstanceEntity.getExecutionInstanceId());
+        taskInstance.setExecutionInstanceId(taskInstanceEntity.getExecutionInstanceId().toString());
 
         taskInstance.setClaimUserId(taskInstanceEntity.getClaimUserId());
         taskInstance.setCompleteTime(taskInstanceEntity.getCompleteTime());
@@ -184,12 +186,12 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     private TaskInstanceEntity buildTaskInstanceEntity(TaskInstance taskInstance) {
         TaskInstanceEntity taskInstanceEntity = new TaskInstanceEntity();
 
-        taskInstanceEntity.setId(taskInstance.getInstanceId());
+        taskInstanceEntity.setId(Long.valueOf(taskInstance.getInstanceId()));
         taskInstanceEntity.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
-        taskInstanceEntity.setProcessInstanceId(taskInstance.getProcessInstanceId());
-        taskInstanceEntity.setActivityInstanceId(taskInstance.getActivityInstanceId());
+        taskInstanceEntity.setProcessInstanceId(Long.valueOf(taskInstance.getProcessInstanceId()));
+        taskInstanceEntity.setActivityInstanceId(Long.valueOf(taskInstance.getActivityInstanceId()));
         taskInstanceEntity.setProcessDefinitionActivityId(taskInstance.getProcessDefinitionActivityId());
-        taskInstanceEntity.setExecutionInstanceId(taskInstance.getExecutionInstanceId());
+        taskInstanceEntity.setExecutionInstanceId(Long.valueOf(taskInstance.getExecutionInstanceId()));
         taskInstanceEntity.setClaimUserId(taskInstance.getClaimUserId());
         taskInstanceEntity.setClaimTime(taskInstance.getClaimTime());
         taskInstanceEntity.setStatus(taskInstance.getStatus());
@@ -207,9 +209,9 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
 
 
     @Override
-    public void remove(Long instanceId) {
+    public void remove(String instanceId) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
-        taskInstanceDAO.delete(instanceId);
+        taskInstanceDAO.delete(Long.valueOf(instanceId));
 
     }
 }

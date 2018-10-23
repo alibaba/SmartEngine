@@ -29,19 +29,19 @@ public interface ExecutionHistoryInstanceStorage {
      * @param instanceId 执行历史ID
      * @return 执行历史
      */
-    ExecutionHistoryInstance find(Long instanceId);
+    ExecutionHistoryInstance find(String instanceId);
 
     /**
      * 删除
      * @param instanceId 执行历史ID
      */
-    void remove(Long instanceId);
+    void remove(String instanceId);
 
     /**
      * 获取流程实例所有执行历史
      * @param processInstanceId 流程实例ID
      * @return 流程实例所有执行历史
      */
-    List<ExecutionHistoryInstance> findAll(Long processInstanceId);
+    List<ExecutionHistoryInstance> findAll(String processInstanceId);
 
 }

@@ -269,7 +269,7 @@ public class ProcessServiceTest {
 
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam ();
-        ArrayList<Long> longs = new ArrayList<Long>();
+        ArrayList<String> longs = new ArrayList<String>();
         longs.add(processInstance.getInstanceId());
         taskInstanceQueryParam.setProcessInstanceIdList(longs);
 
@@ -329,14 +329,14 @@ public class ProcessServiceTest {
         request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
 
 
-        processCommandService.start(deploymentInstance.getInstanceId(),request  );
+        processCommandService.startWith(deploymentInstance.getInstanceId(),request  );
 
-        processCommandService.start(deploymentInstance.getInstanceId(),request  );
+        processCommandService.startWith(deploymentInstance.getInstanceId(),request  );
 
-        processCommandService.start(deploymentInstance.getInstanceId(),request  );
+        processCommandService.startWith(deploymentInstance.getInstanceId(),request  );
 
 
-        processCommandService.start(deploymentInstance.getInstanceId(),request  );
+        processCommandService.startWith(deploymentInstance.getInstanceId(),request  );
 
 
         request.put(RequestMapSpecialKeyConstant.PROCESS_BIZ_UNIQUE_ID,"uniqueId");

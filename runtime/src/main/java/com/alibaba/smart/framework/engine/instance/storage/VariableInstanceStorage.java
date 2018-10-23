@@ -9,7 +9,7 @@ public interface VariableInstanceStorage {
 
     void insert(VariablePersister variablePersister, VariableInstance variableInstance);
 
-    List<VariableInstance> findList(Long processInstanceId, Long executionInstanceId,
+    List<VariableInstance> findList(String processInstanceId, String executionInstanceId,
                                     VariablePersister variablePersister);
 
 }

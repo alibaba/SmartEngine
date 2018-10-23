@@ -17,17 +17,17 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class DefaultExecutionHistoryInstance extends AbstractLifeCycleInstance implements ExecutionHistoryInstance {
 
-    private Long parentProcessInstanceId;
+    private String parentProcessInstanceId;
 
-    private Long parentExecutionInstanceId;
+    private String parentExecutionInstanceId;
 
     private String processDefinitionIdAndVersion;
 
-    private Long processInstanceId;
+    private String processInstanceId;
 
     private String processDefinitionActivityId;
 
-    private Long activityInstanceId;
+    private String activityInstanceId;
 
     private List<TransitionInstance> incomeTransitions = new ArrayList<TransitionInstance>();
 

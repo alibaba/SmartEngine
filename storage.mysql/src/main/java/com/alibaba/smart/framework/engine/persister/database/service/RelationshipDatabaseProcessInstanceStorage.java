@@ -54,10 +54,13 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
     private ProcessInstanceEntity buildProcessInstanceEntity(ProcessInstance processInstance) {
         ProcessInstanceEntity processInstanceEntityToBePersisted = new ProcessInstanceEntity();
-        processInstanceEntityToBePersisted.setId(processInstance.getInstanceId());
+        processInstanceEntityToBePersisted.setId(Long.valueOf(processInstance.getInstanceId()));
         processInstanceEntityToBePersisted.setGmtCreate(processInstance.getStartTime());
         processInstanceEntityToBePersisted.setGmtModified(processInstance.getCompleteTime());
-        processInstanceEntityToBePersisted.setParentProcessInstanceId(processInstance.getParentInstanceId());
+        String parentInstanceId = processInstance.getParentInstanceId();
+        if(null != parentInstanceId){
+            processInstanceEntityToBePersisted.setParentProcessInstanceId(Long.valueOf(parentInstanceId));
+        }
         processInstanceEntityToBePersisted.setStatus(processInstance.getStatus().name());
         processInstanceEntityToBePersisted.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
         processInstanceEntityToBePersisted.setStartUserId(processInstance.getStartUserId());
@@ -73,8 +76,11 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
     private void buildEntityToInstance(ProcessInstance processInstance, ProcessInstanceEntity processInstanceEntity) {
         processInstance.setProcessDefinitionIdAndVersion(processInstanceEntity.getProcessDefinitionIdAndVersion());
-        processInstance.setParentInstanceId(processInstanceEntity.getParentProcessInstanceId());
-        processInstance.setInstanceId(processInstanceEntity.getId());
+        Long parentProcessInstanceId = processInstanceEntity.getParentProcessInstanceId();
+        if(null != parentProcessInstanceId){
+            processInstance.setParentInstanceId(parentProcessInstanceId.toString());
+        }
+        processInstance.setInstanceId(processInstanceEntity.getId().toString());
         processInstance.setStartTime(processInstanceEntity.getGmtCreate());
         processInstance.setProcessDefinitionType(processInstanceEntity.getProcessDefinitionType());
         processInstance.setBizUniqueId(processInstanceEntity.getBizUniqueId());
@@ -89,7 +95,11 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
             return null;
         }
         ProcessInstance processInstance  = new DefaultProcessInstance();
-        processInstance.setParentInstanceId(processInstanceEntity.getParentProcessInstanceId());
+        Long parentProcessInstanceId = processInstanceEntity.getParentProcessInstanceId();
+
+        if(null != parentProcessInstanceId){
+            processInstance.setParentInstanceId(parentProcessInstanceId.toString());
+        }
         InstanceStatus processStatus = InstanceStatus.valueOf(processInstanceEntity.getStatus());
         processInstance.setStatus(processStatus);
         processInstance.setStartTime(processInstanceEntity.getGmtCreate());
@@ -105,7 +115,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
         //TUNE 还是叫做更新时间比较好一点,是否完成等 还是根据status 去判断.
         processInstance.setCompleteTime(processInstanceEntity.getGmtModified());
-        processInstance.setInstanceId(processInstanceEntity.getId());
+        processInstance.setInstanceId(processInstanceEntity.getId().toString());
         processInstance.setTag(processInstanceEntity.getTag());
         processInstance.setTitle(processInstanceEntity.getTitle());
         processInstance.setComment(processInstanceEntity.getComment());
@@ -113,11 +123,11 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     }
 
     @Override
-    public ProcessInstance findOne(Long instanceId) {
+    public ProcessInstance findOne(String instanceId) {
         //TUNE :解决系统服务初始化依赖问题,避免每次获取该dao
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
 
-        ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOne(instanceId);
+        ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOne(Long.valueOf(instanceId));
 
         ProcessInstance processInstance = buildProcessInstanceFromEntity(processInstanceEntity);
 
@@ -127,11 +137,11 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
 
     @Override
-    public ProcessInstance findOneForUpdate(Long instanceId) {
+    public ProcessInstance findOneForUpdate(String instanceId) {
         //TUNE :解决系统服务初始化依赖问题,避免每次获取该dao
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
 
-        ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOneForUpdate(instanceId);
+        ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOneForUpdate(Long.valueOf(instanceId));
 
         ProcessInstance processInstance = buildProcessInstanceFromEntity(processInstanceEntity);
 
@@ -166,8 +176,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
 
     @Override
-    public void remove(Long instanceId) {
+    public void remove(String instanceId) {
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
-        processInstanceDAO.delete(instanceId);
+        processInstanceDAO.delete(Long.valueOf(instanceId));
     }
 }

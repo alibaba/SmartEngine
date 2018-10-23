@@ -64,7 +64,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         DeploymentInstanceStorage deploymentInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
 
-        Long   deployInstanceId =  updateDeploymentCommand.getDeployInstanceId();
+        String   deployInstanceId =  updateDeploymentCommand.getDeployInstanceId();
         DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deployInstanceId);
 
         setUpdateValue(currentDeploymentInstance,updateDeploymentCommand);
@@ -108,7 +108,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
     }
 
     @Override
-    public void inactivateDeploymentInstance(Long deploymentInstanceId) {
+    public void inactivateDeploymentInstance(String deploymentInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         DeploymentInstanceStorage deploymentInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
@@ -126,7 +126,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
     }
 
     @Override
-    public void activateDeploymentInstance(Long deploymentInstanceId) {
+    public void activateDeploymentInstance(String deploymentInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
@@ -147,7 +147,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
     }
 
     @Override
-    public void deleteDeploymentInstanceLogically(Long deploymentInstanceId) {
+    public void deleteDeploymentInstanceLogically(String deploymentInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);

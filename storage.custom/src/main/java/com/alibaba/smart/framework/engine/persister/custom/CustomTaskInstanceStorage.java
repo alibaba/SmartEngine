@@ -65,12 +65,12 @@ public class CustomTaskInstanceStorage implements TaskInstanceStorage {
     }
 
     @Override
-    public TaskInstance find(Long instanceId) {
+    public TaskInstance find(String instanceId) {
         throw new EngineException("not implement intentionally");
     }
 
     @Override
-    public void remove(Long instanceId) {
+    public void remove(String instanceId) {
         throw new EngineException("not implement intentionally");
     }
 }

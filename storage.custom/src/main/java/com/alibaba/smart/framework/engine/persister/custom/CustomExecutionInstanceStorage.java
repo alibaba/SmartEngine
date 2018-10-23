@@ -62,7 +62,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
     }
 
     @Override
-    public ExecutionInstance find(Long instanceId) {
+    public ExecutionInstance find(String instanceId) {
 
         Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
 
@@ -110,12 +110,12 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
 
     @Override
-    public void remove(Long instanceId) {
+    public void remove(String instanceId) {
         throw new EngineException("not implement intentionally");
     }
 
     @Override
-    public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
+    public List<ExecutionInstance> findActiveExecution(String processInstanceId) {
         ProcessInstance processInstance = PersisterSession.currentSession().getProcessInstance(processInstanceId);
         if(null==processInstance){
             return Collections.emptyList();
@@ -126,7 +126,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
      }
 
     @Override
-    public List<ExecutionInstance> findByActivityInstanceId(Long processInstanceId, Long activityInstanceId) {
+    public List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId) {
         ProcessInstance processInstance = PersisterSession.currentSession().getProcessInstance(processInstanceId);
         if (null == processInstance) {
             return null;

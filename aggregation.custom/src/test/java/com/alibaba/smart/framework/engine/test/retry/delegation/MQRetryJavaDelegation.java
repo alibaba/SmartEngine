@@ -73,7 +73,7 @@ public abstract class MQRetryJavaDelegation implements JavaDelegation , MessageL
 
         Long orderId = diqiBean.getOrderId();
         ProcessInstance processInstance = LazadaTest.getMockDB().get(orderId);
-        Long processInstanceId = processInstance.getInstanceId();
+        String processInstanceId = processInstance.getInstanceId();
         String currentActivityId = diqiBean.getCurrentActivityId();
         Map map = null;
 
@@ -95,7 +95,7 @@ public abstract class MQRetryJavaDelegation implements JavaDelegation , MessageL
 
     }
 
-    protected void signalIfNextActivityIsReceiveTask(ProcessInstance processInstance,Long processInstanceId,  Map map, SmartEngine smartEngine,
+    protected void signalIfNextActivityIsReceiveTask(ProcessInstance processInstance,String processInstanceId,  Map map, SmartEngine smartEngine,
                                                    ExecutionQueryService executionQueryService,
                                                    ExecutionCommandService executionCommandService) {
         //FIXME,do query again.
@@ -147,7 +147,7 @@ public abstract class MQRetryJavaDelegation implements JavaDelegation , MessageL
 
     }
 
-    protected void signalCurrentActivity(ProcessInstance processInstance,Long processInstanceId, String currentActivityId, Map map,
+    protected void signalCurrentActivity(ProcessInstance processInstance,String processInstanceId, String currentActivityId, Map map,
                                        ExecutionQueryService executionQueryService,
                                        ExecutionCommandService executionCommandService) {
         //FIXME,do query again.

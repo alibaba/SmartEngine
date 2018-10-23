@@ -8,16 +8,16 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 
 public interface TaskAssigneeStorage {
 
-    List<TaskAssigneeInstance> findList(Long  taskInstanceId);
+    List<TaskAssigneeInstance> findList(String  taskInstanceId);
 
-    Map<Long, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<Long> taskInstanceIdList);
+    Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList) ;
 
     TaskAssigneeInstance insert( TaskAssigneeInstance taskAssigneeInstance);
 
-    TaskAssigneeInstance update(Long taskAssigneeId,String assigneeId);
+    TaskAssigneeInstance update(String taskAssigneeId,String assigneeId);
 
-    TaskAssigneeInstance findOne(Long taskAssigneeId);
+    TaskAssigneeInstance findOne(String taskAssigneeId);
 
-    void remove(Long taskAssigneeId);
+    void remove(String taskAssigneeId);
 
 }

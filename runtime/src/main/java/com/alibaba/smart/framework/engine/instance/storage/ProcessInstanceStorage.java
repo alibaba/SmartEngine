@@ -26,14 +26,14 @@ public interface ProcessInstanceStorage {
      * @param processInstanceId 流程实例ID
      * @return 实例
      */
-    ProcessInstance findOne(Long processInstanceId);
+    ProcessInstance findOne(String processInstanceId);
 
     /**
      * 查询流程实例
      * @param instanceId
      * @return
      */
-    ProcessInstance findOneForUpdate(Long instanceId);
+    ProcessInstance findOneForUpdate(String instanceId);
 
     List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam);
 
@@ -44,7 +44,7 @@ public interface ProcessInstanceStorage {
      *
      * @param processInstanceId 流程实例ID
      */
-    void remove(Long processInstanceId);
+    void remove(String processInstanceId);
 
 
 }

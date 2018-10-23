@@ -36,7 +36,7 @@ public class DefaultProcessQueryService implements ProcessQueryService, LifeCycl
     }
 
     @Override
-    public ProcessInstance findById(Long processInstanceId) {
+    public ProcessInstance findById(String processInstanceId) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 

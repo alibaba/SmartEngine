@@ -32,8 +32,8 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
      */
     private String bizUniqueId;
 
-    private Long parentInstanceId;
-    private Long parentExecutionInstanceId;
+    private String parentInstanceId;
+    private String parentExecutionInstanceId;
 
     private boolean suspend;
 

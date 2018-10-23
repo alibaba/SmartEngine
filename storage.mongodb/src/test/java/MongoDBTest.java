@@ -8,6 +8,9 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 public class MongoDBTest {
 
@@ -27,6 +30,16 @@ public class MongoDBTest {
             }
         }
         String arr[] = {};
+
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("name").is("Markus"));
+        Update update = new Update();
+        update.set("name", "Nick");
+        org.springframework.data.mongodb.core.MongoTemplate mongoTemplate = null ;
+        //mongoTemplate.upsert(query, update, null);
+
+
         return  friends.toArray(arr);
     }
 

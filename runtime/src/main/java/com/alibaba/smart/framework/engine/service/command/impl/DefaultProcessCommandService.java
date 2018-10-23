@@ -135,7 +135,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     }
 
     @Override
-    public ProcessInstance start(Long deploymentInstanceId, String userId, Map<String, Object> request) {
+    public ProcessInstance startWith(String deploymentInstanceId, String userId, Map<String, Object> request) {
         DeploymentQueryService deploymentQueryService = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getDeploymentQueryService();
         DeploymentInstance deploymentInstance = deploymentQueryService.findById(deploymentInstanceId);
 
@@ -155,22 +155,22 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     }
 
     @Override
-    public ProcessInstance start(Long deploymentInstanceId, Map<String, Object> request) {
-        return start(deploymentInstanceId,null, request);
+    public ProcessInstance startWith(String deploymentInstanceId, Map<String, Object> request) {
+        return startWith(deploymentInstanceId,null, request);
     }
 
     @Override
-    public ProcessInstance start(Long deploymentInstanceId) {
-        return start(deploymentInstanceId,null, null);
+    public ProcessInstance startWith(String deploymentInstanceId) {
+        return startWith(deploymentInstanceId,null, null);
     }
 
     @Override
-    public void abort(Long processInstanceId) {
+    public void abort(String processInstanceId) {
         this.abort(processInstanceId,"");
     }
 
     @Override
-    public void abort(Long processInstanceId,String reason){
+    public void abort(String processInstanceId, String reason){
         Map<String, Object> request = new HashMap<String, Object>(2);
         request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_ABORT_REASON,reason);
         abort(processInstanceId,request);
@@ -178,7 +178,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     }
 
     @Override
-    public void abort(Long processInstanceId, Map<String, Object> request) {
+    public void abort(String processInstanceId, Map<String, Object> request) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
         ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId);
@@ -204,7 +204,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        List<Long> processInstanceIdList = new ArrayList<Long>(2);
+        List<String> processInstanceIdList = new ArrayList<String>(2);
         processInstanceIdList.add(processInstanceId);
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         List<TaskInstance> taskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam);

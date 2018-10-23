@@ -38,7 +38,7 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
     }
 
     //TODO ettear 与DefaultProcessCommandService的逻辑合并
-    private boolean call(Long parentInstanceId, Long parentExecutionInstanceId, String processDefinitionId,
+    private boolean call(String parentInstanceId, String parentExecutionInstanceId, String processDefinitionId,
                          String version, ExecutionContext context) {
 
         ExecutionContext subProcessExecutionContext = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class)

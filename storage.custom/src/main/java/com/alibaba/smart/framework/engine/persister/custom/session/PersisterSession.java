@@ -21,7 +21,7 @@ public class PersisterSession {
      */
     private static ThreadLocal<Stack<PersisterSession>> sessionThreadLocal = new ThreadLocal<Stack<PersisterSession>>();
 
-    private Map<Long, ProcessInstance> processInstances = new HashMap<Long, ProcessInstance>(4);
+    private Map<String, ProcessInstance> processInstances = new HashMap<String, ProcessInstance>(4);
 
     public static PersisterSession create() {
         PersisterSession session = new PersisterSession();
@@ -77,7 +77,7 @@ public class PersisterSession {
         getStack(sessionThreadLocal).pop();
     }
 
-    public Map<Long, ProcessInstance> getProcessInstances() {
+    public Map<String, ProcessInstance> getProcessInstances() {
         return processInstances;
     }
 
@@ -90,7 +90,7 @@ public class PersisterSession {
         this.processInstances.put(processInstance.getInstanceId(), processInstance);
     }
 
-    public ProcessInstance getProcessInstance(Long instanceId) {
+    public ProcessInstance getProcessInstance(String instanceId) {
         return this.processInstances.get(instanceId);
     }
 }

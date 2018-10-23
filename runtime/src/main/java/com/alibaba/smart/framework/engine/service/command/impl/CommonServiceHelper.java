@@ -4,6 +4,7 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
+import com.alibaba.smart.framework.engine.constant.AdHocConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
@@ -56,7 +57,7 @@ public abstract  class CommonServiceHelper {
 
 
         persisteVariableInstanceIfPossible(request, processEngineConfiguration, persisterFactoryExtensionPoint,
-            newProcessInstance,0L);
+            newProcessInstance, AdHocConstant.DEFAULT_ZERO_VALUE);
 
         persist(newProcessInstance,    extensionPointRegistry);
 
@@ -67,7 +68,7 @@ public abstract  class CommonServiceHelper {
                                                            ProcessEngineConfiguration processEngineConfiguration,
                                                            PersisterFactoryExtensionPoint
                                                                persisterFactoryExtensionPoint,
-                                                           ProcessInstance newProcessInstance,Long executionInstanceId) {
+                                                           ProcessInstance newProcessInstance,String executionInstanceId) {
         VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
         if( variablePersister.isPersisteVariableInstanceEnabled() && null!= request ){
             VariableInstanceStorage variableInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(VariableInstanceStorage.class);
@@ -97,7 +98,7 @@ public abstract  class CommonServiceHelper {
         }
     }
 
-    public static  ProcessInstance updateAndPersist(Long executionInstanceId,ProcessInstance processInstance,Map<String, Object> request,ExtensionPointRegistry extensionPointRegistry) {
+    public static  ProcessInstance updateAndPersist(String executionInstanceId,ProcessInstance processInstance,Map<String, Object> request,ExtensionPointRegistry extensionPointRegistry) {
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);

@@ -59,7 +59,7 @@ public class CallActivityWithParallelTest {
 
         Assert.assertNotNull(processInstance);
 
-        Long processInstanceId = processInstance.getInstanceId();
+        String processInstanceId = processInstance.getInstanceId();
         List<ExecutionInstance> parentExecutionInstances;
 
         // ==== Assert Task 1 ====
