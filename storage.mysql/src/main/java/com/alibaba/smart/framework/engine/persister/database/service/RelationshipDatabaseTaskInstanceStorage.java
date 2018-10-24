@@ -7,13 +7,12 @@ import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.persister.database.dao.TaskInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
-import com.alibaba.smart.framework.engine.persister.database.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
-import org.springframework.beans.BeanUtils;
 
 
 public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStorage {
@@ -25,7 +24,22 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
 
     private TaskInstanceQueryByAssigneeParam convertToTaskInstanceQueryByAssigneeParam(PendingTaskQueryParam pendingTaskQueryParam) {
         TaskInstanceQueryByAssigneeParam taskInstanceQueryByAssigneeParam = new TaskInstanceQueryByAssigneeParam();
-        BeanUtils.copyProperties(pendingTaskQueryParam, taskInstanceQueryByAssigneeParam);
+        taskInstanceQueryByAssigneeParam.setAssigneeGroupIdList(pendingTaskQueryParam.getAssigneeGroupIdList());
+        taskInstanceQueryByAssigneeParam.setAssigneeUserId(pendingTaskQueryParam.getAssigneeUserId());
+        taskInstanceQueryByAssigneeParam.setProcessDefinitionType(pendingTaskQueryParam.getProcessDefinitionType());
+
+        List<String> processInstanceIdList = pendingTaskQueryParam.getProcessInstanceIdList();
+        if(null != processInstanceIdList){
+            List<Long> processInstanceIdList1  = new ArrayList<Long>(processInstanceIdList.size());
+            for (String s : processInstanceIdList) {
+                processInstanceIdList1.add(Long.valueOf(s));
+            }
+            taskInstanceQueryByAssigneeParam.setProcessInstanceIdList(processInstanceIdList1);
+        }
+
+        taskInstanceQueryByAssigneeParam.setPageOffset(pendingTaskQueryParam.getPageOffset());
+        taskInstanceQueryByAssigneeParam.setPageSize(pendingTaskQueryParam.getPageSize());
+
         taskInstanceQueryByAssigneeParam.setStatus(TaskInstanceConstant.PENDING);
         return taskInstanceQueryByAssigneeParam;
     }

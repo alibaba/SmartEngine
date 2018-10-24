@@ -15,7 +15,7 @@
         http://www.foo.com/schema/data/mybatis http://www.foo.com/schema/data/mybatis/spring-mybatis.xsd">
 
 
-    <context:component-scan base-package="com.alibaba.smart.framework.engine.persister.database"/>
+    <context:component-scan base-package="com.alibaba.smart.framework.engine.persister"/>
 
     <!-- Mapper接口所在包名，Spring会自动查找其下的Mapper -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

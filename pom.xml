@@ -41,6 +41,7 @@
         <module>runtime</module>
         <module>bpmn</module>
         <module>grammar.smart</module>
+        <module>storage.common</module>
         <module>storage.mysql</module>
         <module>storage.custom</module>
         <module>compatible.activiti</module>

@@ -8,9 +8,9 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
 import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
+import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.persister.database.dao.VariableInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity;
-import com.alibaba.smart.framework.engine.persister.database.util.SpringContextUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

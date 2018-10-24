@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.persister.database.util;
+package com.alibaba.smart.framework.engine.persister.common.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;

@@ -8,9 +8,9 @@ import java.util.Map;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
+import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.persister.database.dao.TaskAssigneeDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity;
-import com.alibaba.smart.framework.engine.persister.database.util.SpringContextUtil;
 
 public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 

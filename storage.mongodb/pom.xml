@@ -29,10 +29,7 @@
                     <artifactId>mongo-java-driver</artifactId>
                     <groupId>org.mongodb</groupId>
                 </exclusion>
-                <exclusion>
-                    <artifactId>jcl-over-slf4j</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
+
             </exclusions>
         </dependency>
 
