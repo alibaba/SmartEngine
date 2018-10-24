@@ -23,7 +23,6 @@ import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.test.process.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.DefaultMultiInstanceCounter;
-//import com.alibaba.smart.framework.engine.test.process.FullMultiInstanceTest;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.IdAndGroupTaskAssigneeDispatcher;
 
 import org.junit.Assert;
@@ -74,8 +73,8 @@ public class TaskServiceTest {
 
 
         PendingTaskQueryParam pendingTaskQueryParam = new PendingTaskQueryParam();
-        pendingTaskQueryParam.setAssigneeUserId("1");
-        pendingTaskQueryParam.setAssigneeGroupIdList(Arrays.asList("11"));
+        pendingTaskQueryParam.setAssigneeUserId("testuser1");
+        pendingTaskQueryParam.setAssigneeGroupIdList(Arrays.asList("testgroup11"));
         List<TaskInstance> submitTaskInstanceList=  taskQueryService.findPendingTaskList(pendingTaskQueryParam);
         Assert.assertEquals(1,submitTaskInstanceList.size());
 
