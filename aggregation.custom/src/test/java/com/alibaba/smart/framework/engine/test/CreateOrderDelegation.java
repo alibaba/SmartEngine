@@ -1,14 +1,13 @@
 package com.alibaba.smart.framework.engine.test;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.TccDelegation;
 import com.alibaba.smart.framework.engine.delegation.TccResult;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 
 public class CreateOrderDelegation implements TccDelegation{
@@ -21,7 +20,6 @@ public class CreateOrderDelegation implements TccDelegation{
 
     @Override
     public TccResult tryExecute(ExecutionContext executionContext) {
-        List<ActivityInstance> activityInstances = executionContext.getProcessInstance().getActivityInstances();
         LOGGER.info("TCC executing: invoke some hsf code stuff" +executionContext.getRequest());
         counter.addAndGet(1);
         return TccResult.buildSucessfulResult(null);
