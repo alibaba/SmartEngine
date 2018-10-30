@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
@@ -20,7 +21,8 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
     private static final Logger LOGGER = LoggerFactory.getLogger(RelationshipDatabaseVariableInstanceStorage.class);
 
     @Override
-    public void insert(VariablePersister variablePersister, VariableInstance variableInstance) {
+    public void insert(VariablePersister variablePersister, VariableInstance variableInstance,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         Object value = variableInstance.getFieldValue();
         if (null == value) {
             return;
@@ -69,7 +71,8 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
 
     @Override
     public List<VariableInstance> findList(String processInstanceId, String executionInstanceId,
-                                           VariablePersister variablePersister) {
+                                           VariablePersister variablePersister,
+                                           ProcessEngineConfiguration processEngineConfiguration) {
         VariableInstanceDAO variableInstanceDAO = (VariableInstanceDAO)SpringContextUtil.getBean("variableInstanceDAO");
         List<VariableInstance> variableInstanceList = null;
         List<VariableInstanceEntity> list = variableInstanceDAO.findList(Long.valueOf(processInstanceId), Long.valueOf(executionInstanceId));

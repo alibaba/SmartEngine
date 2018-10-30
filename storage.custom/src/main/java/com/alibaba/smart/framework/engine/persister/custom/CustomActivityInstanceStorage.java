@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.custom;
 import java.util.Collection;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
@@ -16,16 +17,19 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
 
 
     @Override
-    public void insert(ActivityInstance instance) {
+    public void insert(ActivityInstance instance,
+                       ProcessEngineConfiguration processEngineConfiguration) {
     }
 
     @Override
-    public ActivityInstance update(ActivityInstance instance) {
+    public ActivityInstance update(ActivityInstance instance,
+                                   ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException("not implement intentionally");
     }
 
     @Override
-    public ActivityInstance find(String activityInstanceId) {
+    public ActivityInstance find(String activityInstanceId,
+                                 ProcessEngineConfiguration processEngineConfiguration) {
         Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
 
         boolean matched = false;
@@ -55,12 +59,14 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
 
 
     @Override
-    public void remove(String instanceId) {
+    public void remove(String instanceId,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException("not implement intentionally");
     }
 
     @Override
-    public List<ActivityInstance> findAll(String processInstanceId) {
+    public List<ActivityInstance> findAll(String processInstanceId,
+                                          ProcessEngineConfiguration processEngineConfiguration) {
         ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance(processInstanceId);
         return null == processInstance ? null : processInstance.getActivityInstances();
     }

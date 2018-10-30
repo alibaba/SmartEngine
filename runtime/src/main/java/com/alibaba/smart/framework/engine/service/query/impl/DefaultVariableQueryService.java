@@ -18,10 +18,13 @@ import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
  */
 public class DefaultVariableQueryService implements VariableQueryService , LifeCycleListener {
 
+    private final ProcessEngineConfiguration processEngineConfiguration;
     private ExtensionPointRegistry extensionPointRegistry;
 
     public DefaultVariableQueryService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
+        this.processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
+            SmartEngine.class).getProcessEngineConfiguration();
     }
 
     @Override
@@ -45,7 +48,7 @@ public class DefaultVariableQueryService implements VariableQueryService , LifeC
         VariableInstanceStorage variableInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(VariableInstanceStorage.class);
 
         VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
-        List<VariableInstance> variableInstanceList =   variableInstanceStorage.findList(processInstanceId,executionInstanceId,variablePersister );
+        List<VariableInstance> variableInstanceList =   variableInstanceStorage.findList(processInstanceId,executionInstanceId,variablePersister,processEngineConfiguration );
 
         return  variableInstanceList;
     }

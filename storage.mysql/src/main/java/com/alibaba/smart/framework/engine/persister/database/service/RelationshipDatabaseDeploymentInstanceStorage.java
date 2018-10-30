@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultDeploymentInstance;
 import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
@@ -24,25 +25,28 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)SpringContextUtil.getBean("deploymentInstanceDAO");
 
     @Override
-    public DeploymentInstance insert(DeploymentInstance deploymentInstance) {
+    public DeploymentInstance insert(DeploymentInstance deploymentInstance,
+                                     ProcessEngineConfiguration processEngineConfiguration) {
         DeploymentInstanceEntity entity = convertByInstance(deploymentInstance);
         deploymentnstanceDAO.insert(entity);
 
-        deploymentInstance = findById(entity.getId().toString());
+        deploymentInstance = findById(entity.getId().toString(), processEngineConfiguration);
 
         return deploymentInstance;
     }
 
     @Override
-    public DeploymentInstance update(DeploymentInstance deploymentInstance) {
+    public DeploymentInstance update(DeploymentInstance deploymentInstance,
+                                     ProcessEngineConfiguration processEngineConfiguration) {
         DeploymentInstanceEntity entity = convertByInstance(deploymentInstance);
         deploymentnstanceDAO.update(entity);
-        deploymentInstance = findById(entity.getId().toString());
+        deploymentInstance = findById(entity.getId().toString(), processEngineConfiguration);
         return deploymentInstance;
     }
 
     @Override
-    public DeploymentInstance findById(String id) {
+    public DeploymentInstance findById(String id,
+                                       ProcessEngineConfiguration processEngineConfiguration) {
         if (null == id){
             return null;
         }
@@ -54,7 +58,8 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     }
 
     @Override
-    public List<DeploymentInstance> findByPage(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
+    public List<DeploymentInstance> findByPage(DeploymentInstanceQueryParam deploymentInstanceQueryParam,
+                                               ProcessEngineConfiguration processEngineConfiguration) {
         List<DeploymentInstanceEntity> deploymentInstanceEntities = deploymentnstanceDAO.findByPage(
             deploymentInstanceQueryParam);
         if (!CollectionUtils.isEmpty(deploymentInstanceEntities)) {
@@ -69,12 +74,14 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     }
 
     @Override
-    public int count(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
+    public int count(DeploymentInstanceQueryParam deploymentInstanceQueryParam,
+                     ProcessEngineConfiguration processEngineConfiguration) {
         return deploymentnstanceDAO.count(deploymentInstanceQueryParam);
     }
 
     @Override
-    public void remove(String id) {
+    public void remove(String id,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         deploymentnstanceDAO.delete(Long.valueOf(id));
     }
 

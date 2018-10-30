@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.ConcurrentException;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
@@ -18,7 +19,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
 
     @Override
-    public ProcessInstance insert(ProcessInstance processInstance) {
+    public ProcessInstance insert(ProcessInstance processInstance,
+                                  ProcessEngineConfiguration processEngineConfiguration) {
 
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
 
@@ -44,7 +46,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     }
 
     @Override
-    public ProcessInstance update(ProcessInstance processInstance) {
+    public ProcessInstance update(ProcessInstance processInstance,
+                                  ProcessEngineConfiguration processEngineConfiguration) {
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
         ProcessInstanceEntity processInstanceEntity = buildProcessInstanceEntity(processInstance);
         processInstanceDAO.update(processInstanceEntity);
@@ -123,7 +126,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     }
 
     @Override
-    public ProcessInstance findOne(String instanceId) {
+    public ProcessInstance findOne(String instanceId,
+                                   ProcessEngineConfiguration processEngineConfiguration) {
         //TUNE :解决系统服务初始化依赖问题,避免每次获取该dao
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
 
@@ -137,7 +141,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
 
     @Override
-    public ProcessInstance findOneForUpdate(String instanceId) {
+    public ProcessInstance findOneForUpdate(String instanceId,
+                                            ProcessEngineConfiguration processEngineConfiguration) {
         //TUNE :解决系统服务初始化依赖问题,避免每次获取该dao
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
 
@@ -149,7 +154,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     }
 
     @Override
-    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {
+    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam,
+                                                          ProcessEngineConfiguration processEngineConfiguration) {
 
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
 
@@ -168,7 +174,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     }
 
     @Override
-    public Long count(ProcessInstanceQueryParam processInstanceQueryParam) {
+    public Long count(ProcessInstanceQueryParam processInstanceQueryParam,
+                      ProcessEngineConfiguration processEngineConfiguration) {
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
         Long processCount = processInstanceDAO.count(processInstanceQueryParam);
         return processCount;
@@ -176,7 +183,8 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
 
     @Override
-    public void remove(String instanceId) {
+    public void remove(String instanceId,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
         processInstanceDAO.delete(Long.valueOf(instanceId));
     }

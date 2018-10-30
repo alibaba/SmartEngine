@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.persister.custom;
 
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
@@ -14,40 +15,47 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
 
 
     @Override
-    public ProcessInstance insert(ProcessInstance instance) {
+    public ProcessInstance insert(ProcessInstance instance,
+                                  ProcessEngineConfiguration processEngineConfiguration) {
         PersisterSession.currentSession().putProcessInstance(instance);
         return instance;
     }
 
     @Override
-    public ProcessInstance update(ProcessInstance processInstanceVar) {
+    public ProcessInstance update(ProcessInstance processInstanceVar,
+                                  ProcessEngineConfiguration processEngineConfiguration) {
         PersisterSession.currentSession().putProcessInstance(processInstanceVar);
         return processInstanceVar;
     }
 
     @Override
-    public ProcessInstance findOne(String instanceId) {
+    public ProcessInstance findOne(String instanceId,
+                                   ProcessEngineConfiguration processEngineConfiguration) {
         return  PersisterSession.currentSession().getProcessInstance(instanceId);
     }
 
     @Override
-    public ProcessInstance findOneForUpdate(String instanceId) {
+    public ProcessInstance findOneForUpdate(String instanceId,
+                                            ProcessEngineConfiguration processEngineConfiguration) {
         return  PersisterSession.currentSession().getProcessInstance(instanceId);
     }
 
     @Override
-    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam) {
+    public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam,
+                                                          ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 
     @Override
-    public Long count(ProcessInstanceQueryParam processInstanceQueryParam) {
+    public Long count(ProcessInstanceQueryParam processInstanceQueryParam,
+                      ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 
 
     @Override
-    public void remove(String instanceId) {
+    public void remove(String instanceId,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         PersisterSession.currentSession().getProcessInstances().remove(instanceId);
     }
 }

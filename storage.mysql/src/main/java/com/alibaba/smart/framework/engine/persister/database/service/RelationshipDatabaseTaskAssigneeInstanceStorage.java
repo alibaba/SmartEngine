@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
@@ -15,7 +16,8 @@ import com.alibaba.smart.framework.engine.persister.database.entity.TaskAssignee
 public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
     @Override
-    public List<TaskAssigneeInstance> findList(String taskInstanceId) {
+    public List<TaskAssigneeInstance> findList(String taskInstanceId,
+                                               ProcessEngineConfiguration processEngineConfiguration) {
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
         List<TaskAssigneeEntity> taskAssigneeEntityList =  taskAssigneeDAO.findList(Long.valueOf(taskInstanceId));
 
@@ -32,7 +34,8 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
     }
 
     @Override
-    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList) {
+    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,
+                                                                              ProcessEngineConfiguration processEngineConfiguration) {
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
 
         Map<String, List<TaskAssigneeInstance>> assigneeMap = null;
@@ -62,14 +65,15 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
     }
 
     @Override
-    public TaskAssigneeInstance insert(TaskAssigneeInstance taskAssigneeInstance) {
+    public TaskAssigneeInstance insert(TaskAssigneeInstance taskAssigneeInstance,
+                                       ProcessEngineConfiguration processEngineConfiguration) {
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
 
         TaskAssigneeEntity taskAssigneeEntity = buildTaskInstanceEntity(  taskAssigneeInstance);
         //taskAssigneeEntity.setId(null);
         taskAssigneeDAO.insert(taskAssigneeEntity);
 
-        TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(taskAssigneeEntity.getId().toString());
+        TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(taskAssigneeEntity.getId().toString(),processEngineConfiguration );
         return resultTaskAssigneeInstance;
     }
 
@@ -89,15 +93,17 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
 
 
     @Override
-    public TaskAssigneeInstance update(String taskAssigneeInstanceId, String assigneeId) {
+    public TaskAssigneeInstance update(String taskAssigneeInstanceId, String assigneeId,
+                                       ProcessEngineConfiguration processEngineConfiguration) {
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
         taskAssigneeDAO.update(  Long.valueOf(taskAssigneeInstanceId), Long.valueOf( assigneeId));
-        TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(taskAssigneeInstanceId);
+        TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(taskAssigneeInstanceId, processEngineConfiguration);
         return resultTaskAssigneeInstance;
     }
 
     @Override
-    public TaskAssigneeInstance findOne(String taskAssigneeInstanceId) {
+    public TaskAssigneeInstance findOne(String taskAssigneeInstanceId,
+                                        ProcessEngineConfiguration processEngineConfiguration) {
 
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
         TaskAssigneeEntity taskAssigneeEntity =  taskAssigneeDAO.findOne(Long.valueOf(taskAssigneeInstanceId));
@@ -124,7 +130,8 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
     }
 
     @Override
-    public void remove(String taskAssigneeInstanceId) {
+    public void remove(String taskAssigneeInstanceId,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
         taskAssigneeDAO.delete(Long.valueOf(taskAssigneeInstanceId));
 

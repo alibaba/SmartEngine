@@ -2,6 +2,8 @@ package com.alibaba.smart.framework.engine.service.query.impl;
 
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
@@ -37,25 +39,32 @@ public class DefaultProcessQueryService implements ProcessQueryService, LifeCycl
 
     @Override
     public ProcessInstance findById(String processInstanceId) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
+            SmartEngine.class).getProcessEngineConfiguration();
+
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
-        return processInstanceStorage.findOne(processInstanceId);
+        return processInstanceStorage.findOne(processInstanceId, processEngineConfiguration);
     }
 
     @Override
     public List<ProcessInstance> findList(ProcessInstanceQueryParam processInstanceQueryParam) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
-        return processInstanceStorage.queryProcessInstanceList(processInstanceQueryParam);
+        return processInstanceStorage.queryProcessInstanceList(processInstanceQueryParam, processEngineConfiguration);
     }
 
     @Override
     public Long count(ProcessInstanceQueryParam processInstanceQueryParam) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
-        return processInstanceStorage.count(processInstanceQueryParam);
+        return processInstanceStorage.count(processInstanceQueryParam,processEngineConfiguration );
     }
 }

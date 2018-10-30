@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
@@ -18,8 +19,9 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
 public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStorage {
 
     @Override
-    public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
-        return findTaskListByAssignee(convertToTaskInstanceQueryByAssigneeParam(pendingTaskQueryParam));
+    public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
+                                                  ProcessEngineConfiguration processEngineConfiguration) {
+        return findTaskListByAssignee(convertToTaskInstanceQueryByAssigneeParam(pendingTaskQueryParam), processEngineConfiguration);
     }
 
     private TaskInstanceQueryByAssigneeParam convertToTaskInstanceQueryByAssigneeParam(PendingTaskQueryParam pendingTaskQueryParam) {
@@ -45,12 +47,14 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     }
 
     @Override
-    public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
-        return countTaskListByAssignee(convertToTaskInstanceQueryByAssigneeParam(pendingTaskQueryParam));
+    public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
+                                        ProcessEngineConfiguration processEngineConfiguration) {
+        return countTaskListByAssignee(convertToTaskInstanceQueryByAssigneeParam(pendingTaskQueryParam),processEngineConfiguration );
     }
 
     @Override
-    public List<TaskInstance> findTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
+    public List<TaskInstance> findTaskListByAssignee(TaskInstanceQueryByAssigneeParam param,
+                                                     ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskByAssignee(param);
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
@@ -65,14 +69,16 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     }
 
     @Override
-    public Integer countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
+    public Integer countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param,
+                                           ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         Integer count = taskInstanceDAO.countTaskByAssignee(param);
         return  count  == null? 0:count;
     }
 
     @Override
-    public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam) {
+    public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam,
+                                                                   ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         String processInstanceId = taskInstanceQueryParam.getProcessInstanceIdList().get(0);
         List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskByProcessInstanceIdAndStatus(
@@ -93,7 +99,8 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
 
 
     @Override
-    public List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam) {
+    public List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam,
+                                           ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskList(taskInstanceQueryParam);
 
@@ -110,7 +117,8 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     }
 
     @Override
-    public Integer count(TaskInstanceQueryParam taskInstanceQueryParam) {
+    public Integer count(TaskInstanceQueryParam taskInstanceQueryParam,
+                         ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         Integer count = taskInstanceDAO.count(taskInstanceQueryParam);
         return  count  == null? 0:count;
@@ -132,7 +140,8 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     //}
 
     @Override
-    public TaskInstance insert(TaskInstance taskInstance) {
+    public TaskInstance insert(TaskInstance taskInstance,
+                               ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
 
         TaskInstanceEntity taskInstanceEntity = buildTaskInstanceEntity(taskInstance);
@@ -149,7 +158,8 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
 
 
     @Override
-    public TaskInstance update(TaskInstance taskInstance) {
+    public TaskInstance update(TaskInstance taskInstance,
+                               ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         TaskInstanceEntity taskInstanceEntity = buildTaskInstanceEntity(taskInstance);
         taskInstanceDAO.update(taskInstanceEntity);
@@ -159,14 +169,16 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     }
 
     @Override
-    public int updateFromStatus(TaskInstance taskInstance, String fromStatus) {
+    public int updateFromStatus(TaskInstance taskInstance, String fromStatus,
+                                ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         TaskInstanceEntity taskInstanceEntity = buildTaskInstanceEntity(taskInstance);
         return taskInstanceDAO.updateFromStatus(taskInstanceEntity,fromStatus);
     }
 
     @Override
-    public TaskInstance find(String instanceId) {
+    public TaskInstance find(String instanceId,
+                             ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         TaskInstanceEntity taskInstanceEntity =  taskInstanceDAO.findOne(Long.valueOf(instanceId));
 
@@ -223,7 +235,8 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
 
 
     @Override
-    public void remove(String instanceId) {
+    public void remove(String instanceId,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         taskInstanceDAO.delete(Long.valueOf(instanceId));
 

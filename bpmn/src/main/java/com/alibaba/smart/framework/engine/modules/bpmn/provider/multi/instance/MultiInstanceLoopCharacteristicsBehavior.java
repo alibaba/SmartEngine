@@ -6,8 +6,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -38,7 +40,7 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
 public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBehavior {
     private ExtensionPointRegistry extensionPointRegistry;
     private ProcessCommandService processCommandService;
-
+    private ProcessEngineConfiguration processEngineConfiguration ;
     private ExecutionInstanceFactory executionInstanceFactory;
     private TaskInstanceStorage taskInstanceStorage;
 
@@ -56,6 +58,9 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
         ExtensionPointRegistry extensionPointRegistry,
         MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics) {
         this.extensionPointRegistry = extensionPointRegistry;
+        this.processEngineConfiguration =  extensionPointRegistry.getExtensionPoint(
+            SmartEngine.class).getProcessEngineConfiguration();
+
         this.processCommandService = this.extensionPointRegistry.getExtensionPoint(ProcessCommandService.class);
 
         ProviderFactoryExtensionPoint providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(
@@ -150,12 +155,13 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
         if (!context.isNeedPause()) {
             ExecutionInstance executionInstance = context.getExecutionInstance();
             //只负责完成当前executionInstance的状态更新,此时产生了 DB 写.
-            MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage);
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage,
+                this.processEngineConfiguration);
 
             ActivityInstance activityInstance = context.getActivityInstance();
 
             List<ExecutionInstance> executionInstances = executionInstanceStorage.findByActivityInstanceId(
-                activityInstance.getProcessInstanceId(), activityInstance.getInstanceId());
+                activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),this.processEngineConfiguration );
             activityInstance.setExecutionInstanceList(executionInstances);
 
             if (null != this.completionCheckPrepareProvider) {
@@ -218,7 +224,8 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
                 // Complete all execution
                 for (ExecutionInstance instance : executionInstances) {
                     if (instance.isActive()) {
-                        MarkDoneUtil.markDoneExecutionInstance(instance, this.executionInstanceStorage);
+                        MarkDoneUtil.markDoneExecutionInstance(instance, this.executionInstanceStorage,
+                            this.processEngineConfiguration);
                     }
                 }
 
@@ -229,7 +236,7 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
                 processInstanceIdList.add(executionInstance.getProcessInstanceId());
                 taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
                 taskInstanceQueryParam.setActivityInstanceId(executionInstance.getActivityInstanceId());
-                List<TaskInstance> allTaskInstanceList = this.taskInstanceStorage.findTaskList(taskInstanceQueryParam);
+                List<TaskInstance> allTaskInstanceList = this.taskInstanceStorage.findTaskList(taskInstanceQueryParam,this.processEngineConfiguration );
 
                 // Cancel uncompleted task
                 for (TaskInstance taskInstance : allTaskInstanceList) {
@@ -246,7 +253,7 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
                     taskInstance.setStatus(TaskInstanceConstant.CANCELED);
                     Date currentDate = DateUtil.getCurrentDate();
                     taskInstance.setCompleteTime(currentDate);
-                    taskInstanceStorage.update(taskInstance);
+                    taskInstanceStorage.update(taskInstance, this.processEngineConfiguration);
                 }
             } else {
                 context.setNeedPause(true);

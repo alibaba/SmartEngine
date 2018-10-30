@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.persister.mongo.service;
 
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
@@ -15,7 +16,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
 
     @Override
-    public void insert(ActivityInstance activityInstance) {
+    public void insert(ActivityInstance activityInstance,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         MongoTemplate mongoTemplate =  SpringContextUtil.getBean("mongoTemplate", MongoTemplate.class);
         ActivityInstanceEntity activityInstanceEntity = new ActivityInstanceEntity();
         activityInstanceEntity.setProcessDefinitionActivityId(activityInstance.getProcessDefinitionActivityId());
@@ -24,26 +26,29 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
         activityInstanceEntity.setGmtCreate(activityInstance.getStartTime());
         activityInstanceEntity.setGmtModified(activityInstance.getStartTime());
         mongoTemplate.insert(activityInstanceEntity);
-        activityInstanceEntity.getId();
     }
 
     @Override
-    public ActivityInstance update(ActivityInstance activityInstance) {
+    public ActivityInstance update(ActivityInstance activityInstance,
+                                   ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 
     @Override
-    public ActivityInstance find(String activityInstanceId) {
+    public ActivityInstance find(String activityInstanceId,
+                                 ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 
     @Override
-    public void remove(String activityInstanceId) {
+    public void remove(String activityInstanceId,
+                       ProcessEngineConfiguration processEngineConfiguration) {
 
     }
 
     @Override
-    public List<ActivityInstance> findAll(String processInstanceId) {
+    public List<ActivityInstance> findAll(String processInstanceId,
+                                          ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 }

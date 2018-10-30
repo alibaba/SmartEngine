@@ -123,7 +123,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
             ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
-            ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance);
+            ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance, processEngineConfiguration);
 
             lockStrategy.tryLock(newProcessInstance.getInstanceId());
         }
@@ -179,9 +179,10 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     @Override
     public void abort(String processInstanceId, Map<String, Object> request) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
-        ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId);
+        ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId,processEngineConfiguration );
         processInstance.setStatus(InstanceStatus.aborted);
         String  reason = null;
         if (null != request){
@@ -189,15 +190,16 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         }
 
         processInstance.setReason(reason);
-        processInstanceStorage.update(processInstance);
+        processInstanceStorage.update(processInstance, processEngineConfiguration);
 
         ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
-        List<ExecutionInstance> executionInstanceList = executionInstanceStorage.findActiveExecution(processInstanceId);
+        List<ExecutionInstance> executionInstanceList = executionInstanceStorage.findActiveExecution(processInstanceId, processEngineConfiguration);
 
         if(null != executionInstanceList){
             for (ExecutionInstance executionInstance : executionInstanceList) {
                 //TUNE 有点违反在最后去写 DB 的原则。 不过由于这个是终态了，应该不会产生问题。
-                MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
+                MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
+                    processEngineConfiguration);
             }
         }
 
@@ -207,14 +209,14 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         List<String> processInstanceIdList = new ArrayList<String>(2);
         processInstanceIdList.add(processInstanceId);
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
-        List<TaskInstance> taskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam);
+        List<TaskInstance> taskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam,processEngineConfiguration );
         if(null!=taskInstanceList){
             for (TaskInstance taskInstance : taskInstanceList) {
                 if(TaskInstanceConstant.COMPLETED.equals(taskInstance.getStatus()) || TaskInstanceConstant.CANCELED.equals(taskInstance.getStatus())){
                     continue;
                 }
                 MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.ABORTED,TaskInstanceConstant.PENDING, request,
-                    taskInstanceStorage);
+                    taskInstanceStorage, processEngineConfiguration);
 
             }
         }

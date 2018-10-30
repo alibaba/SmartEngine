@@ -1,6 +1,8 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -51,14 +53,17 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
 
     @Override
     public void complete(String taskId, Map<String, Object> variables) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
+            SmartEngine.class).getProcessEngineConfiguration();
+
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(
             PersisterFactoryExtensionPoint.class);
 
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(
             TaskInstanceStorage.class);
-        TaskInstance taskInstance = taskInstanceStorage.find(taskId);
+        TaskInstance taskInstance = taskInstanceStorage.find(taskId,processEngineConfiguration );
         MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
-            variables, taskInstanceStorage);
+            variables, taskInstanceStorage, processEngineConfiguration);
 
         executionCommandService.signal(taskInstance.getExecutionInstanceId(), variables);
 

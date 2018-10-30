@@ -72,7 +72,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
 
-        ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId);
+        ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId, processEngineConfiguration);
 
         if(null == executionInstance){
             throw new EngineException("No executionInstance found for id "+executionInstanceId);
@@ -90,9 +90,10 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
 
             //BE AWARE: 注意:针对TP,AliPay场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
-            ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId());
+            ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId(),
+                processEngineConfiguration);
 
-            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId());
+            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId(), processEngineConfiguration);
 
             PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(
                 processInstance.getProcessDefinitionIdAndVersion());
@@ -144,7 +145,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
 
-        ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId);
+        ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId, processEngineConfiguration);
 
         if(null == executionInstance){
             throw new EngineException("No executionInstance found for id "+executionInstanceId);
@@ -161,10 +162,12 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
 
             //BE AWARE: 注意:针对TP,AliPay场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
-            ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId());
+            ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId(),
+                processEngineConfiguration);
 
-            MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage);
-            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId());
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage,
+                processEngineConfiguration);
+            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId(), processEngineConfiguration);
 
             PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(
                 processInstance.getProcessDefinitionIdAndVersion());

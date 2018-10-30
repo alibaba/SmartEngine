@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTransitionInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
@@ -17,7 +18,8 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
 
 
     @Override
-    public ExecutionInstance insert(ExecutionInstance executionInstance) {
+    public ExecutionInstance insert(ExecutionInstance executionInstance,
+                                    ProcessEngineConfiguration processEngineConfiguration) {
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
 
         ExecutionInstanceEntity executionInstanceEntity = buildExecutionInstanceEntity(executionInstance);
@@ -51,7 +53,8 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
     }
 
     @Override
-    public ExecutionInstance update(ExecutionInstance executionInstance) {
+    public ExecutionInstance update(ExecutionInstance executionInstance,
+                                    ProcessEngineConfiguration processEngineConfiguration) {
 
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
         ExecutionInstanceEntity executionInstanceEntity = buildExecutionInstanceEntity(executionInstance);
@@ -85,7 +88,8 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
     }
 
     @Override
-    public ExecutionInstance find(String instanceId) {
+    public ExecutionInstance find(String instanceId,
+                                  ProcessEngineConfiguration processEngineConfiguration) {
 
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
         ExecutionInstanceEntity executionInstanceEntity =    executionInstanceDAO.findOne(Long.valueOf(instanceId));
@@ -97,13 +101,15 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
 
 
     @Override
-    public void remove(String instanceId) {
+    public void remove(String instanceId,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
         executionInstanceDAO.delete(Long.valueOf(instanceId));
     }
 
     @Override
-    public List<ExecutionInstance> findActiveExecution(String processInstanceId) {
+    public List<ExecutionInstance> findActiveExecution(String processInstanceId,
+                                                       ProcessEngineConfiguration processEngineConfiguration) {
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
         List<ExecutionInstanceEntity> executionInstanceEntities=  executionInstanceDAO.findActiveExecution(Long.valueOf(processInstanceId));
 
@@ -121,7 +127,8 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
     }
 
     @Override
-    public List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId) {
+    public List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId,
+                                                            ProcessEngineConfiguration processEngineConfiguration) {
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
         List<ExecutionInstanceEntity> executionInstanceEntities=  executionInstanceDAO.findByActivityInstanceId(Long.valueOf(processInstanceId),Long.valueOf(activityInstanceId));
 

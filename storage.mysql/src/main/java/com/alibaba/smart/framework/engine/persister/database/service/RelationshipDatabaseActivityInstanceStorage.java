@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
@@ -15,7 +16,8 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
 
     @Override
-    public void insert(ActivityInstance activityInstance) {
+    public void insert(ActivityInstance activityInstance,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
 
 
@@ -44,7 +46,8 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
     }
 
     @Override
-    public ActivityInstance update(ActivityInstance activityInstance) {
+    public ActivityInstance update(ActivityInstance activityInstance,
+                                   ProcessEngineConfiguration processEngineConfiguration) {
         //TUNE no need to persister
 //        ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
 //        ActivityInstanceEntity processInstanceEntity = buildProcessInstanceEntity(processInstance);
@@ -52,7 +55,8 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         return activityInstance;    }
 
     @Override
-    public ActivityInstance find(String instanceId) {
+    public ActivityInstance find(String instanceId,
+                                 ProcessEngineConfiguration processEngineConfiguration) {
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
         ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(Long.valueOf(instanceId));
 
@@ -73,7 +77,8 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
 
     @Override
-    public void remove(String instanceId) {
+    public void remove(String instanceId,
+                       ProcessEngineConfiguration processEngineConfiguration) {
 
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
         activityInstanceDAO.delete(Long.valueOf(instanceId));
@@ -81,7 +86,8 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
     }
 
     @Override
-    public List<ActivityInstance> findAll(String processInstanceId) {
+    public List<ActivityInstance> findAll(String processInstanceId,
+                                          ProcessEngineConfiguration processEngineConfiguration) {
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
         List<ActivityInstanceEntity> activityInstanceEntities  = activityInstanceDAO.findAllActivity(Long.valueOf(processInstanceId));
 

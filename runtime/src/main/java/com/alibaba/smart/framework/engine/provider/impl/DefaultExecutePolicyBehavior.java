@@ -3,7 +3,9 @@ package com.alibaba.smart.framework.engine.provider.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
@@ -25,6 +27,7 @@ public class DefaultExecutePolicyBehavior implements ExecutePolicyBehavior, Life
     private ExtensionPointRegistry extensionPointRegistry;
     private ExecutionInstanceFactory executionInstanceFactory;
     private ExecutionInstanceStorage executionInstanceStorage;
+    private ProcessEngineConfiguration processEngineConfiguration;
 
     public DefaultExecutePolicyBehavior(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -32,6 +35,9 @@ public class DefaultExecutePolicyBehavior implements ExecutePolicyBehavior, Life
 
     @Override
     public void start() {
+        this.processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
+            SmartEngine.class).getProcessEngineConfiguration();
+
         this.executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         this.executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
@@ -67,7 +73,8 @@ public class DefaultExecutePolicyBehavior implements ExecutePolicyBehavior, Life
         pvmActivity.invoke(PvmEventConstant.ACTIVITY_EXECUTE.name(), context);
         if (!context.isNeedPause()) {
             ExecutionInstance executionInstance = context.getExecutionInstance();
-            MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
+                processEngineConfiguration);
         }else{
             ExecutionInstance executionInstance = context.getExecutionInstance();
             executionInstance.setStatus(InstanceStatus.suspended);
