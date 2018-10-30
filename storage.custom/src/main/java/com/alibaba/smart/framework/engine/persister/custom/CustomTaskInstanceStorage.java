@@ -52,8 +52,8 @@ public class CustomTaskInstanceStorage implements TaskInstanceStorage {
     }
 
     @Override
-    public Integer count(TaskInstanceQueryParam taskInstanceQueryParam,
-                         ProcessEngineConfiguration processEngineConfiguration) {
+    public Long count(TaskInstanceQueryParam taskInstanceQueryParam,
+                      ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 

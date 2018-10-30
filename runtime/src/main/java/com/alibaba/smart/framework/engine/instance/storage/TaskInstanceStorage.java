@@ -29,8 +29,8 @@ public interface TaskInstanceStorage {
     List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam,
                                     ProcessEngineConfiguration processEngineConfiguration);
 
-    Integer count(TaskInstanceQueryParam taskInstanceQueryParam,
-                  ProcessEngineConfiguration processEngineConfiguration);
+    Long count(TaskInstanceQueryParam taskInstanceQueryParam,
+               ProcessEngineConfiguration processEngineConfiguration);
 
     TaskInstance insert(TaskInstance taskInstance,
                         ProcessEngineConfiguration processEngineConfiguration);

@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface ExecutionInstanceStorage {
 
-    ExecutionInstance insert(ExecutionInstance executionInstance,
-                             ProcessEngineConfiguration processEngineConfiguration);
+    void insert(ExecutionInstance executionInstance,
+                ProcessEngineConfiguration processEngineConfiguration);
 
-    ExecutionInstance update(ExecutionInstance executionInstance,
-                             ProcessEngineConfiguration processEngineConfiguration);
+    void update(ExecutionInstance executionInstance,
+                ProcessEngineConfiguration processEngineConfiguration);
 
 
     ExecutionInstance find(String executionInstanceId,

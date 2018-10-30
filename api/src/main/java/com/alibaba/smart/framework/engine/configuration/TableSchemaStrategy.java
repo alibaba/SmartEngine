@@ -5,9 +5,5 @@ package com.alibaba.smart.framework.engine.configuration;
  */
 public interface TableSchemaStrategy {
 
-    void  initTableSchemaNaming();
-
-    TableSchemaNaming getTableSchemaNaming();
-
     String  getTableSchemaFormatter(String tableOrCollectionName);
 }

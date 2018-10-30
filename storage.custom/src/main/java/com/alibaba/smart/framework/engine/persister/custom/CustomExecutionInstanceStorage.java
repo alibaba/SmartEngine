@@ -20,14 +20,13 @@ import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSess
 public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage {
 
     @Override
-    public ExecutionInstance insert(ExecutionInstance instance,
-                                    ProcessEngineConfiguration processEngineConfiguration) {
-        return instance;
+    public void insert(ExecutionInstance instance,
+                       ProcessEngineConfiguration processEngineConfiguration) {
     }
 
     @Override
-    public ExecutionInstance update(ExecutionInstance executionInstance,
-                                    ProcessEngineConfiguration processEngineConfiguration) {
+    public void update(ExecutionInstance executionInstance,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         //Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
         //
         //boolean matched= false;
@@ -61,7 +60,6 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
         //    throw new EngineException("No ExecutionInstance found : "+executionInstance);
         //}
 
-        return executionInstance;
     }
 
     @Override

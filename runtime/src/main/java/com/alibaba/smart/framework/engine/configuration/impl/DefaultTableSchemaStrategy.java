@@ -11,18 +11,10 @@ public class DefaultTableSchemaStrategy  implements TableSchemaStrategy {
     private TableSchemaNaming tableSchemaNaming;
 
     public DefaultTableSchemaStrategy() {
-        initTableSchemaNaming();
+        tableSchemaNaming = new TableSchemaNaming();
     }
 
-    @Override
-    public void initTableSchemaNaming() {
-        this.tableSchemaNaming = new TableSchemaNaming();
-    }
 
-    @Override
-    public TableSchemaNaming getTableSchemaNaming() {
-        return tableSchemaNaming;
-    }
 
     @Override
     public String  getTableSchemaFormatter(String tableOrCollectionName){

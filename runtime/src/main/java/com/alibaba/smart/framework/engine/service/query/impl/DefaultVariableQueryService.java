@@ -43,7 +43,6 @@ public class DefaultVariableQueryService implements VariableQueryService , LifeC
 
     @Override
     public List<VariableInstance> findList(String processInstanceId, String executionInstanceId) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         VariableInstanceStorage variableInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(VariableInstanceStorage.class);
 

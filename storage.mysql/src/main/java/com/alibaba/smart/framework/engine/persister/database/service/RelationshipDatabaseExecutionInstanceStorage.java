@@ -18,8 +18,8 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
 
 
     @Override
-    public ExecutionInstance insert(ExecutionInstance executionInstance,
-                                    ProcessEngineConfiguration processEngineConfiguration) {
+    public void insert(ExecutionInstance executionInstance,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
 
         ExecutionInstanceEntity executionInstanceEntity = buildExecutionInstanceEntity(executionInstance);
@@ -30,7 +30,6 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
         executionInstanceEntity =   executionInstanceDAO.findOne(executionInstanceEntity.getId());
 
          executionInstance = buildExecutionInstance(executionInstance, executionInstanceEntity);
-        return executionInstance;
 
     }
 
@@ -53,8 +52,8 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
     }
 
     @Override
-    public ExecutionInstance update(ExecutionInstance executionInstance,
-                                    ProcessEngineConfiguration processEngineConfiguration) {
+    public void update(ExecutionInstance executionInstance,
+                       ProcessEngineConfiguration processEngineConfiguration) {
 
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
         ExecutionInstanceEntity executionInstanceEntity = buildExecutionInstanceEntity(executionInstance);
@@ -63,7 +62,6 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
         executionInstanceEntity.setGmtModified(executionInstance.getCompleteTime());
 
         executionInstanceDAO.update(executionInstanceEntity);
-        return executionInstance;
     }
 
     private ExecutionInstance buildExecutionInstance(ExecutionInstance executionInstance, ExecutionInstanceEntity executionInstanceEntity) {

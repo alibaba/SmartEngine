@@ -61,8 +61,8 @@ CREATE TABLE `se_task_instance` (
   `claim_time` datetime DEFAULT NULL COMMENT '任务认领时间,预留字段.',
   `complete_time` datetime DEFAULT NULL COMMENT '任务结束时间',
   `status` varchar(255) NOT NULL COMMENT '任务状态 ',
-  `comment` varchar(255) NOT NULL COMMENT '备注 ',
-  `extension` varchar(255) NOT NULL COMMENT '扩展字段，可自由使用',
+  `comment` varchar(255) DEFAULT NULL COMMENT '备注 ',
+  `extension` varchar(255) DEFAULT NULL COMMENT '扩展字段，可自由使用',
 
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='流程引擎-任务实例'

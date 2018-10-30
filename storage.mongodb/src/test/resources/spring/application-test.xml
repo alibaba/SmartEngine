@@ -28,5 +28,7 @@
 
     <context:component-scan base-package="com.alibaba.smart.framework.engine.persister"/>
 
+    <bean class="com.alibaba.smart.framework.engine.persister.mongo.service.MongoActivityInstanceStorage" />
+
 
 </beans>

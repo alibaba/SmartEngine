@@ -16,6 +16,9 @@
 3. * 涉及到 PUBLIC API 修改，将 Long 型传参修改为 String 型传参； 以及将与流程启动相关的 API 方法名称换成了 startWith。
 4. * 将com.alibaba.smart.framework.engine.persister.database.util.SpringContextUtil move 到
 
+public Long count(TaskInstanceQueryParam taskInstanceQueryParam,
+                      ProcessEngineConfiguration processEngineConfiguration)
+
 ===================================================
 
 
