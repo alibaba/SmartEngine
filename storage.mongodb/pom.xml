@@ -29,13 +29,18 @@
                     <artifactId>mongo-java-driver</artifactId>
                     <groupId>org.mongodb</groupId>
                 </exclusion>
-
             </exclusions>
         </dependency>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>smart-engine-runtime</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>storage.common</artifactId>
             <version>${project.version}</version>
         </dependency>
 

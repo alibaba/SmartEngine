@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ActivityInstanceStorage {
 
-    ActivityInstance insert(ActivityInstance activityInstance);
+    void insert(ActivityInstance activityInstance);
 
     ActivityInstance update(ActivityInstance activityInstance);
 

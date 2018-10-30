@@ -30,6 +30,11 @@ public class SpringContextUtil implements ApplicationContextAware, BeanFactoryPo
         return appContext.getBean(name);
     }
 
+    public static <T> T  getBean(String name, Class<T> requiredType) {
+        return appContext.getBean(name,requiredType);
+    }
+
+
     public static ApplicationContext getAppContext() {
         return appContext;
     }

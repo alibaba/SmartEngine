@@ -16,8 +16,7 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
 
 
     @Override
-    public ActivityInstance insert(ActivityInstance instance) {
-       return instance;
+    public void insert(ActivityInstance instance) {
     }
 
     @Override

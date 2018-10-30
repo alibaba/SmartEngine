@@ -1,5 +1,9 @@
 package com.alibaba.smart.framework.engine.persister.mongo;
 
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +33,24 @@ public class SpringMongoDataTest {
        User r =  mongoTemplate.findById(user.getId(),User.class);
 
        Assert.assertNotNull(r);
+
+    }
+
+    @Test
+    public void testAI() {
+
+        ActivityInstance activityInstance = new DefaultActivityInstance();
+        activityInstance.setProcessDefinitionActivityId("a");
+        activityInstance.setProcessDefinitionIdAndVersion("version");
+        activityInstance.setProcessInstanceId("processInstanceid");
+        activityInstance.setStartTime(DateUtil.getCurrentDate());
+        activityInstance.setCompleteTime(DateUtil.getCurrentDate());
+
+
+        mongoTemplate.insert(activityInstance, "ActivityInstance");
+
+
+        //Assert.assertNotNull(r);
 
     }
 }

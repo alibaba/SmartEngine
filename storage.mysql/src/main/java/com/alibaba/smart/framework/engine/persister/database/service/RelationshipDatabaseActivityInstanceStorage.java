@@ -15,7 +15,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
 
     @Override
-    public ActivityInstance insert(ActivityInstance activityInstance) {
+    public void insert(ActivityInstance activityInstance) {
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
 
 
@@ -29,7 +29,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         activityInstance.setInstanceId(activityInstanceEntity.getId().toString());
         activityInstance.setStartTime(activityInstanceEntity.getGmtCreate());
 
-        return activityInstance;
+        //return activityInstance;
     }
 
     private ActivityInstanceEntity buildActivityInstanceEntity(ActivityInstance activityInstance) {
