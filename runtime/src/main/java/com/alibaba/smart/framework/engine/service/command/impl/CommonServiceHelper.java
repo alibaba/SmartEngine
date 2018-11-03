@@ -138,7 +138,7 @@ public abstract  class CommonServiceHelper {
 
             if(null != executionInstanceList){
                 for (ExecutionInstance executionInstance : executionInstanceList) {
-                    buildInstance( executionInstanceStorage, taskInstanceStorage,taskAssigneeStorage,
+                    persisteInstance( executionInstanceStorage, taskInstanceStorage,taskAssigneeStorage,
                         activityInstance,
                         executionInstance,  processEngineConfiguration);
                 }
@@ -149,9 +149,9 @@ public abstract  class CommonServiceHelper {
     }
 
     //TUNE too many args
-    private static void buildInstance(ExecutionInstanceStorage executionInstanceStorage,
-                                      TaskInstanceStorage taskInstanceStorage,TaskAssigneeStorage taskAssigneeStorage, ActivityInstance activityInstance,
-                                      ExecutionInstance executionInstance,ProcessEngineConfiguration processEngineConfiguration) {
+    private static void persisteInstance(ExecutionInstanceStorage executionInstanceStorage,
+                                         TaskInstanceStorage taskInstanceStorage, TaskAssigneeStorage taskAssigneeStorage, ActivityInstance activityInstance,
+                                         ExecutionInstance executionInstance, ProcessEngineConfiguration processEngineConfiguration) {
         if (null != executionInstance) {
             executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
             executionInstance.setActivityInstanceId(activityInstance.getInstanceId());

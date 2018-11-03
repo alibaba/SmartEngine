@@ -1,19 +1,24 @@
 package com.alibaba.smart.framework.engine.persister.mongo.service;
+import java.util.Date;
+
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
+import com.alibaba.smart.framework.engine.persister.mongo.entity.TaskAssigneeEntity;
+import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
+import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
-import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant;
 import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.persister.mongo.entity.ProcessInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.mongo.entity.TaskInstanceEntity;
@@ -76,6 +81,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
 
     private TaskInstance buildInstance(TaskInstanceEntity entity) {
         TaskInstance taskInstance= new DefaultTaskInstance();
+        taskInstance.setInstanceId(entity.getId());
         taskInstance.setProcessDefinitionIdAndVersion(entity.getProcessDefinitionIdAndVersion());
         taskInstance.setProcessInstanceId(entity.getProcessInstanceId());
         taskInstance.setProcessDefinitionActivityId(entity.getProcessDefinitionActivityId());
@@ -165,14 +171,179 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
     @Override
     public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
                                                   ProcessEngineConfiguration processEngineConfiguration) {
-        return null;
+        // 该算法逻辑依赖：  先 insert 任务实例时，需要插入任务的处理者。 同时，需要保存另一个 collectionA，当前候选者对应的任务实例 list
+        // 2. 完成任务时， 更新任务实例状态，子 collection 不需要处理。 同时，将collectionA 的任务实例置为 completed。
+        // 3. 删除或者 abort 流程实例时，对应的冗余数据也需要处理掉。
+
+        //下面的待办逻辑是：先从 TaskAssignee 中查询
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = processEngineConfiguration.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+        TaskAssigneeStorage  taskAssigneeStorage =  persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
+        List<TaskAssigneeInstance>  taskAssigneeInstanceList =  taskAssigneeStorage.findPendingTaskAssigneeList(pendingTaskQueryParam,processEngineConfiguration);
+
+        if(CollectionUtil.isNotEmpty(taskAssigneeInstanceList)){
+
+            List<String> taskInstanceIdList = new ArrayList<String>(taskAssigneeInstanceList.size());
+
+            for (TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstanceList) {
+                taskInstanceIdList.add(taskAssigneeInstance.getTaskInstanceId());
+            }
+
+            List<TaskInstance>  taskInstanceList = findList(taskInstanceIdList,  processEngineConfiguration) ;
+            return taskInstanceList;
+        }
+
+
+
+        return Collections.emptyList();
     }
 
     @Override
-    public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
-                                        ProcessEngineConfiguration processEngineConfiguration) {
-        return null;
+    public Long countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
+                                     ProcessEngineConfiguration processEngineConfiguration) {
+
+        TaskAssigneeStorage  taskAssigneeStorage =  processEngineConfiguration.getExtensionPointRegistry().getExtensionPoint(TaskAssigneeStorage.class);
+
+        Long  counter =  taskAssigneeStorage.countPendingTaskAssigneeList(pendingTaskQueryParam,processEngineConfiguration);
+        return counter;
+
     }
+
+
+    @Override
+    public void remove(String taskInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
+        String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
+
+
+        TaskInstanceEntity entity =  mongoTemplate.findById(taskInstanceId,TaskInstanceEntity.class,
+            collectionName);
+
+        mongoTemplate.remove(entity,collectionName);
+    }
+
+
+
+
+
+    @Override
+    public TaskInstance insert(TaskInstance instance, ProcessEngineConfiguration processEngineConfiguration) {
+        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
+        String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
+
+        TaskInstanceEntity entity = buildEntity(instance);
+
+        mongoTemplate.insert(entity, collectionName);
+
+        instance.setInstanceId(entity.getId());
+
+        return  instance;
+
+    }
+
+    private TaskInstanceEntity buildEntity(TaskInstance instance) {
+        TaskInstanceEntity taskInstanceEntity= new TaskInstanceEntity();
+        taskInstanceEntity.setProcessInstanceId(instance.getProcessInstanceId());
+        taskInstanceEntity.setProcessDefinitionIdAndVersion(instance.getProcessDefinitionIdAndVersion());
+        taskInstanceEntity.setExecutionInstanceId(instance.getExecutionInstanceId());
+        taskInstanceEntity.setActivityInstanceId(instance.getActivityInstanceId());
+        taskInstanceEntity.setProcessDefinitionType(instance.getProcessDefinitionType());
+        taskInstanceEntity.setProcessDefinitionActivityId(instance.getProcessDefinitionActivityId());
+        taskInstanceEntity.setClaimUserId(instance.getClaimUserId());
+        taskInstanceEntity.setPriority(instance.getPriority());
+        taskInstanceEntity.setStatus(instance.getStatus());
+        taskInstanceEntity.setTag(instance.getTag());
+        taskInstanceEntity.setClaimTime(instance.getClaimTime());
+        taskInstanceEntity.setComment(instance.getComment());
+        taskInstanceEntity.setExtension(instance.getExtension());
+        taskInstanceEntity.setTitle(instance.getTitle());
+
+        Date now = DateUtil.getCurrentDate();
+        taskInstanceEntity.setGmtCreate(now);
+        taskInstanceEntity.setGmtModified(now);
+
+
+        List<TaskAssigneeInstance> taskAssigneeInstanceList = instance.getTaskAssigneeInstanceList();
+        if(CollectionUtil.isNotEmpty(taskAssigneeInstanceList)){
+            List<TaskAssigneeEntity> assigneeList  = new ArrayList<TaskAssigneeEntity>(taskAssigneeInstanceList.size());
+
+            for (TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstanceList) {
+                TaskAssigneeEntity taskAssigneeEntity = new TaskAssigneeEntity();
+                taskAssigneeEntity.setProcessInstanceId(taskAssigneeInstance.getProcessInstanceId());
+                taskAssigneeEntity.setTaskInstanceId(taskAssigneeInstance.getTaskInstanceId());
+                taskAssigneeEntity.setAssigneeId(taskAssigneeInstance.getAssigneeId());
+                taskAssigneeEntity.setAssigneeType(taskAssigneeInstance.getAssigneeType());
+                taskAssigneeEntity.setGmtCreate(now);
+                taskAssigneeEntity.setGmtModified(now);
+                assigneeList.add(taskAssigneeEntity);
+
+            }
+
+            taskInstanceEntity.setAssigneeList(assigneeList);
+
+        }
+
+        return taskInstanceEntity;
+
+    }
+
+    @Override
+    public TaskInstance update(TaskInstance instance, ProcessEngineConfiguration processEngineConfiguration) {
+
+        save(instance, processEngineConfiguration);
+
+        return instance;
+
+    }
+
+
+
+    @Override
+    public TaskInstance find(String instanceId, ProcessEngineConfiguration processEngineConfiguration) {
+        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
+        String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
+
+        TaskInstanceEntity entity =  mongoTemplate.findById(instanceId,TaskInstanceEntity.class,collectionName);
+
+        TaskInstance instance = buildInstance(entity);
+
+        return instance;
+
+    }
+
+    public List<TaskInstance> findList(List<String> taskInstanceIdList, ProcessEngineConfiguration processEngineConfiguration) {
+        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
+        String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
+
+        Query query = new Query();
+
+        if(CollectionUtil.isNotEmpty(taskInstanceIdList)){
+            query.addCriteria(Criteria.where("id").in(taskInstanceIdList));
+        }
+
+
+        List<TaskInstanceEntity> entityList = mongoTemplate.find(query,TaskInstanceEntity.class,collectionName);
+
+
+        if(null != entityList){
+            List<TaskInstance> instanceList = new ArrayList<TaskInstance>(entityList.size());
+
+            for (TaskInstanceEntity entity : entityList) {
+                TaskInstance instance = buildInstance(entity);
+                instanceList.add(instance);
+            }
+
+            return instanceList;
+        }
+
+        return Collections.emptyList();
+
+    }
+
 
     @Override
     public List<TaskInstance> findTaskListByAssignee(TaskInstanceQueryByAssigneeParam param,
@@ -181,39 +352,40 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
     }
 
     @Override
-    public Integer countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param,
+    public Long countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param,
                                            ProcessEngineConfiguration processEngineConfiguration) {
-        return null;
-    }
-
-
-
-    @Override
-    public TaskInstance insert(TaskInstance taskInstance, ProcessEngineConfiguration processEngineConfiguration) {
-        return null;
-    }
-
-    @Override
-    public TaskInstance update(TaskInstance taskInstance, ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 
     @Override
     public int updateFromStatus(TaskInstance taskInstance, String fromStatus,
                                 ProcessEngineConfiguration processEngineConfiguration) {
-        return 0;
+
+        save(taskInstance, processEngineConfiguration);
+
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = processEngineConfiguration.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);
+
+
+        TaskAssigneeStorage  taskAssigneeStorage =  persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
+
+
+
+        taskAssigneeStorage.removeAll(taskInstance.getInstanceId(),processEngineConfiguration);
+
+        //TODO
+        return 1;
+
     }
 
-    @Override
-    public TaskInstance find(String taskInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
-        return null;
+    private void save(TaskInstance taskInstance, ProcessEngineConfiguration processEngineConfiguration) {
+        MongoTemplate mongoTemplate = SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
+        String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
+
+        TaskInstanceEntity entity = buildEntity(taskInstance);
+
+        mongoTemplate.save(entity, collectionName);
     }
-
-    @Override
-    public void remove(String taskInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
-
-    }
-
 
     @Override
     public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam,

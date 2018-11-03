@@ -47,8 +47,8 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     }
 
     @Override
-    public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
-                                        ProcessEngineConfiguration processEngineConfiguration) {
+    public Long countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
+                                     ProcessEngineConfiguration processEngineConfiguration) {
         return countTaskListByAssignee(convertToTaskInstanceQueryByAssigneeParam(pendingTaskQueryParam),processEngineConfiguration );
     }
 
@@ -69,11 +69,11 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     }
 
     @Override
-    public Integer countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param,
+    public Long countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param,
                                            ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         Integer count = taskInstanceDAO.countTaskByAssignee(param);
-        return  count  == null? 0:count;
+        return  count  == null? 0L:count;
     }
 
     @Override
@@ -121,7 +121,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
                       ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         Integer count = taskInstanceDAO.count(taskInstanceQueryParam);
-        return  count  == null? 0:count;
+        return  count  == null? 0L:count;
     }
 
     //@Override

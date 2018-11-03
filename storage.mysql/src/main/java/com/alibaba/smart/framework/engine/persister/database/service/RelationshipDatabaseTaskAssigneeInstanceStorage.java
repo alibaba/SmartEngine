@@ -6,12 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.persister.database.dao.TaskAssigneeDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity;
+import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
+
+import static com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant.NOT_IMPLEMENT_INTENTIONALLY;
 
 public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
@@ -62,6 +66,18 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
             }
          }
          return assigneeMap;
+    }
+
+    @Override
+    public List<TaskAssigneeInstance> findPendingTaskAssigneeList(PendingTaskQueryParam pendingTaskQueryParam,
+                                                                  ProcessEngineConfiguration processEngineConfiguration) {
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
+    }
+
+    @Override
+    public Long countPendingTaskAssigneeList(PendingTaskQueryParam pendingTaskQueryParam,
+                                             ProcessEngineConfiguration processEngineConfiguration) {
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 
     @Override
@@ -135,5 +151,10 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
         taskAssigneeDAO.delete(Long.valueOf(taskAssigneeInstanceId));
 
+    }
+
+    @Override
+    public void removeAll(String taskInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 }

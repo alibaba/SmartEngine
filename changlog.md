@@ -18,6 +18,9 @@
 
 public Long count(TaskInstanceQueryParam taskInstanceQueryParam,
                       ProcessEngineConfiguration processEngineConfiguration)
+                      
+                  DefaultTaskQueryService       public Long count(TaskInstanceQueryParam taskInstanceQueryParam) {
+MultiInstanceCounter
 
 ===================================================
 

@@ -51,7 +51,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     }
 
     @Override
-    public Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
+    public Long countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
 
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
@@ -70,7 +70,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     }
 
     @Override
-    public Integer countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
+    public Long countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
         return taskInstanceStorage.countTaskListByAssignee(param,processEngineConfiguration );
@@ -107,7 +107,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     }
 
     @Override
-    public Integer count(TaskInstanceQueryParam taskInstanceQueryParam) {
+    public Long count(TaskInstanceQueryParam taskInstanceQueryParam) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 

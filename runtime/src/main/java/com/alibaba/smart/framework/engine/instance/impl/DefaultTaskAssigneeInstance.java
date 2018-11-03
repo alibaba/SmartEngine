@@ -20,8 +20,4 @@ public class DefaultTaskAssigneeInstance extends AbstractLifeCycleInstance imple
     private String assigneeId;
     private String assigneeType;
     private String taskInstanceId;
-
-
-
-
 }

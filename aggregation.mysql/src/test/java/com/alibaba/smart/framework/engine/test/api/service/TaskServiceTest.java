@@ -96,7 +96,7 @@ public class TaskServiceTest {
         submitTaskInstanceList=  taskQueryService.findPendingTaskList(pendingTaskQueryParam);
         Assert.assertEquals(1,submitTaskInstanceList.size());
 
-        Integer count =  taskQueryService.countPendingTaskList(pendingTaskQueryParam);
+        Long count =  taskQueryService.countPendingTaskList(pendingTaskQueryParam);
         Assert.assertEquals(1L,count.longValue());
 
         PendingTaskQueryParam  pendingTaskQueryParam1 = new PendingTaskQueryParam();

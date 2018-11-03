@@ -14,6 +14,8 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 
+import static com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant.NOT_IMPLEMENT_INTENTIONALLY;
+
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  11:54.
  */
@@ -114,7 +116,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
     @Override
     public void remove(String instanceId,
                        ProcessEngineConfiguration processEngineConfiguration) {
-        throw new EngineException("not implement intentionally");
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 
     @Override

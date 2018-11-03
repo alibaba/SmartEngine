@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.persister.mongo.entity;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -9,9 +11,14 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class TaskAssigneeEntity extends BaseProcessEntity {
 
+    private String processInstanceId;
+
+    private String taskInstanceId;
+
     private String assigneeId;
 
     private String assigneeType;
 
+    //private String processDefinitionType;
 
 }

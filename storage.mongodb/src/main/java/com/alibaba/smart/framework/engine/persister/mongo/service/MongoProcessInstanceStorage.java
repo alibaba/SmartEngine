@@ -27,6 +27,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import static com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant.NOT_IMPLEMENT_INTENTIONALLY;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.ACTIVITY_INSTANCE_ID;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.GMT_CREATE;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.MONGO_TEMPLATE;
@@ -86,6 +87,7 @@ public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
         ProcessInstanceEntity entity = buildEntity(instance);
+        entity.setId(instance.getInstanceId());
 
         mongoTemplate.save(entity,collectionName);
 
@@ -108,6 +110,7 @@ public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
 
     private ProcessInstance buildInstance(ProcessInstanceEntity entity) {
         ProcessInstance processInstance= new DefaultProcessInstance();
+        processInstance.setInstanceId(entity.getId());
 
         String processDefinitionIdAndVersion =  entity.getProcessDefinitionIdAndVersion();
         processInstance.setProcessDefinitionId(StringUtil.substringBefore(processDefinitionIdAndVersion,":"));
@@ -135,7 +138,7 @@ public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
 
     @Override
     public ProcessInstance findOneForUpdate(String instanceId, ProcessEngineConfiguration processEngineConfiguration) {
-        throw new EngineException("not implement intentionally");
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 
     @Override

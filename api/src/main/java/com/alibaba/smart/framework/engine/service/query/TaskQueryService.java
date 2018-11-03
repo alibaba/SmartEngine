@@ -19,11 +19,11 @@ public interface TaskQueryService {
      */
     List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam);
 
-    Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam);
+    Long countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam);
 
     List<TaskInstance> findTaskListByAssignee(TaskInstanceQueryByAssigneeParam param);
 
-    Integer countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param);
+    Long countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param);
 
     /**
      * 不分页查询，大数据量下慎用。
@@ -47,6 +47,6 @@ public interface TaskQueryService {
      */
     List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam);
 
-    Integer count(TaskInstanceQueryParam taskInstanceQueryParam);
+    Long count(TaskInstanceQueryParam taskInstanceQueryParam);
 
 }

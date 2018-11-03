@@ -5,7 +5,8 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
-
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 
 public interface TaskAssigneeStorage {
 
@@ -14,6 +15,13 @@ public interface TaskAssigneeStorage {
 
     Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,
                                                                        ProcessEngineConfiguration processEngineConfiguration) ;
+
+
+    List<TaskAssigneeInstance> findPendingTaskAssigneeList(PendingTaskQueryParam pendingTaskQueryParam,
+                                                  ProcessEngineConfiguration processEngineConfiguration);
+
+    Long countPendingTaskAssigneeList(PendingTaskQueryParam pendingTaskQueryParam,
+                                                           ProcessEngineConfiguration processEngineConfiguration);
 
     TaskAssigneeInstance insert(TaskAssigneeInstance taskAssigneeInstance,
                                 ProcessEngineConfiguration processEngineConfiguration);
@@ -25,6 +33,9 @@ public interface TaskAssigneeStorage {
                                  ProcessEngineConfiguration processEngineConfiguration);
 
     void remove(String taskAssigneeId,
+                ProcessEngineConfiguration processEngineConfiguration);
+
+    void removeAll(String taskInstanceId,
                 ProcessEngineConfiguration processEngineConfiguration);
 
 }

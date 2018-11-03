@@ -21,6 +21,10 @@ public interface TaskAssigneeInstance extends LifeCycleInstance {
 
     void setProcessInstanceId(String processInstanceId);
 
+    //String getProcessDefinitionType();
+    //
+    //void setProcessDefinitionType(String processDefinitionType);
+
     String getTaskInstanceId();
 
     void setTaskInstanceId(String taskInstanceId);

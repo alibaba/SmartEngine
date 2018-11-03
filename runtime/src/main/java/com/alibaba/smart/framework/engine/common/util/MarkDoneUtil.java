@@ -59,12 +59,15 @@ public class MarkDoneUtil {
 
             String claimUserId = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID);
             taskInstance.setClaimUserId(claimUserId);
-            String comment = variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT) == null?null:String.valueOf(variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT));
+            Object o = variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT);
+            String comment =  o == null?null:String.valueOf(
+                o);
             taskInstance.setClaimUserId(claimUserId);
             taskInstance.setComment(comment);
 
         }
 
+        // 需要注意，针对 mongodb 模式，该方法会在内部实现，删除人员和任务的冗余存储关系。
         int updateCount = taskInstanceStorage.updateFromStatus(taskInstance, sourceStatus, processEngineConfiguration);
         if (updateCount != 1) {
             throw new ConcurrentException(String

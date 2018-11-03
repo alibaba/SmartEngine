@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.configuration;
 
-import java.util.Set;
-
 import com.alibaba.smart.framework.engine.SmartEngine;
 
 /**
@@ -9,10 +7,10 @@ import com.alibaba.smart.framework.engine.SmartEngine;
  */
 public interface MultiInstanceCounter {
 
-    Integer countPassedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
-                                          SmartEngine smartEngine);
+    Long countPassedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
+                                       SmartEngine smartEngine);
 
-    Integer countRejectedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
-                                            SmartEngine smartEngine);
+    Long countRejectedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
+                                         SmartEngine smartEngine);
 
 }

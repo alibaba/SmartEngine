@@ -52,8 +52,6 @@ public class SpringMongoDataTest {
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
         TableSchemaStrategy tableSchemaStrategy = new CustomTableSchemaStrategy();
-
-
         processEngineConfiguration.setTableSchemaStrategy(tableSchemaStrategy);
 
         ActivityInstance activityInstance = new DefaultActivityInstance();

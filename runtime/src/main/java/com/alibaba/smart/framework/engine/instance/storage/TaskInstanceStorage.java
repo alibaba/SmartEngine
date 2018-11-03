@@ -17,13 +17,13 @@ public interface TaskInstanceStorage {
     List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
                                            ProcessEngineConfiguration processEngineConfiguration);
 
-    Integer countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
-                                 ProcessEngineConfiguration processEngineConfiguration);
+    Long countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
+                              ProcessEngineConfiguration processEngineConfiguration);
 
     List<TaskInstance> findTaskListByAssignee(TaskInstanceQueryByAssigneeParam param,
                                               ProcessEngineConfiguration processEngineConfiguration);
 
-    Integer countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param,
+    Long countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param,
                                     ProcessEngineConfiguration processEngineConfiguration);
 
     List<TaskInstance> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam,

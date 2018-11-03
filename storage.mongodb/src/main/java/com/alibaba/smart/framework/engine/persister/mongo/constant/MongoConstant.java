@@ -18,8 +18,12 @@ public interface MongoConstant {
 
     String STATUS = "status";
 
+
     String CLAIM_USER_ID = "claimUserId";
 
     String TAG = "tag";
+
+    String ASSIGNEE_USER_ID = "assigneeUserId";
+
 
 }
