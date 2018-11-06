@@ -19,6 +19,6 @@ public abstract class AbstractElement implements Element {
     private boolean unresolved = true;
     private String id;
     private String name;
-    private Extensions extensions;
+    protected Extensions extensions;
     private List<Performable> performers;
 }
