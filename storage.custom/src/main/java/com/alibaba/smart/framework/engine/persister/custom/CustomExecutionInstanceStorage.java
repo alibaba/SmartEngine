@@ -23,7 +23,8 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
     @Override
     public ExecutionInstance update(ExecutionInstance executionInstance) {
-        //Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
+        //Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances()
+        // .values();
         //
         //boolean matched= false;
         //
@@ -80,7 +81,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
                 for (int i = size - 1; i >= 0; i--) {
                     ActivityInstance activityInstance = activityInstances.get(i);
 
-                    List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+                    List<ExecutionInstance> executionInstances = activityInstance.getExecutionInstanceList();
                     for (ExecutionInstance tempExecutionInstance : executionInstances) {
                         if (null != tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(instanceId)) {
                             executionInstance = tempExecutionInstance;
@@ -98,14 +99,13 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
             }
         }
 
-        if(!matched){
-            throw new EngineException("No ExecutionInstance found for id : "+instanceId);
+        if (!matched) {
+            throw new EngineException("No ExecutionInstance found for id : " + instanceId);
         }
 
         return executionInstance;
 
     }
-
 
     @Override
     public void remove(Long instanceId) {
@@ -115,19 +115,19 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
     @Override
     public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
         ProcessInstance processInstance = PersisterSession.currentSession().getProcessInstance(processInstanceId);
-        if(null==processInstance){
+        if (null == processInstance) {
             return null;
         }
-        List<ActivityInstance> activityInstances =  processInstance.getActivityInstances();
-        if(null==activityInstances){
+        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
+        if (null == activityInstances) {
             return null;
         }
         //TUNE 扩容
         List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
         for (ActivityInstance activityInstance : activityInstances) {
-            List<ExecutionInstance> executionInstances1 =    activityInstance.getExecutionInstanceList();
+            List<ExecutionInstance> executionInstances1 = activityInstance.getExecutionInstanceList();
             for (ExecutionInstance executionInstance : executionInstances1) {
-                if(null != executionInstance && executionInstance.isActive()){
+                if (null != executionInstance && executionInstance.isActive()) {
                     executionInstances.add(executionInstance);
                 }
             }
@@ -136,8 +136,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
         return executionInstances;
 
-
-     }
+    }
 
     @Override
     public List<ExecutionInstance> findByActivityInstanceId(Long processInstanceId, Long activityInstanceId) {
