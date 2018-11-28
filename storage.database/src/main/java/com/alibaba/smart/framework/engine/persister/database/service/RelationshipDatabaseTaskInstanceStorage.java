@@ -122,7 +122,14 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         TaskInstanceEntity taskInstanceEntity = buildTaskInstanceEntity(taskInstance);
         taskInstanceDAO.insert(taskInstanceEntity);
 
-        taskInstanceEntity = taskInstanceDAO.findOne(taskInstanceEntity.getId());
+        Long entityId = taskInstanceEntity.getId();
+
+        // 当数据库表id 是非自增时，需要以传入的 id 值为准
+        if(0L == entityId){
+            entityId = taskInstance.getInstanceId();
+        }
+
+        taskInstanceEntity = taskInstanceDAO.findOne(entityId);
 
         //reAssign
         TaskInstance   resultTaskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);

@@ -28,7 +28,14 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         DeploymentInstanceEntity entity = convertByInstance(deploymentInstance);
         deploymentnstanceDAO.insert(entity);
 
-        deploymentInstance = findById(entity.getId());
+        Long entityId = entity.getId();
+
+        // 当数据库表id 是非自增时，需要以传入的 id 值为准
+        if(0L == entityId){
+            entityId = deploymentInstance.getInstanceId();
+        }
+
+        deploymentInstance = findById(entityId);
 
         return deploymentInstance;
     }

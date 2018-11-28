@@ -26,6 +26,7 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
         entity.setProcessDefinitionIdAndVersion("processDefinitionId");
         entity.setStatus("running");
         Long id = System.currentTimeMillis();
+        entity.setId(1L);
         entity.setBizUniqueId(String.valueOf(id * 1000 + new Random().nextInt(1000)) );
         entity.setTitle("title");
         entity.setStartUserId("234");

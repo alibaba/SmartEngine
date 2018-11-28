@@ -84,6 +84,7 @@ public abstract  class CommonServiceHelper {
                 Class type = value.getClass();
 
                 VariableInstance variableInstance = new DefaultVariableInstance();
+                variableInstance.setInstanceId(processEngineConfiguration.getIdGenerator().getId());
                 variableInstance.setProcessInstanceId(newProcessInstance.getInstanceId());
                 variableInstance.setExecutionInstanceId(executionInstanceId);
                 variableInstance.setFieldKey(key);
@@ -171,6 +172,7 @@ public abstract  class CommonServiceHelper {
                     for (TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstances) {
                         taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
                         taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
+
                         taskAssigneeStorage.insert(taskAssigneeInstance);
                     }
                 }

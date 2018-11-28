@@ -21,11 +21,18 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
         ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) SpringContextUtil.getBean("executionInstanceDAO");
 
         ExecutionInstanceEntity executionInstanceEntity = buildExecutionInstanceEntity(executionInstance);
-        //executionInstanceEntity.setId(null);
 
         executionInstanceDAO.insert(executionInstanceEntity);
 
-        executionInstanceEntity =   executionInstanceDAO.findOne(executionInstanceEntity.getId());
+        Long entityId = executionInstanceEntity.getId();
+
+        // 当数据库表id 是非自增时，需要以传入的 id 值为准
+        if(0L == entityId){
+            entityId = executionInstance.getInstanceId();
+        }
+
+
+        executionInstanceEntity =   executionInstanceDAO.findOne(entityId);
 
          executionInstance = buildExecutionInstance(executionInstance, executionInstanceEntity);
         return executionInstance;
