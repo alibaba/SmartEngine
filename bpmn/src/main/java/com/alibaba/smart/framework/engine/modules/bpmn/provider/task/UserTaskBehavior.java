@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -164,10 +165,14 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
             List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
 
+            IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
+
+
             for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : taskAssigneeCandidateInstanceList) {
                 TaskAssigneeInstance taskAssigneeInstance = new DefaultTaskAssigneeInstance();
                 taskAssigneeInstance.setAssigneeId(taskAssigneeCandidateInstance.getAssigneeId());
                 taskAssigneeInstance.setAssigneeType(taskAssigneeCandidateInstance.getAssigneeType());
+                taskAssigneeInstance.setInstanceId(idGenerator.getId());
                 taskAssigneeInstanceList.add(taskAssigneeInstance);
             }
             taskInstance.setTaskAssigneeInstanceList(taskAssigneeInstanceList);

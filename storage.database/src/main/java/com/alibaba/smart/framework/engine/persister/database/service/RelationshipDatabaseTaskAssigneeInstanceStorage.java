@@ -56,10 +56,16 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
 
         TaskAssigneeEntity taskAssigneeEntity = buildTaskInstanceEntity(  taskAssigneeInstance);
-        //taskAssigneeEntity.setId(null);
         taskAssigneeDAO.insert(taskAssigneeEntity);
 
-        TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(taskAssigneeEntity.getId());
+        Long entityId = taskAssigneeEntity.getId();
+
+        // 当数据库表id 是非自增时，需要以传入的 id 值为准
+        if(0L == entityId){
+            entityId = taskAssigneeInstance.getInstanceId();
+        }
+
+        TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(entityId);
         return resultTaskAssigneeInstance;
     }
 

@@ -189,7 +189,7 @@ public class DeploymentServiceTest {
         createDeploymentCommand.setProcessDefinitionType(type);
         createDeploymentCommand.setProcessDefinitionCode(code);
 
-       DeploymentInstance deploymentInstance= deploymentCommandService.createDeployment(createDeploymentCommand);
+        DeploymentInstance deploymentInstance= deploymentCommandService.createDeployment(createDeploymentCommand);
         deploymentCommandService.createDeployment(createDeploymentCommand);
         deploymentCommandService.createDeployment(createDeploymentCommand);
 

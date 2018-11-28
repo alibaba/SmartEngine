@@ -37,6 +37,8 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         DeploymentInstance deploymentInstance  = new DefaultDeploymentInstance();
 
+        Long id = smartEngine.getProcessEngineConfiguration().getIdGenerator().getId();
+        deploymentInstance.setInstanceId(id);
         deploymentInstance.setProcessDefinitionContent(processDefinitionContent);
         deploymentInstance.setProcessDefinitionId(processDefinition.getId());
         deploymentInstance.setProcessDefinitionVersion(processDefinition.getVersion());

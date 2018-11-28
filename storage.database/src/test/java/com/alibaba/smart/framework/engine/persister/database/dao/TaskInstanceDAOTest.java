@@ -19,6 +19,8 @@ public class TaskInstanceDAOTest extends BaseElementTest {
     @Before
     public void before() {
         entity = new TaskInstanceEntity();
+        entity.setId(1L);
+
         entity.setProcessDefinitionIdAndVersion("processDefinitionId");
         entity.setActivityInstanceId(11L);
         entity.setClaimUserId("assign_id");

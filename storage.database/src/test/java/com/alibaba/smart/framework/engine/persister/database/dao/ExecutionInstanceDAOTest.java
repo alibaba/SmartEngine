@@ -17,6 +17,8 @@ public class ExecutionInstanceDAOTest extends BaseElementTest {
     @Before
     public void before() {
         entity = new ExecutionInstanceEntity();
+        long id = System.currentTimeMillis();
+        entity.setId(id);
         entity.setProcessDefinitionIdAndVersion("processDefinitionId");
         entity.setActivityInstanceId(11L);
         entity.setProcessInstanceId(444L);

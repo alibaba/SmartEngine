@@ -20,11 +20,18 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
 
         ActivityInstanceEntity activityInstanceEntityToBePersisted = buildActivityInstanceEntity(activityInstance);
-        //activityInstanceEntityToBePersisted.setId(null);
 
         activityInstanceDAO.insert(activityInstanceEntityToBePersisted);
 
-        ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(activityInstanceEntityToBePersisted.getId());
+        Long entityId = activityInstanceEntityToBePersisted.getId();
+
+        // 当数据库表id 是非自增时，需要以传入的 id 值为准
+        if(0L == entityId){
+            entityId = activityInstance.getInstanceId();
+        }
+
+        ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(
+            entityId);
 
         activityInstance.setInstanceId(activityInstanceEntity.getId());
         activityInstance.setStartTime(activityInstanceEntity.getGmtCreate());

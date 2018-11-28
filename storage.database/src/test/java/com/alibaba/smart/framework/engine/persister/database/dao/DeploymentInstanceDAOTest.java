@@ -24,6 +24,7 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
     @Before
     public void before() {
         entity = new DeploymentInstanceEntity();
+        entity.setId(1L);
         entity.setProcessDefinitionId("processDefinitionId");
         entity.setProcessDefinitionVersion("processDefinitionVersion");
         entity.setProcessDefinitionContent(PROCESS_DEFINITION_CONTENT);
@@ -81,6 +82,8 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
         dao.insert(entity);
 
         entity = new DeploymentInstanceEntity();
+        long id = System.currentTimeMillis();
+        entity.setId(id);
         entity.setProcessDefinitionId("processDefinitionId1");
         entity.setProcessDefinitionVersion("processDefinitionVersion1");
         entity.setProcessDefinitionContent(PROCESS_DEFINITION_CONTENT);
