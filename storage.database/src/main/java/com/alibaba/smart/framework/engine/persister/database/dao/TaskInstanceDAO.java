@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface TaskInstanceDAO {
@@ -36,6 +37,7 @@ public interface TaskInstanceDAO {
 
     int update(@Param("taskInstanceEntity") TaskInstanceEntity taskInstanceEntity);
 
+    @Transactional
     int updateFromStatus(@Param("taskInstanceEntity") TaskInstanceEntity taskInstanceEntity,@Param("fromStatus") String fromStatus);
 
     void delete(@Param("id") Long id);

@@ -7,7 +7,9 @@ import com.alibaba.smart.framework.engine.persister.database.entity.ExecutionIns
 
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ExecutionInstanceDAO  {
 
     List<ExecutionInstanceEntity> findActiveExecution(Long processInstanceId);

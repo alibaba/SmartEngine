@@ -6,7 +6,9 @@ import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInsta
 import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ProcessInstanceDAO {
 
     ProcessInstanceEntity findOne(@Param("id") Long id);

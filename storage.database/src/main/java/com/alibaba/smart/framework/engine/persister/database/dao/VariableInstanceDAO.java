@@ -8,7 +8,9 @@ import com.alibaba.smart.framework.engine.persister.database.entity.VariableInst
 
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface VariableInstanceDAO  {
 
 

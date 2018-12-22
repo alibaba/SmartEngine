@@ -6,6 +6,7 @@ import com.alibaba.smart.framework.engine.persister.database.entity.DeploymentIn
 import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by yueyu.yr on 2017/9/22.
@@ -13,6 +14,7 @@ import org.apache.ibatis.annotations.Param;
  * @author yueyu.yr
  * @date 2017/09/22
  */
+@Repository
 public interface DeploymentInstanceDAO {
     DeploymentInstanceEntity findOne(@Param("id") Long id);
 
