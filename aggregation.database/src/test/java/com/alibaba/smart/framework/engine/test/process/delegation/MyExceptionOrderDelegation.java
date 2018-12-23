@@ -21,7 +21,7 @@ public class MyExceptionOrderDelegation implements TccDelegation{
 
     @Override
     public TccResult tryExecute(ExecutionContext executionContext) {
-        throw new RuntimeException("yahaha");
+        throw new IllegalArgumentException("yahaha");
     }
 
     public static Long getCounter() {

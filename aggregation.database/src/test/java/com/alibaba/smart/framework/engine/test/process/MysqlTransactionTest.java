@@ -31,14 +31,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-//@Transactional
+@Transactional
 public class MysqlTransactionTest {
 
 
     @Autowired
     private TransactionHelper transactionHelper;
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
+
     public void passed() throws Exception {
 
         //1.初始化
@@ -67,6 +68,7 @@ public class MysqlTransactionTest {
 
         ProcessInstance processInstance = transactionHelper.start(processCommandService, processDefinition);
 
+        //TUNE 增加对事务的查询判断。
         TaskInstance submitTaskInstance = transactionHelper.signal(taskCommandService, taskQueryService, processInstance);
 
         transactionHelper.a(processQueryService, submitTaskInstance);
