@@ -56,7 +56,7 @@ public class JumpFreeNode1Test {
 
         Assert.assertNotNull(processInstance);
 
-        Long processInstanceId = processInstance.getInstanceId();
+        String processInstanceId = processInstance.getInstanceId();
         List<ExecutionInstance> executionInstances;
 
         //assert task1

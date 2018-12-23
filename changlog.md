@@ -1,6 +1,29 @@
 ## ChangeLog
 
+## version 1.6.0 by diqi
+
+
+1. Add MongoDB integration
+    * 修改maven gav : smart-engine-storage-database 为 smart-engine-storage-mysql
+    * 
+2. 修复表结构字段缺少的问题
+3. 
+
+
+### 不兼容升级
+1. * 修改maven gav : smart-engine-storage-database 为 smart-engine-storage-mysql
+2. * InstanceId 改为 String 类型，目的是为了更好的支持 MongoDB，以及 Javascrpit 中，long 类型数据过长问题。
+3. * 涉及到 PUBLIC API 修改，将 Long 型传参修改为 String 型传参； 以及将与流程启动相关的 API 方法名称换成了 startWith。
+4. * 将com.alibaba.smart.framework.engine.persister.database.util.SpringContextUtil move 到
+
+public Long count(TaskInstanceQueryParam taskInstanceQueryParam,
+                      ProcessEngineConfiguration processEngineConfiguration)
+                      
+                  DefaultTaskQueryService       public Long count(TaskInstanceQueryParam taskInstanceQueryParam) {
+MultiInstanceCounter
+
 ===================================================
+
 
 
 ### version 1.5.5 by 彬灵

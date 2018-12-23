@@ -71,6 +71,15 @@ public interface ProcessEngineConfiguration {
     LockStrategy getLockStrategy();
 
     /**
+     * 服务于 MongoDB 模式，当前。
+     *
+     * @param tableSchemaStrategy
+     */
+    void setTableSchemaStrategy(TableSchemaStrategy tableSchemaStrategy);
+
+    TableSchemaStrategy getTableSchemaStrategy();
+
+    /**
      * 内部执行需要，不需要客户端 API 感知。
      * @param extensionPointRegistry
      */

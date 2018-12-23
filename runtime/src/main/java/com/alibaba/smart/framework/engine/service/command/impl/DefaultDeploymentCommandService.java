@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
@@ -37,7 +38,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         DeploymentInstance deploymentInstance  = new DefaultDeploymentInstance();
 
-        Long id = smartEngine.getProcessEngineConfiguration().getIdGenerator().getId();
+        String id = smartEngine.getProcessEngineConfiguration().getIdGenerator().getId();
         deploymentInstance.setInstanceId(id);
         deploymentInstance.setProcessDefinitionContent(processDefinitionContent);
         deploymentInstance.setProcessDefinitionId(processDefinition.getId());
@@ -53,21 +54,23 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         deploymentInstance.setDeploymentStatus(createDeploymentCommand.getDeploymentStatus());
         deploymentInstance.setLogicStatus(LogicStatusConstant.VALID);
 
-        deploymentInstance = deploymentInstanceStorage.insert(deploymentInstance);
+        deploymentInstance = deploymentInstanceStorage.insert(deploymentInstance, smartEngine.getProcessEngineConfiguration());
 
         return deploymentInstance;
     }
 
     @Override
     public DeploymentInstance updateDeployment(UpdateDeploymentCommand updateDeploymentCommand) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         DeploymentInstanceStorage deploymentInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
 
-        Long   deployInstanceId =  updateDeploymentCommand.getDeployInstanceId();
-        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deployInstanceId);
+        String   deployInstanceId =  updateDeploymentCommand.getDeployInstanceId();
+        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deployInstanceId,
+            processEngineConfiguration);
 
         setUpdateValue(currentDeploymentInstance,updateDeploymentCommand);
 
@@ -75,7 +78,8 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
             throw  new EngineException("Can't find a deploymentInstance by deployInstanceId: "+deployInstanceId);
         }
 
-        DeploymentInstance deploymentInstance =  deploymentInstanceStorage.update(currentDeploymentInstance);
+        DeploymentInstance deploymentInstance =  deploymentInstanceStorage.update(currentDeploymentInstance,
+            processEngineConfiguration);
 
         if(DeploymentStatusConstant.ACTIVE.equals(deploymentInstance.getDeploymentStatus())){
             String processDefinitionContent = updateDeploymentCommand.getProcessDefinitionContent();
@@ -110,51 +114,57 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
     }
 
     @Override
-    public void inactivateDeploymentInstance(Long deploymentInstanceId) {
+    public void inactivateDeploymentInstance(String deploymentInstanceId) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         DeploymentInstanceStorage deploymentInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
-        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId);
+        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,
+            processEngineConfiguration);
 
         if(null == currentDeploymentInstance){
             throw  new EngineException("Can't find a deploymentInstance by deployInstanceId: "+deploymentInstanceId);
         }
 
         currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.INACTIVE);
-        deploymentInstanceStorage.update(currentDeploymentInstance);
+        deploymentInstanceStorage.update(currentDeploymentInstance, processEngineConfiguration);
 
         //processDefinitionContainer.uninstall(currentDeploymentInstance.getProcessDefinitionId(),currentDeploymentInstance.getProcessDefinitionVersion());
     }
 
     @Override
-    public void activateDeploymentInstance(Long deploymentInstanceId) {
+    public void activateDeploymentInstance(String deploymentInstanceId) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
         RepositoryCommandService repositoryCommandService =  smartEngine.getRepositoryCommandService();
         DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
-        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId);
+        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,
+            processEngineConfiguration);
 
         if(null == currentDeploymentInstance){
             throw  new EngineException("Can't find a deploymentInstance by deployInstanceId: "+deploymentInstanceId);
         }
 
         currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
-        deploymentInstanceStorage.update(currentDeploymentInstance);
+        deploymentInstanceStorage.update(currentDeploymentInstance, processEngineConfiguration);
 
         repositoryCommandService.deployWithUTF8Content(currentDeploymentInstance.getProcessDefinitionContent());
 
     }
 
     @Override
-    public void deleteDeploymentInstanceLogically(Long deploymentInstanceId) {
+    public void deleteDeploymentInstanceLogically(String deploymentInstanceId) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
-        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId);
+        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,
+            processEngineConfiguration);
 
         if(null == currentDeploymentInstance){
             throw  new EngineException("Can't find a deploymentInstance by deployInstanceId: "+deploymentInstanceId);
@@ -162,7 +172,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         currentDeploymentInstance.setLogicStatus(LogicStatusConstant.DELETED);
         currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.DELETED);
-        deploymentInstanceStorage.update(currentDeploymentInstance);
+        deploymentInstanceStorage.update(currentDeploymentInstance, processEngineConfiguration);
 
         processDefinitionContainer.uninstall(currentDeploymentInstance.getProcessDefinitionId(),currentDeploymentInstance.getProcessDefinitionVersion());
 

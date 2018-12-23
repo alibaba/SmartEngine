@@ -43,7 +43,7 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
 
         //==== 子流程结束，执行父流程 ====
         //子流程结束时,才会进入到该环节里面来。需要找出父流程的执行实例id,然后继续执行父流程的后续节点。
-        Long parentExecutionInstanceId = processInstance.getParentExecutionInstanceId();
+        String parentExecutionInstanceId = processInstance.getParentExecutionInstanceId();
         if (null != parentExecutionInstanceId) {
             //如果上下文中有父上下文，说明父子在同一线程中，父线程本身就会执行，所以不需要启动
             if (null == context.getParent()) {

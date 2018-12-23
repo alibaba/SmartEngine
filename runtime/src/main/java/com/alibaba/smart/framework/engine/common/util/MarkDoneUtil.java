@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.common.util;
 import java.util.Date;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.exception.ConcurrentException;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
@@ -17,14 +18,15 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 public class MarkDoneUtil {
 
     public static ExecutionInstance markDoneExecutionInstance(ExecutionInstance executionInstance,
-                                                              ExecutionInstanceStorage executionInstanceStorage) {
+                                                              ExecutionInstanceStorage executionInstanceStorage,
+                                                              ProcessEngineConfiguration processEngineConfiguration) {
         Date completeDate = DateUtil.getCurrentDate();
         executionInstance.setCompleteTime(completeDate);
         executionInstance.setActive(false);
         executionInstance.setStatus(InstanceStatus.completed);
 
-        //产生了 DB 写，是否需要干掉。
-        executionInstanceStorage.update(executionInstance);
+        //TODO 产生了 DB 写，是否需要干掉。
+        executionInstanceStorage.update(executionInstance, processEngineConfiguration);
         return executionInstance;
     }
 
@@ -38,9 +40,10 @@ public class MarkDoneUtil {
         return executionInstance;
     }
 
-    public static TaskInstance markDoneTaskInstance(TaskInstance taskInstance, String targetStatus,String sourceStatus,
+    public static TaskInstance markDoneTaskInstance(TaskInstance taskInstance, String targetStatus, String sourceStatus,
                                                     Map<String, Object> variables,
-                                                    TaskInstanceStorage taskInstanceStorage) {
+                                                    TaskInstanceStorage taskInstanceStorage,
+                                                    ProcessEngineConfiguration processEngineConfiguration) {
         Date currentDate = DateUtil.getCurrentDate();
         taskInstance.setCompleteTime(currentDate);
 
@@ -56,13 +59,16 @@ public class MarkDoneUtil {
 
             String claimUserId = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID);
             taskInstance.setClaimUserId(claimUserId);
-            String comment = variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT) == null?null:String.valueOf(variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT));
+            Object o = variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT);
+            String comment =  o == null?null:String.valueOf(
+                o);
             taskInstance.setClaimUserId(claimUserId);
             taskInstance.setComment(comment);
 
         }
 
-        int updateCount = taskInstanceStorage.updateFromStatus(taskInstance, sourceStatus);
+        // 需要注意，针对 mongodb 模式，该方法会在内部实现，删除人员和任务的冗余存储关系。
+        int updateCount = taskInstanceStorage.updateFromStatus(taskInstance, sourceStatus, processEngineConfiguration);
         if (updateCount != 1) {
             throw new ConcurrentException(String
                 .format("update_task_status_fail task_id=%s expect_from_[%s]_to_[%s]", taskInstance.getInstanceId(), sourceStatus,

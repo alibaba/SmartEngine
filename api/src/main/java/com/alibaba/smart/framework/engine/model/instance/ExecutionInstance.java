@@ -11,9 +11,9 @@ public interface ExecutionInstance extends LifeCycleInstance {
     void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
 
 
-    Long getProcessInstanceId();
+    String getProcessInstanceId();
 
-    void setProcessInstanceId(Long processInstanceId);
+    void setProcessInstanceId(String processInstanceId);
 
     boolean isActive();
 
@@ -24,9 +24,9 @@ public interface ExecutionInstance extends LifeCycleInstance {
     void setProcessDefinitionActivityId(String processDefinitionActivityId);
 
 
-    Long getActivityInstanceId();
+    String getActivityInstanceId();
 
-    void setActivityInstanceId(Long activityInstanceId);
+    void setActivityInstanceId(String activityInstanceId);
 
 
     //TUNE 这种对象关联需要在service处理,感觉有点不太好.

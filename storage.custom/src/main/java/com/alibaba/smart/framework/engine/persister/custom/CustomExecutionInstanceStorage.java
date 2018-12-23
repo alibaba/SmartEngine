@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
@@ -13,18 +14,21 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 
+import static com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant.NOT_IMPLEMENT_INTENTIONALLY;
+
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  11:54.
  */
 public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage {
 
     @Override
-    public ExecutionInstance insert(ExecutionInstance instance) {
-        return instance;
+    public void insert(ExecutionInstance instance,
+                       ProcessEngineConfiguration processEngineConfiguration) {
     }
 
     @Override
-    public ExecutionInstance update(ExecutionInstance executionInstance) {
+    public void update(ExecutionInstance executionInstance,
+                       ProcessEngineConfiguration processEngineConfiguration) {
         //Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
         //
         //boolean matched= false;
@@ -58,11 +62,11 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
         //    throw new EngineException("No ExecutionInstance found : "+executionInstance);
         //}
 
-        return executionInstance;
     }
 
     @Override
-    public ExecutionInstance find(Long instanceId) {
+    public ExecutionInstance find(String instanceId,
+                                  ProcessEngineConfiguration processEngineConfiguration) {
 
         Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
 
@@ -110,12 +114,14 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
 
     @Override
-    public void remove(Long instanceId) {
-        throw new EngineException("not implement intentionally");
+    public void remove(String instanceId,
+                       ProcessEngineConfiguration processEngineConfiguration) {
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 
     @Override
-    public List<ExecutionInstance> findActiveExecution(Long processInstanceId) {
+    public List<ExecutionInstance> findActiveExecution(String processInstanceId,
+                                                       ProcessEngineConfiguration processEngineConfiguration) {
         ProcessInstance processInstance = PersisterSession.currentSession().getProcessInstance(processInstanceId);
         if(null==processInstance){
             return Collections.emptyList();
@@ -126,7 +132,8 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
      }
 
     @Override
-    public List<ExecutionInstance> findByActivityInstanceId(Long processInstanceId, Long activityInstanceId) {
+    public List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId,
+                                                            ProcessEngineConfiguration processEngineConfiguration) {
         ProcessInstance processInstance = PersisterSession.currentSession().getProcessInstance(processInstanceId);
         if (null == processInstance) {
             return null;

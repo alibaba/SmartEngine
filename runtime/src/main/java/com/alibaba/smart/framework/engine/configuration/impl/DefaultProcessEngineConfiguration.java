@@ -5,6 +5,7 @@ import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
+import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
@@ -44,11 +45,15 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
     private LockStrategy lockStrategy;
     //protected boolean persisteVariableInstanceEnabled = false;
 
+    private TableSchemaStrategy tableSchemaStrategy;
+
     public DefaultProcessEngineConfiguration() {
         //说明:先默认设置一个id生成器,业务使用方可以根据自己的需要再覆盖掉这个值。
         this.idGenerator = new DefaultIdGenerator();
         this.instanceAccessor = new DefaultInstanceAccessor();
         this.variablePersister = new DefaultVariablePersister();
+        this.tableSchemaStrategy = new DefaultTableSchemaStrategy();
+
     }
 
 

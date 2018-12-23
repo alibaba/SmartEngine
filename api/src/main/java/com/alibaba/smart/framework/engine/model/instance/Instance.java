@@ -13,12 +13,12 @@ public interface Instance extends Serializable {
      * @return 实例ID
      */
 
-    Long getInstanceId();
+    String getInstanceId();
 
     /**
      * 设置实例ID
      *
      * @param id 实例ID
      */
-    void setInstanceId(Long id);
+    void setInstanceId(String id);
 }

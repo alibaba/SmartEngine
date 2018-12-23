@@ -18,21 +18,21 @@ public interface ProcessCommandService {
 
     ProcessInstance start(String processDefinitionId, String processDefinitionVersion);
 
-    ProcessInstance start(Long deploymentInstanceId, String userId, Map<String, Object> request);
+    ProcessInstance startWith(String deploymentInstanceId, String userId, Map<String, Object> request);
 
-    ProcessInstance start(Long deploymentInstanceId, Map<String, Object> request);
+    ProcessInstance startWith(String deploymentInstanceId, Map<String, Object> request);
 
-    ProcessInstance start(Long deploymentInstanceId);
+    ProcessInstance startWith(String deploymentInstanceId);
 
     /**
      * 将流程实例,其他活跃的执行实例,任务实例都 abort 掉. 并行网关下可能由其他活跃的实例,所以需要全局关闭.
      *
      * @param processInstanceId
      */
-    void abort(Long processInstanceId);
+    void abort(String processInstanceId);
 
-    void abort(Long processInstanceId,String reason);
+    void abort(String processInstanceId, String reason);
 
-    void abort(Long processInstanceId,  Map<String, Object> request);
+    void abort(String processInstanceId, Map<String, Object> request);
 
 }

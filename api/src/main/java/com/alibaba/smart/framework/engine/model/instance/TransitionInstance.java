@@ -10,7 +10,7 @@ public interface TransitionInstance {
 
     void setTransitionId(String transitionId);
 
-    Long getSourceActivityInstanceId();
+    String getSourceActivityInstanceId();
 
-    void setSourceActivityInstanceId(Long sourceActivityInstanceId);
+    void setSourceActivityInstanceId(String sourceActivityInstanceId);
 }

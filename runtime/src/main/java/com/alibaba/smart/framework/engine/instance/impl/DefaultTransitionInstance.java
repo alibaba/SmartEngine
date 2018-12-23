@@ -12,5 +12,5 @@ public class DefaultTransitionInstance implements TransitionInstance {
 
     private static final long serialVersionUID = 8888812970442968263L;
     private String transitionId;
-    private Long sourceActivityInstanceId;
+    private String sourceActivityInstanceId;
 }

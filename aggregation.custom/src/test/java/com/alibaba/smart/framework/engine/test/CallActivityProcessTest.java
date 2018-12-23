@@ -86,8 +86,8 @@ public class CallActivityProcessTest {
         ProcessInstance subProcessInstance=null;
         Assert.assertNotNull(processInstance);
 
-        Long processInstanceId = processInstance.getInstanceId();
-        Long subProcessInstanceId = null;
+        String processInstanceId = processInstance.getInstanceId();
+        String subProcessInstanceId = null;
 
         List<ExecutionInstance> executionInstanceList;
         ExecutionInstance firstExecutionInstance;
@@ -96,7 +96,7 @@ public class CallActivityProcessTest {
         ExecutionInstance firstSubExecutionInstance;
 
         //只有主流程一个实例
-        Collection<Long> processInstanceIds = PersisterSession.currentSession().getProcessInstances().keySet();
+        Collection<String> processInstanceIds = PersisterSession.currentSession().getProcessInstances().keySet();
         Assert.assertEquals(1, processInstanceIds.size());
 
         executionInstanceList =executionQueryService.findActiveExecutionList(processInstanceId);
@@ -109,7 +109,7 @@ public class CallActivityProcessTest {
         //因为执行到了callActivity节点,有主流程和子流程两个实例
         processInstanceIds = PersisterSession.currentSession().getProcessInstances().keySet();
         Assert.assertEquals(2, processInstanceIds.size());
-        for (Long instanceId : processInstanceIds) {
+        for (String instanceId : processInstanceIds) {
             if (!processInstanceId.equals(instanceId)) {
                 subProcessInstanceId = instanceId;
             }

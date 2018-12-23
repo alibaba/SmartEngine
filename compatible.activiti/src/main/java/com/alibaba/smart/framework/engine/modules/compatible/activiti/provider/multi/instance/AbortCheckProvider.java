@@ -20,7 +20,7 @@ public class AbortCheckProvider implements Performer {
     @Override
     public Object perform(ExecutionContext context) {
         Map<String, Object> privateContext = context.getPrivateContext();
-        Integer rejectedInstanceCount=(Integer)privateContext.get("nrOfRejectedInstance");
+        Long rejectedInstanceCount=(Long)privateContext.get("nrOfRejectedInstance");
 
         return null!=rejectedInstanceCount && rejectedInstanceCount>0;
     }

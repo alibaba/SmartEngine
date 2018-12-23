@@ -32,14 +32,14 @@ public interface ActivityInstance extends Instance {
      *
      * @return 流程实例ID
      */
-    Long getProcessInstanceId();
+    String getProcessInstanceId();
 
     /**
      * 设置流程实例ID
      *
      * @param processInstanceId 流程实例ID
      */
-    void setProcessInstanceId(Long processInstanceId);
+    void setProcessInstanceId(String processInstanceId);
 
     void setExecutionInstanceList(List<ExecutionInstance> executionInstanceList);
 
@@ -68,7 +68,7 @@ public interface ActivityInstance extends Instance {
 
     void setCompleteTime(Date completeTime);
 
-    Long getBlockId();
+    String getBlockId();
 
-    void setBlockId(Long blockId);
+    void setBlockId(String blockId);
 }

@@ -40,14 +40,14 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     void setStartUserId(String startUserId);
 
-    Long getParentInstanceId();
+    String getParentInstanceId();
 
-    void setParentInstanceId(Long parentInstanceId);
+    void setParentInstanceId(String parentInstanceId);
 
 
-    Long getParentExecutionInstanceId();
+    String getParentExecutionInstanceId();
 
-    void setParentExecutionInstanceId(Long parentExecutionInstanceId);
+    void setParentExecutionInstanceId(String parentExecutionInstanceId);
 
     InstanceStatus getStatus();
 

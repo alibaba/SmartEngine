@@ -12,9 +12,9 @@ import java.util.Map;
  */
 public interface ExecutionCommandService {
 
-    ProcessInstance signal(Long executionInstanceId, Map<String, Object> request);
+    ProcessInstance signal(String executionInstanceId, Map<String, Object> request);
 
-    ProcessInstance signal(Long executionInstanceId);
+    ProcessInstance signal(String executionInstanceId);
 
     /**
      * 驱动流程转向自由节点
@@ -24,5 +24,5 @@ public interface ExecutionCommandService {
      * @param request
      * @return
      */
-    ProcessInstance jump(Long executionInstanceId, String activityId, Map<String, Object> request);
+    ProcessInstance jump(String executionInstanceId, String activityId, Map<String, Object> request);
 }

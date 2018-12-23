@@ -20,8 +20,8 @@ public class CompletionCheckProvider implements Performer {
     @Override
     public Object perform(ExecutionContext context) {
         Map<String, Object> privateContext = context.getPrivateContext();
-        Integer instanceCount=(Integer)privateContext.get("nrOfInstances");
-        Integer completedInstanceCount=(Integer)privateContext.get("nrOfCompletedInstances");
+        Long instanceCount=(Long)privateContext.get("nrOfInstances");
+        Long completedInstanceCount=(Long)privateContext.get("nrOfCompletedInstances");
 
         if(null!=instanceCount && null!=completedInstanceCount){
             return instanceCount.equals(completedInstanceCount);
