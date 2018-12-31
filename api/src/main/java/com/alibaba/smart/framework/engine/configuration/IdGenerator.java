@@ -5,5 +5,5 @@ package com.alibaba.smart.framework.engine.configuration;
  */
 public interface IdGenerator {
 
-        Long getId() ;
+        String getId() ;
 }

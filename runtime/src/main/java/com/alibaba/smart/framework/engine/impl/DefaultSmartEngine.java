@@ -36,6 +36,7 @@ public class DefaultSmartEngine implements SmartEngine {
 
     @Override
     public void init(ProcessEngineConfiguration processEngineConfiguration) {
+
         this.setProcessEngineConfiguration(processEngineConfiguration);
 
         this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);

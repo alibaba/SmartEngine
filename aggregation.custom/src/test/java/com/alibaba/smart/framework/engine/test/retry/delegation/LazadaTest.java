@@ -118,7 +118,7 @@ public class LazadaTest extends  MQRetryJavaDelegation {
 
 
         processInstance = LazadaTest.getMockDB().get(ORDER_ID);
-        Long processInstanceId = processInstance.getInstanceId();
+        String processInstanceId = processInstance.getInstanceId();
         String currentActivityId = "WaitPayCallBackActivity";
         Map map = null;
 

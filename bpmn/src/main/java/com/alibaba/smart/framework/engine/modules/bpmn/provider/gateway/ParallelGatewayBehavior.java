@@ -5,15 +5,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
-import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
-import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ParallelGateway;
@@ -21,7 +19,6 @@ import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoi
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.service.command.impl.CommonServiceHelper;
 
 public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> {
 
@@ -40,6 +37,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         if(incomeTransitions.size()==1){
             return false;
         }
+        ProcessEngineConfiguration processEngineConfiguration = super.getExtensionPointRegistry().getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = super.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
@@ -56,7 +54,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
 
         //当前持久化介质中中，已产生的 active ExecutionInstance。
-        List<ExecutionInstance> executionInstanceListFromDB =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId());
+        List<ExecutionInstance> executionInstanceListFromDB =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(), processEngineConfiguration);
 
         //Merge 数据库中和内存中的EI。如果是 custom模式，则可能会存在重复记录，所以这里需要去重。 如果是 DataBase 模式，则不会有重复的EI.
 
@@ -95,7 +93,8 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
             if(null != chosenExecutionInstances){
                 for (ExecutionInstance executionInstance : chosenExecutionInstances) {
-                      MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
+                      MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
+                          processEngineConfiguration);
                 }
             }
 

@@ -17,13 +17,17 @@ public interface TaskAssigneeInstance extends LifeCycleInstance {
     //
     //void setActivityId(String activityId);
 
-    Long getProcessInstanceId();
+    String getProcessInstanceId();
 
-    void setProcessInstanceId(Long processInstanceId);
+    void setProcessInstanceId(String processInstanceId);
 
-    Long getTaskInstanceId();
+    //String getProcessDefinitionType();
+    //
+    //void setProcessDefinitionType(String processDefinitionType);
 
-    void setTaskInstanceId(Long taskInstanceId);
+    String getTaskInstanceId();
+
+    void setTaskInstanceId(String taskInstanceId);
 
     //Long getExecutionInstanceId();
     //

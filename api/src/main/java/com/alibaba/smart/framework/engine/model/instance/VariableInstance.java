@@ -6,13 +6,13 @@ public interface VariableInstance extends LifeCycleInstance {
 
     void setFieldType(Class fieldType);
 
-    Long getProcessInstanceId();
+    String getProcessInstanceId();
 
-    void setProcessInstanceId(Long processInstanceId);
+    void setProcessInstanceId(String processInstanceId);
 
-    Long getExecutionInstanceId();
+    String getExecutionInstanceId();
 
-    void setExecutionInstanceId(Long executionInstanceId);
+    void setExecutionInstanceId(String executionInstanceId);
 
     void setFieldKey(String fieldKey);
 

@@ -145,7 +145,7 @@ public class InstanceSerializer {
         String activityInstanceAndExecutionInstance = st.nextToken();
         StringTokenizer st1 = new StringTokenizer(activityInstanceAndExecutionInstance, ",");
         ActivityInstance activityInstance = new DefaultActivityInstance();
-        activityInstance.setInstanceId(Long.valueOf(st1.nextToken()));
+        activityInstance.setInstanceId(st1.nextToken());
         String activityId = st1.nextToken();
         activityInstance.setProcessDefinitionActivityId(activityId);
         ExecutionInstance executionInstance = buildExecutionInstance(st1, activityId);
@@ -160,7 +160,7 @@ public class InstanceSerializer {
 
     private static ExecutionInstance buildExecutionInstance(StringTokenizer st1, String activityId) {
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
-        executionInstance.setInstanceId(Long.valueOf(st1.nextToken()));
+        executionInstance.setInstanceId(st1.nextToken());
         executionInstance.setProcessDefinitionActivityId(activityId);
         executionInstance.setActive(Boolean.valueOf(st1.nextToken()));
         return executionInstance;
@@ -168,7 +168,7 @@ public class InstanceSerializer {
 
     private static void buildProcessInstance(ProcessInstance processInstance, String processInstanceSerialiable) {
         StringTokenizer st = new StringTokenizer(processInstanceSerialiable, ",");
-        processInstance.setInstanceId(Long.valueOf(st.nextToken()));
+        processInstance.setInstanceId(st.nextToken());
         String processDefinitionIdAndVersion = st.nextToken();
         processInstance.setProcessDefinitionIdAndVersion(processDefinitionIdAndVersion);
         processInstance.setStatus(InstanceStatus.valueOf(st.nextToken()));

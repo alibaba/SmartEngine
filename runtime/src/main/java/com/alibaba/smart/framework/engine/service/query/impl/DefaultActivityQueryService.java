@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.service.query.impl;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
@@ -36,12 +38,15 @@ public class DefaultActivityQueryService implements ActivityQueryService, LifeCy
 
 
     @Override
-    public List<ActivityInstance> findAll(Long processInstanceId) {
+    public List<ActivityInstance> findAll(String processInstanceId) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
+            SmartEngine.class).getProcessEngineConfiguration();
+
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         ActivityInstanceStorage  activityInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
 
-        return activityInstanceStorage.findAll(processInstanceId);
+        return activityInstanceStorage.findAll(processInstanceId, processEngineConfiguration);
     }
 
 }

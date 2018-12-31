@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.instance.storage;
 
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
 
@@ -13,16 +14,22 @@ import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstance
  */
 public interface DeploymentInstanceStorage {
 
-    DeploymentInstance insert(DeploymentInstance deploymentInstance);
+    DeploymentInstance insert(DeploymentInstance deploymentInstance,
+                              ProcessEngineConfiguration processEngineConfiguration);
 
-    DeploymentInstance update(DeploymentInstance deploymentInstance);
+    DeploymentInstance update(DeploymentInstance deploymentInstance,
+                              ProcessEngineConfiguration processEngineConfiguration);
 
-    DeploymentInstance findById(Long id);
+    DeploymentInstance findById(String id,
+                                ProcessEngineConfiguration processEngineConfiguration);
 
-    List<DeploymentInstance> findByPage(DeploymentInstanceQueryParam deploymentInstanceQueryParam);
+    List<DeploymentInstance> findByPage(DeploymentInstanceQueryParam deploymentInstanceQueryParam,
+                                        ProcessEngineConfiguration processEngineConfiguration);
 
-    int count(DeploymentInstanceQueryParam deploymentInstanceQueryParam);
+    int count(DeploymentInstanceQueryParam deploymentInstanceQueryParam,
+              ProcessEngineConfiguration processEngineConfiguration);
 
-    void remove(Long id);
+    void remove(String id,
+                ProcessEngineConfiguration processEngineConfiguration);
 
 }

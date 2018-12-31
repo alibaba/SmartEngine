@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.service.query.impl;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
@@ -36,10 +38,13 @@ public class DefaultExecutionQueryService implements ExecutionQueryService, Life
 
 
     @Override
-    public List<ExecutionInstance> findActiveExecutionList(Long processInstanceId) {
+    public List<ExecutionInstance> findActiveExecutionList(String processInstanceId) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
+            SmartEngine.class).getProcessEngineConfiguration();
+
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
 
-        return executionInstanceStorage.findActiveExecution(processInstanceId);
+        return executionInstanceStorage.findActiveExecution(processInstanceId, processEngineConfiguration);
     }
 }

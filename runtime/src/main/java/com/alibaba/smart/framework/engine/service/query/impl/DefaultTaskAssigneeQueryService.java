@@ -5,26 +5,25 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
-import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
-import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
-import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 October  07:46.
  */
 public class DefaultTaskAssigneeQueryService implements TaskAssigneeQueryService, LifeCycleListener {
 
+    private final ProcessEngineConfiguration processEngineConfiguration;
     private ExtensionPointRegistry extensionPointRegistry;
 
     public DefaultTaskAssigneeQueryService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
+        this.processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
+            SmartEngine.class).getProcessEngineConfiguration();
     }
 
     @Override
@@ -38,18 +37,22 @@ public class DefaultTaskAssigneeQueryService implements TaskAssigneeQueryService
     }
 
     @Override
-    public List<TaskAssigneeInstance> findList(Long taskInstanceId) {
+    public List<TaskAssigneeInstance> findList(String taskInstanceId) {
+
+
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskAssigneeStorage taskAssigneeStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
-        List<TaskAssigneeInstance>  taskAssigneeStorageList =  taskAssigneeStorage.findList(taskInstanceId);
+        List<TaskAssigneeInstance>  taskAssigneeStorageList =  taskAssigneeStorage.findList(taskInstanceId, processEngineConfiguration);
         return taskAssigneeStorageList;
     }
 
     @Override
-    public Map<Long, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<Long> taskInstanceIdList) {
+    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskAssigneeStorage taskAssigneeStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
-        return taskAssigneeStorage.findAssigneeOfInstanceList(taskInstanceIdList);
+        return taskAssigneeStorage.findAssigneeOfInstanceList(taskInstanceIdList,processEngineConfiguration );
     }
 }
 

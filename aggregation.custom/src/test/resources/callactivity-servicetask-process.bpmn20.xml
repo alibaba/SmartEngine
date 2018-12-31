@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="simpleCallActivity" version="2.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:smart="http://smart.alibaba-inc.com/schema/process"
+             targetNamespace="Examples">
+
+    <process id="test" isExecutable="true">
+
+        <startEvent id="theStart"></startEvent>
+
+        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="debit"></sequenceFlow>
+
+        <serviceTask id="debit" name="扣款" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></serviceTask>
+
+        <sequenceFlow id="flow28" sourceRef="debit" targetRef="checkDebitResult"></sequenceFlow>
+
+        <serviceTask id="checkDebitResult" name="查看扣款结果" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></serviceTask>
+
+        <sequenceFlow id="flow29" sourceRef="checkDebitResult" targetRef="endevent3"></sequenceFlow>
+
+        <endEvent id="endevent3" name="End"></endEvent>
+
+    </process>
+
+</definitions>

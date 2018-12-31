@@ -13,9 +13,9 @@ public interface TaskInstance extends LifeCycleInstance {
 
     void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
 
-    Long getProcessInstanceId();
+    String getProcessInstanceId();
 
-    void setProcessInstanceId(Long processInstanceId);
+    void setProcessInstanceId(String processInstanceId);
 
     String getProcessDefinitionActivityId();
 
@@ -25,13 +25,13 @@ public interface TaskInstance extends LifeCycleInstance {
 
     void setProcessDefinitionType(String processDefinitionType);
 
-    Long getExecutionInstanceId();
+    String getExecutionInstanceId();
 
-    void setExecutionInstanceId(Long executionInstanceId);
+    void setExecutionInstanceId(String executionInstanceId);
 
-    Long getActivityInstanceId();
+    String getActivityInstanceId();
 
-    void setActivityInstanceId(Long activityInstanceId);
+    void setActivityInstanceId(String activityInstanceId);
 
     String getClaimUserId();
 

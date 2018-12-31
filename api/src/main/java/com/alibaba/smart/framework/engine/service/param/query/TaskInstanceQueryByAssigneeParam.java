@@ -19,4 +19,5 @@ public class TaskInstanceQueryByAssigneeParam extends PaginateQueryParam {
     private List<Long> processInstanceIdList;
 
     private String status;
+
 }

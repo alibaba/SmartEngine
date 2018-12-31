@@ -55,7 +55,7 @@ public class JumpFreeNode2Test {
 
         Assert.assertNotNull(processInstance);
 
-        Long processInstanceId = processInstance.getInstanceId();
+        String processInstanceId = processInstance.getInstanceId();
         List<ExecutionInstance> executionInstances;
 
         executionInstances = this.executionQueryService.findActiveExecutionList(processInstanceId);

@@ -62,7 +62,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     @Override
-    public ProcessInstance signal(Long executionInstanceId, Map<String, Object> request) {
+    public ProcessInstance signal(String executionInstanceId, Map<String, Object> request) {
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
@@ -72,7 +72,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
 
-        ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId);
+        ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId, processEngineConfiguration);
 
         if(null == executionInstance){
             throw new EngineException("No executionInstance found for id "+executionInstanceId);
@@ -90,9 +90,10 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
 
             //BE AWARE: 注意:针对TP,AliPay场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
-            ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId());
+            ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId(),
+                processEngineConfiguration);
 
-            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId());
+            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId(), processEngineConfiguration);
 
             PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(
                 processInstance.getProcessDefinitionIdAndVersion());
@@ -125,12 +126,12 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
 
     @Override
-    public ProcessInstance signal(Long executionInstanceId) {
+    public ProcessInstance signal(String executionInstanceId) {
         return signal(executionInstanceId, null);
     }
 
     @Override
-    public ProcessInstance jump(Long executionInstanceId, String activityId, Map<String, Object> request) {
+    public ProcessInstance jump(String executionInstanceId, String activityId, Map<String, Object> request) {
         if (StringUtil.isEmpty(activityId)){
             return signal(executionInstanceId, request);
         }
@@ -144,7 +145,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
 
-        ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId);
+        ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId, processEngineConfiguration);
 
         if(null == executionInstance){
             throw new EngineException("No executionInstance found for id "+executionInstanceId);
@@ -161,10 +162,12 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
 
             //BE AWARE: 注意:针对TP,AliPay场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
-            ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId());
+            ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId(),
+                processEngineConfiguration);
 
-            MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage);
-            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId());
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage,
+                processEngineConfiguration);
+            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId(), processEngineConfiguration);
 
             PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(
                 processInstance.getProcessDefinitionIdAndVersion());
@@ -195,7 +198,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     private void tryLock(ProcessEngineConfiguration processEngineConfiguration,
-                         Long processInstanceId) {
+                         String processInstanceId) {
         LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
         if (null != lockStrategy) {
             lockStrategy.tryLock(processInstanceId);
@@ -203,7 +206,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     private void unLock(ProcessEngineConfiguration processEngineConfiguration,
-                        Long processInstanceId) {
+                        String processInstanceId) {
         LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
         if (null != lockStrategy) {
             lockStrategy.unLock(processInstanceId);
