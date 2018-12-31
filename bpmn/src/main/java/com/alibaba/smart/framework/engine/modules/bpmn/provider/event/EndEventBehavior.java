@@ -33,7 +33,7 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
 
         if(null != request){
             Object taskInstanceTag = request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG);
-            //processInstance的tag使用的是最后一个完成的任务的tag
+            //非标准特性 HARDCODE： processInstance的tag使用的是最后一个完成的任务的tag
             if (taskInstanceTag != null) {
                 processInstance.setTag(taskInstanceTag.toString());
             }
