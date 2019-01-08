@@ -27,7 +27,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ServiceTaskParallelGatewayTest {
+public class AllServiceTaskParallelGatewayTest {
     @After
     public void clear(){
         PersisterSession.destroySession();
@@ -58,7 +58,7 @@ public class ServiceTaskParallelGatewayTest {
         RepositoryCommandService repositoryCommandService = smartEngine
                 .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("test-servicetask-parallel-gateway.bpmn20.xml");
+                .deploy("test-all-servicetask-parallel-gateway.bpmn20.xml");
         assertEquals(16, processDefinition.getProcess().getElements().size());
 
 
@@ -76,16 +76,8 @@ public class ServiceTaskParallelGatewayTest {
 
 
         List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
-        assertEquals(1, executionInstanceList.size());
+        assertEquals(0, executionInstanceList.size());
 
-        ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
-
-
-        assertTrue(("theTask3".equals(firstExecutionInstance.getProcessDefinitionActivityId())));
-
-        processInstance =   persisteAndUpdateThreadLocal(orderId,processInstance);
-
-        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
 
 
         Assert.assertNotNull(processInstance.getCompleteTime());
