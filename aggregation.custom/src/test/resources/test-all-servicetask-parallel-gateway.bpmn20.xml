@@ -49,9 +49,9 @@
                       targetRef="theTask3">
         </sequenceFlow>
 
-        <receiveTask id="theTask3" name="Task3"
+        <serviceTask id="theTask3" name="Task3"
                      smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
-        </receiveTask>
+        </serviceTask>
 
         <sequenceFlow id="flow4" sourceRef="theTask3" targetRef="theEnd"/>
 
