@@ -22,12 +22,13 @@ import org.springframework.util.CollectionUtils;
  */
 public class RelationshipDatabaseDeploymentInstanceStorage implements DeploymentInstanceStorage {
 
-    DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)SpringContextUtil.getBean("deploymentInstanceDAO");
 
     @Override
     public DeploymentInstance insert(DeploymentInstance deploymentInstance,
                                      ProcessEngineConfiguration processEngineConfiguration) {
         DeploymentInstanceEntity entity = convertByInstance(deploymentInstance);
+        DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)SpringContextUtil.getBean("deploymentInstanceDAO");
+
         deploymentnstanceDAO.insert(entity);
 
         Long entityId = entity.getId();
@@ -46,6 +47,8 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     public DeploymentInstance update(DeploymentInstance deploymentInstance,
                                      ProcessEngineConfiguration processEngineConfiguration) {
         DeploymentInstanceEntity entity = convertByInstance(deploymentInstance);
+        DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)SpringContextUtil.getBean("deploymentInstanceDAO");
+
         deploymentnstanceDAO.update(entity);
         deploymentInstance = findById(entity.getId().toString(), processEngineConfiguration);
         return deploymentInstance;
@@ -57,6 +60,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         if (null == id){
             return null;
         }
+        DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)SpringContextUtil.getBean("deploymentInstanceDAO");
 
         DeploymentInstanceEntity entity = deploymentnstanceDAO.findOne(Long.valueOf(id));
         DeploymentInstance deploymentInstance = convertByEntity(entity);
@@ -67,6 +71,8 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     @Override
     public List<DeploymentInstance> findByPage(DeploymentInstanceQueryParam deploymentInstanceQueryParam,
                                                ProcessEngineConfiguration processEngineConfiguration) {
+        DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)SpringContextUtil.getBean("deploymentInstanceDAO");
+
         List<DeploymentInstanceEntity> deploymentInstanceEntities = deploymentnstanceDAO.findByPage(
             deploymentInstanceQueryParam);
         if (!CollectionUtils.isEmpty(deploymentInstanceEntities)) {
@@ -83,12 +89,16 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     @Override
     public int count(DeploymentInstanceQueryParam deploymentInstanceQueryParam,
                      ProcessEngineConfiguration processEngineConfiguration) {
+        DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)SpringContextUtil.getBean("deploymentInstanceDAO");
+
         return deploymentnstanceDAO.count(deploymentInstanceQueryParam);
     }
 
     @Override
     public void remove(String id,
                        ProcessEngineConfiguration processEngineConfiguration) {
+        DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)SpringContextUtil.getBean("deploymentInstanceDAO");
+
         deploymentnstanceDAO.delete(Long.valueOf(id));
     }
 
