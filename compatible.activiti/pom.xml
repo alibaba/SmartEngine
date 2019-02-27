@@ -5,19 +5,16 @@
     <parent>
         <groupId>com.alibaba.smart.framework</groupId>
         <artifactId>smart-engine</artifactId>
-        <version>1.6.2</version>
+        <version>1.6.4-SNAPSHOT</version>
     </parent>
 
     <artifactId>smart-engine-compatible-activiti</artifactId>
     <name>Smart Engine Modules - ompatible - Activiti</name>
     <dependencies>
-
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>smart-engine-bpmn</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-
     </dependencies>
 </project>
