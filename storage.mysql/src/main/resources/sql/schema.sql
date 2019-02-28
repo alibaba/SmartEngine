@@ -107,6 +107,39 @@ CREATE TABLE `se_variable_instance` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 COMMENT='变量实例-SmartEngine'
 
+
+CREATE TABLE `se_task_item_instance` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `gmt_create` datetime NOT NULL COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL COMMENT '修改时间',
+  `process_instance_id` bigint(20) unsigned NOT NULL COMMENT '流程实例id',
+  `process_definition_id_and_version` varchar(128) DEFAULT NULL COMMENT '流程定义id和 version',
+  `process_definition_type` varchar(128) DEFAULT NULL COMMENT '流程类型',
+  `activity_instance_id` bigint(20) unsigned NOT NULL COMMENT '活动实例id',
+  `process_definition_activity_id` varchar(255) NOT NULL COMMENT '流程定义里面定义的流程节点(活动)id',
+  `execution_instance_id` bigint(20) unsigned NOT NULL COMMENT '执行实例id',
+  `claim_user_id` varchar(128) DEFAULT NULL COMMENT '任务认领人id',
+  `title` varchar(255) DEFAULT NULL COMMENT '任务标题',
+  `priority` int(11) DEFAULT '500' COMMENT '任务优先级,默认500',
+  `tag` varchar(128) DEFAULT NULL COMMENT '任务标签',
+  `claim_time` datetime DEFAULT NULL COMMENT '任务认领时间,预留字段.',
+  `complete_time` datetime DEFAULT NULL COMMENT '任务结束时间',
+  `status` varchar(128) NOT NULL COMMENT '任务状态',
+  `comment` varchar(255) DEFAULT NULL COMMENT '备注',
+  `extension` varchar(1000) DEFAULT NULL COMMENT '用户自定义扩展字段',
+  `task_instance_id` bigint(20) unsigned DEFAULT NULL COMMENT '主任务实例Id',
+  `sub_biz_id` varchar(256) DEFAULT NULL COMMENT '子业务实例id',
+  `biz_id` varchar(256) DEFAULT NULL COMMENT '主业务实例id',
+  PRIMARY KEY (`id`),
+  KEY `idx_process_instance_id_and_type_status` (`process_instance_id`,`process_definition_type`,`status`),
+  KEY `idx_tag` (`tag`),
+  KEY `idx_activity_instance_id` (`activity_instance_id`),
+  KEY `idx_claim_user_id` (`claim_user_id`),
+  KEY `idx_biz_id_and_sub_biz_id` (`sub_biz_id`(64),`biz_id`(64)),
+  KEY `idx_task_instance_id` (`task_instance_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='流程引擎-子单据任务实例'
+
+
 alter table `se_execution_instance`
 add key `idx_process_instance_id_and_status` (process_instance_id,active),
 add key `idx_process_instance_id_and_activity_instance_id` (process_instance_id,activity_instance_id);
