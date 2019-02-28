@@ -78,6 +78,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstanceEntityToBePersisted.setTitle(processInstance.getTitle());
         processInstanceEntityToBePersisted.setComment(processInstance.getComment());
         processInstanceEntityToBePersisted.setTag(processInstance.getTag());
+        processInstanceEntityToBePersisted.setMode(processInstance.getMode());
         return processInstanceEntityToBePersisted;
     }
 
@@ -96,6 +97,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstance.setTitle(processInstanceEntity.getTitle());
         processInstance.setTag(processInstanceEntity.getTag());
         processInstance.setComment(processInstanceEntity.getComment());
+        processInstance.setMode(processInstanceEntity.getMode());
     }
 
     private ProcessInstance buildProcessInstanceFromEntity(ProcessInstanceEntity processInstanceEntity) {
@@ -127,6 +129,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         processInstance.setTag(processInstanceEntity.getTag());
         processInstance.setTitle(processInstanceEntity.getTitle());
         processInstance.setComment(processInstanceEntity.getComment());
+        processInstance.setMode(processInstanceEntity.getMode());
         return processInstance;
     }
 

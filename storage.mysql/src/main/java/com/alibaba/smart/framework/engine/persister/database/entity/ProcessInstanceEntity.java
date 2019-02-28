@@ -29,4 +29,6 @@ public class ProcessInstanceEntity extends BaseProcessEntity {
 
     private String comment;
 
+    private String mode;
+
 }

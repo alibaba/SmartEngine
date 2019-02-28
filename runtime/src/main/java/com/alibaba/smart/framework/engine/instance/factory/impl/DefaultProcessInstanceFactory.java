@@ -2,8 +2,10 @@ package com.alibaba.smart.framework.engine.instance.factory.impl;
 
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.constant.ProcessInstanceModeConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
@@ -47,6 +49,12 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
             String comment = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_COMMENT);
             defaultProcessInstance.setComment(comment);
+
+            String mode = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE);
+            if(StringUtil.isNotEmpty(mode)
+                && (ProcessInstanceModeConstant.NORMAL.equals(mode) || ProcessInstanceModeConstant.ITEM.equals(mode))) {
+                defaultProcessInstance.setMode(mode);
+            }
         }
 
         return defaultProcessInstance;

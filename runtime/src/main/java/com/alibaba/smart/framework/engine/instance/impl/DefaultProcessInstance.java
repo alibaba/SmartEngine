@@ -48,6 +48,8 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
      */
     private String comment;
 
+    private String mode;
+
 
     @Setter
     private InstanceStatus status = InstanceStatus.running;

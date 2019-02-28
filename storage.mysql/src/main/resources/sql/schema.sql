@@ -30,6 +30,7 @@ CREATE TABLE `se_process_instance` (
   `comment` varchar(255) DEFAULT NULL COMMENT '备注',
   `title` varchar(255) DEFAULT NULL COMMENT '标题',
   `tag` varchar(255) DEFAULT NULL COMMENT '标签',
+  `mode` varchar(64) DEFAULT NULL COMMENT '审批模式，normal:通用模式，item:行审批模式',
 
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='流程引擎-流程实例'

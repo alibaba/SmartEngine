@@ -90,4 +90,8 @@ public interface ProcessInstance extends LifeCycleInstance {
     String getComment();
 
     void setComment(String comment);
+
+    String getMode();
+
+    void setMode(String mode);
 }
