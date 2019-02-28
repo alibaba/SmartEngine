@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskItemInstance;
 
 import lombok.Data;
@@ -62,15 +61,15 @@ public class DefaultTaskItemInstance extends AbstractLifeCycleInstance implement
     /**
      * 主任务id
      */
-    Long taskInstanceId;
+    private Long taskInstanceId;
 
     /**
      * 子业务id
      */
-    String subBizId;
+    private String subBizId;
 
     /**
      * 主业务id
      */
-    String bizId;
+    private String bizId;
 }

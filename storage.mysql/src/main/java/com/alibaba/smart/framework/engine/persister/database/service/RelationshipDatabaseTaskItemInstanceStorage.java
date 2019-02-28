@@ -160,7 +160,7 @@ public class RelationshipDatabaseTaskItemInstanceStorage implements TaskItemInst
 
         //reAssign
         TaskItemInstance   resultTaskItemInstance= buildTaskItemInstanceFromEntity(taskInstanceEntity);
-        resultTaskItemInstance.setTaskItemAssigneeInstanceList(taskInstance.getTaskAssigneeInstanceList());
+        resultTaskItemInstance.setTaskAssigneeInstanceList(taskInstance.getTaskAssigneeInstanceList());
 
         return resultTaskItemInstance;
     }

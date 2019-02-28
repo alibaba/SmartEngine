@@ -47,7 +47,7 @@ public interface TaskItemInstance extends LifeCycleInstance {
 
     List<TaskAssigneeInstance> getTaskAssigneeInstanceList();
 
-    void setTaskItemAssigneeInstanceList(List<TaskAssigneeInstance> taskAssigneeInstanceList);
+    void setTaskAssigneeInstanceList(List<TaskAssigneeInstance> taskAssigneeInstanceList);
 
     Integer getPriority();
 
@@ -76,7 +76,7 @@ public interface TaskItemInstance extends LifeCycleInstance {
 
     Long getTaskInstanceId();
 
-    void setTaskInstanceId(Long taskInstanceId);
+    void setTaskInstanceId(Long taskItemInstanceId);
 
     String getSubBizId();
 
