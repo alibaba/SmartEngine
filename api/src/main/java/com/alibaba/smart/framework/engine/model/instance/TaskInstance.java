@@ -74,4 +74,8 @@ public interface TaskInstance extends LifeCycleInstance {
 
     void setTitle(String title);
 
+    List<TaskItemInstance> getTaskItemInstanceList();
+
+    void setTaskItemInstanceList(List<TaskItemInstance> taskItemInstanceList);
+
 }

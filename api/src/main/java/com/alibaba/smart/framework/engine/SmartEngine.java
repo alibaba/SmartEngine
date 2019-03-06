@@ -6,6 +6,7 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskItemCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
@@ -55,6 +56,7 @@ public interface SmartEngine {
 
     TaskAssigneeQueryService getTaskAssigneeQueryService();
 
+    TaskItemCommandService getTaskItemCommandService();
 
     void init(ProcessEngineConfiguration processEngineConfiguration);
 

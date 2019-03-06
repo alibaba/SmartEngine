@@ -10,6 +10,8 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.constant.ProcessInstanceModeConstant;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -151,19 +153,23 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
 
     @Override
     public void execute(PvmActivity pvmActivity, ExecutionContext context) {
+        Object processMode = context.getRequest().get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE);
+        if(ProcessInstanceModeConstant.ITEM.equals(processMode)){
+            if (null != this.completionCheckPrepareProvider) {
+                this.completionCheckPrepareProvider.perform(context);
+            }
+            return;
+        }
+
+
         pvmActivity.invoke(PvmEventConstant.ACTIVITY_EXECUTE.name(), context);
         if (!context.isNeedPause()) {
             ExecutionInstance executionInstance = context.getExecutionInstance();
             //只负责完成当前executionInstance的状态更新,此时产生了 DB 写.
-            MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage,
-                this.processEngineConfiguration);
-
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage,this.processEngineConfiguration);
             ActivityInstance activityInstance = context.getActivityInstance();
-
-            List<ExecutionInstance> executionInstances = executionInstanceStorage.findByActivityInstanceId(
-                activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),this.processEngineConfiguration );
+            List<ExecutionInstance> executionInstances = executionInstanceStorage.findByActivityInstanceId(activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),this.processEngineConfiguration );
             activityInstance.setExecutionInstanceList(executionInstances);
-
             if (null != this.completionCheckPrepareProvider) {
                 this.completionCheckPrepareProvider.perform(context);
             }
@@ -172,11 +178,9 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
             boolean needAbort = false, needComplete = false;
 
             //使用检查器进行判断
-
-                Performer abortCheckPerformer = this.completionCheckerProvider.getAbortCheckPerformer();
-                needAbort = this.check(abortCheckPerformer, context);
-
-                //不需要中断，判断是否需要完成
+            Performer abortCheckPerformer = this.completionCheckerProvider.getAbortCheckPerformer();
+            needAbort = this.check(abortCheckPerformer, context);
+            //不需要中断，判断是否需要完成
 
             //不需要中断
             if (!needAbort) {

@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.instance.impl;
 
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskItemInstance;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -56,5 +57,10 @@ public class DefaultTaskInstance extends AbstractLifeCycleInstance implements Ta
      * 任务标题
      */
     private String title;
+
+    /**
+     * 行级任务
+     */
+    private List<TaskItemInstance> taskItemInstanceList;
 
 }

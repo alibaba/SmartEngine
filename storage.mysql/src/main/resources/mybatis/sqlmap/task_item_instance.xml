@@ -11,7 +11,7 @@
 
 
 
-    <insert id="insert" parameterType="TaskInstanceEntity"  useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="TaskItemInstanceEntity"  useGeneratedKeys="true" keyProperty="id">
         insert into se_task_item_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},#{processDefinitionType},
         #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status},#{comment},#{extension},#{title},
@@ -38,7 +38,7 @@
         </set>
     </sql>
 
-    <update id="update" parameterType="TaskInstanceEntity">
+    <update id="update" parameterType="TaskItemInstanceEntity">
         update se_task_item_instance
        <include refid="update_sql"/>
         where id=#{taskItemInstanceEntity.id}
@@ -52,19 +52,25 @@
 
 
 
-    <select id="findOne" resultType="TaskInstanceEntity">
+    <select id="findOne" resultType="TaskItemInstanceEntity">
         select
         <include refid="baseColumn"/>
         from se_task_item_instance where id=#{id}
     </select>
 
-    <select id="findTaskByProcessInstanceIdAndStatus" resultType="TaskInstanceEntity" >
+    <select id="find" resultType="TaskItemInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from se_task_item_instance where task_instance_id=#{taskInstanceId} and sub_biz_id = #{subBizId}
+    </select>
+
+    <select id="findTaskByProcessInstanceIdAndStatus" resultType="TaskItemInstanceEntity" >
         select
         <include refid="baseColumn"/>
         from se_task_item_instance where process_instance_id = #{param1} and status = #{param2}
     </select>
 
-    <select id="findTaskByAssignee" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryByAssigneeParam">
+    <select id="findTaskByAssignee" resultType="TaskItemInstanceEntity" parameterType="TaskInstanceQueryByAssigneeParam">
         select distinct task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
         activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
         from  se_task_item_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
@@ -136,7 +142,7 @@
 
 
 
-    <select id="findTaskList" resultType="TaskInstanceEntity" parameterType="TaskInstanceQueryParam">
+    <select id="findTaskList" resultType="TaskItemInstanceEntity" parameterType="TaskInstanceQueryParam">
         select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
         activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
         from  se_task_item_instance task  where 1=1

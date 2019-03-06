@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
@@ -12,6 +13,7 @@ import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStor
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.TaskItemInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -19,9 +21,11 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskItemInstance;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -126,7 +130,7 @@ public abstract  class CommonServiceHelper {
         ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
         TaskInstanceStorage taskInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
         TaskAssigneeStorage taskAssigneeStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
-
+        TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
 
         List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
         for (ActivityInstance activityInstance : activityInstances) {
@@ -139,9 +143,8 @@ public abstract  class CommonServiceHelper {
 
             if(null != executionInstanceList){
                 for (ExecutionInstance executionInstance : executionInstanceList) {
-                    persisteInstance( executionInstanceStorage, taskInstanceStorage,taskAssigneeStorage,
-                        activityInstance,
-                        executionInstance,  processEngineConfiguration);
+                    persisteInstance( executionInstanceStorage, taskInstanceStorage, taskItemInstanceStorage, taskAssigneeStorage,
+                        activityInstance, executionInstance,  processEngineConfiguration);
                 }
             }
 
@@ -151,12 +154,12 @@ public abstract  class CommonServiceHelper {
 
     //TUNE too many args
     private static void persisteInstance(ExecutionInstanceStorage executionInstanceStorage,
-                                         TaskInstanceStorage taskInstanceStorage, TaskAssigneeStorage taskAssigneeStorage, ActivityInstance activityInstance,
+                                         TaskInstanceStorage taskInstanceStorage, TaskItemInstanceStorage taskItemInstanceStorage, TaskAssigneeStorage taskAssigneeStorage, ActivityInstance activityInstance,
                                          ExecutionInstance executionInstance, ProcessEngineConfiguration processEngineConfiguration) {
         if (null != executionInstance) {
             executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
             executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
-            executionInstanceStorage.insert(executionInstance,processEngineConfiguration );
+            executionInstanceStorage.insert(executionInstance, processEngineConfiguration );
 
             TaskInstance taskInstance = executionInstance.getTaskInstance();
             if(null!= taskInstance) {
@@ -165,22 +168,29 @@ public abstract  class CommonServiceHelper {
                 taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
 
                 //reAssign
-                taskInstance = taskInstanceStorage.insert(taskInstance,processEngineConfiguration );
+                taskInstance = taskInstanceStorage.insert(taskInstance, processEngineConfiguration);
 
-                List<TaskAssigneeInstance>  taskAssigneeInstances =  taskInstance.getTaskAssigneeInstanceList();
+                List<TaskAssigneeInstance>  taskAssigneeInstances = taskInstance.getTaskAssigneeInstanceList();
 
                 if(null != taskAssigneeInstances){
                     for (TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstances) {
                         taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
                         taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
-                        taskAssigneeStorage.insert(taskAssigneeInstance,processEngineConfiguration );
+                        taskAssigneeStorage.insert(taskAssigneeInstance, processEngineConfiguration);
                     }
                 }
 
+                List<TaskItemInstance> taskItemInstanceList = taskInstance.getTaskItemInstanceList();
+                if(CollectionUtil.isNotEmpty(taskItemInstanceList)){
+                    for(TaskItemInstance taskItemInstance : taskItemInstanceList){
+                        taskItemInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
+                        taskItemInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
+                        taskItemInstance.setExecutionInstanceId(executionInstance.getInstanceId());
+                        taskItemInstanceStorage.insert(taskItemInstance, processEngineConfiguration);
+                    }
+                }
                 executionInstance.setTaskInstance(taskInstance);
             }
-
-
         }
     }
 

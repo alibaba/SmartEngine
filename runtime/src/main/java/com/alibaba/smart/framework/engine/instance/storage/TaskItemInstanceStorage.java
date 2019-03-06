@@ -12,17 +12,17 @@ public interface TaskItemInstanceStorage {
     List<TaskItemInstance> findTaskItemByProcessInstanceIdAndStatus(TaskItemInstanceQueryParam taskItemInstanceQueryParam,
                                                                 ProcessEngineConfiguration processEngineConfiguration);
 
-    List<TaskItemInstance> findPendingTaskItemList(PendingTaskItemQueryParam pendingTaskItemQueryParam,
+    /* List<TaskItemInstance> findPendingTaskItemList(PendingTaskItemQueryParam pendingTaskItemQueryParam,
                                                ProcessEngineConfiguration processEngineConfiguration);
 
     Long countPendingTaskItemList(PendingTaskItemQueryParam pendingTaskItemQueryParam,
-                              ProcessEngineConfiguration processEngineConfiguration);
+                              ProcessEngineConfiguration processEngineConfiguration);*/
 
-    List<TaskItemInstance> findTaskItemListByAssignee(TaskItemInstanceQueryByAssigneeParam param,
-                                                  ProcessEngineConfiguration processEngineConfiguration);
+    /*List<TaskItemInstance> findTaskItemListByAssignee(TaskItemInstanceQueryByAssigneeParam param,
+                                                  ProcessEngineConfiguration processEngineConfiguration);*/
 
-    Long countTaskItemListByAssignee(TaskItemInstanceQueryByAssigneeParam param,
-                                 ProcessEngineConfiguration processEngineConfiguration);
+    /*Long countTaskItemListByAssignee(TaskItemInstanceQueryByAssigneeParam param,
+                                 ProcessEngineConfiguration processEngineConfiguration);*/
 
     List<TaskItemInstance> findTaskList(TaskItemInstanceQueryParam taskInstanceQueryParam,
                                     ProcessEngineConfiguration processEngineConfiguration);
@@ -44,5 +44,8 @@ public interface TaskItemInstanceStorage {
 
     void remove(String taskItemInstanceId,
                 ProcessEngineConfiguration processEngineConfiguration);
+
+    TaskItemInstance find(String taskInstanceId, String subBizId,
+                                 ProcessEngineConfiguration processEngineConfiguration);
 
 }

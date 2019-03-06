@@ -25,6 +25,8 @@ public interface TaskItemInstanceDAO {
 
     TaskItemInstanceEntity findOne(@Param("id") Long id);
 
+    TaskItemInstanceEntity find(@Param("taskInstanceId") String taskInstanceId, @Param("subBizId") String subBizId);
+
     //@Options(useGeneratedKeys = true)
     void insert(TaskItemInstanceEntity taskItemInstanceEntity);
 

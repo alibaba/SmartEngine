@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFacto
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.factory.TaskItemInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
@@ -33,6 +34,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     protected ExecutionInstanceFactory executionInstanceFactory;
     protected ActivityInstanceFactory activityInstanceFactory;
     protected TaskInstanceFactory taskInstanceFactory;
+    protected TaskItemInstanceFactory taskItemInstanceFactory;
 
     public AbstractActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity pvmActivity) {
         this.pvmActivity = pvmActivity;
@@ -41,6 +43,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         this.executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
         this.activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
         this.taskInstanceFactory = extensionPointRegistry.getExtensionPoint(TaskInstanceFactory.class);
+        this.taskItemInstanceFactory = extensionPointRegistry.getExtensionPoint(TaskItemInstanceFactory.class);
     }
 
     protected ExtensionPointRegistry getExtensionPointRegistry() {

@@ -3,8 +3,11 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
+import com.alibaba.smart.framework.engine.constant.ProcessInstanceModeConstant;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -13,9 +16,12 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskItemInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+
+import org.springframework.util.StringUtils;
 
 public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
@@ -164,10 +170,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             TaskInstance taskInstance = super.taskInstanceFactory.create(this.getModel(), executionInstance, context);
 
             List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
-
             IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
-
-
             for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : taskAssigneeCandidateInstanceList) {
                 TaskAssigneeInstance taskAssigneeInstance = new DefaultTaskAssigneeInstance();
                 taskAssigneeInstance.setAssigneeId(taskAssigneeCandidateInstance.getAssigneeId());
@@ -176,6 +179,23 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 taskAssigneeInstanceList.add(taskAssigneeInstance);
             }
             taskInstance.setTaskAssigneeInstanceList(taskAssigneeInstanceList);
+
+            //创建taskItemInstance
+            if(ProcessInstanceModeConstant.ITEM.equals(context.getRequest().get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE))){
+                List<TaskItemInstance> taskItemInstanceList = new ArrayList<TaskItemInstance>(2);
+                Object subBizId = context.getRequest().get(RequestMapSpecialKeyConstant.PROCESS_SUB_BIZ_UNIQUE_ID);
+                if(subBizId instanceof List){
+                    List<String> subBizIdList = (List<String>)subBizId;
+                    for(String subBizIdStr : subBizIdList){
+                        TaskItemInstance taskItemInstance = super.taskItemInstanceFactory.create(this.getModel(), executionInstance, context);
+                        taskItemInstance.setTaskInstanceId(Long.valueOf(taskInstance.getInstanceId()));
+                        taskItemInstance.setSubBizId(subBizIdStr);
+                        taskItemInstanceList.add(taskItemInstance);
+                    }
+                }
+                taskInstance.setTaskItemInstanceList(taskItemInstanceList);
+            }
+
             executionInstance.setTaskInstance(taskInstance);
         }
         return true;
