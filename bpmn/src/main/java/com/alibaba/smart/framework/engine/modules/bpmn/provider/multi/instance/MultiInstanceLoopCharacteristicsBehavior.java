@@ -158,6 +158,7 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
             if (null != this.completionCheckPrepareProvider) {
                 this.completionCheckPrepareProvider.perform(context);
             }
+
             return;
         }
 

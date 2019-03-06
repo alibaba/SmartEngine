@@ -68,7 +68,7 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
         variables.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE, ProcessInstanceModeConstant.ITEM);
         executionCommandService.signal(taskItemInstance.getExecutionInstanceId(), variables);
 
-        MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING, variables, taskInstanceStorage, processEngineConfiguration);
+        MarkDoneUtil.markDoneTaskItemInstance(taskItemInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING, variables, taskItemInstanceStorage, processEngineConfiguration);
         executionCommandService.signal(taskInstance.getExecutionInstanceId(), variables);
     }
 
