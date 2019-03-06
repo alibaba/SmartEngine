@@ -77,6 +77,14 @@ public interface ExecutionContext {
 
     void setBlockId(Long blockId);
 
+    /**
+     * 是否是行级别审批
+     * @return
+     */
+    boolean isItemApprove();
+
+    void setItemApprove(boolean itemApprove);
+
 
 
 }

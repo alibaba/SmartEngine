@@ -153,8 +153,7 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
 
     @Override
     public void execute(PvmActivity pvmActivity, ExecutionContext context) {
-        Object processMode = context.getRequest().get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE);
-        if(ProcessInstanceModeConstant.ITEM.equals(processMode)){
+        if(context.isItemApprove()){
             if (null != this.completionCheckPrepareProvider) {
                 this.completionCheckPrepareProvider.perform(context);
             }

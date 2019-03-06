@@ -45,6 +45,8 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private PvmActivity sourcePvmActivity;
 
+    private boolean itemApprove;
+
     @Override
     public Map<String, Object> getResponse() {
         return request;
