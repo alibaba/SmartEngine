@@ -178,6 +178,19 @@
                 #{item}
             </foreach>
         </if>
+        <if test="subBizIdList != null">
+            and task.sub_biz_id in
+            <foreach item="item" index="index" separator="," open="(" close=")"  collection="subBizIdList">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="bizIdList != null">
+            and task.biz_id in
+            <foreach item="item" index="index" separator="," open="(" close=")"  collection="bizIdList">
+                #{item}
+            </foreach>
+        </if>
     </sql>
 
 </mapper>
