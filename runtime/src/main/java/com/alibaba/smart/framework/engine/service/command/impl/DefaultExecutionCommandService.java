@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
@@ -108,6 +109,8 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             executionContext.setExecutionInstance(executionInstance);
             executionContext.setActivityInstance(activityInstance);
             executionContext.setRequest(request);
+            Object processMode = request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE);
+            executionContext.setItemApprove(processMode == null ? false : (Boolean)processMode);
 
             // TUNE 减少不必要的对象创建
             PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
