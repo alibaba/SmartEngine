@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
@@ -22,6 +23,7 @@ import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoi
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskItemCommandService;
+import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQueryParam;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -84,6 +86,34 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
         //TODO check priviage
 
         complete(taskItemId, subBizId, variables);
+    }
+
+    @Override
+    public void complete(String taskInstanceId, List<String> subBizIds, Map<String, Object> variables) {
+        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+        TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
+
+        //查询子任务列表
+        TaskItemInstanceQueryParam taskInstanceQueryParam = new TaskItemInstanceQueryParam();
+        taskInstanceQueryParam.setTaskInstanceId(taskInstanceId);
+        taskInstanceQueryParam.setSubBizIdList(subBizIds);
+        List<TaskItemInstance> taskItemInstanceList = taskItemInstanceStorage.findTaskList(taskInstanceQueryParam, processEngineConfiguration);
+        variables.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE, ProcessInstanceModeConstant.ITEM);
+
+        MarkDoneUtil.markDoneTaskItemInstance(taskItemInstanceList, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING, variables, taskItemInstanceStorage, processEngineConfiguration);
+        //TODO 驱动逻辑==>子任务驱动主任务
+        executionCommandService.signal(taskItemInstanceList.get(0).getExecutionInstanceId(), variables);
+    }
+
+    @Override
+    public void complete(String taskInstanceId, List<String> subBizIds, String userId, Map<String, Object> variables) {
+        if(null == variables){
+            variables = new HashMap<String, Object>();
+        }
+        variables.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,userId);
+        this.complete(taskInstanceId,subBizIds,variables);
     }
 
     //@Override

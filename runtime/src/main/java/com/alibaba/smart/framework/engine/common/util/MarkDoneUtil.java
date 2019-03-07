@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.common.util;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -108,6 +109,52 @@ public class MarkDoneUtil {
                     taskItemInstance.getStatus()));
         }
         return taskItemInstance;
+    }
+
+
+    /**
+     * 完成子单据
+     * @param taskItemInstanceList
+     * @param targetStatus
+     * @param sourceStatus
+     * @param variables
+     * @param taskItemInstanceStorage
+     * @param processEngineConfiguration
+     * @return
+     */
+    public static List<TaskItemInstance> markDoneTaskItemInstance(List<TaskItemInstance> taskItemInstanceList, String targetStatus, String sourceStatus,
+                                                            Map<String, Object> variables,
+                                                            TaskItemInstanceStorage taskItemInstanceStorage,
+                                                            ProcessEngineConfiguration processEngineConfiguration) {
+        Date currentDate = DateUtil.getCurrentDate();
+        for(TaskItemInstance taskItemInstance:taskItemInstanceList){
+            taskItemInstance.setCompleteTime(currentDate);
+            if (null == taskItemInstance.getClaimTime()) {
+                taskItemInstance.setClaimTime(currentDate);
+            }
+            taskItemInstance.setStatus(targetStatus);
+
+            if (null != variables) {
+                String tag = (String)variables.get(RequestMapSpecialKeyConstant.TASK_ITEM_INSTANCE_TAG);
+                taskItemInstance.setTag(tag);
+                String claimUserId = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID);
+                taskItemInstance.setClaimUserId(claimUserId);
+                Object o = variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT);
+                String comment =  o == null?null:String.valueOf(o);
+                taskItemInstance.setClaimUserId(claimUserId);
+                taskItemInstance.setComment(comment);
+            }
+            // 需要注意，针对 mongodb 模式，该方法会在内部实现，删除人员和任务的冗余存储关系。
+            //TODO 为了性能改成为批量更新，但是批量更新1000行会不会有性能问题，需要经过压力测试
+            int updateCount = taskItemInstanceStorage.updateFromStatus(taskItemInstance, sourceStatus, processEngineConfiguration);
+            if (updateCount !=1) {
+                throw new ConcurrentException(String
+                        .format("update_task_status_fail task_id=%s expect_from_[%s]_to_[%s]", taskItemInstance.getInstanceId(), sourceStatus,
+                                taskItemInstance.getStatus()));
+            }
+        }
+
+        return taskItemInstanceList;
     }
 
 }
