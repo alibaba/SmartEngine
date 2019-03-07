@@ -12,7 +12,6 @@ import com.alibaba.smart.framework.engine.persister.database.entity.TaskItemInst
 import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQueryByAssigneeParam;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 public class RelationshipDatabaseTaskItemInstanceStorage implements TaskItemInstanceStorage {
 
