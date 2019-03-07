@@ -99,7 +99,7 @@ public class RelationshipDatabaseTaskItemInstanceStorage implements TaskItemInst
 
 
     @Override
-    public List<TaskItemInstance> findTaskList(TaskItemInstanceQueryParam taskItemInstanceQueryParam,
+    public List<TaskItemInstance> findTaskItemList(TaskItemInstanceQueryParam taskItemInstanceQueryParam,
                                            ProcessEngineConfiguration processEngineConfiguration) {
         TaskItemInstanceDAO taskItemInstanceDAO= (TaskItemInstanceDAO) SpringContextUtil.getBean("taskItemInstanceDAO");
         List<TaskItemInstanceEntity>  taskItemInstanceEntityList= taskItemInstanceDAO.findTaskItemList(taskItemInstanceQueryParam);

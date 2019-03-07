@@ -142,7 +142,7 @@
 
 
 
-    <select id="findTaskList" resultType="TaskItemInstanceEntity" parameterType="TaskInstanceQueryParam">
+    <select id="findTaskItemList" resultType="TaskItemInstanceEntity" parameterType="TaskInstanceQueryParam">
         select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
         activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
         from  se_task_item_instance task  where 1=1

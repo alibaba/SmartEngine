@@ -92,14 +92,13 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
     public void complete(String taskInstanceId, List<String> subBizIds, Map<String, Object> variables) {
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
         TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
 
         //查询子任务列表
         TaskItemInstanceQueryParam taskInstanceQueryParam = new TaskItemInstanceQueryParam();
         taskInstanceQueryParam.setTaskInstanceId(taskInstanceId);
         taskInstanceQueryParam.setSubBizIdList(subBizIds);
-        List<TaskItemInstance> taskItemInstanceList = taskItemInstanceStorage.findTaskList(taskInstanceQueryParam, processEngineConfiguration);
+        List<TaskItemInstance> taskItemInstanceList = taskItemInstanceStorage.findTaskItemList(taskInstanceQueryParam, processEngineConfiguration);
         variables.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE, ProcessInstanceModeConstant.ITEM);
 
         MarkDoneUtil.markDoneTaskItemInstance(taskItemInstanceList, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING, variables, taskItemInstanceStorage, processEngineConfiguration);
