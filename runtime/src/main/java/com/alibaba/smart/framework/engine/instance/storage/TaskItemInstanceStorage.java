@@ -39,6 +39,16 @@ public interface TaskItemInstanceStorage {
     int updateFromStatus(TaskItemInstance taskInstance, String fromStatus,
                          ProcessEngineConfiguration processEngineConfiguration);
 
+    /**
+     * 批量更新状态
+     * @param taskItemInstanceList
+     * @param fromStatus
+     * @param processEngineConfiguration
+     * @return
+     */
+    int updateStatusBatch(List<TaskItemInstance> taskItemInstanceList, String fromStatus,
+                         ProcessEngineConfiguration processEngineConfiguration);
+
     TaskItemInstance find(String taskItemInstanceId,
                       ProcessEngineConfiguration processEngineConfiguration);
 

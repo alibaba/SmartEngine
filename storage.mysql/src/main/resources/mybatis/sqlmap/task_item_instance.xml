@@ -50,6 +50,21 @@
         where id=#{taskItemInstanceEntity.id} and status = #{fromStatus}
     </update>
 
+    <update id="updateStatusBatch" parameterType="TaskItemInstanceEntity">
+        update se_task_item_instance
+        <include refid="update_sql"/>
+        where
+          task_instance_id=#{taskItemInstanceEntity.taskInstanceId}
+         <if test = "taskItemInstanceEntity.subBizId != null" > and sub_biz_id = #{taskItemInstanceEntity.subBizId} </if>
+         <if test = "taskItemInstanceEntity.bizId != null" > and biz_id = #{taskItemInstanceEntity.bizId} </if>
+         <if test = "taskItemInstanceEntity.fromStatus != null" > and status = #{taskItemInstanceEntity.fromStatus} </if>
+         <if test = "taskItemInstanceEntity.subBizIdList != null" > and sub_biz_id in
+            <foreach item="item" index="index" separator="," open="(" close=")"  collection="taskItemInstanceEntity.subBizIdList">
+                #{item}
+            </foreach>
+         </if>
+    </update>
+
 
 
     <select id="findOne" resultType="TaskItemInstanceEntity">
@@ -144,7 +159,7 @@
 
     <select id="findTaskItemList" resultType="TaskItemInstanceEntity" parameterType="TaskInstanceQueryParam">
         select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
-        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
+        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title,task.sub_biz_id,task.biz_id,task.task_instance_id
         from  se_task_item_instance task  where 1=1
         <include refid="where_condition"/>
 

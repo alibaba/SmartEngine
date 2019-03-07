@@ -35,6 +35,13 @@ public interface TaskItemInstanceDAO {
     int updateFromStatus(@Param("taskItemInstanceEntity") TaskItemInstanceEntity taskItemInstanceEntity,
                          @Param("fromStatus") String fromStatus);
 
+    /**
+     * 批量更新状态
+     * @param taskItemInstanceEntity
+     * @return
+     */
+    int updateStatusBatch(@Param("taskItemInstanceEntity") TaskItemInstanceEntity taskItemInstanceEntity);
+
     void delete(@Param("id") Long id);
 
 }

@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.persister.database.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskItemInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskItemInstanceStorage;
@@ -12,6 +11,8 @@ import com.alibaba.smart.framework.engine.persister.database.dao.TaskItemInstanc
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskItemInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQueryByAssigneeParam;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class RelationshipDatabaseTaskItemInstanceStorage implements TaskItemInstanceStorage {
 
@@ -163,6 +164,24 @@ public class RelationshipDatabaseTaskItemInstanceStorage implements TaskItemInst
         TaskItemInstanceDAO taskItemInstanceDAO= (TaskItemInstanceDAO) SpringContextUtil.getBean("taskItemInstanceDAO");
         TaskItemInstanceEntity taskItemInstanceEntity = buildTaskItemInstanceEntity(taskItemInstance);
         return taskItemInstanceDAO.updateFromStatus(taskItemInstanceEntity,fromStatus);
+    }
+
+    @Override
+    public int updateStatusBatch(List<TaskItemInstance> taskItemInstanceList, String fromStatus,ProcessEngineConfiguration processEngineConfiguration) {
+        TaskItemInstanceDAO taskItemInstanceDAO= (TaskItemInstanceDAO) SpringContextUtil.getBean("taskItemInstanceDAO");
+        TaskItemInstance taskItemInstance = taskItemInstanceList.get(0);
+        TaskItemInstanceEntity taskItemInstanceEntity = new TaskItemInstanceEntity();
+        taskItemInstanceEntity.setTaskInstanceId(taskItemInstance.getTaskInstanceId());
+        taskItemInstanceEntity.setTag(taskItemInstance.getTag());
+        taskItemInstanceEntity.setStatus(taskItemInstance.getStatus());
+        taskItemInstanceEntity.setFromStatus(fromStatus);
+        //获取子单据id列表
+        List<String> subBizIdList= Lists.newArrayList();
+        for(TaskItemInstance itemInstance:taskItemInstanceList){
+            subBizIdList.add(itemInstance.getSubBizId());
+        }
+        taskItemInstanceEntity.setSubBizIdList(subBizIdList);
+        return taskItemInstanceDAO.updateStatusBatch(taskItemInstanceEntity);
     }
 
     @Override

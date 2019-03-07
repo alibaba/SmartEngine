@@ -111,17 +111,6 @@ public class MarkDoneUtil {
         return taskItemInstance;
     }
 
-
-    /**
-     * 完成子单据
-     * @param taskItemInstanceList
-     * @param targetStatus
-     * @param sourceStatus
-     * @param variables
-     * @param taskItemInstanceStorage
-     * @param processEngineConfiguration
-     * @return
-     */
     public static List<TaskItemInstance> markDoneTaskItemInstance(List<TaskItemInstance> taskItemInstanceList, String targetStatus, String sourceStatus,
                                                             Map<String, Object> variables,
                                                             TaskItemInstanceStorage taskItemInstanceStorage,
@@ -141,17 +130,15 @@ public class MarkDoneUtil {
                 taskItemInstance.setClaimUserId(claimUserId);
                 Object o = variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT);
                 String comment =  o == null?null:String.valueOf(o);
-                taskItemInstance.setClaimUserId(claimUserId);
                 taskItemInstance.setComment(comment);
             }
-            // 需要注意，针对 mongodb 模式，该方法会在内部实现，删除人员和任务的冗余存储关系。
-            //TODO 为了性能改成为批量更新，但是批量更新1000行会不会有性能问题，需要经过压力测试
-            int updateCount = taskItemInstanceStorage.updateFromStatus(taskItemInstance, sourceStatus, processEngineConfiguration);
-            if (updateCount !=1) {
-                throw new ConcurrentException(String
-                        .format("update_task_status_fail task_id=%s expect_from_[%s]_to_[%s]", taskItemInstance.getInstanceId(), sourceStatus,
-                                taskItemInstance.getStatus()));
-            }
+
+        }
+        int updateCount = taskItemInstanceStorage.updateStatusBatch(taskItemInstanceList, sourceStatus, processEngineConfiguration);
+        if (updateCount <taskItemInstanceList.size()) {
+            throw new ConcurrentException(String
+                    .format("update_task_status_batch_fail task_id=%s expect_from_[%s]_to_[%s]", taskItemInstanceList.get(0).getInstanceId(), sourceStatus,
+                            taskItemInstanceList.get(0).getStatus()));
         }
 
         return taskItemInstanceList;
