@@ -27,4 +27,7 @@ public class TaskItemInstanceQueryParam extends PaginateQueryParam {
 
    private String tag;
 
+   private String subBizId;
+
+   private String bizId;
 }

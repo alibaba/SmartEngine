@@ -50,8 +50,6 @@
         where id=#{taskItemInstanceEntity.id} and status = #{fromStatus}
     </update>
 
-
-
     <select id="findOne" resultType="TaskItemInstanceEntity">
         select
         <include refid="baseColumn"/>
@@ -64,103 +62,19 @@
         from se_task_item_instance where task_instance_id=#{taskInstanceId} and sub_biz_id = #{subBizId}
     </select>
 
-    <select id="findTaskByProcessInstanceIdAndStatus" resultType="TaskItemInstanceEntity" >
-        select
-        <include refid="baseColumn"/>
-        from se_task_item_instance where process_instance_id = #{param1} and status = #{param2}
-    </select>
-
-    <select id="findTaskByAssignee" resultType="TaskItemInstanceEntity" parameterType="TaskInstanceQueryByAssigneeParam">
-        select distinct task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
-        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
-        from  se_task_item_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
-
-        <if test = "status != null" > and task.status = #{status} </if>
-
-        <include refid="pending_where_condition"/>
-
-        <include refid="pending_task_assignee_choose_sql"/>
-
-        order by task.gmt_modified desc
-
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
-
-    </select>
-
-
-    <select id="countTaskByAssignee" resultType="int" parameterType="TaskInstanceQueryByAssigneeParam">
-        select  count(distinct task.id)
-        from  se_task_item_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
-
-        <if test = "status != null" > and task.status = #{status} </if>
-
-        <include refid="pending_where_condition"/>
-
-        <include refid="pending_task_assignee_choose_sql"/>
-
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
-
-    </select>
-
-    <sql id="pending_task_assignee_choose_sql">
-        <choose>
-            <when test="assigneeUserId != null and assigneeGroupIdList != null">
-                and (      (assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user') or (assignee.assignee_id in
-                <foreach item="item" index="index" separator="," open="(" close=")"  collection="assigneeGroupIdList">
-                    #{item}
-                </foreach>
-                and assignee.assignee_type = 'group')    )
-            </when>
-            <when test="assigneeUserId != null">
-                and assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user'
-            </when>
-
-            <when test="assigneeGroupIdList != null">
-                and assignee.assignee_id in
-                <foreach item="item" index="index" separator="," open="(" close=")"  collection="assigneeGroupIdList">
-                    #{item}
-                </foreach>
-                and assignee.assignee_type = 'group'
-            </when>
-
-            <otherwise>
-
-            </otherwise>
-        </choose>
-
-    </sql>
-
-    <sql id="pending_where_condition">
-        <if test="processDefinitionType != null">  and  task.process_definition_type = #{processDefinitionType} </if>
-        <if test="processInstanceIdList != null">
-            and task.process_instance_id in
-            <foreach item="item" index="index" separator="," open="(" close=")"  collection="processInstanceIdList">
-                #{item}
-            </foreach>
-        </if>
-    </sql>
-
-
-
-    <select id="findTaskList" resultType="TaskItemInstanceEntity" parameterType="TaskInstanceQueryParam">
-        select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
-        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
+    <select id="findTaskItemList" resultType="TaskItemInstanceEntity" parameterType="TaskItemInstanceQueryParam">
+        select  <include refid="baseColumn"/>
         from  se_task_item_instance task  where 1=1
         <include refid="where_condition"/>
-
         order by task.gmt_modified desc
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
-
     </select>
 
 
-    <select id="count" resultType="int" parameterType="TaskInstanceQueryParam">
+    <select id="count" resultType="int" parameterType="TaskItemInstanceQueryParam">
         select  count(task.id)
         from  se_task_item_instance task where 1=1
         <include refid="where_condition"/>
-
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
-
     </select>
 
 
@@ -171,6 +85,7 @@
         <if test="tag != null">  and  task.tag = #{tag} </if>
         <if test="activityInstanceId != null">  and  task.activity_instance_id = #{activityInstanceId} </if>
         <if test="taskInstanceId != null">  and  task.task_instance_id = #{taskInstanceId} </if>
+        <if test="subBizId != null">  and  task.sub_biz_id = #{subBizId} </if>
         <if test="processDefinitionActivityId != null">  and  task.process_definition_activity_id = #{processDefinitionActivityId} </if>
         <if test="processInstanceIdList != null">
             and task.process_instance_id in

@@ -11,17 +11,9 @@ import org.apache.ibatis.annotations.Param;
 
 public interface TaskItemInstanceDAO {
 
-    List<TaskItemInstanceEntity> findTaskItemByAssignee(TaskItemInstanceQueryByAssigneeParam TaskItemInstanceQueryByAssigneeParam);
-
-    Integer countTaskItemByAssignee(TaskItemInstanceQueryByAssigneeParam TaskItemInstanceQueryByAssigneeParam);
-
     List<TaskItemInstanceEntity> findTaskItemList(TaskItemInstanceQueryParam TaskItemInstanceQueryParam);
 
     Integer count(TaskItemInstanceQueryParam TaskItemInstanceQueryParam);
-
-    List<TaskItemInstanceEntity> findTaskItemByProcessInstanceIdAndStatus(Long processInstanceId, String status);
-
-    //List<TaskItemInstanceEntity> findList(Long processInstanceId, Long activityInstanceId);
 
     TaskItemInstanceEntity findOne(@Param("id") Long id);
 

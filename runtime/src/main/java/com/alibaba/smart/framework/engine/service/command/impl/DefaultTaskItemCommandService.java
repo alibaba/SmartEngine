@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
@@ -9,6 +10,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.constant.ProcessInstanceModeConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
+import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
@@ -16,9 +18,17 @@ import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorag
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskItemInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.Extensions;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskItemInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskItemCommandService;
@@ -34,6 +44,7 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
     private ActivityInstanceStorage activityInstanceStorage;
     private ExecutionInstanceStorage executionInstanceStorage;
     private ExecutionCommandService executionCommandService;
+    private ProcessDefinitionContainer processContainer;
 
 
     public DefaultTaskItemCommandService(ExtensionPointRegistry extensionPointRegistry) {
@@ -46,6 +57,7 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
         this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
         this.activityInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceStorage.class);
         this.executionInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceStorage.class);
+        this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
 
     }
 
@@ -59,17 +71,25 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
     public void complete(String taskInstanceId, String subBizId, Map<String, Object> variables) {
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
+        //TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
         TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
 
         TaskItemInstance taskItemInstance = taskItemInstanceStorage.find(taskInstanceId, subBizId, processEngineConfiguration);
-        TaskInstance taskInstance = taskInstanceStorage.find(String.valueOf(taskInstanceId), processEngineConfiguration);
 
         variables.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE, ProcessInstanceModeConstant.ITEM);
+        variables.put(RequestMapSpecialKeyConstant.PROCESS_SUB_BIZ_UNIQUE_ID, subBizId);
+        variables.put("taskInstanceId", taskInstanceId);
+        MarkDoneUtil.markDoneTaskItemInstance(taskItemInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING, variables, taskItemInstanceStorage, processEngineConfiguration);
         executionCommandService.signal(taskItemInstance.getExecutionInstanceId(), variables);
 
-        MarkDoneUtil.markDoneTaskItemInstance(taskItemInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING, variables, taskItemInstanceStorage, processEngineConfiguration);
-        executionCommandService.signal(taskInstance.getExecutionInstanceId(), variables);
+        String processDefinitionActivityId = taskItemInstance.getProcessDefinitionActivityId();
+        String processDefinitionIdAndVersion = taskItemInstance.getProcessDefinitionIdAndVersion();
+
+        PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(processDefinitionIdAndVersion);
+        PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(processDefinitionActivityId);
+
+        //TaskInstance taskInstance = taskInstanceStorage.find(String.valueOf(taskInstanceId), processEngineConfiguration);
+        //executionCommandService.signal(taskInstance.getExecutionInstanceId(), variables);
     }
 
 

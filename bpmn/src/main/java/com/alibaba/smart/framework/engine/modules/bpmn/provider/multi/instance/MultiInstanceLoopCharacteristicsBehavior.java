@@ -1,16 +1,17 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.multi.instance;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.constant.ProcessInstanceModeConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
@@ -18,13 +19,17 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.TaskItemInstanceStorage;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskItemInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopCollection;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.provider.Performer;
@@ -34,6 +39,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQueryParam;
 
 /**
  * @author ettear
@@ -45,7 +51,7 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
     private ProcessEngineConfiguration processEngineConfiguration ;
     private ExecutionInstanceFactory executionInstanceFactory;
     private TaskInstanceStorage taskInstanceStorage;
-
+    private TaskItemInstanceStorage taskItemInstanceStorage;
 
     private CompletionCheckerProvider completionCheckerProvider;
     private Performer completionCheckPrepareProvider;
@@ -101,7 +107,7 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
         this.executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(
             ExecutionInstanceStorage.class);
         this.taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
-
+        this.taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
     }
 
     @Override
@@ -154,10 +160,44 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
     @Override
     public void execute(PvmActivity pvmActivity, ExecutionContext context) {
         if(context.isItemApprove()){
+            ActivityInstance activityInstance = context.getActivityInstance();
+            Activity activity = pvmActivity.getModel();
+            if(activity instanceof UserTask) {
+                UserTask userTask = (UserTask)activity;
+                Map<String, String> properties = userTask.getProperties();
+                String approvalType = properties.get("approvalType");
+                if("anyone".equals(approvalType)){
+                    Map<String, Object> request = context.getRequest();
+                    String subBizId = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_SUB_BIZ_UNIQUE_ID);
+                    String taskInstanceId = (String)request.get("taskInstanceId");
+
+                    TaskItemInstanceQueryParam taskItemInstanceQueryParam = new TaskItemInstanceQueryParam();
+                    taskItemInstanceQueryParam.setSubBizId(subBizId);
+                    taskItemInstanceQueryParam.setActivityInstanceId(activityInstance.getInstanceId());
+                    taskItemInstanceQueryParam.setProcessInstanceIdList(Arrays.asList(activityInstance.getProcessInstanceId()));
+                    List<TaskItemInstance> taskItemList = taskItemInstanceStorage.findTaskItemList(taskItemInstanceQueryParam, this.processEngineConfiguration);
+
+                    List<Long> taskIdList = new ArrayList<Long>();
+                    if(taskItemList != null && taskItemList.size() >0){
+                        for(TaskItemInstance taskItemInstance : taskItemList){
+                            if (StringUtil.equals(taskItemInstance.getTaskInstanceId() + "", taskInstanceId)) {
+                                taskIdList.add(taskItemInstance.getTaskInstanceId());
+                            }
+                        }
+                    }
+                }
+            }
             if (null != this.completionCheckPrepareProvider) {
                 this.completionCheckPrepareProvider.perform(context);
             }
+            if (null != this.completionCheckerProvider) {
+                Performer completionCheckPerformer = this.completionCheckerProvider.getCompletionCheckPerformer();
+                boolean needComplete = this.check(completionCheckPerformer, context);
+                if(needComplete){
 
+                }
+            }
+            context.setNeedPause(true);
             return;
         }
 
