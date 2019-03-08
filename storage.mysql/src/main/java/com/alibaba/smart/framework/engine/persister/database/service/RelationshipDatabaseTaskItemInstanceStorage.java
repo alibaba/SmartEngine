@@ -10,18 +10,18 @@ import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUti
 import com.alibaba.smart.framework.engine.persister.database.dao.TaskItemInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskItemInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQueryParam;
-
+import com.google.common.collect.Lists;
 public class RelationshipDatabaseTaskItemInstanceStorage implements TaskItemInstanceStorage {
 
     @Override
     public List<TaskItemInstance> findTaskItemList(TaskItemInstanceQueryParam taskItemInstanceQueryParam,
-                                           ProcessEngineConfiguration processEngineConfiguration) {
+                                                   ProcessEngineConfiguration processEngineConfiguration) {
         TaskItemInstanceDAO taskItemInstanceDAO= (TaskItemInstanceDAO) SpringContextUtil.getBean("taskItemInstanceDAO");
         List<TaskItemInstanceEntity>  taskItemInstanceEntityList= taskItemInstanceDAO.findTaskItemList(taskItemInstanceQueryParam);
         List<TaskItemInstance> taskItemInstanceList = new ArrayList<TaskItemInstance>(taskItemInstanceEntityList.size());
         for (TaskItemInstanceEntity taskItemInstanceEntity : taskItemInstanceEntityList) {
-          TaskItemInstance taskItemInstance= buildTaskItemInstanceFromEntity(taskItemInstanceEntity);
-          taskItemInstanceList.add(taskItemInstance);
+            TaskItemInstance taskItemInstance= buildTaskItemInstanceFromEntity(taskItemInstanceEntity);
+            taskItemInstanceList.add(taskItemInstance);
         }
         return taskItemInstanceList;
     }
@@ -67,6 +67,24 @@ public class RelationshipDatabaseTaskItemInstanceStorage implements TaskItemInst
         TaskItemInstanceDAO taskItemInstanceDAO= (TaskItemInstanceDAO) SpringContextUtil.getBean("taskItemInstanceDAO");
         TaskItemInstanceEntity taskItemInstanceEntity = buildTaskItemInstanceEntity(taskItemInstance);
         return taskItemInstanceDAO.updateFromStatus(taskItemInstanceEntity,fromStatus);
+    }
+
+    @Override
+    public int updateStatusBatch(List<TaskItemInstance> taskItemInstanceList, String fromStatus,ProcessEngineConfiguration processEngineConfiguration) {
+        TaskItemInstanceDAO taskItemInstanceDAO= (TaskItemInstanceDAO) SpringContextUtil.getBean("taskItemInstanceDAO");
+        TaskItemInstance taskItemInstance = taskItemInstanceList.get(0);
+        TaskItemInstanceEntity taskItemInstanceEntity = new TaskItemInstanceEntity();
+        taskItemInstanceEntity.setTaskInstanceId(taskItemInstance.getTaskInstanceId());
+        taskItemInstanceEntity.setTag(taskItemInstance.getTag());
+        taskItemInstanceEntity.setStatus(taskItemInstance.getStatus());
+        taskItemInstanceEntity.setFromStatus(fromStatus);
+        //获取子单据id列表
+        List<String> subBizIdList= Lists.newArrayList();
+        for(TaskItemInstance itemInstance:taskItemInstanceList){
+            subBizIdList.add(itemInstance.getSubBizId());
+        }
+        taskItemInstanceEntity.setSubBizIdList(subBizIdList);
+        return taskItemInstanceDAO.updateStatusBatch(taskItemInstanceEntity);
     }
 
     @Override

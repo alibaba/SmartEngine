@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQu
 public interface TaskItemInstanceStorage {
 
     List<TaskItemInstance> findTaskItemList(TaskItemInstanceQueryParam taskInstanceQueryParam,
-                                    ProcessEngineConfiguration processEngineConfiguration);
+                                            ProcessEngineConfiguration processEngineConfiguration);
 
     Long count(TaskItemInstanceQueryParam taskItemInstanceQueryParam,
                ProcessEngineConfiguration processEngineConfiguration);
@@ -32,5 +32,7 @@ public interface TaskItemInstanceStorage {
 
     TaskItemInstance find(String taskInstanceId, String subBizId,
                                  ProcessEngineConfiguration processEngineConfiguration);
+
+    int updateStatusBatch(List<TaskItemInstance> taskItemInstanceList, String fromStatus,ProcessEngineConfiguration processEngineConfiguration);
 
 }

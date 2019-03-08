@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.common.util;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -108,6 +109,39 @@ public class MarkDoneUtil {
                     taskItemInstance.getStatus()));
         }
         return taskItemInstance;
+    }
+
+    public static List<TaskItemInstance> markDoneTaskItemInstance(List<TaskItemInstance> taskItemInstanceList, String targetStatus, String sourceStatus,
+                                                            Map<String, Object> variables,
+                                                            TaskItemInstanceStorage taskItemInstanceStorage,
+                                                            ProcessEngineConfiguration processEngineConfiguration) {
+        Date currentDate = DateUtil.getCurrentDate();
+        for(TaskItemInstance taskItemInstance:taskItemInstanceList){
+            taskItemInstance.setCompleteTime(currentDate);
+            if (null == taskItemInstance.getClaimTime()) {
+                taskItemInstance.setClaimTime(currentDate);
+            }
+            taskItemInstance.setStatus(targetStatus);
+
+            if (null != variables) {
+                String tag = (String)variables.get(RequestMapSpecialKeyConstant.TASK_ITEM_INSTANCE_TAG);
+                taskItemInstance.setTag(tag);
+                String claimUserId = (String)variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID);
+                taskItemInstance.setClaimUserId(claimUserId);
+                Object o = variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT);
+                String comment =  o == null?null:String.valueOf(o);
+                taskItemInstance.setComment(comment);
+            }
+
+        }
+        int updateCount = taskItemInstanceStorage.updateStatusBatch(taskItemInstanceList, sourceStatus, processEngineConfiguration);
+        if (updateCount <taskItemInstanceList.size()) {
+            throw new ConcurrentException(String
+                    .format("update_task_status_batch_fail task_id=%s expect_from_[%s]_to_[%s]", taskItemInstanceList.get(0).getInstanceId(), sourceStatus,
+                            taskItemInstanceList.get(0).getStatus()));
+        }
+
+        return taskItemInstanceList;
     }
 
 }
