@@ -3,10 +3,14 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.multi.instance;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
@@ -15,6 +19,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
@@ -40,6 +45,7 @@ import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQueryParam;
+import com.alibaba.smart.framework.engine.service.query.TaskItemQueryService;
 
 /**
  * @author ettear
@@ -162,27 +168,40 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
         if(context.isItemApprove()){
             ActivityInstance activityInstance = context.getActivityInstance();
             Activity activity = pvmActivity.getModel();
+            Map<String, Object> request = context.getRequest();
+            String subBizId = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_SUB_BIZ_UNIQUE_ID);
+            String taskInstanceId = (String)request.get("taskInstanceId");
             if(activity instanceof UserTask) {
                 UserTask userTask = (UserTask)activity;
                 Map<String, String> properties = userTask.getProperties();
                 String approvalType = properties.get("approvalType");
                 if("anyone".equals(approvalType)){
-                    Map<String, Object> request = context.getRequest();
-                    String subBizId = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_SUB_BIZ_UNIQUE_ID);
-                    String taskInstanceId = (String)request.get("taskInstanceId");
-
-                    TaskItemInstanceQueryParam taskItemInstanceQueryParam = new TaskItemInstanceQueryParam();
-                    taskItemInstanceQueryParam.setSubBizId(subBizId);
-                    taskItemInstanceQueryParam.setActivityInstanceId(activityInstance.getInstanceId());
-                    taskItemInstanceQueryParam.setProcessInstanceIdList(Arrays.asList(activityInstance.getProcessInstanceId()));
-                    List<TaskItemInstance> taskItemList = taskItemInstanceStorage.findTaskItemList(taskItemInstanceQueryParam, this.processEngineConfiguration);
-
-                    List<Long> taskIdList = new ArrayList<Long>();
-                    if(taskItemList != null && taskItemList.size() >0){
-                        for(TaskItemInstance taskItemInstance : taskItemList){
-                            if (StringUtil.equals(taskItemInstance.getTaskInstanceId() + "", taskInstanceId)) {
-                                taskIdList.add(taskItemInstance.getTaskInstanceId());
+                    TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
+                    taskInstanceQueryParam.setProcessInstanceIdList(Collections.singletonList(activityInstance.getProcessInstanceId()));
+                    taskInstanceQueryParam.setActivityInstanceId(activityInstance.getInstanceId());
+                    List<TaskInstance> allTaskInstanceList = this.taskInstanceStorage.findTaskList(taskInstanceQueryParam,this.processEngineConfiguration);
+                    if(allTaskInstanceList != null && allTaskInstanceList.size()>0){
+                        boolean flag = false;
+                        for(TaskInstance taskInstance : allTaskInstanceList){
+                            if(TaskInstanceConstant.CANCELED.equals(taskInstance.getStatus()) && taskInstance.getInstanceId().equals(taskInstanceId)){
+                                flag = true;
+                                break;
                             }
+                        }
+                        if(flag){
+                            throw new EngineException("该单据已在审批中");
+                        }
+                        for(TaskInstance taskInstance : allTaskInstanceList){
+                            if(taskInstance.getInstanceId().equals(taskInstanceId)){
+                                continue;
+                            }
+                            if(!TaskInstanceConstant.PENDING.equals(taskInstance.getStatus())){
+                                continue;
+                            }
+                            taskInstance.setComment("行级别审批，anyone抢单");
+                            taskInstance.setStatus(TaskInstanceConstant.CANCELED);
+                            taskInstance.setCompleteTime(DateUtil.getCurrentDate());
+                            taskInstanceStorage.update(taskInstance, this.processEngineConfiguration);
                         }
                     }
                 }
@@ -192,9 +211,23 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
             }
             if (null != this.completionCheckerProvider) {
                 Performer completionCheckPerformer = this.completionCheckerProvider.getCompletionCheckPerformer();
-                boolean needComplete = this.check(completionCheckPerformer, context);
-                if(needComplete){
-
+                boolean taskItemNeedComplete = this.check(completionCheckPerformer, context);
+                if(taskItemNeedComplete){
+                    TaskItemInstanceQueryParam taskItemInstanceQueryParam = new TaskItemInstanceQueryParam();
+                    taskItemInstanceQueryParam.setActivityInstanceId(activityInstance.getInstanceId());
+                    taskItemInstanceQueryParam.setProcessInstanceIdList(Arrays.asList(activityInstance.getProcessInstanceId()));
+                    taskItemInstanceQueryParam.setSubBizId(subBizId);
+                    List<TaskItemInstance> taskItemList = this.taskItemInstanceStorage.findTaskItemList(taskItemInstanceQueryParam,this.processEngineConfiguration);
+                    if(taskItemList != null && taskItemList.size()>0){
+                        for(TaskItemInstance taskItemInstance : taskItemList){
+                            if(TaskInstanceConstant.COMPLETED.equals(taskItemInstance.getStatus())){
+                                continue;
+                            }
+                            taskItemInstance.setStatus(TaskInstanceConstant.CANCELED);
+                            taskItemInstance.setCompleteTime(DateUtil.getCurrentDate());
+                            this.taskItemInstanceStorage.update(taskItemInstance, this.processEngineConfiguration);
+                        }
+                    }
                 }
             }
             context.setNeedPause(true);

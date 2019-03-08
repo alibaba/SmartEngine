@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.configuration.ItemApproveMultiInstanceCounter;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.ProcessInstanceModeConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
@@ -72,9 +73,7 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
     public void complete(String taskInstanceId, String subBizId, Map<String, Object> variables) {
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-        //TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
         TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
-
         TaskItemInstance taskItemInstance = taskItemInstanceStorage.find(taskInstanceId, subBizId, processEngineConfiguration);
 
         variables.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE, ProcessInstanceModeConstant.ITEM);
@@ -85,12 +84,17 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
 
         String processDefinitionActivityId = taskItemInstance.getProcessDefinitionActivityId();
         String processDefinitionIdAndVersion = taskItemInstance.getProcessDefinitionIdAndVersion();
-
         PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(processDefinitionIdAndVersion);
         PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(processDefinitionActivityId);
-
-        //TaskInstance taskInstance = taskInstanceStorage.find(String.valueOf(taskInstanceId), processEngineConfiguration);
-        //executionCommandService.signal(taskInstance.getExecutionInstanceId(), variables);
+        ItemApproveMultiInstanceCounter itemApproveMultiInstanceCounter = processEngineConfiguration.getItemApproveMultiInstanceCounter();
+        Map<String, String> map = itemApproveMultiInstanceCounter.canDriveNextMainElement(taskItemInstance.getProcessInstanceId(), pvmActivity.getModel(),extensionPointRegistry.getExtensionPoint(SmartEngine.class));
+        if(map != null && Boolean.TRUE.toString().equalsIgnoreCase(map.get("canDrive"))){
+            SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
+            TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
+            variables.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE, ProcessInstanceModeConstant.NORMAL);
+            variables.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG, map.get("tag"));
+            taskCommandService.complete(taskInstanceId, variables);
+        }
     }
 
 

@@ -40,20 +40,18 @@ public class CompletionCheckPrepareProvider implements Performer {
                 (activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), subBizId, smartEngine);
             rejectedInstanceCount = itemApproveMultiInstanceCounter.countRejectedTaskItemInstanceNumber
                 (activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), subBizId, smartEngine);
-            instanceCount = itemApproveMultiInstanceCounter.countAllTaskItemInstanceNumber
-                (activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), subBizId, smartEngine);
         }else {
             MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration().getMultiInstanceCounter();
             completedInstanceCount = multiInstanceCounter.countPassedTaskInstanceNumber(
                 activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), smartEngine);
             rejectedInstanceCount = multiInstanceCounter.countRejectedTaskInstanceNumber(
                 activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), smartEngine);
-            if (null != activityInstance.getExecutionInstanceList()) {
-                int size = activityInstance.getExecutionInstanceList().size();
-                instanceCount = Long.valueOf(size);
-            } else {
-                instanceCount = 0L;
-            }
+        }
+        if (null != activityInstance.getExecutionInstanceList()) {
+            int size = activityInstance.getExecutionInstanceList().size();
+            instanceCount = Long.valueOf(size);
+        } else {
+            instanceCount = 0L;
         }
         Map<String, Object> privateContext = context.getPrivateContext();
         // 此变量nrOfCompletedInstances命名并不合适,但是为了兼容 Activiti 不得不这样做.
