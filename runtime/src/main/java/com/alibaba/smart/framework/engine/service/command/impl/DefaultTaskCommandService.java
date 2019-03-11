@@ -93,6 +93,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleL
 
     @Override
     public void cancel(String taskId, Map<String, Object> variables) {
+        if(variables == null){
+            variables = new HashMap<String, Object>();
+        }
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
             SmartEngine.class).getProcessEngineConfiguration();
 
