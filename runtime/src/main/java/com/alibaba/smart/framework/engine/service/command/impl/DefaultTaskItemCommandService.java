@@ -94,7 +94,7 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
         taskItemCompleteProcessor.PostProcessAfterTaskItemComplete(processInstanceId, activityInstanceId,
             taskInstanceId, taskItemInstance.getInstanceId(), variables, pvmActivity.getModel(), smartEngine);
         //是否可以关闭当前主任务
-        Map<String, String> map = taskItemCompleteProcessor.canCompleteMainTask(taskItemInstance.getProcessInstanceId(), taskInstanceId, pvmActivity.getModel(), smartEngine);
+        Map<String, String> map = taskItemCompleteProcessor.canCompleteCurrentMainTask(taskItemInstance.getProcessInstanceId(), taskInstanceId, pvmActivity.getModel(), smartEngine);
         if(map != null && Boolean.TRUE.toString().equalsIgnoreCase(map.get("canDrive"))){
             TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
             variables.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG, map.get("tag"));

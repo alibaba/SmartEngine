@@ -20,5 +20,5 @@ public interface TaskItemCompleteProcessor {
      *      map.put("canDrive","true");
      *      map.put("tag","pass");
      */
-    Map<String,String> canCompleteMainTask(String processInstanceId, String taskInstanceId, Activity activity, SmartEngine smartEngine);
+    Map<String,String> canCompleteCurrentMainTask(String processInstanceId, String taskInstanceId, Activity activity, SmartEngine smartEngine);
 }
