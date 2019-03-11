@@ -110,8 +110,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             executionContext.setExecutionInstance(executionInstance);
             executionContext.setActivityInstance(activityInstance);
             executionContext.setRequest(request);
-            Object processMode = request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE);
-            executionContext.setItemApprove(ProcessInstanceModeConstant.ITEM.equals(processMode));
 
             // TUNE 减少不必要的对象创建
             PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();

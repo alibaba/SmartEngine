@@ -67,15 +67,4 @@ public class TaskItemInstanceEntity extends BaseProcessEntity {
      */
     private String subBizId;
 
-    /**
-     * 子业务id列表
-     */
-    private List<String> subBizIdList;
-
-    /**
-     * 源状态，
-     */
-    private String fromStatus;
-
-
 }

@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.configuration.impl;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
-import com.alibaba.smart.framework.engine.configuration.ItemApproveMultiInstanceCounter;
+import com.alibaba.smart.framework.engine.configuration.TaskItemCompleteProcessor;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
@@ -48,7 +48,7 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private TableSchemaStrategy tableSchemaStrategy;
 
-    private ItemApproveMultiInstanceCounter itemApproveMultiInstanceCounter;
+    private TaskItemCompleteProcessor taskItemCompleteProcessor;
 
     public DefaultProcessEngineConfiguration() {
         //说明:先默认设置一个id生成器,业务使用方可以根据自己的需要再覆盖掉这个值。

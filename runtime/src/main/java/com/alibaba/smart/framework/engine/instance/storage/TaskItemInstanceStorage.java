@@ -12,6 +12,9 @@ public interface TaskItemInstanceStorage {
     List<TaskItemInstance> findTaskItemList(TaskItemInstanceQueryParam taskInstanceQueryParam,
                                             ProcessEngineConfiguration processEngineConfiguration);
 
+    List<TaskItemInstance> findTaskItemList(List<Long> taskItemIdList,
+                                            ProcessEngineConfiguration processEngineConfiguration);
+
     Long count(TaskItemInstanceQueryParam taskItemInstanceQueryParam,
                ProcessEngineConfiguration processEngineConfiguration);
 

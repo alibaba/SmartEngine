@@ -15,6 +15,7 @@ public interface TaskItemCommandService {
 
     void complete(String taskInstanceId, String subBizId, String userId, Map<String, Object> variables);
 
+    void cancel(List<Long> taskItemIdList);
 
     /**
      *

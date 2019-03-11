@@ -13,6 +13,8 @@ public interface TaskItemInstanceDAO {
 
     List<TaskItemInstanceEntity> findTaskItemList(TaskItemInstanceQueryParam TaskItemInstanceQueryParam);
 
+    List<TaskItemInstanceEntity> findList(@Param("idList") List<Long> idList);
+
     Integer count(TaskItemInstanceQueryParam TaskItemInstanceQueryParam);
 
     TaskItemInstanceEntity findOne(@Param("id") Long id);
@@ -32,7 +34,8 @@ public interface TaskItemInstanceDAO {
      * @param taskItemInstanceEntity
      * @return
      */
-    int updateStatusBatch(@Param("taskItemInstanceEntity") TaskItemInstanceEntity taskItemInstanceEntity);
+    int updateStatusBatch(@Param("taskItemInstanceEntity") TaskItemInstanceEntity taskItemInstanceEntity,
+                          @Param("taskItemIdList") List<Long> taskItemIdList, @Param("fromStatus") String fromStatus);
 
     void delete(@Param("id") Long id);
 
