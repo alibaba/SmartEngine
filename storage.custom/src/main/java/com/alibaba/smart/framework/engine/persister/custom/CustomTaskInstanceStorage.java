@@ -67,7 +67,7 @@ public class CustomTaskInstanceStorage implements TaskInstanceStorage {
     }
 
     @Override
-    public TaskInstance insert(TaskInstance taskInstance, Map<String, Object> extraFieldsMap, ProcessEngineConfiguration processEngineConfiguration) {
+    public TaskInstance insert(TaskInstance taskInstance, Map<String, Object> customFieldsMap, ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 

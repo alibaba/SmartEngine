@@ -39,11 +39,11 @@ public interface TaskInstanceStorage {
     /**
      * 任务创建，支撑自定义扩展字段
      * @param taskInstance
-     * @param extraFieldsMap
+     * @param customFieldsMap
      * @param processEngineConfiguration
      * @return
      */
-    TaskInstance insert(TaskInstance taskInstance,Map<String,Object> extraFieldsMap,
+    TaskInstance insert(TaskInstance taskInstance,Map<String,Object> customFieldsMap,
                         ProcessEngineConfiguration processEngineConfiguration);
 
     TaskInstance update(TaskInstance taskInstance,
