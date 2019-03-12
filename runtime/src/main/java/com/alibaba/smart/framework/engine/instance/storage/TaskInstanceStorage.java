@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.instance.storage;
 
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
@@ -33,6 +34,16 @@ public interface TaskInstanceStorage {
                ProcessEngineConfiguration processEngineConfiguration);
 
     TaskInstance insert(TaskInstance taskInstance,
+                        ProcessEngineConfiguration processEngineConfiguration);
+
+    /**
+     * 任务创建，支撑自定义扩展字段
+     * @param taskInstance
+     * @param extraFieldsMap
+     * @param processEngineConfiguration
+     * @return
+     */
+    TaskInstance insert(TaskInstance taskInstance,Map<String,Object> extraFieldsMap,
                         ProcessEngineConfiguration processEngineConfiguration);
 
     TaskInstance update(TaskInstance taskInstance,

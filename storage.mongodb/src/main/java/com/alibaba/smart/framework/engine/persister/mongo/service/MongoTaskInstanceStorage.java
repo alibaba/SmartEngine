@@ -1,5 +1,5 @@
 package com.alibaba.smart.framework.engine.persister.mongo.service;
-import java.util.Date;
+import java.util.*;
 
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
@@ -9,10 +9,6 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
@@ -33,6 +29,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import static com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant.NOT_IMPLEMENT_INTENTIONALLY;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.*;
 
 
@@ -241,6 +238,12 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
 
         return  instance;
 
+    }
+
+    @Override
+    public TaskInstance insert(TaskInstance taskInstance, Map<String, Object> extraFieldsMap, ProcessEngineConfiguration processEngineConfiguration) {
+        //TODO 暂未支持
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 
     private TaskInstanceEntity buildEntity(TaskInstance instance) {

@@ -135,11 +135,11 @@ public class MarkDoneUtil {
 
         }
         int updateCount = taskItemInstanceStorage.updateStatusBatch(taskItemInstanceList, sourceStatus, processEngineConfiguration);
-        if (updateCount <taskItemInstanceList.size()) {
-            throw new ConcurrentException(String
-                    .format("update_task_status_batch_fail task_id=%s expect_from_[%s]_to_[%s]", taskItemInstanceList.get(0).getInstanceId(), sourceStatus,
-                            taskItemInstanceList.get(0).getStatus()));
-        }
+//        if (updateCount <taskItemInstanceList.size()) {
+//            throw new ConcurrentException(String
+//                    .format("update_task_status_batch_fail task_id=%s expect_from_[%s]_to_[%s]", taskItemInstanceList.get(0).getInstanceId(), sourceStatus,
+//                            taskItemInstanceList.get(0).getStatus()));
+//        }
 
         return taskItemInstanceList;
     }

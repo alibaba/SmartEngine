@@ -35,5 +35,8 @@ public class RequestMapSpecialKeyConstant {
 
     public static final  String PROCESS_INSTANCE_ABORT_REASON = $_SMART_ENGINE_$_PREFIX + "PROCESS_INSTANCE_ABORT_REASON";
 
-
+    /**
+     * 任务表自定义字段前缀
+     */
+    public static final String TASK_INSTANCE_CUSTOM_FIELDS =$_SMART_ENGINE_$_PREFIX+"task_instance_custom_fields";
 }
