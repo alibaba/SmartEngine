@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.persister.custom;
 
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -62,6 +63,11 @@ public class CustomTaskInstanceStorage implements TaskInstanceStorage {
     @Override
     public TaskInstance insert(TaskInstance instance,
                                ProcessEngineConfiguration processEngineConfiguration) {
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
+    }
+
+    @Override
+    public TaskInstance insert(TaskInstance taskInstance, Map<String, Object> customFieldsMap, ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 

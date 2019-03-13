@@ -2,7 +2,10 @@ package com.alibaba.smart.framework.engine.persister.database.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
@@ -146,6 +149,41 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
 
         TaskInstanceEntity taskInstanceEntity = buildTaskInstanceEntity(taskInstance);
         taskInstanceDAO.insert(taskInstanceEntity);
+
+        Long entityId = taskInstanceEntity.getId();
+
+        // 当数据库表id 是非自增时，需要以传入的 id 值为准
+        if(0L == entityId){
+            entityId = Long.valueOf( taskInstance.getInstanceId());
+        }
+
+        taskInstanceEntity = taskInstanceDAO.findOne(entityId);
+
+        //reAssign
+        TaskInstance   resultTaskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
+        resultTaskInstance.setTaskAssigneeInstanceList(taskInstance.getTaskAssigneeInstanceList());
+        resultTaskInstance.setTaskItemInstanceList(taskInstance.getTaskItemInstanceList());
+        return resultTaskInstance;
+    }
+
+    @Override
+    public TaskInstance insert(TaskInstance taskInstance, Map<String,Object> customFieldsMap, ProcessEngineConfiguration processEngineConfiguration) {
+        TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
+
+        TaskInstanceEntity taskInstanceEntity = buildTaskInstanceEntity(taskInstance);
+
+        //如果没有扩展字段，走原来的逻辑
+        if(null== customFieldsMap || customFieldsMap.size()==0){
+            taskInstanceDAO.insert(taskInstanceEntity);
+        }else{
+            //将实体转换为Map，走扩展字段写入逻辑
+            Map<String,Object> taskInstanceEntityMap= JSON.parseObject(JSON.toJSONString(taskInstance),new TypeReference<Map<String, Object>>(){});
+            if(customFieldsMap !=null&& customFieldsMap.size()>0){
+                taskInstanceEntityMap.putAll(customFieldsMap);
+            }
+            taskInstanceDAO.insertWithCustomFields(taskInstanceEntityMap);
+        }
+
 
         Long entityId = taskInstanceEntity.getId();
 

@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
@@ -32,6 +33,12 @@ public interface TaskInstanceDAO {
 
     //@Options(useGeneratedKeys = true)
     void insert(  TaskInstanceEntity taskInstanceEntity );
+
+    /**
+     * 以Map参数的形式创建task
+     * @param taskInstanceEntityMap
+     */
+    void insertWithCustomFields(@Param("TaskInstanceEntityMap") Map<String,Object> taskInstanceEntityMap);
 
     int update(@Param("taskInstanceEntity") TaskInstanceEntity taskInstanceEntity);
 

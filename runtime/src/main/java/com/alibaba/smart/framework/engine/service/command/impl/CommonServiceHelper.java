@@ -6,6 +6,7 @@ import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.constant.AdHocConstant;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
@@ -24,6 +25,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskItemInstance;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
+import com.google.common.collect.Maps;
 
 import java.util.Collections;
 import java.util.List;
@@ -63,7 +65,7 @@ public abstract  class CommonServiceHelper {
         persisteVariableInstanceIfPossible(request, processEngineConfiguration, persisterFactoryExtensionPoint,
             newProcessInstance, AdHocConstant.DEFAULT_ZERO_VALUE);
 
-        persist(newProcessInstance,    extensionPointRegistry,processEngineConfiguration);
+        persist(newProcessInstance, request,   extensionPointRegistry,processEngineConfiguration);
 
         return newProcessInstance;
     }
@@ -116,14 +118,14 @@ public abstract  class CommonServiceHelper {
         persisteVariableInstanceIfPossible(request, processEngineConfiguration, persisterFactoryExtensionPoint,
             newProcessInstance,executionInstanceId);
 
-        persist(processInstance,    extensionPointRegistry,  processEngineConfiguration );
+        persist(processInstance, request,   extensionPointRegistry,  processEngineConfiguration );
 
         return newProcessInstance;
     }
 
 
 
-    private static void persist(ProcessInstance processInstance,  ExtensionPointRegistry extensionPointRegistry,ProcessEngineConfiguration processEngineConfiguration ) {
+    private static void persist(ProcessInstance processInstance, Map<String,Object> request, ExtensionPointRegistry extensionPointRegistry,ProcessEngineConfiguration processEngineConfiguration ) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
@@ -144,7 +146,7 @@ public abstract  class CommonServiceHelper {
             if(null != executionInstanceList){
                 for (ExecutionInstance executionInstance : executionInstanceList) {
                     persisteInstance( executionInstanceStorage, taskInstanceStorage, taskItemInstanceStorage, taskAssigneeStorage,
-                        activityInstance, executionInstance,  processEngineConfiguration);
+                        activityInstance, executionInstance, request, processEngineConfiguration);
                 }
             }
 
@@ -155,7 +157,7 @@ public abstract  class CommonServiceHelper {
     //TUNE too many args
     private static void persisteInstance(ExecutionInstanceStorage executionInstanceStorage,
                                          TaskInstanceStorage taskInstanceStorage, TaskItemInstanceStorage taskItemInstanceStorage, TaskAssigneeStorage taskAssigneeStorage, ActivityInstance activityInstance,
-                                         ExecutionInstance executionInstance, ProcessEngineConfiguration processEngineConfiguration) {
+                                         ExecutionInstance executionInstance,Map<String,Object> request, ProcessEngineConfiguration processEngineConfiguration) {
         if (null != executionInstance) {
             executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
             executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
@@ -167,8 +169,14 @@ public abstract  class CommonServiceHelper {
                 taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
                 taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
 
+                //获取扩展字段
+                Map<String,Object> customFieldValues= Maps.newHashMap();
+                if(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CUSTOM_FIELDS)!=null){
+                    customFieldValues=(Map<String,Object>)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CUSTOM_FIELDS);
+
+                }
                 //reAssign
-                taskInstance = taskInstanceStorage.insert(taskInstance, processEngineConfiguration);
+                taskInstance = taskInstanceStorage.insert(taskInstance,customFieldValues, processEngineConfiguration);
 
                 List<TaskAssigneeInstance>  taskAssigneeInstances = taskInstance.getTaskAssigneeInstanceList();
 

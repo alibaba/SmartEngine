@@ -16,6 +16,19 @@
         #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status},#{comment},#{extension},#{title})
     </insert>
 
+
+    <!-- 通过map参数形式创建任务，主要可以处理自定义字段 -->
+    <insert id="insertWithCustomFields" parameterType="java.util.Map">
+      insert into se_task_instance
+        <foreach collection="TaskInstanceEntityMap.keys" separator="," item="key" open="(" close=")">
+            ${key}
+        </foreach>
+        values
+        <foreach collection="TaskInstanceEntityMap.keys" item="key" separator="," open="(" close=")">
+            #{TaskInstanceEntityMap[${key}]}
+        </foreach>
+    </insert>
+
     <delete id="delete" parameterType="long">
         delete from se_task_instance where id=#{id}
     </delete>
