@@ -25,13 +25,8 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskItemInstance;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-import com.google.common.collect.Maps;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  20:38.
@@ -170,7 +165,7 @@ public abstract  class CommonServiceHelper {
                 taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
 
                 //获取扩展字段
-                Map<String,Object> customFieldValues= Maps.newHashMap();
+                Map<String,Object> customFieldValues= new HashMap<String, Object>();
                 if(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CUSTOM_FIELDS)!=null){
                     customFieldValues=(Map<String,Object>)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CUSTOM_FIELDS);
 

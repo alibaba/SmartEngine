@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.service.query.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -14,6 +15,7 @@ import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoi
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.condition.CustomFieldCondition;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
 /**
@@ -112,5 +114,22 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         return taskInstanceStorage.count(taskInstanceQueryParam, processEngineConfiguration);
+    }
+
+    @Override
+    public List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam, List<CustomFieldCondition> customFieldConditionList) {
+        if(customFieldConditionList==null||customFieldConditionList.size()==0){
+            return this.findList(taskInstanceQueryParam);
+        }
+        taskInstanceQueryParam.setCustomFieldConditionList(customFieldConditionList);
+        return this.findList(taskInstanceQueryParam);
+    }
+
+    @Override
+    public Long count(TaskInstanceQueryParam taskInstanceQueryParam,List<CustomFieldCondition> customFieldConditionList) {
+        if(customFieldConditionList==null||customFieldConditionList.size()==0){
+            return this.count(taskInstanceQueryParam);
+        }
+        return null;
     }
 }

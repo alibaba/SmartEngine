@@ -1,11 +1,13 @@
 package com.alibaba.smart.framework.engine.service.query;
 
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.condition.CustomFieldCondition;
 
 /**
  * 用户任务查询服务。
@@ -48,5 +50,22 @@ public interface TaskQueryService {
     List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam);
 
     Long count(TaskInstanceQueryParam taskInstanceQueryParam);
+
+    /**
+     *  扩展方法，查询用户指定状态的单据，可支持审批人和状态以外的自定义扩展字段的检索
+     * @param taskInstanceQueryParam 基本查询条件
+     * @param customFieldConditionList  自定义查询字段条件
+     * @return
+     */
+    List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam, List<CustomFieldCondition> customFieldConditionList);
+
+    /**
+     * 扩展方法，查询用户指定状态的单据数量，可支持审批人和状态以外的自定义扩展字段的检索
+     * @param taskInstanceQueryParam 基本查询条件
+     * @param customFieldConditionList  自定义查询字段条件
+     * @return
+     */
+    Long count(TaskInstanceQueryParam taskInstanceQueryParam, List<CustomFieldCondition> customFieldConditionList);
+
 
 }

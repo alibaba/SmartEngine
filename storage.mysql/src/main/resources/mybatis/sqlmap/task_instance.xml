@@ -152,7 +152,7 @@
         activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
         from  se_task_instance task  where 1=1
         <include refid="where_condition"/>
-
+        <include refid="where_custom_condition"/>
         order by task.gmt_modified desc
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
 
@@ -163,7 +163,7 @@
         select  count(task.id)
         from  se_task_instance task where 1=1
         <include refid="where_condition"/>
-
+        <include refid="where_custom_condition"/>
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
 
     </select>
@@ -180,6 +180,14 @@
             and task.process_instance_id in
             <foreach item="item" index="index" separator="," open="(" close=")"  collection="processInstanceIdList">
                 #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="where_custom_condition">
+        <if test="customFieldConditionList != null">
+            <foreach item="item" index="index" separator="" open="" close=""  collection="customFieldConditionList">
+                #{item.condition} #{item.fieldName} #{item.operator}  #{item.fieldValue}
             </foreach>
         </if>
     </sql>

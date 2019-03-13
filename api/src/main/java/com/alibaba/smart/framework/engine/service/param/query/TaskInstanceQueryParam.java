@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.service.param.query;
 
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.service.param.query.condition.CustomFieldCondition;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -25,5 +26,7 @@ public class TaskInstanceQueryParam extends PaginateQueryParam {
    private String claimUserId;
 
    private String tag;
+
+   private List<CustomFieldCondition> customFieldConditionList;
 
 }
