@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.smart.framework.engine.common.util.ObjectUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
@@ -177,7 +176,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
             taskInstanceDAO.insert(taskInstanceEntity);
         }else{
             //将实体转换为Map，走扩展字段写入逻辑
-            Map<String,Object> taskInstanceEntityMap= JSON.parseObject(JSON.toJSONString(taskInstance),new TypeReference<Map<String, Object>>(){});
+            Map<String,Object> taskInstanceEntityMap= ObjectUtil.parse2Map(taskInstance);
             if(customFieldsMap !=null&& customFieldsMap.size()>0){
                 taskInstanceEntityMap.putAll(customFieldsMap);
             }
