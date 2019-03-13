@@ -3,9 +3,12 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
+import com.alibaba.smart.framework.engine.configuration.TaskItemCompleteProcessor;
 import com.alibaba.smart.framework.engine.constant.ProcessInstanceModeConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
@@ -183,9 +186,17 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             //创建taskItemInstance
             if(ProcessInstanceModeConstant.ITEM.equals(context.getRequest().get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE))){
                 List<TaskItemInstance> taskItemInstanceList = new ArrayList<TaskItemInstance>(2);
-                Object subBizId = context.getRequest().get(RequestMapSpecialKeyConstant.PROCESS_SUB_BIZ_UNIQUE_ID);
-                if(subBizId instanceof List){
-                    List<String> subBizIdList = (List<String>)subBizId;
+                Object subBizIds = context.getRequest().get(RequestMapSpecialKeyConstant.PROCESS_SUB_BIZ_UNIQUE_ID);
+                if(subBizIds == null){
+                    String activityInstanceId = (String)context.getRequest().get("activityInstanceId");
+                    ExtensionPointRegistry extensionPointRegistry = context.getExtensionPointRegistry();
+                    SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
+                    ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
+                    TaskItemCompleteProcessor taskItemCompleteProcessor = processEngineConfiguration.getTaskItemCompleteProcessor();
+                    subBizIds = taskItemCompleteProcessor.getPassedSubBizIdByActivityInstanceId(activityInstanceId, smartEngine);
+                }
+                if(subBizIds instanceof List){
+                    List<String> subBizIdList = (List<String>)subBizIds;
                     for(String subBizIdStr : subBizIdList){
                         TaskItemInstance taskItemInstance = super.taskItemInstanceFactory.create(this.getModel(), executionInstance, context);
                         taskItemInstance.setTaskInstanceId(Long.valueOf(taskInstance.getInstanceId()));

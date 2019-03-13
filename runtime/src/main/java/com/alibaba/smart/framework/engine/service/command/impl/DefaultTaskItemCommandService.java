@@ -28,6 +28,7 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskItemCommandService;
 import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQueryParam;
+import com.alibaba.smart.framework.engine.service.query.TaskItemQueryService;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -95,9 +96,11 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
             taskInstanceId, taskItemInstance.getInstanceId(), variables, pvmActivity.getModel(), smartEngine);
         //是否可以关闭当前主任务
         Map<String, String> map = taskItemCompleteProcessor.canCompleteCurrentMainTask(taskItemInstance.getProcessInstanceId(), taskInstanceId, pvmActivity.getModel(), smartEngine);
-        if(map != null && Boolean.TRUE.toString().equalsIgnoreCase(map.get("canDrive"))){
+        if(map != null && Boolean.TRUE.toString().equalsIgnoreCase(map.get("canComplete"))){
             TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
             variables.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG, map.get("tag"));
+            variables.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE, ProcessInstanceModeConstant.ITEM);
+            variables.put("activityInstanceId", activityInstanceId);
             taskCommandService.complete(taskInstanceId, variables);
         }
     }
