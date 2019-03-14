@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,13 +89,13 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
         TaskItemCompleteProcessor taskItemCompleteProcessor = processEngineConfiguration.getTaskItemCompleteProcessor();
         //完成子任务之前
         taskItemCompleteProcessor.PostProcessBeforeTaskItemComplete(processInstanceId, activityInstanceId,
-            taskInstanceId, taskItemInstance.getInstanceId(), variables, pvmActivity.getModel(), smartEngine);
+            taskInstanceId, Collections.singletonList(taskItemInstance.getInstanceId()), variables, pvmActivity.getModel(), smartEngine);
         //完成子任务
         MarkDoneUtil.markDoneTaskItemInstance(taskItemInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
             variables, taskItemInstanceStorage, processEngineConfiguration);
         //完成子任务之后
         taskItemCompleteProcessor.PostProcessAfterTaskItemComplete(processInstanceId, activityInstanceId,
-            taskInstanceId, taskItemInstance.getInstanceId(), variables, pvmActivity.getModel(), smartEngine);
+            taskInstanceId, Collections.singletonList(taskItemInstance.getInstanceId()), variables, pvmActivity.getModel(), smartEngine);
         //是否可以关闭当前主任务
         Map<String, String> map = taskItemCompleteProcessor.canCompleteCurrentMainTask(taskItemInstance.getProcessInstanceId(), taskInstanceId, pvmActivity.getModel(), smartEngine);
         if(map != null && Boolean.TRUE.toString().equalsIgnoreCase(map.get("canComplete"))){
@@ -115,21 +117,9 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
     }
 
     @Override
-    public void cancel(List<Long> taskItemIdList){
-        if(taskItemIdList == null || taskItemIdList.size() <= 0){
-            return;
-        }
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-        TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
-        List<TaskItemInstance> taskItemList = taskItemInstanceStorage.findTaskItemList(taskItemIdList,
-            processEngineConfiguration);
-        MarkDoneUtil.markDoneTaskItemInstance(taskItemList, TaskInstanceConstant.CANCELED, TaskInstanceConstant.PENDING, null, taskItemInstanceStorage, processEngineConfiguration);
-    }
-
-    @Override
     public void complete(String taskInstanceId, List<String> subBizIds, Map<String, Object> variables) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+        SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
+        ProcessEngineConfiguration processEngineConfiguration = smartEngine.getProcessEngineConfiguration();
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
 
@@ -138,11 +128,42 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
         taskInstanceQueryParam.setTaskInstanceId(taskInstanceId);
         taskInstanceQueryParam.setSubBizIdList(subBizIds);
         List<TaskItemInstance> taskItemInstanceList = taskItemInstanceStorage.findTaskItemList(taskInstanceQueryParam, processEngineConfiguration);
-        variables.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE, ProcessInstanceModeConstant.ITEM);
+        if(taskItemInstanceList == null || taskItemInstanceList.size() <= 0){
+            return;
+        }
 
-        MarkDoneUtil.markDoneTaskItemInstance(taskItemInstanceList, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING, variables, taskItemInstanceStorage, processEngineConfiguration);
-        //TODO 驱动逻辑==>子任务驱动主任务
-        executionCommandService.signal(taskItemInstanceList.get(0).getExecutionInstanceId(), variables);
+        List<String> taskItemIdList = new ArrayList<String>();
+        for(TaskItemInstance taskItemInstance : taskItemInstanceList){
+            taskItemIdList.add(taskItemInstance.getInstanceId());
+        }
+
+        String processInstanceId = taskItemInstanceList.get(0).getProcessInstanceId();
+        String activityInstanceId = taskItemInstanceList.get(0).getActivityInstanceId();
+        String processDefinitionActivityId = taskItemInstanceList.get(0).getProcessDefinitionActivityId();
+        String processDefinitionIdAndVersion = taskItemInstanceList.get(0).getProcessDefinitionIdAndVersion();
+
+        PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(processDefinitionIdAndVersion);
+        PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(processDefinitionActivityId);
+
+        TaskItemCompleteProcessor taskItemCompleteProcessor = processEngineConfiguration.getTaskItemCompleteProcessor();
+        //完成子任务之前
+        taskItemCompleteProcessor.PostProcessBeforeTaskItemComplete(processInstanceId, activityInstanceId,
+            taskInstanceId, taskItemIdList, variables, pvmActivity.getModel(), smartEngine);
+        //完成子任务
+        MarkDoneUtil.markDoneTaskItemInstance(taskItemInstanceList, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
+            variables, taskItemInstanceStorage, processEngineConfiguration);
+        //完成子任务之后
+        taskItemCompleteProcessor.PostProcessAfterTaskItemComplete(processInstanceId, activityInstanceId,
+            taskInstanceId, taskItemIdList, variables, pvmActivity.getModel(), smartEngine);
+        //是否可以关闭当前主任务
+        Map<String, String> map = taskItemCompleteProcessor.canCompleteCurrentMainTask(processInstanceId, taskInstanceId, pvmActivity.getModel(), smartEngine);
+        if(map != null && Boolean.TRUE.toString().equalsIgnoreCase(map.get("canComplete"))){
+            TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
+            variables.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG, map.get("tag"));
+            variables.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE, ProcessInstanceModeConstant.ITEM);
+            variables.put("activityInstanceId", activityInstanceId);
+            taskCommandService.complete(taskInstanceId, variables);
+        }
     }
 
     @Override
@@ -151,11 +172,7 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
             variables = new HashMap<String, Object>();
         }
         variables.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,userId);
-        this.complete(taskInstanceId,subBizIds,variables);
+        this.complete(taskInstanceId, subBizIds, variables);
     }
 
-    //@Override
-    //public void claim(Long taskId, String userId, Map<String, Object> variables) {
-    //
-    //}
 }
