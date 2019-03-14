@@ -15,8 +15,6 @@ public interface TaskItemCommandService {
 
     void complete(String taskInstanceId, String subBizId, String userId, Map<String, Object> variables);
 
-    void cancel(List<Long> taskItemIdList);
-
     /**
      *
      * 子任务完成
@@ -37,7 +35,5 @@ public interface TaskItemCommandService {
      *              key:RequestMapSpecialKeyConstant.TASK_ITEM_INSTANCE_TAG  子单据据状态
      */
     void complete(String taskInstanceId, List<String> subBizIds, String userId, Map<String, Object> variables);
-
-    //void claim(Long taskId, String userId, Map<String, Object> variables);
 
 }
