@@ -28,6 +28,16 @@ public class CustomField {
      */
     private String operator;
 
+
+    /**
+     * 判断该字段是否合法
+     * @return
+     */
+    public boolean isValid(){
+        //此处目前只校验操作符，后续需要增加字段及值的校验，避免sql注入
+        return OperatorType.valid(this.operator);
+    }
+
     public String getFieldName() {
         return fieldName;
     }

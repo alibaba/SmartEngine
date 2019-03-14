@@ -19,6 +19,18 @@ public class CustomFieldCondition  extends CustomField{
      */
     private String condition;
 
+
+    /**
+     * 判断该条件字段是否合法
+     * @return
+     */
+    public boolean isValid(){
+        if(!super.isValid()){
+            return false;
+        }
+        return ConditionType.valid(condition);
+    }
+
     public String getCondition() {
         return condition;
     }

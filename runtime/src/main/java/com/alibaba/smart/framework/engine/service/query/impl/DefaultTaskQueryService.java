@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.util.ConditionUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -15,6 +16,7 @@ import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoi
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.condition.ConditionException;
 import com.alibaba.smart.framework.engine.service.param.query.condition.CustomFieldCondition;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
@@ -62,8 +64,13 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
         return taskInstanceStorage.countPendingTaskList(pendingTaskQueryParam, processEngineConfiguration);
     }
 
+
     @Override
     public List<TaskInstance> findTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
+        //判断自定义字段条件是否合法
+        if(!ConditionUtil.isValid(param.getCustomFieldConditionList())){
+            throw new ConditionException();
+        }
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
@@ -73,6 +80,10 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
 
     @Override
     public Long countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
+        //判断自定义字段条件是否合法
+        if(!ConditionUtil.isValid(param.getCustomFieldConditionList())){
+            throw new ConditionException();
+        }
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
         return taskInstanceStorage.countTaskListByAssignee(param,processEngineConfiguration );
