@@ -88,6 +88,8 @@
 
         <include refid="pending_task_assignee_choose_sql"/>
 
+        <include refid="where_custom_condition"/>
+
         order by task.gmt_modified desc
 
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
@@ -104,6 +106,8 @@
         <include refid="pending_where_condition"/>
 
         <include refid="pending_task_assignee_choose_sql"/>
+
+        <include refid="where_custom_condition"/>
 
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
 
@@ -189,7 +193,7 @@
     <sql id="where_custom_condition">
         <if test="customFieldConditionList != null">
             <foreach item="item" index="index" separator="" open="" close=""  collection="customFieldConditionList">
-                #{item.condition} #{item.fieldName} #{item.operator}  #{item.fieldValue}
+                ${item.condition} ${item.fieldName} ${item.operator}  #{item.fieldValue}
             </foreach>
         </if>
     </sql>
