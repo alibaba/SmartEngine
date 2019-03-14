@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.service.param.query.condition;
 
+import lombok.Data;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +35,7 @@ public enum  OperatorType {
     /**
      * 操作符
      */
-    String operator;
+    public String operator;
 
     OperatorType(String operator){
         this.operator=operator;

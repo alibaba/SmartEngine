@@ -17,7 +17,7 @@ public enum ConditionType {
    AND("and"), OR("or");
 
 
-    private String type;
+    public String type;
 
     private static final Map<String,ConditionType> conditionTypeMap=new HashMap<String, ConditionType>();
     static {
