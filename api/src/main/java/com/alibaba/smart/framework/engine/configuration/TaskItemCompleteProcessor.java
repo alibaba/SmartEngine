@@ -8,10 +8,10 @@ import com.alibaba.smart.framework.engine.model.assembly.Activity;
 
 public interface TaskItemCompleteProcessor {
 
-    void PostProcessBeforeTaskItemComplete(String processInstanceId, String activityInstanceId, String taskInstanceId,
+    void postProcessBeforeTaskItemComplete(String processInstanceId, String activityInstanceId, String taskInstanceId,
                                            List<String> taskItemInstanceId, Map<String, Object> variables, Activity activity, SmartEngine smartEngine);
 
-    void PostProcessAfterTaskItemComplete(String processInstanceId, String activityInstanceId, String taskInstanceId,
+    void postProcessAfterTaskItemComplete(String processInstanceId, String activityInstanceId, String taskInstanceId,
                                           List<String> taskItemInstanceId, Map<String, Object> variables, Activity activity, SmartEngine smartEngine);
 
     /**
