@@ -175,12 +175,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         if(null== customFieldsMap || customFieldsMap.size()==0){
             taskInstanceDAO.insert(taskInstanceEntity);
         }else{
-            //将实体转换为Map，走扩展字段写入逻辑
-            Map<String,Object> taskInstanceEntityMap= ObjectUtil.parse2Map(taskInstance);
-            if(customFieldsMap !=null&& customFieldsMap.size()>0){
-                taskInstanceEntityMap.putAll(customFieldsMap);
-            }
-            taskInstanceDAO.insertWithCustomFields(taskInstanceEntityMap);
+            taskInstanceDAO.insertWithCustomFields(taskInstanceEntity,customFieldsMap);
         }
 
 

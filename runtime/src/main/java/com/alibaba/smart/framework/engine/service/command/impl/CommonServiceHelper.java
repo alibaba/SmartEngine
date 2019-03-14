@@ -164,14 +164,17 @@ public abstract  class CommonServiceHelper {
                 taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
                 taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
 
+                //reAssign
                 //获取扩展字段
                 Map<String,Object> customFieldValues= new HashMap<String, Object>();
                 if(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CUSTOM_FIELDS)!=null){
                     customFieldValues=(Map<String,Object>)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CUSTOM_FIELDS);
-
                 }
-                //reAssign
-                taskInstance = taskInstanceStorage.insert(taskInstance,customFieldValues, processEngineConfiguration);
+                if(customFieldValues==null||customFieldValues.size()==0){
+                    taskInstance = taskInstanceStorage.insert(taskInstance, processEngineConfiguration);
+                }else{
+                    taskInstance = taskInstanceStorage.insert(taskInstance,customFieldValues, processEngineConfiguration);
+                }
 
                 List<TaskAssigneeInstance>  taskAssigneeInstances = taskInstance.getTaskAssigneeInstanceList();
 

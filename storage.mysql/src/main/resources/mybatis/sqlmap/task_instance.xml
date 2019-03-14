@@ -18,14 +18,16 @@
 
 
     <!-- 通过map参数形式创建任务，主要可以处理自定义字段 -->
-    <insert id="insertWithCustomFields" parameterType="java.util.Map">
-      insert into se_task_instance
-        <foreach collection="TaskInstanceEntityMap.keys" separator="," item="key" open="(" close=")">
+    <insert id="insertWithCustomFields">
+      insert into se_task_instance(<include refid="baseColumn"/>
+        <foreach collection="taskInstanceEntityMap.keys" separator="," item="key" open="," close=")">
             ${key}
         </foreach>
         values
-        <foreach collection="TaskInstanceEntityMap.keys" item="key" separator="," open="(" close=")">
-            #{TaskInstanceEntityMap[${key}]}
+        (#{taskInstanceEntity.id}, now(), now(), #{taskInstanceEntity.processInstanceId}, #{taskInstanceEntity.processDefinitionIdAndVersion},#{taskInstanceEntity.processDefinitionType},
+        #{taskInstanceEntity.activityInstanceId}, #{taskInstanceEntity.processDefinitionActivityId},#{taskInstanceEntity.executionInstanceId},#{taskInstanceEntity.claimUserId},#{taskInstanceEntity.priority},#{taskInstanceEntity.tag},#{taskInstanceEntity.claimTime},#{taskInstanceEntity.completeTime},#{taskInstanceEntity.status},#{taskInstanceEntity.comment},#{taskInstanceEntity.extension},#{taskInstanceEntity.title}
+        <foreach collection="taskInstanceEntityMap.keys" item="key" separator="," open="," close=")">
+            #{taskInstanceEntityMap[${key}]}
         </foreach>
     </insert>
 

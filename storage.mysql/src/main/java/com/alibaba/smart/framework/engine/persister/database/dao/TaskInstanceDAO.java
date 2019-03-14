@@ -38,7 +38,7 @@ public interface TaskInstanceDAO {
      * 以Map参数的形式创建task
      * @param taskInstanceEntityMap
      */
-    void insertWithCustomFields(@Param("TaskInstanceEntityMap") Map<String,Object> taskInstanceEntityMap);
+    void insertWithCustomFields(@Param("taskInstanceEntity")TaskInstanceEntity taskInstanceEntity,@Param("taskInstanceEntityMap") Map<String,Object> taskInstanceEntityMap);
 
     int update(@Param("taskInstanceEntity") TaskInstanceEntity taskInstanceEntity);
 
