@@ -19,7 +19,6 @@ import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFact
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
-import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskItemInstanceStorage;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.instance.TaskItemInstance;
@@ -30,7 +29,6 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskItemCommandService;
 import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQueryParam;
-import com.alibaba.smart.framework.engine.service.query.TaskItemQueryService;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -88,13 +86,13 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
 
         TaskItemCompleteProcessor taskItemCompleteProcessor = processEngineConfiguration.getTaskItemCompleteProcessor();
         //完成子任务之前
-        taskItemCompleteProcessor.PostProcessBeforeTaskItemComplete(processInstanceId, activityInstanceId,
+        taskItemCompleteProcessor.postProcessBeforeTaskItemComplete(processInstanceId, activityInstanceId,
             taskInstanceId, Collections.singletonList(taskItemInstance.getInstanceId()), variables, pvmActivity.getModel(), smartEngine);
         //完成子任务
         MarkDoneUtil.markDoneTaskItemInstance(taskItemInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
             variables, taskItemInstanceStorage, processEngineConfiguration);
         //完成子任务之后
-        taskItemCompleteProcessor.PostProcessAfterTaskItemComplete(processInstanceId, activityInstanceId,
+        taskItemCompleteProcessor.postProcessAfterTaskItemComplete(processInstanceId, activityInstanceId,
             taskInstanceId, Collections.singletonList(taskItemInstance.getInstanceId()), variables, pvmActivity.getModel(), smartEngine);
         //是否可以关闭当前主任务
         Map<String, String> map = taskItemCompleteProcessor.canCompleteCurrentMainTask(taskItemInstance.getProcessInstanceId(), taskInstanceId, pvmActivity.getModel(), smartEngine);
@@ -147,13 +145,13 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
 
         TaskItemCompleteProcessor taskItemCompleteProcessor = processEngineConfiguration.getTaskItemCompleteProcessor();
         //完成子任务之前
-        taskItemCompleteProcessor.PostProcessBeforeTaskItemComplete(processInstanceId, activityInstanceId,
+        taskItemCompleteProcessor.postProcessBeforeTaskItemComplete(processInstanceId, activityInstanceId,
             taskInstanceId, taskItemIdList, variables, pvmActivity.getModel(), smartEngine);
         //完成子任务
         MarkDoneUtil.markDoneTaskItemInstance(taskItemInstanceList, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
             variables, taskItemInstanceStorage, processEngineConfiguration);
         //完成子任务之后
-        taskItemCompleteProcessor.PostProcessAfterTaskItemComplete(processInstanceId, activityInstanceId,
+        taskItemCompleteProcessor.postProcessAfterTaskItemComplete(processInstanceId, activityInstanceId,
             taskInstanceId, taskItemIdList, variables, pvmActivity.getModel(), smartEngine);
         //是否可以关闭当前主任务
         Map<String, String> map = taskItemCompleteProcessor.canCompleteCurrentMainTask(processInstanceId, taskInstanceId, pvmActivity.getModel(), smartEngine);
