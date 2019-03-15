@@ -22,7 +22,7 @@ public enum  OperatorType {
     LTE("<="),
     E("="),
     NE("!="),
-    HAVE("like");
+    LIKE("like");
 
 
     private static Map<String,OperatorType> operatorTypeMap=new HashMap<String, OperatorType>();
