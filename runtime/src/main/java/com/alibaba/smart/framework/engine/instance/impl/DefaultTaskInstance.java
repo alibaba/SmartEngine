@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 默认任务实例 Created by ettear on 16-4-20.
@@ -62,5 +63,11 @@ public class DefaultTaskInstance extends AbstractLifeCycleInstance implements Ta
      * 行级任务
      */
     private List<TaskItemInstance> taskItemInstanceList;
+
+    /**
+     * 自定义字段值列表
+     * @return
+     */
+    Map<String,Object> customFiledValues;
 
 }

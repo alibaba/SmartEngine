@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.model.instance;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -77,5 +78,18 @@ public interface TaskInstance extends LifeCycleInstance {
     List<TaskItemInstance> getTaskItemInstanceList();
 
     void setTaskItemInstanceList(List<TaskItemInstance> taskItemInstanceList);
+
+    /**
+     * 获取自定义字段值列表
+     * @return
+     */
+    Map<String,Object> getCustomFiledValues();
+
+    /**
+     * 设置自定义字段值列表
+     * @param customFiledValues
+     */
+    void setCustomFiledValues(Map<String,Object> customFiledValues);
+
 
 }

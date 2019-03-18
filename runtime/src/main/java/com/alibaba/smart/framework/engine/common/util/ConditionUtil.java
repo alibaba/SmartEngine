@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.common.util;
 
+import com.alibaba.smart.framework.engine.service.param.query.CustomFieldsQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.condition.CustomFieldCondition;
 
 import java.util.List;
@@ -17,14 +18,14 @@ public class ConditionUtil {
 
     /**
      * 判断字段是否
-     * @param customFieldConditionList
+     * @param customFieldsQueryParam
      * @return
      */
-    public static boolean isValid(List<CustomFieldCondition> customFieldConditionList){
-        if(customFieldConditionList==null||customFieldConditionList.size()==0){
+    public static boolean isValid(CustomFieldsQueryParam customFieldsQueryParam){
+        if(customFieldsQueryParam==null||customFieldsQueryParam.getCustomFieldConditionList()==null||customFieldsQueryParam.getCustomFieldConditionList().size()==0){
             return true;
         }
-        for(CustomFieldCondition customFieldCondition:customFieldConditionList){
+        for(CustomFieldCondition customFieldCondition:customFieldsQueryParam.getCustomFieldConditionList()){
             if(!customFieldCondition.isValid()){
                 return false;
             }

@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.persister.database.entity;
 
 import java.util.Date;
+import java.util.Map;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,4 +51,9 @@ public class TaskInstanceEntity extends BaseProcessEntity {
      * 任务标题
      */
     private String title;
+
+    /**
+     * 扩展字段值
+     */
+    private Map<String,Object> customFiledValues;
 }

@@ -96,6 +96,34 @@
 
     </select>
 
+    <select id="findTaskCustomFieldsByAssignee" resultType="java.util.Map" parameterType="TaskInstanceQueryByAssigneeParam">
+        select distinct task.id
+        <include refid="custom_column_sql"></include>
+
+        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
+
+        <if test = "status != null" > and task.status = #{status} </if>
+
+        <include refid="pending_where_condition"/>
+
+        <include refid="pending_task_assignee_choose_sql"/>
+
+        <include refid="where_custom_condition"/>
+
+        order by task.gmt_modified desc
+
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+
+    </select>
+
+    <sql id="custom_column_sql">
+        <if test="customFieldsQueryParam != null and customFieldsQueryParam.allCustomFieldsList != null">
+            <foreach item="item" index="index" separator="," open="," close=""  collection="customFieldsQueryParam.allCustomFieldsList">
+                ${item}
+            </foreach>
+        </if>
+    </sql>
+
 
     <select id="countTaskByAssignee" resultType="int" parameterType="TaskInstanceQueryByAssigneeParam">
         select  count(distinct task.id)
@@ -191,8 +219,8 @@
     </sql>
 
     <sql id="where_custom_condition">
-        <if test="customFieldConditionList != null">
-            <foreach item="item" index="index" separator="" open="" close=""  collection="customFieldConditionList">
+        <if test="customFieldsQueryParam != null and customFieldsQueryParam.customFieldConditionList != null">
+            <foreach item="item" index="index" separator="" open="" close=""  collection="customFieldsQueryParam.customFieldConditionList">
                 ${item.condition} ${item.fieldName} ${item.operator}  #{item.fieldValue}
             </foreach>
         </if>

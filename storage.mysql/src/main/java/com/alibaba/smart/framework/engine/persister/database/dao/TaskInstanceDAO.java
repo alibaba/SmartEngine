@@ -16,6 +16,13 @@ public interface TaskInstanceDAO {
 
     List<TaskInstanceEntity> findTaskByAssignee(TaskInstanceQueryByAssigneeParam taskInstanceQueryByAssigneeParam);
 
+    /**
+     * 获取指定条件的扩展字段
+     * @param taskInstanceQueryByAssigneeParam
+     * @return
+     */
+    List<Map<String,Object>> findTaskCustomFieldsByAssignee(TaskInstanceQueryByAssigneeParam taskInstanceQueryByAssigneeParam);
+
     Integer countTaskByAssignee(TaskInstanceQueryByAssigneeParam taskInstanceQueryByAssigneeParam);
 
     List<TaskInstanceEntity> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam);

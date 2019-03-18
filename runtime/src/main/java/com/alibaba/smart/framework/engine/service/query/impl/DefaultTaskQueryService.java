@@ -68,7 +68,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     @Override
     public List<TaskInstance> findTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
         //判断自定义字段条件是否合法
-        if(!ConditionUtil.isValid(param.getCustomFieldConditionList())){
+        if(!ConditionUtil.isValid(param.getCustomFieldsQueryParam())){
             throw new ConditionException();
         }
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
@@ -81,7 +81,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
     @Override
     public Long countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
         //判断自定义字段条件是否合法
-        if(!ConditionUtil.isValid(param.getCustomFieldConditionList())){
+        if(!ConditionUtil.isValid(param.getCustomFieldsQueryParam())){
             throw new ConditionException();
         }
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
