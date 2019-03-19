@@ -48,16 +48,23 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
 
     @Override
     public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
+        //判断自定义字段条件是否合法
+        if(!ConditionUtil.isValid(pendingTaskQueryParam.getCustomFieldsQueryParam())){
+            throw new ConditionException();
+        }
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
-        return taskInstanceStorage.findPendingTaskList(pendingTaskQueryParam, processEngineConfiguration);
+        List<TaskInstance> pendingTaskList = taskInstanceStorage.findPendingTaskList(pendingTaskQueryParam, processEngineConfiguration);
+        return pendingTaskList;
     }
 
     @Override
     public Long countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
-
-
+        //判断自定义字段条件是否合法
+        if(!ConditionUtil.isValid(pendingTaskQueryParam.getCustomFieldsQueryParam())){
+            throw new ConditionException();
+        }
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 

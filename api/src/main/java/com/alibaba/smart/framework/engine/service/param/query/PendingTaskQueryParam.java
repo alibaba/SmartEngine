@@ -20,4 +20,9 @@ public class PendingTaskQueryParam extends PaginateQueryParam{
     private String processDefinitionType;
 
     private List<String> processInstanceIdList;
+
+    /**
+     * 自定义字段查询，包括查询条件和系统扩展字段
+     */
+    private CustomFieldsQueryParam customFieldsQueryParam;
 }

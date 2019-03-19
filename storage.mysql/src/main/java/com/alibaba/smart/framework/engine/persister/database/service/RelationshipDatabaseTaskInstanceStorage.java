@@ -46,6 +46,8 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstanceQueryByAssigneeParam.setPageSize(pendingTaskQueryParam.getPageSize());
 
         taskInstanceQueryByAssigneeParam.setStatus(TaskInstanceConstant.PENDING);
+        //自定义查询条件
+        taskInstanceQueryByAssigneeParam.setCustomFieldsQueryParam(pendingTaskQueryParam.getCustomFieldsQueryParam());
         return taskInstanceQueryByAssigneeParam;
     }
 
