@@ -45,27 +45,17 @@ public interface TaskQueryService {
 
     /**
      * 扩展方法，可用于典型的审批场景等等，取决于tag的值是什么。tag 任意非null值，可以为 appproved,rejected 等等。
+     * 扩展方法，查询用户指定状态的单据，可支持审批人和状态以外的自定义扩展字段的检索
      *
      */
     List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam);
 
-    Long count(TaskInstanceQueryParam taskInstanceQueryParam);
-
-    /**
-     *  扩展方法，查询用户指定状态的单据，可支持审批人和状态以外的自定义扩展字段的检索
-     * @param taskInstanceQueryParam 基本查询条件
-     * @param customFieldConditionList  自定义查询字段条件
-     * @return
-     */
-    List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam, List<CustomFieldCondition> customFieldConditionList);
-
     /**
      * 扩展方法，查询用户指定状态的单据数量，可支持审批人和状态以外的自定义扩展字段的检索
      * @param taskInstanceQueryParam 基本查询条件
-     * @param customFieldConditionList  自定义查询字段条件
      * @return
      */
-    Long count(TaskInstanceQueryParam taskInstanceQueryParam, List<CustomFieldCondition> customFieldConditionList);
+    Long count(TaskInstanceQueryParam taskInstanceQueryParam);
 
 
 }

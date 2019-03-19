@@ -27,6 +27,15 @@ public interface TaskInstanceDAO {
 
     List<TaskInstanceEntity> findTaskList(TaskInstanceQueryParam taskInstanceQueryParam);
 
+    /**
+     * 获取扩展属性，与findTaskList 匹配使用
+     * @param taskInstanceQueryParam
+     * @return
+     */
+    List<Map<String,Object>> findTaskCustomFields(TaskInstanceQueryParam taskInstanceQueryParam);
+
+
+
     Integer count(TaskInstanceQueryParam taskInstanceQueryParam);
 
     List<TaskInstanceEntity> findTaskByProcessInstanceIdAndStatus(Long processInstanceId,String status);

@@ -191,6 +191,16 @@
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
 
     </select>
+    <select id="findTaskCustomFields" resultType="java.util.Map" parameterType="TaskInstanceQueryParam">
+        select  task.id
+        <include refid="custom_column_sql"></include>
+        from  se_task_instance task  where 1=1
+        <include refid="where_condition"/>
+        <include refid="where_custom_condition"/>
+        order by task.gmt_modified desc
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+
+    </select>
 
 
     <select id="count" resultType="int" parameterType="TaskInstanceQueryParam">

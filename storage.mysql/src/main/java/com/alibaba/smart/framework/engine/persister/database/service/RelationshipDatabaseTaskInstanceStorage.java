@@ -62,26 +62,11 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskByAssignee(param);
 
         //获取扩展字段
+        //获取扩展字段
         Map<String,Map<String,Object>> taskInstanceFieldsMaps=new HashMap<String, Map<String, Object>>();
         if(param.getCustomFieldsQueryParam()!=null&&param.getCustomFieldsQueryParam().getAllCustomFieldsList().size()>0){
             List<Map<String,Object>> taskInstanceCustomFieldsMapList=taskInstanceDAO.findTaskCustomFieldsByAssignee(param);
-            if(taskInstanceCustomFieldsMapList!=null&&taskInstanceCustomFieldsMapList.size()>0){
-                for(Map<String,Object> map:taskInstanceCustomFieldsMapList){
-                    if(map.isEmpty()||map.get("id")==null){
-                        continue;
-                    }
-                    //任务Id
-                    String taskId=map.get("id").toString();
-                    //临时map，把id删除
-                    Map<String,Object> tempMap=new HashMap<String,Object>(map);
-                    tempMap.remove("id");
-                    //判断除id之外的字段是否都为空，如果都为空，则过滤掉
-                    if(tempMap.isEmpty()){
-                        continue;
-                    }
-                    taskInstanceFieldsMaps.put(taskId,tempMap);
-                }
-            }
+            convert(taskInstanceFieldsMaps, taskInstanceCustomFieldsMapList);
         }
 
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
@@ -133,16 +118,45 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) SpringContextUtil.getBean("taskInstanceDAO");
         List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskList(taskInstanceQueryParam);
 
+        //获取扩展字段
+        Map<String,Map<String,Object>> taskInstanceFieldsMaps=new HashMap<String, Map<String, Object>>();
+        if(taskInstanceQueryParam.getCustomFieldsQueryParam()!=null&&taskInstanceQueryParam.getCustomFieldsQueryParam().getAllCustomFieldsList().size()>0){
+            List<Map<String,Object>> taskInstanceCustomFieldsMapList=taskInstanceDAO.findTaskCustomFields(taskInstanceQueryParam);
+            convert(taskInstanceFieldsMaps, taskInstanceCustomFieldsMapList);
+        }
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
-
           TaskInstance taskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
-
+            Map<String, Object> customFieldsMap = taskInstanceFieldsMaps.get(taskInstance.getInstanceId());
+            if(customFieldsMap ==null){
+                continue;
+            }
+            taskInstance.setCustomFiledValues(customFieldsMap);
           taskInstanceList.add(taskInstance);
 
         }
 
         return taskInstanceList;
+    }
+
+    private void convert(Map<String, Map<String, Object>> taskInstanceFieldsMaps, List<Map<String, Object>> taskInstanceCustomFieldsMapList) {
+        if(taskInstanceCustomFieldsMapList!=null&&taskInstanceCustomFieldsMapList.size()>0){
+            for(Map<String,Object> map:taskInstanceCustomFieldsMapList){
+                if(map.isEmpty()||map.get("id")==null){
+                    continue;
+                }
+                //任务Id
+                String taskId=map.get("id").toString();
+                //临时map，把id删除
+                Map<String,Object> tempMap=new HashMap<String,Object>(map);
+                tempMap.remove("id");
+                //判断除id之外的字段是否都为空，如果都为空，则过滤掉
+                if(tempMap.isEmpty()){
+                    continue;
+                }
+                taskInstanceFieldsMaps.put(taskId,tempMap);
+            }
+        }
     }
 
     @Override

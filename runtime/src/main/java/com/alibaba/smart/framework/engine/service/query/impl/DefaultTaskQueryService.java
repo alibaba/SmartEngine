@@ -113,6 +113,10 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
 
     @Override
     public List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam){
+        //判断自定义字段条件是否合法
+        if(!ConditionUtil.isValid(taskInstanceQueryParam.getCustomFieldsQueryParam())){
+            throw new ConditionException();
+        }
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
@@ -121,26 +125,13 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListe
 
     @Override
     public Long count(TaskInstanceQueryParam taskInstanceQueryParam) {
+        //判断自定义字段条件是否合法
+        if(!ConditionUtil.isValid(taskInstanceQueryParam.getCustomFieldsQueryParam())){
+            throw new ConditionException();
+        }
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         return taskInstanceStorage.count(taskInstanceQueryParam, processEngineConfiguration);
-    }
-
-    @Override
-    public List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam, List<CustomFieldCondition> customFieldConditionList) {
-        if(customFieldConditionList==null||customFieldConditionList.size()==0){
-            return this.findList(taskInstanceQueryParam);
-        }
-        taskInstanceQueryParam.setCustomFieldConditionList(customFieldConditionList);
-        return this.findList(taskInstanceQueryParam);
-    }
-
-    @Override
-    public Long count(TaskInstanceQueryParam taskInstanceQueryParam,List<CustomFieldCondition> customFieldConditionList) {
-        if(customFieldConditionList==null||customFieldConditionList.size()==0){
-            return this.count(taskInstanceQueryParam);
-        }
-        return null;
     }
 }
