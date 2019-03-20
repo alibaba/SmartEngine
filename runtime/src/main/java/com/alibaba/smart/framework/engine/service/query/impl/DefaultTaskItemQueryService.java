@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.TaskItemInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskItemInstance;
@@ -68,7 +70,9 @@ public class DefaultTaskItemQueryService implements TaskItemQueryService {
             List<TaskItemInstance> taskItemInstanceList = entry.getValue();
             int count = 0;
             for(TaskItemInstance taskItemInstance : taskItemInstanceList){
-                if(taskItemInstance.getTag().equals(passTag)){
+                String tag = taskItemInstance.getTag();
+                String status = taskItemInstance.getStatus();
+                if(StringUtil.equals(tag, passTag) || (tag == null && TaskInstanceConstant.CANCELED.equals(status))){
                     count ++;
                 }
             }
