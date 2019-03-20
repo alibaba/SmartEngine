@@ -24,4 +24,7 @@ public interface TaskItemQueryService {
      * @return
      */
     List<String> getSubBizIdOfIntersectionResult(String activityInstanceId, String passTag);
+
+
+    List<String> getSubBizIdOfIntersectionResult(Long processInstanceId, String passTag);
 }
