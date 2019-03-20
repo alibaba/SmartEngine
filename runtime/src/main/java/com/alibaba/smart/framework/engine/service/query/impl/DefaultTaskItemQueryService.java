@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.service.query.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class DefaultTaskItemQueryService implements TaskItemQueryService {
         TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
         TaskItemInstanceQueryParam taskItemInstanceQueryParam = new TaskItemInstanceQueryParam();
         taskItemInstanceQueryParam.setActivityInstanceId(activityInstanceId);
-        List<TaskItemInstance> taskItemList = taskItemInstanceStorage.findTaskItemList(taskItemInstanceQueryParam,processEngineConfiguration);
+        List<TaskItemInstance> taskItemList = taskItemInstanceStorage.findTaskItemList(taskItemInstanceQueryParam, processEngineConfiguration);
         Map<String, List<TaskItemInstance>> subBizIdMap = new HashMap<String, List<TaskItemInstance>>(2);
         for(TaskItemInstance taskItemInstance : taskItemList){
             String subBizId = taskItemInstance.getSubBizId();
@@ -76,5 +77,24 @@ public class DefaultTaskItemQueryService implements TaskItemQueryService {
             }
         }
         return subBizIdList;
+    }
+
+    @Override
+    public List<String> getSubBizIdOfIntersectionResult(Long processInstanceId, String passTag) {
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
+        TaskItemInstanceQueryParam taskItemInstanceQueryParam = new TaskItemInstanceQueryParam();
+        taskItemInstanceQueryParam.setProcessInstanceIdList(Collections.singletonList(String.valueOf(processInstanceId)));
+        List<TaskItemInstance> taskItemList = taskItemInstanceStorage.findTaskItemList(taskItemInstanceQueryParam, processEngineConfiguration);
+        Long maxActivityId = 0L;
+        if(taskItemList != null && taskItemList.size() >0){
+            for(TaskItemInstance taskItemInstance : taskItemList){
+                Long activityId = Long.valueOf(taskItemInstance.getActivityInstanceId());
+                if(activityId > maxActivityId){
+                    maxActivityId = activityId;
+                }
+            }
+        }
+        return getSubBizIdOfIntersectionResult(String.valueOf(maxActivityId), passTag);
     }
 }
