@@ -130,9 +130,6 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
           TaskInstance taskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
             Map<String, Object> customFieldsMap = taskInstanceFieldsMaps.get(taskInstance.getInstanceId());
-            if(customFieldsMap ==null){
-                continue;
-            }
             taskInstance.setCustomFiledValues(customFieldsMap);
           taskInstanceList.add(taskInstance);
 
