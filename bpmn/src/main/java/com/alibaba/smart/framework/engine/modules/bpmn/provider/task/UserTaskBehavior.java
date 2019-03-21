@@ -196,11 +196,11 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                     subBizIds = taskItemCompleteProcessor.getPassedSubBizIdByActivityInstanceId(activityInstanceId, smartEngine);
                 }
                 if(subBizIds instanceof List){
-                    List<String> subBizIdList = (List<String>)subBizIds;
-                    for(String subBizIdStr : subBizIdList){
+                    List subBizIdList = (List)subBizIds;
+                    for(Object subBizIdStr : subBizIdList){
                         TaskItemInstance taskItemInstance = super.taskItemInstanceFactory.create(this.getModel(), executionInstance, context);
                         taskItemInstance.setTaskInstanceId(Long.valueOf(taskInstance.getInstanceId()));
-                        taskItemInstance.setSubBizId(subBizIdStr);
+                        taskItemInstance.setSubBizId(String.valueOf(subBizIdStr));
                         taskItemInstanceList.add(taskItemInstance);
                     }
                 }
