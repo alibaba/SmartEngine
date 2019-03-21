@@ -66,7 +66,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         //获取扩展字段
         //获取扩展字段
         Map<String,Map<String,Object>> taskInstanceFieldsMaps=new HashMap<String, Map<String, Object>>();
-        if(param.getCustomFieldsQueryParam()!=null&&param.getCustomFieldsQueryParam().getAllCustomFieldsList().size()>0){
+        if(param.getCustomFieldsQueryParam()!=null&&param.getCustomFieldsQueryParam().getAllCustomFieldsList()!=null&&param.getCustomFieldsQueryParam().getAllCustomFieldsList().size()>0){
             List<Map<String,Object>> taskInstanceCustomFieldsMapList=taskInstanceDAO.findTaskCustomFieldsByAssignee(param);
             convert(taskInstanceFieldsMaps, taskInstanceCustomFieldsMapList);
         }
@@ -122,7 +122,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
 
         //获取扩展字段
         Map<String,Map<String,Object>> taskInstanceFieldsMaps=new HashMap<String, Map<String, Object>>();
-        if(taskInstanceQueryParam.getCustomFieldsQueryParam()!=null&&taskInstanceQueryParam.getCustomFieldsQueryParam().getAllCustomFieldsList().size()>0){
+        if(taskInstanceQueryParam.getCustomFieldsQueryParam()!=null&&taskInstanceQueryParam.getCustomFieldsQueryParam().getAllCustomFieldsList()!=null&&taskInstanceQueryParam.getCustomFieldsQueryParam().getAllCustomFieldsList().size()>0){
             List<Map<String,Object>> taskInstanceCustomFieldsMapList=taskInstanceDAO.findTaskCustomFields(taskInstanceQueryParam);
             convert(taskInstanceFieldsMaps, taskInstanceCustomFieldsMapList);
         }
