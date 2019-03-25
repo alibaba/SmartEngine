@@ -232,7 +232,7 @@
         <if test="customFieldsQueryParam != null and customFieldsQueryParam.customFieldConditionList != null">
             <foreach item="item" index="index" separator="" open="" close=""  collection="customFieldsQueryParam.customFieldConditionList">
                 <choose>
-                    <when test="(item.operator=='LIKE' ||item.operator=='like') and item.fieldValue!=null">
+                    <when test="(item.operator=='LIKE' or item.operator=='like') and item.fieldValue!=null">
                         ${item.condition} ${item.fieldName} ${item.operator}  '%${item.fieldValue}%'
                     </when>
                     <otherwise>
