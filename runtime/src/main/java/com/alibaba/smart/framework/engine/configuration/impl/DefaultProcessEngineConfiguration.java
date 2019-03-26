@@ -15,6 +15,9 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 //import org.springframework.beans.BeansException;
 //import org.springframework.beans.factory.InitializingBean;
 //import org.springframework.context.ApplicationContext;
@@ -50,13 +53,16 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private TaskItemCompleteProcessor taskItemCompleteProcessor;
 
+    private List<String> customFieldsList;
+
     public DefaultProcessEngineConfiguration() {
         //说明:先默认设置一个id生成器,业务使用方可以根据自己的需要再覆盖掉这个值。
         this.idGenerator = new DefaultIdGenerator();
         this.instanceAccessor = new DefaultInstanceAccessor();
         this.variablePersister = new DefaultVariablePersister();
         this.tableSchemaStrategy = new DefaultTableSchemaStrategy();
-
+        //扩展字段
+        this.customFieldsList=new ArrayList<String>();
     }
 
 

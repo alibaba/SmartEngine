@@ -1,7 +1,9 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
@@ -11,6 +13,7 @@ import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.configuration.TaskItemCompleteProcessor;
 import com.alibaba.smart.framework.engine.constant.ProcessInstanceModeConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
@@ -24,6 +27,9 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
+import com.alibaba.smart.framework.engine.service.param.query.CustomFieldsQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import org.springframework.util.StringUtils;
 
 public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
@@ -207,6 +213,40 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 taskInstance.setTaskItemInstanceList(taskItemInstanceList);
             }
 
+            //TODO 获取扩展字段，填充到上下文中去
+            Map<String,Object> customFieldValues=new HashMap<String, Object>();
+            if(taskInstance.getCustomFiledValues()==null||taskInstance.getCustomFiledValues().size()==0){
+                //先判断client有没有传扩展字段
+                if(context.getRequest()!=null&&context.getRequest().get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CUSTOM_FIELDS)!=null){
+                    customFieldValues=(Map<String,Object>)context.getRequest().get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CUSTOM_FIELDS);
+                }else{
+                    //如果没有，则已完成的任务表中取
+                    //获取系统字段列表
+                   List<String> customFieldsList= context.getProcessEngineConfiguration().getCustomFieldsList();
+                   //获取查询服务
+                    TaskQueryService taskQueryService=super.getExtensionPointRegistry().getExtensionPoint(TaskQueryService.class);
+                    TaskInstanceQueryByAssigneeParam taskInstanceQueryByAssigneeParam=new TaskInstanceQueryByAssigneeParam();
+                    ArrayList<Long> processInstanceIdList = new ArrayList<Long>();
+                    processInstanceIdList.add(Long.valueOf(executionInstance.getProcessInstanceId()));
+                    taskInstanceQueryByAssigneeParam.setProcessInstanceIdList(processInstanceIdList);
+                    //获取已完成的
+                    taskInstanceQueryByAssigneeParam.setStatus(TaskInstanceConstant.COMPLETED);
+                    //自定
+                    CustomFieldsQueryParam customFieldsQueryParam = new CustomFieldsQueryParam();
+                    customFieldsQueryParam.setAllCustomFieldsList(customFieldsList);
+                    taskInstanceQueryByAssigneeParam.setCustomFieldsQueryParam(customFieldsQueryParam);
+                    List<TaskInstance> result=taskQueryService.findTaskListByAssignee(taskInstanceQueryByAssigneeParam);
+                    if(result!=null&&result.size()>0){
+                        TaskInstance taskInstanceCompleted=result.get(0);
+                        if(taskInstanceCompleted.getCustomFiledValues()!=null){
+                            customFieldValues.putAll(taskInstanceCompleted.getCustomFiledValues());
+                        }
+                    }
+                    //填充到上下文中去
+                    context.getRequest().put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CUSTOM_FIELDS,customFieldValues);
+                }
+            }
+            taskInstance.setCustomFiledValues(customFieldValues);
             executionInstance.setTaskInstance(taskInstance);
         }
         return true;

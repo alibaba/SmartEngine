@@ -2,6 +2,8 @@ package com.alibaba.smart.framework.engine.configuration;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 
+import java.util.List;
+
 /**
  * @author 高海军 帝奇  2016.11.11
  *
@@ -97,5 +99,18 @@ public interface ProcessEngineConfiguration {
     //void setPersisterStrategy(PersisterStrategy persisterStrategy);
     //
     //PersisterStrategy getPersisterStrategy();
+
+
+    /**
+     * 获取扩展字段列表
+     * @return
+     */
+    List<String> getCustomFieldsList();
+
+    /**
+     * 获取扩展字段列表
+     * @param customFieldsList
+     */
+    void setCustomFieldsList(List<String> customFieldsList);
 }
 
