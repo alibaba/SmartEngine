@@ -220,7 +220,7 @@
         <if test="tag != null">  and  task.tag = #{tag} </if>
         <if test="activityInstanceId != null">  and  task.activity_instance_id = #{activityInstanceId} </if>
         <if test="processDefinitionActivityId != null">  and  task.process_definition_activity_id = #{processDefinitionActivityId} </if>
-        <if test="processInstanceIdList != null">
+        <if test="processInstanceIdList != null and processInstanceIdList.size>0 ">
             and task.process_instance_id in
             <foreach item="item" index="index" separator="," open="(" close=")"  collection="processInstanceIdList">
                 #{item}
