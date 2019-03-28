@@ -130,6 +130,7 @@ public abstract  class CommonServiceHelper {
         TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
 
         List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
+        String bizUniqueId = processInstance.getBizUniqueId();
         for (ActivityInstance activityInstance : activityInstances) {
 
             //TUNE 这里重新赋值了,id还是统一由数据库分配.
@@ -141,7 +142,7 @@ public abstract  class CommonServiceHelper {
             if(null != executionInstanceList){
                 for (ExecutionInstance executionInstance : executionInstanceList) {
                     persisteInstance( executionInstanceStorage, taskInstanceStorage, taskItemInstanceStorage, taskAssigneeStorage,
-                        activityInstance, executionInstance, request, processEngineConfiguration);
+                        activityInstance, executionInstance, bizUniqueId, request, processEngineConfiguration);
                 }
             }
 
@@ -152,7 +153,7 @@ public abstract  class CommonServiceHelper {
     //TUNE too many args
     private static void persisteInstance(ExecutionInstanceStorage executionInstanceStorage,
                                          TaskInstanceStorage taskInstanceStorage, TaskItemInstanceStorage taskItemInstanceStorage, TaskAssigneeStorage taskAssigneeStorage, ActivityInstance activityInstance,
-                                         ExecutionInstance executionInstance,Map<String,Object> request, ProcessEngineConfiguration processEngineConfiguration) {
+                                         ExecutionInstance executionInstance, String bizUniqueId, Map<String,Object> request, ProcessEngineConfiguration processEngineConfiguration) {
         if (null != executionInstance) {
             executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
             executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
@@ -189,6 +190,7 @@ public abstract  class CommonServiceHelper {
                 List<TaskItemInstance> taskItemInstanceList = taskInstance.getTaskItemInstanceList();
                 if(CollectionUtil.isNotEmpty(taskItemInstanceList)){
                     for(TaskItemInstance taskItemInstance : taskItemInstanceList){
+                        taskItemInstance.setBizId(bizUniqueId);
                         taskItemInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
                         taskItemInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
                         taskItemInstance.setExecutionInstanceId(executionInstance.getInstanceId());
