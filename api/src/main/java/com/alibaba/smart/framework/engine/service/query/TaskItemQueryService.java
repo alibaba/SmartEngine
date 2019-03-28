@@ -23,8 +23,8 @@ public interface TaskItemQueryService {
      * @param activityInstanceId 活动实例id
      * @return
      */
-    List<String> getSubBizIdOfIntersectionResult(String activityInstanceId, String passTag);
+    List<String> getPassSubBizIdByActivityId(String activityInstanceId, String passTag);
 
 
-    List<String> getSubBizIdOfIntersectionResult(Long processInstanceId, String passTag);
+    List<String> getPassPassSubBizId(String processInstanceId, String passTag);
 }

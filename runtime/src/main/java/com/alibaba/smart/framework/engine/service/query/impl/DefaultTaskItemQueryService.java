@@ -42,12 +42,12 @@ public class DefaultTaskItemQueryService implements TaskItemQueryService {
 
     @Override
     public boolean taskItemIntersectionResult(String activityInstanceId, String passTag) {
-        List<String> subBizIdOftIntersectionResult = getSubBizIdOfIntersectionResult(activityInstanceId, passTag);
+        List<String> subBizIdOftIntersectionResult = getPassSubBizIdByActivityId(activityInstanceId, passTag);
         return subBizIdOftIntersectionResult != null && subBizIdOftIntersectionResult.size() > 0;
     }
 
     @Override
-    public List<String> getSubBizIdOfIntersectionResult(String activityInstanceId, String passTag) {
+    public List<String> getPassSubBizIdByActivityId(String activityInstanceId, String passTag) {
         List<String> subBizIdList = new ArrayList<String>();
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
@@ -84,7 +84,7 @@ public class DefaultTaskItemQueryService implements TaskItemQueryService {
     }
 
     @Override
-    public List<String> getSubBizIdOfIntersectionResult(Long processInstanceId, String passTag) {
+    public List<String> getPassPassSubBizId(String  processInstanceId, String passTag) {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
         TaskItemInstanceQueryParam taskItemInstanceQueryParam = new TaskItemInstanceQueryParam();
@@ -99,6 +99,6 @@ public class DefaultTaskItemQueryService implements TaskItemQueryService {
                 }
             }
         }
-        return getSubBizIdOfIntersectionResult(String.valueOf(maxActivityId), passTag);
+        return getPassSubBizIdByActivityId(String.valueOf(maxActivityId), passTag);
     }
 }
