@@ -189,13 +189,7 @@ public abstract  class CommonServiceHelper {
 
                 List<TaskItemInstance> taskItemInstanceList = taskInstance.getTaskItemInstanceList();
                 if(CollectionUtil.isNotEmpty(taskItemInstanceList)){
-                    for(TaskItemInstance taskItemInstance : taskItemInstanceList){
-                        taskItemInstance.setBizId(bizUniqueId);
-                        taskItemInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
-                        taskItemInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
-                        taskItemInstance.setExecutionInstanceId(executionInstance.getInstanceId());
-                        taskItemInstanceStorage.insert(taskItemInstance, processEngineConfiguration);
-                    }
+                    taskItemInstanceStorage.batchInsert(taskItemInstanceList, processEngineConfiguration);
                 }
                 executionInstance.setTaskInstance(taskInstance);
             }

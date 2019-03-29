@@ -21,6 +21,9 @@ public interface TaskItemInstanceStorage {
     TaskItemInstance insert(TaskItemInstance taskInstance,
                         ProcessEngineConfiguration processEngineConfiguration);
 
+    void batchInsert(List<TaskItemInstance> taskInstance,
+                            ProcessEngineConfiguration processEngineConfiguration);
+
     TaskItemInstance update(TaskItemInstance taskInstance,
                         ProcessEngineConfiguration processEngineConfiguration);
 

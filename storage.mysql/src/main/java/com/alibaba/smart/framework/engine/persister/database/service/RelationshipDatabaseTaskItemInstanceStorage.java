@@ -69,6 +69,18 @@ public class RelationshipDatabaseTaskItemInstanceStorage implements TaskItemInst
         return resultTaskItemInstance;
     }
 
+    @Override
+    public void batchInsert(List<TaskItemInstance> taskItemInstanceList,
+                                   ProcessEngineConfiguration processEngineConfiguration) {
+        TaskItemInstanceDAO taskItemInstanceDAO= (TaskItemInstanceDAO) SpringContextUtil.getBean("taskItemInstanceDAO");
+        List<TaskItemInstanceEntity> TaskItemInstanceEntitys = new ArrayList<TaskItemInstanceEntity>();
+        for(TaskItemInstance taskItemInstance : taskItemInstanceList) {
+            TaskItemInstanceEntity taskItemInstanceEntity = buildTaskItemInstanceEntity(taskItemInstance);
+            TaskItemInstanceEntitys.add(taskItemInstanceEntity);
+        }
+        taskItemInstanceDAO.batchInsert(TaskItemInstanceEntitys);
+    }
+
 
     @Override
     public TaskItemInstance update(TaskItemInstance taskItemInstance,

@@ -24,6 +24,8 @@ public interface TaskItemInstanceDAO {
     //@Options(useGeneratedKeys = true)
     void insert(TaskItemInstanceEntity taskItemInstanceEntity);
 
+    void batchInsert(@Param("taskItemInstanceEntityList") List<TaskItemInstanceEntity> taskItemInstanceEntityList);
+
     int update(@Param("taskItemInstanceEntity") TaskItemInstanceEntity taskItemInstanceEntity);
 
     int updateFromStatus(@Param("taskItemInstanceEntity") TaskItemInstanceEntity taskItemInstanceEntity,

@@ -18,6 +18,16 @@
         #{taskInstanceId},#{subBizId},#{bizId})
     </insert>
 
+    <insert id="batchInsert" parameterType="taskItemInstanceEntityList"  useGeneratedKeys="true" keyProperty="id">
+        insert into se_task_item_instance(<include refid="baseColumn"/>)
+        values
+        <foreach collection="taskItemInstanceEntityList" item="item" index ="index" separator =",">
+        (#{item.id}, now(), now(), #{item.processInstanceId}, #{item.processDefinitionIdAndVersion},#{item.processDefinitionType},
+        #{item.activityInstanceId}, #{item.processDefinitionActivityId},#{item.executionInstanceId},#{item.claimUserId},#{item.priority},#{item.tag},#{item.claimTime},#{item.completeTime},#{item.status},#{item.comment},#{item.extension},#{item.title},
+        #{item.taskInstanceId},#{item.subBizId},#{item.bizId})
+        </foreach>
+    </insert>
+
     <delete id="delete" parameterType="long">
         delete from se_task_item_instance where id=#{id}
     </delete>
