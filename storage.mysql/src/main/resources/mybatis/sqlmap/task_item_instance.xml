@@ -18,11 +18,11 @@
         #{taskInstanceId},#{subBizId},#{bizId})
     </insert>
 
-    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+    <insert id="batchInsert" parameterType="java.util.List">
         insert into se_task_item_instance(<include refid="baseColumn"/>)
         values
         <foreach collection="taskItemInstanceEntityList" item="item" index ="index" separator =",">
-        (now(), now(), #{item.processInstanceId}, #{item.processDefinitionIdAndVersion},#{item.processDefinitionType},
+        (#{item.id}, now(), now(), #{item.processInstanceId}, #{item.processDefinitionIdAndVersion},#{item.processDefinitionType},
         #{item.activityInstanceId}, #{item.processDefinitionActivityId},#{item.executionInstanceId},#{item.claimUserId},#{item.priority},#{item.tag},#{item.claimTime},#{item.completeTime},#{item.status},#{item.comment},#{item.extension},#{item.title},
         #{item.taskInstanceId},#{item.subBizId},#{item.bizId})
         </foreach>
