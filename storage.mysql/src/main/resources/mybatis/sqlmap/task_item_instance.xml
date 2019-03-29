@@ -18,7 +18,7 @@
         #{taskInstanceId},#{subBizId},#{bizId})
     </insert>
 
-    <insert id="batchInsert" parameterType="taskItemInstanceEntityList"  useGeneratedKeys="true" keyProperty="id">
+    <insert id="batchInsert" parameterType="java.util.List"  useGeneratedKeys="true" keyProperty="id">
         insert into se_task_item_instance(<include refid="baseColumn"/>)
         values
         <foreach collection="taskItemInstanceEntityList" item="item" index ="index" separator =",">
