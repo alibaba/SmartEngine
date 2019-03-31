@@ -19,8 +19,9 @@ public class ValueProviderFactory implements
 
     @Override
     public Invoker createInvoker(Value value) {
-        return new ValueInvoker(this.extensionPointRegistry,value);
+        return InvokerUtil.createValueInvoker(this.extensionPointRegistry,value);
     }
+
 
     @Override
     public Class<Value> getModelType() {

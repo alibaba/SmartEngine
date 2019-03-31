@@ -1,0 +1,54 @@
+package com.alibaba.smart.framework.engine.modules.smart.provider.extension;
+
+import java.util.List;
+
+import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.assembly.Extension;
+import com.alibaba.smart.framework.engine.model.assembly.Performable;
+import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.ExecutionListener;
+import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Properties;
+import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Value;
+import com.alibaba.smart.framework.engine.provider.Invoker;
+import com.alibaba.smart.framework.engine.provider.Performer;
+import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
+import com.alibaba.smart.framework.engine.provider.factory.InvokerProviderFactory;
+import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFactory;
+
+public class PropertiesProviderFactory implements
+    InvokerProviderFactory<Properties> {
+
+    private ExtensionPointRegistry extensionPointRegistry;
+    private ProviderFactoryExtensionPoint providerFactoryExtensionPoint;
+
+    public PropertiesProviderFactory(ExtensionPointRegistry extensionPointRegistry) {
+        this.extensionPointRegistry = extensionPointRegistry;
+        this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(
+            ProviderFactoryExtensionPoint.class);
+    }
+
+    @Override
+    public Invoker createInvoker(Properties properties) {
+
+        List<Extension> extensionList   =  properties.getExtensionList();
+
+            for (Extension extension : extensionList) {
+                if(extension instanceof Value){
+                    return InvokerUtil.createValueInvoker(extensionPointRegistry,(Value)extension);
+                }else if(extension instanceof ExecutionListener ){
+                    return InvokerUtil.createExecutionListenerInvoker(extensionPointRegistry,providerFactoryExtensionPoint,(ExecutionListener)extension);
+                }else{
+                    throw  new EngineException("Unsupported Type:"+extension);
+                }
+            }
+
+        throw  new EngineException("Unsupported Type:"+properties.getExtensionList());
+    }
+
+
+    @Override
+    public Class<Properties> getModelType() {
+        return Properties.class;
+    }
+
+}
