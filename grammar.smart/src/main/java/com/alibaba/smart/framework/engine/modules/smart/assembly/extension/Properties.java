@@ -1,11 +1,13 @@
 package com.alibaba.smart.framework.engine.modules.smart.assembly.extension;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
-import com.alibaba.smart.framework.engine.model.assembly.Performable;
-import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBaseElement;
+import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,13 +18,10 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ExecutionListener extends Properties implements Extension {
-    public final static QName type = new QName(SmartBase.SMART_NS, "executionListener");
+public class Properties extends AbstractBaseElement implements Extension {
+    public final static QName type = new QName(SmartBase.SMART_NS, "properties");
 
-    private static final long serialVersionUID = -2881657965418926667L;
-
-    private Performable performable;
-    private String[] events;
+    private List<Extension> extensionList  = new ArrayList();
 
     @Override
     public boolean isPrepare() {

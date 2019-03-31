@@ -139,7 +139,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             inputStream = classLoader.getResourceAsStream(uri);
 
             if(null == inputStream){
-                throw new IllegalArgumentException("Cant findAll any resources for the uri:"+uri);
+                throw new IllegalArgumentException("Cant find any resources for the uri:"+uri);
             }
 
             return parseStream(inputStream);
@@ -366,7 +366,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     InvokerProviderFactory providerFactory = (InvokerProviderFactory)this.providerFactoryExtensionPoint
                         .getProviderFactory(extension.getClass());
                     if (null == providerFactory) {
-                        throw new RuntimeException("No factory found for " + extension.getClass());
+                        LOGGER.debug("No factory found for " + extension.getClass());
+                        continue;
                     }
                     Invoker extensionInvoker = providerFactory.createInvoker(extension);
                     if (extension.isPrepare()) {

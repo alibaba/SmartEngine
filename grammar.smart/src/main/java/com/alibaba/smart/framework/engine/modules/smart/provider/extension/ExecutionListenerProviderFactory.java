@@ -26,12 +26,10 @@ public class ExecutionListenerProviderFactory implements
 
     @Override
     public Invoker createInvoker(ExecutionListener executionListener) {
-        Performable performable = executionListener.getPerformable();
-        PerformerProviderFactory providerFactory = (PerformerProviderFactory)this.providerFactoryExtensionPoint
-            .getProviderFactory(performable.getClass());
-        Performer performer = providerFactory.createPerformer(null, performable);
-        return new ExecutionListenerInvoker(this.extensionPointRegistry, executionListener, performer);
+        return InvokerUtil.createExecutionListenerInvoker( extensionPointRegistry, providerFactoryExtensionPoint,executionListener);
     }
+
+
 
     @Override
     public Class<ExecutionListener> getModelType() {

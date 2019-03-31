@@ -12,7 +12,7 @@ SmartEngine是一个开放性的，以社区化方式运作的流程引擎，目
 1. TP3
 2. 蚂蚁金服结算
 3. 蚂蚁保险业务
-4. Lazada 交易，纠纷和营销
+4. Lazada 纠纷和营销
 5. ICBU 交易
 6. 1688 采购
 7. AE 纠纷
@@ -46,7 +46,13 @@ SmartEngine是一个开放性的，以社区化方式运作的流程引擎，目
 
 ## SmartEngineCommunity 钉钉群 (群号： 21952257 群名称：SmartEngineCommunity )
 
+<font color=red>强烈建议使用 SmartEngine 的同学加入此群，以便及时同步最新进展以及BugFix进展。</font>
+
 ![LOGO](http://ata2-img.cn-hangzhou.img-pub.aliyun-inc.com/701aebc9ecd30b24e59e6e51f197306f.png)
+
+
+## SmartEngineCommunity 钉钉群 (群号： 21952257 群名称：SmartEngineCommunity )
+
 
 
 ## 注意事项

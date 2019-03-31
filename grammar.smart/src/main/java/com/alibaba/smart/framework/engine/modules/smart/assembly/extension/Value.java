@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Value extends AbstractBaseElement implements Extension {
+public class Value extends Properties implements Extension {
     public final static QName type = new QName(SmartBase.SMART_NS, "value");
 
     private String name;
