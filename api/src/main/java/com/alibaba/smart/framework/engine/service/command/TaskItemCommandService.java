@@ -11,6 +11,8 @@ import java.util.Map;
  */
 public interface TaskItemCommandService {
 
+    void complete(String taskInstanceId, Map<String, Object> variables);
+
     void complete(String taskInstanceId, String subBizId, Map<String, Object> variables);
 
     void complete(String taskInstanceId, String subBizId, String userId, Map<String, Object> variables);

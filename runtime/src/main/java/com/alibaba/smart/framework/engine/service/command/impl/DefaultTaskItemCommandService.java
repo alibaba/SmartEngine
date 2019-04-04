@@ -67,6 +67,26 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
 
     }
 
+    @Override
+    public void complete(String taskInstanceId, Map<String, Object> variables){
+        SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
+        ProcessEngineConfiguration processEngineConfiguration = smartEngine.getProcessEngineConfiguration();
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
+        TaskItemInstanceQueryParam taskItemInstanceQueryParam = new TaskItemInstanceQueryParam();
+        taskItemInstanceQueryParam.setTaskInstanceId(taskInstanceId);
+        List<TaskItemInstance> taskItemList = taskItemInstanceStorage.findTaskItemList(taskItemInstanceQueryParam,
+            processEngineConfiguration);
+        if(taskItemList == null || taskItemList.size() <= 0){
+            return;
+        }
+        List<String> subBizIdList = new ArrayList<String>();
+        for(TaskItemInstance taskItemInstance : taskItemList){
+            subBizIdList.add(taskItemInstance.getSubBizId());
+        }
+        complete(taskInstanceId, subBizIdList, variables);
+    }
+
 
     @Override
     public void complete(String taskInstanceId, String subBizId, Map<String, Object> variables) {
