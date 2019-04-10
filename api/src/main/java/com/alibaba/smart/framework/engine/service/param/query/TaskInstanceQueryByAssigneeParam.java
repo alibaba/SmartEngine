@@ -11,6 +11,8 @@ import java.util.List;
 @Data
 public class TaskInstanceQueryByAssigneeParam extends PaginateQueryParam {
 
+    private String taskInstanceId;
+
     private String assigneeUserId;
 
     private List<String> assigneeGroupIdList;

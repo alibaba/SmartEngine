@@ -27,6 +27,8 @@ public class TaskInstanceQueryParam extends PaginateQueryParam {
 
    private String tag;
 
+   private String taskInstanceId;
+
    /**
     * 自定义字段查询，包括查询条件和系统扩展字段
     */

@@ -214,6 +214,7 @@
 
 
     <sql id="where_condition">
+        <if test="taskInstanceId != null">and task.id = #{taskInstanceId}</if>
         <if test="status != null">  and task.status = #{status} </if>
         <if test="processDefinitionType != null">  and  task.process_definition_type = #{processDefinitionType} </if>
         <if test="claimUserId != null">  and  task.claim_user_id = #{claimUserId} </if>
