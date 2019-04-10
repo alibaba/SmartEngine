@@ -170,6 +170,7 @@
     </sql>
 
     <sql id="pending_where_condition">
+        <if test="taskInstanceId != null">and task.id = #{taskInstanceId}</if>
         <if test="processDefinitionType != null">  and  task.process_definition_type = #{processDefinitionType} </if>
         <if test="processInstanceIdList != null">
             and task.process_instance_id in
