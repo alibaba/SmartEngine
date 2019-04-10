@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 public class PendingTaskQueryParam extends PaginateQueryParam{
 
+    private String taskInstanceId;
     /**
      * 任务处理者的用户Id
      */

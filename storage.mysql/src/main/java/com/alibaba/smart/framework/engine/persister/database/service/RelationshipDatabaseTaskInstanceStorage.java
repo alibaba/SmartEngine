@@ -16,7 +16,6 @@ import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstance
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
-import org.springframework.beans.BeanUtils;
 
 
 public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStorage {
@@ -32,7 +31,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstanceQueryByAssigneeParam.setAssigneeGroupIdList(pendingTaskQueryParam.getAssigneeGroupIdList());
         taskInstanceQueryByAssigneeParam.setAssigneeUserId(pendingTaskQueryParam.getAssigneeUserId());
         taskInstanceQueryByAssigneeParam.setProcessDefinitionType(pendingTaskQueryParam.getProcessDefinitionType());
-
+        taskInstanceQueryByAssigneeParam.setTaskInstanceId(pendingTaskQueryParam.getTaskInstanceId());
         List<String> processInstanceIdList = pendingTaskQueryParam.getProcessInstanceIdList();
         if(null != processInstanceIdList){
             List<Long> processInstanceIdList1  = new ArrayList<Long>(processInstanceIdList.size());
