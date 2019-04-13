@@ -105,7 +105,7 @@ public class MarkDoneUtil {
         int updateCount = taskItemInstanceStorage.updateFromStatus(taskItemInstance, sourceStatus, processEngineConfiguration);
         if (updateCount != 1) {
             throw new ConcurrentException(String
-                .format("update_task_status_fail task_id=%s expect_from_[%s]_to_[%s]", taskItemInstance.getInstanceId(), sourceStatus,
+                .format("update_task_item_status_fail task_id=%s expect_from_[%s]_to_[%s]", taskItemInstance.getInstanceId(), sourceStatus,
                     taskItemInstance.getStatus()));
         }
         return taskItemInstance;
