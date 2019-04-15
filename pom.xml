@@ -19,7 +19,7 @@
     <artifactId>smart-engine</artifactId>
     <!--  mvn versions:set -DnewVersion=1.6.2 -DgenerateBackupPoms=false  -->
     <!--  mvn versions:set -DnewVersion=1.6.1-SNAPSHOT -DgenerateBackupPoms=false  -->
-    <version>1.6.3-SNAPSHOT</version>
+    <version>1.6.5-item-beta</version>
     <packaging>pom</packaging>
     <name>Smart Engine</name>
 
