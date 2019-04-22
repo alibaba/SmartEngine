@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 public class Properties extends AbstractBaseElement implements Extension {
     public final static QName type = new QName(SmartBase.SMART_NS, "properties");
 
-    private List<Extension> extensionList  = new ArrayList();
+    private List<Value> extensionList  = new ArrayList();
 
     @Override
     public boolean isPrepare() {

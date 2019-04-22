@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.smart.provider.extension;
 
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.ExecutionListener;
@@ -16,6 +18,11 @@ public abstract  class InvokerUtil {
 
     public static Invoker  createValueInvoker(ExtensionPointRegistry extensionPointRegistry,Value value) {
         return new ValueInvoker(extensionPointRegistry,value);
+    }
+
+    public static Invoker  createMultiValueInvoker(ExtensionPointRegistry extensionPointRegistry,
+                                                   List<Value> extensionList) {
+        return new MultiValueInvoker(extensionPointRegistry,extensionList);
     }
 
     public static Invoker createExecutionListenerInvoker(ExtensionPointRegistry extensionPointRegistry,

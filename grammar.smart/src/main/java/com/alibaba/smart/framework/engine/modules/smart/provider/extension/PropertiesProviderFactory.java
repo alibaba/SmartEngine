@@ -30,17 +30,13 @@ public class PropertiesProviderFactory implements
     @Override
     public Invoker createInvoker(Properties properties) {
 
-        List<Extension> extensionList   =  properties.getExtensionList();
+        //extensionList 这个里面只可能是Value 类型
+        List<Value> extensionList   =  properties.getExtensionList();
 
-            for (Extension extension : extensionList) {
-                if(extension instanceof Value){
-                    return InvokerUtil.createValueInvoker(extensionPointRegistry,(Value)extension);
-                }else if(extension instanceof ExecutionListener ){
-                    return InvokerUtil.createExecutionListenerInvoker(extensionPointRegistry,providerFactoryExtensionPoint,(ExecutionListener)extension);
-                }else{
-                    throw  new EngineException("Unsupported Type:"+extension);
-                }
-            }
+        if(null != extensionList){
+            return InvokerUtil.createMultiValueInvoker(extensionPointRegistry,extensionList);
+
+        }
 
         throw  new EngineException("Unsupported Type:"+properties.getExtensionList());
     }
