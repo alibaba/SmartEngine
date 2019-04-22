@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:smart="http://smart.alibaba-inc.com/schema/process" id="test-exclusive" targetNamespace="Examples" version="1.0.0">
+
+<process id="Process_1" isExecutable="false">
+  <startEvent id="start" />
+
+  <sequenceFlow id="start_to_service" sourceRef="start" targetRef="service" />
+
+  <serviceTask id="service" smart:class = "com.alibaba.smart.framework.engine.test.MultiValueAndEventListenerDelegation">
+  <extensionElements>
+    <smart:properties>
+      <smart:value name="key1" value="value1" />
+      <smart:value name="key2" value="value2" />
+    </smart:properties>
+    <smart:executionListener event="ACTIVITY_START,ACTIVITY_END" class="com.alibaba.smart.framework.engine.test.EventListener"/>
+  </extensionElements>
+  </serviceTask>
+
+  <sequenceFlow id="to_end" sourceRef="service" targetRef="end" />
+
+  <endEvent id="end" />
+  </process>
+  
+</definitions>

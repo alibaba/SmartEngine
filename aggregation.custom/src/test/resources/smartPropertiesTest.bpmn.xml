@@ -7,8 +7,8 @@
       <extensionElements>
         <smart:properties>
           <smart:value name="value" value="right" />
-          <smart:executionListener event="ACTIVITY_START,ACTIVITY_END" class="com.alibaba.smart.framework.engine.test.Listener"/>
         </smart:properties>
+        <smart:executionListener event="ACTIVITY_START,ACTIVITY_END" class="com.alibaba.smart.framework.engine.test.Listener"/>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="SequenceFlow_1mxsbfh" sourceRef="StartEvent_1" targetRef="ExclusiveGateway_1otbxkp" />
@@ -29,71 +29,5 @@
     </sequenceFlow>
     <sequenceFlow id="SequenceFlow_0ve344a" sourceRef="ServiceTask_1le00ez" targetRef="EndEvent_1uof7f8" />
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="80" y="240" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ExclusiveGateway_1otbxkp_di" bpmnElement="ExclusiveGateway_1otbxkp" isMarkerVisible="true">
-        <dc:Bounds x="210" y="233" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="235" y="286" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_056ab4g_di" bpmnElement="ServiceTask_056ab4g">
-        <dc:Bounds x="388" y="191" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_1mxsbfh_di" bpmnElement="SequenceFlow_1mxsbfh">
-        <di:waypoint type="dc:Point" x="116" y="258" />
-        <di:waypoint type="dc:Point" x="210" y="258" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="163" y="236" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_1q5d0bb_di" bpmnElement="SequenceFlow_1q5d0bb">
-        <di:waypoint type="dc:Point" x="260" y="258" />
-        <di:waypoint type="dc:Point" x="324" y="258" />
-        <di:waypoint type="dc:Point" x="324" y="231" />
-        <di:waypoint type="dc:Point" x="388" y="231" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="339" y="238" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="EndEvent_1uof7f8_di" bpmnElement="EndEvent_1uof7f8">
-        <dc:Bounds x="598" y="213" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="616" y="252" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_0nrw22m_di" bpmnElement="SequenceFlow_0nrw22m">
-        <di:waypoint type="dc:Point" x="488" y="231" />
-        <di:waypoint type="dc:Point" x="543" y="231" />
-        <di:waypoint type="dc:Point" x="543" y="231" />
-        <di:waypoint type="dc:Point" x="598" y="231" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="558" y="224.5" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="ServiceTask_1le00ez_di" bpmnElement="ServiceTask_1le00ez">
-        <dc:Bounds x="388" y="358" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_03y3oxa_di" bpmnElement="SequenceFlow_03y3oxa">
-        <di:waypoint type="dc:Point" x="235" y="283" />
-        <di:waypoint type="dc:Point" x="235" y="398" />
-        <di:waypoint type="dc:Point" x="388" y="398" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="250" y="334" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_0ve344a_di" bpmnElement="SequenceFlow_0ve344a">
-        <di:waypoint type="dc:Point" x="488" y="398" />
-        <di:waypoint type="dc:Point" x="534" y="398" />
-        <di:waypoint type="dc:Point" x="534" y="231" />
-        <di:waypoint type="dc:Point" x="598" y="231" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="549" y="308" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-    </bpmndi:BPMNPlane>
-  </bpmndi:BPMNDiagram>
+
 </definitions>

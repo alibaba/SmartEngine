@@ -1,6 +1,11 @@
 ## ChangeLog
 
-## version 1.6.0 by diqi
+
+## version 1.6.5
+###BUGFIX
+1. 修复在 smart:properties 下，不能支持多个 value 的问题。 
+
+## version 1.6.0 
 
 
 1. Add MongoDB integration
