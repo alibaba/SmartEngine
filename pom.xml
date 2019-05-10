@@ -48,6 +48,7 @@
         <module>aggregation.mysql</module>
         <module>aggregation.custom</module>
         <module>storage.mongodb</module>
+        <module>retry</module>
     </modules>
 
     <dependencies>
