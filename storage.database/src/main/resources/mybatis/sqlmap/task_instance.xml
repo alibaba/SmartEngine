@@ -182,6 +182,15 @@
                 #{item}
             </foreach>
         </if>
+        <if test="idList != null">
+            and task.id in
+            <foreach item="item" index="index" separator="," open="(" close=")"  collection="idList">
+                #{item}
+            </foreach>
+        </if>
+
+
+
     </sql>
 
 </mapper>

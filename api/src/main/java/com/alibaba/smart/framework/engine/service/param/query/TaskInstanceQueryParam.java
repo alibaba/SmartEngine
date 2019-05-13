@@ -29,4 +29,6 @@ public class TaskInstanceQueryParam extends PaginateQueryParam {
 
    private String tag;
 
+   private List<Long> idList;
+
 }
