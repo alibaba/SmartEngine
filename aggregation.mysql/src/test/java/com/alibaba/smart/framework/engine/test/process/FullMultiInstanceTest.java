@@ -52,6 +52,8 @@ public class FullMultiInstanceTest {
 
     public static final String DISAGREE = "disagree";
 
+    public static final String PART_AGREE = "part_agree";
+
     public static List<Object> trace=new ArrayList<Object>();
 
 
