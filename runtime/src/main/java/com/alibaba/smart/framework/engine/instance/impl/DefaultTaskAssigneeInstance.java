@@ -14,21 +14,10 @@ import java.util.Date;
 public class DefaultTaskAssigneeInstance extends AbstractLifeCycleInstance implements TaskAssigneeInstance {
 
     private static final long serialVersionUID = -3920292154786127202L;
-    //private String processDefinitionIdAndVersion;
 
-    //private String activityId;
-    private Long processInstanceId;
-    //private Long executionInstanceId;
-    //private Long activityInstanceId;
-    //
-    //private String title;
+    private String processInstanceId;
+
     private String assigneeId;
     private String assigneeType;
-    private Long taskInstanceId;
-
-
-    //private Integer priority;
-    //private Date claimTime;
-    //private Date endTime;
-
+    private String taskInstanceId;
 }

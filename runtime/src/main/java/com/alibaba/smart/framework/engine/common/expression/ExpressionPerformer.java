@@ -6,11 +6,17 @@ import com.alibaba.smart.framework.engine.common.expression.evaluator.Expression
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author ettear
  * Created by ettear on 15/10/2017.
  */
 public abstract class ExpressionPerformer {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExpressionPerformer.class);
+
+
     private static final String PACKAGE_NAME = "com.alibaba.smart.framework.engine.common.expression.evaluator.";
     private static final String EXPRESSION_EVALUATOR = "ExpressionEvaluator";
 
@@ -29,7 +35,11 @@ public abstract class ExpressionPerformer {
                 //TODO ettear 不够优雅，后续结合Scope再一起优化
                 privateContext.putAll(requestContext);
             }
-            return expressionEvaluator.eval(expression, privateContext);
+            Object eval = expressionEvaluator.eval(expression, privateContext);
+
+            LOGGER.debug("expressionEvaluator.eval result is {}, each param is {} {} ",eval,expression,privateContext);
+
+            return eval;
         } else {
             return null;
         }

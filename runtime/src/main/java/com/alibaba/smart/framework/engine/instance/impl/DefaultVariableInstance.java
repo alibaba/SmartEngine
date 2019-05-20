@@ -14,11 +14,10 @@ import lombok.EqualsAndHashCode;
 @Data
 public class DefaultVariableInstance extends AbstractLifeCycleInstance implements VariableInstance {
 
-    private Long instanceId;
 
-    private Long processInstanceId;
+    private String processInstanceId;
 
-    private Long executionInstanceId;
+    private String executionInstanceId;
 
     private String fieldKey;
 

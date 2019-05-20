@@ -7,32 +7,32 @@ import java.util.List;
  * Created by ettear on 18/08/2017.
  */
 public interface ExecutionHistoryInstance extends LifeCycleInstance {
-    Long getParentProcessInstanceId();
+    String getParentProcessInstanceId();
 
-    void setParentProcessInstanceId(Long parentProcessInstanceId);
+    void setParentProcessInstanceId(String parentProcessInstanceId);
 
 
-    Long getParentExecutionInstanceId();
+    String getParentExecutionInstanceId();
 
-    void setParentExecutionInstanceId(Long parentExecutionInstanceId);
+    void setParentExecutionInstanceId(String parentExecutionInstanceId);
 
     String getProcessDefinitionIdAndVersion();
 
     void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
 
 
-    Long getProcessInstanceId();
+    String getProcessInstanceId();
 
-    void setProcessInstanceId(Long processInstanceId);
+    void setProcessInstanceId(String processInstanceId);
 
     String getProcessDefinitionActivityId();
 
     void setProcessDefinitionActivityId(String activityId);
 
 
-    Long getActivityInstanceId();
+    String getActivityInstanceId();
 
-    void setActivityInstanceId(Long activityInstanceId);
+    void setActivityInstanceId(String activityInstanceId);
 
     /**
      * 获取进入活动的关联

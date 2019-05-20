@@ -26,21 +26,22 @@ public class CompletionCheckPrepareProvider implements Performer {
 
         ActivityInstance activityInstance = context.getActivityInstance();
         MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration().getMultiInstanceCounter();
-        Integer completedInstanceCount = multiInstanceCounter.countPassedTaskInstanceNumber(
+        Long completedInstanceCount = multiInstanceCounter.countPassedTaskInstanceNumber(
             activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
 
             smartEngine);
 
-        Integer rejectedInstanceCount = multiInstanceCounter.countRejectedTaskInstanceNumber(
+        Long rejectedInstanceCount = multiInstanceCounter.countRejectedTaskInstanceNumber(
             activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
 
             smartEngine);
 
-        Integer instanceCount = null;
+        Long instanceCount = null;
         if (null != activityInstance.getExecutionInstanceList()) {
-            instanceCount = activityInstance.getExecutionInstanceList().size();
+            int size = activityInstance.getExecutionInstanceList().size();
+            instanceCount = Long.valueOf(size);
         } else {
-            instanceCount = 0;
+            instanceCount = 0L;
         }
 
         Map<String, Object> privateContext = context.getPrivateContext();

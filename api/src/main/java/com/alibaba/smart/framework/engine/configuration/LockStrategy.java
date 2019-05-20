@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.exception.LockException;
 public interface LockStrategy {
 
 
-    void tryLock(Long processInstanceId) throws LockException;
+    void tryLock(String processInstanceId) throws LockException;
 
-    void unLock(Long processInstanceId) throws LockException;
+    void unLock(String processInstanceId) throws LockException;
 }

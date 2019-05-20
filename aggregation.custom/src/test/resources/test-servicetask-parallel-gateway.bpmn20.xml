@@ -9,45 +9,51 @@
         <startEvent id="theStart">
         </startEvent>
 
-        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="theTask1"/>
+        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="theTask0"/>
 
-        <!--<parallelGateway id="fork" name="ForkGateway"/>-->
+        <serviceTask id="theTask0" name="theTask0"
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+        </serviceTask>
 
-        <!--<sequenceFlow id="flow2" sourceRef="fork"-->
-                      <!--targetRef="theTask1">-->
-        <!--</sequenceFlow>-->
+        <sequenceFlow id="flowTask0" sourceRef="theTask0" targetRef="fork"/>
 
-        <!--<sequenceFlow id="flow3" sourceRef="fork"-->
-                      <!--targetRef="theTask2">-->
-        <!--</sequenceFlow>-->
+        <parallelGateway id="fork" name="ForkGateway"/>
+
+        <sequenceFlow id="flow2" sourceRef="fork"
+                      targetRef="theTask1">
+        </sequenceFlow>
+
+        <sequenceFlow id="flow3" sourceRef="fork"
+                      targetRef="theTask2">
+        </sequenceFlow>
 
         <serviceTask id="theTask1" name="Task1"
                      smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
         </serviceTask>
 
-        <!--<serviceTask id="theTask2" name="Task2"-->
-                     <!--smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">-->
-        <!--</serviceTask>-->
+        <serviceTask id="theTask2" name="Task2"
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+        </serviceTask>
 
-        <!--<sequenceFlow id="flow5" sourceRef="theTask1" targetRef="join"/>-->
+        <sequenceFlow id="flow5" sourceRef="theTask1" targetRef="join"/>
 
-        <!--<sequenceFlow id="flow6" sourceRef="theTask2" targetRef="join"/>-->
-
-
-
-        <!--<parallelGateway id="join" name="JoinGateWay">-->
-        <!--</parallelGateway>-->
+        <sequenceFlow id="flow6" sourceRef="theTask2" targetRef="join"/>
 
 
-        <!--<sequenceFlow id="flow7" sourceRef="join"-->
-                      <!--targetRef="theTask3">-->
-        <!--</sequenceFlow>-->
 
-        <!--<receiveTask id="theTask3" name="Task3"-->
-                     <!--smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">-->
-        <!--</receiveTask>-->
+        <parallelGateway id="join" name="JoinGateWay">
+        </parallelGateway>
 
-        <sequenceFlow id="flow4" sourceRef="theTask1" targetRef="theEnd"/>
+
+        <sequenceFlow id="flow7" sourceRef="join"
+                      targetRef="theTask3">
+        </sequenceFlow>
+
+        <receiveTask id="theTask3" name="Task3"
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+        </receiveTask>
+
+        <sequenceFlow id="flow4" sourceRef="theTask3" targetRef="theEnd"/>
 
         <endEvent id="theEnd"/>
 

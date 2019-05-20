@@ -16,7 +16,7 @@ public interface ActivityQueryService {
      * @param processInstanceId
      * @return
      */
-    List<ActivityInstance> findAll(Long processInstanceId);
+    List<ActivityInstance> findAll(String processInstanceId);
 
     //List<ActivityInstance> findAll(Long processInstanceId, boolean asc);
 

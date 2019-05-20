@@ -60,6 +60,7 @@ import org.slf4j.LoggerFactory;
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
+
 /**
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
@@ -67,6 +68,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 public class DefaultRepositoryCommandService implements RepositoryCommandService, LifeCycleListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRepositoryCommandService.class);
+
 
     private ExtensionPointRegistry extensionPointRegistry;
 
@@ -80,16 +82,31 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @Override
-    public ProcessDefinition deploy(String classPathUri) throws DeployException {
+    public ProcessDefinition deploy( String classPathUri) throws DeployException {
 
-        ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
+       ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
 
         ProcessDefinition definition = this.parse(classLoader, classPathUri);
-        putIntoContainer(definition);
+        putIntoContainer( definition);
 
         return definition;
     }
 
+    @Override
+    public ProcessDefinition deploy(InputStream inputStream) {
+        try {
+            ProcessDefinition processDefinition = parseStream(inputStream);
+            putIntoContainer( processDefinition);
+
+            return processDefinition;
+        } catch (Exception e) {
+            throw new DeployException("Parse process definition file failure!", e);
+        } finally {
+            IOUtil.closeQuietly(inputStream);
+        }
+    }
+
+    /* add by zhengzheng.hzz */
     @Override
     public ProcessDefinition deploy(String definitionId, String version) throws DeployException {
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(
@@ -105,45 +122,30 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             throw new DeployException(String.format("Parse process definitionId: %s failure!", definitionId), e);
         }
     }
-
-    @Override
-    public ProcessDefinition deploy(InputStream inputStream) {
-        try {
-            ProcessDefinition processDefinition = parseStream(inputStream);
-            putIntoContainer(processDefinition);
-
-            return processDefinition;
-        } catch (Exception e) {
-            throw new DeployException("Parse process definition file failure!", e);
-        } finally {
-            IOUtil.closeQuietly(inputStream);
-        }
-    }
+    /* add by zhengzheng.hzz */
 
     @Override
     public ProcessDefinition deployWithUTF8Content(String uTF8ProcessDefinitionContent) {
-        byte[] bytes;
+        byte[] bytes ;
         try {
             bytes = uTF8ProcessDefinitionContent.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(),e);
             throw new EngineException(e);
         }
         InputStream stream = new ByteArrayInputStream(bytes);
-        ProcessDefinition processDefinition = this.deploy(stream);
-        return processDefinition;
+        ProcessDefinition processDefinition =  this.deploy(stream);
+        return  processDefinition;
 
     }
 
     @Override
     public void start() {
 
-        this.assemblyParserExtensionPoint = extensionPointRegistry.getExtensionPoint(
-            AssemblyParserExtensionPoint.class);
-        this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(
-            ProviderFactoryExtensionPoint.class);
+        this.assemblyParserExtensionPoint = extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
+        this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
         this.processContainer = extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
-        this.defaultExecutePolicyBehavior = extensionPointRegistry.getExtensionPoint(ExecutePolicyBehavior.class);
+        this.defaultExecutePolicyBehavior=extensionPointRegistry.getExtensionPoint(ExecutePolicyBehavior.class);
     }
 
     @Override
@@ -157,8 +159,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         try {
             inputStream = classLoader.getResourceAsStream(uri);
 
-            if (null == inputStream) {
-                throw new IllegalArgumentException("Cant findAll any resources for the uri:" + uri);
+            if(null == inputStream){
+                throw new IllegalArgumentException("Cant find any resources for the uri:"+uri);
             }
 
             return parseStream(inputStream);
@@ -189,7 +191,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         } while (reader.hasNext());
 
         if (findStart) {
-            return (ProcessDefinition)this.assemblyParserExtensionPoint.parse(reader, context);
+            return (ProcessDefinition) this.assemblyParserExtensionPoint.parse(reader, context);
         } else {
             throw new DeployException("Read process definition file failure! Not found start element!");
         }
@@ -205,9 +207,12 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         String processDefinitionId = processDefinition.getId();
         String version = processDefinition.getVersion();
 
+
+
         if (StringUtil.isEmpty(processDefinitionId) || StringUtil.isEmpty(version)) {
             throw new EngineException("empty processDefinitionId or version");
         }
+
 
         PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(processDefinition, false);
 
@@ -215,7 +220,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @SuppressWarnings("rawtypes")
-    private PvmProcessDefinition buildPvmProcessDefinition(ProcessDefinition processDefinition, boolean sub) {
+    private PvmProcessDefinition buildPvmProcessDefinition(ProcessDefinition processDefinition,  boolean sub) {
+
 
         Process process = processDefinition.getProcess();
         String idPrefix = "";
@@ -229,6 +235,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         pvmProcessDefinition.setId(processDefinition.getId());
         pvmProcessDefinition.setVersion(processDefinition.getVersion());
 
+
         pvmProcessDefinition.setModel(process);
 
         List<BaseElement> elements = process.getElements();
@@ -239,24 +246,23 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             Map<String, PvmActivity> pvmActivityMap = new HashMap<String, PvmActivity>();
             for (BaseElement element : elements) {
                 if (element instanceof Process) {
-                    Process subProcess = (Process)element;
+                    Process subProcess = (Process) element;
 
                     if (StringUtil.isEmpty(subProcess.getId())) {
                         subProcess.setId(idPrefix + "process" + index);
                     }
                     index++;
 
-                    //                    PvmProcessDefinition processDefinition = this.buildPvmProcessDefinition
-                    // (subProcess, true);
+//                    PvmProcessDefinition processDefinition = this.buildPvmProcessDefinition(subProcess, true);
 
                     //TUNE support subProcess
-                    //                    pvmActivityMap.put(processDefinition.getModel().getId(), processDefinition);
-                    //
-                    //                    if (processDefinition.getModel().isStartActivity()) {
-                    //                        pvmProcessDefinition.setStartActivity(processDefinition);
-                    //                    }
+//                    pvmActivityMap.put(processDefinition.getModel().getId(), processDefinition);
+//
+//                    if (processDefinition.getModel().isStartActivity()) {
+//                        pvmProcessDefinition.setStartActivity(processDefinition);
+//                    }
                 } else if (element instanceof Transition) {
-                    Transition transition = (Transition)element;
+                    Transition transition = (Transition) element;
 
                     if (StringUtil.isEmpty(transition.getId())) {
                         transition.setId(idPrefix + "transition" + index);
@@ -268,13 +274,14 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                     String id = pvmTransition.getModel().getId();
 
-                    PvmTransition oldValue = pvmTransitionMap.put(id, pvmTransition);
-                    if (null != oldValue) {
-                        throw new EngineException("duplicated id found for " + id);
+
+                    PvmTransition oldValue =    pvmTransitionMap.put(id, pvmTransition);
+                    if(null != oldValue){
+                        throw new EngineException("duplicated id found for "+id);
                     }
 
                 } else if (element instanceof Activity) {
-                    Activity activity = (Activity)element;
+                    Activity activity = (Activity) element;
 
                     if (StringUtil.isEmpty(activity.getId())) {
                         activity.setId(idPrefix + "activity" + index);
@@ -286,10 +293,12 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                     String id = pvmActivity.getModel().getId();
 
-                    PvmActivity oldValue = pvmActivityMap.put(id, pvmActivity);
-                    if (null != oldValue) {
-                        throw new EngineException("duplicated id found for " + id);
+
+                    PvmActivity oldValue =   pvmActivityMap.put(id, pvmActivity);
+                    if(null != oldValue){
+                        throw new EngineException("duplicated id found for "+id);
                     }
+
 
                     if (pvmActivity.getModel().isStartActivity()) {
                         pvmProcessDefinition.setStartActivity(pvmActivity);
@@ -299,11 +308,11 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
             // Process Transition Flow
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
-                DefaultPvmTransition runtimeTransition = (DefaultPvmTransition)runtimeTransitionEntry.getValue();
+                DefaultPvmTransition runtimeTransition = (DefaultPvmTransition) runtimeTransitionEntry.getValue();
                 String sourceRef = runtimeTransition.getModel().getSourceRef();
                 String targetRef = runtimeTransition.getModel().getTargetRef();
-                DefaultPvmActivity source = (DefaultPvmActivity)pvmActivityMap.get(sourceRef);
-                DefaultPvmActivity target = (DefaultPvmActivity)pvmActivityMap.get(targetRef);
+                DefaultPvmActivity source = (DefaultPvmActivity) pvmActivityMap.get(sourceRef);
+                DefaultPvmActivity target = (DefaultPvmActivity) pvmActivityMap.get(targetRef);
 
                 runtimeTransition.setSource(source);
                 runtimeTransition.setTarget(target);
@@ -315,9 +324,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
                 PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
                 this.initElement(runtimeTransition);
-                TransitionProviderFactory providerFactory
-                    = (TransitionProviderFactory)this.providerFactoryExtensionPoint.getProviderFactory(
-                    runtimeTransition.getModel().getClass());
+                TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModel().getClass());
 
                 if (null == providerFactory) {
                     throw new RuntimeException("No factory found for " + runtimeTransition.getModel().getClass());
@@ -332,9 +339,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                 this.initElement(pvmActivity);
 
-                Activity activity = pvmActivity.getModel();
-                ActivityProviderFactory providerFactory = (ActivityProviderFactory)this.providerFactoryExtensionPoint
-                    .getProviderFactory(activity.getClass());
+                Activity activity=pvmActivity.getModel();
+                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(activity.getClass());
 
                 if (null == providerFactory) {
                     throw new RuntimeException("No factory found for " + activity.getClass());
@@ -342,18 +348,18 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                 pvmActivity.setBehavior(providerFactory.createActivityProvider(pvmActivity));
 
-                ExecutePolicy executePolicy = activity.getExecutePolicy();
-                ExecutePolicyBehavior executePolicyBehavior = null;
-                if (null != executePolicy) {
+                ExecutePolicy executePolicy=activity.getExecutePolicy();
+                ExecutePolicyBehavior executePolicyBehavior=null;
+                if(null!=executePolicy) {
                     ExecutePolicyProviderFactory executePolicyProviderFactory
                         = (ExecutePolicyProviderFactory)this.providerFactoryExtensionPoint.getProviderFactory(
                         activity.getExecutePolicy().getClass());
-                    if (null != executePolicyProviderFactory) {
-                        executePolicyBehavior = executePolicyProviderFactory.createExecutePolicyBehavior(executePolicy);
+                    if(null!=executePolicyProviderFactory){
+                        executePolicyBehavior=executePolicyProviderFactory.createExecutePolicyBehavior(executePolicy);
                     }
                 }
-                if (null == executePolicyBehavior) {
-                    executePolicyBehavior = this.defaultExecutePolicyBehavior;
+                if(null==executePolicyBehavior){
+                    executePolicyBehavior=this.defaultExecutePolicyBehavior;
                 }
                 pvmActivity.setExecutePolicyBehavior(executePolicyBehavior);
             }
@@ -381,7 +387,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     InvokerProviderFactory providerFactory = (InvokerProviderFactory)this.providerFactoryExtensionPoint
                         .getProviderFactory(extension.getClass());
                     if (null == providerFactory) {
-                        throw new RuntimeException("No factory found for " + extension.getClass());
+                        LOGGER.debug("No factory found for " + extension.getClass());
+                        continue;
                     }
                     Invoker extensionInvoker = providerFactory.createInvoker(extension);
                     if (extension.isPrepare()) {
@@ -395,9 +402,9 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             }
         }
 
-        List<Performable> performers = pvmElement.getModel().getPerformers();
+        List<Performable> performers=pvmElement.getModel().getPerformers();
         if (null != performers) {
-            ComboInvoker invoker = new ComboInvoker();
+            ComboInvoker invoker=new ComboInvoker();
             for (Performable performable : performers) {
                 PerformerProviderFactory providerFactory = (PerformerProviderFactory)this.providerFactoryExtensionPoint
                     .getProviderFactory(performable.getClass());

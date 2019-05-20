@@ -1,20 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  
-  <modelVersion>4.0.0</modelVersion>  
-  <parent> 
-    <groupId>com.alibaba.smart.framework</groupId>  
-    <artifactId>smart-engine</artifactId>  
-    <version>1.5.6.xbpm-SNAPSHOT</version> 
-  </parent>  
-  <artifactId>smart-engine-base</artifactId>  
-  <name>Smart Engine Base</name>  
-  <dependencies> 
-    <dependency> 
-      <groupId>${project.groupId}</groupId>  
-      <artifactId>smart-engine-api</artifactId>  
-      <version>${project.version}</version> 
-    </dependency> 
-  </dependencies>  
-  <contributors><contributor><properties><provider>zhengzheng.hzz@alibaba-inc.com</provider><codeName>null</codeName><codeUrl>git@gitlab.alibaba-inc.com:smart-framework/smart-engine.git commit:73e0574c</codeUrl><description>contributors added by SCM Plugin, please don't modify it!</description></properties></contributor></contributors>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.alibaba.smart.framework</groupId>
+        <artifactId>smart-engine</artifactId>
+        <version>1.6.5</version>
+    </parent>
+
+    <artifactId>smart-engine-base</artifactId>
+    <name>Smart Engine Base</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>smart-engine-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
+
 </project>

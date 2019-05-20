@@ -88,7 +88,8 @@ public class ReceiveTaskParallelGatewayTest {
 
         assertTrue(("theTask1".equals(firstActivityId) && "theTask2".equals(secondActivityId)) || ("theTask1".equals(secondActivityId) && "theTask2".equals(firstActivityId)));
 
-        //完成两个任务节点创建,已经进入fork节点后面的数据。完成其中一个节点的驱动。
+        //完成两个任务节点创建,已经进入fork节点后面的数据。
+        //完成其中一个节点的驱动。
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
 
         processInstance =   persisteAndUpdateThreadLocal(orderId,processInstance);
@@ -123,6 +124,9 @@ public class ReceiveTaskParallelGatewayTest {
 
         //完成两个任务节点，完成并行网关的计算。
         processInstance = executionCommandService.signal(runningExecutionInstance.getInstanceId(), request);
+
+        processInstance =   persisteAndUpdateThreadLocal(orderId,processInstance);
+
 
         executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);

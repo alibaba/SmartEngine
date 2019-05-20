@@ -1,17 +1,17 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.gateway;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
-import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
-import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ParallelGateway;
@@ -19,7 +19,6 @@ import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoi
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.service.command.impl.CommonServiceHelper;
 
 public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> {
 
@@ -34,14 +33,15 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();
 
+        //TODO 假设前提：fork 网关不能有多个 incoming 节点。 fork 职责还是要拿回来。
         if(incomeTransitions.size()==1){
             return false;
         }
+        ProcessEngineConfiguration processEngineConfiguration = super.getExtensionPointRegistry().getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = super.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
-        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
 
         Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
@@ -49,60 +49,52 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         ProcessInstance processInstance = context.getProcessInstance();
 
-        List<ExecutionInstance> executionInstanceList = executionInstanceStorage.findActiveExecution(processInstance.getInstanceId());
+        //当前内存中的，新产生的 active ExecutionInstance
+        List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
 
-        int reachedForkedSum = 0;
 
-        if(null != executionInstanceList){
+        //当前持久化介质中中，已产生的 active ExecutionInstance。
+        List<ExecutionInstance> executionInstanceListFromDB =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(), processEngineConfiguration);
 
-            for (ExecutionInstance executionInstance : executionInstanceList) {
+        //Merge 数据库中和内存中的EI。如果是 custom模式，则可能会存在重复记录，所以这里需要去重。 如果是 DataBase 模式，则不会有重复的EI.
+
+        List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
+
+
+        for (ExecutionInstance instance : executionInstanceListFromDB) {
+            if (executionInstanceListFromMemory.contains(instance)){
+                //ignore
+            }else {
+                mergedExecutionInstanceList.add(instance);
+            }
+        }
+
+
+        mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
+
+
+        int reachedJoinCounter = 0;
+        List<ExecutionInstance> chosenExecutionInstances = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
+
+        if(null != mergedExecutionInstanceList){
+
+            for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
 
                 if (executionInstance.getProcessDefinitionActivityId().equals(parallelGateway.getId())) {
-                    reachedForkedSum++;
+                    reachedJoinCounter++;
+                    chosenExecutionInstances.add(executionInstance);
                 }
             }
         }
 
-        //由于 SmartEngine的设计理念是尽量在后期去持久化，减少事务的开启时间。 所以比如在 database 模式下，这里的很多访问 db 方法 只能获取上一次写进 DB 的数据。
-        //但是由于进入到这里的代码，肯定有一个新的节点完成了，但是这个状态并没有写进 DB。所以
-        //FIXME
-        int tunedTotalReachedForkedSum = reachedForkedSum;
-        if(tunedTotalReachedForkedSum == inComingPvmTransitions.size() ){
+
+        if(reachedJoinCounter == inComingPvmTransitions.size() ){
             //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
-            ActivityInstanceStorage activityInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
 
-
-            ExecutionInstance executionInstance1 = context.getExecutionInstance();
-            MarkDoneUtil.markDoneExecutionInstance(executionInstance1,executionInstanceStorage);
-
-            //TODO ActivityInstance 的完成时间没有 更新
-
-            List<ActivityInstance> activityInstanceList = activityInstanceStorage.findAll(processInstance.getInstanceId());
-
-            for (ActivityInstance activityInstance : activityInstanceList) {
-                //把 join 网关对应的执行执行完成掉。
-                if(activityInstance.getProcessDefinitionActivityId().equals(pvmActivity.getModel().getId())){
-                    //TODO 针对 custom，memory 模式，这里activityInstance.getExecutionInstanceList() 这个才不会为null； database模式下都是null
-                    List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
-                    if(null != executionInstances){
-                        for (ExecutionInstance executionInstance : executionInstances) {
-                            if(executionInstance != null){
-                                MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
-                            }
-                        }
-                    }
-
-                }
-            }
-
-            //check again,有优化的空间，也可以把executionInstance给activityInstance.getExecutionInstanceList()
-            List<ExecutionInstance> executionInstanceList1 =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId());
-
-            if(null != executionInstanceList1){
-                for (ExecutionInstance executionInstance : executionInstanceList1) {
-                    if(executionInstance.getProcessDefinitionActivityId().equals(pvmActivity.getModel().getId())){
-                      MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage);
-                    }
+            if(null != chosenExecutionInstances){
+                for (ExecutionInstance executionInstance : chosenExecutionInstances) {
+                      MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
+                          processEngineConfiguration);
                 }
             }
 
@@ -113,6 +105,8 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             return true;
         }
     }
+
+
 /*
     @Override
     public void buildInstanceRelationShip(ExecutionContext context) {

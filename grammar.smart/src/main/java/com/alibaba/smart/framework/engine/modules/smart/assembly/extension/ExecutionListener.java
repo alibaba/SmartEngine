@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ExecutionListener extends AbstractBaseElement implements Extension {
+public class ExecutionListener extends Properties implements Extension {
     public final static QName type = new QName(SmartBase.SMART_NS, "executionListener");
 
     private static final long serialVersionUID = -2881657965418926667L;
