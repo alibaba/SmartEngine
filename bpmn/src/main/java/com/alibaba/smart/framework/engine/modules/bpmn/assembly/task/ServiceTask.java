@@ -14,9 +14,9 @@ import javax.xml.namespace.QName;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class ServiceTask extends AbstractTask {
+    private static final long serialVersionUID = 2900871220232200586L;
 
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "serviceTask");
-    private static final long serialVersionUID = 2900871220232200586L;
 
     /**
      * 流程节点的主要执行动作
