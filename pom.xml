@@ -19,7 +19,7 @@
     <artifactId>smart-engine</artifactId>
     <!--  mvn versions:set -DnewVersion=1.6.5 -DgenerateBackupPoms=false  -->
     <!--  mvn versions:set -DnewVersion=1.6.3-SNAPSHOT -DgenerateBackupPoms=false  -->
-    <version>1.6.5</version>
+    <version>1.6.5.1</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
@@ -179,10 +179,11 @@
             </dependency>
 
             <!-- 会被自动rename package -->
+            <!-- https://mvnrepository.com/artifact/org.mvel/mvel2 -->
             <dependency>
                 <groupId>org.mvel</groupId>
                 <artifactId>mvel2</artifactId>
-                <version>2.2.6.Final</version>
+                <version>2.4.4.Final</version>
             </dependency>
 
 
@@ -286,6 +287,44 @@
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>2.1</version>
             </plugin>
+            <plugin>
+                <!-- COPY FROM https://github.com/EsotericSoftware/kryo/blob/master/pom-shaded.xml -->
+
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <shadedArtifactAttached>false</shadedArtifactAttached>
+                    <artifactSet>
+                        <includes>
+                            <!-- 重要:!!!! 千万记得这个 artifact 的scope 不要设置为provided了,已经浪费至少2个小时了!!!!!-->
+                            <include>com.esotericsoftware:reflectasm:shaded</include>
+                            <include>org.mvel:mvel2</include>
+                        </includes>
+                    </artifactSet>
+                    <relocations>
+                        <relocation>
+                            <pattern>com.esotericsoftware.reflectasm</pattern>
+                            <shadedPattern>com.alibaba.smart.framework.engine.shaded.com.esotericsoftware.reflectasm</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.mvel2</pattern>
+                            <shadedPattern>com.alibaba.smart.framework.engine.org.mvel2</shadedPattern>
+                        </relocation>
+                    </relocations>
+
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
 
         </plugins>
     </build>

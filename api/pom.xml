@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.alibaba.smart.framework</groupId>
         <artifactId>smart-engine</artifactId>
-        <version>1.6.5</version>
+        <version>1.6.5.1</version>
     </parent>
 
     <artifactId>smart-engine-api</artifactId>
@@ -16,43 +16,6 @@
             <artifactId>mvel2</artifactId>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <!-- COPY FROM https://github.com/EsotericSoftware/kryo/blob/master/pom-shaded.xml -->
 
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.1</version>
-
-
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-
-                    </execution>
-                </executions>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <shadedArtifactAttached>false</shadedArtifactAttached>
-                    <artifactSet>
-                        <includes>
-                            <!-- 重要:!!!! 千万记得这个 artifact 的scope 不要设置为provided了,已经浪费至少2个小时了!!!!!-->
-                            <include>org.mvel:mvel2</include>
-                        </includes>
-                    </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.mvel2</pattern>
-                            <shadedPattern>com.alibaba.smart.framework.engine.org.mvel2</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
