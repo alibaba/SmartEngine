@@ -49,6 +49,9 @@
         <module>aggregation.custom</module>
         <module>storage.mongodb</module>
         <module>retry</module>
+        <module>extend</module>
+        <module>extend</module>
+        <module>ext</module>
     </modules>
 
     <dependencies>

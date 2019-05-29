@@ -27,13 +27,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba.smart.framework</groupId>
-            <artifactId>smart-engine-retry</artifactId>
-            <version>1.6.4</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>smart-engine-bpmn</artifactId>
             <version>${project.version}</version>

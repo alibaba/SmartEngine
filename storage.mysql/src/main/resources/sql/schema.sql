@@ -106,17 +106,6 @@ CREATE TABLE `se_variable_instance` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 COMMENT='变量实例-SmartEngine'
 
-CREATE TABLE `se_retry_record` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `gmt_create` datetime NOT NULL COMMENT '创建时间',
-  `gmt_modified` datetime NOT NULL COMMENT '修改时间',
-  `instance_id` bigint(20) unsigned NOT NULL COMMENT '流程实例id',
-  `retry_times` bigint(20) unsigned DEFAULT 0 COMMENT '重试次数',
-  `retry_success` boolean NOT NULL DEFAULT false COMMENT '重试是否成功',
-  `request_params` varchar(4000) DEFAULT NULL COMMENT '存储请求参数的值',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 COMMENT='重试对象-SmartEngine'
-
 alter table `se_execution_instance`
 add key `idx_process_instance_id_and_status` (process_instance_id,active),
 add key `idx_process_instance_id_and_activity_instance_id` (process_instance_id,activity_instance_id);
