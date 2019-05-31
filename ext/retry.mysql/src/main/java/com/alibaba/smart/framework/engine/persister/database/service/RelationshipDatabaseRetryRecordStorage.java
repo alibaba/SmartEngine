@@ -13,14 +13,14 @@ public class RelationshipDatabaseRetryRecordStorage implements RetryRecordStorag
 
     @Override
     public boolean insertOrUpdate(RetryRecord retryRecord) {
-        RetryRecordDAO activityInstanceDAO = (RetryRecordDAO)SpringContextUtil.getBean("retryRecordDAO");
+        RetryRecordDAO retryRecordDAO = (RetryRecordDAO)SpringContextUtil.getBean("retryRecordDAO");
 
-        RetryRecord retryRecordDO = activityInstanceDAO.queryByInstanceId(retryRecord.getInstanceId());
+        RetryRecord retryRecordDO = retryRecordDAO.queryByInstanceId(retryRecord.getInstanceId());
         long count = 0L;
         if (retryRecordDO == null) {
-            count = activityInstanceDAO.insert(retryRecord);
+            count = retryRecordDAO.insert(retryRecord);
         } else {
-            count = activityInstanceDAO.update(retryRecord);
+            count = retryRecordDAO.update(retryRecord);
         }
         return count > 0;
     }

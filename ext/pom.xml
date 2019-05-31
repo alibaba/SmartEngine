@@ -10,11 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>smart-engine-extend</artifactId>
+    <name>Smart Engine Extends</name>
+
     <packaging>pom</packaging>
     <modules>
-        <module>smart-engine-retry</module>
+        <module>retry</module>
         <module>retry.mysql</module>
+        <module>retry.custom</module>
     </modules>
-
 
 </project>

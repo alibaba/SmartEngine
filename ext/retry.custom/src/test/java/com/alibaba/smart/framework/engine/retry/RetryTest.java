@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.persister.custom.RetryRecordInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 import com.alibaba.smart.framework.engine.retry.model.instance.RetryRecord;
 import com.alibaba.smart.framework.engine.retry.service.command.RetryService;
@@ -83,14 +84,14 @@ public class RetryTest {
             retryService.save(retryRecord);
         }
 
-        // 模拟通过metaQ接收消息
+        // 模拟通过metaQ接收消息，执行重试
         RetryListener retryListener = retryExtensionPoint.getExtensionPoint(RetryListener.class);
         retryListener.onMessage(retryRecord);
 
+        // 校验流程是否正确流转到报名环节
         executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         assertEquals(1, executionInstanceList.size());
         ExecutionInstance enrollInstance = executionInstanceList.get(0);
-        // 校验流程是否正确流转到报名环节
         assertEquals("enroll", enrollInstance.getProcessDefinitionActivityId());
     }
 

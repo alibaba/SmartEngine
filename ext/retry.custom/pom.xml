@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>smart-engine-retry-storage-mysql</artifactId>
-    <name>Smart Engine Extends - Retry.storage.mysql</name>
+    <artifactId>smart-engine-retry-storage-custom</artifactId>
+    <name>Smart Engine Extends - Retry.storage.custom</name>
 
     <dependencies>
         <dependency>
@@ -20,15 +20,23 @@
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-engine-storage-mysql</artifactId>
+            <groupId>com.alibaba.smart.framework</groupId>
+            <artifactId>smart-engine-storage-custom</artifactId>
             <version>${project.version}</version>
         </dependency>
 
+        <!--TEST-->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>smart-engine-bpmn</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>smart-engine-grammar-smart</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>
