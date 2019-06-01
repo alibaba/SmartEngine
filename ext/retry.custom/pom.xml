@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>smart-engine-extend</artifactId>
+        <groupId>com.alibaba.smart.framework</groupId>
+        <version>1.6.5.2</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>smart-engine-retry-storage-custom</artifactId>
+    <name>Smart Engine Extends - Retry.storage.custom</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>smart-engine-retry</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.smart.framework</groupId>
+            <artifactId>smart-engine-storage-custom</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!--TEST-->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>smart-engine-bpmn</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>smart-engine-grammar-smart</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
