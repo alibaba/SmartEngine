@@ -1,17 +1,8 @@
 package com.alibaba.smart.framework.engine.persister.custom.service;
 
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 import com.alibaba.smart.framework.engine.retry.instance.storage.RetryRecordStorage;
 import com.alibaba.smart.framework.engine.retry.model.instance.RetryRecord;
-import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
-
-import java.util.List;
-
-import static com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant.NOT_IMPLEMENT_INTENTIONALLY;
+import com.alibaba.smart.framework.engine.retry.service.command.RetryPersistence;
 
 /**
  * @author zhenhong.tzh
@@ -20,7 +11,17 @@ import static com.alibaba.smart.framework.engine.persister.common.constant.Stora
 public class CustomRetryRecordStorage implements RetryRecordStorage {
 
     @Override
-    public boolean insertOrUpdate(RetryRecord retryRecord) {
-        return true;
+    public RetryRecord find(String instanceId, RetryPersistence retryPersistence) {
+        return null;
+    }
+
+    @Override
+    public boolean insert(RetryRecord retryRecord, RetryPersistence retryPersistence) {
+        return false;
+    }
+
+    @Override
+    public boolean update(RetryRecord retryRecord, RetryPersistence retryPersistence) {
+        return false;
     }
 }

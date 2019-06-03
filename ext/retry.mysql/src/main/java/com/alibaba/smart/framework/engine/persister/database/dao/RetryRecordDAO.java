@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 
+import com.alibaba.smart.framework.engine.persister.database.entity.RetryRecordEntity;
 import com.alibaba.smart.framework.engine.retry.model.instance.RetryRecord;
 import org.springframework.stereotype.Repository;
 
@@ -10,9 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RetryRecordDAO {
 
-    RetryRecord queryByInstanceId(String instanceId);
+    RetryRecordEntity queryByInstanceId(String instanceId);
 
-    Long insert(RetryRecord retryRecord);
+    Long insert(RetryRecordEntity retryRecordEntity);
 
-    Long update(RetryRecord retryRecord);
+    Long update(RetryRecordEntity retryRecordEntity);
 }

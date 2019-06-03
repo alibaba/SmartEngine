@@ -9,6 +9,7 @@ import com.alibaba.smart.framework.engine.retry.RetryExtensionPoint;
 import com.alibaba.smart.framework.engine.retry.RetryListener;
 import com.alibaba.smart.framework.engine.retry.instance.storage.RetryRecordStorage;
 import com.alibaba.smart.framework.engine.retry.model.instance.RetryRecord;
+import com.alibaba.smart.framework.engine.retry.service.command.RetryPersistence;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -20,12 +21,6 @@ import java.util.TimerTask;
 public class MemoryRetryRecordStorage implements RetryRecordStorage {
 
     private RetryRecord retryRecord;
-
-    @Override
-    public boolean insertOrUpdate(RetryRecord retryRecord) {
-        this.retryRecord = retryRecord;
-        return true;
-    }
 
     public MemoryRetryRecordStorage() {
         /**
@@ -51,5 +46,22 @@ public class MemoryRetryRecordStorage implements RetryRecordStorage {
             }
         };
         //new Timer().schedule(timerTask, 1000);
+    }
+
+    @Override
+    public RetryRecord find(String instanceId, RetryPersistence retryPersistence) {
+        return retryRecord;
+    }
+
+    @Override
+    public boolean insert(RetryRecord retryRecord, RetryPersistence retryPersistence) {
+        this.retryRecord = retryRecord;
+        return true;
+    }
+
+    @Override
+    public boolean update(RetryRecord retryRecord, RetryPersistence retryPersistence) {
+        this.retryRecord = retryRecord;
+        return true;
     }
 }
