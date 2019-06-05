@@ -35,6 +35,9 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQu
  */
 public class DefaultTaskItemCommandService implements TaskItemCommandService, LifeCycleListener {
 
+    /**
+     * 扩展点注册
+     */
     private ExtensionPointRegistry extensionPointRegistry;
 
     private ProcessInstanceStorage processInstanceStorage;
@@ -69,10 +72,15 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
 
     @Override
     public void complete(String taskInstanceId, Map<String, Object> variables){
+        //获取smart-engine实例
         SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
+        //获取流程实例配置，包括所有的查询服务和命令及扩展点
         ProcessEngineConfiguration processEngineConfiguration = smartEngine.getProcessEngineConfiguration();
+        //持久化工厂扩展点,用于获取各领域的DAO实例
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        //获取子任务存储实例
         TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
+        //获取主任务下的子任务实例列表
         TaskItemInstanceQueryParam taskItemInstanceQueryParam = new TaskItemInstanceQueryParam();
         taskItemInstanceQueryParam.setTaskInstanceId(taskInstanceId);
         List<TaskItemInstance> taskItemList = taskItemInstanceStorage.findTaskItemList(taskItemInstanceQueryParam,
@@ -80,10 +88,12 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
         if(taskItemList == null || taskItemList.size() <= 0){
             return;
         }
+        //获取子任务id列表，传统写法，引擎追求最小依赖，避免各种Jar包冲突
         List<String> subBizIdList = new ArrayList<String>();
         for(TaskItemInstance taskItemInstance : taskItemList){
             subBizIdList.add(taskItemInstance.getSubBizId());
         }
+        //批量审批子任务
         complete(taskInstanceId, subBizIdList, variables);
     }
 
@@ -91,36 +101,56 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
     @Override
     public void complete(String taskInstanceId, String subBizId, Map<String, Object> variables) {
         SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
+        //获取流程实例配置，包括所有的查询服务和命令及扩展点
         ProcessEngineConfiguration processEngineConfiguration = smartEngine.getProcessEngineConfiguration();
+        //持久化工厂扩展点,用于获取各领域的DAO实例
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        //获取子任务存储实例
         TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
+        //查询子任务实例
         TaskItemInstance taskItemInstance = taskItemInstanceStorage.find(taskInstanceId, subBizId, processEngineConfiguration);
 
         String processInstanceId = taskItemInstance.getProcessInstanceId();
         String activityInstanceId = taskItemInstance.getActivityInstanceId();
         String processDefinitionActivityId = taskItemInstance.getProcessDefinitionActivityId();
         String processDefinitionIdAndVersion = taskItemInstance.getProcessDefinitionIdAndVersion();
-
+        //获取pvm流程定义
         PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(processDefinitionIdAndVersion);
+        //获取pvm活动节点
         PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(processDefinitionActivityId);
-
+        //获取子任务审批扩展点
         TaskItemCompleteProcessor taskItemCompleteProcessor = processEngineConfiguration.getTaskItemCompleteProcessor();
-        //完成子任务之前
+        //执行前置处理
         taskItemCompleteProcessor.postProcessBeforeTaskItemComplete(processInstanceId, activityInstanceId,
             taskInstanceId, Collections.singletonList(taskItemInstance.getInstanceId()), variables, pvmActivity.getModel(), smartEngine);
-        //完成子任务
+        //完成子任务，领域内持久化（不真正入库）
         MarkDoneUtil.markDoneTaskItemInstance(taskItemInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
             variables, taskItemInstanceStorage, processEngineConfiguration);
-        //完成子任务之后
+        //扩展点后置处理
         taskItemCompleteProcessor.postProcessAfterTaskItemComplete(processInstanceId, activityInstanceId,
             taskInstanceId, Collections.singletonList(taskItemInstance.getInstanceId()), variables, pvmActivity.getModel(), smartEngine);
-        //是否可以关闭当前主任务
-        Map<String, String> map = taskItemCompleteProcessor.canCompleteCurrentMainTask(taskItemInstance.getProcessInstanceId(), taskInstanceId, pvmActivity.getModel(), smartEngine);
-        if(map != null && Boolean.TRUE.toString().equalsIgnoreCase(map.get("canComplete"))){
+        /*
+            根据canCompleteCurrentMainTask返回值决策是否可以关闭当前主任务
+                 * 核心处理
+                 * 是否可以关闭当前主任务
+                 * 返回值： key=canComplete(是否可以关闭当前主任务)
+                 * key=tag(如果可以驱动到下一个节点，则当前节点的审核结果的标签值)
+                 * 例子：Map<String,String> map = new HashMap<>;
+                 * map.put("canComplete","true");
+                 * map.put("tag","pass");
+         */
+        Map<String, String> decision = taskItemCompleteProcessor.canCompleteCurrentMainTask(taskItemInstance.getProcessInstanceId(), taskInstanceId, pvmActivity.getModel(), smartEngine);
+        if(decision != null && Boolean.TRUE.toString().equalsIgnoreCase(decision.get("canComplete"))){
+            //获取放任务实例
             TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
-            variables.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG, map.get("tag"));
+            //传递上下文参数
+            //审批通过时的tag
+            variables.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG, decision.get("tag"));
+            //行级审批模式
             variables.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_MODE, ProcessInstanceModeConstant.ITEM);
+            //活动实例id
             variables.put("activityInstanceId", activityInstanceId);
+            //完成主任务，通过子任务驱动主任务实现
             taskCommandService.complete(taskInstanceId, variables);
         }
     }
@@ -136,8 +166,10 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
 
     @Override
     public void complete(String taskInstanceId, List<String> subBizIds, Map<String, Object> variables) {
+        //获取smart-engine实例
         SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
         ProcessEngineConfiguration processEngineConfiguration = smartEngine.getProcessEngineConfiguration();
+        //持久化工厂扩展点,用于获取各领域的DAO实例
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
         TaskItemInstanceStorage taskItemInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskItemInstanceStorage.class);
 
@@ -159,21 +191,30 @@ public class DefaultTaskItemCommandService implements TaskItemCommandService, Li
         String activityInstanceId = taskItemInstanceList.get(0).getActivityInstanceId();
         String processDefinitionActivityId = taskItemInstanceList.get(0).getProcessDefinitionActivityId();
         String processDefinitionIdAndVersion = taskItemInstanceList.get(0).getProcessDefinitionIdAndVersion();
-
+        ////获取pvm流程定义
         PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(processDefinitionIdAndVersion);
         PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(processDefinitionActivityId);
-
+        //获取子任务审批扩展点
         TaskItemCompleteProcessor taskItemCompleteProcessor = processEngineConfiguration.getTaskItemCompleteProcessor();
-        //完成子任务之前
+        //执行前置处理
         taskItemCompleteProcessor.postProcessBeforeTaskItemComplete(processInstanceId, activityInstanceId,
             taskInstanceId, taskItemIdList, variables, pvmActivity.getModel(), smartEngine);
-        //完成子任务
+        //完成子任务，领域内持久化（不真正入库）
         MarkDoneUtil.markDoneTaskItemInstance(taskItemInstanceList, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
             variables, taskItemInstanceStorage, processEngineConfiguration);
-        //完成子任务之后
+        //扩展点后置处理
         taskItemCompleteProcessor.postProcessAfterTaskItemComplete(processInstanceId, activityInstanceId,
             taskInstanceId, taskItemIdList, variables, pvmActivity.getModel(), smartEngine);
-        //是否可以关闭当前主任务
+        /*
+        根据canCompleteCurrentMainTask返回值决策是否可以关闭当前主任务
+                * 核心处理
+                * 是否可以关闭当前主任务
+                * 返回值： key=canComplete(是否可以关闭当前主任务)
+                * key=tag(如果可以驱动到下一个节点，则当前节点的审核结果的标签值)
+                * 例子：Map<String,String> map = new HashMap<>;
+                 * map.put("canComplete","true");
+                 * map.put("tag","pass");
+         */
         Map<String, String> map = taskItemCompleteProcessor.canCompleteCurrentMainTask(processInstanceId, taskInstanceId, pvmActivity.getModel(), smartEngine);
         if(map != null && Boolean.TRUE.toString().equalsIgnoreCase(map.get("canComplete"))){
             TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
