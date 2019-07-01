@@ -45,9 +45,28 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private PvmActivity sourcePvmActivity;
 
+    private boolean needParallelLock = false;
+
     @Override
     public Map<String, Object> getResponse() {
         return request;
+    }
+
+    public static DefaultInstanceContext copy(ExecutionContext context) {
+        DefaultInstanceContext copyContext = new DefaultInstanceContext();
+        copyContext.parent = context.getParent();
+        copyContext.processInstance = context.getProcessInstance();
+        copyContext.executionInstance = context.getExecutionInstance();
+        copyContext.activityInstance = context.getActivityInstance();
+        copyContext.pvmProcessDefinition = context.getPvmProcessDefinition();
+        copyContext.processEngineConfiguration = context.getProcessEngineConfiguration();
+        copyContext.request = context.getRequest();
+        copyContext.privateContext = context.getPrivateContext();
+        copyContext.needPause = context.isNeedPause();
+        copyContext.extensionPointRegistry = context.getExtensionPointRegistry();
+        copyContext.blockId = context.getBlockId();
+        copyContext.sourcePvmActivity = context.getSourcePvmActivity();
+        return copyContext;
     }
 
 }

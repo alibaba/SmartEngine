@@ -19,7 +19,7 @@ public class PersisterSession {
     /**
      * The Session Thread Local.
      */
-    private static ThreadLocal<Stack<PersisterSession>> sessionThreadLocal = new ThreadLocal<Stack<PersisterSession>>();
+    private static InheritableThreadLocal<Stack<PersisterSession>> sessionThreadLocal = new InheritableThreadLocal<Stack<PersisterSession>>();
 
     private Map<String, ProcessInstance> processInstances = new HashMap<String, ProcessInstance>(4);
 

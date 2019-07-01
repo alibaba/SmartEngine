@@ -1,10 +1,5 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.gateway;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
@@ -20,11 +15,18 @@ import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> {
 
     public ParallelGatewayBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
         super(extensionPointRegistry, runtimeActivity);
     }
+    private static final ReentrantLock LOCK = new ReentrantLock();
 
     @Override
     public boolean enter(ExecutionContext context) {
@@ -34,75 +36,74 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();
 
         //TODO 假设前提：fork 网关不能有多个 incoming 节点。 fork 职责还是要拿回来。
-        if(incomeTransitions.size()==1){
+        if (incomeTransitions.size() == 1) {
             return false;
         }
-        ProcessEngineConfiguration processEngineConfiguration = super.getExtensionPointRegistry().getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+        ProcessEngineConfiguration processEngineConfiguration = super.getExtensionPointRegistry().getExtensionPoint(
+            SmartEngine.class).getProcessEngineConfiguration();
 
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = super.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = super.getExtensionPointRegistry()
+            .getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
-
+        ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(
+            ExecutionInstanceStorage.class);
 
         Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
 
-
         ProcessInstance processInstance = context.getProcessInstance();
 
-        //当前内存中的，新产生的 active ExecutionInstance
-        List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
+        LOCK.lock();
+        try {
+            //当前内存中的，新产生的 active ExecutionInstance
+            List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
 
+            //当前持久化介质中中，已产生的 active ExecutionInstance。
+            List<ExecutionInstance> executionInstanceListFromDB = executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(), processEngineConfiguration);
 
-        //当前持久化介质中中，已产生的 active ExecutionInstance。
-        List<ExecutionInstance> executionInstanceListFromDB =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(), processEngineConfiguration);
+            //Merge 数据库中和内存中的EI。如果是 custom模式，则可能会存在重复记录，所以这里需要去重。 如果是 DataBase 模式，则不会有重复的EI.
 
-        //Merge 数据库中和内存中的EI。如果是 custom模式，则可能会存在重复记录，所以这里需要去重。 如果是 DataBase 模式，则不会有重复的EI.
+            List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
 
-        List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
-
-
-        for (ExecutionInstance instance : executionInstanceListFromDB) {
-            if (executionInstanceListFromMemory.contains(instance)){
-                //ignore
-            }else {
-                mergedExecutionInstanceList.add(instance);
-            }
-        }
-
-
-        mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
-
-
-        int reachedJoinCounter = 0;
-        List<ExecutionInstance> chosenExecutionInstances = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
-
-        if(null != mergedExecutionInstanceList){
-
-            for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
-
-                if (executionInstance.getProcessDefinitionActivityId().equals(parallelGateway.getId())) {
-                    reachedJoinCounter++;
-                    chosenExecutionInstances.add(executionInstance);
-                }
-            }
-        }
-
-
-        if(reachedJoinCounter == inComingPvmTransitions.size() ){
-            //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
-
-            if(null != chosenExecutionInstances){
-                for (ExecutionInstance executionInstance : chosenExecutionInstances) {
-                      MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
-                          processEngineConfiguration);
+            for (ExecutionInstance instance : executionInstanceListFromDB) {
+                if (executionInstanceListFromMemory.contains(instance)) {
+                    //ignore
+                } else {
+                    mergedExecutionInstanceList.add(instance);
                 }
             }
 
-            return false;
+            mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
 
-        }else{
-            //未完成的话,流程继续暂停
-            return true;
+            int reachedJoinCounter = 0;
+            List<ExecutionInstance> chosenExecutionInstances = new ArrayList<ExecutionInstance>(
+                executionInstanceListFromMemory.size());
+
+            if (null != mergedExecutionInstanceList) {
+
+                for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
+                    if (executionInstance.getProcessDefinitionActivityId().equals(parallelGateway.getId())) {
+                        reachedJoinCounter++;
+                        chosenExecutionInstances.add(executionInstance);
+                    }
+                }
+            }
+
+            if (reachedJoinCounter == inComingPvmTransitions.size()) {
+                //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
+
+                if (null != chosenExecutionInstances) {
+                    for (ExecutionInstance executionInstance : chosenExecutionInstances) {
+                        MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage,
+                            processEngineConfiguration);
+                    }
+                }
+                return false;
+            } else {
+                //未完成的话,流程继续暂停
+                return true;
+            }
+        } finally {
+            LOCK.unlock();
         }
     }
 

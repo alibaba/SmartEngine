@@ -17,9 +17,7 @@ public class ServiceTaskDelegation implements TccDelegation{
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceTaskDelegation.class);
 
     @Getter
-    private static List<String> arrayList = new ArrayList<String>();
-
-
+    private List<String> arrayList = new ArrayList<String>();
 
     @Override
     public TccResult tryExecute(ExecutionContext executionContext) {
@@ -29,11 +27,9 @@ public class ServiceTaskDelegation implements TccDelegation{
             if(o != null){
                 String input = o.toString();
                 arrayList.add(input);
-                //LOGGER.info("request input"+arrayList);
+                LOGGER.info("request input" + o);
             }
         }
-
-
         return null;
     }
 
