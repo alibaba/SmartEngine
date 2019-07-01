@@ -42,9 +42,9 @@ public class ServiceTaskParallelGatewayTest {
 
     @Test
     public void testParallel() throws Exception {
-        for (int i = 0; i < 10000; i++) {
-            testParallelGateway();
-        }
+        //for (int i = 0; i < 100000; i++) {
+        //    testParallelGateway();
+        //}
     }
 
     @Test
