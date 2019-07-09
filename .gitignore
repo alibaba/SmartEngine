@@ -6,6 +6,7 @@ target
 *.idea
 .idea
 *.swp
+*.swo
 bin
 .settings/
 test-output/

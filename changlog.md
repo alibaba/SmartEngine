@@ -1,5 +1,10 @@
 ## ChangeLog
 
+## version 1.6.5.4
+###NEW FEATURE
+1. 兼容OB，去掉了insert ignore 这种用法。
+
+
 ## version 1.6.5
 ###BUGFIX
 1. 修复在 smart:properties 下，不能支持多个 value 的问题。 

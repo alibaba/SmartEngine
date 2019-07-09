@@ -26,13 +26,9 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
         ProcessInstanceEntity processInstanceEntityToBePersisted = buildProcessInstanceEntity(processInstance);
 
-        int count = processInstanceDAO.insertIgnore(processInstanceEntityToBePersisted);
+        processInstanceDAO.insert(processInstanceEntityToBePersisted);
         Long entityId = processInstanceEntityToBePersisted.getId();
-        if (count == 0) {
-            throw new ConcurrentException(String.format(
-                "the process already exists. processInstanceId=[%s], bizUniqueId=[%s]",
-                entityId, processInstanceEntityToBePersisted.getBizUniqueId()));
-        }
+
 
         // 当数据库表id 是非自增时，需要以传入的 id 值为准
         if(0L == entityId){
