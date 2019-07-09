@@ -14,7 +14,7 @@ CREATE TABLE `se_deployment_instance` (
   `logic_status` varchar(64) NOT NULL COMMENT '逻辑删除状态',
 
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='SmartEngine 部署实例'
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='SmartEngine 部署实例';
 
 CREATE TABLE `se_process_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -32,7 +32,7 @@ CREATE TABLE `se_process_instance` (
   `tag` varchar(255) DEFAULT NULL COMMENT '标签',
 
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='流程引擎-流程实例'
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='流程引擎-流程实例';
 
 CREATE TABLE `se_activity_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -42,7 +42,7 @@ CREATE TABLE `se_activity_instance` (
   `process_definition_id_and_version` varchar(255) NOT NULL COMMENT '流程定义id和 version',
   `process_definition_activity_id` varchar(64) NOT NULL COMMENT '流程定义里面定义的流程节点(活动)id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5910 DEFAULT CHARSET=utf8 COMMENT='流程引擎-活动实例'
+) ENGINE=InnoDB AUTO_INCREMENT=5910 DEFAULT CHARSET=utf8 COMMENT='流程引擎-活动实例';
 
 CREATE TABLE `se_task_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -65,7 +65,7 @@ CREATE TABLE `se_task_instance` (
   `extension` varchar(255) DEFAULT NULL COMMENT '扩展字段，可自由使用',
 
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='流程引擎-任务实例'
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='流程引擎-任务实例';
 
 CREATE TABLE `se_execution_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -77,7 +77,7 @@ CREATE TABLE `se_execution_instance` (
   `activity_instance_id` bigint(20) unsigned NOT NULL COMMENT '活动实例id',
   `active` tinyint(4) NOT NULL COMMENT '枚举 1:活跃 0:非活跃',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=335814 DEFAULT CHARSET=utf8 COMMENT='流程引擎-执行实例'
+) ENGINE=InnoDB AUTO_INCREMENT=335814 DEFAULT CHARSET=utf8 COMMENT='流程引擎-执行实例';
 
 
 CREATE TABLE `se_task_assignee_instance` (
@@ -89,7 +89,7 @@ CREATE TABLE `se_task_assignee_instance` (
   `assignee_id` varchar(255) NOT NULL COMMENT '任务处理人id',
   `assignee_type` varchar(128) NOT NULL COMMENT '任务处理者类型',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6243 DEFAULT CHARSET=utf8 COMMENT='SmartEngine-任务处理者'
+) ENGINE=InnoDB AUTO_INCREMENT=6243 DEFAULT CHARSET=utf8 COMMENT='SmartEngine-任务处理者';
 
 
 CREATE TABLE `se_variable_instance` (
@@ -104,7 +104,7 @@ CREATE TABLE `se_variable_instance` (
   `field_long_value` bigint(20) DEFAULT NULL COMMENT '存储long类型的值\\\\n',
   `field_string_value` varchar(4000) DEFAULT NULL COMMENT '存储字符串类型的值',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 COMMENT='变量实例-SmartEngine'
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 COMMENT='变量实例-SmartEngine';
 
 alter table `se_execution_instance`
 add key `idx_process_instance_id_and_status` (process_instance_id,active),
