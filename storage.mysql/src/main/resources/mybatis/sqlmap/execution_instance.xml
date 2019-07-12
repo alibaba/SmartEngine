@@ -10,7 +10,7 @@
     </sql>
 
     <!-- #{incomeTransitionId},#{incomeActivityInstanceId}, -->
-    <insert id="insert" parameterType="ExecutionInstanceEntity"  useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="ExecutionInstanceEntity"   keyProperty="id">
         insert into  se_execution_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},
         #{processDefinitionActivityId}, #{activityInstanceId},#{active})

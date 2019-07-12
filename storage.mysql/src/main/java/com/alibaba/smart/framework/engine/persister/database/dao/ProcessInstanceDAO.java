@@ -19,7 +19,6 @@ public interface ProcessInstanceDAO {
 
     Long count(ProcessInstanceQueryParam processInstanceQueryParam);
 
-    //@Options(useGeneratedKeys = true)
     void insert(  ProcessInstanceEntity processInstanceEntity );
 
     int update(ProcessInstanceEntity processInstanceEntity);

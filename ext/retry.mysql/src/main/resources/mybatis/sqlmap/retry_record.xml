@@ -8,7 +8,7 @@
         instance_id,retry_times,retry_success,request_params
     </sql>
 
-    <insert id="insert" parameterType="RetryRecord" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="RetryRecord"  keyProperty="id">
         insert into se_retry_record(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{instanceId}, #{retryTimes},#{retrySuccess},#{requestParams})
     </insert>

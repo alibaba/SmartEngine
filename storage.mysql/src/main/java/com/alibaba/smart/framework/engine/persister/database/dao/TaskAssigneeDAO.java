@@ -21,7 +21,6 @@ public interface TaskAssigneeDAO  {
     TaskAssigneeEntity findOne(@Param("id") Long id);
 
 
-    //@Options(useGeneratedKeys = true)
     void insert(  TaskAssigneeEntity taskAssigneeEntity );
 
     int update(@Param("id") Long id,@Param("assigneeId")Long assigneeId);

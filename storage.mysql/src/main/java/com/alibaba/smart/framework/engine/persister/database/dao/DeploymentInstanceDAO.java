@@ -20,7 +20,7 @@ public interface DeploymentInstanceDAO {
 
     List<DeploymentInstanceEntity> findByPage(DeploymentInstanceQueryParam param);
 
-    Long insert(DeploymentInstanceEntity deploymentInstanceEntity);
+    void insert(DeploymentInstanceEntity deploymentInstanceEntity);
 
     int delete(Long id);
 

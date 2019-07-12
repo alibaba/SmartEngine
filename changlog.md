@@ -1,14 +1,18 @@
 ## ChangeLog
 
+## version 1.6.5.5
+### NEW FEATURE
+1. 删除 useGeneratedKeys="true" 特性，以兼容某些中间件。
+
 ## version 1.6.5.4
 ###NEW FEATURE
 1. 兼容OB，去掉了insert ignore 这种用法。
 
 
 ## version 1.6.5
-###BUGFIX
+### BUGFIX
 1. 修复在 smart:properties 下，不能支持多个 value 的问题。 
-###NEW FEATURE
+### NEW FEATURE
 1. 增加重试扩展包
 
 ## version 1.6.0 
