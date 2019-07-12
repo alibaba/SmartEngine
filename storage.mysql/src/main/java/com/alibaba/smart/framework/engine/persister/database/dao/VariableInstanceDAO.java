@@ -19,7 +19,6 @@ public interface VariableInstanceDAO  {
      List<VariableInstanceEntity> findList(@Param("processInstanceId") Long processInstanceId,@Param("executionInstanceId") Long executionInstanceId);
 
 
-     //@Options(useGeneratedKeys = true)
      void insert(  VariableInstanceEntity variableInstanceEntity );
 
      int update(VariableInstanceEntity variableInstanceEntity);

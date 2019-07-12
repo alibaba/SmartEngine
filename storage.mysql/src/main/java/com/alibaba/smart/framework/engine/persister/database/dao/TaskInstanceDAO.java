@@ -24,13 +24,9 @@ public interface TaskInstanceDAO {
     List<TaskInstanceEntity> findTaskByProcessInstanceIdAndStatus(Long processInstanceId,String status);
 
 
-
-    //List<TaskInstanceEntity> findList(Long processInstanceId, Long activityInstanceId);
-
     TaskInstanceEntity findOne(@Param("id") Long id);
 
 
-    //@Options(useGeneratedKeys = true)
     void insert(  TaskInstanceEntity taskInstanceEntity );
 
     int update(@Param("taskInstanceEntity") TaskInstanceEntity taskInstanceEntity);

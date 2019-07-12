@@ -22,7 +22,6 @@ public interface ExecutionInstanceDAO  {
     ExecutionInstanceEntity findOne(@Param("id") Long id);
 
 
-    //@Options(useGeneratedKeys = true)
     void insert(  ExecutionInstanceEntity executionInstanceEntity );
 
     int update(ExecutionInstanceEntity executionInstanceEntity);

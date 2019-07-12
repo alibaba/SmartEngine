@@ -36,7 +36,7 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
     @Test
     public void testInsert() {
 
-       Object o =  dao.insert(entity);
+        dao.insert(entity);
         Assert.assertNotNull(entity.getId());
     }
 
