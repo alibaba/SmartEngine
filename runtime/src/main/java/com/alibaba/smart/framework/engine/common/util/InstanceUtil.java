@@ -14,14 +14,13 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 public abstract class InstanceUtil {
     private static final ReentrantLock LOCK = new ReentrantLock();
 
-    public static List<ExecutionInstance> findActiveExecution(ProcessInstance processInstance) {
-        if (null == processInstance.getActivityInstances()) {
-            return null;
-        }
-
+    public  static   List<ExecutionInstance> findActiveExecution (ProcessInstance processInstance){
         List<ActivityInstance> activityInstances;
         LOCK.lock();
         try {
+            if (null == processInstance.getActivityInstances()) {
+                return null;
+            }
             activityInstances = new ArrayList<ActivityInstance>(processInstance.getActivityInstances());
         } finally {
             LOCK.unlock();
