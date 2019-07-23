@@ -8,7 +8,7 @@
         task_instance_id,assignee_id,assignee_type
     </sql>
 
-    <insert id="insert" parameterType="TaskAssigneeEntity"   keyProperty="id">
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity"   keyProperty="id">
         insert into se_task_assignee_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId},
         #{taskInstanceId},#{assigneeId},#{assigneeType})
@@ -28,19 +28,19 @@
         where id=#{id}
     </update>
 
-    <select id="findOne" resultType="TaskAssigneeEntity">
+    <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity">
         select
         <include refid="baseColumn"/>
         from se_task_assignee_instance where id=#{id}
     </select>
 
-    <select id="findList" resultType="TaskAssigneeEntity">
+    <select id="findList" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity">
         select
         <include refid="baseColumn"/>
         from se_task_assignee_instance where task_instance_id=#{taskInstanceId}
     </select>
 
-    <select id="findListForInstanceList" parameterType="java.util.List" resultType="TaskAssigneeEntity">
+    <select id="findListForInstanceList" parameterType="java.util.List" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity">
         select
         <include refid="baseColumn"/>
         from se_task_assignee_instance where task_instance_id in

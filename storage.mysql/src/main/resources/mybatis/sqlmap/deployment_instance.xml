@@ -12,10 +12,18 @@
     <sql id="condition">
         <where>
             <if test="id != null">and id = #{id}</if>
-            <if test="processDefinitionVersion != null">and process_definition_version = #{processDefinitionVersion}</if>
-            <if test="processDefinitionType != null">and process_definition_type = #{processDefinitionType}</if>
-            <if test="processDefinitionCode != null">and process_definition_code = #{processDefinitionCode}</if>
-            <if test="processDefinitionName != null">and process_definition_name = #{processDefinitionName}</if>
+            <if test="processDefinitionVersion != null">and process_definition_version =
+                #{processDefinitionVersion}
+            </if>
+            <if test="processDefinitionType != null">and process_definition_type =
+                #{processDefinitionType}
+            </if>
+            <if test="processDefinitionCode != null">and process_definition_code =
+                #{processDefinitionCode}
+            </if>
+            <if test="processDefinitionName != null">and process_definition_name =
+                #{processDefinitionName}
+            </if>
             <if test="deploymentUserId != null">and deployment_user_id = #{deploymentUserId}</if>
             <if test="deploymentStatus != null">and deployment_status = #{deploymentStatus}</if>
             <if test="logicStatus != null">and logic_status = #{logicStatus}</if>
@@ -23,9 +31,12 @@
         </where>
     </sql>
 
-    <insert id="insert" parameterType="DeploymentInstanceEntity"  keyProperty="id">
-        insert into  se_deployment_instance(<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{processDefinitionId}, #{processDefinitionVersion},#{processDefinitionType},#{processDefinitionCode},
+    <insert id="insert"
+            parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity"
+            keyProperty="id">
+        insert into se_deployment_instance(<include refid="baseColumn"/>)
+        values (#{id}, now(), now(), #{processDefinitionId},
+        #{processDefinitionVersion},#{processDefinitionType},#{processDefinitionCode},
         #{processDefinitionName},#{processDefinitionDesc},#{processDefinitionContent},
         #{deploymentUserId},#{deploymentStatus} , #{logicStatus})
     </insert>
@@ -34,42 +45,61 @@
         delete from se_deployment_instance where id=#{id}
     </delete>
 
-    <update id="update"  parameterType="DeploymentInstanceEntity">
+    <update id="update"
+            parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity">
         update se_deployment_instance set
         gmt_modified = now()
-        <if test="processDefinitionId != null"> ,process_definition_id = #{processDefinitionId}</if>
-        <if test="processDefinitionVersion != null"> ,process_definition_version = #{processDefinitionVersion}</if>
-        <if test="processDefinitionType != null"> ,process_definition_type = #{processDefinitionType}</if>
-        <if test="processDefinitionCode != null"> , process_definition_code = #{processDefinitionCode}</if>
-        <if test="processDefinitionName != null"> ,process_definition_name = #{processDefinitionName}</if>
-        <if test="processDefinitionDesc != null"> ,process_definition_desc = #{processDefinitionDesc}</if>
-        <if test="processDefinitionContent != null"> ,process_definition_content = #{processDefinitionContent}</if>
-        <if test="deploymentUserId != null"> ,deployment_user_id = #{deploymentUserId}</if>
-        <if test="deploymentStatus != null"> ,deployment_status = #{deploymentStatus}</if>
-        <if test="logicStatus != null"> ,logic_status = #{logicStatus}</if>
+        <if test="processDefinitionId != null">,process_definition_id = #{processDefinitionId}</if>
+        <if test="processDefinitionVersion != null">,process_definition_version =
+            #{processDefinitionVersion}
+        </if>
+        <if test="processDefinitionType != null">,process_definition_type =
+            #{processDefinitionType}
+        </if>
+        <if test="processDefinitionCode != null">, process_definition_code =
+            #{processDefinitionCode}
+        </if>
+        <if test="processDefinitionName != null">,process_definition_name =
+            #{processDefinitionName}
+        </if>
+        <if test="processDefinitionDesc != null">,process_definition_desc =
+            #{processDefinitionDesc}
+        </if>
+        <if test="processDefinitionContent != null">,process_definition_content =
+            #{processDefinitionContent}
+        </if>
+        <if test="deploymentUserId != null">,deployment_user_id = #{deploymentUserId}</if>
+        <if test="deploymentStatus != null">,deployment_status = #{deploymentStatus}</if>
+        <if test="logicStatus != null">,logic_status = #{logicStatus}</if>
 
         where id=#{id}
     </update>
 
-    <select id="findOne" resultType="DeploymentInstanceEntity">
+    <select id="findOne"
+            resultType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from  se_deployment_instance where id=#{id}
+        from se_deployment_instance where id=#{id}
     </select>
 
 
-    <select id="findByPage" resultType="DeploymentInstanceEntity" parameterType="DeploymentInstanceQueryParam">
+    <select id="findByPage"
+            resultType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity"
+            parameterType="com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam">
         select
         <include refid="baseColumn"/>
-        from  se_deployment_instance
+        from se_deployment_instance
         <include refid="condition"/>
         order by gmt_modified desc
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
 
     </select>
 
-    <select id="count" resultType="int" parameterType="DeploymentInstanceQueryParam">
-        select count(1) from  se_deployment_instance  <include refid="condition"/> <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+    <select id="count" resultType="int"
+            parameterType="com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam">
+        select count(1) from se_deployment_instance
+        <include refid="condition"/>
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
     </select>
 
 
