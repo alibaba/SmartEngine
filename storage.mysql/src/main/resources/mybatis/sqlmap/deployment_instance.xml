@@ -23,7 +23,7 @@
         </where>
     </sql>
 
-    <insert id="insert" parameterType="DeploymentInstanceEntity"  keyProperty="id">
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity"  keyProperty="id">
         insert into  se_deployment_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionId}, #{processDefinitionVersion},#{processDefinitionType},#{processDefinitionCode},
         #{processDefinitionName},#{processDefinitionDesc},#{processDefinitionContent},
@@ -34,7 +34,7 @@
         delete from se_deployment_instance where id=#{id}
     </delete>
 
-    <update id="update"  parameterType="DeploymentInstanceEntity">
+    <update id="update"  parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity">
         update se_deployment_instance set
         gmt_modified = now()
         <if test="processDefinitionId != null"> ,process_definition_id = #{processDefinitionId}</if>
@@ -51,14 +51,14 @@
         where id=#{id}
     </update>
 
-    <select id="findOne" resultType="DeploymentInstanceEntity">
+    <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity">
         select
         <include refid="baseColumn"/>
         from  se_deployment_instance where id=#{id}
     </select>
 
 
-    <select id="findByPage" resultType="DeploymentInstanceEntity" parameterType="DeploymentInstanceQueryParam">
+    <select id="findByPage" resultType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity" parameterType="com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam">
         select
         <include refid="baseColumn"/>
         from  se_deployment_instance
@@ -68,7 +68,7 @@
 
     </select>
 
-    <select id="count" resultType="int" parameterType="DeploymentInstanceQueryParam">
+    <select id="count" resultType="int" parameterType="com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam">
         select count(1) from  se_deployment_instance  <include refid="condition"/> <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
     </select>
 

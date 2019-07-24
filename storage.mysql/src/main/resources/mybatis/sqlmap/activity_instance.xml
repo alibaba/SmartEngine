@@ -8,7 +8,7 @@
         process_instance_id,process_definition_id_and_version,process_definition_activity_id
     </sql>
 
-    <insert id="insert" parameterType="ActivityInstanceEntity"  keyProperty="id">
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity"  keyProperty="id">
         insert into  se_activity_instance(<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},
         #{processDefinitionActivityId})
@@ -28,13 +28,13 @@
             where id=#{id}
         </update> -->
 
-    <select id="findOne" resultType="ActivityInstanceEntity">
+    <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity">
         select
         <include refid="baseColumn"/>
         from  se_activity_instance where id=#{id}
     </select>
 
-    <select id="findAllActivity" resultType="ActivityInstanceEntity">
+    <select id="findAllActivity" resultType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity">
         select
         <include refid="baseColumn"/>
         from  se_activity_instance where process_instance_id=#{processInstanceId}

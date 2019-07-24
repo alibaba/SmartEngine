@@ -8,7 +8,7 @@
          execution_instance_id,field_key,field_type,field_long_value,field_double_value,field_string_value
     </sql>
 
-    <insert id="insert" parameterType="VariableInstanceEntity"   keyProperty="id">
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity"   keyProperty="id">
         insert into se_variable_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processInstanceId}, #{executionInstanceId},
         #{fieldKey},#{fieldType},#{fieldLongValue},#{fieldDoubleValue},#{fieldStringValue} )
@@ -18,7 +18,7 @@
         delete from se_variable_instance where id=#{id}
     </delete>
 
-    <update id="update" parameterType="VariableInstanceEntity">
+    <update id="update" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity">
         update se_variable_instance
         <set>
             gmt_modified=now()
@@ -29,13 +29,13 @@
         where id=#{id}
     </update>
 
-    <select id="findOne" resultType="VariableInstanceEntity">
+    <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity">
         select
         <include refid="baseColumn"/>
         from se_variable_instance where id=#{id}
     </select>
 
-    <select id="findList" resultType="VariableInstanceEntity">
+    <select id="findList" resultType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity">
         select
         <include refid="baseColumn"/>
         from  se_variable_instance
