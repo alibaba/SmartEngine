@@ -1,5 +1,11 @@
 ## ChangeLog
 
+## version 1.6.5.6
+### NEW FEATURE
+1. FIX https://github.com/mybatis/spring-boot-starter/issues/278。
+
+
+
 ## version 1.6.5.5
 ### NEW FEATURE
 1. 删除 useGeneratedKeys="true" 特性，以兼容某些中间件。
