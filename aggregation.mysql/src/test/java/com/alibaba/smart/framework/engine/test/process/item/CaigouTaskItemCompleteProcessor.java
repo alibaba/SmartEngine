@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test.process;
+package com.alibaba.smart.framework.engine.test.process.item;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +18,7 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
 import com.alibaba.smart.framework.engine.service.param.query.TaskItemInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.TaskItemQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import com.alibaba.smart.framework.engine.test.process.FullMultiInstanceTest;
 
 
 public class CaigouTaskItemCompleteProcessor implements TaskItemCompleteProcessor {
