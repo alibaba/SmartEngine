@@ -5,7 +5,7 @@
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
         <!-- 测试版本增加该配置，可以打印sql语句及参数，正式发布前务必注释掉 -->
-        <!--<setting name="logImpl" value="STDOUT_LOGGING"/>-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>
 
     <typeAliases>
