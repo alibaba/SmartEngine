@@ -5,7 +5,7 @@ CREATE TABLE `se_deployment_instance` (
   `process_definition_id` varchar(255) NOT NULL COMMENT '流程定义 id',
   `process_definition_version` varchar(255) DEFAULT NULL COMMENT '流程定义版本',
   `process_definition_type` varchar(255) DEFAULT NULL COMMENT '流程定义类型',
-  `process_definition_code` varchar(255) DEFAULT NULL COMMENT '流程定义 code,不作用与逻辑',
+  `process_definition_code` varchar(255) DEFAULT NULL COMMENT '流程定义 code,不作用于逻辑',
   `process_definition_name` varchar(255) DEFAULT NULL COMMENT '流程定义名称',
   `process_definition_desc` varchar(255) DEFAULT NULL COMMENT '流程定义描述',
   `process_definition_content` mediumtext NOT NULL COMMENT '流程定义文本内容',

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.PersisterStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
@@ -27,7 +26,6 @@ import static org.junit.Assert.assertTrue;
 
 public class AliPayForeignExchange_ExceptionEndEventTest {
 
-    private PersisterStrategy persisterStrategy = new AliPayPersisterStrategy();
 
     private long orderId = 123456L;
 

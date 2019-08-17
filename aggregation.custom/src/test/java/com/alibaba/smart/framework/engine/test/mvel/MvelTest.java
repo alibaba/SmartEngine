@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.PersisterStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
@@ -19,7 +18,6 @@ import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.test.AliPayIdGenerator;
-import com.alibaba.smart.framework.engine.test.AliPayPersisterStrategy;
 
 import org.junit.After;
 import org.junit.Assert;

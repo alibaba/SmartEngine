@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
@@ -21,7 +22,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-
+import static org.junit.Assert.assertEquals;
 
 public class MultiValueAndEventListenerTest {
 
@@ -39,7 +40,7 @@ public class MultiValueAndEventListenerTest {
             .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryService
             .deploy("MultiValueAndEventListenerTest.bpmn.xml");
-        Assert.assertEquals(5,processDefinition.getProcess().getElements().size());
+        Assert.assertEquals(7,processDefinition.getProcess().getElements().size());
 
         ProcessCommandService processService = smartEngine.getProcessCommandService();
 
@@ -50,14 +51,32 @@ public class MultiValueAndEventListenerTest {
             processDefinition.getId(), processDefinition.getVersion(),
             request);
 
-        Assert.assertTrue(processInstance.getStatus().equals(InstanceStatus.completed));
-
-
 
         Assert.assertEquals(MultiValueAndEventListenerDelegation.getCounter().longValue(),1L);
 
         Assert.assertEquals(MultiValueAndEventListenerTest.trace.get(0),"world");
         Assert.assertEquals(MultiValueAndEventListenerTest.trace.get(1),"world");
+
+
+        PersisterSession.create().putProcessInstance(processInstance);
+
+        List<ExecutionInstance> executionInstanceList =smartEngine.getExecutionQueryService().findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(1, executionInstanceList.size());
+        ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
+        assertEquals("receive", firstExecutionInstance.getProcessDefinitionActivityId());
+
+        request = new HashMap<String, Object>();
+        request.put("hello", "world1");
+
+        ProcessInstance  processInstance1 = smartEngine.getExecutionCommandService().signal(firstExecutionInstance.getInstanceId(), request);
+
+        Assert.assertEquals(MultiValueAndEventListenerTest.trace.get(2),"world1");
+        Assert.assertEquals(MultiValueAndEventListenerTest.trace.get(3),"world1");
+
+        Assert.assertTrue(processInstance1.getStatus().equals(InstanceStatus.completed));
+
+
+
 
     }
 
