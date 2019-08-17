@@ -71,7 +71,7 @@ public interface ProcessEngineConfiguration {
     LockStrategy getLockStrategy();
 
     /**
-     * 服务于 MongoDB 模式，当前。
+     * 当前服务于 MongoDB 模式,可选。
      *
      * @param tableSchemaStrategy
      */
