@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 public class DefaultMultiInstanceCounter implements MultiInstanceCounter {
 
 
+    @Override
     public Long countPassedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
                                               SmartEngine smartEngine) {
       TaskQueryService taskQueryService = smartEngine.getTaskQueryService();

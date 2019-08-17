@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ServiceOrchestrationJavaDelegation implements JavaDelegation{
 
@@ -18,8 +19,14 @@ public class ServiceOrchestrationJavaDelegation implements JavaDelegation{
     @Getter
     private  static  List<String> arrayList = new ArrayList<String>();
 
+    @Autowired
+    private  Service  aService;
+
     @Override
     public Object execute(ExecutionContext executionContext) {
+
+
+
         Map<String, Object> request = executionContext.getRequest();
             if(null !=  request){
                 Object o = request.get("input");
@@ -31,7 +38,10 @@ public class ServiceOrchestrationJavaDelegation implements JavaDelegation{
             }
 
 
-            return null;
+        aService.invoke(request);
+
+
+         return null;
     }
 
 }

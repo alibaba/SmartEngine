@@ -1,7 +1,10 @@
 package com.alibaba.smart.framework.engine.test;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.PersisterStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
@@ -20,17 +23,12 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class AliPayForeignExchangeTest {
 
-    private PersisterStrategy persisterStrategy = new AliPayPersisterStrategy();
 
     private long orderId = 123456L;
 
