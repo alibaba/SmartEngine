@@ -54,8 +54,12 @@ public class MultiValueAndEventListenerTest {
 
         Assert.assertEquals(MultiValueAndEventListenerDelegation.getCounter().longValue(),1L);
 
-        Assert.assertEquals(MultiValueAndEventListenerTest.trace.get(0),"world");
-        Assert.assertEquals(MultiValueAndEventListenerTest.trace.get(1),"world");
+        List<String> trace = MultiValueAndEventListenerTest.trace;
+        Assert.assertEquals(3,trace.size());
+
+        Assert.assertEquals(trace.get(0),"world");
+        Assert.assertEquals(trace.get(1),"world");
+        Assert.assertEquals(trace.get(2),"world");
 
 
         PersisterSession.create().putProcessInstance(processInstance);
@@ -69,9 +73,9 @@ public class MultiValueAndEventListenerTest {
         request.put("hello", "world1");
 
         ProcessInstance  processInstance1 = smartEngine.getExecutionCommandService().signal(firstExecutionInstance.getInstanceId(), request);
+        Assert.assertEquals(4,trace.size());
 
-        Assert.assertEquals(MultiValueAndEventListenerTest.trace.get(2),"world1");
-        Assert.assertEquals(MultiValueAndEventListenerTest.trace.get(3),"world1");
+        Assert.assertEquals(trace.get(3),"world1");
 
         Assert.assertTrue(processInstance1.getStatus().equals(InstanceStatus.completed));
 
