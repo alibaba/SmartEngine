@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression;
 
-import com.alibaba.smart.framework.engine.model.assembly.Condition;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractPerformable;

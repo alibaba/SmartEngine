@@ -6,8 +6,15 @@ import java.util.List;
  * @author pengziran
  * Created by pengziran on 01/08/2017.
  */
-public interface Element extends BaseElement,Indentity,Invocable{
+public interface Element extends BaseElement{
+    /**
+     * 获取元素ID
+     *
+     * @return 元素ID
+     */
+    String getId();
 
+    void setId(String id);
     /**
      * 获取扩展
      * @return Extentions

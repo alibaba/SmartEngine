@@ -41,7 +41,7 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
 
     @Override
     protected MultiInstanceLoopCharacteristics parseModel(XMLStreamReader reader, ParseContext context)
-        throws ParseException, XMLStreamException {
+         {
         MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = new MultiInstanceLoopCharacteristics();
         multiInstanceLoopCharacteristics.setSequential(this.getBoolean(reader, "isSequential", false));
         return multiInstanceLoopCharacteristics;

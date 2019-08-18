@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.service.param.query;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
@@ -10,7 +11,7 @@ import lombok.ToString;
  * @date 2017/09/22
  */
 @Data
-@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class DeploymentInstanceQueryParam extends PaginateQueryParam {
 
     private Long id;
