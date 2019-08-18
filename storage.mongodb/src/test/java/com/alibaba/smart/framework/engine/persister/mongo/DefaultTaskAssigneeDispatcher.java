@@ -16,7 +16,7 @@ public class DefaultTaskAssigneeDispatcher implements TaskAssigneeDispatcher {
 
     @Override
     public List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity,Map<String,Object> request) {
-        List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList= new ArrayList();
+        List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList= new ArrayList<TaskAssigneeCandidateInstance>();
 
         TaskAssigneeCandidateInstance taskAssigneeCandidateInstance = new TaskAssigneeCandidateInstance();
         taskAssigneeCandidateInstance.setAssigneeId("1");

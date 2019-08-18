@@ -3,12 +3,14 @@ package com.alibaba.smart.framework.engine.instance.impl;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:21.
  */
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class DefaultDeploymentInstance extends  AbstractLifeCycleInstance implements DeploymentInstance {
 
     private  String processDefinitionId;

@@ -7,12 +7,15 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.Condi
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:27.
  */
 
 @Data
+@EqualsAndHashCode(callSuper = true)
+
 public class CompletionCondition extends AbstractBaseElement {
     public final static String ACTION_ABORT="abort";
     public final static String ACTION_CONTINUE="continue";

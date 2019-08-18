@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇
  */
 public abstract class ContextBoundedJavaDelegation implements JavaDelegation {
 

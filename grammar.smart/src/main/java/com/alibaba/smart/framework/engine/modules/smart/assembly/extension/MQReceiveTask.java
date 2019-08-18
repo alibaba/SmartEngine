@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 
 import com.taobao.metaq.client.MetaPushConsumer;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,8 @@ import org.slf4j.LoggerFactory;
  * Created by 高海军 帝奇 74394 on 2017 October  15:59.
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
+
 public class MQReceiveTask extends AbstractActivity {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MQReceiveTask.class);
