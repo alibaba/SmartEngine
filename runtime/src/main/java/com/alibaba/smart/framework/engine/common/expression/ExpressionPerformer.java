@@ -35,11 +35,11 @@ public abstract class ExpressionPerformer {
                 //TODO ettear 不够优雅，后续结合Scope再一起优化
                 privateContext.putAll(requestContext);
             }
-            Object eval = expressionEvaluator.eval(expression, privateContext);
+            Object result = expressionEvaluator.eval(expression, privateContext);
 
-            LOGGER.debug("expressionEvaluator.eval result is {}, each param is {} {} ",eval,expression,privateContext);
+            LOGGER.debug("expressionEvaluator.result result is {}, each param is {} {} ",result,expression,privateContext);
 
-            return eval;
+            return result;
         } else {
             return null;
         }

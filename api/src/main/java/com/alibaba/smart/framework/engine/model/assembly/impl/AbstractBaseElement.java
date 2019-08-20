@@ -8,7 +8,6 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
  */
 public abstract class AbstractBaseElement implements BaseElement {
 
-    private static final long serialVersionUID = -8729383608303781741L;
     private boolean unresolved = true;
 
     @Override

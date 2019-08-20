@@ -72,12 +72,12 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
 
     @Override
     public Object parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
-        QName type = reader.getName();
-        StAXArtifactParser artifactParser = this.artifactParsers.get(type);
+        QName nodeQname = reader.getName();
+        StAXArtifactParser artifactParser = this.artifactParsers.get(nodeQname);
         if (null != artifactParser) {
             return artifactParser.parse(reader, context);
         } else {
-            throw new RuntimeException("No StAXArtifactParser found for QName: " + type);
+            throw new RuntimeException("No StAXArtifactParser found for QName: " + nodeQname);
         }
     }
 
@@ -88,25 +88,28 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         if (null == attributeName) {
             return null;
         }
-        QName type = reader.getName();
+        QName currentNode = reader.getName();
 
-        QName attributeType;
-        if(null==attributeName.getNamespaceURI() || "".equals(attributeName.getNamespaceURI())){
-            attributeType=new QName(type.getNamespaceURI(),attributeName.getLocalPart());
+        QName attributeQname;
+        String namespaceURI = attributeName.getNamespaceURI();
+        String localPart = attributeName.getLocalPart();
+        String currentNodeNamespaceURI = currentNode.getNamespaceURI();
+        if(StringUtil.isEmpty(namespaceURI)){
+            attributeQname=new QName(currentNodeNamespaceURI, localPart);
         }else{
-            attributeType=attributeName;
+            attributeQname=attributeName;
         }
-        StAXAttributeParser artifactParser = this.attributeParsers.get(attributeType);
-        if (null == artifactParser) {
-            artifactParser = this.attributeParsers.get(type);
+        StAXAttributeParser attributeParser = this.attributeParsers.get(attributeQname);
+        if (null == attributeParser) {
+            attributeParser = this.attributeParsers.get(currentNode);
         }
-        if (null != artifactParser) {
-            return artifactParser.parse(attributeName, reader, context);
-        } else if (StringUtil.equals(type.getNamespaceURI(), attributeName.getNamespaceURI())) {
-            return reader.getAttributeValue(attributeName.getNamespaceURI(), attributeName.getLocalPart());
+        if (null != attributeParser) {
+            return attributeParser.parse(attributeName, reader, context);
+        } else if (StringUtil.equals(currentNodeNamespaceURI, namespaceURI)) {
+            return reader.getAttributeValue(namespaceURI, localPart);
         } else {
             return null; //TODO XXX
-            //throw new RuntimeException("No artifactParser found for QName: " + type);
+            //throw new RuntimeException("No attributeParser found for QName: " + currentNode);
         }
     }
 

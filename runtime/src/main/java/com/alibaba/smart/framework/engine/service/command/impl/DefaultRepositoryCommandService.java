@@ -142,7 +142,9 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 throw new IllegalArgumentException("Cant find any resources for the uri:"+uri);
             }
 
-            return parseStream(inputStream);
+            ProcessDefinition processDefinition = parseStream(inputStream);
+            return processDefinition;
+
         } catch (Exception e) {
             throw new DeployException("Read process definition file[" + uri + "] failure!", e);
         } finally {
@@ -170,7 +172,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         } while (reader.hasNext());
 
         if (findStart) {
-            return (ProcessDefinition) this.assemblyParserExtensionPoint.parse(reader, context);
+            Object parseResult = this.assemblyParserExtensionPoint.parse(reader, context);
+            return (ProcessDefinition)parseResult;
         } else {
             throw new DeployException("Read process definition file failure! Not found start element!");
         }

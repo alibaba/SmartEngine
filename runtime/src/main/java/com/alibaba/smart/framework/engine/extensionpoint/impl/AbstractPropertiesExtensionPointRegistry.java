@@ -45,7 +45,8 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
 
         try {
             classLoader = ClassLoaderUtil.getStandardClassLoader();
-            extensionConfigFiles = classLoader.getResources("smart/" + extensionName + ".properties");
+            String resourceName = "smart/" + extensionName + ".properties";
+            extensionConfigFiles = classLoader.getResources(resourceName);
         } catch (IOException e) {
             throw new EngineException("Scan config file " + extensionName + " failure!", e);
         }
