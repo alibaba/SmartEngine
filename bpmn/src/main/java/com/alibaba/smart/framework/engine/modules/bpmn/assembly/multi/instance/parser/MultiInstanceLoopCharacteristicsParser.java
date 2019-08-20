@@ -21,7 +21,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
  * Created by 高海军 帝奇 74394 on 2017 September  21:01.
  */
 public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParser<MultiInstanceLoopCharacteristics>
-    implements ElementParser<MultiInstanceLoopCharacteristics> {
+      {
 
     public MultiInstanceLoopCharacteristicsParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

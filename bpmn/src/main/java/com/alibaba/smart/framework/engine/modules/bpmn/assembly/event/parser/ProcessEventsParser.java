@@ -19,7 +19,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 /**
  * Created by dongdongzdd on 16/9/20.
  */
-public class ProcessEventsParser extends AbstractElementParser<ProcessEvents> implements ElementParser<ProcessEvents> {
+public class ProcessEventsParser extends AbstractElementParser<ProcessEvents>  {
 
     public ProcessEventsParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

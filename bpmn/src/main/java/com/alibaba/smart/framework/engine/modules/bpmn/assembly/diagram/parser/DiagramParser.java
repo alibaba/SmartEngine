@@ -15,7 +15,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 /**
  * Created by 高海军 帝奇 74394 on 2017 August  10:02.
  */
-public class DiagramParser extends AbstractElementParser<Diagram> implements ElementParser<Diagram> {
+public class DiagramParser extends AbstractElementParser<Diagram>   {
 
     public final static QName type = new QName(BpmnNameSpaceConstant.BPMNDI_NAME_SPACE, "BPMNDiagram");
 

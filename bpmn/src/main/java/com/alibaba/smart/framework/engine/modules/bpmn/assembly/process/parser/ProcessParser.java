@@ -14,7 +14,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProcessParser extends AbstractElementParser<Process> implements ElementParser<Process> {
+public class ProcessParser extends AbstractElementParser<Process>  {
 
     public ProcessParser(ExtensionPointRegistry extensionPointRegistry) {
 

@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
-public class StartEventParser extends AbstractBpmnActivityParser<StartEvent> implements ElementParser<StartEvent> {
+public class StartEventParser extends AbstractBpmnActivityParser<StartEvent>   {
 
     public StartEventParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

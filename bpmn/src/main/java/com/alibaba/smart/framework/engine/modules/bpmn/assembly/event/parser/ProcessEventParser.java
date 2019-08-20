@@ -14,7 +14,7 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * Created by dongdongzdd on 16/9/20.
  */
-public class ProcessEventParser extends AbstractElementParser<ProcessEvent> implements ElementParser<ProcessEvent> {
+public class ProcessEventParser extends AbstractElementParser<ProcessEvent>  {
 
     public ProcessEventParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

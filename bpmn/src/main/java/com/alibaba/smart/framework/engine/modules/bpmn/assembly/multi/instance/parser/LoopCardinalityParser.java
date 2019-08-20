@@ -17,7 +17,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
  * Created by ettear on 15/10/2017.
  */
 public class LoopCardinalityParser extends AbstractElementParser<LoopCardinality>
-    implements ElementParser<LoopCardinality> {
+      {
 
     public LoopCardinalityParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

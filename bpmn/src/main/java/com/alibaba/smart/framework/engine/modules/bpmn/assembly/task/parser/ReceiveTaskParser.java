@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
-public class ReceiveTaskParser extends AbstractBpmnActivityParser<ReceiveTask> implements ElementParser<ReceiveTask> {
+public class ReceiveTaskParser extends AbstractBpmnActivityParser<ReceiveTask>  {
 
     public ReceiveTaskParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

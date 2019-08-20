@@ -14,7 +14,7 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * Created by dongdongzdd on 16/9/8.
  */
-public class ActionParser extends AbstractElementParser<Action> implements ElementParser<Action> {
+public class ActionParser extends AbstractElementParser<Action>  {
 
 
     public ActionParser(ExtensionPointRegistry extensionPointRegistry) {

@@ -11,7 +11,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-public class EndEventParser extends AbstractBpmnActivityParser<EndEvent> implements ElementParser<EndEvent> {
+public class EndEventParser extends AbstractBpmnActivityParser<EndEvent>   {
 
     public EndEventParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

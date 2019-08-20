@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 /**
  * Created by 高海军 帝奇 74394 on 2017 August  10:02.
  */
-public class DocumentationParser extends AbstractElementParser<Documentation> implements ElementParser<Documentation> {
+public class DocumentationParser extends AbstractElementParser<Documentation>   {
 
 
     public DocumentationParser(ExtensionPointRegistry extensionPointRegistry) {

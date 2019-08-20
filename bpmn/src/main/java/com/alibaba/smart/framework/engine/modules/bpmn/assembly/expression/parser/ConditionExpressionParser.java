@@ -13,7 +13,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class ConditionExpressionParser extends AbstractElementParser<ConditionExpression>
-    implements ElementParser<ConditionExpression> {
+      {
 
     public ConditionExpressionParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

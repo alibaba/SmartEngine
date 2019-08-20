@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
  * Created by ettear on 15/10/2017.
  */
 public class LoopDataInputRefParser extends AbstractElementParser<LoopDataInputRef>
-    implements ElementParser<LoopDataInputRef> {
+      {
 
     public LoopDataInputRefParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

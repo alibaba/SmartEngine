@@ -15,14 +15,9 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-public abstract class AbstractElementParser<M extends BaseElement>
-    implements ElementParser<M> {
+public abstract class AbstractElementParser<M extends BaseElement> implements ElementParser<M> {
 
 
-
-    /**
-     * 扩展点注册器
-     */
     private ExtensionPointRegistry extensionPointRegistry;
     private XmlParserExtensionPoint xmlParserExtensionPoint;
 
@@ -40,10 +35,9 @@ public abstract class AbstractElementParser<M extends BaseElement>
 
     }
 
-    //@Override
-    //public void resolve(M model, ParseContext context) throws ResolveException {
-    //    model.setUnresolved(false);
-    //}
+
+
+    //HELPER
 
     protected String getString(XMLStreamReader reader, String name) {
         return reader.getAttributeValue((String) null, name);
@@ -63,21 +57,6 @@ public abstract class AbstractElementParser<M extends BaseElement>
         }
     }
 
-    public static QName getValueAsQName(XMLStreamReader reader, String value) {
-        if (value != null) {
-            int index = value.indexOf(58);
-            String prefix = index == -1 ? "" : value.substring(0, index);
-            String localName = index == -1 ? value : value.substring(index + 1);
-            String ns = reader.getNamespaceContext().getNamespaceURI(prefix);
-            if (ns == null) {
-                ns = "";
-            }
-
-            return new QName(ns, localName, prefix);
-        } else {
-            return null;
-        }
-    }
 
     protected boolean nextChildElement(XMLStreamReader reader) throws XMLStreamException {
         while (reader.hasNext()) {
@@ -96,12 +75,7 @@ public abstract class AbstractElementParser<M extends BaseElement>
         return false;
     }
 
-    /**
-     * Advance the stream to the next END_ELEMENT event skipping any nested content.
-     *
-     * @param reader the reader to advance
-     * @throws XMLStreamException if there was a problem reading the stream
-     */
+
     protected void skipToEndElement(XMLStreamReader reader) throws XMLStreamException {
         int depth = 0;
 

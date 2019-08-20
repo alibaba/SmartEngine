@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
-public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> implements ElementParser<SequenceFlow> {
+public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
     private final static String DEFAULT_ACTION = PvmEventConstant.TRANSITION_EXECUTE.name();
 
     public SequenceFlowParser(ExtensionPointRegistry extensionPointRegistry) {
