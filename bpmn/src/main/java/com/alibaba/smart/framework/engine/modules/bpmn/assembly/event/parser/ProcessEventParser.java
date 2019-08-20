@@ -5,7 +5,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEve
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -14,7 +14,7 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * Created by dongdongzdd on 16/9/20.
  */
-public class ProcessEventParser extends AbstractStAXXmlParser<ProcessEvent> implements ElementParser<ProcessEvent> {
+public class ProcessEventParser extends AbstractElementParser<ProcessEvent> implements ElementParser<ProcessEvent> {
 
     public ProcessEventParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -46,5 +46,7 @@ public class ProcessEventParser extends AbstractStAXXmlParser<ProcessEvent> impl
         return event;
 
     }
+
+
 
 }

@@ -16,13 +16,13 @@ import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.m
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AttributeParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
 /**
  * @author ettear
  * Created by ettear on 15/10/2017.
  */
-public class CollectionParser extends AbstractStAXXmlParser<Collection> implements
+public class CollectionParser extends AbstractElementParser<Collection> implements
     AttributeParser<Collection> {
 
     public CollectionParser(

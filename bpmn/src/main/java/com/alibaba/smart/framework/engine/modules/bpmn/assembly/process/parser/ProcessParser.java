@@ -6,7 +6,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Process;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -14,7 +14,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProcessParser extends AbstractStAXXmlParser<Process> implements ElementParser<Process> {
+public class ProcessParser extends AbstractElementParser<Process> implements ElementParser<Process> {
 
     public ProcessParser(ExtensionPointRegistry extensionPointRegistry) {
 

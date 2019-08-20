@@ -10,12 +10,12 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.diagram.Diagram;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 August  10:02.
  */
-public class DiagramParser extends AbstractStAXXmlParser<Diagram> implements ElementParser<Diagram> {
+public class DiagramParser extends AbstractElementParser<Diagram> implements ElementParser<Diagram> {
 
     public final static QName type = new QName(BpmnNameSpaceConstant.BPMNDI_NAME_SPACE, "BPMNDiagram");
 

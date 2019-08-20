@@ -9,12 +9,12 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.common.Outgoing;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 August  10:02.
  */
-public class OutgoingParser extends AbstractStAXXmlParser<Outgoing> implements ElementParser<Outgoing> {
+public class OutgoingParser extends AbstractElementParser<Outgoing> implements ElementParser<Outgoing> {
 
 
     public OutgoingParser(ExtensionPointRegistry extensionPointRegistry) {

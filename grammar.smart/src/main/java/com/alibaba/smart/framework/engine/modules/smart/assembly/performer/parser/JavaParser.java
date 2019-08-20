@@ -9,13 +9,13 @@ import com.alibaba.smart.framework.engine.modules.smart.assembly.performer.Java;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-public class JavaParser extends AbstractStAXXmlParser<Java> implements
+public class JavaParser extends AbstractElementParser<Java> implements
     ElementParser<Java> {
 
     public JavaParser(ExtensionPointRegistry extensionPointRegistry) {
@@ -33,6 +33,11 @@ public class JavaParser extends AbstractStAXXmlParser<Java> implements
         java.setAction(this.getString(reader, "action"));
         this.skipToEndElement(reader);
         return java;
+    }
+
+    @Override
+    protected Java parseModel(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+        return null;
     }
 
     @Override

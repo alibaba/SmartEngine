@@ -6,13 +6,13 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.Condi
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-public class ConditionExpressionParser extends AbstractStAXXmlParser<ConditionExpression>
+public class ConditionExpressionParser extends AbstractElementParser<ConditionExpression>
     implements ElementParser<ConditionExpression> {
 
     public ConditionExpressionParser(ExtensionPointRegistry extensionPointRegistry) {

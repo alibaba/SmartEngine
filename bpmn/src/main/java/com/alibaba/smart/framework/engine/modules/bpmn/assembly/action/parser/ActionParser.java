@@ -5,7 +5,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.action.Action;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -14,7 +14,7 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * Created by dongdongzdd on 16/9/8.
  */
-public class ActionParser extends AbstractStAXXmlParser<Action> implements ElementParser<Action> {
+public class ActionParser extends AbstractElementParser<Action> implements ElementParser<Action> {
 
 
     public ActionParser(ExtensionPointRegistry extensionPointRegistry) {
