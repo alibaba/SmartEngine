@@ -12,14 +12,14 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvents;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
+import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
 /**
  * Created by dongdongzdd on 16/9/20.
  */
-public class ProcessEventsParser extends AbstractElementParser<ProcessEvents> implements StAXXmlParser<ProcessEvents> {
+public class ProcessEventsParser extends AbstractElementParser<ProcessEvents> implements ElementParser<ProcessEvents> {
 
     public ProcessEventsParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

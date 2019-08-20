@@ -9,7 +9,7 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * Created by ettear on 16-4-12.
  */
-public interface StAXXmlParser<M>  extends BaseXmlParser {
+public interface ElementParser<M>  extends BaseXmlParser {
 
     /**
      * Reads a model from an XMLStreamReader.

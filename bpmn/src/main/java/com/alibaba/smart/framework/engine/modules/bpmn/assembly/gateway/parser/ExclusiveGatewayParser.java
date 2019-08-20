@@ -7,12 +7,12 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
+import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
 public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<ExclusiveGateway> implements
-    StAXXmlParser<ExclusiveGateway> {
+    ElementParser<ExclusiveGateway> {
 
     public ExclusiveGatewayParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

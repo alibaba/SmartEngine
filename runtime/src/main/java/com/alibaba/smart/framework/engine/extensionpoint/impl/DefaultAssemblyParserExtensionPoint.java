@@ -4,7 +4,6 @@ import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.xml.parser.*;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -18,9 +17,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("rawtypes")
 public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements AssemblyParserExtensionPoint {
 
-    private Map<QName, StAXXmlParser> artifactParsers = new ConcurrentHashMap<QName, StAXXmlParser>();
+    private Map<QName, ElementParser> artifactParsers = new ConcurrentHashMap<QName, ElementParser>();
 
-    private Map<QName, StAXAttributeParser> attributeParsers = new ConcurrentHashMap<QName, StAXAttributeParser>();
+    private Map<QName, AttributeParser> attributeParsers = new ConcurrentHashMap<QName, AttributeParser>();
 
     public DefaultAssemblyParserExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -29,35 +28,35 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
     @Override
     public void start() {
 
-        for (StAXXmlParser stAXArtifactParser : artifactParsers.values()) {
+        for (ElementParser stAXArtifactParser : artifactParsers.values()) {
             stAXArtifactParser.start();
         }
-        for (StAXAttributeParser stAXAttributeParser : attributeParsers.values()) {
-            stAXAttributeParser.start();
+        for (AttributeParser attributeParser : attributeParsers.values()) {
+            attributeParser.start();
         }
 
     }
 
     @Override
     public void stop() {
-        for (StAXXmlParser stAXArtifactParser : artifactParsers.values()) {
+        for (ElementParser stAXArtifactParser : artifactParsers.values()) {
             stAXArtifactParser.stop();
         }
-        for (StAXAttributeParser stAXAttributeParser : attributeParsers.values()) {
-            stAXAttributeParser.stop();
+        for (AttributeParser attributeParser : attributeParsers.values()) {
+            attributeParser.stop();
         }
     }
 
     @Override
     protected void initExtension(ClassLoader classLoader, String extensionEntryKey, Object artifactParseObject) {
-        if (artifactParseObject instanceof StAXXmlParser) {
-            StAXXmlParser artifactParser = (StAXXmlParser) artifactParseObject;
+        if (artifactParseObject instanceof ElementParser) {
+            ElementParser artifactParser = (ElementParser) artifactParseObject;
             QName artifactType = artifactParser.getArtifactType();
             this.artifactParsers.put(artifactType, artifactParser);
             //this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
         }
-        if (artifactParseObject instanceof StAXAttributeParser) {
-            StAXAttributeParser artifactParser = (StAXAttributeParser) artifactParseObject;
+        if (artifactParseObject instanceof AttributeParser) {
+            AttributeParser artifactParser = (AttributeParser) artifactParseObject;
             this.attributeParsers.put(artifactParser.getArtifactType(), artifactParser);
             //this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
         }
@@ -71,11 +70,11 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
     @Override
     public Object parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         QName nodeQname = reader.getName();
-        StAXXmlParser artifactParser = this.artifactParsers.get(nodeQname);
+        ElementParser artifactParser = this.artifactParsers.get(nodeQname);
         if (null != artifactParser) {
             return artifactParser.parse(reader, context);
         } else {
-            throw new RuntimeException("No StAXXmlParser found for QName: " + nodeQname);
+            throw new RuntimeException("No ElementParser found for QName: " + nodeQname);
         }
     }
 
@@ -97,7 +96,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         }else{
             attributeQname=attributeName;
         }
-        StAXAttributeParser attributeParser = this.attributeParsers.get(attributeQname);
+        AttributeParser attributeParser = this.attributeParsers.get(attributeQname);
         if (null == attributeParser) {
             attributeParser = this.attributeParsers.get(currentNode);
         }

@@ -12,8 +12,8 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.C
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.InputDataItem;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopCollection;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
+import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
@@ -21,7 +21,7 @@ import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
  * Created by 高海军 帝奇 74394 on 2017 September  21:01.
  */
 public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParser<MultiInstanceLoopCharacteristics>
-    implements StAXXmlParser<MultiInstanceLoopCharacteristics> {
+    implements ElementParser<MultiInstanceLoopCharacteristics> {
 
     public MultiInstanceLoopCharacteristicsParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

@@ -10,7 +10,7 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * Created by ettear on 16-4-12.
  */
-public interface StAXAttributeParser<M> extends BaseXmlParser {
+public interface AttributeParser<M> extends BaseXmlParser {
 
     /**
      * Reads a model from an XMLStreamReader.

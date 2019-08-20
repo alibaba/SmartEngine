@@ -15,7 +15,7 @@ import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 /**
- * Abstract StAXXmlParser Created by ettear on 16-4-14.
+ * Abstract ElementParser Created by ettear on 16-4-14.
  */
 public abstract class AbstractStAXXmlParser<M extends BaseElement> implements LifeCycleListener{
 

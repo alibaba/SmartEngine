@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.m
 import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance
     .CompletionCheckPreparePerformable;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXAttributeParser;
+import com.alibaba.smart.framework.engine.xml.parser.AttributeParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
 
@@ -23,7 +23,7 @@ import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
  * Created by ettear on 15/10/2017.
  */
 public class CollectionParser extends AbstractStAXXmlParser<Collection> implements
-    StAXAttributeParser<Collection> {
+    AttributeParser<Collection> {
 
     public CollectionParser(
         ExtensionPointRegistry extensionPointRegistry) {

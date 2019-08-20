@@ -6,8 +6,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.InputDataItem;
+import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
  * Created by ettear on 15/10/2017.
  */
 public class InputDataItemParser extends AbstractElementParser<InputDataItem>
-    implements StAXXmlParser<InputDataItem> {
+    implements ElementParser<InputDataItem> {
 
     public InputDataItemParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

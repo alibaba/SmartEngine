@@ -10,10 +10,10 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
+import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
-public class UserTaskParser extends AbstractBpmnActivityParser<UserTask> implements StAXXmlParser<UserTask> {
+public class UserTaskParser extends AbstractBpmnActivityParser<UserTask> implements ElementParser<UserTask> {
 
     public UserTaskParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

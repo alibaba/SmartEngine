@@ -9,8 +9,8 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.ExtensionElements;
+import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 
@@ -18,7 +18,7 @@ import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
  * Extension Elements Parser Created by ettear on 16-4-14.
  */
 public class ExtensionElementsParser extends AbstractElementParser<ExtensionElements> implements
-    StAXXmlParser<ExtensionElements> {
+    ElementParser<ExtensionElements> {
 
 
     public ExtensionElementsParser(ExtensionPointRegistry extensionPointRegistry) {

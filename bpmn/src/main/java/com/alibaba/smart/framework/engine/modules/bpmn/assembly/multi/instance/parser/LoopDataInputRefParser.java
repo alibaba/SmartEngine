@@ -7,7 +7,7 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopDataInputRef;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
+import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
 
@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
  * Created by ettear on 15/10/2017.
  */
 public class LoopDataInputRefParser extends AbstractStAXXmlParser<LoopDataInputRef>
-    implements StAXXmlParser<LoopDataInputRef> {
+    implements ElementParser<LoopDataInputRef> {
 
     public LoopDataInputRefParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

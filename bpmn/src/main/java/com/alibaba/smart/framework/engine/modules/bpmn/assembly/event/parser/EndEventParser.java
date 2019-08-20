@@ -4,15 +4,14 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
+import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-public class EndEventParser extends AbstractBpmnActivityParser<EndEvent> implements StAXXmlParser<EndEvent> {
+public class EndEventParser extends AbstractBpmnActivityParser<EndEvent> implements ElementParser<EndEvent> {
 
     public EndEventParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

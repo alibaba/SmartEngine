@@ -7,15 +7,15 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.ExecutionListener;
+import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
 public class ExecutionListenerParser extends AbstractElementParser<ExecutionListener>
-    implements StAXXmlParser<ExecutionListener> {
+    implements ElementParser<ExecutionListener> {
 
     public ExecutionListenerParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

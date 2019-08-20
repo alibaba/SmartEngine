@@ -6,8 +6,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
 /**
@@ -15,7 +15,7 @@ import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
  * Created by ettear on 06/08/2017.
  */
 public abstract class AbstractElementParser<M extends BaseElement> extends AbstractStAXXmlParser<M>
-    implements StAXXmlParser<M> {
+    implements ElementParser<M> {
 
     public AbstractElementParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
