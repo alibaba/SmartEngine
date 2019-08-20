@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.modules.smart.assembly.performer.Java;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 /**
  * @author ettear

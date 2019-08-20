@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.common.Documenta
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 August  10:02.

@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.Extens
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 /**
  * Extension Elements Parser Created by ettear on 16-4-14.

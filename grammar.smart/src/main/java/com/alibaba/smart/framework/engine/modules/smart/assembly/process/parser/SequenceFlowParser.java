@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Exten
 import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 /**
  * @author ettear

@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.model.assembly.Element;
 import com.alibaba.smart.framework.engine.model.assembly.Extensions;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 /**
  * Created by ettear on 16-4-29.

@@ -15,7 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * 默认处理器扩展点 Created by ettear on 16-4-12.
  */
 @SuppressWarnings("rawtypes")
-public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements AssemblyParserExtensionPoint {
+public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements
+    XmlParserExtensionPoint {
 
     private Map<QName, ElementParser> artifactParsers = new ConcurrentHashMap<QName, ElementParser>();
 

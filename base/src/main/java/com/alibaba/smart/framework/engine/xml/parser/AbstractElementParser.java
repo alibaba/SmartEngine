@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.xml.parser.impl;
+package com.alibaba.smart.framework.engine.xml.parser;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -6,9 +6,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
-import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
@@ -27,7 +24,7 @@ public abstract class AbstractElementParser<M extends BaseElement>
      * 扩展点注册器
      */
     private ExtensionPointRegistry extensionPointRegistry;
-    private AssemblyParserExtensionPoint assemblyParserExtensionPoint;
+    private XmlParserExtensionPoint xmlParserExtensionPoint;
 
     public AbstractElementParser(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -35,7 +32,7 @@ public abstract class AbstractElementParser<M extends BaseElement>
 
     @Override
     public void start() {
-        this.assemblyParserExtensionPoint = this.extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
+        this.xmlParserExtensionPoint = this.extensionPointRegistry.getExtensionPoint(XmlParserExtensionPoint.class);
     }
 
     @Override
@@ -123,16 +120,16 @@ public abstract class AbstractElementParser<M extends BaseElement>
 
     protected Object readElement(XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {
-        AssemblyParserExtensionPoint assemblyParserExtensionPoint = this.getAssemblyParserExtensionPoint();
-        return assemblyParserExtensionPoint.parse(reader, context);
+        XmlParserExtensionPoint xmlParserExtensionPoint = this.getXmlParserExtensionPoint();
+        return xmlParserExtensionPoint.parse(reader, context);
     }
 
 
 
     protected Object readAttribute(QName attributeName,XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {
-        AssemblyParserExtensionPoint assemblyParserExtensionPoint = this.getAssemblyParserExtensionPoint();
-        return assemblyParserExtensionPoint.readAttribute(attributeName,reader, context);
+        XmlParserExtensionPoint xmlParserExtensionPoint = this.getXmlParserExtensionPoint();
+        return xmlParserExtensionPoint.readAttribute(attributeName,reader, context);
     }
 
     // GETTER & SETTER
@@ -141,8 +138,8 @@ public abstract class AbstractElementParser<M extends BaseElement>
         return extensionPointRegistry;
     }
 
-    protected AssemblyParserExtensionPoint getAssemblyParserExtensionPoint() {
-        return assemblyParserExtensionPoint;
+    protected XmlParserExtensionPoint getXmlParserExtensionPoint() {
+        return xmlParserExtensionPoint;
     }
 
     @Override

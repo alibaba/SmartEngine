@@ -47,7 +47,7 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmActivity;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
@@ -69,7 +69,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
     private ExtensionPointRegistry extensionPointRegistry;
 
-    private AssemblyParserExtensionPoint assemblyParserExtensionPoint;
+    private XmlParserExtensionPoint xmlParserExtensionPoint;
     private ProviderFactoryExtensionPoint providerFactoryExtensionPoint;
     private ProcessDefinitionContainer processContainer;
     private ExecutePolicyBehavior defaultExecutePolicyBehavior;
@@ -121,7 +121,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     @Override
     public void start() {
 
-        this.assemblyParserExtensionPoint = extensionPointRegistry.getExtensionPoint(AssemblyParserExtensionPoint.class);
+        this.xmlParserExtensionPoint = extensionPointRegistry.getExtensionPoint(XmlParserExtensionPoint.class);
         this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
         this.processContainer = extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
         this.defaultExecutePolicyBehavior=extensionPointRegistry.getExtensionPoint(ExecutePolicyBehavior.class);
@@ -172,7 +172,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         } while (reader.hasNext());
 
         if (findStart) {
-            Object parseResult = this.assemblyParserExtensionPoint.parse(reader, context);
+            Object parseResult = this.xmlParserExtensionPoint.parse(reader, context);
             return (ProcessDefinition)parseResult;
         } else {
             throw new DeployException("Read process definition file failure! Not found start element!");

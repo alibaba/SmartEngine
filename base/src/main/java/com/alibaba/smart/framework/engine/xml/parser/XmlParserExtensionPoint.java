@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * XML处理器扩展点 Created by ettear on 16-4-12.
  */
-public interface AssemblyParserExtensionPoint extends LifeCycleListener {
+public interface XmlParserExtensionPoint extends LifeCycleListener {
 
     /**
      * Reads a model from an XMLStreamReader.
