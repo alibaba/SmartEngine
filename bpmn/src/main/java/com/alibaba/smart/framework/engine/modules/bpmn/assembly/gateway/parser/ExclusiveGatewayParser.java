@@ -11,8 +11,7 @@ import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
-public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<ExclusiveGateway> implements
-    ElementParser<ExclusiveGateway> {
+public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<ExclusiveGateway>  {
 
     public ExclusiveGatewayParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

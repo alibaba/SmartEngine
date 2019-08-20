@@ -11,8 +11,7 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
-public class ParallelGatewayParser extends AbstractBpmnActivityParser<ParallelGateway> implements
-    ElementParser<ParallelGateway> {
+public class ParallelGatewayParser extends AbstractBpmnActivityParser<ParallelGateway>   {
 
     public ParallelGatewayParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

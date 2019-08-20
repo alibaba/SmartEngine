@@ -21,6 +21,16 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
     private ExtensionPointRegistry extensionPointRegistry;
     private XmlParserExtensionPoint xmlParserExtensionPoint;
 
+    // GETTER & SETTER
+
+    protected ExtensionPointRegistry getExtensionPointRegistry() {
+        return extensionPointRegistry;
+    }
+
+    protected XmlParserExtensionPoint getXmlParserExtensionPoint() {
+        return xmlParserExtensionPoint;
+    }
+
     public AbstractElementParser(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
@@ -106,15 +116,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
         return xmlParserExtensionPoint.readAttribute(attributeName,reader, context);
     }
 
-    // GETTER & SETTER
 
-    protected ExtensionPointRegistry getExtensionPointRegistry() {
-        return extensionPointRegistry;
-    }
-
-    protected XmlParserExtensionPoint getXmlParserExtensionPoint() {
-        return xmlParserExtensionPoint;
-    }
 
     @Override
     public M parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {

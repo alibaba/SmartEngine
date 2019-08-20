@@ -17,8 +17,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 /**
  * Extension Elements Parser Created by ettear on 16-4-14.
  */
-public class ExtensionElementsParser extends AbstractElementParser<ExtensionElements> implements
-    ElementParser<ExtensionElements> {
+public class ExtensionElementsParser extends AbstractElementParser<ExtensionElements>   {
 
 
     public ExtensionElementsParser(ExtensionPointRegistry extensionPointRegistry) {

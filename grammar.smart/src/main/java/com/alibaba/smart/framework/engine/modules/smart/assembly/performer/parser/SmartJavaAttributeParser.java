@@ -15,10 +15,10 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-public class JavaAttributeParser extends AbstractElementParser<Java> implements
+public class SmartJavaAttributeParser extends AbstractElementParser<Java> implements
     AttributeParser<Java> {
 
-    public JavaAttributeParser(ExtensionPointRegistry extensionPointRegistry) {
+    public SmartJavaAttributeParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 

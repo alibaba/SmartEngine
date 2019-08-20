@@ -14,8 +14,7 @@ import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 /**
  * Created by 高海军 帝奇 74394 on 2017 May  14:55.
  */
-public class CallActivityParser  extends AbstractBpmnActivityParser<CallActivity> implements
-    ElementParser<CallActivity> {
+public class CallActivityParser  extends AbstractBpmnActivityParser<CallActivity>  {
 
     public CallActivityParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

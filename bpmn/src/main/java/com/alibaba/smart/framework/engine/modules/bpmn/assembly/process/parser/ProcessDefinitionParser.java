@@ -13,8 +13,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefinition> implements
-    ElementParser<ProcessDefinition> {
+public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefinition>  {
 
     public ProcessDefinitionParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
