@@ -13,10 +13,10 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEve
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
-public class ServiceTaskParser extends AbstractBpmnActivityParser<ServiceTask> implements StAXArtifactParser<ServiceTask> {
+public class ServiceTaskParser extends AbstractBpmnActivityParser<ServiceTask> implements StAXXmlParser<ServiceTask> {
 
     public ServiceTaskParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

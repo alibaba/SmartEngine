@@ -4,15 +4,16 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-public class ConditionExpressionParser extends AbstractStAXArtifactParser<ConditionExpression> implements StAXArtifactParser<ConditionExpression> {
+public class ConditionExpressionParser extends AbstractStAXXmlParser<ConditionExpression>
+    implements StAXXmlParser<ConditionExpression> {
 
     public ConditionExpressionParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

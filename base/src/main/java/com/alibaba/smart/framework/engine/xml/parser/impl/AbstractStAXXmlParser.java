@@ -3,11 +3,9 @@ package com.alibaba.smart.framework.engine.xml.parser.impl;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.xml.parser.ArtifactParser;
 import com.alibaba.smart.framework.engine.xml.parser.AssemblyParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -17,11 +15,11 @@ import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 /**
- * Abstract StAXArtifactParser Created by ettear on 16-4-14.
+ * Abstract StAXXmlParser Created by ettear on 16-4-14.
  */
-public abstract class AbstractStAXArtifactParser<M extends BaseElement> implements LifeCycleListener, ArtifactParser<M> {
+public abstract class AbstractStAXXmlParser<M extends BaseElement> implements LifeCycleListener{
 
-//    private static final Logger          LOGGER = LoggerFactory.getLogger(AbstractStAXArtifactParser.class);
+//    private static final Logger          LOGGER = LoggerFactory.getLogger(AbstractStAXXmlParser.class);
 
 
     /**
@@ -30,7 +28,7 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
     private ExtensionPointRegistry extensionPointRegistry;
     private AssemblyParserExtensionPoint assemblyParserExtensionPoint;
 
-    public AbstractStAXArtifactParser(ExtensionPointRegistry extensionPointRegistry) {
+    public AbstractStAXXmlParser(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 
@@ -44,10 +42,10 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
 
     }
 
-    @Override
-    public void resolve(M model, ParseContext context) throws ResolveException {
-        model.setUnresolved(false);
-    }
+    //@Override
+    //public void resolve(M model, ParseContext context) throws ResolveException {
+    //    model.setUnresolved(false);
+    //}
 
     protected String getString(XMLStreamReader reader, String name) {
         return reader.getAttributeValue((String) null, name);
@@ -128,10 +126,7 @@ public abstract class AbstractStAXArtifactParser<M extends BaseElement> implemen
         return assemblyParserExtensionPoint.parse(reader, context);
     }
 
-    protected void resolveElement(Object model, ParseContext context) throws ResolveException {
-        AssemblyParserExtensionPoint assemblyParserExtensionPoint = this.getAssemblyParserExtensionPoint();
-        assemblyParserExtensionPoint.resolve(model, context);
-    }
+
 
     protected Object readAttribute(QName attributeName,XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {

@@ -4,20 +4,19 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:26.
  */
-public class CompletionConditionParser extends AbstractStAXArtifactParser<CompletionCondition>
-    implements StAXArtifactParser<CompletionCondition> {
+public class CompletionConditionParser extends AbstractStAXXmlParser<CompletionCondition>
+    implements StAXXmlParser<CompletionCondition> {
 
     public CompletionConditionParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

@@ -56,4 +56,27 @@ public class MvelTest {
         CompiledExpression executableAccessor = (CompiledExpression)serializable;
         Assert.assertNotNull(executableAccessor);
     }
+
+    //@Test
+    //public void test2() throws Exception {
+    //
+    //    String conditionText = "productId == 123 ".trim();
+    //    Serializable serializable =  MVEL.compileExpression(conditionText);
+    //    Map vars = new HashMap();
+    //    Object o = MVEL.executeExpression(serializable, vars);
+    //
+    //    boolean b = (Boolean) o;
+    //    Assert.assertFalse(b);
+    //}
+    //
+    //@Test
+    //public void test3() throws Exception {
+    //    String conditionText = "empty  == productId ".trim();
+    //    Serializable serializable =  MVEL.compileExpression(conditionText);
+    //    Map vars = new HashMap();
+    //    Object o = MVEL.executeExpression(serializable, vars);
+    //
+    //    boolean b = (Boolean) o;
+    //    Assert.assertFalse(b);
+    //}
 }

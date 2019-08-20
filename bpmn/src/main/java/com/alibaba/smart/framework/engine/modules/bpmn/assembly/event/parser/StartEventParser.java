@@ -8,10 +8,10 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.StartEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
-public class StartEventParser extends AbstractBpmnActivityParser<StartEvent> implements StAXArtifactParser<StartEvent> {
+public class StartEventParser extends AbstractBpmnActivityParser<StartEvent> implements StAXXmlParser<StartEvent> {
 
     public StartEventParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

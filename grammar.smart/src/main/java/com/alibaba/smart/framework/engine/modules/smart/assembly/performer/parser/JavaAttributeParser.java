@@ -9,13 +9,13 @@ import com.alibaba.smart.framework.engine.modules.smart.assembly.performer.Java;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXAttributeParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
 
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-public class JavaAttributeParser extends AbstractStAXArtifactParser<Java> implements
+public class JavaAttributeParser extends AbstractStAXXmlParser<Java> implements
     StAXAttributeParser<Java> {
 
     public JavaAttributeParser(ExtensionPointRegistry extensionPointRegistry) {

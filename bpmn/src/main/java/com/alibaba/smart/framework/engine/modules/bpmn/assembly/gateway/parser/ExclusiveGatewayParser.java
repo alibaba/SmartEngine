@@ -8,10 +8,11 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
-public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<ExclusiveGateway> implements StAXArtifactParser<ExclusiveGateway> {
+public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<ExclusiveGateway> implements
+    StAXXmlParser<ExclusiveGateway> {
 
     public ExclusiveGatewayParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

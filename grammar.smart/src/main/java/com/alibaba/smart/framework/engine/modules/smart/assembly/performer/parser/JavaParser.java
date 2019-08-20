@@ -7,16 +7,16 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.performer.Java;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
 
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-public class JavaParser extends AbstractStAXArtifactParser<Java> implements
-    StAXArtifactParser<Java> {
+public class JavaParser extends AbstractStAXXmlParser<Java> implements
+    StAXXmlParser<Java> {
 
     public JavaParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

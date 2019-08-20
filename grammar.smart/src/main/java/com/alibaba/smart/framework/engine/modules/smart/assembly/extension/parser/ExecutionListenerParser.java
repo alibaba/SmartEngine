@@ -8,14 +8,14 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.ExecutionListener;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
 public class ExecutionListenerParser extends AbstractElementParser<ExecutionListener>
-    implements StAXArtifactParser<ExecutionListener> {
+    implements StAXXmlParser<ExecutionListener> {
 
     public ExecutionListenerParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

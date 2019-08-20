@@ -32,5 +32,4 @@ public interface AssemblyParserExtensionPoint extends LifeCycleListener {
     Object readAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) throws ParseException,
             XMLStreamException;
 
-    void resolve(Object model, ParseContext context) throws ResolveException;
 }

@@ -9,13 +9,13 @@ import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.m
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.StAXAttributeParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXXmlParser;
 
 /**
  * @author ettear
  * Created by ettear on 15/10/2017.
  */
-public class ElementVariableParser extends AbstractStAXArtifactParser<ElementVariable> implements
+public class ElementVariableParser extends AbstractStAXXmlParser<ElementVariable> implements
     StAXAttributeParser<ElementVariable> {
 
     public ElementVariableParser(ExtensionPointRegistry extensionPointRegistry) {

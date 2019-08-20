@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.xml.parser;
 
+import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
 import javax.xml.namespace.QName;
@@ -7,9 +8,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * An artifact parser that can parse attributes from a StAX XMLStreamReader. Created by ettear on 16-4-12.
+ * Created by ettear on 16-4-12.
  */
-public interface StAXAttributeParser<M> extends ArtifactParser<M> {
+public interface StAXAttributeParser<M> extends BaseXmlParser {
 
     /**
      * Reads a model from an XMLStreamReader.

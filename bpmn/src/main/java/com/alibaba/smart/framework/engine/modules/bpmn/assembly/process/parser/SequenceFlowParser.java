@@ -10,10 +10,10 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.Condi
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 
-public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> implements StAXArtifactParser<SequenceFlow> {
+public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> implements StAXXmlParser<SequenceFlow> {
     private final static String DEFAULT_ACTION = PvmEventConstant.TRANSITION_EXECUTE.name();
 
     public SequenceFlowParser(ExtensionPointRegistry extensionPointRegistry) {

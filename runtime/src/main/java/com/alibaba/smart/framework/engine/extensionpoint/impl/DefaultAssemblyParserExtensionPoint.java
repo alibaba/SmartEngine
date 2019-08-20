@@ -18,11 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("rawtypes")
 public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements AssemblyParserExtensionPoint {
 
-    private Map<QName, StAXArtifactParser> artifactParsers = new ConcurrentHashMap<QName, StAXArtifactParser>();
+    private Map<QName, StAXXmlParser> artifactParsers = new ConcurrentHashMap<QName, StAXXmlParser>();
 
     private Map<QName, StAXAttributeParser> attributeParsers = new ConcurrentHashMap<QName, StAXAttributeParser>();
-
-    private Map<Class, ArtifactParser> resolveArtifactParsers = new ConcurrentHashMap<Class, ArtifactParser>();
 
     public DefaultAssemblyParserExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
@@ -31,7 +29,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
     @Override
     public void start() {
 
-        for (StAXArtifactParser stAXArtifactParser : artifactParsers.values()) {
+        for (StAXXmlParser stAXArtifactParser : artifactParsers.values()) {
             stAXArtifactParser.start();
         }
         for (StAXAttributeParser stAXAttributeParser : attributeParsers.values()) {
@@ -42,7 +40,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
 
     @Override
     public void stop() {
-        for (StAXArtifactParser stAXArtifactParser : artifactParsers.values()) {
+        for (StAXXmlParser stAXArtifactParser : artifactParsers.values()) {
             stAXArtifactParser.stop();
         }
         for (StAXAttributeParser stAXAttributeParser : attributeParsers.values()) {
@@ -52,16 +50,16 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
 
     @Override
     protected void initExtension(ClassLoader classLoader, String extensionEntryKey, Object artifactParseObject) {
-        if (artifactParseObject instanceof StAXArtifactParser) {
-            StAXArtifactParser artifactParser = (StAXArtifactParser) artifactParseObject;
+        if (artifactParseObject instanceof StAXXmlParser) {
+            StAXXmlParser artifactParser = (StAXXmlParser) artifactParseObject;
             QName artifactType = artifactParser.getArtifactType();
             this.artifactParsers.put(artifactType, artifactParser);
-            this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
+            //this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
         }
         if (artifactParseObject instanceof StAXAttributeParser) {
             StAXAttributeParser artifactParser = (StAXAttributeParser) artifactParseObject;
             this.attributeParsers.put(artifactParser.getArtifactType(), artifactParser);
-            this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
+            //this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
         }
     }
 
@@ -73,11 +71,11 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
     @Override
     public Object parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         QName nodeQname = reader.getName();
-        StAXArtifactParser artifactParser = this.artifactParsers.get(nodeQname);
+        StAXXmlParser artifactParser = this.artifactParsers.get(nodeQname);
         if (null != artifactParser) {
             return artifactParser.parse(reader, context);
         } else {
-            throw new RuntimeException("No StAXArtifactParser found for QName: " + nodeQname);
+            throw new RuntimeException("No StAXXmlParser found for QName: " + nodeQname);
         }
     }
 
@@ -112,18 +110,6 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
             //throw new RuntimeException("No attributeParser found for QName: " + currentNode);
         }
     }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void resolve(Object model, ParseContext context) throws ResolveException {
-        ArtifactParser artifactParser = this.resolveArtifactParsers.get(model.getClass());
-        if (null != artifactParser) {
-            artifactParser.resolve(model, context);
-        }
-    }
-
-
-
 
 
 }

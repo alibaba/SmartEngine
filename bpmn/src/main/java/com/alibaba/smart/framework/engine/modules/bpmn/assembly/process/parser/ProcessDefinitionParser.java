@@ -5,16 +5,16 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Process;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.ProcessDefinition;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.StAXArtifactParser;
+import com.alibaba.smart.framework.engine.xml.parser.StAXXmlParser;
 import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractElementParser;
-import com.alibaba.smart.framework.engine.xml.parser.impl.AbstractStAXArtifactParser;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefinition> implements StAXArtifactParser<ProcessDefinition> {
+public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefinition> implements
+    StAXXmlParser<ProcessDefinition> {
 
     public ProcessDefinitionParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
