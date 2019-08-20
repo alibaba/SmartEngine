@@ -15,7 +15,7 @@ import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.m
     .CompletionCheckPreparePerformable;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AttributeParser;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 /**

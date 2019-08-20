@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.ExtensionElements;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 /**

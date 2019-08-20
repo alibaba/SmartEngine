@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.common.Outgoing;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 /**

@@ -49,7 +49,7 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

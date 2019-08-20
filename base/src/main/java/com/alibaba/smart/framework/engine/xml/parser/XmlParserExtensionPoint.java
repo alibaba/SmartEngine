@@ -1,8 +1,7 @@
 package com.alibaba.smart.framework.engine.xml.parser;
 
 import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ResolveException;
+import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;

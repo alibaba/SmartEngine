@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.Condi
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 /**

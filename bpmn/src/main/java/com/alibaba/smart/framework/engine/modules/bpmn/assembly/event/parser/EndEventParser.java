@@ -5,7 +5,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;

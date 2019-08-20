@@ -10,11 +10,9 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.AbstractTask;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
 /**
  * Created by ettear on 16-4-29.

@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.extensionpoint.impl;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.xml.parser.*;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;

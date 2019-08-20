@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEve
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvents;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 /**

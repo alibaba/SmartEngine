@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.xml.parser.exception;
+package com.alibaba.smart.framework.engine.xml.exception;
 
 /**
  * Created by ettear on 16-4-12.

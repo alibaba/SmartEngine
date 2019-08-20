@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.StartEvent
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
 public class StartEventParser extends AbstractBpmnActivityParser<StartEvent> implements ElementParser<StartEvent> {
 
