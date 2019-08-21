@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.multi.instance;
 
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopDataInputRef;
 
 /**

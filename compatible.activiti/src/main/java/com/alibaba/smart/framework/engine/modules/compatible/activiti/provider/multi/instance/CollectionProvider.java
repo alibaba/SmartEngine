@@ -6,12 +6,10 @@ import java.util.List;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.multi.instance.LoopCollectionProvider;
 import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance.Collection;
-import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**

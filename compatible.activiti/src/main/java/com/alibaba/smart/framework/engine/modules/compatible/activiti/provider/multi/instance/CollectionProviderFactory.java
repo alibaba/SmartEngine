@@ -1,10 +1,8 @@
 package com.alibaba.smart.framework.engine.modules.compatible.activiti.provider.multi.instance;
 
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.multi.instance.LoopCollectionProviderFactory;
 import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance.Collection;
-import com.alibaba.smart.framework.engine.provider.Performer;
-import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFactory;
 
 /**
  * @author ettear

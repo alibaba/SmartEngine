@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.service.query.impl;
 import java.util.Collection;
 
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;

@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.modules.smart.provider.extension;
 
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.ExecutionListener;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Value;

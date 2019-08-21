@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.multi.instance;
 
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionChecker;
 import com.alibaba.smart.framework.engine.provider.Performer;

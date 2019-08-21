@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 
 import java.util.Map;

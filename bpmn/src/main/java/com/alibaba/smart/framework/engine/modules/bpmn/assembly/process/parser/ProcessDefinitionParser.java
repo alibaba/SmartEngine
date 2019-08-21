@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Process;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.ProcessDefinition;

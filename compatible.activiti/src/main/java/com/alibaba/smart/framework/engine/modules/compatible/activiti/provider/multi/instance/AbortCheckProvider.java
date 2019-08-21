@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.modules.compatible.activiti.provider.
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.provider.Performer;
 
 /**

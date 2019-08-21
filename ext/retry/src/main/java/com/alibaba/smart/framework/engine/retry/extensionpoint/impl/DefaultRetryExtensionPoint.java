@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.retry.extensionpoint.impl;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.impl.AbstractPropertiesExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.retry.RetryExtensionPoint;
 
 import java.util.Map;

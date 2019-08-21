@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.smart.provider.process;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartSequenceFlow;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractTransitionBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;

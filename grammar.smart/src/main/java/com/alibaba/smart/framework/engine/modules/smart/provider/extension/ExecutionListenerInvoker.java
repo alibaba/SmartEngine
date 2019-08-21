@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.smart.provider.extension;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.ExecutionListener;
 import com.alibaba.smart.framework.engine.provider.Invoker;
 import com.alibaba.smart.framework.engine.provider.Performer;

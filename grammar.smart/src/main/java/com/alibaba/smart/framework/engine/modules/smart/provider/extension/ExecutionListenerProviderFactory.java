@@ -1,13 +1,11 @@
 package com.alibaba.smart.framework.engine.modules.smart.provider.extension;
 
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.model.assembly.Performable;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.ExecutionListener;
 import com.alibaba.smart.framework.engine.provider.Invoker;
-import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.factory.InvokerProviderFactory;
-import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFactory;
+
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.

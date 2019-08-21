@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.delegation;
 
-import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.pvm.PvmElement;
 
 import lombok.Getter;

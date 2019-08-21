@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.extensionpoint.registry;
+package com.alibaba.smart.framework.engine.extensionpoint;
 
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 

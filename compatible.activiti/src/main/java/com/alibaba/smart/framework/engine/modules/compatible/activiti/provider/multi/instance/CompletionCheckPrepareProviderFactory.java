@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.compatible.activiti.provider.multi.instance;
 
-import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance
     .CompletionCheckPreparePerformable;
 import com.alibaba.smart.framework.engine.provider.Performer;

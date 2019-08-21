@@ -1,7 +1,7 @@
 //package com.alibaba.smart.framework.engine.modules.bpmn.provider.event;
 //
 //import com.alibaba.smart.framework.engine.context.ExecutionContext;
-//import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
+//import ExtensionPointRegistry;
 //import com.alibaba.smart.framework.engine.invocation.Invoker;
 //import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvents;
 //import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityBehavior;
