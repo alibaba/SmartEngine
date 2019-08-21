@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartProcess;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
-import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
+import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 /**
  * @author ettear

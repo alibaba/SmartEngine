@@ -1,10 +1,11 @@
-package com.alibaba.smart.framework.engine.xml.parser;
+package com.alibaba.smart.framework.engine.xml.util;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class XmlParseUtil {
+
     public static String getString(XMLStreamReader reader, String name) {
         return reader.getAttributeValue((String)null, name);
     }

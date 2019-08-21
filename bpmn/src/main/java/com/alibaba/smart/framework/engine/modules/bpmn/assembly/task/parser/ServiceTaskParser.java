@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.A
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
+import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class ServiceTaskParser extends AbstractBpmnActivityParser<ServiceTask>  {
 

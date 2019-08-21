@@ -172,7 +172,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         } while (reader.hasNext());
 
         if (findStart) {
-            Object parseResult = this.xmlParserExtensionPoint.parse(reader, context);
+            Object parseResult = this.xmlParserExtensionPoint.parseElement(reader, context);
             return (ProcessDefinition)parseResult;
         } else {
             throw new DeployException("Read process definition file failure! Not found start element!");

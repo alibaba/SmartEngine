@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Sequence
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
-import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
+import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
     private final static String DEFAULT_ACTION = PvmEventConstant.TRANSITION_EXECUTE.name();

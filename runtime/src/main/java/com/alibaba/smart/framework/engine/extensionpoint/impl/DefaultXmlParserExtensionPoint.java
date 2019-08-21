@@ -69,7 +69,7 @@ public class DefaultXmlParserExtensionPoint extends AbstractPropertiesExtensionP
     }
 
     @Override
-    public Object parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+    public Object parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         QName nodeQname = reader.getName();
         ElementParser artifactParser = this.artifactParsers.get(nodeQname);
         if (null != artifactParser) {
@@ -80,7 +80,7 @@ public class DefaultXmlParserExtensionPoint extends AbstractPropertiesExtensionP
     }
 
     @Override
-    public Object readAttribute(QName attributeQName, XMLStreamReader reader, ParseContext context)
+    public Object parseAttribute(QName attributeQName, XMLStreamReader reader, ParseContext context)
             throws ParseException,
             XMLStreamException {
         if (null == attributeQName) {

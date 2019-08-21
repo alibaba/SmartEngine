@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,22 +49,13 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
     }
 
 
-
-    //HELPER
-
     protected Object readElement(XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {
         XmlParserExtensionPoint xmlParserExtensionPoint = this.getXmlParserExtensionPoint();
-        return xmlParserExtensionPoint.parse(reader, context);
+        return xmlParserExtensionPoint.parseElement(reader, context);
     }
 
 
-
-    protected Object readAttribute(QName attributeName,XMLStreamReader reader, ParseContext context) throws ParseException,
-        XMLStreamException {
-        XmlParserExtensionPoint xmlParserExtensionPoint = this.getXmlParserExtensionPoint();
-        return xmlParserExtensionPoint.readAttribute(attributeName,reader, context);
-    }
 
 
 
@@ -96,6 +88,12 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
                 }
             }
         }
+    }
+
+    private Object readAttribute(QName attributeName,XMLStreamReader reader, ParseContext context) throws ParseException,
+        XMLStreamException {
+        XmlParserExtensionPoint xmlParserExtensionPoint = this.getXmlParserExtensionPoint();
+        return xmlParserExtensionPoint.parseAttribute(attributeName,reader, context);
     }
 
 

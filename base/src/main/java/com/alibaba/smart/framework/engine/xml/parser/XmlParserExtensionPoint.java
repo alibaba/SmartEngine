@@ -19,7 +19,7 @@ public interface XmlParserExtensionPoint extends LifeCycleHook {
      * @param context The context
      * @return A model representation of the input.
      */
-    Object parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException;
+    Object parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException;
 
     /**
      * Reads a model from an XMLStreamReader.
@@ -28,7 +28,7 @@ public interface XmlParserExtensionPoint extends LifeCycleHook {
      * @param context The context
      * @return A model representation of the input.
      */
-    Object readAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) throws ParseException,
+    Object parseAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) throws ParseException,
             XMLStreamException;
 
 }
