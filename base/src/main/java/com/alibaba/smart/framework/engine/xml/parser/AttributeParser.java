@@ -18,6 +18,6 @@ public interface AttributeParser<M> extends BaseXmlParser {
      * @param context The context
      * @return A model representation of the input.
      */
-    M parse(QName attributeName, XMLStreamReader reader, ParseContext context) throws ParseException,
+    M parseAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) throws ParseException,
             XMLStreamException;
 }

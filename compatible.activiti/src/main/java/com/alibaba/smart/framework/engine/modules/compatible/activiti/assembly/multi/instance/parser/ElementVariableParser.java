@@ -33,7 +33,7 @@ public class ElementVariableParser extends AbstractElementParser<ElementVariable
     }
 
     @Override
-    public ElementVariable parse(QName attributeName, XMLStreamReader reader, ParseContext context)
+    public ElementVariable parseAttribute(QName attributeName, XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         ElementVariable elementVariable = new ElementVariable();
         elementVariable.setName(reader.getAttributeValue(attributeName.getNamespaceURI(),

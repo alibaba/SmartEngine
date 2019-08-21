@@ -28,7 +28,7 @@ public class SmartJavaAttributeParser extends AbstractElementParser<Java> implem
     }
 
     @Override
-    public Java parse(QName attributeName, XMLStreamReader reader, ParseContext context)
+    public Java parseAttribute(QName attributeName, XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         Java java = new Java();
         String className = reader.getAttributeValue(attributeName.getNamespaceURI(),

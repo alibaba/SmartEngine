@@ -22,7 +22,7 @@ public class SmartJavaParser extends AbstractElementParser<Java>   {
     }
 
     @Override
-    public Java parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+    public Java parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         Java java = new Java();
         String className=this.getString(reader, "class");
         if(null==className || "".equals(className)){

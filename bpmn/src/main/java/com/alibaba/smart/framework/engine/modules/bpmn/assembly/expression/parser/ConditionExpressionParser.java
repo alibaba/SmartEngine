@@ -30,7 +30,7 @@ public class ConditionExpressionParser extends AbstractElementParser<ConditionEx
     }
 
     @Override
-    public ConditionExpression parse(XMLStreamReader reader, ParseContext context) throws ParseException,
+    public ConditionExpression parseElement(XMLStreamReader reader, ParseContext context) throws ParseException,
             XMLStreamException {
         ConditionExpression conditionExpression = new ConditionExpression();
 

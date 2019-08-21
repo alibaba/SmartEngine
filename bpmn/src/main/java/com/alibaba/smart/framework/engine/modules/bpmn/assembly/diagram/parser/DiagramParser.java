@@ -37,7 +37,7 @@ public class DiagramParser extends AbstractElementParser<Diagram>   {
     }
 
     @Override
-    public Diagram parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+    public Diagram parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         // JUST SKIP
         this.skipToEndElement(reader);
 

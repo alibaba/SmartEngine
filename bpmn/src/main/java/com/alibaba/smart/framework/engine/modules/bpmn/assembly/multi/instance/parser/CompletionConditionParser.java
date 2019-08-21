@@ -33,7 +33,7 @@ public class CompletionConditionParser extends AbstractElementParser<CompletionC
     }
 
     @Override
-    public CompletionCondition parse(XMLStreamReader reader, ParseContext context)
+    public CompletionCondition parseElement(XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         CompletionCondition completionCondition = new CompletionCondition();
 

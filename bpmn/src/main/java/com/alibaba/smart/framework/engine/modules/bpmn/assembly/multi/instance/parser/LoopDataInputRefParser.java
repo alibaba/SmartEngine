@@ -33,7 +33,7 @@ public class LoopDataInputRefParser extends AbstractElementParser<LoopDataInputR
     }
 
     @Override
-    public LoopDataInputRef parse(XMLStreamReader reader, ParseContext context)
+    public LoopDataInputRef parseElement(XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         LoopDataInputRef loopDataInputRef = new LoopDataInputRef();
         loopDataInputRef.setReference(reader.getElementText());

@@ -13,7 +13,7 @@ import javax.xml.namespace.QName;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ConditionExpression extends AbstractPerformable implements Performable {
+public class ConditionExpression extends AbstractPerformable   {
 
     private static final long serialVersionUID = -6152070683207905381L;
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "conditionExpression");

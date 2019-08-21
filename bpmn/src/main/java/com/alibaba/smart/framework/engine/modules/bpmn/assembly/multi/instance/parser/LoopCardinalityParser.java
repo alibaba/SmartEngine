@@ -34,7 +34,7 @@ public class LoopCardinalityParser extends AbstractElementParser<LoopCardinality
     }
 
     @Override
-    public LoopCardinality parse(XMLStreamReader reader, ParseContext context)
+    public LoopCardinality parseElement(XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         LoopCardinality loopCardinality = new LoopCardinality();
 

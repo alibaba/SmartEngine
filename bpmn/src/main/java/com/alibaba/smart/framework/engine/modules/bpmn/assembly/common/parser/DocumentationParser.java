@@ -33,7 +33,7 @@ public class DocumentationParser extends AbstractElementParser<Documentation>   
     }
 
     @Override
-    public Documentation parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+    public Documentation parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         // JUST SKIP
         this.skipToEndElement(reader);
 

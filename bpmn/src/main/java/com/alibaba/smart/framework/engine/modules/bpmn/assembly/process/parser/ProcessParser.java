@@ -32,7 +32,7 @@ public class ProcessParser extends AbstractElementParser<Process>  {
     }
 
     @Override
-    public Process parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+    public Process parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
 
         Process process = new Process();
         process.setId(this.getString(reader, "id"));

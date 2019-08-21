@@ -31,7 +31,7 @@ public class CollectionParser extends AbstractElementParser<Collection> implemen
     }
 
     @Override
-    public Collection parse(QName attributeName, XMLStreamReader reader, ParseContext context)
+    public Collection parseAttribute(QName attributeName, XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         Collection collection = new Collection();
 

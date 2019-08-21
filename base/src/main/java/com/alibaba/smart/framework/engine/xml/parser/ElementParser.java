@@ -17,5 +17,5 @@ public interface ElementParser<M>  extends BaseXmlParser {
      * @param context The context
      * @return A model representation of the input.
      */
-    M parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException;
+    M parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException;
 }

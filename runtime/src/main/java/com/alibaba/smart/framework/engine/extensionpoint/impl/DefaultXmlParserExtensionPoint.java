@@ -15,14 +15,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * 默认处理器扩展点 Created by ettear on 16-4-12.
  */
 @SuppressWarnings("rawtypes")
-public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements
+public class DefaultXmlParserExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements
     XmlParserExtensionPoint {
 
     private Map<QName, ElementParser> artifactParsers = new ConcurrentHashMap<QName, ElementParser>();
 
     private Map<QName, AttributeParser> attributeParsers = new ConcurrentHashMap<QName, AttributeParser>();
 
-    public DefaultAssemblyParserExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultXmlParserExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
@@ -73,7 +73,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         QName nodeQname = reader.getName();
         ElementParser artifactParser = this.artifactParsers.get(nodeQname);
         if (null != artifactParser) {
-            return artifactParser.parse(reader, context);
+            return artifactParser.parseElement(reader, context);
         } else {
             throw new RuntimeException("No ElementParser found for QName: " + nodeQname);
         }
@@ -107,7 +107,7 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
         }
 
         if (null != attributeParser) {
-            return attributeParser.parse(attributeQName, reader, context);
+            return attributeParser.parseAttribute(attributeQName, reader, context);
         } else if (StringUtil.equals(currentNodeNamespaceURI, attributeNamespaceURI)) {
             return reader.getAttributeValue(attributeNamespaceURI, attributeLocalPart);
         } else {

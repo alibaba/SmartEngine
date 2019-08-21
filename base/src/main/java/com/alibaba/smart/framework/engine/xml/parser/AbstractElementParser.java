@@ -8,6 +8,9 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
@@ -17,6 +20,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
  */
 public abstract class AbstractElementParser<M extends BaseElement> implements ElementParser<M> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractElementParser.class);
 
     private ExtensionPointRegistry extensionPointRegistry;
     private XmlParserExtensionPoint xmlParserExtensionPoint;
@@ -119,7 +123,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
 
     @Override
-    public M parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+    public M parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         M model=this.parseModel(reader,context);
         context=context.evolve(model);
         this.parseAttribute(model,reader,context);
@@ -135,6 +139,8 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
                 Object value=this.readAttribute(attributeQName,reader, context);
                 if(null!=value && value instanceof BaseElement){
                     this.parseChild(model, (BaseElement) value);
+                }else{
+                    LOGGER.debug(attributeQName +" is ignored when parsing attribute from "+ model);
                 }
             }
         }

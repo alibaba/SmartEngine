@@ -33,7 +33,7 @@ public class OutgoingParser extends AbstractElementParser<Outgoing>  {
     }
 
     @Override
-    public Outgoing parse(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+    public Outgoing parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         // JUST SKIP
         this.skipToEndElement(reader);
 
