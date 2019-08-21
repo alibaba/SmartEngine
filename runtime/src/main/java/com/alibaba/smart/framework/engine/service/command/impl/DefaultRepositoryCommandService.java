@@ -84,6 +84,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
        ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
 
         ProcessDefinition definition = this.parse(classLoader, classPathUri);
+
         putIntoContainer( definition);
 
         return definition;
