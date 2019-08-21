@@ -32,7 +32,7 @@ public class SmartProcessParser extends AbstractElementParser<SmartProcess> {
     }
 
     @Override
-    protected void parseChild(SmartProcess smartProcess, BaseElement child) {
+    protected void parseSingleChild(SmartProcess smartProcess, BaseElement child) {
         List<BaseElement> elements = smartProcess.getElements();
         if (null == elements) {
             elements = new ArrayList<BaseElement>();

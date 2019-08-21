@@ -25,7 +25,7 @@ public class ExtensionsParser extends AbstractElementParser<Extensions> {
     }
 
     @Override
-    protected void parseChild(Extensions extensions, BaseElement child) {
+    protected void parseSingleChild(Extensions extensions, BaseElement child) {
         if (child instanceof Extension) {
             extensions.addExtension((Extension)child);
         }

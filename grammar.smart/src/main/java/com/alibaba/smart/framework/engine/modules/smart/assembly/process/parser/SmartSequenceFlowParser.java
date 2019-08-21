@@ -39,7 +39,7 @@ public class SmartSequenceFlowParser extends AbstractElementParser<SmartSequence
     }
 
     @Override
-    protected void parseChild(SmartSequenceFlow model, BaseElement child) {
+    protected void parseSingleChild(SmartSequenceFlow model, BaseElement child) {
         //TODO duplicate code
 
         if (child instanceof Extensions) {

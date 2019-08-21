@@ -26,7 +26,7 @@ public class PropertiesParser extends AbstractElementParser<Properties> {
     }
 
     @Override
-    protected void parseChild(Properties properties, BaseElement child) {
+    protected void parseSingleChild(Properties properties, BaseElement child) {
         if (child instanceof Extension) {
             properties.getExtensionList().add((Value)child);
         }

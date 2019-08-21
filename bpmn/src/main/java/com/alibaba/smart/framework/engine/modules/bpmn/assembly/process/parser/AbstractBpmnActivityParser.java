@@ -25,11 +25,11 @@ public abstract class AbstractBpmnActivityParser<M extends AbstractActivity> ext
     }
 
     @Override
-    protected void parseChild(M model, BaseElement child) throws ParseException {
+    protected void parseSingleChild(M model, BaseElement child) throws ParseException {
         if (child instanceof ExecutePolicy) {
             model.setExecutePolicy((ExecutePolicy)child);
         }else {
-            super.parseChild(model, child);
+            super.parseSingleChild(model, child);
         }
     }
 

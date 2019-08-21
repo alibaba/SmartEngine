@@ -34,7 +34,7 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
     }
 
     @Override
-    protected void parseChild(ExecutionListener model, BaseElement child) {
+    protected void parseSingleChild(ExecutionListener model, BaseElement child) {
         if (child instanceof Performable) {
             model.setPerformable((Performable)child);
         }

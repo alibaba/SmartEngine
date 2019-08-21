@@ -31,7 +31,7 @@ public class SmartProcessDefinitionParser extends AbstractElementParser<SmartPro
     }
 
     @Override
-    protected void parseChild(SmartProcessDefinition smartProcessDefinition, BaseElement child) {
+    protected void parseSingleChild(SmartProcessDefinition smartProcessDefinition, BaseElement child) {
         if (child instanceof SmartProcess) {
             smartProcessDefinition.setProcess((SmartProcess)child);
         }

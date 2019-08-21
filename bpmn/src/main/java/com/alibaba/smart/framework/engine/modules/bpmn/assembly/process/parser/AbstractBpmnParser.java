@@ -22,7 +22,7 @@ public abstract class AbstractBpmnParser<M extends Element> extends AbstractElem
     }
 
     @Override
-    protected void parseChild(M model, BaseElement child) throws ParseException {
+    protected void parseSingleChild(M model, BaseElement child) throws ParseException {
         if(!this.parseModelChild(model, child)) {
             if (child instanceof Extensions) {
                 model.setExtensions((Extensions)child);

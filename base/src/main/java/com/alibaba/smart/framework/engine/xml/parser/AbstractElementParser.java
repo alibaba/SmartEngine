@@ -63,8 +63,8 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
     public M parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         M model=this.parseModel(reader,context);
         context=context.evolve(model);
-        this.parseAttribute(model,reader,context);
-        this.parseChildren(model,reader,context);
+        this.parseMultiAttributes(model,reader,context);
+        this.parseMultiChildren(model,reader,context);
         return model;
     }
 
@@ -75,14 +75,14 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
 
 
-    private void parseAttribute(M model, XMLStreamReader reader, ParseContext context) throws ParseException,XMLStreamException{
+    private void parseMultiAttributes(M model, XMLStreamReader reader, ParseContext context) throws ParseException,XMLStreamException{
         int attributeCount=reader.getAttributeCount();
         if(attributeCount>0){
             for (int i = 0; i < attributeCount; i++) {
                 QName attributeQName=reader.getAttributeName(i);
-                Object value=this.readAttribute(attributeQName,reader, context);
+                Object value=this.parseSingleAttribute(attributeQName,reader, context);
                 if(null!=value && value instanceof BaseElement){
-                    this.parseChild(model, (BaseElement) value);
+                    this.parseSingleChild(model, (BaseElement) value);
                 }else{
                     LOGGER.debug(attributeQName +" is ignored when parsing attribute from "+ model);
                 }
@@ -90,24 +90,24 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
         }
     }
 
-    private Object readAttribute(QName attributeName,XMLStreamReader reader, ParseContext context) throws ParseException,
+    private Object parseSingleAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {
         XmlParserExtensionPoint xmlParserExtensionPoint = this.getXmlParserExtensionPoint();
         return xmlParserExtensionPoint.parseAttribute(attributeName,reader, context);
     }
 
 
-    private void parseChildren(M model, XMLStreamReader reader, ParseContext context) throws ParseException,
+    private void parseMultiChildren(M model, XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {
         while (XmlParseUtil.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
             if (element instanceof BaseElement) {
-                this.parseChild(model, (BaseElement) element);
+                this.parseSingleChild(model, (BaseElement) element);
             }
         }
     }
 
-    protected void parseChild(M model, BaseElement child) throws ParseException{
+    protected void parseSingleChild(M model, BaseElement child) throws ParseException{
 
     }
 

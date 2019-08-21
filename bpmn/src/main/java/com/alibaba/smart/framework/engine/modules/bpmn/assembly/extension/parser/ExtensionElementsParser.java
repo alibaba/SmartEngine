@@ -31,7 +31,7 @@ public class ExtensionElementsParser extends AbstractElementParser<ExtensionElem
     }
 
     @Override
-    protected void parseChild(ExtensionElements model, BaseElement child) throws ParseException {
+    protected void parseSingleChild(ExtensionElements model, BaseElement child) throws ParseException {
         if (child instanceof Extension) {
             model.addExtension((Extension) child);
         } else {

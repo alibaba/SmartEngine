@@ -36,7 +36,7 @@ public class SmartTaskParser extends AbstractElementParser<SmartTask> {
     }
 
     @Override
-    protected void parseChild(SmartTask model, BaseElement child) {
+    protected void parseSingleChild(SmartTask model, BaseElement child) {
         if (child instanceof Extensions) {
             model.setExtensions((Extensions)child);
         }else if (child instanceof Performable) {
