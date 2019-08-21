@@ -14,10 +14,10 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-public class ExecutionHookParser extends AbstractElementParser<ExecutionListener>
+public class ExecutionListenerParser extends AbstractElementParser<ExecutionListener>
        {
 
-    public ExecutionHookParser(ExtensionPointRegistry extensionPointRegistry) {
+    public ExecutionListenerParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 

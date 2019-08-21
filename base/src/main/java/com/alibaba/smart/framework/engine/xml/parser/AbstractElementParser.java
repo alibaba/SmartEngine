@@ -131,8 +131,8 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
         int attributeCount=reader.getAttributeCount();
         if(attributeCount>0){
             for (int i = 0; i < attributeCount; i++) {
-                QName attributeName=reader.getAttributeName(i);
-                Object value=this.readAttribute(attributeName,reader, context);
+                QName attributeQName=reader.getAttributeName(i);
+                Object value=this.readAttribute(attributeQName,reader, context);
                 if(null!=value && value instanceof BaseElement){
                     this.parseChild(model, (BaseElement) value);
                 }

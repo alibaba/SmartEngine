@@ -80,34 +80,38 @@ public class DefaultAssemblyParserExtensionPoint extends AbstractPropertiesExten
     }
 
     @Override
-    public Object readAttribute(QName attributeName, XMLStreamReader reader, ParseContext context)
+    public Object readAttribute(QName attributeQName, XMLStreamReader reader, ParseContext context)
             throws ParseException,
             XMLStreamException {
-        if (null == attributeName) {
+        if (null == attributeQName) {
             return null;
         }
         QName currentNode = reader.getName();
-
-        QName attributeQname;
-        String namespaceURI = attributeName.getNamespaceURI();
-        String localPart = attributeName.getLocalPart();
         String currentNodeNamespaceURI = currentNode.getNamespaceURI();
-        if(StringUtil.isEmpty(namespaceURI)){
-            attributeQname=new QName(currentNodeNamespaceURI, localPart);
+
+
+        QName tunedAttributeQname;
+
+        String attributeNamespaceURI = attributeQName.getNamespaceURI();
+        String attributeLocalPart = attributeQName.getLocalPart();
+
+        if(StringUtil.isEmpty(attributeNamespaceURI)){
+            tunedAttributeQname=new QName(currentNodeNamespaceURI, attributeLocalPart);
         }else{
-            attributeQname=attributeName;
+            tunedAttributeQname=attributeQName;
         }
-        AttributeParser attributeParser = this.attributeParsers.get(attributeQname);
+
+        AttributeParser attributeParser = this.attributeParsers.get(tunedAttributeQname);
         if (null == attributeParser) {
             attributeParser = this.attributeParsers.get(currentNode);
         }
+
         if (null != attributeParser) {
-            return attributeParser.parse(attributeName, reader, context);
-        } else if (StringUtil.equals(currentNodeNamespaceURI, namespaceURI)) {
-            return reader.getAttributeValue(namespaceURI, localPart);
+            return attributeParser.parse(attributeQName, reader, context);
+        } else if (StringUtil.equals(currentNodeNamespaceURI, attributeNamespaceURI)) {
+            return reader.getAttributeValue(attributeNamespaceURI, attributeLocalPart);
         } else {
-            return null; //TODO XXX
-            //throw new RuntimeException("No attributeParser found for QName: " + currentNode);
+            return null;
         }
     }
 

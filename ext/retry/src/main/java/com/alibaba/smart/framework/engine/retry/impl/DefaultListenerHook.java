@@ -14,12 +14,12 @@ import com.alibaba.smart.framework.engine.retry.service.command.RetryService;
  * @author zhenhong.tzh
  * @date 2019-04-27
  */
-public class DefaultRetryHook implements RetryListener, LifeCycleHook {
+public class DefaultListenerHook implements RetryListener, LifeCycleHook {
 
     private final ExtensionPointRegistry extensionPointRegistry;
     private RetryService retryService;
 
-    public DefaultRetryHook(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultListenerHook(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 
@@ -31,6 +31,7 @@ public class DefaultRetryHook implements RetryListener, LifeCycleHook {
         }
         retryService.retry(retryRecord);
     }
+
 
     @Override
     public void start() {
