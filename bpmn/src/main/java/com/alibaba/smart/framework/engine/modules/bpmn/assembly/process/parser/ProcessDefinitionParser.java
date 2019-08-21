@@ -20,7 +20,7 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return ProcessDefinition.type;
     }
 

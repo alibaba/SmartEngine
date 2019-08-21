@@ -54,7 +54,7 @@ public class SmartTaskParser extends AbstractElementParser<SmartTask> {
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return SmartTask.type;
     }
 

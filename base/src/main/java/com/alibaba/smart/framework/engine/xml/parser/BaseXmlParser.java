@@ -9,7 +9,7 @@ import javax.xml.namespace.QName;
  */
 public interface BaseXmlParser<M> extends LifeCycleHook {
 
-    QName getArtifactType();
+    QName getQname();
 
     Class<M> getModelType();
     

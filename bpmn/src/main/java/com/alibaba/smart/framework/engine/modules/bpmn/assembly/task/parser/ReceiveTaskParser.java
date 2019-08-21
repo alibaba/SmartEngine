@@ -20,7 +20,7 @@ public class ReceiveTaskParser extends AbstractBpmnActivityParser<ReceiveTask>  
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return ReceiveTask.type;
     }
 

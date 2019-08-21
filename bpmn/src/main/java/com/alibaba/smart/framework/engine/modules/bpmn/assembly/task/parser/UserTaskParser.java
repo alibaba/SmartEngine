@@ -20,7 +20,7 @@ public class UserTaskParser extends AbstractBpmnActivityParser<UserTask>  {
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return UserTask.type;
     }
 

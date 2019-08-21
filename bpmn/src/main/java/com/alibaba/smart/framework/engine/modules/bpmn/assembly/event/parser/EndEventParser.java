@@ -23,7 +23,7 @@ public class EndEventParser extends AbstractBpmnActivityParser<EndEvent>   {
     //}
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return EndEvent.type;
     }
 

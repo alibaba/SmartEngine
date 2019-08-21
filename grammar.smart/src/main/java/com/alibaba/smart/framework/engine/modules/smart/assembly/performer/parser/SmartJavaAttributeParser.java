@@ -38,7 +38,7 @@ public class SmartJavaAttributeParser extends AbstractElementParser<Java> implem
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return Java.classQName;
     }
 

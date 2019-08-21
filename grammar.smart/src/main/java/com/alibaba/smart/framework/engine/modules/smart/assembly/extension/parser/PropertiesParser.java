@@ -33,7 +33,7 @@ public class PropertiesParser extends AbstractElementParser<Properties> {
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return Properties.type;
     }
 

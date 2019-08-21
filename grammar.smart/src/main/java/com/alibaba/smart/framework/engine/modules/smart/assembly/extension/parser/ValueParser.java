@@ -29,7 +29,7 @@ public class ValueParser extends AbstractElementParser<Value> {
 
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return Value.type;
     }
 

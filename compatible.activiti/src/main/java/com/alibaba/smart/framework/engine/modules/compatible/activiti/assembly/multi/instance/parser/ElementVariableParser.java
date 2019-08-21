@@ -23,7 +23,7 @@ public class ElementVariableParser extends AbstractElementParser<ElementVariable
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return ElementVariable.type;
     }
 

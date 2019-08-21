@@ -18,7 +18,7 @@ public class StartEventParser extends AbstractBpmnActivityParser<StartEvent>   {
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return StartEvent.type;
     }
 

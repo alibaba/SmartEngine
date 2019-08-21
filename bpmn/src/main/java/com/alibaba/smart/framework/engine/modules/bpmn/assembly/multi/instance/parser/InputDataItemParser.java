@@ -23,7 +23,7 @@ public class InputDataItemParser extends AbstractElementParser<InputDataItem>
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return InputDataItem.type;
     }
 

@@ -32,7 +32,7 @@ public class MQReceiveTaskParser extends AbstractElementParser<MQReceiveTask> {
 
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return MQReceiveTask.type;
     }
 

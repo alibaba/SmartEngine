@@ -62,9 +62,12 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
     @Override
     public M parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         M model=this.parseModel(reader,context);
+
         context=context.evolve(model);
+
         this.parseMultiAttributes(model,reader,context);
         this.parseMultiChildren(model,reader,context);
+
         return model;
     }
 

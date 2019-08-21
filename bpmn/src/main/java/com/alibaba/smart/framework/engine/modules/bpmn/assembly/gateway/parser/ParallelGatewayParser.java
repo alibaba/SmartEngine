@@ -18,7 +18,7 @@ public class ParallelGatewayParser extends AbstractBpmnActivityParser<ParallelGa
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return ParallelGateway.type;
     }
 

@@ -21,7 +21,7 @@ public class ServiceTaskParser extends AbstractBpmnActivityParser<ServiceTask>  
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return ServiceTask.type;
     }
 

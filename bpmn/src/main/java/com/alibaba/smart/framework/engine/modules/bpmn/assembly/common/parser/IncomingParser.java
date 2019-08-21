@@ -23,7 +23,7 @@ public class IncomingParser extends AbstractElementParser<Incoming>   {
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return Incoming.type;
     }
 

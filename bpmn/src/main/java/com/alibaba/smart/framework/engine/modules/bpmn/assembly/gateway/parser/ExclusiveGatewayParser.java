@@ -18,7 +18,7 @@ public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<Exclusive
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return ExclusiveGateway.type;
     }
 

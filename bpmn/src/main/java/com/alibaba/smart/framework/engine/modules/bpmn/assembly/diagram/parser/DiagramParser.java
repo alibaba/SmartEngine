@@ -27,7 +27,7 @@ public class DiagramParser extends AbstractElementParser<Diagram>   {
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return Diagram.type;
     }
 

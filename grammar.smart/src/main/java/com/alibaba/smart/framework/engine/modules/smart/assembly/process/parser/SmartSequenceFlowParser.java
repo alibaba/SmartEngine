@@ -59,7 +59,7 @@ public class SmartSequenceFlowParser extends AbstractElementParser<SmartSequence
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return SmartSequenceFlow.type;
     }
 

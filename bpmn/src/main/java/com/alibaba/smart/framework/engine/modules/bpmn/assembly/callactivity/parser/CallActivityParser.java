@@ -26,7 +26,7 @@ public class CallActivityParser  extends AbstractBpmnActivityParser<CallActivity
     //}
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return CallActivity.type;
     }
 

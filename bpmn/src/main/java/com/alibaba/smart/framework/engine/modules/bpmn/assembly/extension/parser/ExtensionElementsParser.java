@@ -50,7 +50,7 @@ public class ExtensionElementsParser extends AbstractElementParser<ExtensionElem
     // }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return ExtensionElements.type;
     }
 

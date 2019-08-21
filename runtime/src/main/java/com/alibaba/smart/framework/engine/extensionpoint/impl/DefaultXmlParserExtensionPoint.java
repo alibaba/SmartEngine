@@ -52,13 +52,13 @@ public class DefaultXmlParserExtensionPoint extends AbstractPropertiesExtensionP
     protected void initExtension(ClassLoader classLoader, String extensionEntryKey, Object artifactParseObject) {
         if (artifactParseObject instanceof ElementParser) {
             ElementParser artifactParser = (ElementParser) artifactParseObject;
-            QName artifactType = artifactParser.getArtifactType();
+            QName artifactType = artifactParser.getQname();
             this.artifactParsers.put(artifactType, artifactParser);
             //this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
         }
         if (artifactParseObject instanceof AttributeParser) {
             AttributeParser artifactParser = (AttributeParser) artifactParseObject;
-            this.attributeParsers.put(artifactParser.getArtifactType(), artifactParser);
+            this.attributeParsers.put(artifactParser.getQname(), artifactParser);
             //this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
         }
     }

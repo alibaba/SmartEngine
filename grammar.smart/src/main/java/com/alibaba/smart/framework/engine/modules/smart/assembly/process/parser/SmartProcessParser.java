@@ -43,7 +43,7 @@ public class SmartProcessParser extends AbstractElementParser<SmartProcess> {
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return SmartProcess.type;
     }
 

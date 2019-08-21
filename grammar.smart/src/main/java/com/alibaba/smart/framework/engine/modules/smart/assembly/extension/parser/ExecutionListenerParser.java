@@ -41,7 +41,7 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return ExecutionListener.type;
     }
 

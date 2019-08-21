@@ -23,7 +23,7 @@ public class CompletionConditionParser extends AbstractElementParser<CompletionC
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return CompletionCondition.type;
     }
 

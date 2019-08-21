@@ -52,7 +52,7 @@ public class CollectionParser extends AbstractElementParser<Collection> implemen
     }
 
     @Override
-    public QName getArtifactType() {
+    public QName getQname() {
         return Collection.type;
     }
 
