@@ -8,8 +8,8 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.callactivity.CallActivity;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 May  14:55.
@@ -39,9 +39,9 @@ public class CallActivityParser  extends AbstractBpmnActivityParser<CallActivity
     public CallActivity parseModel(XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         CallActivity callActivity = new CallActivity();
-        callActivity.setId(this.getString(reader, "id"));
-        callActivity.setCalledElement(this.getString(reader, "calledElement"));
-        callActivity.setCalledElementVersion(this.getString(reader, "calledElementVersion"));
+        callActivity.setId(XmlParseUtil.getString(reader, "id"));
+        callActivity.setCalledElement(XmlParseUtil.getString(reader, "calledElement"));
+        callActivity.setCalledElementVersion(XmlParseUtil.getString(reader, "calledElementVersion"));
         return callActivity;
     }
 }

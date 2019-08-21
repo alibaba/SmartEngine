@@ -7,9 +7,10 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.ExecutionListener;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
+
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
@@ -24,7 +25,7 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
     @Override
     protected ExecutionListener parseModel(XMLStreamReader reader, ParseContext context) {
         ExecutionListener executionListener = new ExecutionListener();
-        String event = this.getString(reader, "event");
+        String event = XmlParseUtil.getString(reader, "event");
         if (null != event) {
             String[] events = event.split(",");
             executionListener.setEvents(events);

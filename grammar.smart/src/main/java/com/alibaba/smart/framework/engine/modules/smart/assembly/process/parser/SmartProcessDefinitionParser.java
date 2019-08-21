@@ -9,6 +9,7 @@ import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartPr
 import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartProcessDefinition;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 /**
  * @author ettear
@@ -23,9 +24,9 @@ public class SmartProcessDefinitionParser extends AbstractElementParser<SmartPro
     @Override
     protected SmartProcessDefinition parseModel(XMLStreamReader reader, ParseContext context) {
         SmartProcessDefinition smartProcessDefinition = new SmartProcessDefinition();
-        smartProcessDefinition.setId(this.getString(reader, "id"));
-        smartProcessDefinition.setVersion(this.getString(reader, "version"));
-        smartProcessDefinition.setName(this.getString(reader, "name"));
+        smartProcessDefinition.setId(XmlParseUtil.getString(reader, "id"));
+        smartProcessDefinition.setVersion(XmlParseUtil.getString(reader, "version"));
+        smartProcessDefinition.setName(XmlParseUtil.getString(reader, "name"));
         return smartProcessDefinition;
     }
 

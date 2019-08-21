@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartProcess;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 /**
  * @author ettear
@@ -26,7 +27,7 @@ public class SmartProcessParser extends AbstractElementParser<SmartProcess> {
     @Override
     protected SmartProcess parseModel(XMLStreamReader reader, ParseContext context) {
         SmartProcess smartProcess = new SmartProcess();
-        smartProcess.setId(this.getString(reader, "id"));
+        smartProcess.setId(XmlParseUtil.getString(reader, "id"));
         return smartProcess;
     }
 

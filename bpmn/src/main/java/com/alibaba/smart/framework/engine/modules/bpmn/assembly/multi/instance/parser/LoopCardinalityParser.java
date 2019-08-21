@@ -7,10 +7,10 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopCardinality;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 /**
  * @author ettear
@@ -38,7 +38,7 @@ public class LoopCardinalityParser extends AbstractElementParser<LoopCardinality
         throws ParseException, XMLStreamException {
         LoopCardinality loopCardinality = new LoopCardinality();
 
-        String expressionType = this.getString(reader, "type");
+        String expressionType = XmlParseUtil.getString(reader, "type");
         String content = reader.getElementText();
         if (null != content) {
             ConditionExpression expression = new ConditionExpression();

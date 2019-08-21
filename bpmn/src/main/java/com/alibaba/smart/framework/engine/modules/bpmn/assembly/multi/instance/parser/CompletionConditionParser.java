@@ -7,10 +7,10 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:26.
@@ -37,8 +37,8 @@ public class CompletionConditionParser extends AbstractElementParser<CompletionC
         throws ParseException, XMLStreamException {
         CompletionCondition completionCondition = new CompletionCondition();
 
-        String expressionType = this.getString(reader, "type");
-        String action = this.getString(reader, "action");
+        String expressionType = XmlParseUtil.getString(reader, "type");
+        String action = XmlParseUtil.getString(reader, "action");
         if(null==action || "".equals(action)){
             action=CompletionCondition.ACTION_CONTINUE;
         }

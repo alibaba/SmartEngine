@@ -6,10 +6,10 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.InputDataItem;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 /**
  * @author ettear
@@ -36,7 +36,7 @@ public class InputDataItemParser extends AbstractElementParser<InputDataItem>
     protected InputDataItem parseModel(XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         InputDataItem inputDataItem = new InputDataItem();
-        inputDataItem.setName(this.getString(reader, "name"));
+        inputDataItem.setName(XmlParseUtil.getString(reader, "name"));
         return inputDataItem;
     }
 }

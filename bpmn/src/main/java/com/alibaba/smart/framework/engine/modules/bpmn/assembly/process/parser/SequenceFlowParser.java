@@ -10,8 +10,8 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.Condi
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
     private final static String DEFAULT_ACTION = PvmEventConstant.TRANSITION_EXECUTE.name();
@@ -34,10 +34,10 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
     public SequenceFlow parseModel(XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         SequenceFlow sequenceFlow = new SequenceFlow();
-        sequenceFlow.setId(this.getString(reader, "id"));
-        sequenceFlow.setName(this.getString(reader, "name"));
-        sequenceFlow.setSourceRef(this.getString(reader, "sourceRef"));
-        sequenceFlow.setTargetRef(this.getString(reader, "targetRef"));
+        sequenceFlow.setId(XmlParseUtil.getString(reader, "id"));
+        sequenceFlow.setName(XmlParseUtil.getString(reader, "name"));
+        sequenceFlow.setSourceRef(XmlParseUtil.getString(reader, "sourceRef"));
+        sequenceFlow.setTargetRef(XmlParseUtil.getString(reader, "targetRef"));
         return sequenceFlow;
     }
 

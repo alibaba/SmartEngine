@@ -3,10 +3,10 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.pars
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -34,7 +34,7 @@ public class ConditionExpressionParser extends AbstractElementParser<ConditionEx
             XMLStreamException {
         ConditionExpression conditionExpression = new ConditionExpression();
 
-        String type = getString(reader, "type");
+        String type = XmlParseUtil.getString(reader, "type");
 
         String type0 =  reader.getAttributeValue("xsi", "type");
         String type1 =  reader.getAttributeValue(null, "type");

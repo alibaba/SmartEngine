@@ -5,9 +5,9 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Process;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.ProcessDefinition;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -33,9 +33,9 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
     protected ProcessDefinition parseModel(XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         ProcessDefinition processDefinition = new ProcessDefinition();
-        processDefinition.setId(this.getString(reader, "id"));
-        processDefinition.setVersion(this.getString(reader, "version"));
-        processDefinition.setName(this.getString(reader, "name"));
+        processDefinition.setId(XmlParseUtil.getString(reader, "id"));
+        processDefinition.setVersion(XmlParseUtil.getString(reader, "version"));
+        processDefinition.setName(XmlParseUtil.getString(reader, "name"));
         return processDefinition;
     }
 

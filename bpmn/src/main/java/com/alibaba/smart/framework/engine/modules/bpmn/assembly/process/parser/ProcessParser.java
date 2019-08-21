@@ -3,10 +3,10 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Process;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -35,10 +35,10 @@ public class ProcessParser extends AbstractElementParser<Process>  {
     public Process parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
 
         Process process = new Process();
-        process.setId(this.getString(reader, "id"));
+        process.setId(XmlParseUtil.getString(reader, "id"));
 
         List<BaseElement> elements = new ArrayList<BaseElement>();
-        while (this.nextChildElement(reader)) {
+        while (XmlParseUtil.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
             if (element instanceof BaseElement) {
                 elements.add((BaseElement) element);

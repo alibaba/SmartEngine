@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartTa
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 /**
  * @author ettear
@@ -29,8 +30,8 @@ public class SmartTaskParser extends AbstractElementParser<SmartTask> {
     @Override
     protected SmartTask parseModel(XMLStreamReader reader, ParseContext context) {
         SmartTask smartTask = new SmartTask();
-        smartTask.setId(this.getString(reader, "id"));
-        smartTask.setStartActivity(this.getBoolean(reader, "isStart"));
+        smartTask.setId(XmlParseUtil.getString(reader, "id"));
+        smartTask.setStartActivity(XmlParseUtil.getBoolean(reader, "isStart"));
         return smartTask;
     }
 

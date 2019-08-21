@@ -4,10 +4,10 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.MQReceiveTask;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 /**
  * @author ettear
@@ -22,10 +22,10 @@ public class MQReceiveTaskParser extends AbstractElementParser<MQReceiveTask> {
     @Override
     protected MQReceiveTask parseModel(XMLStreamReader reader, ParseContext context) {
         MQReceiveTask MQReceiveTask = new MQReceiveTask();
-        MQReceiveTask.setName(this.getString(reader, "name"));
-        MQReceiveTask.setGroup(this.getString(reader, "group"));
-        MQReceiveTask.setTopic(this.getString(reader, "topic"));
-        MQReceiveTask.setTag(this.getString(reader, "tag"));
+        MQReceiveTask.setName(XmlParseUtil.getString(reader, "name"));
+        MQReceiveTask.setGroup(XmlParseUtil.getString(reader, "group"));
+        MQReceiveTask.setTopic(XmlParseUtil.getString(reader, "topic"));
+        MQReceiveTask.setTag(XmlParseUtil.getString(reader, "tag"));
 
         return MQReceiveTask;
     }

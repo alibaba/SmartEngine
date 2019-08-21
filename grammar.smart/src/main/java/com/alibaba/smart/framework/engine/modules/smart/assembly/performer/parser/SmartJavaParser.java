@@ -7,9 +7,9 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.performer.Java;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 /**
  * @author ettear
@@ -24,13 +24,13 @@ public class SmartJavaParser extends AbstractElementParser<Java>   {
     @Override
     public Java parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         Java java = new Java();
-        String className=this.getString(reader, "class");
+        String className= XmlParseUtil.getString(reader, "class");
         if(null==className || "".equals(className)){
             throw new ParseException();
         }
         java.setClassName(className);
-        java.setAction(this.getString(reader, "action"));
-        this.skipToEndElement(reader);
+        java.setAction(XmlParseUtil.getString(reader, "action"));
+        XmlParseUtil.skipToEndElement(reader);
         return java;
     }
 

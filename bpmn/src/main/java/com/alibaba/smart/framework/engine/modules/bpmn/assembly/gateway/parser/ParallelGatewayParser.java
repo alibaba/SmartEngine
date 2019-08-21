@@ -8,8 +8,8 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 public class ParallelGatewayParser extends AbstractBpmnActivityParser<ParallelGateway>   {
 
@@ -32,7 +32,7 @@ public class ParallelGatewayParser extends AbstractBpmnActivityParser<ParallelGa
             XMLStreamException {
 
         ParallelGateway parallelGateway = new ParallelGateway();
-        parallelGateway.setId(this.getString(reader, "id"));
+        parallelGateway.setId(XmlParseUtil.getString(reader, "id"));
         return parallelGateway;
     }
 

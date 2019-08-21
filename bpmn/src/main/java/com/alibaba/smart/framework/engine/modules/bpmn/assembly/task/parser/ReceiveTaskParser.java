@@ -10,8 +10,8 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ReceiveTask;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 public class ReceiveTaskParser extends AbstractBpmnActivityParser<ReceiveTask>  {
 
@@ -33,8 +33,8 @@ public class ReceiveTaskParser extends AbstractBpmnActivityParser<ReceiveTask>  
     public ReceiveTask parseModel(XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         ReceiveTask receiveTask = new ReceiveTask();
-        receiveTask.setId(this.getString(reader, "id"));
-        receiveTask.setName(this.getString(reader, "name"));
+        receiveTask.setId(XmlParseUtil.getString(reader, "id"));
+        receiveTask.setName(XmlParseUtil.getString(reader, "name"));
 
 
         Map<String, String> userTaskProperties = super.parseExtendedProperties(reader,  context);

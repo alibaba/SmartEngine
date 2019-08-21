@@ -4,10 +4,10 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Value;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 /**
  * @author ettear
@@ -22,8 +22,8 @@ public class ValueParser extends AbstractElementParser<Value> {
     @Override
     protected Value parseModel(XMLStreamReader reader, ParseContext context) {
         Value value = new Value();
-        value.setName(this.getString(reader, "name"));
-        value.setValue(this.getString(reader, "value"));
+        value.setName(XmlParseUtil.getString(reader, "name"));
+        value.setValue(XmlParseUtil.getString(reader, "value"));
         return value;
     }
 

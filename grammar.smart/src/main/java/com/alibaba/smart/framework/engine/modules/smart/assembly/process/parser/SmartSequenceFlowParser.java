@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartSe
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 /**
  * @author ettear
@@ -29,11 +30,11 @@ public class SmartSequenceFlowParser extends AbstractElementParser<SmartSequence
     @Override
     protected SmartSequenceFlow parseModel(XMLStreamReader reader, ParseContext context) {
         SmartSequenceFlow smartSequenceFlow = new SmartSequenceFlow();
-        smartSequenceFlow.setId(this.getString(reader, "id"));
-        smartSequenceFlow.setName(this.getString(reader, "name"));
+        smartSequenceFlow.setId(XmlParseUtil.getString(reader, "id"));
+        smartSequenceFlow.setName(XmlParseUtil.getString(reader, "name"));
 
-        smartSequenceFlow.setSourceRef(this.getString(reader, "sourceRef"));
-        smartSequenceFlow.setTargetRef(this.getString(reader, "targetRef"));
+        smartSequenceFlow.setSourceRef(XmlParseUtil.getString(reader, "sourceRef"));
+        smartSequenceFlow.setTargetRef(XmlParseUtil.getString(reader, "targetRef"));
         return smartSequenceFlow;
     }
 

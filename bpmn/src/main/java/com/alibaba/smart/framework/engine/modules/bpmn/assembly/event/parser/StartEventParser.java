@@ -7,9 +7,9 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.StartEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 public class StartEventParser extends AbstractBpmnActivityParser<StartEvent>   {
 
@@ -31,7 +31,7 @@ public class StartEventParser extends AbstractBpmnActivityParser<StartEvent>   {
     public StartEvent parseModel(XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
         StartEvent startEvent = new StartEvent();
-        startEvent.setId(this.getString(reader, "id"));
+        startEvent.setId(XmlParseUtil.getString(reader, "id"));
         startEvent.setStartActivity(true);
         return startEvent;
     }

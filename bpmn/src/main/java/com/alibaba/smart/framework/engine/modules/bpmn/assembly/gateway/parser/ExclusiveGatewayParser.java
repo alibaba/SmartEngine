@@ -7,9 +7,9 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
-import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParseUtil;
 
 public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<ExclusiveGateway>  {
 
@@ -31,7 +31,7 @@ public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<Exclusive
     public ExclusiveGateway parseModel(XMLStreamReader reader, ParseContext context) throws ParseException,
             XMLStreamException {
         ExclusiveGateway exclusiveGateway = new ExclusiveGateway();
-        exclusiveGateway.setId(this.getString(reader, "id"));
+        exclusiveGateway.setId(XmlParseUtil.getString(reader, "id"));
         return exclusiveGateway;
     }
 

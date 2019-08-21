@@ -12,9 +12,6 @@ import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
-import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
-
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
@@ -53,59 +50,6 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
 
     //HELPER
-
-    protected String getString(XMLStreamReader reader, String name) {
-        return reader.getAttributeValue((String) null, name);
-    }
-
-    protected boolean getBoolean(XMLStreamReader reader, String name) {
-        return getBoolean(reader,name,false);
-    }
-
-    protected boolean getBoolean(XMLStreamReader reader, String name,boolean defaultValue) {
-        String value = reader.getAttributeValue((String) null, name);
-        Boolean attr = value == null ? null : Boolean.valueOf(value);
-        if (attr == null) {
-            return defaultValue;
-        } else {
-            return attr;
-        }
-    }
-
-
-    protected boolean nextChildElement(XMLStreamReader reader) throws XMLStreamException {
-        while (reader.hasNext()) {
-            int event = reader.next();
-
-
-            // LOGGER.debug(event + reader.getEventType() + "");
-
-            if (event == END_ELEMENT) {
-                return false;
-            }
-            if (event == START_ELEMENT) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    protected void skipToEndElement(XMLStreamReader reader) throws XMLStreamException {
-        int depth = 0;
-
-        while (reader.hasNext()) {
-            int event = reader.next();
-            if (event == START_ELEMENT) {
-                ++depth;
-            } else if (event == END_ELEMENT) {
-                if (depth == 0) {
-                    return;
-                }
-                --depth;
-            }
-        }
-    }
 
     protected Object readElement(XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {
@@ -157,7 +101,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     private void parseChildren(M model, XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {
-        while (this.nextChildElement(reader)) {
+        while (XmlParseUtil.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
             if (element instanceof BaseElement) {
                 this.parseChild(model, (BaseElement) element);
