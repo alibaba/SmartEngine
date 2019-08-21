@@ -8,7 +8,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.modules.smart.assembly.process.Process;
+import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartProcess;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
  * @author ettear
  * Created by ettear on 04/08/2017.
  */
-public class SmartProcessParser extends AbstractElementParser<Process> {
+public class SmartProcessParser extends AbstractElementParser<SmartProcess> {
 
     public SmartProcessParser(ExtensionPointRegistry extensionPointRegistry) {
 
@@ -24,18 +24,18 @@ public class SmartProcessParser extends AbstractElementParser<Process> {
     }
 
     @Override
-    protected Process parseModel(XMLStreamReader reader, ParseContext context) {
-        Process process = new Process();
-        process.setId(this.getString(reader, "id"));
-        return process;
+    protected SmartProcess parseModel(XMLStreamReader reader, ParseContext context) {
+        SmartProcess smartProcess = new SmartProcess();
+        smartProcess.setId(this.getString(reader, "id"));
+        return smartProcess;
     }
 
     @Override
-    protected void parseChild(Process process, BaseElement child) {
-        List<BaseElement> elements = process.getElements();
+    protected void parseChild(SmartProcess smartProcess, BaseElement child) {
+        List<BaseElement> elements = smartProcess.getElements();
         if (null == elements) {
             elements = new ArrayList<BaseElement>();
-            process.setElements(elements);
+            smartProcess.setElements(elements);
         }
         elements.add(child);
 
@@ -43,12 +43,12 @@ public class SmartProcessParser extends AbstractElementParser<Process> {
 
     @Override
     public QName getArtifactType() {
-        return Process.type;
+        return SmartProcess.type;
     }
 
     @Override
-    public Class<Process> getModelType() {
-        return Process.class;
+    public Class<SmartProcess> getModelType() {
+        return SmartProcess.class;
     }
 
 }

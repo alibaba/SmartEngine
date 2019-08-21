@@ -5,8 +5,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.modules.smart.assembly.process.Process;
-import com.alibaba.smart.framework.engine.modules.smart.assembly.process.ProcessDefinition;
+import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartProcess;
+import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartProcessDefinition;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
@@ -14,35 +14,35 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
  * @author ettear
  * Created by ettear on 04/08/2017.
  */
-public class SmartProcessDefinitionParser extends AbstractElementParser<ProcessDefinition> {
+public class SmartProcessDefinitionParser extends AbstractElementParser<SmartProcessDefinition> {
 
     public SmartProcessDefinitionParser(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);
     }
 
     @Override
-    protected ProcessDefinition parseModel(XMLStreamReader reader, ParseContext context) {
-        ProcessDefinition processDefinition = new ProcessDefinition();
-        processDefinition.setId(this.getString(reader, "id"));
-        processDefinition.setVersion(this.getString(reader, "version"));
-        processDefinition.setName(this.getString(reader, "name"));
-        return processDefinition;
+    protected SmartProcessDefinition parseModel(XMLStreamReader reader, ParseContext context) {
+        SmartProcessDefinition smartProcessDefinition = new SmartProcessDefinition();
+        smartProcessDefinition.setId(this.getString(reader, "id"));
+        smartProcessDefinition.setVersion(this.getString(reader, "version"));
+        smartProcessDefinition.setName(this.getString(reader, "name"));
+        return smartProcessDefinition;
     }
 
     @Override
-    protected void parseChild(ProcessDefinition processDefinition, BaseElement child) {
-        if (child instanceof Process) {
-            processDefinition.setProcess((Process)child);
+    protected void parseChild(SmartProcessDefinition smartProcessDefinition, BaseElement child) {
+        if (child instanceof SmartProcess) {
+            smartProcessDefinition.setProcess((SmartProcess)child);
         }
     }
 
     @Override
     public QName getArtifactType() {
-        return ProcessDefinition.type;
+        return SmartProcessDefinition.type;
     }
 
     @Override
-    public Class<ProcessDefinition> getModelType() {
-        return ProcessDefinition.class;
+    public Class<SmartProcessDefinition> getModelType() {
+        return SmartProcessDefinition.class;
     }
 }

@@ -6,7 +6,7 @@ import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTransition;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +17,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Task extends AbstractActivity {
+public class SmartSequenceFlow extends AbstractTransition {
 
-    public final static QName type = new QName(SmartBase.SMART_NS, "task");
+    public final static QName type = new QName(SmartBase.SMART_NS, "sequenceFlow");
+
 }

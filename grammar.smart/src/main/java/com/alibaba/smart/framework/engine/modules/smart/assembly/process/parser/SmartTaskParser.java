@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPoint
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Extensions;
-import com.alibaba.smart.framework.engine.modules.smart.assembly.process.Task;
+import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartTask;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
@@ -19,7 +19,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
  * @author ettear
  * Created by ettear on 04/08/2017.
  */
-public class SmartTaskParser extends AbstractElementParser<Task> {
+public class SmartTaskParser extends AbstractElementParser<SmartTask> {
     private final static String DEFAULT_ACTION = PvmEventConstant.ACTIVITY_EXECUTE.name();
 
     public SmartTaskParser(ExtensionPointRegistry extensionPointRegistry) {
@@ -27,15 +27,15 @@ public class SmartTaskParser extends AbstractElementParser<Task> {
     }
 
     @Override
-    protected Task parseModel(XMLStreamReader reader, ParseContext context) {
-        Task task = new Task();
-        task.setId(this.getString(reader, "id"));
-        task.setStartActivity(this.getBoolean(reader, "isStart"));
-        return task;
+    protected SmartTask parseModel(XMLStreamReader reader, ParseContext context) {
+        SmartTask smartTask = new SmartTask();
+        smartTask.setId(this.getString(reader, "id"));
+        smartTask.setStartActivity(this.getBoolean(reader, "isStart"));
+        return smartTask;
     }
 
     @Override
-    protected void parseChild(Task model, BaseElement child) {
+    protected void parseChild(SmartTask model, BaseElement child) {
         if (child instanceof Extensions) {
             model.setExtensions((Extensions)child);
         }else if (child instanceof Performable) {
@@ -54,11 +54,11 @@ public class SmartTaskParser extends AbstractElementParser<Task> {
 
     @Override
     public QName getArtifactType() {
-        return Task.type;
+        return SmartTask.type;
     }
 
     @Override
-    public Class<Task> getModelType() {
-        return Task.class;
+    public Class<SmartTask> getModelType() {
+        return SmartTask.class;
     }
 }

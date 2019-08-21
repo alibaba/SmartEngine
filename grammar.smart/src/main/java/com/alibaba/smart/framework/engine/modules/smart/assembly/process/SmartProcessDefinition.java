@@ -9,7 +9,8 @@ import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractProcessDef
  * @author ettear
  * Created by ettear on 04/08/2017.
  */
-public class ProcessDefinition extends AbstractProcessDefinition {
+public class
+SmartProcessDefinition extends AbstractProcessDefinition {
 
     public final static QName type = new QName(SmartBase.SMART_NS, "definitions");
 

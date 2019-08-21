@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.smart.provider.process;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SequenceFlow;
+import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartSequenceFlow;
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-public class SequenceFlowProviderFactory implements TransitionProviderFactory<SequenceFlow> {
+public class SequenceFlowProviderFactory implements TransitionProviderFactory<SmartSequenceFlow> {
 
     private ExtensionPointRegistry extensionPointRegistry;
 
@@ -23,8 +23,8 @@ public class SequenceFlowProviderFactory implements TransitionProviderFactory<Se
     }
 
     @Override
-    public Class<SequenceFlow> getModelType() {
-        return SequenceFlow.class;
+    public Class<SmartSequenceFlow> getModelType() {
+        return SmartSequenceFlow.class;
     }
 
 }
