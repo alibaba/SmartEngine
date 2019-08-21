@@ -1,12 +1,12 @@
 package com.alibaba.smart.framework.engine.retry;
 
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
 
 /**
  * @author zhenhong.tzh
  * @date 2019-04-27
  */
-public interface RetryExtensionPoint extends LifeCycleListener {
+public interface RetryExtensionPoint extends LifeCycleHook {
 
     /**
      * 获取重试扩展点

@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.xml.parser;
 
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
 import javax.xml.namespace.QName;
@@ -10,7 +10,7 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * XML处理器扩展点 Created by ettear on 16-4-12.
  */
-public interface XmlParserExtensionPoint extends LifeCycleListener {
+public interface XmlParserExtensionPoint extends LifeCycleHook {
 
     /**
      * Reads a model from an XMLStreamReader.

@@ -1,13 +1,12 @@
 package com.alibaba.smart.framework.engine.extensionpoint.registry;
 
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
-
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
 
 /**
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public interface ExtensionPointRegistry extends LifeCycleListener {
+public interface ExtensionPointRegistry extends LifeCycleHook {
 
     void register();
 

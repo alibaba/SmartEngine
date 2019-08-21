@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.constant.AdHocConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
 /**
  * Created by 高海军 帝奇 74394 on 2017 October  07:46.
  */
-public class DefaultVariableQueryService implements VariableQueryService , LifeCycleListener {
+public class DefaultVariableQueryService implements VariableQueryService , LifeCycleHook {
 
     private final ProcessEngineConfiguration processEngineConfiguration;
     private ExtensionPointRegistry extensionPointRegistry;

@@ -19,7 +19,7 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
@@ -62,7 +62,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public class DefaultRepositoryCommandService implements RepositoryCommandService, LifeCycleListener {
+public class DefaultRepositoryCommandService implements RepositoryCommandService, LifeCycleHook {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRepositoryCommandService.class);
 

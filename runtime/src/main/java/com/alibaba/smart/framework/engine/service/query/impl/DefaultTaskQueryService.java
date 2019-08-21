@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
@@ -19,7 +19,7 @@ import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 /**
  * Created by 高海军 帝奇 74394 on 2016 November  22:10.
  */
-public class DefaultTaskQueryService implements TaskQueryService, LifeCycleListener {
+public class DefaultTaskQueryService implements TaskQueryService, LifeCycleHook {
 
     private ExtensionPointRegistry extensionPointRegistry;
     private ProcessEngineConfiguration processEngineConfiguration ;

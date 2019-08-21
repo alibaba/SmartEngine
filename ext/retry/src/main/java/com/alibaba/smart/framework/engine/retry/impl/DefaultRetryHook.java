@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.retry.impl;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
 import com.alibaba.smart.framework.engine.retry.RetryExtensionPoint;
 import com.alibaba.smart.framework.engine.retry.RetryListener;
 import com.alibaba.smart.framework.engine.retry.model.instance.RetryRecord;
@@ -14,12 +14,12 @@ import com.alibaba.smart.framework.engine.retry.service.command.RetryService;
  * @author zhenhong.tzh
  * @date 2019-04-27
  */
-public class DefaultRetryListener implements RetryListener, LifeCycleListener {
+public class DefaultRetryHook implements RetryListener, LifeCycleHook {
 
     private final ExtensionPointRegistry extensionPointRegistry;
     private RetryService retryService;
 
-    public DefaultRetryListener(ExtensionPointRegistry extensionPointRegistry) {
+    public DefaultRetryHook(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
     }
 

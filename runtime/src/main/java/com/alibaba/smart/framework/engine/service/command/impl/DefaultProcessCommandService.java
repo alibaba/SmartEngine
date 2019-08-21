@@ -17,7 +17,7 @@ import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactor
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -41,7 +41,7 @@ import java.util.Map;
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public class DefaultProcessCommandService implements ProcessCommandService, LifeCycleListener {
+public class DefaultProcessCommandService implements ProcessCommandService, LifeCycleHook {
 
     private ExtensionPointRegistry extensionPointRegistry;
 

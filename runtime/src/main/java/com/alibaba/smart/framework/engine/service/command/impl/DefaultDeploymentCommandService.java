@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultDeploymentInstance;
 import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceStorage;
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
@@ -22,7 +22,7 @@ import com.alibaba.smart.framework.engine.service.param.command.UpdateDeployment
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  07:47.
  */
-public class DefaultDeploymentCommandService implements DeploymentCommandService, LifeCycleListener {
+public class DefaultDeploymentCommandService implements DeploymentCommandService, LifeCycleHook {
 
     @Override
     public DeploymentInstance createDeployment(CreateDeploymentCommand createDeploymentCommand) {

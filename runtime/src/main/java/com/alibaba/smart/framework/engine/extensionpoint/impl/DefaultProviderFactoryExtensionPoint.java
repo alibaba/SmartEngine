@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
 
@@ -26,8 +26,8 @@ public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExte
     @Override
     public void start() {
         for (ProviderFactory providerFactory : providerFactories.values()) {
-            if (providerFactory instanceof LifeCycleListener) {
-                ((LifeCycleListener) providerFactory).start();
+            if (providerFactory instanceof LifeCycleHook) {
+                ((LifeCycleHook) providerFactory).start();
             }
         }
     }
@@ -35,8 +35,8 @@ public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExte
     @Override
     public void stop() {
         for (ProviderFactory providerFactory : providerFactories.values()) {
-            if (providerFactory instanceof LifeCycleListener) {
-                ((LifeCycleListener) providerFactory).stop();
+            if (providerFactory instanceof LifeCycleHook) {
+                ((LifeCycleHook) providerFactory).stop();
             }
         }
     }

@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.retry.impl;
 
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.retry.RetryExtensionPoint;
@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * @author zhenhong.tzh
  * @date 2019-04-30
  */
-public class DefaultRetryService implements RetryService, LifeCycleListener {
+public class DefaultRetryService implements RetryService, LifeCycleHook {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRetryService.class);
 

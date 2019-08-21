@@ -3,7 +3,8 @@ package com.alibaba.smart.framework.engine.extensionpoint.impl;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,13 +51,13 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
     @Override
     public void start() {
         for (Object extensionPoint : extensionPoints.values()) {
-            if (extensionPoint instanceof LifeCycleListener) {
-                LOGGER.debug(extensionPoint.getClass() + " is a LifeCycleListener,so deep into.");
+            if (extensionPoint instanceof LifeCycleHook) {
+                LOGGER.debug(extensionPoint.getClass() + " is a LifeCycleHook,so deep into.");
 
-                LifeCycleListener lifeCycleListener = (LifeCycleListener) extensionPoint;
-                lifeCycleListener.start();
+                LifeCycleHook lifeCycleHook = (LifeCycleHook) extensionPoint;
+                lifeCycleHook.start();
             } else {
-                LOGGER.debug(extensionPoint.getClass() + " is not a LifeCycleListener,so ignored.");
+                LOGGER.debug(extensionPoint.getClass() + " is not a LifeCycleHook,so ignored.");
 
             }
         }
@@ -65,9 +66,9 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
     @Override
     public void stop() {
         for (Object extensionPoint : extensionPoints.values()) {
-            if (extensionPoint instanceof LifeCycleListener) {
-                LifeCycleListener lifeCycleListener = (LifeCycleListener) extensionPoint;
-                lifeCycleListener.stop();
+            if (extensionPoint instanceof LifeCycleHook) {
+                LifeCycleHook lifeCycleHook = (LifeCycleHook) extensionPoint;
+                lifeCycleHook.stop();
             }
         }
     }

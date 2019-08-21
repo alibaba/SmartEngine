@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
-import com.alibaba.smart.framework.engine.listener.LifeCycleListener;
+import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -23,7 +23,7 @@ import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
  * @author ettear
  * Created by ettear on 14/10/2017.
  */
-public class DefaultExecutePolicyBehavior implements ExecutePolicyBehavior, LifeCycleListener {
+public class DefaultExecutePolicyBehavior implements ExecutePolicyBehavior, LifeCycleHook {
     private ExtensionPointRegistry extensionPointRegistry;
     private ExecutionInstanceFactory executionInstanceFactory;
     private ExecutionInstanceStorage executionInstanceStorage;
