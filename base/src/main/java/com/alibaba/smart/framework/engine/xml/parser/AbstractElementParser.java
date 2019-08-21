@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.xml.exception.ParseException;
@@ -131,7 +132,14 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
         return model;
     }
 
-    protected void parseAttribute(M model, XMLStreamReader reader, ParseContext context) throws ParseException,XMLStreamException{
+
+    protected   M parseModel(XMLStreamReader reader, ParseContext context) throws ParseException,XMLStreamException{
+       throw  new EngineException("should be overridden");
+    }
+
+
+
+    private void parseAttribute(M model, XMLStreamReader reader, ParseContext context) throws ParseException,XMLStreamException{
         int attributeCount=reader.getAttributeCount();
         if(attributeCount>0){
             for (int i = 0; i < attributeCount; i++) {
@@ -147,7 +155,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
     }
 
 
-    protected void parseChildren(M model, XMLStreamReader reader, ParseContext context) throws ParseException,
+    private void parseChildren(M model, XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {
         while (this.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
@@ -159,11 +167,6 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     protected void parseChild(M model, BaseElement child) throws ParseException{
 
-    }
-
-
-    protected   M parseModel(XMLStreamReader reader, ParseContext context) throws ParseException,XMLStreamException{
-        return null;
     }
 
 

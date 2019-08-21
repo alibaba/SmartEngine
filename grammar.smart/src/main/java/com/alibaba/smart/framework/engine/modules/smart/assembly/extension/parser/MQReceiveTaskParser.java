@@ -30,10 +30,6 @@ public class MQReceiveTaskParser extends AbstractElementParser<MQReceiveTask> {
         return MQReceiveTask;
     }
 
-    @Override
-    protected void parseChild(MQReceiveTask model, BaseElement child) {
-
-    }
 
     @Override
     public QName getArtifactType() {

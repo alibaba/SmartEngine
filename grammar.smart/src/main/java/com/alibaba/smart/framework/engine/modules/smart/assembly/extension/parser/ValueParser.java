@@ -27,10 +27,6 @@ public class ValueParser extends AbstractElementParser<Value> {
         return value;
     }
 
-    @Override
-    protected void parseChild(Value model, BaseElement child) {
-
-    }
 
     @Override
     public QName getArtifactType() {
