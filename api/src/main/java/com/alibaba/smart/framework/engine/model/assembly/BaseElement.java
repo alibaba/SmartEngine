@@ -9,12 +9,5 @@ import java.util.List;
  */
 public interface BaseElement  {
 
-    /**
-     * @return
-     */
-    boolean isUnresolved();
-
-    void setUnresolved(boolean unresolved);
-
 
 }

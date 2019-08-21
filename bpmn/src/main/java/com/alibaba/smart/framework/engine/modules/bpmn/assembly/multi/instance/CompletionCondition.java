@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
@@ -14,9 +14,7 @@ import lombok.EqualsAndHashCode;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-
-public class CompletionCondition extends AbstractBaseElement {
+public class CompletionCondition implements BaseElement {
     public final static String ACTION_ABORT="abort";
     public final static String ACTION_CONTINUE="continue";
 

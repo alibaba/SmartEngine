@@ -5,7 +5,6 @@ import javax.xml.namespace.QName;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBaseElement;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

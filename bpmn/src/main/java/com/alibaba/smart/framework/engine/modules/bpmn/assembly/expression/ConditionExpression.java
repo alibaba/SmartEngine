@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression;
 
 import com.alibaba.smart.framework.engine.model.assembly.Performable;
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractBaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractPerformable;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 import lombok.Data;
