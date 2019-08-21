@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultDeploymentInstance;
 import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceStorage;
-import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
+import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;

@@ -5,9 +5,9 @@
 //import java.util.List;
 //import java.util.Map;
 //
-//import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
-//import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
-//import com.alibaba.rocketmq.client.consumer.listener.MessageListenerConcurrently;
+//import com.alibaba.rocketmq.client.consumer.hook.ConsumeConcurrentlyContext;
+//import com.alibaba.rocketmq.client.consumer.hook.ConsumeConcurrentlyStatus;
+//import com.alibaba.rocketmq.client.consumer.hook.MessageListenerConcurrently;
 //import com.alibaba.rocketmq.common.message.Message;
 //import com.alibaba.rocketmq.common.message.MessageExt;
 //import com.alibaba.smart.framework.engine.SmartEngine;

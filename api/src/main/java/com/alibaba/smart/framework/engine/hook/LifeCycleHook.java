@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.listener;
+package com.alibaba.smart.framework.engine.hook;
 
 /**
  * 生命周期监听 Created by ettear on 16-4-13.

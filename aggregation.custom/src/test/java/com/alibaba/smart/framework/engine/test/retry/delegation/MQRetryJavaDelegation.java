@@ -3,7 +3,7 @@
 //import java.util.List;
 //import java.util.Map;
 //
-//import com.alibaba.rocketmq.client.consumer.listener.MessageListenerConcurrently;
+//import com.alibaba.rocketmq.client.consumer.hook.MessageListenerConcurrently;
 //
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -11,8 +11,8 @@
 ///**
 // * Created by 高海军 帝奇 74394 on 2017 November  11:46.
 // */
-//import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
-//import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+//import com.alibaba.rocketmq.client.consumer.hook.ConsumeConcurrentlyContext;
+//import com.alibaba.rocketmq.client.consumer.hook.ConsumeConcurrentlyStatus;
 //import com.alibaba.rocketmq.common.message.MessageExt;
 //import com.alibaba.smart.framework.engine.SmartEngine;
 //import com.alibaba.smart.framework.engine.context.ExecutionContext;

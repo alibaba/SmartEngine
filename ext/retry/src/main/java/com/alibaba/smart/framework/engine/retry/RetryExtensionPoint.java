@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.retry;
 
-import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
+import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 
 /**
  * @author zhenhong.tzh

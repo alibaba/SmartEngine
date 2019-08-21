@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.extensionpoint.registry;
 
-import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
+import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 
 /**
  * @author 高海军 帝奇  2016.11.11

@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.retry.impl;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.registry.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
+import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.retry.RetryExtensionPoint;
 import com.alibaba.smart.framework.engine.retry.RetryListener;
 import com.alibaba.smart.framework.engine.retry.model.instance.RetryRecord;

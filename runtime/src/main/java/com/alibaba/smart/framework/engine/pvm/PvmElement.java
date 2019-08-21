@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.pvm;
 
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
+import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.assembly.Element;
 import com.alibaba.smart.framework.engine.provider.Invoker;
 

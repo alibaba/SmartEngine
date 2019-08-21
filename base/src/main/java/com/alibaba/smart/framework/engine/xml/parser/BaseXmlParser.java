@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.xml.parser;
 
-import com.alibaba.smart.framework.engine.listener.LifeCycleHook;
+import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 
 import javax.xml.namespace.QName;
 
