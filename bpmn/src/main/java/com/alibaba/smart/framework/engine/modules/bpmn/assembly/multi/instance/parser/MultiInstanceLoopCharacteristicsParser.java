@@ -12,9 +12,9 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.C
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.InputDataItem;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopCollection;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
-import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.exception.ParseException;
+import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 /**
@@ -51,24 +51,29 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
             model.setLoopCollection((LoopCollection)child);
         } else if (child instanceof InputDataItem) {
             model.setInputDataItemName(((InputDataItem)child).getName());
-        } else if (child instanceof CompletionCondition) {
-            CompletionCondition completionCondition=(CompletionCondition)child;
-            CompletionChecker completionChecker=model.getCompletionChecker();
+        }
 
-            if(null==completionChecker || !completionChecker.isCustom()){
-                completionChecker = new CompletionChecker();
-                completionChecker.setCustom(true);
-            }
+        //else if (child instanceof CompletionCondition) {
+        //    CompletionCondition completionCondition=(CompletionCondition)child;
+        //    CompletionChecker completionChecker=model.getCompletionChecker();
+        //
+        //    if(null==completionChecker || !completionChecker.isCustom()){
+        //        completionChecker = new CompletionChecker();
+        //        completionChecker.setCustom(true);
+        //    }
+        //
+        //    if(CompletionCondition.ACTION_ABORT.equals(completionCondition.getAction())){
+        //        completionChecker.setAbortCheckPerformable(((CompletionCondition)child).getExpression());
+        //    }else if(CompletionCondition.ACTION_CONTINUE.equals(completionCondition.getAction())){
+        //        completionChecker.setCompletionCheckPerformable(((CompletionCondition)child).getExpression());
+        //    }
+        //    model.setCompletionChecker(completionChecker);
+        //}else if (child instanceof CompletionCheckPrepare) {
+        //    model.setCompletionCheckPrepare((CompletionCheckPrepare)child);
+        //}
 
-            if(CompletionCondition.ACTION_ABORT.equals(completionCondition.getAction())){
-                completionChecker.setAbortCheckPerformable(((CompletionCondition)child).getExpression());
-            }else if(CompletionCondition.ACTION_CONTINUE.equals(completionCondition.getAction())){
-                completionChecker.setCompletionCheckPerformable(((CompletionCondition)child).getExpression());
-            }
-            model.setCompletionChecker(completionChecker);
-        }else if (child instanceof CompletionCheckPrepare) {
-            model.setCompletionCheckPrepare((CompletionCheckPrepare)child);
-        }else {
+
+        else {
             throw  new EngineException("Should be a instance of CompletionCondition :"+child.getClass());
         }
     }

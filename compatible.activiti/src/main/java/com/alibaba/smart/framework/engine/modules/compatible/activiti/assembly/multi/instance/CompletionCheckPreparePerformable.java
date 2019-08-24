@@ -1,11 +1,11 @@
-package com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance;
-
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractPerformable;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCheckPrepare;
-
-/**
- * @author ettear
- * Created by ettear on 15/10/2017.
- */
-public class CompletionCheckPreparePerformable extends AbstractPerformable implements CompletionCheckPrepare {
-}
+//package com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance;
+//
+//import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractPerformable;
+//import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCheckPrepare;
+//
+///**
+// * @author ettear
+// * Created by ettear on 15/10/2017.
+// */
+//public class CompletionCheckPreparePerformable extends AbstractPerformable implements CompletionCheckPrepare {
+//}

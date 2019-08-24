@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

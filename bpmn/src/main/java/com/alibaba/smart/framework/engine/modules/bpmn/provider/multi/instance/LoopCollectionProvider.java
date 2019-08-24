@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.multi.instance;
 import java.util.Collection;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**

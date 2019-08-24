@@ -8,7 +8,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Extensions;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartTask;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
@@ -39,18 +38,21 @@ public class SmartTaskParser extends AbstractElementParser<SmartTask> {
     protected void parseSingleChild(SmartTask model, BaseElement child) {
         if (child instanceof Extensions) {
             model.setExtensions((Extensions)child);
-        }else if (child instanceof Performable) {
-            List<Performable> performers = model.getPerformers();
-            if (null == performers) {
-                performers = new ArrayList<Performable>();
-                model.setPerformers(performers);
-            }
-            Performable performable = (Performable)child;
-            if (null == performable.getAction() || "".equals(performable.getAction())) {
-                performable.setAction(DEFAULT_ACTION);
-            }
-            performers.add(performable);
         }
+
+        //FIXME
+        //else if (child instanceof Performable) {
+        //    List<Performable> performers = model.getPerformers();
+        //    if (null == performers) {
+        //        performers = new ArrayList<Performable>();
+        //        model.setPerformers(performers);
+        //    }
+        //    Performable performable = (Performable)child;
+        //    if (null == performable.getAction() || "".equals(performable.getAction())) {
+        //        performable.setAction(DEFAULT_ACTION);
+        //    }
+        //    performers.add(performable);
+        //}
     }
 
     @Override

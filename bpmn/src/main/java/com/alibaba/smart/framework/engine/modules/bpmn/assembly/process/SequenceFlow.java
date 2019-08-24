@@ -1,13 +1,13 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process;
 
+import javax.xml.namespace.QName;
+
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTransition;
-import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
+import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.xml.namespace.QName;
 
 /**
  * @author 高海军 帝奇 Apr 21, 2016 3:08:26 PM

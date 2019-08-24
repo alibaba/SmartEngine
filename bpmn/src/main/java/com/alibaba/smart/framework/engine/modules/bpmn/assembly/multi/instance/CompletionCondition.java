@@ -7,7 +7,6 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.Condi
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:27.

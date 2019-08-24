@@ -16,7 +16,6 @@ import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -27,7 +26,6 @@ import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoi
 import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFactory;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
@@ -76,20 +74,22 @@ public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBe
             this.loopCollectionProvider = loopCollectionProviderFactory.createProvider(loopCollection);
         }
 
-        Performable completionPrepareCheckPerformable = multiInstanceLoopCharacteristics.getCompletionCheckPrepare();
-        if (null != completionPrepareCheckPerformable) {
+        //FIXME
 
-            PerformerProviderFactory completionPrepareCheckPerformerProviderFactory
-                = (PerformerProviderFactory)providerFactoryExtensionPoint
-                .getProviderFactory(completionPrepareCheckPerformable.getClass());
-            this.completionCheckPrepareProvider = completionPrepareCheckPerformerProviderFactory.createPerformer(null,
-                completionPrepareCheckPerformable);
-        }
-
-        if (null != multiInstanceLoopCharacteristics.getCompletionChecker()) {
-            this.completionCheckerProvider = new CompletionCheckerProvider(extensionPointRegistry,
-                multiInstanceLoopCharacteristics.getCompletionChecker());
-        }
+        //Performable completionPrepareCheckPerformable = multiInstanceLoopCharacteristics.getCompletionCheckPrepare();
+        //if (null != completionPrepareCheckPerformable) {
+        //
+        //    PerformerProviderFactory completionPrepareCheckPerformerProviderFactory
+        //        = (PerformerProviderFactory)providerFactoryExtensionPoint
+        //        .getProviderFactory(completionPrepareCheckPerformable.getClass());
+        //    this.completionCheckPrepareProvider = completionPrepareCheckPerformerProviderFactory.createPerformer(null,
+        //        completionPrepareCheckPerformable);
+        //}
+        //
+        //if (null != multiInstanceLoopCharacteristics.getCompletionChecker()) {
+        //    this.completionCheckerProvider = new CompletionCheckerProvider(extensionPointRegistry,
+        //        multiInstanceLoopCharacteristics.getCompletionChecker());
+        //}
 
 
         this.multiInstanceLoopCharacteristics = multiInstanceLoopCharacteristics;

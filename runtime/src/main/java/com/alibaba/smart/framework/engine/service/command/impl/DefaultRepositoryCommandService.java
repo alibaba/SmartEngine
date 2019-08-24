@@ -16,6 +16,7 @@ import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
 import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.instance.util.IOUtil;
@@ -25,7 +26,6 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.model.assembly.Extensions;
-import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
@@ -36,7 +36,6 @@ import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.ExecutePolicyProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.InvokerProviderFactory;
-import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.TransitionProviderFactory;
 import com.alibaba.smart.framework.engine.provider.impl.ComboInvoker;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -49,7 +48,6 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.exception.ParseException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -385,16 +383,6 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             }
         }
 
-        List<Performable> performers=pvmElement.getModel().getPerformers();
-        if (null != performers) {
-            ComboInvoker invoker=new ComboInvoker();
-            for (Performable performable : performers) {
-                PerformerProviderFactory providerFactory = (PerformerProviderFactory)this.providerFactoryExtensionPoint
-                    .getProviderFactory(performable.getClass());
-                Performer performer = providerFactory.createPerformer(pvmElement, performable);
-                invoker.addPerformer(performable.getAction(), performer);
-            }
-            pvmElement.setInvoker(invoker);
-        }
+
     }
 }

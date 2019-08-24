@@ -1,14 +1,12 @@
 package com.alibaba.smart.framework.engine.modules.smart.assembly.process.parser;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Extensions;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartSequenceFlow;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
@@ -41,21 +39,24 @@ public class SmartSequenceFlowParser extends AbstractElementParser<SmartSequence
     @Override
     protected void parseSingleChild(SmartSequenceFlow model, BaseElement child) {
         //TODO duplicate code
+        //fixme
 
         if (child instanceof Extensions) {
             model.setExtensions((Extensions)child);
-        }else if (child instanceof Performable) {
-            List<Performable> performers = model.getPerformers();
-            if (null == performers) {
-                performers = new ArrayList<Performable>();
-                model.setPerformers(performers);
-            }
-            Performable performable = (Performable)child;
-            if (null == performable.getAction() || "".equals(performable.getAction())) {
-                performable.setAction(DEFAULT_ACTION);
-            }
-            performers.add(performable);
         }
+
+        //else if (child instanceof Performable) {
+        //    List<Performable> performers = model.getPerformers();
+        //    if (null == performers) {
+        //        performers = new ArrayList<Performable>();
+        //        model.setPerformers(performers);
+        //    }
+        //    Performable performable = (Performable)child;
+        //    if (null == performable.getAction() || "".equals(performable.getAction())) {
+        //        performable.setAction(DEFAULT_ACTION);
+        //    }
+        //    performers.add(performable);
+        //}
     }
 
     @Override

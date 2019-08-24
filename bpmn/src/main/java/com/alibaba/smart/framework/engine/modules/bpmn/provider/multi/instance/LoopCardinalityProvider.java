@@ -6,11 +6,9 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopCardinality;
 import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.provider.factory.PerformerProviderFactory;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**
@@ -26,15 +24,17 @@ public class LoopCardinalityProvider implements LoopCollectionProvider {
         ProviderFactoryExtensionPoint providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(
             ProviderFactoryExtensionPoint.class);
 
-        Performable cardinalityExpression = loopCardinality.getCardinalityExpression();
-        if (null != cardinalityExpression) {
+        //FIXME
 
-            PerformerProviderFactory cardinalityExpressionProviderFactory
-                = (PerformerProviderFactory)providerFactoryExtensionPoint
-                .getProviderFactory(cardinalityExpression.getClass());
-            this.cardinalityExpressionPerformer = cardinalityExpressionProviderFactory.createPerformer(null,
-                cardinalityExpression);
-        }
+        //Performable cardinalityExpression = loopCardinality.getCardinalityExpression();
+        //if (null != cardinalityExpression) {
+        //
+        //    PerformerProviderFactory cardinalityExpressionProviderFactory
+        //        = (PerformerProviderFactory)providerFactoryExtensionPoint
+        //        .getProviderFactory(cardinalityExpression.getClass());
+        //    this.cardinalityExpressionPerformer = cardinalityExpressionProviderFactory.createPerformer(null,
+        //        cardinalityExpression);
+        //}
     }
 
     @Override

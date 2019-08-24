@@ -1,11 +1,11 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task;
 
+import javax.xml.namespace.QName;
+
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.xml.namespace.QName;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

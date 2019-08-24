@@ -23,12 +23,4 @@ public interface Element extends BaseElement{
 
     void setExtensions(Extensions extensions);
 
-    /**
-     * Get Performers
-     * @return Performers
-     */
-    List<Performable> getPerformers();
-
-    void setPerformers(List<Performable> performables);
-
 }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.assembly.Element;
 import com.alibaba.smart.framework.engine.model.assembly.Extensions;
-import com.alibaba.smart.framework.engine.model.assembly.Performable;
 
 import lombok.Data;
 
@@ -20,5 +19,4 @@ public abstract class AbstractElement implements Element {
     private String id;
     private String name;
     private Extensions extensions;
-    private List<Performable> performers;
 }

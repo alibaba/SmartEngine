@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
 

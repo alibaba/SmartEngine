@@ -5,7 +5,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.Performable;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.ExecutionListener;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
@@ -35,9 +34,11 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
 
     @Override
     protected void parseSingleChild(ExecutionListener model, BaseElement child) {
-        if (child instanceof Performable) {
-            model.setPerformable((Performable)child);
-        }
+
+        //fixme
+        //if (child instanceof Performable) {
+        //    model.setPerformable((Performable)child);
+        //}
     }
 
     @Override

@@ -1,10 +1,9 @@
-package com.alibaba.smart.framework.engine.xml.exception;
-
-/**
- * Created by ettear on 16-4-12.
- */
-public class ParseException extends AbstractParseException {
-
-    private static final long serialVersionUID = 6304946747125320343L;
-
-}
+//package com.alibaba.smart.framework.engine.xml.exception;
+//
+///**
+// * Created by 高海军 帝奇 74394 on  2019-08-24 17:43.
+// */
+//public class ParseException extends Exception {
+//    //fixme
+//
+//}

@@ -8,8 +8,8 @@ import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Element;
 import com.alibaba.smart.framework.engine.model.assembly.Extensions;
-import com.alibaba.smart.framework.engine.model.assembly.Performable;
-import com.alibaba.smart.framework.engine.xml.exception.ParseException;
+
+import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 /**
@@ -26,18 +26,21 @@ public abstract class AbstractBpmnParser<M extends Element> extends AbstractElem
         if(!this.parseModelChild(model, child)) {
             if (child instanceof Extensions) {
                 model.setExtensions((Extensions)child);
-            } else if (child instanceof Performable) {
-                List<Performable> performers = model.getPerformers();
-                if (null == performers) {
-                    performers = new ArrayList<Performable>();
-                    model.setPerformers(performers);
-                }
-                Performable performable = (Performable)child;
-                if (StringUtil.isEmpty(performable.getAction())) {
-                    performable.setAction(getDefaultActionName());
-                }
-                performers.add(performable);
             }
+
+            //fixme
+            //else if (child instanceof Performable) {
+            //    List<Performable> performers = model.getPerformers();
+            //    if (null == performers) {
+            //        performers = new ArrayList<Performable>();
+            //        model.setPerformers(performers);
+            //    }
+            //    Performable performable = (Performable)child;
+            //    if (StringUtil.isEmpty(performable.getAction())) {
+            //        performable.setAction(getDefaultActionName());
+            //    }
+            //    performers.add(performable);
+            //}
         }
     }
 

@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.event;
 
 import java.util.Map;
 
-
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;

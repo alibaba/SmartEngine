@@ -1,10 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance;
 
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractPerformable;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * @author ettear
