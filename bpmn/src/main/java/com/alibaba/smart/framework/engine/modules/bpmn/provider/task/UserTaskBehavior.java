@@ -23,6 +23,10 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         super(extensionPointRegistry, runtimeActivity);
     }
 
+    public UserTaskBehavior() {
+        super();
+    }
+
     /*
     protected void beforeEnter(ExecutionContext context) {
         ProcessInstance processInstance = context.getProcessInstance();

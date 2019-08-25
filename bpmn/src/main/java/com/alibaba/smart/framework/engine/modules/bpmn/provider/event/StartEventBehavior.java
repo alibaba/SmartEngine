@@ -11,4 +11,7 @@ public class StartEventBehavior extends AbstractActivityBehavior<StartEvent> {
         super(extensionPointRegistry, runtimeActivity);
     }
 
+    public StartEventBehavior() {
+        super();
+    }
 }

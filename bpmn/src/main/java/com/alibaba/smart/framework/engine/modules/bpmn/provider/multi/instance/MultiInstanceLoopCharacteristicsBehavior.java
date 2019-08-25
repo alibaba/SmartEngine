@@ -36,6 +36,12 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
  * Created by ettear on 14/10/2017.
  */
 public class MultiInstanceLoopCharacteristicsBehavior implements ExecutePolicyBehavior {
+
+    public MultiInstanceLoopCharacteristicsBehavior() {
+        super();
+    }
+
+
     private ExtensionPointRegistry extensionPointRegistry;
     private ProcessCommandService processCommandService;
     private ProcessEngineConfiguration processEngineConfiguration ;

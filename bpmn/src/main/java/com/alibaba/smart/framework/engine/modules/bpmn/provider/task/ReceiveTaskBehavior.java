@@ -12,6 +12,10 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
         super(extensionPointRegistry, runtimeActivity);
     }
 
+    public ReceiveTaskBehavior() {
+        super();
+    }
+
     @Override
     public boolean enter(ExecutionContext context) {
         return true;

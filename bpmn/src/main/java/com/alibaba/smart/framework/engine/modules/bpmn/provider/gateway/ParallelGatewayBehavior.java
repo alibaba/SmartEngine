@@ -26,6 +26,10 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         super(extensionPointRegistry, runtimeActivity);
     }
 
+    public ParallelGatewayBehavior() {
+        super();
+    }
+
     @Override
     public boolean enter(ExecutionContext context) {
         ParallelGateway parallelGateway = this.getModel();

@@ -25,6 +25,10 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     protected ActivityInstanceFactory activityInstanceFactory;
     protected TaskInstanceFactory taskInstanceFactory;
 
+    public AbstractActivityBehavior() {
+        //FIXME
+    }
+
     public AbstractActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity pvmActivity) {
         this.pvmActivity = pvmActivity;
         this.extensionPointRegistry = extensionPointRegistry;

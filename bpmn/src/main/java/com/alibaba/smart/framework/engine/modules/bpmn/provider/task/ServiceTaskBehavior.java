@@ -17,4 +17,8 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> {
         super(extensionPointRegistry, runtimeActivity);
     }
 
+    public ServiceTaskBehavior() {
+        super();
+    }
+
 }

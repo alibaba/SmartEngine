@@ -25,6 +25,12 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
         super(extensionPointRegistry, runtimeActivity);
     }
 
+
+    public CallActivityBehavior() {
+        super();
+    }
+
+
     @Override
     public boolean enter(ExecutionContext context) {
         CallActivity callActivity = this.getModel();

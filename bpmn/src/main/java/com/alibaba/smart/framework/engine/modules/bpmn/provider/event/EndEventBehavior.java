@@ -21,6 +21,10 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
         this.executionCommandService = extensionPointRegistry.getExtensionPoint(ExecutionCommandService.class);
     }
 
+    public EndEventBehavior() {
+        super();
+    }
+
     @Override
     public void leave(ExecutionContext context) {
         ProcessInstance processInstance = context.getProcessInstance();

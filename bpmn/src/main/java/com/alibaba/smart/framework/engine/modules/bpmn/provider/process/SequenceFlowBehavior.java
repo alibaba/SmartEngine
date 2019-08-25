@@ -9,6 +9,10 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 public class SequenceFlowBehavior extends AbstractTransitionBehavior<SequenceFlow> {
 
+    public SequenceFlowBehavior() {
+        super();
+    }
+
     private Performer matchPerformer;
     public SequenceFlowBehavior(ExtensionPointRegistry extensionPointRegistry, PvmTransition runtimeTransition) {
         super(extensionPointRegistry,runtimeTransition);

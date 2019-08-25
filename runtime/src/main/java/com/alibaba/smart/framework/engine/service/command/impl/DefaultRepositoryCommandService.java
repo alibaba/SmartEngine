@@ -33,6 +33,7 @@ import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.provider.Invoker;
 import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
+import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.provider.factory.ActivityProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.ExecutePolicyProviderFactory;
 import com.alibaba.smart.framework.engine.provider.factory.InvokerProviderFactory;
@@ -311,7 +312,9 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     throw new RuntimeException("No factory found for " + runtimeTransition.getModel().getClass());
                 }
 
-                runtimeTransition.setBehavior(providerFactory.createTransitionProvider(runtimeTransition));
+                TransitionBehavior transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
+                //runtimeTransition.setBehavior(this.extensionPointRegistry.getExtensionPoint());
+
             }
 
             // Create Invoker for Activity

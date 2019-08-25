@@ -11,4 +11,7 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<Exclusive
         super(extensionPointRegistry, runtimeActivity);
     }
 
+    public ExclusiveGatewayBehavior() {
+        super();
+    }
 }

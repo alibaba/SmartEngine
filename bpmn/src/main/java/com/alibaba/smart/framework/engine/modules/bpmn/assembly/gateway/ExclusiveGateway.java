@@ -1,5 +1,4 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway;
-
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;

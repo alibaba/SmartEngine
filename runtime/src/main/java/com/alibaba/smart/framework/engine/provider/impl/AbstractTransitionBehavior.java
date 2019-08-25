@@ -21,6 +21,9 @@ public abstract class AbstractTransitionBehavior<T extends Transition> implement
         this.runtimeTransition = runtimeTransition;
     }
 
+    public AbstractTransitionBehavior() {
+    }
+
     @Override
     public boolean match(ExecutionContext context) {
         return false;
