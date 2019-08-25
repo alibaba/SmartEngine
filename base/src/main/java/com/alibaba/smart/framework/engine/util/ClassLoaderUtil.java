@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.util.util;
+package com.alibaba.smart.framework.engine.util;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.esotericsoftware.reflectasm.ConstructorAccess;

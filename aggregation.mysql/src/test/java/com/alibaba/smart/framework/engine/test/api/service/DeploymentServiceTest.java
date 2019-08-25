@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngin
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
-import com.alibaba.smart.framework.engine.util.util.IOUtil;
+import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.param.command.CreateDeploymentCommand;

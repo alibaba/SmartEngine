@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.util.util;
+package com.alibaba.smart.framework.engine.util;
 
 import java.io.BufferedInputStream;
 import java.io.Closeable;

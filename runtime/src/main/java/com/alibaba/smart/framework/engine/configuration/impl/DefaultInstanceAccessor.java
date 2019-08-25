@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
-import com.alibaba.smart.framework.engine.util.util.ClassLoaderUtil;
+import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 
 /**
  *
