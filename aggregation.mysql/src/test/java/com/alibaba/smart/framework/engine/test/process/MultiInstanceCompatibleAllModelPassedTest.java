@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
-import com.alibaba.smart.framework.engine.instance.util.IOUtil;
+import com.alibaba.smart.framework.engine.util.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;

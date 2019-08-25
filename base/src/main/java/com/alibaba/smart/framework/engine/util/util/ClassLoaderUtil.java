@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.instance.util;
+package com.alibaba.smart.framework.engine.util.util;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * //FIXME COPYRIGHT
  * Keeps all classloading in ehcache consistent.
  *
  * @author Greg Luck

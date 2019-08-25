@@ -9,8 +9,8 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultInstanceAcce
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
-import com.alibaba.smart.framework.engine.instance.util.ClassLoaderUtil;
-import com.alibaba.smart.framework.engine.instance.util.IOUtil;
+import com.alibaba.smart.framework.engine.util.util.ClassLoaderUtil;
+import com.alibaba.smart.framework.engine.util.util.IOUtil;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 
 import org.springframework.beans.factory.FactoryBean;

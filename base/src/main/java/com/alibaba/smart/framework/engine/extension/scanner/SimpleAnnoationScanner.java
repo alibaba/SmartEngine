@@ -21,11 +21,10 @@ import java.util.jar.JarFile;
 public class SimpleAnnoationScanner {
 
 
+    public static void scan(String packageName){
 
-    public static void main(String[] args) {
-        
         // 包下面的类
-        Set<Class<?>> clazzs = getClasses("cn.package.test");
+        Set<Class<?>> clazzs = getClasses(packageName);
         if (clazzs == null) {
             return;
         }
@@ -62,7 +61,7 @@ public class SimpleAnnoationScanner {
      * @param pack
      * @return
      */
-    public static Set<Class<?>> getClasses(String pack) {
+    private static Set<Class<?>> getClasses(String pack) {
 
         // 第一个class类的集合
         Set<Class<?>> classes = new LinkedHashSet();
@@ -165,6 +164,7 @@ public class SimpleAnnoationScanner {
         // 如果存在 就获取包下的所有文件 包括目录
         File[] dirfiles = dir.listFiles(new FileFilter() {
             // 自定义过滤规则 如果可以循环(包含子目录) 或则是以.class结尾的文件(编译好的java类文件)
+            @Override
             public boolean accept(File file) {
                 return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"));
             }
@@ -195,7 +195,7 @@ public class SimpleAnnoationScanner {
     // --------------------------------------------------------------------------------------------------------
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static Set<Class<?>> getByInterface(Class clazz, Set<Class<?>> classesAll) {
+    private static Set<Class<?>> getByInterface(Class clazz, Set<Class<?>> classesAll) {
         Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
         // 获取指定接口的实现类
         if (!clazz.isInterface()) {
