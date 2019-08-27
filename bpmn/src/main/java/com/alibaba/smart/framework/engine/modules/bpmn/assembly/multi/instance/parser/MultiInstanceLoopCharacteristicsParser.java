@@ -4,11 +4,10 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCheckPrepare;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionChecker;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.InputDataItem;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopCollection;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
@@ -20,6 +19,8 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:01.
  */
+@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = MultiInstanceLoopCharacteristics.class)
+
 public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParser<MultiInstanceLoopCharacteristics>
       {
 

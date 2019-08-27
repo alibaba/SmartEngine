@@ -2,13 +2,20 @@ package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.exception.ParseException;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
+import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.xml.parser.*;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
+import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -71,12 +78,40 @@ public class DefaultXmlParserExtensionPoint extends AbstractPropertiesExtensionP
     @Override
     public Object parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         QName nodeQname = reader.getName();
-        ElementParser artifactParser = this.artifactParsers.get(nodeQname);
-        if (null != artifactParser) {
-            return artifactParser.parseElement(reader, context);
-        } else {
-            throw new RuntimeException("No ElementParser found for QName: " + nodeQname);
+
+        //FIXME cache
+        Map<String, Class> bindings = SimpleAnnotationScanner.scan("com.alibaba.smart.framework.engine",
+            ExtensionBinding.class).get(
+            ExtensionConstant.ELEMENT_PARSER).getBindings();
+        Set<Entry<String, Class>> entries = bindings.entrySet();
+        QName qName = null;
+        for (Entry<String, Class> entry : entries) {
+            String key = entry.getKey();
+            Class<?> aClass = null;
+            try {
+                aClass = Class.forName(key);
+                Object o = aClass.newInstance();
+                Field type = aClass.getField("type");
+                qName=   (QName)type.get(o);
+                if(nodeQname.equals( qName)){
+                    ElementParser artifactParser = (ElementParser)  entry.getValue().newInstance();
+                    return artifactParser.parseElement(reader, context);
+
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
+
+        throw new RuntimeException("No ElementParser found for QName: " + nodeQname);
+
+
+        //ElementParser artifactParser = this.artifactParsers.get(nodeQname);
+        //if (null != artifactParser) {
+        //    return artifactParser.parseElement(reader, context);
+        //} else {
+        //    throw new RuntimeException("No ElementParser found for QName: " + nodeQname);
+        //}
     }
 
     @Override

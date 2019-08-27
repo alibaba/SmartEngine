@@ -3,6 +3,8 @@ package com.alibaba.smart.framework.engine.modules.smart.assembly.extension.pars
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Value;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -13,6 +15,9 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
+
+@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = Value.class)
+
 public class ValueParser extends AbstractElementParser<Value> {
 
     public ValueParser(ExtensionPointRegistry extensionPointRegistry) {

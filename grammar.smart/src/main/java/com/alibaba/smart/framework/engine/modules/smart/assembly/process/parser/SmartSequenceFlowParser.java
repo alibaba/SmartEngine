@@ -5,6 +5,8 @@ package com.alibaba.smart.framework.engine.modules.smart.assembly.process.parser
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Extensions;
@@ -18,6 +20,9 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
  * @author ettear
  * Created by ettear on 04/08/2017.
  */
+
+@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = SmartSequenceFlow.class)
+
 public class SmartSequenceFlowParser extends AbstractElementParser<SmartSequenceFlow> {
     private final static String DEFAULT_ACTION = PvmEventConstant.TRANSITION_EXECUTE.name();
 

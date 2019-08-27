@@ -9,49 +9,68 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import com.alibaba.smart.framework.engine.exception.ParseException;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
+
 /**
  * see https://www.cnblogs.com/rinack/p/7606285.html  FIXME copyright
  */
-public class SimpleAnnoationScanner {
+public class SimpleAnnotationScanner {
+
+    private static Map<String,ExtensionBindingResult> map = new HashMap<String, ExtensionBindingResult>();
 
 
-    public static void scan(String packageName){
+    public static Map<String,ExtensionBindingResult> scan(String packageName,  Class<? extends  ExtensionBinding> bindingAnnotationClazz){
 
         // 包下面的类
         Set<Class<?>> clazzs = getClasses(packageName);
-        if (clazzs == null) {
-            return;
-        }
 
-        System.out.printf(clazzs.size() + "");
         // 某类或者接口的子类
-        Set<Class<?>> inInterface = getByInterface(Object.class, clazzs);
-        System.out.printf(inInterface.size() + "");
+        //Set<Class<?>> inInterface = getByInterface(Object.class, clazzs);
+        //System.out.printf(inInterface.size() + "");
 
         for (Class<?> clazz : clazzs) {
 
-            // 获取类上的注解
-            Annotation[] annos = clazz.getAnnotations();
-            for (Annotation anno : annos) {
-                System.out.println(clazz.getSimpleName().concat(".").concat(anno.annotationType().getSimpleName()));
+            boolean result = clazz.isAnnotationPresent(bindingAnnotationClazz);
+
+            if(result){
+                ExtensionBinding bindAnnotation = clazz.getAnnotation(bindingAnnotationClazz);
+                String type = bindAnnotation.type();
+                ExtensionBindingResult extensionBindingResult  =   map.get(type);
+                if(null == extensionBindingResult){
+                    extensionBindingResult = new ExtensionBindingResult();
+                    Map<String,Class>  classMap = new HashMap<String, Class>();
+                    extensionBindingResult.setBindings(classMap);
+                    map.put(type,extensionBindingResult);
+                }
+
+                Map<String, Class> bindings = extensionBindingResult.getBindings();
+                String name = bindAnnotation.binding().getName();
+                if(bindings.get(name) == null){
+                    bindings.put(name,clazz);
+                }else {
+                    throw new ParseException("Duplicated key found for "+name);
+                }
+
+
+
+
             }
 
-            // 获取方法上的注解
-            Method[] methods = clazz.getDeclaredMethods();
-            for (Method method : methods) {
-                Annotation[] annotations = method.getDeclaredAnnotations();
-                for (Annotation annotation : annotations) {
-                    System.out.println(clazz.getSimpleName().concat(".").concat(method.getName()).concat(".")
-                            .concat(annotation.annotationType().getSimpleName()));
-                }
-            }
         }
+
+        return map;
+
 
     }
 
@@ -73,7 +92,7 @@ public class SimpleAnnoationScanner {
         // 定义一个枚举的集合 并进行循环来处理这个目录下的things
         Enumeration<URL> dirs;
         try {
-            dirs = Thread.currentThread().getContextClassLoader().getResources(packageDirName);
+            dirs = ClassLoaderUtil.getContextClassLoader().getResources(packageDirName);
             // 循环迭代下去
             while (dirs.hasMoreElements()) {
                 // 获取下一个元素
@@ -152,7 +171,7 @@ public class SimpleAnnoationScanner {
      * @param recursive
      * @param classes
      */
-    public static void findAndAddClassesInPackageByFile(String packageName, String packagePath, final boolean recursive,
+    private static void findAndAddClassesInPackageByFile(String packageName, String packagePath, final boolean recursive,
             Set<Class<?>> classes) {
         // 获取此包的目录 建立一个File
         File dir = new File(packagePath);

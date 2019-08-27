@@ -6,6 +6,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ParseException;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
@@ -54,7 +55,6 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
         XmlParserExtensionPoint xmlParserExtensionPoint = this.getXmlParserExtensionPoint();
         return xmlParserExtensionPoint.parseElement(reader, context);
     }
-
 
 
 

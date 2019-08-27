@@ -9,6 +9,8 @@ import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
  */
 public interface BaseXmlParser<M> extends LifeCycleHook {
 
+
+    // check 是否需要
     QName getQname();
 
     Class<M> getModelType();
