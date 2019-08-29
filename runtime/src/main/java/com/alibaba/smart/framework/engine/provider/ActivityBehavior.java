@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.provider;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -12,6 +13,6 @@ public interface ActivityBehavior {
 
     boolean execute(ExecutionContext context);
 
-    void leave(ExecutionContext context);
+    void leave(PvmActivity pvmActivity,ExecutionContext context);
 
 }

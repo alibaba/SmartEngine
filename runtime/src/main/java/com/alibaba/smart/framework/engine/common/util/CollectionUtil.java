@@ -11,7 +11,6 @@ public  abstract class CollectionUtil {
         return null != collection && !collection.isEmpty();
     }
 
-
     public static boolean isEmpty(Collection collection){
         return !isNotEmpty(collection);
     }

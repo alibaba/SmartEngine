@@ -70,6 +70,7 @@ public class DefaultExecutePolicyBehavior implements ExecutePolicyBehavior, Life
 
     @Override
     public void execute(PvmActivity pvmActivity, ExecutionContext context) {
+
         pvmActivity.invoke(PvmEventConstant.ACTIVITY_EXECUTE.name(), context);
         if (!context.isNeedPause()) {
             ExecutionInstance executionInstance = context.getExecutionInstance();
@@ -80,4 +81,5 @@ public class DefaultExecutePolicyBehavior implements ExecutePolicyBehavior, Life
             executionInstance.setStatus(InstanceStatus.suspended);
         }
     }
+
 }

@@ -30,7 +30,7 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
     }
 
     @Override
-    public void leave(ExecutionContext context) {
+    public void leave(PvmActivity pvmActivity,ExecutionContext context) {
         ProcessInstance processInstance = context.getProcessInstance();
         processInstance.setStatus(InstanceStatus.completed);
         processInstance.setCompleteTime(DateUtil.getCurrentDate());

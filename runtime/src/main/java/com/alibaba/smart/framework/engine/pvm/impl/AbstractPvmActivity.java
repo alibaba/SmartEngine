@@ -34,13 +34,14 @@ public abstract class AbstractPvmActivity extends AbstractPvmElement<Activity> i
     @Override
     protected Object invokeBehavior(String event, ExecutionContext context) {
         if (PvmEventConstant.ACTIVITY_START.name().equals(event)) {
-            boolean needPause=this.behavior.enter(context);
+            boolean needPause=this.behavior.
+                enter(context);
             context.setNeedPause(needPause);
         } else if (PvmEventConstant.ACTIVITY_EXECUTE.name().equals(event)) {
             boolean needPause=this.behavior.execute(context);
             context.setNeedPause(needPause);
         } else if (PvmEventConstant.ACTIVITY_END.name().equals(event)) {
-            this.behavior.leave(context);
+            this.behavior.leave(this,context);
         }
 
         return null;

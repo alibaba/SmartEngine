@@ -23,9 +23,9 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 public class ElementVariableParser extends AbstractElementParser<ElementVariable> implements
     AttributeParser<ElementVariable> {
 
-    public ElementVariableParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+    //public ElementVariableParser(ExtensionPointRegistry extensionPointRegistry) {
+    //    super(extensionPointRegistry);
+    //}
 
     @Override
     public QName getQname() {
