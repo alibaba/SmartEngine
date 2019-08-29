@@ -21,9 +21,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 public class PropertiesParser extends AbstractElementParser<Properties> {
 
-    public PropertiesParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+
 
     @Override
     protected Properties parseModel(XMLStreamReader reader, ParseContext context) {

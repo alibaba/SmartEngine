@@ -1,9 +1,14 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.event;
 
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.StartEvent;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+
+@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR,binding = StartEvent.class)
 
 public class StartEventBehavior extends AbstractActivityBehavior<StartEvent> {
 

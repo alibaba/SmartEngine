@@ -22,9 +22,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class SmartProcessDefinitionParser extends AbstractElementParser<SmartProcessDefinition> {
 
-    public SmartProcessDefinitionParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
 
     @Override
     protected SmartProcessDefinition parseModel(XMLStreamReader reader, ParseContext context) {

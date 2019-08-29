@@ -22,15 +22,18 @@ import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 
+import lombok.Getter;
+
 /**
  * see https://www.cnblogs.com/rinack/p/7606285.html  FIXME copyright
  */
 public class SimpleAnnotationScanner {
 
+    @Getter
     private static Map<String,ExtensionBindingResult> map = new HashMap<String, ExtensionBindingResult>();
 
 
-    public static Map<String,ExtensionBindingResult> scan(String packageName,  Class<? extends  ExtensionBinding> bindingAnnotationClazz){
+    public static void scan(String packageName,  Class<? extends  ExtensionBinding> bindingAnnotationClazz){
 
         // 包下面的类
         Set<Class<?>> clazzs = getClasses(packageName);
@@ -68,9 +71,6 @@ public class SimpleAnnotationScanner {
             }
 
         }
-
-        return map;
-
 
     }
 

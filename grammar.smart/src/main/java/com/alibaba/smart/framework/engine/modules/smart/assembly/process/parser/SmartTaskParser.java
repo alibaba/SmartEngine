@@ -24,9 +24,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class SmartTaskParser extends AbstractElementParser<SmartTask> {
     private final static String DEFAULT_ACTION = PvmEventConstant.ACTIVITY_EXECUTE.name();
 
-    public SmartTaskParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
 
     @Override
     protected SmartTask parseModel(XMLStreamReader reader, ParseContext context) {

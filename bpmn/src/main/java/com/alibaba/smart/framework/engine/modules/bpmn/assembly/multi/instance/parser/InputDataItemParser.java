@@ -22,9 +22,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class InputDataItemParser extends AbstractElementParser<InputDataItem>
       {
 
-    public InputDataItemParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+
 
     @Override
     public QName getQname() {

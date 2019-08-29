@@ -7,8 +7,12 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
+import com.alibaba.smart.framework.engine.extension.scanner.ExtensionBindingResult;
+import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 import org.slf4j.Logger;
@@ -22,26 +26,26 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractElementParser.class);
 
-    private ExtensionPointRegistry extensionPointRegistry;
-    private XmlParserExtensionPoint xmlParserExtensionPoint;
+    //private ExtensionPointRegistry extensionPointRegistry;
+    //private XmlParserExtensionPoint xmlParserExtensionPoint;
+    //
+    //// GETTER & SETTER
+    //
+    //protected ExtensionPointRegistry getExtensionPointRegistry() {
+    //    return extensionPointRegistry;
+    //}
+    //
+    //protected XmlParserExtensionPoint getXmlParserExtensionPoint() {
+    //    return xmlParserExtensionPoint;
+    //}
 
-    // GETTER & SETTER
-
-    protected ExtensionPointRegistry getExtensionPointRegistry() {
-        return extensionPointRegistry;
-    }
-
-    protected XmlParserExtensionPoint getXmlParserExtensionPoint() {
-        return xmlParserExtensionPoint;
-    }
-
-    public AbstractElementParser(ExtensionPointRegistry extensionPointRegistry) {
-        this.extensionPointRegistry = extensionPointRegistry;
-    }
+    //public AbstractElementParser(ExtensionPointRegistry extensionPointRegistry) {
+    //    this.extensionPointRegistry = extensionPointRegistry;
+    //}
 
     @Override
     public void start() {
-        this.xmlParserExtensionPoint = this.extensionPointRegistry.getExtensionPoint(XmlParserExtensionPoint.class);
+        //this.xmlParserExtensionPoint = this.extensionPointRegistry.getExtensionPoint(XmlParserExtensionPoint.class);
     }
 
     @Override
@@ -52,10 +56,9 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     protected Object readElement(XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {
-        XmlParserExtensionPoint xmlParserExtensionPoint = this.getXmlParserExtensionPoint();
+        XmlParserExtensionPoint xmlParserExtensionPoint = getXmlParserExtensionPoint1();
         return xmlParserExtensionPoint.parseElement(reader, context);
     }
-
 
 
 
@@ -95,10 +98,20 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     private Object parseSingleAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {
-        XmlParserExtensionPoint xmlParserExtensionPoint = this.getXmlParserExtensionPoint();
+
+        XmlParserExtensionPoint xmlParserExtensionPoint = getXmlParserExtensionPoint1();
         return xmlParserExtensionPoint.parseAttribute(attributeName,reader, context);
     }
 
+
+    //TUNE CACHE
+    private XmlParserExtensionPoint getXmlParserExtensionPoint1() {
+        ExtensionBindingResult extensionBindingResult = SimpleAnnotationScanner.getMap().get(
+            ExtensionConstant.EXTENSION_POINT);
+        Class aClass = extensionBindingResult.getBindings().get(XmlParserExtensionPoint.class.getName());
+        Object o = ClassLoaderUtil.createNewInstance(aClass);
+        return (XmlParserExtensionPoint)o;
+    }
 
     private void parseMultiChildren(M model, XMLStreamReader reader, ParseContext context) throws ParseException,
         XMLStreamException {

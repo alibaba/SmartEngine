@@ -23,9 +23,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 public class SmartJavaAttributeParser extends AbstractElementParser<Java> implements
     AttributeParser<Java> {
 
-    public SmartJavaAttributeParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+
 
     @Override
     protected Java parseModel(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {

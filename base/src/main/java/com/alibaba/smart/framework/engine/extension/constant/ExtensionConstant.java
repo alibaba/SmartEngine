@@ -11,4 +11,6 @@ public interface ExtensionConstant {
 
     String ACTIVITY_BEHAVIOR = "activity-behavior";
 
+    String EXTENSION_POINT = "extension-point";
+
 }

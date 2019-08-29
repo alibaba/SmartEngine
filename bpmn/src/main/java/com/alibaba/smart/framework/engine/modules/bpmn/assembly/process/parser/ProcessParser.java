@@ -22,10 +22,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class ProcessParser extends AbstractElementParser<Process>  {
 
-    public ProcessParser(ExtensionPointRegistry extensionPointRegistry) {
 
-        super(extensionPointRegistry);
-    }
 
     @Override
     public QName getQname() {

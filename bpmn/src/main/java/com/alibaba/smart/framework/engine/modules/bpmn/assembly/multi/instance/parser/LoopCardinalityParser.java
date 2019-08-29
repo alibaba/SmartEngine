@@ -23,9 +23,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class LoopCardinalityParser extends AbstractElementParser<LoopCardinality>
       {
 
-    public LoopCardinalityParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+
 
     @Override
     public QName getQname() {

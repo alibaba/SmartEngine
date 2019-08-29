@@ -17,9 +17,6 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
  */
 public abstract class AbstractBpmnParser<M extends Element> extends AbstractElementParser<M> {
 
-    public AbstractBpmnParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
 
     @Override
     protected void parseSingleChild(M model, BaseElement child) throws ParseException {

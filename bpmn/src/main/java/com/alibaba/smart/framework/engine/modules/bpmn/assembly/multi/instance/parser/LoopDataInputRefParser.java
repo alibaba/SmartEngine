@@ -21,9 +21,7 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 public class LoopDataInputRefParser extends AbstractElementParser<LoopDataInputRef>
       {
 
-    public LoopDataInputRefParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+
 
     @Override
     public QName getQname() {

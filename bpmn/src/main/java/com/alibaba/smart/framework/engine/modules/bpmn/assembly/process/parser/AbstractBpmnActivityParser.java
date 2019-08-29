@@ -20,9 +20,7 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 public abstract class AbstractBpmnActivityParser<M extends AbstractActivity> extends AbstractBpmnParser<M> {
     private final static String DEFAULT_ACTION = PvmEventConstant.ACTIVITY_EXECUTE.name();
 
-    public AbstractBpmnActivityParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+
 
     @Override
     protected void parseSingleChild(M model, BaseElement child) throws ParseException {

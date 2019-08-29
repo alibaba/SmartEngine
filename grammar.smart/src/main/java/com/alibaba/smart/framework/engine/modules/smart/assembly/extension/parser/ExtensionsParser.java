@@ -19,9 +19,6 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 public class ExtensionsParser extends AbstractElementParser<Extensions> {
 
-    public ExtensionsParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
 
     @Override
     protected Extensions parseModel(XMLStreamReader reader, ParseContext context) {

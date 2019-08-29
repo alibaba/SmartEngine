@@ -2,6 +2,8 @@ package com.alibaba.smart.framework.engine.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
@@ -38,6 +40,9 @@ public class DefaultSmartEngine implements SmartEngine {
     public void init(ProcessEngineConfiguration processEngineConfiguration) {
 
         this.setProcessEngineConfiguration(processEngineConfiguration);
+
+        String name = SmartEngine.class.getPackage().getName();
+        SimpleAnnotationScanner.scan(name, ExtensionBinding.class);
 
         this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
         this.extensionPointRegistry.register();

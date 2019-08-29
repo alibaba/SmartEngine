@@ -21,10 +21,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class IncomingParser extends AbstractElementParser<Incoming>   {
 
 
-    public IncomingParser(ExtensionPointRegistry extensionPointRegistry) {
 
-        super(extensionPointRegistry);
-    }
 
     @Override
     public QName getQname() {

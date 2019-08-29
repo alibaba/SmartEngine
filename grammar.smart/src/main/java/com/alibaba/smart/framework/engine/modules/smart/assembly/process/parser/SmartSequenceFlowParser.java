@@ -26,9 +26,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class SmartSequenceFlowParser extends AbstractElementParser<SmartSequenceFlow> {
     private final static String DEFAULT_ACTION = PvmEventConstant.TRANSITION_EXECUTE.name();
 
-    public SmartSequenceFlowParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+
 
     @Override
     protected SmartSequenceFlow parseModel(XMLStreamReader reader, ParseContext context) {

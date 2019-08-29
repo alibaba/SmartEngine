@@ -18,9 +18,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class ConditionExpressionParser extends AbstractElementParser<ConditionExpression>
       {
 
-    public ConditionExpressionParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+
 
     @Override
     public QName getQname() {

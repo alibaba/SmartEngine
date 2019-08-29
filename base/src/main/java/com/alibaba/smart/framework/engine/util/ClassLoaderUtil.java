@@ -63,6 +63,19 @@ public final class ClassLoaderUtil {
         return createNewInstance(className, new Class[0], new Object[0]);
     }
 
+    public static Object createNewInstance(Class aClass) {
+        Object o = null;
+        try {
+            o = aClass.newInstance();
+
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return o;
+    }
+
     public static Object createOrGetInstanceWithASM(String className) throws EngineException {
         Object object = objectMap.get(className);
 

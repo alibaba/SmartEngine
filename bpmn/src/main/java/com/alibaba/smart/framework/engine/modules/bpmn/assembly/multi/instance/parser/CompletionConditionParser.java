@@ -21,9 +21,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class CompletionConditionParser extends AbstractElementParser<CompletionCondition>
 {
 
-    public CompletionConditionParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
 
     @Override
     public QName getQname() {

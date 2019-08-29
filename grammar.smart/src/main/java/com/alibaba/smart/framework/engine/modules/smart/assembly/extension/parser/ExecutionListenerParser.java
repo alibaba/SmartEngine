@@ -21,9 +21,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class ExecutionListenerParser extends AbstractElementParser<ExecutionListener>
        {
 
-    public ExecutionListenerParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+
 
     @Override
     protected ExecutionListener parseModel(XMLStreamReader reader, ParseContext context) {

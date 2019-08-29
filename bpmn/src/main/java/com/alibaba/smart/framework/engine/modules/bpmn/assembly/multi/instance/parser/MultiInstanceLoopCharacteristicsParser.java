@@ -24,9 +24,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParser<MultiInstanceLoopCharacteristics>
       {
 
-    public MultiInstanceLoopCharacteristicsParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
 
     @Override
     public QName getQname() {

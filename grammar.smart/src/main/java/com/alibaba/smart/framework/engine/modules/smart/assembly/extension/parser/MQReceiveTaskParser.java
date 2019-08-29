@@ -20,9 +20,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class MQReceiveTaskParser extends AbstractElementParser<MQReceiveTask> {
 
-    public MQReceiveTaskParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+
 
     @Override
     protected MQReceiveTask parseModel(XMLStreamReader reader, ParseContext context) {

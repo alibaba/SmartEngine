@@ -17,7 +17,11 @@ import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ParseException;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
+import com.alibaba.smart.framework.engine.extension.scanner.ExtensionBindingResult;
+import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
@@ -286,6 +290,9 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 }
             }
 
+            ExtensionBindingResult extensionBindingResult = SimpleAnnotationScanner.getMap().get(
+                ExtensionConstant.ACTIVITY_BEHAVIOR);
+
             // Process Transition Flow
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
                 DefaultPvmTransition runtimeTransition = (DefaultPvmTransition) runtimeTransitionEntry.getValue();
@@ -304,14 +311,22 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
                 PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
                 this.initElement(runtimeTransition);
-                TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModel().getClass());
 
-                if (null == providerFactory) {
-                    throw new RuntimeException("No factory found for " + runtimeTransition.getModel().getClass());
-                }
+                //
+                //TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModel().getClass());
+                //
+                //if (null == providerFactory) {
+                //    throw new RuntimeException("No factory found for " + runtimeTransition.getModel().getClass());
+                //}
 
-                TransitionBehavior transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
-                //runtimeTransition.setBehavior(this.extensionPointRegistry.getExtensionPoint());
+
+                Class aClass = extensionBindingResult.getBindings().get(TransitionBehavior.class.getName());
+
+                //TUNE 强转
+                Object o = ClassLoaderUtil.createNewInstance(aClass);
+
+                //TransitionBehavior transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
+                runtimeTransition.setBehavior((TransitionBehavior)o);
 
             }
 
@@ -322,13 +337,22 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 this.initElement(pvmActivity);
 
                 Activity activity=pvmActivity.getModel();
-                ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(activity.getClass());
+                //ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(activity.getClass());
+                //
+                //if (null == providerFactory) {
+                //    throw new RuntimeException("No factory found for " + activity.getClass());
+                //}
 
-                if (null == providerFactory) {
-                    throw new RuntimeException("No factory found for " + activity.getClass());
+                String name = activity.getClass().getName();
+                Class aClass = extensionBindingResult.getBindings().get(name);
+
+                if(null == aClass){
+                    throw new EngineException("Behavior class can't be null for "+name);
                 }
 
-                pvmActivity.setBehavior(providerFactory.createActivityProvider(pvmActivity));
+                Object o = ClassLoaderUtil.createNewInstance(aClass);
+
+                pvmActivity.setBehavior((ActivityBehavior)o);
 
                 ExecutePolicy executePolicy=activity.getExecutePolicy();
                 ExecutePolicyBehavior executePolicyBehavior=null;

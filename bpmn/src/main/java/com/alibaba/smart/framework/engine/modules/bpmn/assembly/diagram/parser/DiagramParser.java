@@ -26,10 +26,7 @@ public class DiagramParser extends AbstractElementParser<Diagram>   {
 
     private static final long serialVersionUID = -2660788294142169268L;
 
-    public DiagramParser(ExtensionPointRegistry extensionPointRegistry) {
 
-        super(extensionPointRegistry);
-    }
 
     @Override
     public QName getQname() {

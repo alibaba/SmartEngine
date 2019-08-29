@@ -27,6 +27,6 @@ public class SequenceFlow extends AbstractTransition {
 
     @Override
     public String toString() {
-        return super.getId() +", <-- " + super.getSourceRef() + " --> " + super.getTargetRef();
+        return super.getSourceRef() + " --> "+ super.getId() +" --> " + super.getTargetRef();
     }
 }

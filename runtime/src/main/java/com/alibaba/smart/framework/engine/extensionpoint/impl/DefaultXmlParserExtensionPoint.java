@@ -22,16 +22,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * 默认处理器扩展点 Created by ettear on 16-4-12.
  */
 @SuppressWarnings("rawtypes")
-public class DefaultXmlParserExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements
+@ExtensionBinding(type = ExtensionConstant.EXTENSION_POINT,binding = XmlParserExtensionPoint.class)
+public class DefaultXmlParserExtensionPoint  implements
     XmlParserExtensionPoint {
 
     private Map<QName, ElementParser> artifactParsers = new ConcurrentHashMap<QName, ElementParser>();
 
     private Map<QName, AttributeParser> attributeParsers = new ConcurrentHashMap<QName, AttributeParser>();
 
-    public DefaultXmlParserExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+    //public DefaultXmlParserExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
+    //    super(extensionPointRegistry);
+    //}
 
     @Override
     public void start() {
@@ -55,33 +56,32 @@ public class DefaultXmlParserExtensionPoint extends AbstractPropertiesExtensionP
         }
     }
 
-    @Override
-    protected void initExtension(ClassLoader classLoader, String extensionEntryKey, Object artifactParseObject) {
-        if (artifactParseObject instanceof ElementParser) {
-            ElementParser artifactParser = (ElementParser) artifactParseObject;
-            QName artifactType = artifactParser.getQname();
-            this.artifactParsers.put(artifactType, artifactParser);
-            //this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
-        }
-        if (artifactParseObject instanceof AttributeParser) {
-            AttributeParser artifactParser = (AttributeParser) artifactParseObject;
-            this.attributeParsers.put(artifactParser.getQname(), artifactParser);
-            //this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
-        }
-    }
-
-    @Override
-    protected String getExtensionName() {
-        return "assembly-parser";
-    }
+    //@Override
+    //protected void initExtension(ClassLoader classLoader, String extensionEntryKey, Object artifactParseObject) {
+    //    if (artifactParseObject instanceof ElementParser) {
+    //        ElementParser artifactParser = (ElementParser) artifactParseObject;
+    //        QName artifactType = artifactParser.getQname();
+    //        this.artifactParsers.put(artifactType, artifactParser);
+    //        //this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
+    //    }
+    //    if (artifactParseObject instanceof AttributeParser) {
+    //        AttributeParser artifactParser = (AttributeParser) artifactParseObject;
+    //        this.attributeParsers.put(artifactParser.getQname(), artifactParser);
+    //        //this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
+    //    }
+    //}
+    //
+    //@Override
+    //protected String getExtensionName() {
+    //    return "assembly-parser";
+    //}
 
     @Override
     public Object parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
         QName nodeQname = reader.getName();
 
         //FIXME cache
-        Map<String, Class> bindings = SimpleAnnotationScanner.scan("com.alibaba.smart.framework.engine",
-            ExtensionBinding.class).get(
+        Map<String, Class> bindings = SimpleAnnotationScanner.getMap().get(
             ExtensionConstant.ELEMENT_PARSER).getBindings();
         Set<Entry<String, Class>> entries = bindings.entrySet();
         QName qName = null;

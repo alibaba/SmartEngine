@@ -10,8 +10,12 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngin
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
+import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
+import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
+import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.simulation.ProcessSimulation;
 
 import org.junit.After;
@@ -50,6 +54,30 @@ public class SimpleProcessTest {
         assertEquals(14, processDefinition.getProcess().getElements().size());
 
 
+        //2.获得常用服务
+        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
+        ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
+        ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
+
+
+
+
+
+
+        //4.启动流程实例
+        Map<String, Object> request = new HashMap<String, Object>();
+
+        ProcessInstance processInstance = processCommandService.start(
+            processDefinition.getId(), processDefinition.getVersion(),request
+        );
+        Assert.assertNotNull(processInstance);
+        long longValue = BasicServiceTaskDelegation.getCounter().longValue();
+
+        Assert.assertEquals(2,longValue);
+
+
+        //在调用findActiveExecution和signal方法前调用此方法。当然,在实际场景下,persiste通常只需要调用一次;UpdateThreadLocal则很多场景下需要调用。
+        //persisteAndUpdateThreadLocal(orderId, processInstance);
     }
 
 

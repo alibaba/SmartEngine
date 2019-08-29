@@ -20,9 +20,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class ValueParser extends AbstractElementParser<Value> {
 
-    public ValueParser(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
+
 
     @Override
     protected Value parseModel(XMLStreamReader reader, ParseContext context) {
