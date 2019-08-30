@@ -54,15 +54,13 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<Exclusive
                     throw new EngineException("Multiple Transitions matched: "+matchedTransitions);
                 }
 
-                //for (PvmTransition matchedPvmTransition : matchedTransitions) {
-                //    matchedPvmTransition.execute(context);
-                //}
-
-
-                for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
-                    PvmActivity target = pvmTransitionEntry.getValue().getTarget();
+                for (PvmTransition matchedPvmTransition : matchedTransitions) {
+                    PvmActivity target = matchedPvmTransition.getTarget();
                     target.enter(context);
                 }
+
+
+
             }else {
                 throw new EngineException("outcomeTransitions size shoud >= 2");
             }

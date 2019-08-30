@@ -11,7 +11,8 @@ import lombok.Data;
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
  */
 @Data
-public class ConditionExpression  implements BaseElement {
+public class ConditionExpression  implements
+    com.alibaba.smart.framework.engine.model.assembly.ConditionExpression {
 
     private static final long serialVersionUID = -6152070683207905381L;
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "conditionExpression");

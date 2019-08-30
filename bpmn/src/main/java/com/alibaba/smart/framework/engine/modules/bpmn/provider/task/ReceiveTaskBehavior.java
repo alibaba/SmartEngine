@@ -5,6 +5,7 @@ import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ReceiveTask;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ServiceTask;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
@@ -26,5 +27,18 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
 
         return true;
     }
+
+    @Override
+    public void execute(ExecutionContext context) {
+        //tune
+        super.execute(context);
+
+        ReceiveTask model = this.getModel();
+        String className  =  model.getProperties().get("class");
+
+        BehaviorUtil.behavior(context, className,this.extensionPointRegistry,this.getPvmActivity());
+
+    }
+
 
 }

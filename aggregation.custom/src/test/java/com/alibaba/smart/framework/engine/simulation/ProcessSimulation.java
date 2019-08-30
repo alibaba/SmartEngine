@@ -55,7 +55,7 @@ public class ProcessSimulation {
         PvmActivity currentPvmActivity = pvmProcessDefinition.getActivities().get(currentActivityId);
 
         if(null == currentPvmActivity){
-                String exceptionMessage  = String.format("No PvmActivity found for processDefinitionId :%s,processDefinitionVersion :%s,currentActivityId :%s",processDefinitionId,processDefinitionVersion,currentActivityId);
+                String exceptionMessage  = String.format("No PvmActivity found for processDefinitionId :%BehaviorUtil,processDefinitionVersion :%BehaviorUtil,currentActivityId :%BehaviorUtil",processDefinitionId,processDefinitionVersion,currentActivityId);
                 throw new EngineException(exceptionMessage);
 
         }

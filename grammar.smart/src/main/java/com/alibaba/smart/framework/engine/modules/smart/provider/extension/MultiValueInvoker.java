@@ -21,18 +21,18 @@ public class MultiValueInvoker implements Invoker {
         this.valueList = valueList;
     }
 
-    @Override
-    public Object invoke(String method, ExecutionContext context) {
-        Map<String,Object> request=context.getRequest();
-        if(null==request){
-            request=new HashMap<String, Object>();
-            context.setRequest(request);
-        }
-
-        for (Value value : valueList) {
-            request.put(value.getName(),value.getValue());
-        }
-
-        return null;
-    }
+    //@Override
+    //public Object invoke(String method, ExecutionContext context) {
+    //    Map<String,Object> request=context.getRequest();
+    //    if(null==request){
+    //        request=new HashMap<String, Object>();
+    //        context.setRequest(request);
+    //    }
+    //
+    //    for (Value value : valueList) {
+    //        request.put(value.getName(),value.getValue());
+    //    }
+    //
+    //    return null;
+    //}
 }

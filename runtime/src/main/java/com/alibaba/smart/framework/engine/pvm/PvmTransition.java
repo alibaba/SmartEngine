@@ -15,8 +15,8 @@ public interface PvmTransition extends PvmElement<Transition> {
     PvmActivity getTarget();
 
     boolean match(ExecutionContext context);
-
-    void execute(ExecutionContext context);
+    //
+    //void execute(ExecutionContext context);
 
     void setBehavior(TransitionBehavior transitionBehavior);
 

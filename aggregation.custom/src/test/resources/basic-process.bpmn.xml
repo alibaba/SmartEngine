@@ -5,16 +5,16 @@
     <sequenceFlow id="seq0" sourceRef="startEvent" targetRef="serviceTask0" />
     <serviceTask id="serviceTask0" smart:class="com.alibaba.smart.framework.engine.test.BasicServiceTaskDelegation" />
     <sequenceFlow id="seq2" sourceRef="serviceTask0" targetRef="receiveTask0" />
-    <receiveTask id="receiveTask0" />
-    <receiveTask id="receiveTask1" />
+    <receiveTask id="receiveTask0" smart:class="com.alibaba.smart.framework.engine.test.BasicServiceTaskDelegation"  />
+    <receiveTask id="receiveTask1" smart:class="com.alibaba.smart.framework.engine.test.BasicServiceTaskDelegation" />
     <sequenceFlow id="seq_receiveTask0_to_receiveTask1" sourceRef="receiveTask0" targetRef="receiveTask1" />
     <exclusiveGateway id="exclusiveGateway" />
     <sequenceFlow id="seq_receiveTask0_to_exclusiveGateway" sourceRef="receiveTask1" targetRef="exclusiveGateway" />
-    <receiveTask id="receiveTask_a" />
+    <receiveTask id="receiveTask_a" smart:class="com.alibaba.smart.framework.engine.test.ExclusiveTaskDelegation"/>
     <sequenceFlow id="seq_exclusiveGateway_to_receiveTask_a" sourceRef="exclusiveGateway" targetRef="receiveTask_a">
       <conditionExpression type="mvel"><![CDATA[route.equals("a")]]></conditionExpression>
     </sequenceFlow>
-    <receiveTask id="receiveTask_b" />
+    <receiveTask id="receiveTask_b" smart:class="com.alibaba.smart.framework.engine.test.BasicServiceTaskDelegation" />
     <sequenceFlow id="seq_exclusiveGateway_to_receiveTask_b" sourceRef="exclusiveGateway" targetRef="receiveTask_b">
       <conditionExpression type="mvel"><![CDATA[route.equals("b")]]></conditionExpression>
     </sequenceFlow>

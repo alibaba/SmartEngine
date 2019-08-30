@@ -10,6 +10,8 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngin
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
@@ -24,7 +26,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class SimpleProcessTest {
+public class BasicProcessTest {
 
 
     @After
@@ -50,7 +52,7 @@ public class SimpleProcessTest {
         RepositoryCommandService repositoryCommandService = smartEngine
             .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("basic-process-simulation.bpmn.xml");
+            .deploy("basic-process.bpmn.xml");
         assertEquals(16, processDefinition.getProcess().getElements().size());
 
 
@@ -71,15 +73,53 @@ public class SimpleProcessTest {
             processDefinition.getId(), processDefinition.getVersion(),request
         );
         Assert.assertNotNull(processInstance);
-        long longValue = BasicServiceTaskDelegation.getCounter().longValue();
-
-        Assert.assertEquals(2,longValue);
 
 
         //在调用findActiveExecution和signal方法前调用此方法。当然,在实际场景下,persiste通常只需要调用一次;UpdateThreadLocal则很多场景下需要调用。
-        //persisteAndUpdateThreadLocal(orderId, processInstance);
+        persisteAndUpdateThreadLocal( processInstance);
+
+        List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(1, executionInstanceList.size());
+        ExecutionInstance executionInstance = executionInstanceList.get(0);
+        assertEquals("receiveTask0", executionInstance.getProcessDefinitionActivityId());
+        long longValue = BasicServiceTaskDelegation.getCounter().longValue();
+        Assert.assertEquals(2,longValue);
+
+
+        processInstance = executionCommandService.signal(executionInstance.getInstanceId());
+        persisteAndUpdateThreadLocal( processInstance);
+         executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(1, executionInstanceList.size());
+          executionInstance = executionInstanceList.get(0);
+        assertEquals("receiveTask1", executionInstance.getProcessDefinitionActivityId());
+        longValue = BasicServiceTaskDelegation.getCounter().longValue();
+        Assert.assertEquals(3,longValue);
+
+
+        request.put("route","a");
+        processInstance =  executionCommandService.signal(executionInstance.getInstanceId(),request);
+        persisteAndUpdateThreadLocal( processInstance);
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(1, executionInstanceList.size());
+        executionInstance = executionInstanceList.get(0);
+        assertEquals("receiveTask_a", executionInstance.getProcessDefinitionActivityId());
+
+
+
+        processInstance =  executionCommandService.signal(executionInstance.getInstanceId(),request);
+        persisteAndUpdateThreadLocal( processInstance);
+        assertEquals(InstanceStatus.completed, processInstance.getStatus());
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(0, executionInstanceList.size());
+        longValue = ExclusiveTaskDelegation.getCounter().longValue();
+        Assert.assertEquals(101,longValue);
+
+
     }
 
+    private void persisteAndUpdateThreadLocal(ProcessInstance processInstance) {
+        PersisterSession.currentSession().putProcessInstance(processInstance);
+    }
 
 
 }

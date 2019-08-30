@@ -10,4 +10,7 @@ public interface Transition extends Element {
     String getSourceRef();
 
     String getTargetRef();
+
+    //TUNE 重名
+    ConditionExpression getConditionExpression();
 }

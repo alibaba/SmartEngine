@@ -31,35 +31,35 @@ public abstract class AbstractPvmElement<M extends Element> implements PvmElemen
         this.extensionPointRegistry=extensionPointRegistry;
     }
 
-    @Override
-    public Object invoke(String event, ExecutionContext context) {
-        // 执行准备周期扩展：如，参数转换，配置设置，预处理逻辑
-        if (null != this.prepareExtensionInvokers) {
-            for (Invoker prepareExtensionInvoker : prepareExtensionInvokers) {
-                prepareExtensionInvoker.invoke(event, context);
-            }
-        }
+    //@Override
+    //public Object invoke(String event, ExecutionContext context) {
+    //    // 执行准备周期扩展：如，参数转换，配置设置，预处理逻辑
+    //    if (null != this.prepareExtensionInvokers) {
+    //        for (Invoker prepareExtensionInvoker : prepareExtensionInvokers) {
+    //            prepareExtensionInvoker.invoke(event, context);
+    //        }
+    //    }
+    //
+    //   Object result =  invokeBehavior(event, context);
+    //
+    //    // TODO 这个逻辑不合适。
+    //    if (null != this.invoker) {
+    //        result =  this.invoker.invoke(event, context);
+    //
+    //    }
+    //    //TODO 增加事件发送机制 ettear
+    //
+    //    // 执行扩展：如，事件监听
+    //    if (null != this.extensionInvokers) {
+    //        for (Invoker extension : extensionInvokers) {
+    //            extension.invoke(event, context);
+    //        }
+    //    }
+    //
+    //    return result;
+    //}
 
-       Object result =  invokeBehavior(event, context);
-
-        // TODO 这个逻辑不合适。
-        if (null != this.invoker) {
-            result =  this.invoker.invoke(event, context);
-
-        }
-        //TODO 增加事件发送机制 ettear
-
-        // 执行扩展：如，事件监听
-        if (null != this.extensionInvokers) {
-            for (Invoker extension : extensionInvokers) {
-                extension.invoke(event, context);
-            }
-        }
-
-        return result;
-    }
-
-    protected abstract Object invokeBehavior(String event, ExecutionContext context);
+    //protected abstract Object invokeBehavior(String event, ExecutionContext context);
 
     @Override
     public M getModel() {

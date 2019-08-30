@@ -15,5 +15,5 @@ public interface Invoker {
      * @param context 上下文
      * @return 结果
      */
-    Object invoke(String method,ExecutionContext context);
+    //Object invoke(String method,ExecutionContext context);
 }

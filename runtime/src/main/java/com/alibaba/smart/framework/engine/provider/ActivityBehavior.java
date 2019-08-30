@@ -11,7 +11,7 @@ public interface ActivityBehavior {
 
     boolean enter(ExecutionContext context);
 
-    boolean execute(ExecutionContext context);
+    void execute(ExecutionContext context);
 
     void leave(PvmActivity pvmActivity,ExecutionContext context);
 

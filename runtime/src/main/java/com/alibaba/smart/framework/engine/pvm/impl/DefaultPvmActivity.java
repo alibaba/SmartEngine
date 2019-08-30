@@ -61,10 +61,10 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     @Override
     public void execute(ExecutionContext context) {
 
-        boolean needPause= this.getBehavior().execute(context);
+        this.getBehavior().execute(context);
 
         //tune 删除setNeedPause？
-        context.setNeedPause(needPause);
+      //  context.setNeedPause(needPause);
 
 
         //this.executePolicyBehavior.execute(this,context);

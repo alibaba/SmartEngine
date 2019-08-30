@@ -20,23 +20,23 @@ public class ExecutionListenerInvoker implements Invoker {
         this.performer = performer;
     }
 
-    @Override
-    public Object invoke(String method, ExecutionContext context) {
-        String[] events = this.executionListener.getEvents();
-        boolean matched = false;
-        if (null != events) {
-            for (String event : events) {
-                if (method.equals(event)) {
-                    matched = true;
-                    break;
-                }
-            }
-        } else {
-            matched = true;
-        }
-        if (matched) {
-            return this.performer.perform(context);
-        }
-        return null;
-    }
+    //@Override
+    //public Object invoke(String method, ExecutionContext context) {
+    //    String[] events = this.executionListener.getEvents();
+    //    boolean matched = false;
+    //    if (null != events) {
+    //        for (String event : events) {
+    //            if (method.equals(event)) {
+    //                matched = true;
+    //                break;
+    //            }
+    //        }
+    //    } else {
+    //        matched = true;
+    //    }
+    //    if (matched) {
+    //        return this.performer.perform(context);
+    //    }
+    //    return null;
+    //}
 }

@@ -6,12 +6,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
+import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -20,8 +23,8 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
+import lombok.Getter;
 import lombok.Setter;
 
 /**
@@ -34,6 +37,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     private PvmActivity pvmActivity;
 
     @Setter
+    @Getter
     protected ExtensionPointRegistry extensionPointRegistry;
 
     @Setter
@@ -44,6 +48,12 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     protected ActivityInstanceFactory activityInstanceFactory;
     @Setter
     protected TaskInstanceFactory taskInstanceFactory;
+    @Setter
+    private ProcessEngineConfiguration processEngineConfiguration;
+    @Setter
+    private ExecutionInstanceStorage executionInstanceStorage;
+
+
 
     public AbstractActivityBehavior() {
         //FIXME
@@ -102,8 +112,16 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     }
 
     @Override
-    public boolean execute(ExecutionContext context) {
-        return false;
+    public void execute(ExecutionContext context) {
+        if (!context.isNeedPause()) {
+            ExecutionInstance executionInstance = context.getExecutionInstance();
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
+                processEngineConfiguration);
+        }else{
+            ExecutionInstance executionInstance = context.getExecutionInstance();
+            executionInstance.setStatus(InstanceStatus.suspended);
+        }
+
     }
 
     @Override

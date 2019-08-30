@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTransition;
 
@@ -20,4 +21,8 @@ public class SmartSequenceFlow extends AbstractTransition {
 
     public final static QName type = new QName(SmartBase.SMART_NS, "sequenceFlow");
 
+    @Override
+    public ConditionExpression getConditionExpression() {
+        return null;
+    }
 }

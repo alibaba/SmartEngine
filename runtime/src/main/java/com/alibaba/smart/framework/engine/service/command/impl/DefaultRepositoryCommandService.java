@@ -12,6 +12,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
@@ -25,8 +26,11 @@ import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFacto
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
+import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
@@ -52,7 +56,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmActivity;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessDefinition;
-import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
+//import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -355,6 +359,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     throw new EngineException("Behavior class can't be null for "+name);
                 }
 
+                //TUNE initliazer
+
                 Object o = ClassLoaderUtil.createNewInstance(aClass);
 
                 AbstractActivityBehavior o1 = (AbstractActivityBehavior)o;
@@ -365,7 +371,10 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 o1.setExecutionInstanceFactory(extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class));
                 o1.setActivityInstanceFactory(extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class));
                 o1.setTaskInstanceFactory(extensionPointRegistry.getExtensionPoint(TaskInstanceFactory.class));
-
+                o1.setProcessEngineConfiguration( extensionPointRegistry.getExtensionPoint(
+                    SmartEngine.class).getProcessEngineConfiguration());
+                PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+                o1.setExecutionInstanceStorage(persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class));
 
 
                 pvmActivity.setBehavior(o1);

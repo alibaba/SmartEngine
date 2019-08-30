@@ -19,14 +19,14 @@ public class ValueInvoker implements Invoker {
         this.value = value;
     }
 
-    @Override
-    public Object invoke(String method, ExecutionContext context) {
-        Map<String,Object> request=context.getRequest();
-        if(null==request){
-            request=new HashMap<String, Object>();
-            context.setRequest(request);
-        }
-        request.put(value.getName(),value.getValue());
-        return null;
-    }
+    //@Override
+    //public Object invoke(String method, ExecutionContext context) {
+    //    Map<String,Object> request=context.getRequest();
+    //    if(null==request){
+    //        request=new HashMap<String, Object>();
+    //        context.setRequest(request);
+    //    }
+    //    request.put(value.getName(),value.getValue());
+    //    return null;
+    //}
 }

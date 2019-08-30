@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.provider.impl;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
 import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
@@ -25,7 +26,7 @@ public abstract class AbstractTransitionBehavior<T extends Transition> implement
     }
 
     @Override
-    public boolean match(ExecutionContext context) {
+    public boolean match(ExecutionContext context, ConditionExpression conditionExpression) {
         return false;
     }
 

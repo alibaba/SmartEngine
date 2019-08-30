@@ -29,6 +29,8 @@ import lombok.Getter;
  */
 public class SimpleAnnotationScanner {
 
+    //FIXME default 扩展策略，允许集成Spring
+
     @Getter
     private static Map<String,ExtensionBindingResult> map = new HashMap<String, ExtensionBindingResult>();
 
@@ -101,7 +103,6 @@ public class SimpleAnnotationScanner {
                 String protocol = url.getProtocol();
                 // 如果是以文件的形式保存在服务器上
                 if ("file".equals(protocol)) {
-                    System.err.println("file类型的扫描");
                     // 获取包的物理路径
                     String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
                     // 以文件的方式扫描整个包下的文件 并添加到集合中

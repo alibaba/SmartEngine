@@ -29,5 +29,8 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
 
     private InstanceStatus status;
 
-
+    @Override
+    public String toString() {
+        return this.getInstanceId()+":"+this.getProcessDefinitionActivityId()+":"+this.getStatus();
+    }
 }
