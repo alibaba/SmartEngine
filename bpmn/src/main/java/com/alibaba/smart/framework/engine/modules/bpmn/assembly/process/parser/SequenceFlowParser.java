@@ -52,8 +52,4 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
         return false;
     }
 
-    @Override
-    protected String getDefaultActionName() {
-        return DEFAULT_ACTION;
-    }
 }

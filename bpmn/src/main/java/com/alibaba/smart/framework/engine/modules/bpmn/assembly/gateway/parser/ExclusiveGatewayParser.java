@@ -10,14 +10,14 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnActivityParser;
 
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 @ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = ExclusiveGateway.class)
 
-public class ExclusiveGatewayParser extends AbstractBpmnActivityParser<ExclusiveGateway>  {
+public class ExclusiveGatewayParser extends AbstractBpmnParser<ExclusiveGateway> {
 
     @Override
     public QName getQname() {
