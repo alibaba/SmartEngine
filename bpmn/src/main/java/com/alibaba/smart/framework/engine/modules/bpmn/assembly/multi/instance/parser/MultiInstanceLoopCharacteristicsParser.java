@@ -44,7 +44,7 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
     }
 
     @Override
-    protected void parseSingleChild(MultiInstanceLoopCharacteristics model, BaseElement child) throws ParseException {
+    protected void singingMagic(MultiInstanceLoopCharacteristics model, BaseElement child) throws ParseException {
         if (child instanceof LoopCollection) {
             model.setLoopCollection((LoopCollection)child);
         } else if (child instanceof InputDataItem) {

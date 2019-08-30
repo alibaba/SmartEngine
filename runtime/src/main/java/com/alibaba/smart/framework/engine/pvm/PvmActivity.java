@@ -29,7 +29,7 @@ public interface PvmActivity extends PvmElement<Activity> {
 
     void setBehavior(ActivityBehavior activityBehavior);
 
-    void setExecutePolicyBehavior(ExecutePolicyBehavior executePolicyBehavior);
+    //void setExecutePolicyBehavior(ExecutePolicyBehavior executePolicyBehavior);
 
 
 }

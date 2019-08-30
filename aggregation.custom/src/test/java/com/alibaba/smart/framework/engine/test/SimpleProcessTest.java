@@ -50,8 +50,8 @@ public class SimpleProcessTest {
         RepositoryCommandService repositoryCommandService = smartEngine
             .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("simple-process-simulation.bpmn.xml");
-        assertEquals(14, processDefinition.getProcess().getElements().size());
+            .deploy("basic-process-simulation.bpmn.xml");
+        assertEquals(16, processDefinition.getProcess().getElements().size());
 
 
         //2.获得常用服务

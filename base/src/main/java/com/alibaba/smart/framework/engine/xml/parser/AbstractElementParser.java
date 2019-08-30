@@ -6,11 +6,9 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ParseException;
-import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extension.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
@@ -88,7 +86,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
                 QName attributeQName=reader.getAttributeName(i);
                 Object value=this.parseSingleAttribute(attributeQName,reader, context);
                 if(null!=value && value instanceof BaseElement){
-                    this.parseSingleChild(model, (BaseElement) value);
+                    this.singingMagic(model, (BaseElement) value);
                 }else{
                     LOGGER.debug(attributeQName +" is ignored when parsing attribute from "+ model);
                 }
@@ -118,12 +116,12 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
         while (XmlParseUtil.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
             if (element instanceof BaseElement) {
-                this.parseSingleChild(model, (BaseElement) element);
+                this.singingMagic(model, (BaseElement) element);
             }
         }
     }
 
-    protected void parseSingleChild(M model, BaseElement child) throws ParseException{
+    protected void singingMagic(M model, BaseElement child) throws ParseException{
 
     }
 

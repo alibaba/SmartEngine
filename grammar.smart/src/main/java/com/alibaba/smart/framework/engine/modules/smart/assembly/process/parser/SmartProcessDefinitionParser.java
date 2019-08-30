@@ -33,7 +33,7 @@ public class SmartProcessDefinitionParser extends AbstractElementParser<SmartPro
     }
 
     @Override
-    protected void parseSingleChild(SmartProcessDefinition smartProcessDefinition, BaseElement child) {
+    protected void singingMagic(SmartProcessDefinition smartProcessDefinition, BaseElement child) {
         if (child instanceof SmartProcess) {
             smartProcessDefinition.setProcess((SmartProcess)child);
         }

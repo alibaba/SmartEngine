@@ -22,19 +22,27 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
+import lombok.Setter;
+
 /**
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
 public abstract class AbstractActivityBehavior<T extends Activity> implements ActivityBehavior {
 
+    @Setter
     private PvmActivity pvmActivity;
 
+    @Setter
     protected ExtensionPointRegistry extensionPointRegistry;
 
+    @Setter
     protected ProcessInstanceFactory processInstanceFactory;
+    @Setter
     protected ExecutionInstanceFactory executionInstanceFactory;
+    @Setter
     protected ActivityInstanceFactory activityInstanceFactory;
+    @Setter
     protected TaskInstanceFactory taskInstanceFactory;
 
     public AbstractActivityBehavior() {
@@ -43,16 +51,16 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     public AbstractActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity pvmActivity) {
         this.pvmActivity = pvmActivity;
-        this.extensionPointRegistry = extensionPointRegistry;
+        //this.extensionPointRegistry = extensionPointRegistry;
         this.processInstanceFactory = extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
         this.executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
         this.activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
         this.taskInstanceFactory = extensionPointRegistry.getExtensionPoint(TaskInstanceFactory.class);
     }
 
-    protected ExtensionPointRegistry getExtensionPointRegistry() {
-        return extensionPointRegistry;
-    }
+    //protected ExtensionPointRegistry getExtensionPointRegistry() {
+    //    return extensionPointRegistry;
+    //}
 
 
     protected PvmActivity getPvmActivity() {
@@ -72,7 +80,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         activityInstance.setExecutionInstanceList(executionInstanceList);
         context.setExecutionInstance(executionInstance);
 
-        pvmActivity.invoke(PvmEventConstant.ACTIVITY_START.name(), context);
+        //pvmActivity.invoke(PvmEventConstant.ACTIVITY_START.name(), context);
         if (context.isNeedPause()) {
             executionInstance.setStatus(InstanceStatus.suspended);
         }
@@ -140,9 +148,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     }
 
-    private boolean isNotEmpty(Map<String, PvmTransition> outcomeTransitions) {
-        return null != outcomeTransitions && !outcomeTransitions.isEmpty();
-    }
+
 
     //private void executeRecursively(ExecutionContext context) {
     //

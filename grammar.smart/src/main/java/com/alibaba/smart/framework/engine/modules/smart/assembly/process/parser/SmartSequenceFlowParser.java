@@ -40,7 +40,7 @@ public class SmartSequenceFlowParser extends AbstractElementParser<SmartSequence
     }
 
     @Override
-    protected void parseSingleChild(SmartSequenceFlow model, BaseElement child) {
+    protected void singingMagic(SmartSequenceFlow model, BaseElement child) {
         //TODO duplicate code
         //fixme
 

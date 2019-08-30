@@ -46,9 +46,9 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         if(incomeTransitions.size()==1){
             return false;
         }
-        ProcessEngineConfiguration processEngineConfiguration = super.getExtensionPointRegistry().getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+        ProcessEngineConfiguration processEngineConfiguration = super.extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = super.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = super.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
 

@@ -21,7 +21,12 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extension.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
+import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
@@ -126,7 +131,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         this.xmlParserExtensionPoint = extensionPointRegistry.getExtensionPoint(XmlParserExtensionPoint.class);
         this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
         this.processContainer = extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
-        this.defaultExecutePolicyBehavior=extensionPointRegistry.getExtensionPoint(ExecutePolicyBehavior.class);
+        //this.defaultExecutePolicyBehavior=extensionPointRegistry.getExtensionPoint(ExecutePolicyBehavior.class);
     }
 
     @Override
@@ -352,22 +357,33 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                 Object o = ClassLoaderUtil.createNewInstance(aClass);
 
-                pvmActivity.setBehavior((ActivityBehavior)o);
+                AbstractActivityBehavior o1 = (AbstractActivityBehavior)o;
+                o1.setPvmActivity(pvmActivity);
+                o1.setExtensionPointRegistry(extensionPointRegistry.getExtensionPoint(ExtensionPointRegistry.class));
 
-                ExecutePolicy executePolicy=activity.getExecutePolicy();
-                ExecutePolicyBehavior executePolicyBehavior=null;
-                if(null!=executePolicy) {
-                    ExecutePolicyProviderFactory executePolicyProviderFactory
-                        = (ExecutePolicyProviderFactory)this.providerFactoryExtensionPoint.getProviderFactory(
-                        activity.getExecutePolicy().getClass());
-                    if(null!=executePolicyProviderFactory){
-                        executePolicyBehavior=executePolicyProviderFactory.createExecutePolicyBehavior(executePolicy);
-                    }
-                }
-                if(null==executePolicyBehavior){
-                    executePolicyBehavior=this.defaultExecutePolicyBehavior;
-                }
-                pvmActivity.setExecutePolicyBehavior(executePolicyBehavior);
+                o1.setProcessInstanceFactory(extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class));
+                o1.setExecutionInstanceFactory(extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class));
+                o1.setActivityInstanceFactory(extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class));
+                o1.setTaskInstanceFactory(extensionPointRegistry.getExtensionPoint(TaskInstanceFactory.class));
+
+
+
+                pvmActivity.setBehavior(o1);
+
+                //ExecutePolicy executePolicy=activity.getExecutePolicy();
+                //ExecutePolicyBehavior executePolicyBehavior=null;
+                //if(null!=executePolicy) {
+                //    ExecutePolicyProviderFactory executePolicyProviderFactory
+                //        = (ExecutePolicyProviderFactory)this.providerFactoryExtensionPoint.getProviderFactory(
+                //        activity.getExecutePolicy().getClass());
+                //    if(null!=executePolicyProviderFactory){
+                //        executePolicyBehavior=executePolicyProviderFactory.createExecutePolicyBehavior(executePolicy);
+                //    }
+                //}
+                //if(null==executePolicyBehavior){
+                //    executePolicyBehavior=this.defaultExecutePolicyBehavior;
+                //}
+                //pvmActivity.setExecutePolicyBehavior(executePolicyBehavior);
             }
 
             pvmProcessDefinition.setActivities(pvmActivityMap);

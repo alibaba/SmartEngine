@@ -21,6 +21,9 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
 
     @Override
     public boolean enter(ExecutionContext context) {
+
+        super.enter(context);
+
         return true;
     }
 

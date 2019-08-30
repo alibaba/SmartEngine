@@ -26,7 +26,7 @@ public class ExtensionsParser extends AbstractElementParser<Extensions> {
     }
 
     @Override
-    protected void parseSingleChild(Extensions extensions, BaseElement child) {
+    protected void singingMagic(Extensions extensions, BaseElement child) {
         if (child instanceof Extension) {
             extensions.addExtension((Extension)child);
         }

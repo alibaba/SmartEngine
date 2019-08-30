@@ -7,7 +7,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.exception.ParseException;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
@@ -23,11 +22,11 @@ public abstract class AbstractBpmnActivityParser<M extends AbstractActivity> ext
 
 
     @Override
-    protected void parseSingleChild(M model, BaseElement child) throws ParseException {
+    protected void singingMagic(M model, BaseElement child) throws ParseException {
         if (child instanceof ExecutePolicy) {
             model.setExecutePolicy((ExecutePolicy)child);
         }else {
-            super.parseSingleChild(model, child);
+            super.singingMagic(model, child);
         }
     }
 

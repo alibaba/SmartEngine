@@ -34,7 +34,7 @@ public class SmartTaskParser extends AbstractElementParser<SmartTask> {
     }
 
     @Override
-    protected void parseSingleChild(SmartTask model, BaseElement child) {
+    protected void singingMagic(SmartTask model, BaseElement child) {
         if (child instanceof Extensions) {
             model.setExtensions((Extensions)child);
         }

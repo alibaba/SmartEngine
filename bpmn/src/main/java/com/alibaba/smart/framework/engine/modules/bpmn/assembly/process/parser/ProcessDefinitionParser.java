@@ -41,7 +41,7 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
     }
 
     @Override
-    protected void parseSingleChild(ProcessDefinition model, BaseElement child) throws ParseException {
+    protected void singingMagic(ProcessDefinition model, BaseElement child) throws ParseException {
         if (child instanceof Process) {
             model.setProcess((Process) child);
         }

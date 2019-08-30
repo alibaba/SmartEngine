@@ -35,7 +35,7 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
     }
 
     @Override
-    protected void parseSingleChild(ExecutionListener model, BaseElement child) {
+    protected void singingMagic(ExecutionListener model, BaseElement child) {
 
         //fixme
         //if (child instanceof Performable) {
