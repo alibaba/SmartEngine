@@ -12,7 +12,6 @@ import lombok.Setter;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-
 public abstract class AbstractProcessDefinition extends AbstractElement implements ProcessDefinition {
 
     private static final long serialVersionUID = -1765647192018309663L;

@@ -5,7 +5,7 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 /**
  * @author 高海军 帝奇  2016.11.11
  */
-public interface JavaDelegation {
+public interface JavaDelegation extends RootDelegation {
 
     Object execute(ExecutionContext executionContext);
 

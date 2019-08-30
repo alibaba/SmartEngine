@@ -14,4 +14,9 @@ public class ProcessDefinition extends AbstractProcessDefinition {
 
     private static final long serialVersionUID = -7973338663278156625L;
 
+    @Override
+    public String toString() {
+        return super.getId()+":"+super.getVersion();
+    }
+
 }
