@@ -102,7 +102,8 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
         for (ActivityInstanceEntity activityInstanceEntity : activityInstanceEntities) {
             ActivityInstance activityInstance = new DefaultActivityInstance();
-
+            //把主键返回
+            activityInstance.setInstanceId(activityInstanceEntity.getId().toString());
             activityInstance.setProcessDefinitionIdAndVersion(activityInstanceEntity.getProcessDefinitionIdAndVersion());
             activityInstance.setProcessInstanceId(processInstanceId);
             activityInstance.setProcessDefinitionActivityId(activityInstanceEntity.getProcessDefinitionActivityId());
