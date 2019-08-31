@@ -22,9 +22,9 @@ import org.junit.Test;
  * @date 2017/12/6
  */
 public class JumpFreeNode2Test {
-    private SmartEngine smartEngine;
     ExecutionQueryService executionQueryService;
     ExecutionCommandService executionCommandService;
+    private SmartEngine smartEngine;
 
     @Before
     public void before() {

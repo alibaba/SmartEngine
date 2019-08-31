@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test;
+package com.alibaba.smart.framework.engine.test.cases;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +13,7 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
+import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
@@ -25,16 +26,14 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class OfcMarketPlaceTest {
-
+public class MockProcessInstanceTest {
 
     private long orderId = 123456L;
 
     @After
-    public void clear(){
+    public void clear() {
         PersisterSession.destroySession();
     }
-
 
     @Test
     public void test() throws Exception {
@@ -42,85 +41,73 @@ public class OfcMarketPlaceTest {
         PersisterSession.create();
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
-        //processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
+        //processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
-
 
         //2.获得常用服务
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
-
         //3. 部署流程定义
         RepositoryCommandService repositoryCommandService = smartEngine
-                .getRepositoryCommandService();
+            .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("ofcMp.bpmn.xml");
-        assertEquals(16, processDefinition.getProcess().getElements().size());
-
-
+            .deploy("mockProcessInstance.bpmn.xml");
+        assertEquals(12, processDefinition.getProcess().getElements().size());
 
         //4.启动流程实例
         Map<String, Object> request = new HashMap<String, Object>();
 
         ProcessInstance processInstance = processCommandService.start(
-                processDefinition.getId(), processDefinition.getVersion(),request
+            processDefinition.getId(), processDefinition.getVersion(), request
         );
         Assert.assertNotNull(processInstance);
 
-        //在调用findActiveExecution和signal方法前调用此方法。当然,在实际场景下,persiste通常只需要调用一次;UpdateThreadLocal则很多场景下需要调用。
-        persisteAndUpdateThreadLocal(orderId, processInstance);
+        processInstance = persisteAndUpdateThreadLocal(InstanceStatus.running, "createOrder");
 
-        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(
+            processInstance.getInstanceId());
         assertEquals(1, executionInstanceList.size());
         ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
-        assertEquals("package", firstExecutionInstance.getProcessDefinitionActivityId());
+        Assert.assertEquals("createOrder", firstExecutionInstance.getProcessDefinitionActivityId());
+        request.put("action", "complete");
+        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
 
+        processInstance = persisteAndUpdateThreadLocal(InstanceStatus.running, "completeOrder");
 
-
-        //完成预下单,将流程驱动到 下单确认环节。
-        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
-
-        //测试下是否符合预期
-        persisteAndUpdateThreadLocal(orderId, processInstance);
-        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
-        assertTrue("RTS".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
+        assertTrue("completeOrder".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
-        persisteAndUpdateThreadLocal(orderId, processInstance);
-        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
-        firstExecutionInstance = executionInstanceList.get(0);
-        assertEquals(1, executionInstanceList.size());
-        assertTrue("update_and_notify_order".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
-        request.put("action","fail");
-        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
-        persisteAndUpdateThreadLocal(orderId, processInstance);
-        executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
-        firstExecutionInstance = executionInstanceList.get(0);
-        assertEquals(1, executionInstanceList.size());
-        assertTrue("update_and_notify_order".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
+        processInstance = persisteAndUpdateThreadLocal(InstanceStatus.completed, "endEvent");
 
-
-        request.put("action","pass");
-        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
-        persisteAndUpdateThreadLocal(orderId, processInstance);
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
-//        PersisterSession.destroySession();
-
     }
 
-    private void persisteAndUpdateThreadLocal(long orderId, ProcessInstance processInstance) {
+    private ProcessInstance persisteAndUpdateThreadLocal(InstanceStatus instanceStatus,
+                                                         String processDefinitionActivityId) {
 
+        ProcessInstance processInstance = InstanceSerializerFacade.mockSimpleProcessInstance("mock_trade_process_test",
+            "1.0.0", instanceStatus, processDefinitionActivityId);
         PersisterSession.currentSession().putProcessInstance(processInstance);
+        return processInstance;
     }
 
+    private ProcessInstance persisteAndUpdateThreadLocal(String processDefinitionId, String version,
+                                                         InstanceStatus instanceStatus,
+                                                         String processDefinitionActivityId) {
+
+        ProcessInstance processInstance = InstanceSerializerFacade.mockSimpleProcessInstance(processDefinitionId,
+            version, instanceStatus, processDefinitionActivityId);
+        PersisterSession.currentSession().putProcessInstance(processInstance);
+        return processInstance;
+    }
 
 }

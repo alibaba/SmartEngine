@@ -71,6 +71,7 @@
 //
 //    @Override
 //    public void afterPropertiesSet() throws Exception {
-//        buildConsumer(LazadaTest.LAZADA_DIQI_security_GROUP,LazadaTest.LAZADA_DIQI_security_TOPIC,LazadaTest.LAZADA_DIQI_1111_security_TAG);
+//        buildConsumer(LazadaTest.LAZADA_DIQI_security_GROUP,LazadaTest.LAZADA_DIQI_security_TOPIC,LazadaTest
+//        .LAZADA_DIQI_1111_security_TAG);
 //    }
 //}

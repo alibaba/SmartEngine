@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test;
+package com.alibaba.smart.framework.engine.test.cases;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
+import com.alibaba.smart.framework.engine.test.AliPayIdGenerator;
 
 import org.junit.Before;
 
@@ -23,15 +24,13 @@ public class CustomBaseTest {
     protected ExecutionQueryService executionQueryService;
     protected ExecutionCommandService executionCommandService;
 
-
     @Before
-    public void before(){
+    public void before() {
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
 
         smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
-
 
         processCommandService = smartEngine.getProcessCommandService();
         processQueryService = smartEngine.getProcessQueryService();

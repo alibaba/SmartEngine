@@ -23,9 +23,9 @@ import org.junit.Test;
  * @date 2017/12/6
  */
 public class JumpFreeNode1Test {
-    private SmartEngine smartEngine;
     ExecutionQueryService executionQueryService;
     ExecutionCommandService executionCommandService;
+    private SmartEngine smartEngine;
 
     @Before
     public void before() {
@@ -79,7 +79,7 @@ public class JumpFreeNode1Test {
         }
 
         //jump task1
-        this.executionCommandService.jump(executionInstances.get(0).getInstanceId(), "task1",null);
+        this.executionCommandService.jump(executionInstances.get(0).getInstanceId(), "task1", null);
 
         //assert task1
         Assert.assertEquals(1, session.getProcessInstances().values().size());
@@ -118,9 +118,6 @@ public class JumpFreeNode1Test {
                 Assert.assertEquals(0, executionInstances.size());
             }
         }
-
-
-
 
     }
 

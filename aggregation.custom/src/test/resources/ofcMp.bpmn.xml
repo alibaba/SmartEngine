@@ -1,120 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:smart="http://smart.alibaba-inc.com/schema/process" id="ofc-mp" targetNamespace="smart" version="1.0.0">
-  <process id="Process_1" isExecutable="false">
-    <startEvent id="StartEvent_1" />
-    <serviceTask id="receive_order" name="接单" smart:class="com.alibaba.smart.framework.engine.test.OfcMarketPlaceJavaDelegation" />
-    <receiveTask id="update_and_notify_order" name="更新并通知交易" smart:class="com.alibaba.smart.framework.engine.test.OfcMarketPlaceJavaDelegation" />
-    <receiveTask id="package" name="打包" smart:class="com.alibaba.smart.framework.engine.test.OfcMarketPlaceJavaDelegation" />
-    <exclusiveGateway id="ExclusiveGateway_0j49op2" name="最终状态" />
-    <sequenceFlow id="SequenceFlow_084shqt" sourceRef="update_and_notify_order" targetRef="ExclusiveGateway_0j49op2" />
-    <sequenceFlow id="SequenceFlow_1n569a9" sourceRef="ExclusiveGateway_0j49op2" targetRef="update_and_notify_order">
-      <conditionExpression type="mvel"><![CDATA[action.equals("fail")]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="SequenceFlow_04xwbr7" sourceRef="StartEvent_1" targetRef="receive_order" />
-    <endEvent id="EndEvent_16s656a" />
-    <sequenceFlow id="SequenceFlow_0oljx80" sourceRef="ExclusiveGateway_0j49op2" targetRef="EndEvent_16s656a">
-      <conditionExpression type="mvel"><![CDATA[action.equals("pass")]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="SequenceFlow_0o7hmrw" sourceRef="receive_order" targetRef="package" />
-    <receiveTask id="RTS" name="RTS" smart:class="com.alibaba.smart.framework.engine.test.OfcMarketPlaceJavaDelegation" />
-    <sequenceFlow id="SequenceFlow_1gmcs17" sourceRef="package" targetRef="RTS" />
-    <serviceTask id="deliver" name="下发" smart:class="com.alibaba.smart.framework.engine.test.OfcMarketPlaceJavaDelegation" />
-    <sequenceFlow id="SequenceFlow_02kaik0" sourceRef="RTS" targetRef="deliver" />
-    <sequenceFlow id="SequenceFlow_1ny4l6d" sourceRef="deliver" targetRef="update_and_notify_order" />
-  </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="34" y="240" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="7" y="276" width="90" height="20" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="receive_order_di" bpmnElement="receive_order">
-        <dc:Bounds x="91" y="218" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="update_and_notify_order_di" bpmnElement="update_and_notify_order">
-        <dc:Bounds x="598" y="218" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="package_di" bpmnElement="package">
-        <dc:Bounds x="224" y="218" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ExclusiveGateway_0j49op2_di" bpmnElement="ExclusiveGateway_0j49op2" isMarkerVisible="true">
-        <dc:Bounds x="722" y="233" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="725" y="286" width="44" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_084shqt_di" bpmnElement="SequenceFlow_084shqt">
-        <di:waypoint  x="698" y="258" type="dc:Point" />
-        <di:waypoint type="dc:Point" x="722" y="258"  />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="710" y="236.5" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_1n569a9_di" bpmnElement="SequenceFlow_1n569a9">
-        <di:waypoint type="dc:Point" x="747" y="283"  />
-        <di:waypoint type="dc:Point" x="747" y="336"  />
-        <di:waypoint type="dc:Point" x="648" y="336"  />
-        <di:waypoint type="dc:Point" x="648" y="298"   />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="697.5" y="314.5" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_04xwbr7_di" bpmnElement="SequenceFlow_04xwbr7">
-        <di:waypoint type="dc:Point" x="70" y="258"   />
-        <di:waypoint type="dc:Point" x="91" y="258"   />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="80.5" y="236.5" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="EndEvent_16s656a_di" bpmnElement="EndEvent_16s656a">
-        <dc:Bounds x="825" y="240" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="843" y="279" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_0oljx80_di" bpmnElement="SequenceFlow_0oljx80">
-        <di:waypoint type="dc:Point" x="772" y="258"   />
-        <di:waypoint type="dc:Point" x="825" y="258"   />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="798.5" y="236.5" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_0o7hmrw_di" bpmnElement="SequenceFlow_0o7hmrw">
-        <di:waypoint type="dc:Point" x="191" y="258"   />
-        <di:waypoint type="dc:Point" x="224" y="258"  />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="207.5" y="236.5" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="RTS_di" bpmnElement="RTS">
-        <dc:Bounds x="356" y="218" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_1gmcs17_di" bpmnElement="SequenceFlow_1gmcs17">
-        <di:waypoint type="dc:Point" x="324" y="258"   />
-        <di:waypoint type="dc:Point" x="356" y="258"   />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="340" y="236" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="deliver_di" bpmnElement="deliver">
-        <dc:Bounds x="481" y="218" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_02kaik0_di" bpmnElement="SequenceFlow_02kaik0">
-        <di:waypoint type="dc:Point" x="456" y="258"   />
-        <di:waypoint type="dc:Point" x="481" y="258"   />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="468.5" y="236" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_1ny4l6d_di" bpmnElement="SequenceFlow_1ny4l6d">
-        <di:waypoint type="dc:Point" x="581" y="258"  />
-        <di:waypoint type="dc:Point" x="598" y="258" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="589.5" y="236" width="0" height="13" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-    </bpmndi:BPMNPlane>
-  </bpmndi:BPMNDiagram>
+<definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:smart="http://smart.alibaba-inc.com/schema/process"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="ofc-mp" targetNamespace="smart"
+             version="1.0.0">
+    <process id="Process_1" isExecutable="false">
+        <startEvent id="StartEvent_1"/>
+        <serviceTask id="receive_order" name="接单"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.OfcMarketPlaceJavaDelegation"/>
+        <receiveTask id="update_and_notify_order" name="更新并通知交易"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.OfcMarketPlaceJavaDelegation"/>
+        <receiveTask id="package" name="打包"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.OfcMarketPlaceJavaDelegation"/>
+        <exclusiveGateway id="ExclusiveGateway_0j49op2" name="最终状态"/>
+        <sequenceFlow id="SequenceFlow_084shqt" sourceRef="update_and_notify_order"
+                      targetRef="ExclusiveGateway_0j49op2"/>
+        <sequenceFlow id="SequenceFlow_1n569a9" sourceRef="ExclusiveGateway_0j49op2"
+                      targetRef="update_and_notify_order">
+            <conditionExpression type="mvel"><![CDATA[action.equals("fail")]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="SequenceFlow_04xwbr7" sourceRef="StartEvent_1" targetRef="receive_order"/>
+        <endEvent id="EndEvent_16s656a"/>
+        <sequenceFlow id="SequenceFlow_0oljx80" sourceRef="ExclusiveGateway_0j49op2" targetRef="EndEvent_16s656a">
+            <conditionExpression type="mvel"><![CDATA[action.equals("pass")]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="SequenceFlow_0o7hmrw" sourceRef="receive_order" targetRef="package"/>
+        <receiveTask id="RTS" name="RTS"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.OfcMarketPlaceJavaDelegation"/>
+        <sequenceFlow id="SequenceFlow_1gmcs17" sourceRef="package" targetRef="RTS"/>
+        <serviceTask id="deliver" name="下发"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.OfcMarketPlaceJavaDelegation"/>
+        <sequenceFlow id="SequenceFlow_02kaik0" sourceRef="RTS" targetRef="deliver"/>
+        <sequenceFlow id="SequenceFlow_1ny4l6d" sourceRef="deliver" targetRef="update_and_notify_order"/>
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+                <dc:Bounds x="34" y="240" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="7" y="276" width="90" height="20"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="receive_order_di" bpmnElement="receive_order">
+                <dc:Bounds x="91" y="218" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="update_and_notify_order_di" bpmnElement="update_and_notify_order">
+                <dc:Bounds x="598" y="218" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="package_di" bpmnElement="package">
+                <dc:Bounds x="224" y="218" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="ExclusiveGateway_0j49op2_di" bpmnElement="ExclusiveGateway_0j49op2"
+                              isMarkerVisible="true">
+                <dc:Bounds x="722" y="233" width="50" height="50"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="725" y="286" width="44" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_084shqt_di" bpmnElement="SequenceFlow_084shqt">
+                <di:waypoint x="698" y="258" type="dc:Point"/>
+                <di:waypoint type="dc:Point" x="722" y="258"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="710" y="236.5" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="SequenceFlow_1n569a9_di" bpmnElement="SequenceFlow_1n569a9">
+                <di:waypoint type="dc:Point" x="747" y="283"/>
+                <di:waypoint type="dc:Point" x="747" y="336"/>
+                <di:waypoint type="dc:Point" x="648" y="336"/>
+                <di:waypoint type="dc:Point" x="648" y="298"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="697.5" y="314.5" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="SequenceFlow_04xwbr7_di" bpmnElement="SequenceFlow_04xwbr7">
+                <di:waypoint type="dc:Point" x="70" y="258"/>
+                <di:waypoint type="dc:Point" x="91" y="258"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="80.5" y="236.5" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="EndEvent_16s656a_di" bpmnElement="EndEvent_16s656a">
+                <dc:Bounds x="825" y="240" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="843" y="279" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_0oljx80_di" bpmnElement="SequenceFlow_0oljx80">
+                <di:waypoint type="dc:Point" x="772" y="258"/>
+                <di:waypoint type="dc:Point" x="825" y="258"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="798.5" y="236.5" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="SequenceFlow_0o7hmrw_di" bpmnElement="SequenceFlow_0o7hmrw">
+                <di:waypoint type="dc:Point" x="191" y="258"/>
+                <di:waypoint type="dc:Point" x="224" y="258"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="207.5" y="236.5" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="RTS_di" bpmnElement="RTS">
+                <dc:Bounds x="356" y="218" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_1gmcs17_di" bpmnElement="SequenceFlow_1gmcs17">
+                <di:waypoint type="dc:Point" x="324" y="258"/>
+                <di:waypoint type="dc:Point" x="356" y="258"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="340" y="236" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="deliver_di" bpmnElement="deliver">
+                <dc:Bounds x="481" y="218" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_02kaik0_di" bpmnElement="SequenceFlow_02kaik0">
+                <di:waypoint type="dc:Point" x="456" y="258"/>
+                <di:waypoint type="dc:Point" x="481" y="258"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="468.5" y="236" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="SequenceFlow_1ny4l6d_di" bpmnElement="SequenceFlow_1ny4l6d">
+                <di:waypoint type="dc:Point" x="581" y="258"/>
+                <di:waypoint type="dc:Point" x="598" y="258"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="589.5" y="236" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
 </definitions>

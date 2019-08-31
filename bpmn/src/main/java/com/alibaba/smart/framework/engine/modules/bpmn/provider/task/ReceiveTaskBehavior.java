@@ -36,7 +36,11 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
         ReceiveTask model = this.getModel();
         String className  =  model.getProperties().get("class");
 
-        BehaviorUtil.behavior(context, className,this.extensionPointRegistry,this.getPvmActivity());
+        if(null != className){
+            BehaviorUtil.behavior(context, className,this.extensionPointRegistry,this.getPvmActivity());
+        }else {
+            //tune logger
+        }
 
     }
 

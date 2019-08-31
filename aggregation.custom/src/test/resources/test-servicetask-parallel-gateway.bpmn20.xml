@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions id="test-exclusive" version="1.0.0"
+<definitions xmlns:smart="http://smart.alibaba-inc.com/schema/process" id="test-exclusive"
+             version="1.0.0"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-             xmlns:smart="http://smart.alibaba-inc.com/schema/process"
              targetNamespace="Examples">
 
     <process id="exclusiveTest">
@@ -38,7 +38,6 @@
         <sequenceFlow id="flow5" sourceRef="theTask1" targetRef="join"/>
 
         <sequenceFlow id="flow6" sourceRef="theTask2" targetRef="join"/>
-
 
 
         <parallelGateway id="join" name="JoinGateWay">

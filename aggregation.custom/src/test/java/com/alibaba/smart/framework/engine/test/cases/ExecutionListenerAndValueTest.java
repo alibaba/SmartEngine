@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test;
+package com.alibaba.smart.framework.engine.test.cases;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,12 +26,11 @@ import org.junit.Test;
  */
 public class ExecutionListenerAndValueTest {
 
-    public static List<String> trace=new ArrayList<String>();
-
+    public static List<String> trace = new ArrayList<String>();
 
     @Test
     public void testDemo() throws Exception {
-        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
+        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -40,7 +39,7 @@ public class ExecutionListenerAndValueTest {
             .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryService
             .deploy("execution_listener_and_value_test.bpmn20.xml");
-        Assert.assertEquals(7,processDefinition.getProcess().getElements().size());
+        Assert.assertEquals(7, processDefinition.getProcess().getElements().size());
 
         ProcessCommandService processService = smartEngine.getProcessCommandService();
 
@@ -52,29 +51,26 @@ public class ExecutionListenerAndValueTest {
             request);
         Assert.assertNotNull(processInstance);
 
-        Assert.assertEquals(trace.get(0),"start");
-        Assert.assertEquals(trace.get(1),"Listener: Create task");
-        Assert.assertEquals(trace.get(2),"Create task");
-        Assert.assertEquals(trace.get(3),"Listener: Create task");
+        Assert.assertEquals(trace.get(0), "start");
+        Assert.assertEquals(trace.get(1), "Listener: Create task");
+        Assert.assertEquals(trace.get(2), "Create task");
+        Assert.assertEquals(trace.get(3), "Listener: Create task");
 
-        Assert.assertEquals(trace.get(4),"Listener: Pay task");
-        Assert.assertEquals(trace.get(5),"Pay task");
-        Assert.assertEquals(trace.get(6),"Listener: Pay task");
-        Assert.assertEquals(trace.get(7),"Listener: Pay task");
+        Assert.assertEquals(trace.get(4), "Listener: Pay task");
+        Assert.assertEquals(trace.get(5), "Pay task");
+        Assert.assertEquals(trace.get(6), "Listener: Pay task");
+        Assert.assertEquals(trace.get(7), "Listener: Pay task");
 
     }
 
     @Before
-    public void before(){
+    public void before() {
         PersisterSession.create();
     }
 
     @After
-    public void after(){
+    public void after() {
         PersisterSession.destroySession();
     }
-
-
-
 
 }

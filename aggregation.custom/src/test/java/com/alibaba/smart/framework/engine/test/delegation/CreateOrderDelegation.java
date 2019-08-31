@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test;
+package com.alibaba.smart.framework.engine.test.delegation;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -11,24 +11,22 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ExclusiveTaskDelegation implements TccDelegation{
+public class CreateOrderDelegation implements TccDelegation {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExclusiveTaskDelegation.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CreateOrderDelegation.class);
 
+    private static final AtomicLong counter = new AtomicLong();
 
-
-    private static  final AtomicLong counter= new AtomicLong(100);
+    public static Long getCounter() {
+        return counter.get();
+    }
 
     @Override
     public TccResult tryExecute(ExecutionContext executionContext) {
         List<ActivityInstance> activityInstances = executionContext.getProcessInstance().getActivityInstances();
-        LOGGER.info("TCC executing: invoke some hsf code stuff" +executionContext.getRequest());
+        LOGGER.info("TCC executing: invoke some hsf code stuff" + executionContext.getRequest());
         counter.addAndGet(1);
         return TccResult.buildSucessfulResult(null);
-    }
-
-    public static Long getCounter() {
-        return counter.get();
     }
 
     @Override

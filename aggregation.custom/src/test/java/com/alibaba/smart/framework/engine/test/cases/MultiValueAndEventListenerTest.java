@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test;
+package com.alibaba.smart.framework.engine.test.cases;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +16,7 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
+import com.alibaba.smart.framework.engine.test.delegation.MultiValueAndEventListenerDelegation;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -26,12 +27,11 @@ import static org.junit.Assert.assertEquals;
 
 public class MultiValueAndEventListenerTest {
 
-    public static List<String> trace=new ArrayList<String>();
-
+    public static List<String> trace = new ArrayList<String>();
 
     @Test
     public void testDemo() throws Exception {
-        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
+        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -40,7 +40,7 @@ public class MultiValueAndEventListenerTest {
             .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryService
             .deploy("MultiValueAndEventListenerTest.bpmn.xml");
-        Assert.assertEquals(7,processDefinition.getProcess().getElements().size());
+        Assert.assertEquals(7, processDefinition.getProcess().getElements().size());
 
         ProcessCommandService processService = smartEngine.getProcessCommandService();
 
@@ -51,20 +51,19 @@ public class MultiValueAndEventListenerTest {
             processDefinition.getId(), processDefinition.getVersion(),
             request);
 
-
-        Assert.assertEquals(MultiValueAndEventListenerDelegation.getCounter().longValue(),1L);
+        Assert.assertEquals(MultiValueAndEventListenerDelegation.getCounter().longValue(), 1L);
 
         List<String> trace = MultiValueAndEventListenerTest.trace;
-        Assert.assertEquals(3,trace.size());
+        Assert.assertEquals(3, trace.size());
 
-        Assert.assertEquals(trace.get(0),"world");
-        Assert.assertEquals(trace.get(1),"world");
-        Assert.assertEquals(trace.get(2),"world");
-
+        Assert.assertEquals(trace.get(0), "world");
+        Assert.assertEquals(trace.get(1), "world");
+        Assert.assertEquals(trace.get(2), "world");
 
         PersisterSession.create().putProcessInstance(processInstance);
 
-        List<ExecutionInstance> executionInstanceList =smartEngine.getExecutionQueryService().findActiveExecutionList(processInstance.getInstanceId());
+        List<ExecutionInstance> executionInstanceList = smartEngine.getExecutionQueryService().findActiveExecutionList(
+            processInstance.getInstanceId());
         assertEquals(1, executionInstanceList.size());
         ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
         assertEquals("receive", firstExecutionInstance.getProcessDefinitionActivityId());
@@ -72,29 +71,24 @@ public class MultiValueAndEventListenerTest {
         request = new HashMap<String, Object>();
         request.put("hello", "world1");
 
-        ProcessInstance  processInstance1 = smartEngine.getExecutionCommandService().signal(firstExecutionInstance.getInstanceId(), request);
-        Assert.assertEquals(4,trace.size());
+        ProcessInstance processInstance1 = smartEngine.getExecutionCommandService().signal(
+            firstExecutionInstance.getInstanceId(), request);
+        Assert.assertEquals(4, trace.size());
 
-        Assert.assertEquals(trace.get(3),"world1");
+        Assert.assertEquals(trace.get(3), "world1");
 
         Assert.assertTrue(processInstance1.getStatus().equals(InstanceStatus.completed));
-
-
-
 
     }
 
     @Before
-    public void before(){
+    public void before() {
         PersisterSession.create();
     }
 
     @After
-    public void after(){
+    public void after() {
         PersisterSession.destroySession();
     }
-
-
-
 
 }

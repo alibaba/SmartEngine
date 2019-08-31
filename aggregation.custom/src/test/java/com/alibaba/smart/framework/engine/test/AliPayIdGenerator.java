@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.test;
 
-import com.alibaba.smart.framework.engine.configuration.IdGenerator;
-
 import java.util.concurrent.atomic.AtomicLong;
+
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  00:02.
@@ -14,6 +14,6 @@ public class AliPayIdGenerator implements IdGenerator {
     @Override
     public String getId() {
         long l = atomicLong.addAndGet(100L);
-        return l+"";
+        return l + "";
     }
 }

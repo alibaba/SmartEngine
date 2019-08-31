@@ -84,31 +84,36 @@
 //        ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 //
 //
-//        signalCurrentActivity(  processInstance,processInstanceId, currentActivityId, map, executionQueryService, executionCommandService);
+//        signalCurrentActivity(  processInstance,processInstanceId, currentActivityId, map, executionQueryService,
+//        executionCommandService);
 //
 //        processInstance = LazadaTest.getMockDB().get(orderId);
 //
 //        //如果仍然是ReceiveTask，但是万一还是需要外部触发的呢？那么就不实现这个继承接口（比如支付宝信息）
-//        signalIfNextActivityIsReceiveTask(  processInstance,processInstanceId, map, smartEngine, executionQueryService,
+//        signalIfNextActivityIsReceiveTask(  processInstance,processInstanceId, map, smartEngine,
+//        executionQueryService,
 //            executionCommandService);
 //
 //
 //    }
 //
-//    protected void signalIfNextActivityIsReceiveTask(ProcessInstance processInstance,String processInstanceId,  Map map, SmartEngine smartEngine,
+//    protected void signalIfNextActivityIsReceiveTask(ProcessInstance processInstance,String processInstanceId,  Map
+//    map, SmartEngine smartEngine,
 //                                                   ExecutionQueryService executionQueryService,
 //                                                   ExecutionCommandService executionCommandService) {
 //        //FIXME,do query again.
 //        try{
 //            PersisterSession.create().setProcessInstance(processInstance);
 //
-//            List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList(processInstanceId);
+//            List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList
+//            (processInstanceId);
 //            boolean found = false;
 //            if(!CollectionUtils.isEmpty(executionInstanceList)){
 //                for (ExecutionInstance executionInstance : executionInstanceList) {
 //                    String processDefinitionActivityId =  executionInstance.getProcessDefinitionActivityId();
 //
-//                    ProcessDefinition processDefinition = smartEngine.getRepositoryQueryService().getCachedProcessDefinition(executionInstance.getProcessDefinitionIdAndVersion());
+//                    ProcessDefinition processDefinition = smartEngine.getRepositoryQueryService()
+//                    .getCachedProcessDefinition(executionInstance.getProcessDefinitionIdAndVersion());
 //
 //                    List<BaseElement> baseElements =  processDefinition.getProcess().getElements();
 //                    for (BaseElement baseElement : baseElements) {
@@ -120,10 +125,12 @@
 //                                needListenerNormalMQMessage =  properties.get("needListenerNormalMQMessage");
 //
 //                            }
-//                            if(processDefinitionActivityId.equals(receiveTask.getId()) && "no".equals(needListenerNormalMQMessage)){
+//                            if(processDefinitionActivityId.equals(receiveTask.getId()) && "no".equals
+//                            (needListenerNormalMQMessage)){
 //                                found = true;
 //
-//                                ProcessInstance newProcessInstance = executionCommandService.signal(executionInstance.getInstanceId(),map);
+//                                ProcessInstance newProcessInstance = executionCommandService.signal
+//                                (executionInstance.getInstanceId(),map);
 //                                LazadaTest.getMockDB().put(LazadaTest.ORDER_ID,newProcessInstance);
 //
 //                            }
@@ -147,32 +154,37 @@
 //
 //    }
 //
-//    protected void signalCurrentActivity(ProcessInstance processInstance,String processInstanceId, String currentActivityId, Map map,
+//    protected void signalCurrentActivity(ProcessInstance processInstance,String processInstanceId, String
+//    currentActivityId, Map map,
 //                                       ExecutionQueryService executionQueryService,
 //                                       ExecutionCommandService executionCommandService) {
 //        //FIXME,do query again.
 //        try{
 //            PersisterSession.create().setProcessInstance(processInstance);
 //
-//            List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList(processInstanceId);
+//            List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList
+//            (processInstanceId);
 //            boolean found = false;
 //            if(!CollectionUtils.isEmpty(executionInstanceList)){
 //                for (ExecutionInstance executionInstance : executionInstanceList) {
 //                    if( executionInstance.getProcessDefinitionActivityId().equals(currentActivityId)){
 //                        found = true;
 //
-//                        ProcessInstance newProcessInstance = executionCommandService.signal(executionInstance.getInstanceId(),map);
+//                        ProcessInstance newProcessInstance = executionCommandService.signal(executionInstance
+//                        .getInstanceId(),map);
 //
 //                        LazadaTest.getMockDB().put(LazadaTest.ORDER_ID,newProcessInstance);
 //
 //                    }
 //                }
 //                if(!found){
-//                    LOGGER.error("No active executionInstance found for businessInstanceId "+123 +",currentActivityId "+currentActivityId);
+//                    LOGGER.error("No active executionInstance found for businessInstanceId "+123 +",
+//                    currentActivityId "+currentActivityId);
 //                }
 //
 //            }else{
-//                LOGGER.error("No active executionInstance found for businessInstanceId "+123 +",currentActivityId "+currentActivityId);
+//                LOGGER.error("No active executionInstance found for businessInstanceId "+123 +",currentActivityId
+//                "+currentActivityId);
 //            }
 //        }finally {
 //            PersisterSession.currentSession().destroy();

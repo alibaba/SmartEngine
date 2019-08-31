@@ -125,13 +125,15 @@
 //        String serializedProcessInstance = InstanceSerializerFacade.serialize(processInstance);
 //        processInstance = InstanceSerializerFacade.deserializeAll(serializedProcessInstance);
 //
-//        signalCurrentActivity(  processInstance,processInstanceId, currentActivityId, map, executionQueryService, executionCommandService);
+//        signalCurrentActivity(  processInstance,processInstanceId, currentActivityId, map, executionQueryService,
+//        executionCommandService);
 //
 //        try{
 //            PersisterSession.create();
 //            ProcessInstance processInstance1 = getMockDB().get(ORDER_ID);
 //            PersisterSession.currentSession().setProcessInstance(processInstance1);
-//            List<ExecutionInstance> executionInstanceList =   executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+//            List<ExecutionInstance> executionInstanceList =   executionQueryService.findActiveExecutionList
+//            (processInstance.getInstanceId());
 //            Assert.assertEquals(1,executionInstanceList.size());
 //            ExecutionInstance  executionInstance =   executionInstanceList.get(0);
 //            Assert.assertEquals("SecurityCheckActivity",executionInstance.getProcessDefinitionActivityId());
@@ -144,7 +146,8 @@
 //        processInstance = LazadaTest.getMockDB().get(ORDER_ID);
 //
 //        //如果仍然是ReceiveTask，但是万一还是需要外部触发的呢？那么就不实现这个继承接口（比如支付宝信息）
-//        signalIfNextActivityIsReceiveTask(  processInstance,processInstanceId, map, smartEngine, executionQueryService,
+//        signalIfNextActivityIsReceiveTask(  processInstance,processInstanceId, map, smartEngine,
+//        executionQueryService,
 //            executionCommandService);
 //
 //
@@ -154,7 +157,8 @@
 //            PersisterSession.create();
 //            ProcessInstance processInstance1 = getMockDB().get(ORDER_ID);
 //            PersisterSession.currentSession().setProcessInstance(processInstance1);
-//            List<ExecutionInstance> executionInstanceList =   executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+//            List<ExecutionInstance> executionInstanceList =   executionQueryService.findActiveExecutionList
+//            (processInstance.getInstanceId());
 //            Assert.assertEquals(1,executionInstanceList.size());
 //            ExecutionInstance  executionInstance =   executionInstanceList.get(0);
 //            Assert.assertEquals("WaitPeopleCheckActivity",executionInstance.getProcessDefinitionActivityId());
@@ -170,7 +174,8 @@
 //            PersisterSession.create();
 //            ProcessInstance processInstance1 = mockDB.get(ORDER_ID);
 //            PersisterSession.currentSession().setProcessInstance(processInstance1);
-//            List<ExecutionInstance> executionInstanceList =   executionQueryService.findActiveExecutionList(processInstance1.getInstanceId());
+//            List<ExecutionInstance> executionInstanceList =   executionQueryService.findActiveExecutionList
+//            (processInstance1.getInstanceId());
 //            Assert.assertEquals(1,executionInstanceList.size());
 //            ExecutionInstance  executionInstance =   executionInstanceList.get(0);
 //            Assert.assertEquals("WaitPayCallBackActivity",executionInstance.getProcessDefinitionActivityId());

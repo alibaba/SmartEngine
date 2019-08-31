@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions id="parent-callactivity" version="1.0.0"
+<definitions xmlns:smart="http://smart.alibaba-inc.com/schema/process" id="parent-callactivity"
+             version="1.0.0"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-             xmlns:smart="http://smart.alibaba-inc.com/schema/process"
              targetNamespace="Examples">
 
     <process id="parent-callactivity-process" isExecutable="true">
@@ -19,9 +19,11 @@
             <conditionExpression type="mvel"><![CDATA[smartEngineAction == "formal_order"]]></conditionExpression>
         </sequenceFlow>
 
-        <receiveTask id="pre_order" name="pre_order" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="pre_order" name="pre_order"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.CreateOrderDelegation"></receiveTask>
 
-        <receiveTask id="formal_order" name="formal_order" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="formal_order" name="formal_order"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.CreateOrderDelegation"></receiveTask>
 
 
         <sequenceFlow id="flow4" sourceRef="pre_order" targetRef="callActivity"></sequenceFlow>
@@ -29,13 +31,15 @@
         <sequenceFlow id="flow5" sourceRef="formal_order" targetRef="callActivity"></sequenceFlow>
 
 
-        <callActivity id="callActivity" name="callActivity" calledElement="simpleCallActivity" calledElementVersion="2.0.0" />
+        <callActivity id="callActivity" name="callActivity" calledElement="simpleCallActivity"
+                      calledElementVersion="2.0.0"/>
 
 
         <sequenceFlow id="flow6" sourceRef="callActivity" targetRef="end_order"></sequenceFlow>
 
 
-        <receiveTask id="end_order" name="结束订单处理" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="end_order" name="结束订单处理"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.CreateOrderDelegation"></receiveTask>
 
         <sequenceFlow id="flow7" sourceRef="end_order" targetRef="endevent4"></sequenceFlow>
 

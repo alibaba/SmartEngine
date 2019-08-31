@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test;
+package com.alibaba.smart.framework.engine.test.cases;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +28,13 @@ public class SequenceFlowExtensionElementTest {
     public static List<String> trace;
 
     @Before
-    public void before(){
-        trace=new ArrayList<String>();
+    public void before() {
+        trace = new ArrayList<String>();
     }
 
     @Test
     public void testDemo() throws Exception {
-        ProcessEngineConfiguration processEngineConfiguration  = new DefaultProcessEngineConfiguration();
+        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -42,43 +42,43 @@ public class SequenceFlowExtensionElementTest {
         RepositoryCommandService repositoryService = smartEngine.getRepositoryCommandService();
         RepositoryQueryService repositoryQueryService = smartEngine.getRepositoryQueryService();
 
-
         ProcessDefinition processDefinition = repositoryService
             .deploy("new_sale.bpmn20.xml");
-        Assert.assertEquals(38,processDefinition.getProcess().getElements().size());
+        Assert.assertEquals(38, processDefinition.getProcess().getElements().size());
 
-        processDefinition = repositoryQueryService.getCachedProcessDefinition(processDefinition.getId(),processDefinition.getVersion());
+        processDefinition = repositoryQueryService.getCachedProcessDefinition(processDefinition.getId(),
+            processDefinition.getVersion());
 
-        boolean found  = false;
+        boolean found = false;
 
-        List<BaseElement> baseElements =  processDefinition.getProcess().getElements();
+        List<BaseElement> baseElements = processDefinition.getProcess().getElements();
         for (BaseElement baseElement : baseElements) {
-            if(baseElement instanceof AbstractElement){
-                AbstractElement element = (AbstractElement) baseElement;
-                if("SequenceFlow_16ifyt3".equals(element.getId())){
+            if (baseElement instanceof AbstractElement) {
+                AbstractElement element = (AbstractElement)baseElement;
+                if ("SequenceFlow_16ifyt3".equals(element.getId())) {
                     found = true;
-                    Assert.assertEquals("提交机构准入",element.getName());
+                    Assert.assertEquals("提交机构准入", element.getName());
                 }
 
             }
         }
 
-        baseElements =  processDefinition.getProcess().getElements();
+        baseElements = processDefinition.getProcess().getElements();
         for (BaseElement baseElement : baseElements) {
-            if(baseElement instanceof AbstractElement){
-                AbstractElement element = (AbstractElement) baseElement;
-                if("InstitutionAdmit".equals(element.getId())){
+            if (baseElement instanceof AbstractElement) {
+                AbstractElement element = (AbstractElement)baseElement;
+                if ("InstitutionAdmit".equals(element.getId())) {
                     found = true;
-                    Assert.assertEquals("机构准入中",element.getName());
+                    Assert.assertEquals("机构准入中", element.getName());
                 }
 
             }
         }
 
         for (BaseElement baseElement : baseElements) {
-            if(baseElement instanceof SequenceFlow){
+            if (baseElement instanceof SequenceFlow) {
                 SequenceFlow sf = (SequenceFlow)baseElement;
-                if("SequenceFlow_16ifyt3".equals(sf.getId())){
+                if ("SequenceFlow_16ifyt3".equals(sf.getId())) {
                     found = true;
                     Extensions extensions = sf.getExtensions();
                     Assert.assertNotNull(extensions);
@@ -87,12 +87,7 @@ public class SequenceFlowExtensionElementTest {
             }
         }
 
-
-
-
-
         Assert.assertTrue(found);
-
 
     }
 

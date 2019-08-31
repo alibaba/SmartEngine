@@ -12,27 +12,24 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ServiceTaskDelegation implements TccDelegation{
+public class ServiceTaskDelegation implements TccDelegation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceTaskDelegation.class);
 
     @Getter
     private static List<String> arrayList = new ArrayList<String>();
 
-
-
     @Override
     public TccResult tryExecute(ExecutionContext executionContext) {
         Map<String, Object> request = executionContext.getRequest();
-        if(null !=  request){
+        if (null != request) {
             Object o = request.get("input");
-            if(o != null){
+            if (o != null) {
                 String input = o.toString();
                 arrayList.add(input);
                 //LOGGER.info("request input"+arrayList);
             }
         }
-
 
         return null;
     }

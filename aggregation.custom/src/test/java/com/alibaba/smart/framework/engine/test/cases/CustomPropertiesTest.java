@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test;
+package com.alibaba.smart.framework.engine.test.cases;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -22,13 +22,11 @@ import static org.junit.Assert.assertEquals;
  */
 public class CustomPropertiesTest {
 
-
     @Test
     public void test() throws Exception {
 
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-
 
         SmartEngine smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -40,31 +38,28 @@ public class CustomPropertiesTest {
         RepositoryQueryService repositoryQueryService = smartEngine
             .getRepositoryQueryService();
 
-
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("custom-properties.bpmn.xml");
         assertEquals(9, processDefinition.getProcess().getElements().size());
 
-
-        processDefinition =  repositoryQueryService.getCachedProcessDefinition("custom-properties","1.0.0");
+        processDefinition = repositoryQueryService.getCachedProcessDefinition("custom-properties", "1.0.0");
         assertEquals(9, processDefinition.getProcess().getElements().size());
 
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        ProcessInstance processInstance = processCommandService.start(processDefinition.getId(), processDefinition.getVersion());
+        ProcessInstance processInstance = processCommandService.start(processDefinition.getId(),
+            processDefinition.getVersion());
         processCommandService.abort(processInstance.getInstanceId());
 
     }
 
     @Before
-    public void before(){
+    public void before() {
         PersisterSession.create();
     }
 
     @After
-    public void after(){
+    public void after() {
         PersisterSession.destroySession();
     }
-
-
 
 }

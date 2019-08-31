@@ -1,118 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:smart="http://smart.alibaba-inc.com/schema/process" id="test-exclusive" targetNamespace="Examples" version="1.0.0">
+<definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:smart="http://smart.alibaba-inc.com/schema/process"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="test-exclusive" targetNamespace="Examples"
+             version="1.0.0">
     <process id="exclusiveTest">
         <startEvent id="theStart">
             <extensionElements>
                 <smart:properties>
-                    <smart:value name="from" value="koubei" />
+                    <smart:value name="from" value="koubei"/>
                 </smart:properties>
             </extensionElements>
         </startEvent>
-        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="theTask0" />
-        <serviceTask id="theTask0" name="theTask0" smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="theTask0"/>
+        <serviceTask id="theTask0" name="theTask0"
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
             <extensionElements>
                 <smart:properties>
-                    <smart:value name="scen" value="cdp" />
-                    <smart:value name="aaa" value="aa" />
+                    <smart:value name="scen" value="cdp"/>
+                    <smart:value name="aaa" value="aa"/>
                 </smart:properties>
             </extensionElements>
         </serviceTask>
-        <sequenceFlow id="flowTask0" sourceRef="theTask0" targetRef="fork" />
-        <parallelGateway id="fork" name="ForkGateway" />
-        <sequenceFlow id="flow2" sourceRef="fork" targetRef="theTask1" />
-        <sequenceFlow id="flow3" sourceRef="fork" targetRef="theTask2" />
-        <serviceTask id="theTask1" name="Task1" smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+        <sequenceFlow id="flowTask0" sourceRef="theTask0" targetRef="fork"/>
+        <parallelGateway id="fork" name="ForkGateway"/>
+        <sequenceFlow id="flow2" sourceRef="fork" targetRef="theTask1"/>
+        <sequenceFlow id="flow3" sourceRef="fork" targetRef="theTask2"/>
+        <serviceTask id="theTask1" name="Task1"
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
             <extensionElements>
                 <smart:properties>
-                    <smart:value name="scen" value="taopiaopiao" />
-                    <smart:value name="bbb" value="bb" />
+                    <smart:value name="scen" value="taopiaopiao"/>
+                    <smart:value name="bbb" value="bb"/>
                 </smart:properties>
             </extensionElements>
         </serviceTask>
-        <serviceTask id="theTask2" name="Task2" smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+        <serviceTask id="theTask2" name="Task2"
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
             <extensionElements>
                 <smart:properties>
-                    <smart:value name="scen" value="search" />
-                    <smart:value name="ccc" value="cc" />
+                    <smart:value name="scen" value="search"/>
+                    <smart:value name="ccc" value="cc"/>
                 </smart:properties>
             </extensionElements>
         </serviceTask>
-        <sequenceFlow id="flow5" sourceRef="theTask1" targetRef="join" />
-        <sequenceFlow id="flow6" sourceRef="theTask2" targetRef="join" />
-        <parallelGateway id="join" name="JoinGateWay" />
-        <sequenceFlow id="flow7" sourceRef="join" targetRef="theTask3" />
-        <serviceTask id="theTask3" name="Task3" smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+        <sequenceFlow id="flow5" sourceRef="theTask1" targetRef="join"/>
+        <sequenceFlow id="flow6" sourceRef="theTask2" targetRef="join"/>
+        <parallelGateway id="join" name="JoinGateWay"/>
+        <sequenceFlow id="flow7" sourceRef="join" targetRef="theTask3"/>
+        <serviceTask id="theTask3" name="Task3"
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
             <extensionElements>
                 <smart:properties>
-                    <smart:value name="ddd" value="dd" />
-                    <smart:value name="eee" value="ee" />
+                    <smart:value name="ddd" value="dd"/>
+                    <smart:value name="eee" value="ee"/>
                 </smart:properties>
             </extensionElements>
         </serviceTask>
-        <sequenceFlow id="flow4" sourceRef="theTask3" targetRef="theEnd" />
-        <endEvent id="theEnd" />
+        <sequenceFlow id="flow4" sourceRef="theTask3" targetRef="theEnd"/>
+        <endEvent id="theEnd"/>
     </process>
     <bpmndi:BPMNDiagram id="BPMNDiagram_1">
         <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="exclusiveTest">
             <bpmndi:BPMNShape id="_BPMNShape_theStart" bpmnElement="theStart">
-                <dc:Bounds x="100" y="100" width="36" height="36" />
+                <dc:Bounds x="100" y="100" width="36" height="36"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="_BPMNShape_theTask0" bpmnElement="theTask0">
-                <dc:Bounds x="236" y="78" width="100" height="80" />
+                <dc:Bounds x="236" y="78" width="100" height="80"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge id="_BPMNConnection_flow1" bpmnElement="flow1">
-                <di:waypoint type="dc:Point" x="136" y="118" />
-                <di:waypoint type="dc:Point" x="236" y="118" />
+                <di:waypoint type="dc:Point" x="136" y="118"/>
+                <di:waypoint type="dc:Point" x="236" y="118"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNShape id="_BPMNShape_fork" bpmnElement="fork">
-                <dc:Bounds x="436" y="78" width="100" height="80" />
+                <dc:Bounds x="436" y="78" width="100" height="80"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge id="_BPMNConnection_flowTask0" bpmnElement="flowTask0">
-                <di:waypoint type="dc:Point" x="336" y="118" />
-                <di:waypoint type="dc:Point" x="436" y="118" />
+                <di:waypoint type="dc:Point" x="336" y="118"/>
+                <di:waypoint type="dc:Point" x="436" y="118"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNShape id="_BPMNShape_theTask1" bpmnElement="theTask1">
-                <dc:Bounds x="636" y="78" width="100" height="80" />
+                <dc:Bounds x="636" y="78" width="100" height="80"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="_BPMNShape_theTask2" bpmnElement="theTask2">
-                <dc:Bounds x="636" y="288" width="100" height="80" />
+                <dc:Bounds x="636" y="288" width="100" height="80"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge id="_BPMNConnection_flow2" bpmnElement="flow2">
-                <di:waypoint type="dc:Point" x="536" y="118" />
-                <di:waypoint type="dc:Point" x="636" y="118" />
+                <di:waypoint type="dc:Point" x="536" y="118"/>
+                <di:waypoint type="dc:Point" x="636" y="118"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge id="_BPMNConnection_flow3" bpmnElement="flow3">
-                <di:waypoint type="dc:Point" x="536" y="118" />
-                <di:waypoint type="dc:Point" x="586" y="118" />
-                <di:waypoint type="dc:Point" x="586" y="328" />
-                <di:waypoint type="dc:Point" x="636" y="328" />
+                <di:waypoint type="dc:Point" x="536" y="118"/>
+                <di:waypoint type="dc:Point" x="586" y="118"/>
+                <di:waypoint type="dc:Point" x="586" y="328"/>
+                <di:waypoint type="dc:Point" x="636" y="328"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNShape id="_BPMNShape_join" bpmnElement="join">
-                <dc:Bounds x="836" y="78" width="100" height="80" />
+                <dc:Bounds x="836" y="78" width="100" height="80"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge id="_BPMNConnection_flow5" bpmnElement="flow5">
-                <di:waypoint type="dc:Point" x="736" y="118" />
-                <di:waypoint type="dc:Point" x="836" y="118" />
+                <di:waypoint type="dc:Point" x="736" y="118"/>
+                <di:waypoint type="dc:Point" x="836" y="118"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge id="_BPMNConnection_flow6" bpmnElement="flow6">
-                <di:waypoint type="dc:Point" x="736" y="328" />
-                <di:waypoint type="dc:Point" x="786" y="328" />
-                <di:waypoint type="dc:Point" x="786" y="118" />
-                <di:waypoint type="dc:Point" x="836" y="118" />
+                <di:waypoint type="dc:Point" x="736" y="328"/>
+                <di:waypoint type="dc:Point" x="786" y="328"/>
+                <di:waypoint type="dc:Point" x="786" y="118"/>
+                <di:waypoint type="dc:Point" x="836" y="118"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNShape id="_BPMNShape_theTask3" bpmnElement="theTask3">
-                <dc:Bounds x="1036" y="78" width="100" height="80" />
+                <dc:Bounds x="1036" y="78" width="100" height="80"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge id="_BPMNConnection_flow7" bpmnElement="flow7">
-                <di:waypoint type="dc:Point" x="936" y="118" />
-                <di:waypoint type="dc:Point" x="1036" y="118" />
+                <di:waypoint type="dc:Point" x="936" y="118"/>
+                <di:waypoint type="dc:Point" x="1036" y="118"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNShape id="_BPMNShape_theEnd" bpmnElement="theEnd">
-                <dc:Bounds x="1236" y="100" width="36" height="36" />
+                <dc:Bounds x="1236" y="100" width="36" height="36"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge id="_BPMNConnection_flow4" bpmnElement="flow4">
-                <di:waypoint type="dc:Point" x="1136" y="118" />
-                <di:waypoint type="dc:Point" x="1236" y="118" />
+                <di:waypoint type="dc:Point" x="1136" y="118"/>
+                <di:waypoint type="dc:Point" x="1236" y="118"/>
             </bpmndi:BPMNEdge>
         </bpmndi:BPMNPlane>
     </bpmndi:BPMNDiagram>

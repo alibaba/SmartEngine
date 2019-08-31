@@ -1,7 +1,8 @@
-package com.alibaba.smart.framework.engine.test;
+package com.alibaba.smart.framework.engine.test.delegation;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
+import com.alibaba.smart.framework.engine.test.cases.ExecutionListenerAndValueTest;
 
 /**
  * @author ettear
@@ -10,7 +11,7 @@ import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 public class Tracker implements JavaDelegation {
     @Override
     public Object execute(ExecutionContext executionContext) {
-        String text= (String)executionContext.getRequest().get("text");
+        String text = (String)executionContext.getRequest().get("text");
         ExecutionListenerAndValueTest.trace.add(text);
         return text;
     }

@@ -34,6 +34,9 @@ public class SimpleAnnotationScanner {
     @Getter
     private static Map<String,ExtensionBindingResult> map = new HashMap<String, ExtensionBindingResult>();
 
+    public static void clear(){
+        map.clear();
+    }
 
     public static void scan(String packageName,  Class<? extends  ExtensionBinding> bindingAnnotationClazz){
 
@@ -64,7 +67,7 @@ public class SimpleAnnotationScanner {
                 if(bindings.get(name) == null){
                     bindings.put(name,clazz);
                 }else {
-                    throw new ParseException("Duplicated key found for "+name);
+                    throw new ParseException("Duplicated key found for "+name +",because of duplicated annotation or init twice.");
                 }
 
 

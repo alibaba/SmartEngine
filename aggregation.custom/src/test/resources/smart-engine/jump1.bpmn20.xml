@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions id="jump1-process" version="1.0.0"
-			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-			 targetNamespace="Examples">
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             targetNamespace="Examples">
 
-	<process id="jump1-process" isExecutable="true">
-		<startEvent id="start"/>
+    <process id="jump1-process" isExecutable="true">
+        <startEvent id="start"/>
 
-		<sequenceFlow id="flow_1" sourceRef="start" targetRef="task1"/>
+        <sequenceFlow id="flow_1" sourceRef="start" targetRef="task1"/>
 
-		<receiveTask id="task1" name="Task 1"/>
+        <receiveTask id="task1" name="Task 1"/>
 
-		<sequenceFlow id="to_task2" sourceRef="task1" targetRef="task2"/>
+        <sequenceFlow id="to_task2" sourceRef="task1" targetRef="task2"/>
 
-		<receiveTask id="task2" name="Task 2"/>
+        <receiveTask id="task2" name="Task 2"/>
 
 
-		<sequenceFlow id="to_end" sourceRef="task2" targetRef="end"/>
+        <sequenceFlow id="to_end" sourceRef="task2" targetRef="end"/>
 
-		<endEvent id="end" name="End"/>
+        <endEvent id="end" name="End"/>
 
-	</process>
+    </process>
 
 </definitions>

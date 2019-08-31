@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 @Service("springApplicationContextUtil")
 public class ApplicationContextUtil implements ApplicationContextAware {
 
+    private static ApplicationContext applicationContext;
+
     private ApplicationContextUtil() {
     }
 
-    private static ApplicationContext applicationContext;
-
-   public static ApplicationContext getApplicationContext() {
-       return applicationContext;
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
     }
 
     @Override
@@ -28,7 +28,6 @@ public class ApplicationContextUtil implements ApplicationContextAware {
     public static Object getBean(String beanId) throws BeansException {
         return applicationContext.getBean(beanId);
     }
-
 
     public static Object getBean(Class clazz) throws BeansException {
         return applicationContext.getBean(clazz);

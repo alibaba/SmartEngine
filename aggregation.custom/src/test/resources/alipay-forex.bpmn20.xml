@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions id="alipay-forex" version="1.0.0"
+<definitions xmlns:smart="http://smart.alibaba-inc.com/schema/process" id="alipay-forex"
+             version="1.0.0"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-             xmlns:smart="http://smart.alibaba-inc.com/schema/process"
              targetNamespace="Examples">
 
     <process id="alipay-forex-process" isExecutable="true">
@@ -35,23 +35,31 @@
             <conditionExpression type="mvel"><![CDATA[smartEngineAction == "money_into_account"]]></conditionExpression>
         </sequenceFlow>
         <sequenceFlow id="flow27" sourceRef="exclusivegateway3" targetRef="refund">
-            <conditionExpression type="mvel"><![CDATA[smartEngineAction == "money_outof_account"]]></conditionExpression>
+            <conditionExpression type="mvel">
+                <![CDATA[smartEngineAction == "money_outof_account"]]></conditionExpression>
         </sequenceFlow>
 
 
-        <receiveTask id="fund_delivery" name="资金交割" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="fund_delivery" name="资金交割"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.CreateOrderDelegation"></receiveTask>
 
-        <receiveTask id="fund_delivery_ack" name="回执确认" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="fund_delivery_ack" name="回执确认"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.CreateOrderDelegation"></receiveTask>
         <sequenceFlow id="flow22" sourceRef="fund_delivery" targetRef="fund_delivery_ack"></sequenceFlow>
         <sequenceFlow id="flow23" sourceRef="pre_order" targetRef="confirm_order"></sequenceFlow>
         <sequenceFlow id="flow24" sourceRef="confirm_order" targetRef="exclusivegateway2"></sequenceFlow>
-        <receiveTask id="confirm_order" name="下单确认" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
-        <receiveTask id="pre_order" name="预下单" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
-        <receiveTask id="formal_order" name="正式下单" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
-        <receiveTask id="wait_money_into_account" name="等待客户资金到账" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="confirm_order" name="下单确认"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="pre_order" name="预下单"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="formal_order" name="正式下单"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="wait_money_into_account" name="等待客户资金到账"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.CreateOrderDelegation"></receiveTask>
         <endEvent id="endevent2" name="End"></endEvent>
         <sequenceFlow id="flow26" sourceRef="fund_delivery_ack" targetRef="endevent2"></sequenceFlow>
-        <receiveTask id="refund" name="资金反平处理" smart:class="com.alibaba.smart.framework.engine.test.CreateOrderDelegation"></receiveTask>
+        <receiveTask id="refund" name="资金反平处理"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.CreateOrderDelegation"></receiveTask>
         <endEvent id="endevent3" name="End"></endEvent>
         <sequenceFlow id="flow28" sourceRef="refund" targetRef="endevent3"></sequenceFlow>
         <endEvent id="endevent4" name="End"></endEvent>

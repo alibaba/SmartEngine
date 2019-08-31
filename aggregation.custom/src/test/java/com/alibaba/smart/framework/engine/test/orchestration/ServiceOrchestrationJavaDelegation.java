@@ -10,36 +10,28 @@ import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-public class ServiceOrchestrationJavaDelegation implements JavaDelegation{
+public class ServiceOrchestrationJavaDelegation implements JavaDelegation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceOrchestrationJavaDelegation.class);
 
     @Getter
-    private  static  List<String> arrayList = new ArrayList<String>();
-
-
+    private static List<String> arrayList = new ArrayList<String>();
 
     @Override
     public Object execute(ExecutionContext executionContext) {
 
-
-
         Map<String, Object> request = executionContext.getRequest();
-            if(null !=  request){
-                Object o = request.get("input");
-                if(o != null){
-                    String input = o.toString();
-                    arrayList.add(input);
-                    LOGGER.info("request input"+arrayList);
-                }
+        if (null != request) {
+            Object o = request.get("input");
+            if (o != null) {
+                String input = o.toString();
+                arrayList.add(input);
+                LOGGER.info("request input" + arrayList);
             }
+        }
 
-
-
-
-         return null;
+        return null;
     }
 
 }

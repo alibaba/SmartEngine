@@ -28,18 +28,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ServiceTaskParallelGatewayTest {
+    private long orderId = 123456L;
+
     @After
-    public void clear(){
+    public void clear() {
         PersisterSession.destroySession();
     }
 
     @Before
-    public void init(){
+    public void init() {
         PersisterSession.create();
     }
-
-    private long orderId = 123456L;
-
 
     @Test
     public void testParallelGateway() throws Exception {
@@ -54,55 +53,46 @@ public class ServiceTaskParallelGatewayTest {
 
         ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
 
-
         RepositoryCommandService repositoryCommandService = smartEngine
-                .getRepositoryCommandService();
+            .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("test-servicetask-parallel-gateway.bpmn20.xml");
+            .deploy("test-servicetask-parallel-gateway.bpmn20.xml");
         assertEquals(16, processDefinition.getProcess().getElements().size());
-
-
 
         Map<String, Object> request = new HashMap<String, Object>();
         request.put("input", 7);
         ProcessInstance processInstance = processCommandService.start(
-                processDefinition.getId(), processDefinition.getVersion(),
-                request);
+            processDefinition.getId(), processDefinition.getVersion(),
+            request);
 
-        persisteAndUpdateThreadLocal(orderId,processInstance);
+        persisteAndUpdateThreadLocal(orderId, processInstance);
 
         // 流程启动后,正确状态断言
         Assert.assertNotNull(processInstance);
 
-
-        List<ExecutionInstance> executionInstanceList =executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(
+            processInstance.getInstanceId());
         assertEquals(1, executionInstanceList.size());
 
         ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
 
-
         assertTrue(("theTask3".equals(firstExecutionInstance.getProcessDefinitionActivityId())));
 
-        processInstance =   persisteAndUpdateThreadLocal(orderId,processInstance);
+        processInstance = persisteAndUpdateThreadLocal(orderId, processInstance);
 
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
-
 
         Assert.assertNotNull(processInstance.getCompleteTime());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
-
     }
 
-    private ProcessInstance  persisteAndUpdateThreadLocal(long orderId, ProcessInstance processInstance) {
+    private ProcessInstance persisteAndUpdateThreadLocal(long orderId, ProcessInstance processInstance) {
         String serializedProcessInstance = InstanceSerializerFacade.serialize(processInstance);
         processInstance = InstanceSerializerFacade.deserializeAll(serializedProcessInstance);
 
         PersisterSession.currentSession().putProcessInstance(processInstance);
         return processInstance;
     }
-
-
-
 
 }
