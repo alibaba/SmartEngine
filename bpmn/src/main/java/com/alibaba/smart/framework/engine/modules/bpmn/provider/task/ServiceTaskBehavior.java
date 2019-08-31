@@ -26,17 +26,6 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> {
         super();
     }
 
-    @Override
-    public void execute(ExecutionContext context) {
-        //tune
-        super.execute(context);
-
-        ServiceTask model = this.getModel();
-        String className  =  model.getProperties().get("class");
-
-        BehaviorUtil.behavior(context, className,this.extensionPointRegistry,this.getPvmActivity());
-
-    }
 
 
 

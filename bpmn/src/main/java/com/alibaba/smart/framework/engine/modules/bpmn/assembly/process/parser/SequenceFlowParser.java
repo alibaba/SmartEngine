@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -40,6 +42,10 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
         sequenceFlow.setName(XmlParseUtil.getString(reader, "name"));
         sequenceFlow.setSourceRef(XmlParseUtil.getString(reader, "sourceRef"));
         sequenceFlow.setTargetRef(XmlParseUtil.getString(reader, "targetRef"));
+
+        //Map<String, String> properties = super.parseExtendedProperties(reader,  context);
+        //sequenceFlow.setProperties(properties);
+
         return sequenceFlow;
     }
 

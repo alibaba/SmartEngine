@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.parser;
 
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -36,6 +38,10 @@ public class ParallelGatewayParser extends AbstractBpmnParser<ParallelGateway>  
 
         ParallelGateway parallelGateway = new ParallelGateway();
         parallelGateway.setId(XmlParseUtil.getString(reader, "id"));
+
+        Map<String, String> properties = super.parseExtendedProperties(reader,  context);
+        parallelGateway.setProperties(properties);
+
         return parallelGateway;
     }
 

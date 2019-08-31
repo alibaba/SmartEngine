@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.parser;
 
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -36,6 +38,9 @@ public class StartEventParser extends AbstractBpmnParser<StartEvent>   {
         StartEvent startEvent = new StartEvent();
         startEvent.setId(XmlParseUtil.getString(reader, "id"));
         startEvent.setStartActivity(true);
+
+        Map<String, String> properties = super.parseExtendedProperties(reader,  context);
+        startEvent.setProperties(properties);
         return startEvent;
     }
 

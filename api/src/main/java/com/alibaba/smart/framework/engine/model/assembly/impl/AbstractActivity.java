@@ -1,7 +1,12 @@
 package com.alibaba.smart.framework.engine.model.assembly.impl;
 
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -14,6 +19,11 @@ public abstract class AbstractActivity extends AbstractElement implements Activi
     private boolean startActivity;
 
     private ExecutePolicy executePolicy;
+
+    @Getter
+    @Setter
+    private Map<String,String> properties;
+
 
     @Override
     public boolean isStartActivity() {

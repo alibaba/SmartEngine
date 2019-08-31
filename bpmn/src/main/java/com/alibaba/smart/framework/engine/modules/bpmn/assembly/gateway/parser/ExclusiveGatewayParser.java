@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.parser;
 
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -34,6 +36,10 @@ public class ExclusiveGatewayParser extends AbstractBpmnParser<ExclusiveGateway>
             XMLStreamException {
         ExclusiveGateway exclusiveGateway = new ExclusiveGateway();
         exclusiveGateway.setId(XmlParseUtil.getString(reader, "id"));
+
+        Map<String, String> properties = super.parseExtendedProperties(reader,  context);
+        exclusiveGateway.setProperties(properties);
+
         return exclusiveGateway;
     }
 

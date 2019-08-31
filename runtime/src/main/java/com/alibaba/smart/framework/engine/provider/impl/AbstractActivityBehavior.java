@@ -20,6 +20,7 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.modules.bpmn.provider.task.BehaviorUtil;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
@@ -113,6 +114,19 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     @Override
     public void execute(ExecutionContext context) {
+        T model = this.getModel();
+        Map<String,String>  properties = model.getProperties();
+        if(MapUtil.isNotEmpty(properties)){
+            String className  =  properties.get("class");
+            if(null != className){
+                BehaviorUtil.behavior(context, className,this.extensionPointRegistry,this.getPvmActivity());
+            }else {
+                //tune logger
+            }
+        }
+
+
+
         if (!context.isNeedPause()) {
             ExecutionInstance executionInstance = context.getExecutionInstance();
             MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,

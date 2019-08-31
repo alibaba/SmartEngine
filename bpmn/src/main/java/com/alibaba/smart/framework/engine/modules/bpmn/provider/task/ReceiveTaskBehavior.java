@@ -28,21 +28,4 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
         return true;
     }
 
-    @Override
-    public void execute(ExecutionContext context) {
-        //tune
-        super.execute(context);
-
-        ReceiveTask model = this.getModel();
-        String className  =  model.getProperties().get("class");
-
-        if(null != className){
-            BehaviorUtil.behavior(context, className,this.extensionPointRegistry,this.getPvmActivity());
-        }else {
-            //tune logger
-        }
-
-    }
-
-
 }
