@@ -22,7 +22,6 @@ public class BasicProcessTest extends BaseTestCase {
     @Test
     public void test() throws Exception {
 
-        PersisterSession.create();
 
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("basic-process.bpmn.xml");

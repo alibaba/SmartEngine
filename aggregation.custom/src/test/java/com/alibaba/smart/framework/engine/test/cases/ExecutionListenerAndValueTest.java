@@ -24,20 +24,14 @@ import org.junit.Test;
  * @author ettear
  * Created by ettear on 04/08/2017.
  */
-public class ExecutionListenerAndValueTest {
+public class ExecutionListenerAndValueTest extends BaseTestCase  {
 
     public static List<String> trace = new ArrayList<String>();
 
     @Test
     public void testDemo() throws Exception {
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-        RepositoryCommandService repositoryService = smartEngine
-            .getRepositoryCommandService();
-        ProcessDefinition processDefinition = repositoryService
+        ProcessDefinition processDefinition = repositoryCommandService
             .deploy("execution_listener_and_value_test.bpmn20.xml");
         Assert.assertEquals(7, processDefinition.getProcess().getElements().size());
 
@@ -63,14 +57,5 @@ public class ExecutionListenerAndValueTest {
 
     }
 
-    @Before
-    public void before() {
-        PersisterSession.create();
-    }
-
-    @After
-    public void after() {
-        PersisterSession.destroySession();
-    }
 
 }

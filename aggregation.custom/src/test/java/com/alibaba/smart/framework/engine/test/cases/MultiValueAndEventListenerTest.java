@@ -25,29 +25,22 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class MultiValueAndEventListenerTest {
+public class MultiValueAndEventListenerTest extends BaseTestCase {
 
     public static List<String> trace = new ArrayList<String>();
 
     @Test
     public void testDemo() throws Exception {
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-        RepositoryCommandService repositoryService = smartEngine
-            .getRepositoryCommandService();
-        ProcessDefinition processDefinition = repositoryService
+        ProcessDefinition processDefinition = repositoryCommandService
             .deploy("MultiValueAndEventListenerTest.bpmn.xml");
         Assert.assertEquals(7, processDefinition.getProcess().getElements().size());
 
-        ProcessCommandService processService = smartEngine.getProcessCommandService();
 
         Map<String, Object> request = new HashMap<String, Object>();
         request.put("hello", "world");
 
-        ProcessInstance processInstance = processService.start(
+        ProcessInstance processInstance = processCommandService.start(
             processDefinition.getId(), processDefinition.getVersion(),
             request);
 
@@ -60,7 +53,7 @@ public class MultiValueAndEventListenerTest {
         Assert.assertEquals(trace.get(1), "world");
         Assert.assertEquals(trace.get(2), "world");
 
-        PersisterSession.create().putProcessInstance(processInstance);
+        PersisterSession.currentSession().putProcessInstance(processInstance);
 
         List<ExecutionInstance> executionInstanceList = smartEngine.getExecutionQueryService().findActiveExecutionList(
             processInstance.getInstanceId());
@@ -81,14 +74,5 @@ public class MultiValueAndEventListenerTest {
 
     }
 
-    @Before
-    public void before() {
-        PersisterSession.create();
-    }
-
-    @After
-    public void after() {
-        PersisterSession.destroySession();
-    }
 
 }

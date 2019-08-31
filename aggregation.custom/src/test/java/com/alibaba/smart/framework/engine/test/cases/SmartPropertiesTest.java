@@ -23,34 +23,13 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class SmartPropertiesTest {
+public class SmartPropertiesTest extends BaseTestCase {
 
-    private long orderId = 123456L;
-
-    @After
-    public void clear() {
-        PersisterSession.destroySession();
-    }
 
     @Test
     public void test() throws Exception {
 
-        PersisterSession.create();
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
 
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-        //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
-        ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
-
-        //3. 部署流程定义
-        RepositoryCommandService repositoryCommandService = smartEngine
-            .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("smartPropertiesTest.bpmn.xml");
         assertEquals(10, processDefinition.getProcess().getElements().size());
@@ -65,11 +44,6 @@ public class SmartPropertiesTest {
         Assert.assertNotNull(processInstance);
         Assert.assertTrue(processInstance.getStatus().equals(InstanceStatus.completed));
 
-    }
-
-    private void persisteAndUpdateThreadLocal(long orderId, ProcessInstance processInstance) {
-
-        PersisterSession.currentSession().putProcessInstance(processInstance);
     }
 
 }

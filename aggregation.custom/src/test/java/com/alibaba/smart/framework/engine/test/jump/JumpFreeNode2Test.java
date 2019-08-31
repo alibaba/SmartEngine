@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSess
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
+import com.alibaba.smart.framework.engine.test.cases.BaseTestCase;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,32 +22,16 @@ import org.junit.Test;
  * @author shiyang.xsy
  * @date 2017/12/6
  */
-public class JumpFreeNode2Test {
-    ExecutionQueryService executionQueryService;
-    ExecutionCommandService executionCommandService;
-    private SmartEngine smartEngine;
+public class JumpFreeNode2Test extends BaseTestCase {
 
-    @Before
-    public void before() {
-        this.smartEngine = new DefaultSmartEngine();
-        this.smartEngine.init(new DefaultProcessEngineConfiguration());
-        this.executionQueryService = this.smartEngine.getExecutionQueryService();
-        this.executionCommandService = this.smartEngine.getExecutionCommandService();
-        this.deploy();
-    }
-
-    private void deploy() {
-        RepositoryCommandService repositoryCommandService = this.smartEngine
-            .getRepositoryCommandService();
-        repositoryCommandService
-            .deploy("smart-engine/jump2.bpmn20.xml");
-    }
 
     @Test
     public void test() {
-        PersisterSession.create();
         PersisterSession session = PersisterSession.currentSession();
         Assert.assertNotNull(session);
+
+        repositoryCommandService
+            .deploy("smart-engine/jump2.bpmn20.xml");
 
         //start
         ProcessInstance processInstance = smartEngine.getProcessCommandService().start(

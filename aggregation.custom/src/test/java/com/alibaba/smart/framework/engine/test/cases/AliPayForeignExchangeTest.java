@@ -25,7 +25,6 @@ public class AliPayForeignExchangeTest extends BaseTestCase {
     @Test
     public void test() throws Exception {
 
-        PersisterSession.create();
 
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("alipay-forex.bpmn20.xml");

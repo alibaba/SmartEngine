@@ -25,16 +25,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @Service
 public class ServiceOrchestrationTest {
 
+    @Before
+    public void before() {
+    }
+
     @Autowired
     private SmartEngine smartEngine;
 
-    @Before
-    public void before() {
-        ServiceOrchestrationJavaDelegation.getArrayList().clear();
-    }
-
     @Test
     public void testExclusive() throws Exception {
+        ServiceOrchestrationJavaDelegation.getArrayList().clear();
+
 
         ProcessCommandService processService = smartEngine.getProcessCommandService();
         Map<String, Object> request = new HashMap<String, Object>();

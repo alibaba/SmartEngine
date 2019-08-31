@@ -30,15 +30,10 @@ public class OfcMarketPlaceTest {
 
     private long orderId = 123456L;
 
-    @After
-    public void clear() {
-        PersisterSession.destroySession();
-    }
 
     @Test
     public void test() throws Exception {
 
-        PersisterSession.create();
         //1.初始化
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());

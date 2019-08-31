@@ -128,6 +128,7 @@
 //        signalCurrentActivity(  processInstance,processInstanceId, currentActivityId, map, executionQueryService,
 //        executionCommandService);
 //
+//fixme
 //        try{
 //            PersisterSession.create();
 //            ProcessInstance processInstance1 = getMockDB().get(ORDER_ID);

@@ -20,23 +20,12 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by 高海军 帝奇 74394 on 2017 November  17:54.
  */
-public class CustomPropertiesTest {
+public class CustomPropertiesTest extends BaseTestCase  {
 
     @Test
     public void test() throws Exception {
 
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-        //3. 部署流程定义
-        RepositoryCommandService repositoryCommandService = smartEngine
-            .getRepositoryCommandService();
-
-        RepositoryQueryService repositoryQueryService = smartEngine
-            .getRepositoryQueryService();
 
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("custom-properties.bpmn.xml");
@@ -52,14 +41,5 @@ public class CustomPropertiesTest {
 
     }
 
-    @Before
-    public void before() {
-        PersisterSession.create();
-    }
-
-    @After
-    public void after() {
-        PersisterSession.destroySession();
-    }
 
 }

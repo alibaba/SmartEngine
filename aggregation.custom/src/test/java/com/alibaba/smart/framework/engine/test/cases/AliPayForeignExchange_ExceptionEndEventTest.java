@@ -25,35 +25,15 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class AliPayForeignExchange_ExceptionEndEventTest {
+public class AliPayForeignExchange_ExceptionEndEventTest extends BaseTestCase {
 
     private long orderId = 123456L;
 
-    @After
-    public void clear() {
-        PersisterSession.destroySession();
-    }
 
     @Test
     public void test() throws Exception {
 
-        PersisterSession.create();
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setIdGenerator(new AliPayIdGenerator());
-        //processEngineConfiguration.setPersisterStrategy(new AliPayPersisterStrategy());
 
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-        //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
-        ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
-
-        //3. 部署流程定义
-        RepositoryCommandService repositoryCommandService = smartEngine
-            .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("alipay-forex-end-event-extension.bpmn20.xml");
         assertEquals(28, processDefinition.getProcess().getElements().size());

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by 高海军 帝奇 74394 on 2017 May  16:31.
  */
-public class CallActivityProcessTest extends CustomBaseTest {
+public class CallActivityProcessTest extends BaseTestCase {
 
     @Test
     public void test() throws Exception {
@@ -234,8 +234,6 @@ public class CallActivityProcessTest extends CustomBaseTest {
         assertEquals(0, executionInstanceList.size());
 
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
-
-        PersisterSession.destroySession();
 
     }
 

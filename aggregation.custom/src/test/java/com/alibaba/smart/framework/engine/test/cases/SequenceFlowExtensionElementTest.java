@@ -23,26 +23,18 @@ import org.junit.Test;
  * @author ettear
  * Created by ettear on 04/08/2017.
  */
-public class SequenceFlowExtensionElementTest {
+public class SequenceFlowExtensionElementTest extends BaseTestCase  {
 
     public static List<String> trace;
 
-    @Before
-    public void before() {
-        trace = new ArrayList<String>();
-    }
+
 
     @Test
     public void testDemo() throws Exception {
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        trace = new ArrayList<String>();
 
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
 
-        RepositoryCommandService repositoryService = smartEngine.getRepositoryCommandService();
-        RepositoryQueryService repositoryQueryService = smartEngine.getRepositoryQueryService();
-
-        ProcessDefinition processDefinition = repositoryService
+        ProcessDefinition processDefinition = repositoryCommandService
             .deploy("new_sale.bpmn20.xml");
         Assert.assertEquals(38, processDefinition.getProcess().getElements().size());
 

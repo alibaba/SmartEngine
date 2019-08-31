@@ -18,6 +18,7 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
+import com.alibaba.smart.framework.engine.test.cases.BaseTestCase;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -27,34 +28,14 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ReceiveTaskParallelGatewayTest {
+public class ReceiveTaskParallelGatewayTest extends BaseTestCase {
     private long orderId = 123456L;
 
-    @After
-    public void clear() {
-        PersisterSession.destroySession();
-    }
 
-    @Before
-    public void init() {
-        PersisterSession.create();
-    }
 
     @Test
     public void testParallelGateway() throws Exception {
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-        //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
-
-        ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
-
-        RepositoryCommandService repositoryCommandService = smartEngine
-            .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("test-receivetask-parallel-gateway.bpmn20.xml");
         assertEquals(14, processDefinition.getProcess().getElements().size());

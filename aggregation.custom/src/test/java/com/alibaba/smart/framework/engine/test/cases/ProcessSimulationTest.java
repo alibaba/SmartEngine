@@ -20,22 +20,13 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class ProcessSimulationTest {
+public class ProcessSimulationTest extends BaseTestCase  {
 
-    @After
-    public void clear() {
-        PersisterSession.destroySession();
-    }
 
     @Test
     public void test() throws Exception {
 
-        PersisterSession.create();
 
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
 
         ProcessSimulation processSimulation = new ProcessSimulation(smartEngine);
 
