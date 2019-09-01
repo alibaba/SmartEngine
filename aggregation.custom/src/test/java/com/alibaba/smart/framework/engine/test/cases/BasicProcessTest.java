@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class BasicProcessTest extends BaseTestCase {
+public class BasicProcessTest extends CustomBaseTestCase {
 
     @Test
     public void test() throws Exception {

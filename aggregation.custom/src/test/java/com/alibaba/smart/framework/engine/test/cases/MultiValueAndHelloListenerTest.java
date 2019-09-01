@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class MultiValueAndHelloListenerTest extends BaseTestCase {
+public class MultiValueAndHelloListenerTest extends CustomBaseTestCase {
 
     public static List<String> trace = new ArrayList<String>();
 

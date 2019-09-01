@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class AliPayForeignExchangeTest extends BaseTestCase {
+public class AliPayForeignExchangeTest extends CustomBaseTestCase {
 
     private long orderId = 123456L;
 

@@ -157,6 +157,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
     @Override
     public boolean enter(ExecutionContext context) {
+        super.enter(context);
+
         UserTask userTask = this.getModel();
 
         List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList= null;

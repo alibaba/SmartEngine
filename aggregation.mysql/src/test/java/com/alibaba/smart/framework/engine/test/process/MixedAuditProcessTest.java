@@ -16,6 +16,7 @@ import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 
 import org.junit.Assert;
@@ -33,29 +34,11 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class MixedAuditProcessTest {
+public class MixedAuditProcessTest extends DatabaseBaseTestCase {
 
 
     @Test
     public void testUserTaskExclusive() throws Exception {
-
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
-
-        SmartEngine smartEngine = new DefaultSmartEngine();
-
-        smartEngine.init(processEngineConfiguration);
-
-
-        //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
-
-        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
-        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
-        ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
-        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
 
 
         //3. 部署流程定义

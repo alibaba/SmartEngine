@@ -1,22 +1,25 @@
-package com.alibaba.smart.framework.engine.test.cases;
+package com.alibaba.smart.framework.engine.test;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
-import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
+import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 
 import org.junit.After;
 import org.junit.Before;
 
-public class BaseTestCase {
+public class DatabaseBaseTestCase {
 
     protected ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
@@ -31,14 +34,13 @@ public class BaseTestCase {
     protected ExecutionQueryService executionQueryService;
     protected ExecutionCommandService executionCommandService;
     protected RepositoryQueryService repositoryQueryService ;
+    protected  TaskCommandService  taskCommandService;
+    protected ActivityQueryService   activityQueryService;
+    protected TaskQueryService  taskQueryService;
 
     @Before
     public void setUp() {
         SimpleAnnotationScanner.clear();
-
-
-        PersisterSession.create();
-
 
         initProcessConfiguation();
 
@@ -56,16 +58,22 @@ public class BaseTestCase {
         executionQueryService = smartEngine.getExecutionQueryService();
         executionCommandService = smartEngine.getExecutionCommandService();
 
+          processCommandService = smartEngine.getProcessCommandService();
+           taskCommandService = smartEngine.getTaskCommandService();
+            activityQueryService = smartEngine.getActivityQueryService();
+          taskQueryService = smartEngine.getTaskQueryService();
+
+
 
     }
 
     protected void initProcessConfiguation() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
     }
 
     @After
     public void clear() {
-        PersisterSession.destroySession();
         SimpleAnnotationScanner.clear();
 
     }

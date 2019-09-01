@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
  *
  * FIXME
  */
-public class CallActivityProcessTest extends BaseTestCase {
+public class CallActivityProcessTest extends CustomBaseTestCase {
 
     @Test
     public void test() throws Exception {

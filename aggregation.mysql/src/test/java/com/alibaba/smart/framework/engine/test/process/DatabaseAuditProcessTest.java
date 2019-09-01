@@ -18,6 +18,7 @@ import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 
 import org.junit.Assert;
@@ -32,33 +33,21 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class DatabaseAuditProcessTest {
+public class DatabaseAuditProcessTest extends DatabaseBaseTestCase {
 
+    @Override
+    protected void initProcessConfiguation() {
+        super.initProcessConfiguation();
+        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+    }
 
     @Test
     public void testAuditProcess() throws Exception {
 
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
-        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-
-        //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
-
-        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
-        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
-        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
 
 
 
-        //3. 部署流程定义
-        RepositoryCommandService repositoryCommandService = smartEngine
-                .getRepositoryCommandService();
+
         ProcessDefinition processDefinition = repositoryCommandService
                 .deploy("test-usertask-and-servicetask-exclusive.bpmn20.xml");
         assertEquals(17, processDefinition.getProcess().getElements().size());
@@ -106,27 +95,7 @@ public class DatabaseAuditProcessTest {
     @Test
     public void testFailedServiceTaskAuditProcess() throws Exception {
 
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
-        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
 
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-
-        //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
-
-        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
-        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
-        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
-
-
-        //3. 部署流程定义
-        RepositoryCommandService repositoryCommandService = smartEngine
-                .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
                 .deploy("failed-test-usertask-and-servicetask-exclusive.bpmn20.xml");
         assertEquals(17, processDefinition.getProcess().getElements().size());

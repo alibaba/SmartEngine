@@ -3,27 +3,20 @@ package com.alibaba.smart.framework.engine.test.cases;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Extensions;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
-import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @author ettear
  * Created by ettear on 04/08/2017.
  */
-public class SequenceFlowExtensionElementTest extends BaseTestCase  {
+public class SequenceFlowExtensionElementTest extends CustomBaseTestCase {
 
     public static List<String> trace;
 

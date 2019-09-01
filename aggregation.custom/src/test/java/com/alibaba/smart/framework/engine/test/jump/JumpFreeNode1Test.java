@@ -3,27 +3,20 @@ package com.alibaba.smart.framework.engine.test.jump;
 import java.util.HashMap;
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
-import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
-import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
-import com.alibaba.smart.framework.engine.test.cases.BaseTestCase;
+import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @author shiyang.xsy
  * @date 2017/12/6
  */
-public class JumpFreeNode1Test  extends BaseTestCase {
+public class JumpFreeNode1Test  extends CustomBaseTestCase {
 
     @Test
     public void test() {
