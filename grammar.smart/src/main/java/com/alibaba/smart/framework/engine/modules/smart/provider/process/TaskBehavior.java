@@ -15,6 +15,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 @ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR,binding = SmartTask.class)
 
 public class TaskBehavior extends AbstractActivityBehavior<SmartTask> {
+
     public TaskBehavior(
         ExtensionPointRegistry extensionPointRegistry,
         PvmActivity pvmActivity) {

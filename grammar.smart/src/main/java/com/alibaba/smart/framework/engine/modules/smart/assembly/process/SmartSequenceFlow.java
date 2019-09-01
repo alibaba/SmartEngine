@@ -25,4 +25,9 @@ public class SmartSequenceFlow extends AbstractTransition {
     public ConditionExpression getConditionExpression() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return super.getId();
+    }
 }

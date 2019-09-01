@@ -15,4 +15,8 @@ public class SmartProcess extends AbstractProcess {
 
     private static final long serialVersionUID = -2660788294142169268L;
 
+    @Override
+    public String toString() {
+        return super.getId();
+    }
 }

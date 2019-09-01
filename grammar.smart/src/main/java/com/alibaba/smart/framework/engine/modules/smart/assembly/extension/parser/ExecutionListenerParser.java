@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.smart.assembly.extension.pars
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
@@ -25,18 +26,21 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
 
     @Override
     protected ExecutionListener parseModel(XMLStreamReader reader, ParseContext context) {
-        ExecutionListener executionListener = new ExecutionListener();
         String event = XmlParseUtil.getString(reader, "event");
         String listener = XmlParseUtil.getString(reader, "class");
 
         if (null != event) {
+            ExecutionListener executionListener = new ExecutionListener();
+
             String[] events = event.split(",");
             executionListener.setEvents(events);
 
             //FIXME 统一通过 instanceAccceor ,都是单例。
             executionListener.setListener(listener);
+            return executionListener;
+        }else{
+            throw new EngineException("Events can not be empty for ExecutionListener");
         }
-        return executionListener;
     }
 
     @Override

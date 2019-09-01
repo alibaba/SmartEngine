@@ -26,7 +26,6 @@
         <task id="pay" name="Pay" class="com.alibaba.smart.framework.engine.test.delegation.Tracker">
             <extensionElements>
                 <value name="text" value="Pay task"/>
-                <executionListener class="com.alibaba.smart.framework.engine.test.Listener"/>
             </extensionElements>
         </task>
 

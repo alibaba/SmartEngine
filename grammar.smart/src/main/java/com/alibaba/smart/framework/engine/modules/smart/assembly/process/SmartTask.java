@@ -19,4 +19,9 @@ import lombok.EqualsAndHashCode;
 public class SmartTask extends AbstractActivity {
 
     public final static QName type = new QName(SmartBase.SMART_NS, "task");
+
+    @Override
+    public String toString() {
+        return super.getId();
+    }
 }
