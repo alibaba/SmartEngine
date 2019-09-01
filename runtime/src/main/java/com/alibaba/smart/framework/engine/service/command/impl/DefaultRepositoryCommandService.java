@@ -422,14 +422,12 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                         continue;
                     }
                     Invoker extensionInvoker = providerFactory.createInvoker(extension);
-                    if (extension.isPrepare()) {
                         prepareExtensionInvokers.add(extensionInvoker);
-                    } else {
                         extensionInvokers.add(extensionInvoker);
-                    }
+
                 }
-                pvmElement.setPrepareExtensionInvokers(prepareExtensionInvokers);
-                pvmElement.setExtensionInvokers(extensionInvokers);
+                //pvmElement.setPrepareExtensionInvokers(prepareExtensionInvokers);
+                //pvmElement.setExtensionInvokers(extensionInvokers);
             }
         }
 

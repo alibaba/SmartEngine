@@ -115,6 +115,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     @Override
     public void execute(ExecutionContext context) {
         T model = this.getModel();
+        model.getExtensions();
+
         Map<String,String>  properties = model.getProperties();
         if(MapUtil.isNotEmpty(properties)){
             String className  =  properties.get("class");

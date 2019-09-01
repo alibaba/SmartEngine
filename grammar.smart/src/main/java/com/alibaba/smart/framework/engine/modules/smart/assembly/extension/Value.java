@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.smart.assembly.extension;
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
+import com.alibaba.smart.framework.engine.model.assembly.Extensions;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 
 import lombok.Data;
@@ -20,8 +21,9 @@ public class Value extends Properties implements Extension {
     private String name;
     private String value;
 
+
     @Override
-    public boolean isPrepare() {
-        return true;
+    public void decorate(Extensions extensions) {
+        extensions.getProperties().put(name,value);
     }
 }

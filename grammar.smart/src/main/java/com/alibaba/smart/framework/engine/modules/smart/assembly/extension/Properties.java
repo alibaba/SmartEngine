@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
+import com.alibaba.smart.framework.engine.model.assembly.Extensions;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 
 import lombok.Data;
@@ -23,7 +24,14 @@ public class Properties implements Extension, BaseElement {
     private List<Value> extensionList  = new ArrayList();
 
     @Override
-    public boolean isPrepare() {
-        return false;
+    public void decorate(Extensions extensions) {
+        for (Value value : extensionList) {
+            extensions.getProperties().put(value.getName(),value.getValue());
+        }
     }
+
+    //@Override
+    //public boolean isPrepare() {
+    //    return false;
+    //}
 }

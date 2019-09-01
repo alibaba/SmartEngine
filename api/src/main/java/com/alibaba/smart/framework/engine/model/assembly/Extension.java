@@ -6,9 +6,7 @@ package com.alibaba.smart.framework.engine.model.assembly;
  */
 
 public interface Extension extends BaseElement {
-    /**
-     * 是否为准备阶段的扩展，准备阶段扩展会在行为之前执行
-     * @return 是否为准备阶段的扩展
-     */
-    boolean isPrepare();
+
+    void decorate(Extensions extensions);
+
 }

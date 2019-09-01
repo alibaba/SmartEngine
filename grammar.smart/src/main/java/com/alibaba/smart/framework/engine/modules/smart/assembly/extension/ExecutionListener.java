@@ -17,14 +17,7 @@ import lombok.EqualsAndHashCode;
 public class ExecutionListener extends Properties implements Extension {
     public final static QName type = new QName(SmartBase.SMART_NS, "executionListener");
 
-    private static final long serialVersionUID = -2881657965418926667L;
-
     private String[] events;
 
-    //fixme
 
-    @Override
-    public boolean isPrepare() {
-        return false;
-    }
 }
