@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
  */
 @ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = ExtensionElements.class)
 
-public class ExtensionsParser extends AbstractElementParser<ExtensionElements> {
+public class ExtensionElementsParser extends AbstractElementParser<ExtensionElements> {
 
 
     @Override
