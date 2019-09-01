@@ -365,7 +365,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                 AbstractActivityBehavior o1 = (AbstractActivityBehavior)o;
                 o1.setPvmActivity(pvmActivity);
-                o1.setExtensionPointRegistry(extensionPointRegistry.getExtensionPoint(ExtensionPointRegistry.class));
+                o1.setExtensionPointRegistry(extensionPointRegistry);
 
                 o1.setProcessInstanceFactory(extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class));
                 o1.setExecutionInstanceFactory(extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class));

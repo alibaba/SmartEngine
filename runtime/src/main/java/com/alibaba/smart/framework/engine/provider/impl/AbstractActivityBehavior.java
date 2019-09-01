@@ -54,9 +54,9 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     @Setter
     protected TaskInstanceFactory taskInstanceFactory;
     @Setter
-    private ProcessEngineConfiguration processEngineConfiguration;
+    protected ProcessEngineConfiguration processEngineConfiguration;
     @Setter
-    private ExecutionInstanceStorage executionInstanceStorage;
+    protected ExecutionInstanceStorage executionInstanceStorage;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractActivityBehavior.class);
 
@@ -84,14 +84,17 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     @Override
     public boolean enter(ExecutionContext context) {
-        this.buildInstanceRelationShip(context);
 
-        ActivityInstance activityInstance = context.getActivityInstance();
+        ProcessInstance processInstance = context.getProcessInstance();
+
+        ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
+        processInstance.addActivityInstance(activityInstance);
+        context.setActivityInstance(activityInstance);
 
         ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
-
         List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(1);
         executionInstanceList.add(executionInstance);
+
         activityInstance.setExecutionInstanceList(executionInstanceList);
         context.setExecutionInstance(executionInstance);
 
@@ -103,18 +106,9 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         return false;
     }
 
-    private void buildInstanceRelationShip(ExecutionContext context){
-        ProcessInstance processInstance = context.getProcessInstance();
-
-        ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
-        //ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance,  context);
-        //
-        //activityInstance.setExecutionInstance(executionInstance);
-        processInstance.addActivityInstance(activityInstance);
-        //
-        //context.setExecutionInstance(executionInstance);
-        context.setActivityInstance(activityInstance);
-    }
+    //private void buildInstanceRelationShip(ExecutionContext context){
+    //
+    //}
 
     @Override
     public void execute(ExecutionContext context) {
