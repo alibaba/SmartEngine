@@ -18,7 +18,6 @@
                 <executionListener event="ACTIVITY_START,ACTIVITY_END"
                                    class="com.alibaba.smart.framework.engine.test.Listener"/>
             </extensionElements>
-            <java action="ACTIVITY_END" class="com.alibaba.smart.framework.engine.test.delegation.Tracker"/>
         </task>
 
         <sequenceFlow id="flow2" sourceRef="create" targetRef="pay"/>

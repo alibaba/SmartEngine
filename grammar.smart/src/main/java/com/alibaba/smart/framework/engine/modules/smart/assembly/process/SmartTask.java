@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.AbstractTask;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
 
@@ -16,7 +17,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SmartTask extends AbstractActivity {
+public class SmartTask extends AbstractTask {
 
     public final static QName type = new QName(SmartBase.SMART_NS, "task");
 

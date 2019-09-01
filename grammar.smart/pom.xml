@@ -35,6 +35,13 @@
             <artifactId>spring-beans</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba.smart.framework</groupId>
+            <artifactId>smart-engine-bpmn</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
 
     </dependencies>
 </project>

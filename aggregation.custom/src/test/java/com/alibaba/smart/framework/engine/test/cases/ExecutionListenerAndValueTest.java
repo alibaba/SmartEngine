@@ -46,14 +46,9 @@ public class ExecutionListenerAndValueTest extends BaseTestCase  {
         Assert.assertNotNull(processInstance);
 
         Assert.assertEquals(trace.get(0), "start");
-        Assert.assertEquals(trace.get(1), "Listener: Create task");
-        Assert.assertEquals(trace.get(2), "Create task");
-        Assert.assertEquals(trace.get(3), "Listener: Create task");
-
-        Assert.assertEquals(trace.get(4), "Listener: Pay task");
-        Assert.assertEquals(trace.get(5), "Pay task");
-        Assert.assertEquals(trace.get(6), "Listener: Pay task");
-        Assert.assertEquals(trace.get(7), "Listener: Pay task");
+        Assert.assertEquals(trace.get(1), "Listener: start");
+        Assert.assertEquals(trace.get(2), "Listener: start");
+        Assert.assertEquals(trace.get(3), "start");
 
     }
 

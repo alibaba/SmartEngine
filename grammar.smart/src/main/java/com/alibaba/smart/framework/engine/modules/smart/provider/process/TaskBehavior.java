@@ -21,4 +21,7 @@ public class TaskBehavior extends AbstractActivityBehavior<SmartTask> {
         PvmActivity pvmActivity) {
         super(extensionPointRegistry, pvmActivity);
     }
+
+    public TaskBehavior() {
+    }
 }

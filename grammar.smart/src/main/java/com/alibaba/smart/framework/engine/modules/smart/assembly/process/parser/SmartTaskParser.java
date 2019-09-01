@@ -1,11 +1,14 @@
 package com.alibaba.smart.framework.engine.modules.smart.assembly.process.parser;
 
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnParser;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartTask;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
@@ -20,7 +23,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 @ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = SmartTask.class)
 
-public class SmartTaskParser extends AbstractElementParser<SmartTask> {
+public class SmartTaskParser extends AbstractBpmnParser<SmartTask> {
     private final static String DEFAULT_ACTION = PvmEventConstant.ACTIVITY_EXECUTE.name();
 
 
@@ -29,6 +32,9 @@ public class SmartTaskParser extends AbstractElementParser<SmartTask> {
         SmartTask smartTask = new SmartTask();
         smartTask.setId(XmlParseUtil.getString(reader, "id"));
         smartTask.setStartActivity(XmlParseUtil.getBoolean(reader, "isStart"));
+        Map<String, String> userTaskProperties = super.parseExtendedProperties(reader,  context);
+        smartTask.setProperties(userTaskProperties);
+
         return smartTask;
     }
 
