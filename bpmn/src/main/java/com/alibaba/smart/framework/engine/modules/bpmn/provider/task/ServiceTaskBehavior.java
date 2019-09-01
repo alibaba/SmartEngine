@@ -18,9 +18,9 @@ public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceTaskBehavior.class);
 
 
-    public ServiceTaskBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-        super(extensionPointRegistry, runtimeActivity);
-    }
+    //public ServiceTaskBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    //    super(extensionPointRegistry, runtimeActivity);
+    //}
 
     public ServiceTaskBehavior() {
         super();

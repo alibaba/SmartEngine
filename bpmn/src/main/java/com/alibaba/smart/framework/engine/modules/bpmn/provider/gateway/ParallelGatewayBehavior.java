@@ -27,9 +27,9 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> {
 
-    public ParallelGatewayBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-        super(extensionPointRegistry, runtimeActivity);
-    }
+    //public ParallelGatewayBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    //    super(extensionPointRegistry, runtimeActivity);
+    //}
 
     public ParallelGatewayBehavior() {
         super();

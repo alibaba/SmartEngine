@@ -64,14 +64,14 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         //FIXME
     }
 
-    public AbstractActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity pvmActivity) {
-        this.pvmActivity = pvmActivity;
-        //this.extensionPointRegistry = extensionPointRegistry;
-        this.processInstanceFactory = extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
-        this.executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
-        this.activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
-        this.taskInstanceFactory = extensionPointRegistry.getExtensionPoint(TaskInstanceFactory.class);
-    }
+    //public AbstractActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity pvmActivity) {
+    //    this.pvmActivity = pvmActivity;
+    //    //this.extensionPointRegistry = extensionPointRegistry;
+    //    this.processInstanceFactory = extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
+    //    this.executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
+    //    this.activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
+    //    this.taskInstanceFactory = extensionPointRegistry.getExtensionPoint(TaskInstanceFactory.class);
+    //}
 
     //protected ExtensionPointRegistry getExtensionPointRegistry() {
     //    return extensionPointRegistry;

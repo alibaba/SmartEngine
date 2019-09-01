@@ -20,10 +20,10 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
     private ExecutionCommandService executionCommandService;
 
-    public EndEventBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-        super(extensionPointRegistry, runtimeActivity);
-        this.executionCommandService = extensionPointRegistry.getExtensionPoint(ExecutionCommandService.class);
-    }
+    //public EndEventBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    //    super(extensionPointRegistry, runtimeActivity);
+    //    this.executionCommandService = extensionPointRegistry.getExtensionPoint(ExecutionCommandService.class);
+    //}
 
     public EndEventBehavior() {
         super();

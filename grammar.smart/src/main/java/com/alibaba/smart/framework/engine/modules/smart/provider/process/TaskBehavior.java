@@ -16,11 +16,11 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 public class TaskBehavior extends AbstractActivityBehavior<SmartTask> {
 
-    public TaskBehavior(
-        ExtensionPointRegistry extensionPointRegistry,
-        PvmActivity pvmActivity) {
-        super(extensionPointRegistry, pvmActivity);
-    }
+    //public TaskBehavior(
+    //    ExtensionPointRegistry extensionPointRegistry,
+    //    PvmActivity pvmActivity) {
+    //    super(extensionPointRegistry, pvmActivity);
+    //}
 
     public TaskBehavior() {
     }

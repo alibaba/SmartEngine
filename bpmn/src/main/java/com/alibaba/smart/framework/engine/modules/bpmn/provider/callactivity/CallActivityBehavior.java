@@ -24,9 +24,9 @@ import com.alibaba.smart.framework.engine.service.command.impl.CommonServiceHelp
 @ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR,binding = CallActivity.class)
 public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity> {
 
-    public CallActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-        super(extensionPointRegistry, runtimeActivity);
-    }
+    //public CallActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    //    super(extensionPointRegistry, runtimeActivity);
+    //}
 
 
     public CallActivityBehavior() {

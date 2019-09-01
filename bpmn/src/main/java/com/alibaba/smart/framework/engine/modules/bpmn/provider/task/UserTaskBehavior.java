@@ -23,9 +23,9 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
-    public UserTaskBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-        super(extensionPointRegistry, runtimeActivity);
-    }
+    //public UserTaskBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    //    super(extensionPointRegistry, runtimeActivity);
+    //}
 
     public UserTaskBehavior() {
         super();

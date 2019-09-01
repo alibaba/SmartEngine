@@ -12,9 +12,9 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 @ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR,binding = ReceiveTask.class)
 public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
 
-    public ReceiveTaskBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-        super(extensionPointRegistry, runtimeActivity);
-    }
+    //public ReceiveTaskBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    //    super(extensionPointRegistry, runtimeActivity);
+    //}
 
     public ReceiveTaskBehavior() {
         super();

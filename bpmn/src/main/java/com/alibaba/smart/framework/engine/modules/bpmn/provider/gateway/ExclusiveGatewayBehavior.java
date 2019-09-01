@@ -20,10 +20,10 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 @ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR,binding = ExclusiveGateway.class)
 
 public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<ExclusiveGateway> {
-
-    public ExclusiveGatewayBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-        super(extensionPointRegistry, runtimeActivity);
-    }
+    //
+    //public ExclusiveGatewayBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
+    //    super(extensionPointRegistry, runtimeActivity);
+    //}
 
     public ExclusiveGatewayBehavior() {
         super();
