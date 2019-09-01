@@ -16,7 +16,7 @@
                     <smart:value name="key2" value="value2"/>
                 </smart:properties>
                 <smart:executionListener event="ACTIVITY_START,ACTIVITY_END"
-                                         class="com.alibaba.smart.framework.engine.test.EventListener"/>
+                                         class="com.alibaba.smart.framework.engine.test.HelloListener"/>
             </extensionElements>
         </serviceTask>
 
@@ -31,7 +31,7 @@
                     <smart:value name="key4" value="value4"/>
                 </smart:properties>
                 <smart:executionListener event="ACTIVITY_START,ACTIVITY_END"
-                                         class="com.alibaba.smart.framework.engine.test.EventListener"/>
+                                         class="com.alibaba.smart.framework.engine.test.HelloListener"/>
             </extensionElements>
         </receiveTask>
 

@@ -2,6 +2,8 @@ package com.alibaba.smart.framework.engine.pvm.event;
 
 /**
  * Created by ettear on 16-4-19.
+ *
+ * //fixme 完善
  */
 public enum PvmEventConstant {
     PROCESS_START(1),

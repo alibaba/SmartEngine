@@ -27,9 +27,14 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
     protected ExecutionListener parseModel(XMLStreamReader reader, ParseContext context) {
         ExecutionListener executionListener = new ExecutionListener();
         String event = XmlParseUtil.getString(reader, "event");
+        String listener = XmlParseUtil.getString(reader, "class");
+
         if (null != event) {
             String[] events = event.split(",");
             executionListener.setEvents(events);
+
+            //FIXME 统一通过 instanceAccceor ,都是单例。
+            executionListener.setListener(listener);
         }
         return executionListener;
     }

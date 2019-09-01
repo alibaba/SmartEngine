@@ -4,16 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
+import com.alibaba.smart.framework.engine.listener.EventListener;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.assembly.Extensions;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,6 +44,8 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     @Override
     public void enter(ExecutionContext context) {
 
+        fireEvent(context,PvmEventConstant.ACTIVITY_START.name());
+
         boolean needPause= this.getBehavior().enter(context);
 
         //tune 删除setNeedPause？
@@ -57,9 +64,24 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         this.execute(context);
     }
 
+    private void fireEvent(ExecutionContext context,String event) {
+        Extensions extensions = this.getModel().getExtensions();
+        if(null != extensions){
+            List<String> listenerList = extensions.getEventListeners().get(event);
+            if(CollectionUtil.isNotEmpty(listenerList)){
+                for (String listener : listenerList) {
+                    EventListener newInstance = (EventListener)ClassLoaderUtil.createNewInstance(listener);
+                    newInstance.execute(context);
+                }
+            }
+        }
+
+    }
 
     @Override
     public void execute(ExecutionContext context) {
+        fireEvent(context,PvmEventConstant.ACTIVITY_EXECUTE.name());
+
 
         this.getBehavior().execute(context);
 
@@ -77,6 +99,9 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         //TODO ettear 以下逻辑待迁移到ExecutionPolicy中去
         //this.invoke(PvmEventConstant.ACTIVITY_END.name(), context);
         //this.executeRecursively(context);
+
+        fireEvent(context,PvmEventConstant.ACTIVITY_END.name());
+
 
         this.getBehavior().leave(this,context);
 

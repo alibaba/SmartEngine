@@ -5,27 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
-import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
-import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.test.delegation.MultiValueAndEventListenerDelegation;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class MultiValueAndEventListenerTest extends BaseTestCase {
+public class MultiValueAndHelloListenerTest extends BaseTestCase {
 
     public static List<String> trace = new ArrayList<String>();
 
@@ -46,7 +38,7 @@ public class MultiValueAndEventListenerTest extends BaseTestCase {
 
         Assert.assertEquals(MultiValueAndEventListenerDelegation.getCounter().longValue(), 1L);
 
-        List<String> trace = MultiValueAndEventListenerTest.trace;
+        List<String> trace = MultiValueAndHelloListenerTest.trace;
         Assert.assertEquals(3, trace.size());
 
         Assert.assertEquals(trace.get(0), "world");

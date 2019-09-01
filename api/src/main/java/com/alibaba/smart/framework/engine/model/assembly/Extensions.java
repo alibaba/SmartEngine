@@ -15,9 +15,10 @@ import java.util.Map;
 @Data
 public class Extensions implements BaseElement {
 
-    private static final long serialVersionUID = -9017389195653634752L;
-    private List<Extension> extensions = new ArrayList<Extension>(5);
+    private List<Extension> extensions = new ArrayList<Extension>();
     private Map<String,String> properties = new HashMap<String, String>();
+    private Map<String,List<String >> eventListeners = new HashMap<String, List<String >>();
+
 
     public void addExtension(Extension extension) {
         extension.decorate(this);
