@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
@@ -44,11 +45,15 @@ public class ExecutionListenerAndValueTest extends BaseTestCase  {
             processDefinition.getId(), processDefinition.getVersion(),
             request);
         Assert.assertNotNull(processInstance);
+        Assert.assertEquals(processInstance.getStatus(), InstanceStatus.running);
 
-        Assert.assertEquals(trace.get(0), "start");
-        Assert.assertEquals(trace.get(1), "Listener: start");
-        Assert.assertEquals(trace.get(2), "Listener: start");
-        Assert.assertEquals(trace.get(3), "start");
+
+        Assert.assertEquals(4,trace.size());
+        Assert.assertEquals("start",trace.get(0));
+        Assert.assertEquals("Listener: start",trace.get(1));
+        Assert.assertEquals("Listener: Create task",trace.get(2));
+        Assert.assertEquals("Pay task",trace.get(3));
+
 
     }
 

@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,6 +17,7 @@ import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactor
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.assembly.Extensions;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -27,6 +29,8 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -54,7 +58,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     @Setter
     private ExecutionInstanceStorage executionInstanceStorage;
 
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractActivityBehavior.class);
 
     public AbstractActivityBehavior() {
         //FIXME
@@ -115,6 +119,33 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     @Override
     public void execute(ExecutionContext context) {
         T model = this.getModel();
+
+        Extensions extensions = model.getExtensions();
+        if(null != extensions){
+            Map<String, String> extensionsProperties = extensions.getProperties();
+            if(extensionsProperties != null){
+                Map<String, Object> request = context.getRequest();
+                if(null == request){
+                    Map<String,Object> freshRequest = new HashMap<String, Object>();
+                    freshRequest.putAll(request);
+                    context.setRequest(freshRequest);
+                }else{
+                    for (Entry<String, String> stringStringEntry : extensionsProperties.entrySet()) {
+                        String key = stringStringEntry.getKey();
+                        String value = stringStringEntry.getValue();
+
+                        Object o = request.get(key);
+                        if(null != o){
+                            LOGGER.warn("The duplicated key found,the key: "+key+" is overidden by value:"+value);
+                        }
+                        request.put(key, value);
+
+                    }
+                }
+
+            }
+        }
+
 
         Map<String,String>  properties = model.getProperties();
         if(MapUtil.isNotEmpty(properties)){
