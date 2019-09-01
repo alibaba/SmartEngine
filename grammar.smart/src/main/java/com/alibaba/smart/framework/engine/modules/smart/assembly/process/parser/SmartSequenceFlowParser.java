@@ -7,9 +7,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Extensions;
+import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartSequenceFlow;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -44,8 +43,8 @@ public class SmartSequenceFlowParser extends AbstractElementParser<SmartSequence
         //TODO duplicate code
         //fixme
 
-        if (child instanceof Extensions) {
-            model.setExtensions((Extensions)child);
+        if (child instanceof ExtensionElements) {
+            model.setExtensions((ExtensionElements)child);
         }
 
         //else if (child instanceof Performable) {

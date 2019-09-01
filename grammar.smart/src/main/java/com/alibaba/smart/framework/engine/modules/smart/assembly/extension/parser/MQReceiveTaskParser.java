@@ -5,8 +5,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Extensions;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.MQReceiveTask;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
