@@ -8,6 +8,12 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngin
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
+import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
+import com.alibaba.smart.framework.engine.test.process.CustomExceptioinProcessor;
+import com.alibaba.smart.framework.engine.test.process.CustomVariablePersister;
+import com.alibaba.smart.framework.engine.test.process.DefaultLockStrategy;
+import com.alibaba.smart.framework.engine.test.process.DefaultMultiInstanceCounter;
+import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
@@ -26,18 +32,23 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class DeploymentServiceTest {
+public class DeploymentServiceTest extends DatabaseBaseTestCase {
+
+    @Override
+    protected void initProcessConfiguation() {
+        super.initProcessConfiguation();
+        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
+        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
+        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
+        processEngineConfiguration.setLockStrategy(new DefaultLockStrategy());
+    }
 
 
     @Test
     public void testSimple() throws Exception {
 
         //TODO 增加对本地内存的 tc。
-
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
 
 
         //2.获得常用服务
@@ -137,11 +148,6 @@ public class DeploymentServiceTest {
     public void testComplex() throws Exception {
 
         //TODO 增加对本地内存的 tc。
-
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
 
 
         //2.获得常用服务

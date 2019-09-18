@@ -5,15 +5,19 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
+import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
+import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
+import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 
 import org.junit.After;
@@ -38,6 +42,11 @@ public class DatabaseBaseTestCase {
     protected ActivityQueryService   activityQueryService;
     protected TaskQueryService  taskQueryService;
 
+    protected DeploymentCommandService deploymentCommandService;
+    protected DeploymentQueryService deploymentQueryService;
+    protected VariableQueryService variableQueryService;
+    protected TaskAssigneeQueryService taskAssigneeQueryService;
+
     @Before
     public void setUp() {
         SimpleAnnotationScanner.clear();
@@ -48,21 +57,24 @@ public class DatabaseBaseTestCase {
         smartEngine.init(processEngineConfiguration);
 
         //3. 部署流程定义
+        deploymentCommandService = smartEngine.getDeploymentCommandService();
+
         repositoryCommandService = smartEngine
             .getRepositoryCommandService();
-          repositoryQueryService = smartEngine
-            .getRepositoryQueryService();
-
         processCommandService = smartEngine.getProcessCommandService();
+        executionCommandService = smartEngine.getExecutionCommandService();
+        taskCommandService = smartEngine.getTaskCommandService();
+
+        deploymentQueryService =  smartEngine.getDeploymentQueryService();
+        repositoryQueryService = smartEngine
+            .getRepositoryQueryService();
         processQueryService = smartEngine.getProcessQueryService();
         executionQueryService = smartEngine.getExecutionQueryService();
-        executionCommandService = smartEngine.getExecutionCommandService();
+        activityQueryService = smartEngine.getActivityQueryService();
+        taskQueryService = smartEngine.getTaskQueryService();
 
-          processCommandService = smartEngine.getProcessCommandService();
-           taskCommandService = smartEngine.getTaskCommandService();
-            activityQueryService = smartEngine.getActivityQueryService();
-          taskQueryService = smartEngine.getTaskQueryService();
-
+        variableQueryService = smartEngine.getVariableQueryService();
+        taskAssigneeQueryService = smartEngine.getTaskAssigneeQueryService();
 
 
     }

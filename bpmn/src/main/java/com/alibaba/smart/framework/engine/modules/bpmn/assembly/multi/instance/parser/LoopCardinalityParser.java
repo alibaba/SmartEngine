@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
@@ -38,16 +39,19 @@ public class LoopCardinalityParser extends AbstractElementParser<LoopCardinality
     @Override
     public LoopCardinality parseElement(XMLStreamReader reader, ParseContext context)
         throws ParseException, XMLStreamException {
-        LoopCardinality loopCardinality = new LoopCardinality();
 
-        String expressionType = XmlParseUtil.getString(reader, "type");
-        String content = reader.getElementText();
-        if (null != content) {
-            ConditionExpression expression = new ConditionExpression();
-            expression.setExpressionContent(content);
-            expression.setExpressionType(expressionType);
-            loopCardinality.setCardinalityExpression(expression);
-        }
-        return loopCardinality;
+        throw new EngineException("Not supported");
+
+        //LoopCardinality loopCardinality = new LoopCardinality();
+        //
+        //String expressionType = XmlParseUtil.getString(reader, "type");
+        //String content = reader.getElementText();
+        //if (null != content) {
+        //    ConditionExpression expression = new ConditionExpression();
+        //    expression.setExpressionContent(content);
+        //    expression.setExpressionType(expressionType);
+        //    loopCardinality.setCardinalityExpression(expression);
+        //}
+        //return loopCardinality;
     }
 }

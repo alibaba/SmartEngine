@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.provider.multi.instance.LoopCollectionProvider;
-import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance.Collection;
+import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance.ActivitiCollection;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**
@@ -18,11 +18,11 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
  */
 public class CollectionProvider implements LoopCollectionProvider {
     private ExtensionPointRegistry extensionPointRegistry;
-    private Collection collection;
+    private ActivitiCollection activitiCollection;
 
-    CollectionProvider(ExtensionPointRegistry extensionPointRegistry, Collection collection) {
+    CollectionProvider(ExtensionPointRegistry extensionPointRegistry, ActivitiCollection activitiCollection) {
         this.extensionPointRegistry = extensionPointRegistry;
-        this.collection = collection;
+        this.activitiCollection = activitiCollection;
     }
 
     @Override

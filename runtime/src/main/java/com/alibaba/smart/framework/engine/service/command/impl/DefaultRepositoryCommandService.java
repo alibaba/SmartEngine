@@ -82,7 +82,6 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     private XmlParserExtensionPoint xmlParserExtensionPoint;
     private ProviderFactoryExtensionPoint providerFactoryExtensionPoint;
     private ProcessDefinitionContainer processContainer;
-    private ExecutePolicyBehavior defaultExecutePolicyBehavior;
 
     public DefaultRepositoryCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -316,41 +315,25 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 target.addIncomeTransition(runtimeTransition.getModel().getId(), runtimeTransition);
             }
 
-            // Create Invoker for Transition Flow
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
                 PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
                 this.initElement(runtimeTransition);
-
-                //
-                //TransitionProviderFactory providerFactory = (TransitionProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(runtimeTransition.getModel().getClass());
-                //
-                //if (null == providerFactory) {
-                //    throw new RuntimeException("No factory found for " + runtimeTransition.getModel().getClass());
-                //}
-
 
                 Class aClass = extensionBindingResult.getBindings().get(TransitionBehavior.class.getName());
 
                 //TUNE 强转
                 Object o = ClassLoaderUtil.createNewInstance(aClass);
 
-                //TransitionBehavior transitionProvider = providerFactory.createTransitionProvider(runtimeTransition);
                 runtimeTransition.setBehavior((TransitionBehavior)o);
 
             }
 
-            // Create Invoker for Activity
             for (Map.Entry<String, PvmActivity> pvmActivityEntry : pvmActivityMap.entrySet()) {
                 PvmActivity pvmActivity = pvmActivityEntry.getValue();
 
                 this.initElement(pvmActivity);
 
                 Activity activity=pvmActivity.getModel();
-                //ActivityProviderFactory providerFactory = (ActivityProviderFactory) this.providerFactoryExtensionPoint.getProviderFactory(activity.getClass());
-                //
-                //if (null == providerFactory) {
-                //    throw new RuntimeException("No factory found for " + activity.getClass());
-                //}
 
                 String name = activity.getClass().getName();
                 Class aClass = extensionBindingResult.getBindings().get(name);
@@ -379,20 +362,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                 pvmActivity.setBehavior(o1);
 
-                //ExecutePolicy executePolicy=activity.getExecutePolicy();
-                //ExecutePolicyBehavior executePolicyBehavior=null;
-                //if(null!=executePolicy) {
-                //    ExecutePolicyProviderFactory executePolicyProviderFactory
-                //        = (ExecutePolicyProviderFactory)this.providerFactoryExtensionPoint.getProviderFactory(
-                //        activity.getExecutePolicy().getClass());
-                //    if(null!=executePolicyProviderFactory){
-                //        executePolicyBehavior=executePolicyProviderFactory.createExecutePolicyBehavior(executePolicy);
-                //    }
-                //}
-                //if(null==executePolicyBehavior){
-                //    executePolicyBehavior=this.defaultExecutePolicyBehavior;
-                //}
-                //pvmActivity.setExecutePolicyBehavior(executePolicyBehavior);
+
             }
 
             pvmProcessDefinition.setActivities(pvmActivityMap);

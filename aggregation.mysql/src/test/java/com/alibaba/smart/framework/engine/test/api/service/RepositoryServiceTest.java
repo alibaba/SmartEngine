@@ -6,6 +6,12 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
+import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
+import com.alibaba.smart.framework.engine.test.process.CustomExceptioinProcessor;
+import com.alibaba.smart.framework.engine.test.process.CustomVariablePersister;
+import com.alibaba.smart.framework.engine.test.process.DefaultLockStrategy;
+import com.alibaba.smart.framework.engine.test.process.DefaultMultiInstanceCounter;
+import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
@@ -21,7 +27,18 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class RepositoryServiceTest {
+public class RepositoryServiceTest extends DatabaseBaseTestCase {
+
+    @Override
+    protected void initProcessConfiguation() {
+        super.initProcessConfiguation();
+        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
+        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
+        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
+        processEngineConfiguration.setLockStrategy(new DefaultLockStrategy());
+    }
+
 
 
     @Test
@@ -29,15 +46,7 @@ public class RepositoryServiceTest {
 
         //TODO 增加对本地内存的 tc。
 
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
 
-
-        //2.获得常用服务
-        RepositoryCommandService repositoryCommandService = smartEngine.getRepositoryCommandService();
-        RepositoryQueryService repositoryQueryService =  smartEngine.getRepositoryQueryService();
 
         String content = IOUtil.readResourceFileAsUTF8String("multi-instance-test.bpmn20.xml");
         repositoryCommandService.deployWithUTF8Content(content);
