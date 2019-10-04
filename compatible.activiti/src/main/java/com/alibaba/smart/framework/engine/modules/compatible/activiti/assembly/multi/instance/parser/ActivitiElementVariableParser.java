@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
  * @author ettear
  * Created by ettear on 15/10/2017.
  */
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = ActivitiElementVariable.class)
+@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = ActivitiElementVariable.class)
 
 public class ActivitiElementVariableParser extends AbstractElementParser<ActivitiElementVariable> implements
     AttributeParser<ActivitiElementVariable> {

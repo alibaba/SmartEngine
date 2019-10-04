@@ -5,5 +5,6 @@ package com.alibaba.smart.framework.engine.configuration;
  */
 public interface IdGenerator {
 
+        //TUNE getNextId
         String getId() ;
 }

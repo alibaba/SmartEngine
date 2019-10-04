@@ -7,12 +7,10 @@ import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.callactivity.CallActivity;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
-import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
@@ -21,7 +19,7 @@ import com.alibaba.smart.framework.engine.service.command.impl.CommonServiceHelp
 /**
  * Created by 高海军 帝奇 74394 on 2017 May  16:07.
  */
-@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR,binding = CallActivity.class)
+@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = CallActivity.class)
 public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity> {
 
     //public CallActivityBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {

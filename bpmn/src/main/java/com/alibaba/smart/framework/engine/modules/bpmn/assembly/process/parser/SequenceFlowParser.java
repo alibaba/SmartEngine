@@ -1,24 +1,20 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 
-import java.util.Map;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Process;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = SequenceFlow.class)
+@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = SequenceFlow.class)
 
 public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
     private final static String DEFAULT_ACTION = PvmEventConstant.TRANSITION_EXECUTE.name();

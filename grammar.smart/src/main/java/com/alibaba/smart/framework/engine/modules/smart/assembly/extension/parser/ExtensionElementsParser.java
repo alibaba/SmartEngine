@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 /**
  * Extension Elements Parser Created by ettear on 16-4-14.
  */
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = ExtensionElements.class)
+@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = ExtensionElements.class)
 
 public class ExtensionElementsParser extends AbstractElementParser<ExtensionElements> {
 

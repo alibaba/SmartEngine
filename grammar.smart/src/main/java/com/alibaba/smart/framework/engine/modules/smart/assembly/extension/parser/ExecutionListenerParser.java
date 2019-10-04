@@ -6,7 +6,6 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.ExecutionListener;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -17,7 +16,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = ExecutionListener.class)
+@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = ExecutionListener.class)
 
 public class ExecutionListenerParser extends AbstractElementParser<ExecutionListener>
        {

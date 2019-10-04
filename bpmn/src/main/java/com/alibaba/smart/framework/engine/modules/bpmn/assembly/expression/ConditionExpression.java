@@ -14,6 +14,8 @@ import lombok.Data;
 public class ConditionExpression  implements
     com.alibaba.smart.framework.engine.model.assembly.ConditionExpression {
 
+    //TUNE 命名
+
     private static final long serialVersionUID = -6152070683207905381L;
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "conditionExpression");
 

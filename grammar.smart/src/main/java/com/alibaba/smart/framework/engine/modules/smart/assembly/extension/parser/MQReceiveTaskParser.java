@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = MQReceiveTask.class)
+@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = MQReceiveTask.class)
 
 public class MQReceiveTaskParser extends AbstractElementParser<MQReceiveTask> {
 

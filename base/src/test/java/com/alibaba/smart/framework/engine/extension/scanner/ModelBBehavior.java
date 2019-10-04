@@ -5,7 +5,7 @@ import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 /**
  * Created by 高海军 帝奇 74394 on  2019-08-25 22:13.
  */
-@ExtensionBinding(type = "Behavior",binding = B.class)
+@ExtensionBinding(type = "Behavior", bindingTo = B.class)
 public class ModelBBehavior implements BehaviorInternface {
 
     @Override

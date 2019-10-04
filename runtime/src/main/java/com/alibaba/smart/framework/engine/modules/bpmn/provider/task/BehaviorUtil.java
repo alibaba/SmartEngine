@@ -25,7 +25,7 @@ public class BehaviorUtil {
         InstanceAccessor instanceAccessor = processEngineConfiguration
             .getInstanceAccessor();
         Object delegation = instanceAccessor.access(className);
-
+        //TUNE 允许扩展
         if (delegation instanceof ContextBoundedJavaDelegation) {
             ContextBoundedJavaDelegation contextBoundedJavaDelegation = (ContextBoundedJavaDelegation)delegation;
             contextBoundedJavaDelegation.setClassName(className);

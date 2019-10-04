@@ -20,7 +20,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
  * Created by ettear on 04/08/2017.
  */
 
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = SmartSequenceFlow.class)
+@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = SmartSequenceFlow.class)
 
 public class SmartSequenceFlowParser extends AbstractElementParser<SmartSequenceFlow> {
     private final static String DEFAULT_ACTION = PvmEventConstant.TRANSITION_EXECUTE.name();

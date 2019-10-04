@@ -13,7 +13,6 @@ import com.alibaba.smart.framework.engine.modules.smart.assembly.extension.Exten
 import com.alibaba.smart.framework.engine.modules.smart.assembly.process.SmartTask;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 /**
@@ -21,7 +20,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
  * Created by ettear on 04/08/2017.
  */
 
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = SmartTask.class)
+@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = SmartTask.class)
 
 public class SmartTaskParser extends AbstractBpmnParser<SmartTask> {
     private final static String DEFAULT_ACTION = PvmEventConstant.ACTIVITY_EXECUTE.name();

@@ -3,14 +3,11 @@ package com.alibaba.smart.framework.engine.extension.scanner;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -63,7 +60,7 @@ public class SimpleAnnotationScanner {
                 }
 
                 Map<String, Class> bindings = extensionBindingResult.getBindings();
-                String name = bindAnnotation.binding().getName();
+                String name = bindAnnotation.bindingTo().getName();
                 if(bindings.get(name) == null){
                     bindings.put(name,clazz);
                 }else {

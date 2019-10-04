@@ -6,7 +6,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
 import com.alibaba.smart.framework.engine.exception.ParseException;
@@ -17,7 +16,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:26.
  */
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER,binding = CompletionCondition.class)
+@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = CompletionCondition.class)
 public class CompletionConditionParser extends AbstractElementParser<CompletionCondition>
 {
 

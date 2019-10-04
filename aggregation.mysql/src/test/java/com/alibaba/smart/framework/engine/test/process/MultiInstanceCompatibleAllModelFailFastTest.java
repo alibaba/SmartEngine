@@ -82,7 +82,7 @@ public class MultiInstanceCompatibleAllModelFailFastTest {
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
         submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,"1");
-        submitFormRequest.put("action", "agree");
+        submitFormRequest.put("action", FullMultiInstanceTest.DISAGREE);
         submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG,FullMultiInstanceTest.DISAGREE);
 
         //6.流程流转:处理 submitTask,完成任务申请.

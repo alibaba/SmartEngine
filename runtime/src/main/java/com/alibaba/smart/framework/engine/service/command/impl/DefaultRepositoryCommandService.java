@@ -321,7 +321,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                 Class aClass = extensionBindingResult.getBindings().get(TransitionBehavior.class.getName());
 
-                //TUNE 强转
+                //TUNE 强转，使用instanceAcessor.
                 Object o = ClassLoaderUtil.createNewInstance(aClass);
 
                 runtimeTransition.setBehavior((TransitionBehavior)o);
@@ -346,21 +346,21 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                 Object o = ClassLoaderUtil.createNewInstance(aClass);
 
-                AbstractActivityBehavior o1 = (AbstractActivityBehavior)o;
-                o1.setPvmActivity(pvmActivity);
-                o1.setExtensionPointRegistry(extensionPointRegistry);
+                AbstractActivityBehavior activityBehavior = (AbstractActivityBehavior)o;
+                activityBehavior.setPvmActivity(pvmActivity);
+                activityBehavior.setExtensionPointRegistry(extensionPointRegistry);
 
-                o1.setProcessInstanceFactory(extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class));
-                o1.setExecutionInstanceFactory(extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class));
-                o1.setActivityInstanceFactory(extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class));
-                o1.setTaskInstanceFactory(extensionPointRegistry.getExtensionPoint(TaskInstanceFactory.class));
-                o1.setProcessEngineConfiguration( extensionPointRegistry.getExtensionPoint(
+                activityBehavior.setProcessInstanceFactory(extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class));
+                activityBehavior.setExecutionInstanceFactory(extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class));
+                activityBehavior.setActivityInstanceFactory(extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class));
+                activityBehavior.setTaskInstanceFactory(extensionPointRegistry.getExtensionPoint(TaskInstanceFactory.class));
+                activityBehavior.setProcessEngineConfiguration( extensionPointRegistry.getExtensionPoint(
                     SmartEngine.class).getProcessEngineConfiguration());
                 PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-                o1.setExecutionInstanceStorage(persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class));
+                activityBehavior.setExecutionInstanceStorage(persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class));
 
 
-                pvmActivity.setBehavior(o1);
+                pvmActivity.setBehavior(activityBehavior);
 
 
             }
@@ -373,6 +373,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
     /**
      * Init Element
+     *
      *
      * @param pvmElement element
      */

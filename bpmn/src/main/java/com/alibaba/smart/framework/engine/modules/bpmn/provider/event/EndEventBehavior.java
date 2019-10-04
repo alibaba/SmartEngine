@@ -7,7 +7,6 @@ import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
@@ -16,7 +15,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 
 
-@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR,binding = EndEvent.class)
+@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = EndEvent.class)
 public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
     private ExecutionCommandService executionCommandService;
 

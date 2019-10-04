@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task;
 
 import javax.xml.namespace.QName;
 
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;
@@ -19,6 +20,7 @@ public class UserTask extends AbstractTask {
 
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "userTask");
 
+    private MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics;
 
     @Override
     public String toString() {

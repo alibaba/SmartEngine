@@ -85,11 +85,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     @Override
     public boolean enter(ExecutionContext context) {
 
-        ProcessInstance processInstance = context.getProcessInstance();
-
-        ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
-        processInstance.addActivityInstance(activityInstance);
-        context.setActivityInstance(activityInstance);
+        ActivityInstance activityInstance = createSingleActivityInstance(context);
 
         ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
         List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(1);
@@ -106,12 +102,39 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         return false;
     }
 
+    protected ActivityInstance createSingleActivityInstance(ExecutionContext context) {
+        ProcessInstance processInstance = context.getProcessInstance();
+
+        ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
+        processInstance.addActivityInstance(activityInstance);
+        context.setActivityInstance(activityInstance);
+        return activityInstance;
+    }
+
     //private void buildInstanceRelationShip(ExecutionContext context){
     //
     //}
 
     @Override
     public void execute(ExecutionContext context) {
+        makeExtensionWorkAndExecuteBehavior(context);
+
+        commonUpdateExecutionInstance(context);
+
+    }
+
+    protected void commonUpdateExecutionInstance(ExecutionContext context) {
+        if (!context.isNeedPause()) {
+            ExecutionInstance executionInstance = context.getExecutionInstance();
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
+                processEngineConfiguration);
+        }else{
+            ExecutionInstance executionInstance = context.getExecutionInstance();
+            executionInstance.setStatus(InstanceStatus.suspended);
+        }
+    }
+
+    protected void makeExtensionWorkAndExecuteBehavior(ExecutionContext context) {
         T model = this.getModel();
 
         Extensions extensions = model.getExtensions();
@@ -140,7 +163,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             }
         }
 
-
         Map<String,String>  properties = model.getProperties();
         if(MapUtil.isNotEmpty(properties)){
             String className  =  properties.get("class");
@@ -150,18 +172,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
                 //tune logger
             }
         }
-
-
-
-        if (!context.isNeedPause()) {
-            ExecutionInstance executionInstance = context.getExecutionInstance();
-            MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
-                processEngineConfiguration);
-        }else{
-            ExecutionInstance executionInstance = context.getExecutionInstance();
-            executionInstance.setStatus(InstanceStatus.suspended);
-        }
-
     }
 
     @Override

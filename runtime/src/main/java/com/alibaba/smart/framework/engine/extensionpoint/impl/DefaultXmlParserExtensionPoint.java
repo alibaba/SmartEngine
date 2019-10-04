@@ -5,7 +5,6 @@ import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.xml.parser.*;
 
 import javax.xml.namespace.QName;
@@ -22,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 默认处理器扩展点 Created by ettear on 16-4-12.
  */
 @SuppressWarnings("rawtypes")
-@ExtensionBinding(type = ExtensionConstant.EXTENSION_POINT,binding = XmlParserExtensionPoint.class)
+@ExtensionBinding(type = ExtensionConstant.EXTENSION_POINT, bindingTo = XmlParserExtensionPoint.class)
 public class DefaultXmlParserExtensionPoint  implements
     XmlParserExtensionPoint {
 

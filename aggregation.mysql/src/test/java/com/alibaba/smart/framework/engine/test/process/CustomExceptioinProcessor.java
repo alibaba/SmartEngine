@@ -15,7 +15,5 @@ public class CustomExceptioinProcessor implements ExceptionProcessor {
     public void process(Exception exception,Object context) {
         LOGGER.error(exception.getMessage(),exception);
 
-//        throw  new RuntimeException(exception);
-
     }
 }

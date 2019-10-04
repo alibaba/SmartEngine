@@ -3,21 +3,17 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.gateway;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.callactivity.CallActivity;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
-@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR,binding = ExclusiveGateway.class)
+@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = ExclusiveGateway.class)
 
 public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<ExclusiveGateway> {
     //

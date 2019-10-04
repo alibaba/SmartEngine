@@ -19,7 +19,10 @@ public abstract class AbstractTask extends AbstractActivity {
      */
     private static final long serialVersionUID = 5042056118774610434L;
 
-    private Map<String,String> properties;
+    //fixme duplicated
+    //private Map<String,String> properties;
+
+    //private  MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics;
 
 
 }
