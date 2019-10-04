@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngin
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
+import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -39,35 +40,23 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class CompatibleActivitiAndCustomExtensionProcessTest {
+public class CompatibleActivitiAndCustomExtensionProcessTest extends DatabaseBaseTestCase {
+
+    @Override
+    protected void initProcessConfiguation() {
+        super.initProcessConfiguation();
+        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
+        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
+        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
+        processEngineConfiguration.setLockStrategy(new DefaultLockStrategy());
+    }
 
 
     public static List<Object> trace=new ArrayList<Object>();
 
     @Test
     public void testMultiInstance() throws Exception {
-
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
-        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
-        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
-        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
-
-
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-
-        //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        DeploymentCommandService deploymentCommandService = smartEngine.getDeploymentCommandService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
-        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
-        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
-        ExecutionQueryService executionQueryService =  smartEngine.getExecutionQueryService();
-        VariableQueryService variableQueryService = smartEngine.getVariableQueryService();
-        ExecutionCommandService executionCommandService =  smartEngine.getExecutionCommandService();
 
 
         //3. 部署流程定义
@@ -182,26 +171,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest {
     @Test
     public void testCouterSign_Fail_All_modle() throws Exception {
 
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
-        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
-        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
-        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
 
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-
-        //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        DeploymentCommandService deploymentCommandService = smartEngine.getDeploymentCommandService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
-        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
-        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
-        ExecutionQueryService executionQueryService =  smartEngine.getExecutionQueryService();
-        VariableQueryService variableQueryService = smartEngine.getVariableQueryService();
-        ExecutionCommandService executionCommandService =  smartEngine.getExecutionCommandService();
 
 
         //3. 部署流程定义

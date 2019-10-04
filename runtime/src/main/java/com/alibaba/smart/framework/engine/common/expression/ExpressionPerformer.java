@@ -29,15 +29,11 @@ public abstract class ExpressionPerformer {
         ExpressionEvaluator expressionEvaluator = (ExpressionEvaluator)instanceAccessor.access(className);
 
         if (null != expressionEvaluator) {
-            Map<String,Object> privateContext=context.getPrivateContext();
             Map<String,Object> requestContext=context.getRequest();
-            if(null!=privateContext && null!=requestContext){
-                //TODO ettear 不够优雅，后续结合Scope再一起优化
-                privateContext.putAll(requestContext);
-            }
-            Object result = expressionEvaluator.eval(expression, privateContext);
 
-            LOGGER.debug("expressionEvaluator.result result is {}, each param is {} {} ",result,expression,privateContext);
+            Object result = expressionEvaluator.eval(expression, requestContext);
+
+            LOGGER.debug("expressionEvaluator.result result is {}, each param is {} {} ",result,expression,requestContext);
 
             return result;
         } else {

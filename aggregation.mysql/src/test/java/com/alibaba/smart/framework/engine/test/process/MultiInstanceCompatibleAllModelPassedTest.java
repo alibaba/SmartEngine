@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
+import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
@@ -42,31 +43,23 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class MultiInstanceCompatibleAllModelPassedTest {
+public class MultiInstanceCompatibleAllModelPassedTest extends DatabaseBaseTestCase {
+
+    @Override
+    protected void initProcessConfiguation() {
+        super.initProcessConfiguation();
+        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
+        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
+        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
+        processEngineConfiguration.setLockStrategy(new DefaultLockStrategy());
+    }
 
 
     @Test
     public void passed() throws Exception {
 
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
-        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
-        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
 
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-
-        //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
-        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
-        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
-
-
-        DeploymentCommandService deploymentCommandService = smartEngine.getDeploymentCommandService();
-        DeploymentQueryService deploymentQueryService =  smartEngine.getDeploymentQueryService();
         String deploymentUserId = "123";
         String name = "name";
         String type = "type";

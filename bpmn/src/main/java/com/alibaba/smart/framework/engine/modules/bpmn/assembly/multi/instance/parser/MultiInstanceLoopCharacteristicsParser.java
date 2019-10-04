@@ -46,8 +46,13 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
 
     @Override
     protected void singingMagic(MultiInstanceLoopCharacteristics model, BaseElement child) throws ParseException {
+        if (child instanceof LoopCollection) {
 
-         if (child instanceof CompletionCondition) {
+            //ignore
+        } else if (child instanceof InputDataItem) {
+            //ignore
+        }
+         else if (child instanceof CompletionCondition) {
              CompletionCondition condition = (CompletionCondition)child;
 
             if (CompletionCondition.ACTION_ABORT.equals(condition.getAction())) {

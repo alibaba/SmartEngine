@@ -2,10 +2,12 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.expression.ExpressionPerformer;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
@@ -17,7 +19,6 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
-import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -25,10 +26,10 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.provider.Performer;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
@@ -36,35 +37,32 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
 
 public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
-
     public UserTaskBehavior() {
         super();
     }
 
-
     private List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstances(ExecutionContext context,
                                                                                   UserTask userTask) {
-        TaskAssigneeDispatcher taskAssigneeDispatcher = context.getProcessEngineConfiguration().getTaskAssigneeDispatcher();
+        TaskAssigneeDispatcher taskAssigneeDispatcher = context.getProcessEngineConfiguration()
+            .getTaskAssigneeDispatcher();
 
-        if(null == taskAssigneeDispatcher){
-            throw  new EngineException("The taskAssigneeService can't be null for UserTask feature");
+        if (null == taskAssigneeDispatcher) {
+            throw new EngineException("The taskAssigneeService can't be null for UserTask feature");
         }
 
-        return taskAssigneeDispatcher.getTaskAssigneeCandidateInstance(userTask,context.getRequest());
+        return taskAssigneeDispatcher.getTaskAssigneeCandidateInstance(userTask, context.getRequest());
     }
 
     @Override
     public boolean enter(ExecutionContext context) {
         UserTask userTask = this.getModel();
 
-        List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = getTaskAssigneeCandidateInstances(context, userTask);
+        List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = getTaskAssigneeCandidateInstances(
+            context, userTask);
 
-
-        if(null != userTask.getMultiInstanceLoopCharacteristics()){
-
+        if (null != userTask.getMultiInstanceLoopCharacteristics()) {
 
             ActivityInstance activityInstance = super.createSingleActivityInstance(context);
-
 
             List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(
                 taskAssigneeCandidateInstanceList.size());
@@ -77,8 +75,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 executionInstanceList.add(executionInstance);
                 context.setExecutionInstance(executionInstance);
 
-
-                TaskInstance taskInstance = super.taskInstanceFactory.create(this.getModel(), executionInstance, context);
+                TaskInstance taskInstance = super.taskInstanceFactory.create(this.getModel(), executionInstance,
+                    context);
 
                 List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
 
@@ -91,22 +89,19 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
             }
 
-
-
-        }else{
+        } else {
 
             super.enter(context);
-
 
             if (null != taskAssigneeCandidateInstanceList) {
                 ExecutionInstance executionInstance = context.getExecutionInstance();
 
-                TaskInstance taskInstance = super.taskInstanceFactory.create(this.getModel(), executionInstance, context);
+                TaskInstance taskInstance = super.taskInstanceFactory.create(this.getModel(), executionInstance,
+                    context);
 
                 List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
 
                 IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
-
 
                 for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : taskAssigneeCandidateInstanceList) {
                     buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
@@ -116,13 +111,12 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             }
         }
 
-
-
         return true;
     }
 
     private void buildTaskAssigneeInstance(TaskAssigneeCandidateInstance taskAssigneeCandidateInstance,
-                                           List<TaskAssigneeInstance> taskAssigneeInstanceList, IdGenerator idGenerator) {
+                                           List<TaskAssigneeInstance> taskAssigneeInstanceList,
+                                           IdGenerator idGenerator) {
         TaskAssigneeInstance taskAssigneeInstance = new DefaultTaskAssigneeInstance();
         taskAssigneeInstance.setAssigneeId(taskAssigneeCandidateInstance.getAssigneeId());
         taskAssigneeInstance.setAssigneeType(taskAssigneeCandidateInstance.getAssigneeType());
@@ -130,151 +124,166 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         taskAssigneeInstanceList.add(taskAssigneeInstance);
     }
 
-
     @Override
     public void execute(ExecutionContext context) {
         UserTask userTask = this.getModel();
-
 
         super.makeExtensionWorkAndExecuteBehavior(context);
 
         MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = userTask
             .getMultiInstanceLoopCharacteristics();
-        if(null != multiInstanceLoopCharacteristics){
+        if (null != multiInstanceLoopCharacteristics) {
 
+            ActivityInstance activityInstance = context.getActivityInstance();
 
+            //1. 当前的所有的 totalExecutionInstanceList，包含所有状态的。
+            List<ExecutionInstance> totalExecutionInstanceList = executionInstanceStorage.findByActivityInstanceId(
+                activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
+                this.processEngineConfiguration);
 
+            //1.1 重新写回内存。
+            activityInstance.setExecutionInstanceList(totalExecutionInstanceList);
 
-                ExecutionInstance executionInstance = context.getExecutionInstance();
-                //只负责完成当前executionInstance的状态更新,此时产生了 DB 写.
-                MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage,
-                    this.processEngineConfiguration);
-
-                ActivityInstance activityInstance = context.getActivityInstance();
-
-                List<ExecutionInstance> executionInstances = executionInstanceStorage.findByActivityInstanceId(
-                    activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),this.processEngineConfiguration );
-
-                //重新写回内存。
-                activityInstance.setExecutionInstanceList(executionInstances);
+            //2. 完成当前ExecutionInstance的状态更新
+            ExecutionInstance executionInstance = context.getExecutionInstance();
+            //只负责完成当前executionInstance的状态更新,此时产生了 DB 写.
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage,
+                this.processEngineConfiguration);
 
             SmartEngine smartEngine = this.extensionPointRegistry.getExtensionPoint(SmartEngine.class);
 
-            MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration().getMultiInstanceCounter();
-            Long completedInstanceCount = multiInstanceCounter.countPassedTaskInstanceNumber(
-                activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
+            MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration()
+                .getMultiInstanceCounter();
 
+            Long passedTaskInstanceNumber = multiInstanceCounter.countPassedTaskInstanceNumber(
+                activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
                 smartEngine);
 
-            Long rejectedInstanceCount = multiInstanceCounter.countRejectedTaskInstanceNumber(
+            Long rejectedTaskInstanceNumber = multiInstanceCounter.countRejectedTaskInstanceNumber(
                 activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
-
                 smartEngine);
 
-            Long instanceCount = null;
-            if (null != activityInstance.getExecutionInstanceList()) {
-                int size = activityInstance.getExecutionInstanceList().size();
-                instanceCount = Long.valueOf(size);
-            } else {
-                instanceCount = 0L;
+            //TUNE 类型转换
+            Long totalInstanceCount = Long.valueOf(totalExecutionInstanceList.size());
+
+
+            Map<String,Object> requestContext=context.getRequest();
+            if(null == requestContext){
+                requestContext = new HashMap<String, Object>();
             }
 
-            Map<String, Object> privateContext = context.getPrivateContext();
-            // TUNE
-            privateContext.put("nrOfCompletedInstances", completedInstanceCount);
-            privateContext.put("nrOfRejectedInstance", rejectedInstanceCount);
-            privateContext.put("nrOfInstances", instanceCount);
+            // TUNE 不变式  nrOfCompletedInstances+ nrOfRejectedInstance <= nrOfInstances
+            requestContext.put("nrOfCompletedInstances", passedTaskInstanceNumber);
+            requestContext.put("nrOfRejectedInstance", rejectedTaskInstanceNumber);
+            requestContext.put("nrOfInstances", totalInstanceCount);
 
+            //TUNE 任务处理的并发性，需要业务程序来控制。
 
-                //TUNE 任务处理的并发性，需要业务程序来控制。
+            boolean abortMatched = false;
 
-                //check
-                boolean needAbort = false, needComplete = false;
+            ConditionExpression abortCondition = multiInstanceLoopCharacteristics.getAbortCondition();
 
-                //使用检查器进行判断
+            if (null != abortCondition) {
+                abortMatched = evaluate(context, abortCondition);
+            }
 
-                needAbort =null!=rejectedInstanceCount && rejectedInstanceCount>0;
+            //此时，尚未触发订单abort逻辑
+            if (!abortMatched) {
+                ConditionExpression completionCondition = multiInstanceLoopCharacteristics.getCompletionCondition();
 
+                if(null != completionCondition){
+                    boolean passedMatched  = evaluate(context, completionCondition) ;
 
-                //不需要中断
-                if (!needAbort) {
-                    //检查是否所有的ExecutionInstance都已完成
-                    boolean executionCompleted = true;
-                    for (ExecutionInstance instance : executionInstances) {
-                        if (instance.isActive()) {
-                            executionCompleted = false;
-                            break;
-                        }
-                    }
+                    long finishedTaskCount = passedTaskInstanceNumber + rejectedTaskInstanceNumber;
+                    if(finishedTaskCount < totalInstanceCount){
 
-                    if (executionCompleted) {
-                        //所有的ExecutionInstance都已完成
-                        if (null != multiInstanceLoopCharacteristics.getCompletionCondition()) {
-                            //完成条件存在
-
-                            if(null!=instanceCount && null!=completedInstanceCount){
-                                needComplete  =     instanceCount.equals(completedInstanceCount);
+                        if(passedMatched){
+                            // Complete all execution
+                            for (ExecutionInstance instance : totalExecutionInstanceList) {
+                                if (instance.isActive()) {
+                                    MarkDoneUtil.markDoneExecutionInstance(instance, this.executionInstanceStorage,
+                                        this.processEngineConfiguration);
+                                }
                             }
 
+                            // Find all task
+                            //TODO ADD INDEX
+                            TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
+                            List<String> processInstanceIdList = new ArrayList<String>(2);
+                            processInstanceIdList.add(executionInstance.getProcessInstanceId());
+                            taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
+                            taskInstanceQueryParam.setActivityInstanceId(executionInstance.getActivityInstanceId());
 
-                            if (!needComplete) {
-                                //如果没有达到完成条件，执行中断
-                                needAbort = true;
-                            }
-                        } else {
-                            //完成条件不存在
-                            needComplete = true;
-                        }
-                    }
-                }
+                            PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry
+                                .getExtensionPoint(
+                                    PersisterFactoryExtensionPoint.class);
 
-                if (needAbort) {
-                    context.getProcessInstance().setStatus(InstanceStatus.aborted);
-                    smartEngine.getProcessCommandService().abort(executionInstance.getProcessInstanceId(), InstanceStatus.aborted.name());
-                    context.setNeedPause(true);
-
-                } else if (needComplete) {
-                    // Complete all execution
-                    for (ExecutionInstance instance : executionInstances) {
-                        if (instance.isActive()) {
-                            MarkDoneUtil.markDoneExecutionInstance(instance, this.executionInstanceStorage,
+                            TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(
+                                TaskInstanceStorage.class);
+                            List<TaskInstance> allTaskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam,
                                 this.processEngineConfiguration);
+
+                            // Cancel uncompleted task
+                            for (TaskInstance taskInstance : allTaskInstanceList) {
+
+                                //当前的taskInstance 已经在complete方法中更新过了
+                                if (taskInstance.getExecutionInstanceId().equals(executionInstance.getInstanceId())) {
+                                    continue;
+                                }
+
+                                if (TaskInstanceConstant.COMPLETED.equals(taskInstance.getStatus())) {
+                                    continue;
+                                }
+
+                                // 这里产生了db 读写访问,
+                                taskInstance.setStatus(TaskInstanceConstant.CANCELED);
+                                Date currentDate = DateUtil.getCurrentDate();
+                                taskInstance.setCompleteTime(currentDate);
+                                taskInstanceStorage.update(taskInstance, this.processEngineConfiguration);
+                            }
+
+                            context.setNeedPause(false);
+
+                        }else{
+                            context.setNeedPause(true);
+
                         }
+
+
+                    }else if(finishedTaskCount == totalInstanceCount){
+
+
+                        if(passedMatched){
+                            context.setNeedPause(false);
+                        }else {
+                            abort(context, executionInstance, smartEngine);
+                        }
+
+
+
+                    }else{
+                        String message =
+                            "Error args: passedTaskInstanceNumber, rejectedTaskInstanceNumber, totalInstanceCount each is :"
+                                + passedMatched+"," + rejectedTaskInstanceNumber+"," + totalInstanceCount+".";
+                        throw new EngineException(
+                            message);
                     }
 
-                    // Find all task
-                    //TODO ADD INDEX
-                    TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-                    List<String> processInstanceIdList = new ArrayList<String>(2);
-                    processInstanceIdList.add(executionInstance.getProcessInstanceId());
-                    taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
-                    taskInstanceQueryParam.setActivityInstanceId(executionInstance.getActivityInstanceId());
+                }
+                else{
 
-                    PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(
-                        PersisterFactoryExtensionPoint.class);
+                    //completionCondition 为空时，则表示是all 模式， 则需要所有任务都完成后，才做判断。
 
-                    TaskInstanceStorage   taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
-                    List<TaskInstance> allTaskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam,this.processEngineConfiguration );
-
-                    // Cancel uncompleted task
-                    for (TaskInstance taskInstance : allTaskInstanceList) {
-
-                        if (taskInstance.getExecutionInstanceId().equals(executionInstance.getInstanceId())) {
-                            continue;
-                        }
-
-                        if (TaskInstanceConstant.COMPLETED.equals(taskInstance.getStatus())) {
-                            continue;
-                        }
-
-                        // 这里产生了db 读写访问,
-                        taskInstance.setStatus(TaskInstanceConstant.CANCELED);
-                        Date currentDate = DateUtil.getCurrentDate();
-                        taskInstance.setCompleteTime(currentDate);
-                        taskInstanceStorage.update(taskInstance, this.processEngineConfiguration);
+                    if(passedTaskInstanceNumber.equals(totalInstanceCount)  ){
+                        context.setNeedPause(false);
                     }
-                } else {
-                    context.setNeedPause(true);
+
+                    if(rejectedTaskInstanceNumber>=1){
+                        abort(context, executionInstance, smartEngine);
+
+                    }
+
+
                 }
 
 
@@ -282,19 +291,41 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
 
 
+            } else {
+                abort(context, executionInstance, smartEngine);
 
+            }
 
-
-
-
-
-
-        }else{
-           super.commonUpdateExecutionInstance(context);
+        } else {
+            super.commonUpdateExecutionInstance(context);
         }
 
+    }
 
+    protected void abort(ExecutionContext context, ExecutionInstance executionInstance, SmartEngine smartEngine) {
+        context.getProcessInstance().setStatus(InstanceStatus.aborted);
+        smartEngine.getProcessCommandService().abort(executionInstance.getProcessInstanceId(),
+            InstanceStatus.aborted.name());
+        context.setNeedPause(true);
+    }
 
+    protected Boolean evaluate(ExecutionContext context, ConditionExpression conditionExpression) {
+
+        String type = conditionExpression.getExpressionType();
+
+        if (null != type) {
+            int expressionTypeSplitIndex = type.indexOf(":");
+            if (expressionTypeSplitIndex >= 0) {
+                type = type.substring(expressionTypeSplitIndex + 1);
+            }
+        } else {
+            type = "mvel";
+        }
+
+        Object eval = ExpressionPerformer.eval(type,
+            conditionExpression.getExpressionContent(), context);
+
+        return (Boolean)eval;
     }
 
 }

@@ -61,7 +61,18 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class FullMultiInstanceTest {
+public class FullMultiInstanceTest extends DatabaseBaseTestCase {
+
+    @Override
+    protected void initProcessConfiguation() {
+        super.initProcessConfiguation();
+        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
+        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
+        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
+        processEngineConfiguration.setLockStrategy(new DefaultLockStrategy());
+    }
+
 
     public static final String AGREE = "agree";
 
@@ -74,29 +85,6 @@ public class FullMultiInstanceTest {
     @Test
     public void testMultiInstance() throws Exception {
 
-        //fixme
-
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
-        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
-        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
-        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-
-        //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        DeploymentCommandService deploymentCommandService = smartEngine.getDeploymentCommandService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
-        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
-        DeploymentQueryService deploymentQueryService =  smartEngine.getDeploymentQueryService();
-        ActivityQueryService activityQueryService = smartEngine.getActivityQueryService();
-        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
-        ExecutionQueryService executionQueryService =  smartEngine.getExecutionQueryService();
-        VariableQueryService variableQueryService = smartEngine.getVariableQueryService();
-        ExecutionCommandService executionCommandService =  smartEngine.getExecutionCommandService();
 
 
         //3. 部署流程定义

@@ -40,9 +40,9 @@ public interface ExecutionContext {
 
     void setRequest(Map<String, Object> request);
 
-    Map<String, Object> getPrivateContext();
-
-    void setPrivateContext(Map<String, Object> request);
+    //Map<String, Object> getPrivateContext();
+    //
+    //void setPrivateContext(Map<String, Object> request);
 
     /**
      * 该方法主要是用于给用户设置返回值的。

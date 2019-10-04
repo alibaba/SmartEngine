@@ -38,9 +38,7 @@ public class CompletionConditionParser extends AbstractElementParser<CompletionC
 
         String expressionType = XmlParseUtil.getString(reader, "type");
         String action = XmlParseUtil.getString(reader, "action");
-        if(null==action || "".equals(action)){
-            action=CompletionCondition.ACTION_CONTINUE;
-        }
+
         completionCondition.setAction(action);
         String content = reader.getElementText();
         if (null != content) {

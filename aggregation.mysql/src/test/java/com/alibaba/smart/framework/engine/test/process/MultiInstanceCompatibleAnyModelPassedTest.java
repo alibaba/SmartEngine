@@ -20,6 +20,7 @@ import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 
 import org.junit.Assert;
@@ -32,32 +33,23 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class MultiInstanceCompatibleAnyModelPassedTest {
+public class MultiInstanceCompatibleAnyModelPassedTest extends DatabaseBaseTestCase {
+
+    @Override
+    protected void initProcessConfiguation() {
+        super.initProcessConfiguation();
+        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
+        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
+        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
+        processEngineConfiguration.setLockStrategy(new DefaultLockStrategy());
+    }
 
 
     @Test
     public void passed() throws Exception {
 
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
-        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
-        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
 
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
-
-
-        //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
-        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
-        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
-
-
-        //3. 部署流程定义
-        RepositoryCommandService repositoryCommandService = smartEngine
-                .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
                 .deploy("compatible-any-passed.bpmn20.xml");
 

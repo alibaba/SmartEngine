@@ -33,7 +33,7 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private Map<String, Object> request;
 
-    private Map<String, Object> privateContext=new HashMap<String, Object>();
+    //private Map<String, Object> privateContext=new HashMap<String, Object>();
 
     private boolean needPause;
 
