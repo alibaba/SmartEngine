@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns:smart="http://smart.alibaba-inc.com/schema/process" xmlns:activiti="http://activiti.org/bpmn"
              xmlns:alibaba="http://smart.alibaba-inc.com/schema/alibaba"
              id="test-multi-instance-user-task" version="1.0.1"

@@ -10,16 +10,12 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngin
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
-import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
@@ -82,8 +78,8 @@ public class MultiInstanceCompatibleAllModelFailFastTest {
         submitFormRequest.put("qps", "300");
         submitFormRequest.put("capacity","10g");
         submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,"1");
-        submitFormRequest.put("action", FullMultiInstanceTest.DISAGREE);
-        submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG,FullMultiInstanceTest.DISAGREE);
+        submitFormRequest.put("action", VariableInstanceAndMultiInstanceTest.DISAGREE);
+        submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG, VariableInstanceAndMultiInstanceTest.DISAGREE);
 
         //6.流程流转:处理 submitTask,完成任务申请.
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);

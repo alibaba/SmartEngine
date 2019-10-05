@@ -5,6 +5,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
@@ -16,6 +17,7 @@ import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.helper.TransactionHelper;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ public class MysqlTransactionTest extends DatabaseBaseTestCase {
     @Override
     protected void initProcessConfiguation() {
         super.initProcessConfiguation();
-        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        //processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
         processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
@@ -43,8 +45,8 @@ public class MysqlTransactionTest extends DatabaseBaseTestCase {
     private TransactionHelper transactionHelper;
 
     @Test(expected = IllegalArgumentException.class)
-
-    public void passed() throws Exception {
+   //@Test
+    public void exception() throws Exception {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
@@ -55,8 +57,9 @@ public class MysqlTransactionTest extends DatabaseBaseTestCase {
         //TUNE 增加对事务的查询判断。
         TaskInstance submitTaskInstance = transactionHelper.signal(taskCommandService, taskQueryService, processInstance);
 
-        transactionHelper.a(processQueryService, submitTaskInstance);
-
+       //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
+       ProcessInstance finalProcessInstance = processQueryService.findById(submitTaskInstance.getProcessInstanceId());
+       Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
     }
 
 

@@ -273,8 +273,10 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 else{
 
                     //completionCondition 为空时，则表示是all 模式， 则需要所有任务都完成后，才做判断。
-
-                    if(passedTaskInstanceNumber.equals(totalInstanceCount)  ){
+                    if(passedTaskInstanceNumber < totalInstanceCount  ){
+                        context.setNeedPause(true);
+                    }
+                    else  if(passedTaskInstanceNumber.equals(totalInstanceCount)  ){
                         context.setNeedPause(false);
                     }
 

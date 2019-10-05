@@ -45,7 +45,7 @@ public class TaskServiceTest extends DatabaseBaseTestCase {
     protected void initProcessConfiguation() {
         super.initProcessConfiguation();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
-        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new IdAndGroupTaskAssigneeDispatcher());
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
         processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
         processEngineConfiguration.setLockStrategy(new DefaultLockStrategy());

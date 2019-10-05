@@ -54,6 +54,8 @@ import com.alibaba.smart.framework.engine.util.IOUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +63,10 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class FullMultiInstanceTest extends DatabaseBaseTestCase {
+public class VariableInstanceAndMultiInstanceTest extends DatabaseBaseTestCase {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(VariableInstanceAndMultiInstanceTest.class);
+
 
     @Override
     protected void initProcessConfiguation() {
@@ -71,6 +76,8 @@ public class FullMultiInstanceTest extends DatabaseBaseTestCase {
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
         processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
         processEngineConfiguration.setLockStrategy(new DefaultLockStrategy());
+
+        trace.clear();
     }
 
 
@@ -154,7 +161,7 @@ public class FullMultiInstanceTest extends DatabaseBaseTestCase {
 
 
         List<TaskInstance>  assertedTaskInstanceList=   taskQueryService.findPendingTaskList(pendingTaskQueryParam);
-        Assert.assertEquals(3,assertedTaskInstanceList.size());
+        Assert.assertEquals(1,assertedTaskInstanceList.size());
 
 
         assertedTaskInstanceList=   taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
@@ -176,7 +183,7 @@ public class FullMultiInstanceTest extends DatabaseBaseTestCase {
 
 
 
-        //6.流程流转:处理 submitTask,完成任务申请.
+        //6.触发会签审批通过，此时应该流转到 normalReceiverTask
         taskCommandService.complete(assertedTaskInstanceList.get(0).getInstanceId(),submitFormRequest);
 
 
@@ -185,7 +192,7 @@ public class FullMultiInstanceTest extends DatabaseBaseTestCase {
 
         taskInstanceQueryParam = new TaskInstanceQueryParam();
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.COMPLETED);
-        taskInstanceQueryParam.setClaimUserId("1");
+        //taskInstanceQueryParam.setClaimUserId("1");
         taskInstanceQueryParam.setTag(AGREE);
         taskInstanceQueryParam.setProcessDefinitionType("type");
 
@@ -226,7 +233,7 @@ public class FullMultiInstanceTest extends DatabaseBaseTestCase {
 
         List<VariableInstance> processInstanceVariableList = variableQueryService.findProcessInstanceVariableList(processInstance.getInstanceId());
         Assert.assertNotNull(processInstanceVariableList);
-        Assert.assertEquals(2,processInstanceVariableList.size());
+        Assert.assertEquals(1,processInstanceVariableList.size());
 
 
 
@@ -243,7 +250,11 @@ public class FullMultiInstanceTest extends DatabaseBaseTestCase {
         ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
         Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
+        LOGGER.info("magic"+trace.toString());
+
         Assert.assertEquals(2,trace.size());
+
+
 
         Assert.assertEquals("123",trace.get(0));
         Assert.assertEquals("789",trace.get(1));

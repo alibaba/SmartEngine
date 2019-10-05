@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.test.process.delegation;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
-import com.alibaba.smart.framework.engine.test.process.FullMultiInstanceTest;
+import com.alibaba.smart.framework.engine.test.process.VariableInstanceAndMultiInstanceTest;
 
 /**
  * @author ettear
@@ -14,7 +14,8 @@ public class UserTaskTestDelegation implements JavaDelegation {
     @Override
     public Object execute(ExecutionContext executionContext) {
         String text= (String)executionContext.getRequest().get("text");
-        FullMultiInstanceTest.trace.add(text);
+
+        VariableInstanceAndMultiInstanceTest.trace.add(text);
         return text;
     }
 }
