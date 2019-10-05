@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.provider.event;
 
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
@@ -17,12 +18,6 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 
 @ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = EndEvent.class)
 public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
-    private ExecutionCommandService executionCommandService;
-
-    //public EndEventBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-    //    super(extensionPointRegistry, runtimeActivity);
-    //    this.executionCommandService = extensionPointRegistry.getExtensionPoint(ExecutionCommandService.class);
-    //}
 
     public EndEventBehavior() {
         super();
@@ -51,7 +46,9 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
         if (null != parentExecutionInstanceId) {
             //如果上下文中有父上下文，说明父子在同一线程中，父线程本身就会执行，所以不需要启动
             if (null == context.getParent()) {
-                this.executionCommandService.signal(parentExecutionInstanceId);
+                ExecutionCommandService executionCommandService =context.getExtensionPointRegistry().getExtensionPoint(
+                    SmartEngine.class).getExecutionCommandService();
+                executionCommandService.signal(parentExecutionInstanceId);
             }
         }
     }

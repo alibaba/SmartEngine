@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.callactivity.CallActivity;
@@ -28,45 +29,51 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
 
     @Override
     public boolean enter(ExecutionContext context) {
-        CallActivity callActivity = this.getModel();
-        String processDefinitionId =  callActivity.getCalledElement();
-        String processDefinitionVersion = callActivity.getCalledElementVersion();
 
-        return this.call(context.getProcessInstance().getInstanceId(), context.getExecutionInstance().getInstanceId(),
-            processDefinitionId, processDefinitionVersion, context);
+        super.enter(context);
+
+
+        CallActivity callActivity = this.getModel();
+
+        ProcessInstance processInstance = context.getProcessInstance();
+        ExecutionInstance executionInstance = context.getExecutionInstance();
+        return this.call(processInstance.getInstanceId(), executionInstance.getInstanceId(),
+            callActivity, context);
     }
 
     //TODO ettear 与DefaultProcessCommandService的逻辑合并
-    private boolean call(String parentInstanceId, String parentExecutionInstanceId, String processDefinitionId,
-                         String version, ExecutionContext context) {
+    private boolean call(String parentInstanceId, String parentExecutionInstanceId,CallActivity callActivity, ExecutionContext context) {
 
-        ExecutionContext subProcessExecutionContext = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class)
+        String processDefinitionId =  callActivity.getCalledElement();
+        String version = callActivity.getCalledElementVersion();
+
+
+        ExecutionContext subContext = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class)
             .create();
-        subProcessExecutionContext.setParent(context);
-        subProcessExecutionContext.setExtensionPointRegistry(this.extensionPointRegistry);
+        subContext.setParent(context);
+        subContext.setExtensionPointRegistry(this.extensionPointRegistry);
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
             SmartEngine.class).getProcessEngineConfiguration();
-        subProcessExecutionContext.setProcessEngineConfiguration(processEngineConfiguration);
-        //TODO ettear 改成clone模式
-        subProcessExecutionContext.setRequest(context.getRequest());
+        subContext.setProcessEngineConfiguration(processEngineConfiguration);
+        subContext.setRequest(context.getRequest());
 
         PvmProcessDefinition pvmProcessDefinition = this.extensionPointRegistry.getExtensionPoint(
             ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinitionId, version);
-        subProcessExecutionContext.setPvmProcessDefinition(pvmProcessDefinition);
+        subContext.setPvmProcessDefinition(pvmProcessDefinition);
 
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
-        ProcessInstance processInstance = processInstanceFactory.create(subProcessExecutionContext);
-        processInstance.setParentInstanceId(parentInstanceId);
-        processInstance.setParentExecutionInstanceId(parentExecutionInstanceId);
+        ProcessInstance subProcessInstance = processInstanceFactory.create(subContext);
+        subProcessInstance.setParentInstanceId(parentInstanceId);
+        subProcessInstance.setParentExecutionInstanceId(parentExecutionInstanceId);
 
-        subProcessExecutionContext.setProcessInstance(processInstance);
+        subContext.setProcessInstance(subProcessInstance);
 
-        processInstance = pvmProcessInstance.start(subProcessExecutionContext);
+        subProcessInstance = pvmProcessInstance.start(subContext);
 
-        processInstance = CommonServiceHelper.insertAndPersist(processInstance, context.getRequest(), extensionPointRegistry);
+        subProcessInstance = CommonServiceHelper.insertAndPersist(subProcessInstance, context.getRequest(), extensionPointRegistry);
 
-        return InstanceStatus.completed!=processInstance.getStatus();
+        return InstanceStatus.completed!=subProcessInstance.getStatus();
     }
 }

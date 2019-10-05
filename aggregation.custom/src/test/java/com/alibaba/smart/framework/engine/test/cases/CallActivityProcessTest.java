@@ -27,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 public class CallActivityProcessTest extends CustomBaseTestCase {
 
     @Test
-    public void test() throws Exception {
+    public void testReceiverTask() throws Exception {
 
         // 部署流程定义
         RepositoryCommandService repositoryCommandService = smartEngine
@@ -37,21 +37,22 @@ public class CallActivityProcessTest extends CustomBaseTestCase {
         assertEquals(14, processDefinition.getProcess().getElements().size());
 
         processDefinition = repositoryCommandService
-            .deploy("callactivity-process.bpmn20.xml");
+            .deploy("child-callactivity-process.bpmn20.xml");
         assertEquals(7, processDefinition.getProcess().getElements().size());
 
         ProcessInstance processInstance = startProcess();
 
-        ExecutionInstance firstExecutionInstance = findAndAssert(processInstance);
+        ExecutionInstance firstExecutionInstance = findAndAssertAtPreOrderPhase(processInstance);
 
         PersisterSession.create().putProcessInstance(processInstance);
 
         //触发主流程执行进入到子流程里面
-        executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
+        executionCommandService.signal(firstExecutionInstance.getInstanceId());
 
         //START 111 因为执行到了callActivity节点,有主流程和子流程两个实例.获得子流程实例 id。
 
-        Set<String> processInstanceIds = PersisterSession.currentSession().getProcessInstances().keySet();
+        Map<String, ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances();
+        Set<String> processInstanceIds = processInstances.keySet();
         Assert.assertEquals(2, processInstanceIds.size());
 
         String parentProcessInstanceId = processInstance.getInstanceId();
@@ -149,7 +150,7 @@ public class CallActivityProcessTest extends CustomBaseTestCase {
         return processInstance;
     }
 
-    private ExecutionInstance findAndAssert(ProcessInstance oldProcessInstance) {
+    private ExecutionInstance findAndAssertAtPreOrderPhase(ProcessInstance oldProcessInstance) {
         PersisterSession.create().putProcessInstance(oldProcessInstance);
 
         ProcessInstance latestProcessInstance = processQueryService.findById(oldProcessInstance.getInstanceId());
@@ -187,11 +188,11 @@ public class CallActivityProcessTest extends CustomBaseTestCase {
             .deploy("callactivity-servicetask-process.bpmn20.xml");
         assertEquals(7, processDefinition.getProcess().getElements().size());
 
-        ProcessInstance processInstance = startProcess();
+        ProcessInstance parentProcessInstance = startProcess();
 
-        ExecutionInstance firstExecutionInstance = findAndAssert(processInstance);
+        ExecutionInstance firstExecutionInstance = findAndAssertAtPreOrderPhase(parentProcessInstance);
 
-        PersisterSession.create().putProcessInstance(processInstance);
+        PersisterSession.create().putProcessInstance(parentProcessInstance);
 
         //触发主流程执行进入到子流程里面
         executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
@@ -201,7 +202,7 @@ public class CallActivityProcessTest extends CustomBaseTestCase {
         Set<String> processInstanceIds = PersisterSession.currentSession().getProcessInstances().keySet();
         Assert.assertEquals(2, processInstanceIds.size());
 
-        String parentProcessInstanceId = processInstance.getInstanceId();
+        String parentProcessInstanceId = parentProcessInstance.getInstanceId();
         String subProcessInstanceId = null;
 
         for (String instanceId : processInstanceIds) {
@@ -229,13 +230,13 @@ public class CallActivityProcessTest extends CustomBaseTestCase {
         assertEquals(0, subExecutionInstanceList.size());
 
         //完成资金交割处理,将流程驱动到ACK确认环节。
-        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId());
+        parentProcessInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId());
 
         //测试下是否符合预期
-        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        executionInstanceList = executionQueryService.findActiveExecutionList(parentProcessInstance.getInstanceId());
         assertEquals(0, executionInstanceList.size());
 
-        assertEquals(InstanceStatus.completed, processInstance.getStatus());
+        assertEquals(InstanceStatus.completed, parentProcessInstance.getStatus());
 
     }
 
