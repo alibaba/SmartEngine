@@ -19,7 +19,7 @@ public class ServiceOrchestrationJavaDelegation implements JavaDelegation {
     private static List<String> arrayList = new ArrayList<String>();
 
     @Override
-    public Object execute(ExecutionContext executionContext) {
+    public void execute(ExecutionContext executionContext) {
 
         Map<String, Object> request = executionContext.getRequest();
         if (null != request) {
@@ -31,7 +31,6 @@ public class ServiceOrchestrationJavaDelegation implements JavaDelegation {
             }
         }
 
-        return null;
     }
 
 }

@@ -12,10 +12,9 @@ public class UserTaskTestDelegation implements JavaDelegation {
 
 
     @Override
-    public Object execute(ExecutionContext executionContext) {
+    public void execute(ExecutionContext executionContext) {
         String text= (String)executionContext.getRequest().get("text");
 
         VariableInstanceAndMultiInstanceTest.trace.add(text);
-        return text;
     }
 }

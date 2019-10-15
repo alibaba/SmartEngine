@@ -14,10 +14,9 @@ public class RetryDelegation implements JavaDelegation {
     private AtomicInteger retryTimes = new AtomicInteger(0);
 
     @Override
-    public Object execute(ExecutionContext executionContext) {
+    public void execute(ExecutionContext executionContext) {
         if (retryTimes.getAndIncrement() < 1) {
             throw new RuntimeException("Execute occurs error.");
         }
-        return null;
     }
 }

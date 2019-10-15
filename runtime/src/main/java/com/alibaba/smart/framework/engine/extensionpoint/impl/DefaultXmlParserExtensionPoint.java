@@ -98,6 +98,8 @@ public class DefaultXmlParserExtensionPoint  implements
 
                 }
             } catch (Exception e) {
+
+                //TUNE 堆栈有些乱
                 throw new RuntimeException(e);
             }
         }

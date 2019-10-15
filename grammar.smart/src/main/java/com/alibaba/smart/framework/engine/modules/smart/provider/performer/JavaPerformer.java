@@ -49,11 +49,11 @@ public class JavaPerformer implements Performer {
             contextBoundedJavaDelegation.setExtensionPointRegistry(extensionPointRegistry);
             contextBoundedJavaDelegation.setPvmElement(pvmElement);
 
-            return contextBoundedJavaDelegation.execute(context);
+              contextBoundedJavaDelegation.execute(context);
 
         } else if (delegation instanceof JavaDelegation) {
             JavaDelegation javaDelegation = (JavaDelegation)delegation;
-            return javaDelegation.execute(context);
+              javaDelegation.execute(context);
 
         } else if (delegation instanceof TccDelegation) {
             //TODO TCC目前只实现了try

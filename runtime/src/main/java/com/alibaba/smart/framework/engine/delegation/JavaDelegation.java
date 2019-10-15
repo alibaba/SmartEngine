@@ -7,6 +7,6 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
  */
 public interface JavaDelegation extends RootDelegation {
 
-    Object execute(ExecutionContext executionContext);
+    void execute(ExecutionContext executionContext);
 
 }

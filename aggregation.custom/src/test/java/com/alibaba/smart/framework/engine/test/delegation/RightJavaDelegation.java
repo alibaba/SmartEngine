@@ -20,13 +20,12 @@ public class RightJavaDelegation implements JavaDelegation {
     private static List<String> arrayList = new ArrayList<String>();
 
     @Override
-    public Object execute(ExecutionContext executionContext) {
+    public void execute(ExecutionContext executionContext) {
         Map<String, Object> request = executionContext.getRequest();
         if (null != request) {
             Assert.assertEquals("right", request.get("value"));
         }
 
-        return null;
     }
 
 }

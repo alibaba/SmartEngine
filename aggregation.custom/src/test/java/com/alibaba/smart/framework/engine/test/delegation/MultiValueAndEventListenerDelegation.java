@@ -20,7 +20,7 @@ public class MultiValueAndEventListenerDelegation implements JavaDelegation {
         return counter.get();
     }
 
-    public Object execute(ExecutionContext executionContext) {
+    public void execute(ExecutionContext executionContext) {
         Map<String, Object> request = executionContext.getRequest();
         LOGGER.info("Delegation executing: invoke some hsf code stuff" + request);
         counter.addAndGet(1);
@@ -28,7 +28,6 @@ public class MultiValueAndEventListenerDelegation implements JavaDelegation {
         //Assert.assertEquals("value1",request.get("key1"));
         //Assert.assertEquals("value2",request.get("key2"));
 
-        return TccResult.buildSucessfulResult(null);
     }
 
 }
