@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns:smart="http://smart.alibaba-inc.com/schema/process" id="process_demo"
-             version="1.0.0"
-             xmlns="http://smart.alibaba-inc.com/schema/process"
-             targetNamespace="Examples">
+<definitions xmlns:smart="http://smart.alibaba-inc.com/schema/process"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="test-exclusive" targetNamespace="Examples"
+             version="1.0.0">
 
     <process id="demo" version="1.0.0" name="Process Demo">
 
-        <task id="theStart" isStart="true" smart:class="com.alibaba.smart.framework.engine.test.delegation.TccTracker"/>
+        <startEvent id="theStart" smart:class="com.alibaba.smart.framework.engine.test.delegation.Tracker"/>
 
 
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="create"/>
 
 
-        <task id="create" name="Create">
+        <serviceTask id="create" name="Create">
             <extensionElements>
-                <value name="text" value="Create task"/>
-                <executionListener event="ACTIVITY_START,ACTIVITY_END"
-                                   class="com.alibaba.smart.framework.engine.test.Listener"/>
+                <smart:value name="task1" value="Create task"/>
+                <smart:executionListener event="ACTIVITY_START"  class="com.alibaba.smart.framework.engine.test.StartListener"/>
+                <smart:executionListener event="ACTIVITY_END"  class="com.alibaba.smart.framework.engine.test.EndListener"/>
+
             </extensionElements>
-        </task>
+        </serviceTask>
 
         <sequenceFlow id="flow2" sourceRef="create" targetRef="pay"/>
 
-        <task id="pay" name="Pay" class="com.alibaba.smart.framework.engine.test.delegation.Tracker">
+        <serviceTask id="pay" name="Pay" smart:class="com.alibaba.smart.framework.engine.test.delegation.Tracker">
             <extensionElements>
-                <value name="text" value="Pay task"/>
+                <smart:value name="task2" value="Pay task"/>
+                <smart:properties>
+                    <smart:value name="from" value="koubei" />
+                </smart:properties>
             </extensionElements>
-        </task>
+        </serviceTask>
 
         <sequenceFlow id="flow3" sourceRef="pay" targetRef="theEnd"/>
 
-        <task id="theEnd"/>
+        <endEvent id="theEnd"/>
 
     </process>
 

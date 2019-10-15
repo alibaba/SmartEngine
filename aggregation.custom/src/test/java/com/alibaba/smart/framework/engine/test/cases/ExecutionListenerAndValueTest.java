@@ -31,20 +31,26 @@ public class ExecutionListenerAndValueTest extends CustomBaseTestCase {
         ProcessCommandService processService = smartEngine.getProcessCommandService();
 
         Map<String, Object> request = new HashMap<String, Object>();
-        request.put("text", "start");
+        request.put("hello", "world1");
+
+        Map<String, Object> response = new HashMap<String, Object>();
+
 
         ProcessInstance processInstance = processService.start(
             processDefinition.getId(), processDefinition.getVersion(),
-            request);
+            request,response);
+
         Assert.assertNotNull(processInstance);
-        Assert.assertEquals(processInstance.getStatus(), InstanceStatus.running);
+        Assert.assertEquals(processInstance.getStatus(), InstanceStatus.completed);
 
 
-        Assert.assertEquals(4,trace.size());
-        Assert.assertEquals("start",trace.get(0));
-        Assert.assertEquals("Listener: start",trace.get(1));
-        Assert.assertEquals("Listener: Create task",trace.get(2));
-        Assert.assertEquals("Pay task",trace.get(3));
+        Assert.assertEquals(6,response.size());
+        Assert.assertEquals("start_listener",response.get("start"));
+        Assert.assertEquals("end_listener",response.get("end"));
+        Assert.assertEquals("koubei",response.get("from"));
+        Assert.assertEquals("world1",response.get("hello"));
+        Assert.assertEquals("Create task",response.get("task1"));
+        Assert.assertEquals("Pay task",response.get("task2"));
 
 
     }

@@ -62,7 +62,13 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     @Override
-    public ProcessInstance signal(String executionInstanceId, Map<String, Object> request) {
+    public ProcessInstance signal(String executionInstanceId, Map<String, Object> request
+                                 ) {
+        return this.signal(executionInstanceId,request,null);
+    }
+
+    @Override
+    public ProcessInstance signal(String executionInstanceId, Map<String, Object> request, Map<String, Object> response) {
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
@@ -108,6 +114,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             executionContext.setExecutionInstance(executionInstance);
             executionContext.setActivityInstance(activityInstance);
             executionContext.setRequest(request);
+            executionContext.setResponse(response);
 
             // TUNE 减少不必要的对象创建
             PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();

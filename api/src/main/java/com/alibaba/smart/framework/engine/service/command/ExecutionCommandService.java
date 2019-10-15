@@ -12,6 +12,9 @@ import java.util.Map;
  */
 public interface ExecutionCommandService {
 
+    ProcessInstance signal(String executionInstanceId, Map<String, Object> request, Map<String, Object> response);
+
+
     ProcessInstance signal(String executionInstanceId, Map<String, Object> request);
 
     ProcessInstance signal(String executionInstanceId);
@@ -19,10 +22,16 @@ public interface ExecutionCommandService {
     /**
      * 驱动流程转向自由节点
      *
+     * TUNE 测试 jumpFrom,jumpTo
+     *
+     *
      * @param executionInstanceId
      * @param activityId
      * @param request
      * @return
      */
     ProcessInstance jump(String executionInstanceId, String activityId, Map<String, Object> request);
+
+
+
 }

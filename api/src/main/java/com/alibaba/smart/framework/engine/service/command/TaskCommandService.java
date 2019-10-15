@@ -10,9 +10,13 @@ import java.util.Map;
  */
 public interface TaskCommandService {
 
-    void complete(String taskId, Map<String, Object> variables);
+    void complete(String taskId, Map<String, Object> request);
 
-    void complete(String taskId, String userId, Map<String, Object> variables);
+    void complete(String taskId, String userId, Map<String, Object> request);
+
+    void complete(String taskId,  Map<String, Object> request, Map<String, Object> response);
+
+
 
     //void claim(Long taskId, String userId, Map<String, Object> variables);
 

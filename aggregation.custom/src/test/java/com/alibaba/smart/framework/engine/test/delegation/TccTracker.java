@@ -1,6 +1,10 @@
 package com.alibaba.smart.framework.engine.test.delegation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import com.alibaba.smart.framework.engine.delegation.TccDelegation;
 import com.alibaba.smart.framework.engine.delegation.TccResult;
 import com.alibaba.smart.framework.engine.test.cases.ExecutionListenerAndValueTest;
@@ -9,26 +13,19 @@ import com.alibaba.smart.framework.engine.test.cases.ExecutionListenerAndValueTe
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-public class TccTracker implements TccDelegation {
+public class TccTracker implements JavaDelegation {
     public TccTracker() {
         String text = "";
 
     }
 
     @Override
-    public TccResult tryExecute(ExecutionContext executionContext) {
+    public void execute(ExecutionContext executionContext) {
         String text = (String)executionContext.getRequest().get("text");
-        ExecutionListenerAndValueTest.trace.add(text);
-        return TccResult.buildSucessfulResult(null);
+
+        executionContext.getResponse().put("hello1",text);
+
     }
 
-    @Override
-    public TccResult confirmExecute(ExecutionContext executionContext) {
-        return null;
-    }
 
-    @Override
-    public TccResult cancelExecute(ExecutionContext executionContext) {
-        return null;
-    }
 }

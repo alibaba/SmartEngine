@@ -74,13 +74,20 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     }
 
     @Override
-    public ProcessInstance start(String processDefinitionId, String processDefinitionVersion, Map<String, Object> request) {
+    public ProcessInstance start(String processDefinitionId, String processDefinitionVersion,
+                                 Map<String, Object> request) {
+        return this.start(processDefinitionId,processDefinitionVersion,request,null);
+    }
+
+    @Override
+    public ProcessInstance start(String processDefinitionId, String processDefinitionVersion, Map<String, Object> request, Map<String, Object> response) {
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
         executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         executionContext.setProcessEngineConfiguration(processEngineConfiguration);
         executionContext.setRequest(request);
+        executionContext.setResponse(response);
 
 
         PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.getPvmProcessDefinition(processDefinitionId,
@@ -136,7 +143,13 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     }
 
     @Override
-    public ProcessInstance startWith(String deploymentInstanceId, String userId, Map<String, Object> request) {
+    public ProcessInstance startWith(String deploymentInstanceId, String userId, Map<String, Object> request
+                                     ) {
+        return this.startWith(deploymentInstanceId,userId,request,null);
+    }
+
+    @Override
+    public ProcessInstance startWith(String deploymentInstanceId, String userId, Map<String, Object> request,Map<String, Object> response) {
         DeploymentQueryService deploymentQueryService = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getDeploymentQueryService();
         DeploymentInstance deploymentInstance = deploymentQueryService.findById(deploymentInstanceId);
 

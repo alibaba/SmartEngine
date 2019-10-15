@@ -52,7 +52,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
 
     @Override
-    public void complete(String taskId, Map<String, Object> variables) {
+    public void complete(String taskId, Map<String, Object> request, Map<String, Object> response) {
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
             SmartEngine.class).getProcessEngineConfiguration();
 
@@ -63,25 +63,30 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
             TaskInstanceStorage.class);
         TaskInstance taskInstance = taskInstanceStorage.find(taskId,processEngineConfiguration );
         MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
-            variables, taskInstanceStorage, processEngineConfiguration);
+            request, taskInstanceStorage, processEngineConfiguration);
 
-        executionCommandService.signal(taskInstance.getExecutionInstanceId(), variables);
+        executionCommandService.signal(taskInstance.getExecutionInstanceId(), request,response);
 
     }
 
-
+    @Override
+    public void complete(String taskId, Map<String, Object> request) {
+        this.complete(taskId,request,null);
+    }
 
     @Override
-    public void complete(String taskId, String userId, Map<String, Object> variables) {
-        if(null == variables){
-            variables = new HashMap<String, Object>();
+    public void complete(String taskId, String userId, Map<String, Object> request) {
+        if(null == request){
+            request = new HashMap<String, Object>();
         }
-        variables.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,userId);
+        request.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,userId);
 
         //TODO check priviage
 
-        complete(  taskId, variables);
+        complete(  taskId, request);
     }
+
+
 
     //@Override
     //public void claim(Long taskId, String userId, Map<String, Object> variables) {

@@ -12,7 +12,7 @@
                     <smart:value name="value" value="right"/>
                 </smart:properties>
                 <smart:executionListener event="ACTIVITY_START,ACTIVITY_END"
-                                         class="com.alibaba.smart.framework.engine.test.Listener"/>
+                                         class="com.alibaba.smart.framework.engine.test.StartListener"/>
             </extensionElements>
         </serviceTask>
         <sequenceFlow id="SequenceFlow_1mxsbfh" sourceRef="StartEvent_1" targetRef="ExclusiveGateway_1otbxkp"/>

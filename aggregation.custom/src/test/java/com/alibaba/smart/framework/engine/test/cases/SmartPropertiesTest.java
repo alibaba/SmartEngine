@@ -25,10 +25,11 @@ public class SmartPropertiesTest extends CustomBaseTestCase {
 
         //4.启动流程实例
         Map<String, Object> request = new HashMap<String, Object>();
+        Map<String, Object> response = new HashMap<String, Object>();
         request.put("input", "right");
 
         ProcessInstance processInstance = processCommandService.start(
-            processDefinition.getId(), processDefinition.getVersion(), request
+            processDefinition.getId(), processDefinition.getVersion(), request,response
         );
         Assert.assertNotNull(processInstance);
         Assert.assertTrue(processInstance.getStatus().equals(InstanceStatus.completed));
