@@ -2,13 +2,14 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.common;
 
 import javax.xml.namespace.QName;
 
+import com.alibaba.smart.framework.engine.model.assembly.NoneIdBasedElement;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractProcess;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 August  10:02.
  */
-public class Documentation extends AbstractProcess {
+public class Documentation implements NoneIdBasedElement {
 
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "documentation");
 

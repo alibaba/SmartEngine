@@ -11,15 +11,14 @@ import lombok.Setter;
  * @author ettear 2016.04.13
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public abstract class AbstractProcessDefinition extends AbstractElement implements ProcessDefinition {
+public abstract class AbstractProcessDefinition  implements ProcessDefinition {
 
     private static final long serialVersionUID = -1765647192018309663L;
 
-    private String name;
-
     private String version;
 
+    private String id;
+    private String name;
 
     private com.alibaba.smart.framework.engine.model.assembly.Process process;
 
