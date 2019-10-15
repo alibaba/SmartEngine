@@ -3,8 +3,6 @@ package com.alibaba.smart.framework.engine.xml.parser;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.exception.ParseException;
-
 /**
  * Created by ettear on 16-4-12.
  */
@@ -17,5 +15,5 @@ public interface ElementParser<M>  extends BaseXmlParser {
      * @param context The context
      * @return A model representation of the input.
      */
-    M parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException;
+    M parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException;
 }

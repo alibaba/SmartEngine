@@ -1,11 +1,9 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension.parser;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
@@ -24,13 +22,12 @@ public class ExtensionElementsParser extends AbstractElementParser<ExtensionElem
 
 
     @Override
-    protected ExtensionElements parseModel(XMLStreamReader reader, ParseContext context)
-        throws ParseException, XMLStreamException {
+    protected ExtensionElements parseModel(XMLStreamReader reader, ParseContext context) {
         return new ExtensionElements();
     }
 
     @Override
-    protected void singingMagic(ExtensionElements model, BaseElement child) throws ParseException {
+    protected void singingMagic(ExtensionElements model, BaseElement child) {
         if (child instanceof Extension) {
             model.addExtension((Extension) child);
         } else {

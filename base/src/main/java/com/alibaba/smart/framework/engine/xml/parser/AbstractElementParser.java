@@ -52,8 +52,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
     }
 
 
-    protected Object readElement(XMLStreamReader reader, ParseContext context) throws ParseException,
-        XMLStreamException {
+    protected Object readElement(XMLStreamReader reader, ParseContext context) {
         XmlParserExtensionPoint xmlParserExtensionPoint = getXmlParserExtensionPoint1();
         return xmlParserExtensionPoint.parseElement(reader, context);
     }
@@ -61,25 +60,30 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
 
     @Override
-    public M parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+    public M parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
         M model=this.parseModel(reader,context);
 
         context=context.evolve(model);
 
         this.parseMultiAttributes(model,reader,context);
-        this.parseMultiChildren(model,reader,context);
+
+        try {
+            this.parseMultiChildren(model,reader,context);
+        } catch (XMLStreamException e) {
+            throw new ParseException(e);
+        }
 
         return model;
     }
 
 
-    protected   M parseModel(XMLStreamReader reader, ParseContext context) throws ParseException,XMLStreamException{
+    protected   M parseModel(XMLStreamReader reader, ParseContext context) {
        throw  new EngineException("should be overridden");
     }
 
 
 
-    private void parseMultiAttributes(M model, XMLStreamReader reader, ParseContext context) throws ParseException,XMLStreamException{
+    private void parseMultiAttributes(M model, XMLStreamReader reader, ParseContext context) {
         int attributeCount=reader.getAttributeCount();
         if(attributeCount>0){
             for (int i = 0; i < attributeCount; i++) {
@@ -94,8 +98,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
         }
     }
 
-    private Object parseSingleAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) throws ParseException,
-        XMLStreamException {
+    private Object parseSingleAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) {
 
         XmlParserExtensionPoint xmlParserExtensionPoint = getXmlParserExtensionPoint1();
         return xmlParserExtensionPoint.parseAttribute(attributeName,reader, context);
@@ -111,8 +114,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
         return (XmlParserExtensionPoint)o;
     }
 
-    private void parseMultiChildren(M model, XMLStreamReader reader, ParseContext context) throws ParseException,
-        XMLStreamException {
+    private void parseMultiChildren(M model, XMLStreamReader reader, ParseContext context) throws XMLStreamException {
         while (XmlParseUtil.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
             if (element instanceof BaseElement) {
@@ -122,7 +124,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
     }
 
     //TUNE rename
-    protected void singingMagic(M model, BaseElement child) throws ParseException{
+    protected void singingMagic(M model, BaseElement child) {
 
     }
 

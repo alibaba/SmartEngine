@@ -5,7 +5,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
@@ -29,8 +28,7 @@ public class ConditionExpressionParser extends AbstractElementParser<ConditionEx
     }
 
     @Override
-    public ConditionExpression parseElement(XMLStreamReader reader, ParseContext context) throws ParseException,
-            XMLStreamException {
+    public ConditionExpression parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
         ConditionExpression conditionExpression = new ConditionExpression();
 
         String type = XmlParseUtil.getString(reader, "type");

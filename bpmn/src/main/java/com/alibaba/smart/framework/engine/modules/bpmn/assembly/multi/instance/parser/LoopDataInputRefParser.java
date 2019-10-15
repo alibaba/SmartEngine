@@ -7,7 +7,6 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopDataInputRef;
-import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 
@@ -33,8 +32,7 @@ public class LoopDataInputRefParser extends AbstractElementParser<LoopDataInputR
     }
 
     @Override
-    public LoopDataInputRef parseElement(XMLStreamReader reader, ParseContext context)
-        throws ParseException, XMLStreamException {
+    public LoopDataInputRef parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
         LoopDataInputRef loopDataInputRef = new LoopDataInputRef();
         loopDataInputRef.setReference(reader.getElementText());
         return loopDataInputRef;

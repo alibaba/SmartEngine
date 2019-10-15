@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceCon
  * @author ettear
  * Created by ettear on 15/10/2017.
  */
-public class LoopCardinality implements LoopCollection, BaseElement {
+public class LoopCardinality implements BaseElement {
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "loopCardinality");
 
     private ConditionExpression cardinalityExpression;

@@ -1,18 +1,13 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.common.util.StringUtil;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Element;
-import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
 import com.alibaba.smart.framework.engine.model.assembly.Extensions;
 
 import com.alibaba.smart.framework.engine.exception.ParseException;
@@ -26,7 +21,7 @@ public abstract class AbstractBpmnParser<M extends Element> extends AbstractElem
 
 
     @Override
-    protected void singingMagic(M model, BaseElement child) throws ParseException {
+    protected void singingMagic(M model, BaseElement child) {
         if(!this.parseModelChild(model, child)) {
             if (child instanceof Extensions) {
                 model.setExtensions((Extensions)child);

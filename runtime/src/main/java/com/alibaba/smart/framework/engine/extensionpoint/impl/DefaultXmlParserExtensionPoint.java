@@ -1,14 +1,12 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
-import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.xml.parser.*;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import java.lang.reflect.Field;
@@ -76,7 +74,7 @@ public class DefaultXmlParserExtensionPoint  implements
     //}
 
     @Override
-    public Object parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+    public Object parseElement(XMLStreamReader reader, ParseContext context) {
         QName nodeQname = reader.getName();
 
         //FIXME cache
@@ -116,9 +114,7 @@ public class DefaultXmlParserExtensionPoint  implements
     }
 
     @Override
-    public Object parseAttribute(QName attributeQName, XMLStreamReader reader, ParseContext context)
-            throws ParseException,
-            XMLStreamException {
+    public Object parseAttribute(QName attributeQName, XMLStreamReader reader, ParseContext context) {
         if (null == attributeQName) {
             return null;
         }

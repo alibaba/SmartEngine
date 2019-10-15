@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance.parser;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
@@ -9,7 +8,6 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.M
 import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance.ActivitiCollection;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.AttributeParser;
-import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 
 /**
@@ -24,8 +22,7 @@ public class ActivitiCollectionParser extends AbstractElementParser<ActivitiColl
     }
 
     @Override
-    public ActivitiCollection parseAttribute(QName attributeName, XMLStreamReader reader, ParseContext context)
-        throws ParseException, XMLStreamException {
+    public ActivitiCollection parseAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) {
         ActivitiCollection activitiCollection = new ActivitiCollection();
 
         Object element=context.getCurrentElement();

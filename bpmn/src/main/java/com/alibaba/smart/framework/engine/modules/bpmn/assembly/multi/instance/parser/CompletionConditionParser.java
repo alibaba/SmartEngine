@@ -8,7 +8,6 @@ import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
-import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
@@ -32,8 +31,7 @@ public class CompletionConditionParser extends AbstractElementParser<CompletionC
     }
 
     @Override
-    public CompletionCondition parseElement(XMLStreamReader reader, ParseContext context)
-        throws ParseException, XMLStreamException {
+    public CompletionCondition parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
         CompletionCondition completionCondition = new CompletionCondition();
 
         String expressionType = XmlParseUtil.getString(reader, "type");

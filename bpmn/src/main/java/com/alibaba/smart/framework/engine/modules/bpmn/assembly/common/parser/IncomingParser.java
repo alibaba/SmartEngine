@@ -7,7 +7,6 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.common.Incoming;
-import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
@@ -33,7 +32,7 @@ public class IncomingParser extends AbstractElementParser<Incoming>   {
     }
 
     @Override
-    public Incoming parseElement(XMLStreamReader reader, ParseContext context) throws ParseException, XMLStreamException {
+    public Incoming parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
         // JUST SKIP
         XmlParseUtil.skipToEndElement(reader);
 

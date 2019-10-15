@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -10,7 +9,6 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
-import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
@@ -31,8 +29,7 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
     }
 
     @Override
-    public SequenceFlow parseModel(XMLStreamReader reader, ParseContext context)
-        throws ParseException, XMLStreamException {
+    public SequenceFlow parseModel(XMLStreamReader reader, ParseContext context) {
         SequenceFlow sequenceFlow = new SequenceFlow();
         sequenceFlow.setId(XmlParseUtil.getString(reader, "id"));
         sequenceFlow.setName(XmlParseUtil.getString(reader, "name"));

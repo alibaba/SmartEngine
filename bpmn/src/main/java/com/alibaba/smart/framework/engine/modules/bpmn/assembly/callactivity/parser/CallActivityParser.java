@@ -1,14 +1,12 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.callactivity.parser;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.callactivity.CallActivity;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.AbstractBpmnParser;
-import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
@@ -38,8 +36,7 @@ public class CallActivityParser  extends AbstractBpmnParser<CallActivity>  {
     }
 
     @Override
-    public CallActivity parseModel(XMLStreamReader reader, ParseContext context)
-        throws ParseException, XMLStreamException {
+    public CallActivity parseModel(XMLStreamReader reader, ParseContext context) {
         CallActivity callActivity = new CallActivity();
         callActivity.setId(XmlParseUtil.getString(reader, "id"));
         callActivity.setCalledElement(XmlParseUtil.getString(reader, "calledElement"));

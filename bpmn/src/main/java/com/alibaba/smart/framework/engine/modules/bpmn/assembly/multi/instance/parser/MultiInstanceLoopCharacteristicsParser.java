@@ -10,12 +10,9 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.InputDataItem;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.LoopCollection;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
-import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:01.
@@ -37,19 +34,15 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
     }
 
     @Override
-    protected MultiInstanceLoopCharacteristics parseModel(XMLStreamReader reader, ParseContext context)
-         {
+    protected MultiInstanceLoopCharacteristics parseModel(XMLStreamReader reader, ParseContext context) {
         MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = new MultiInstanceLoopCharacteristics();
         //multiInstanceLoopCharacteristics.setSequential(XmlParseUtil.getBoolean(reader, "isSequential", false));
         return multiInstanceLoopCharacteristics;
     }
 
     @Override
-    protected void singingMagic(MultiInstanceLoopCharacteristics model, BaseElement child) throws ParseException {
-        if (child instanceof LoopCollection) {
-
-            //ignore
-        } else if (child instanceof InputDataItem) {
+    protected void singingMagic(MultiInstanceLoopCharacteristics model, BaseElement child) {
+          if (child instanceof InputDataItem) {
             //ignore
         }
          else if (child instanceof CompletionCondition) {
