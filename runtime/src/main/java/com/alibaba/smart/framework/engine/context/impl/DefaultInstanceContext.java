@@ -33,7 +33,7 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private Map<String, Object> request;
 
-    //private Map<String, Object> privateContext=new HashMap<String, Object>();
+    private Map<String, Object> response;
 
     private boolean needPause;
 
@@ -44,10 +44,5 @@ public class DefaultInstanceContext implements ExecutionContext {
     private Long blockId;
 
     private PvmActivity sourcePvmActivity;
-
-    @Override
-    public Map<String, Object> getResponse() {
-        return request;
-    }
 
 }
