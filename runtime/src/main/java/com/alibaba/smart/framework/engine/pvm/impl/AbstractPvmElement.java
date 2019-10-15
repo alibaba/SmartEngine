@@ -2,9 +2,8 @@ package com.alibaba.smart.framework.engine.pvm.impl;
 
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.model.assembly.Element;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionBasedElement;
 import com.alibaba.smart.framework.engine.provider.Invoker;
 import com.alibaba.smart.framework.engine.pvm.PvmElement;
 
@@ -15,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public abstract class AbstractPvmElement<M extends Element> implements PvmElement<M> {
+public abstract class AbstractPvmElement<M extends ExtensionBasedElement> implements PvmElement<M> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPvmElement.class);
 

@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.engine.model.assembly.impl;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +16,6 @@ public abstract class AbstractActivity extends AbstractElement implements Activi
     private static final long serialVersionUID = 3558917263151685441L;
 
     private boolean startActivity;
-
-    private ExecutePolicy executePolicy;
 
     @Getter
     @Setter
@@ -34,13 +31,5 @@ public abstract class AbstractActivity extends AbstractElement implements Activi
         this.startActivity = startActivity;
     }
 
-    @Override
-    public ExecutePolicy getExecutePolicy() {
-        return executePolicy;
-    }
 
-    @Override
-    public void setExecutePolicy(ExecutePolicy executePolicy) {
-        this.executePolicy = executePolicy;
-    }
 }

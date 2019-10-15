@@ -7,8 +7,8 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.Element;
-import com.alibaba.smart.framework.engine.model.assembly.Extensions;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionBasedElement;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
 
 import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
@@ -17,14 +17,14 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 /**
  * Created by ettear on 16-4-29.
  */
-public abstract class AbstractBpmnParser<M extends Element> extends AbstractElementParser<M> {
+public abstract class AbstractBpmnParser<M extends ExtensionBasedElement> extends AbstractElementParser<M> {
 
 
     @Override
     protected void singingMagic(M model, BaseElement child) {
         if(!this.parseModelChild(model, child)) {
-            if (child instanceof Extensions) {
-                model.setExtensions((Extensions)child);
+            if (child instanceof ExtensionContainer) {
+                model.setExtensionContainer((ExtensionContainer)child);
             }
 
             //fixme

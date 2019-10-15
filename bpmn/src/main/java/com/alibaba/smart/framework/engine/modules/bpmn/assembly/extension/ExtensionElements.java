@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.extension;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.model.assembly.Extensions;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;
@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ExtensionElements extends Extensions {
+public class ExtensionElements extends ExtensionContainer {
 
     /**
      *

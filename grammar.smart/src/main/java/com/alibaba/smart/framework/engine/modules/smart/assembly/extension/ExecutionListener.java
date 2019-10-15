@@ -1,19 +1,15 @@
 package com.alibaba.smart.framework.engine.modules.smart.assembly.extension;
 
 import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
-import com.alibaba.smart.framework.engine.model.assembly.Extensions;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * @author ettear
@@ -30,15 +26,15 @@ public class ExecutionListener  implements Extension {
     //private Map<String, List<EventListener>> map = new HashMap<String, List<EventListener>>();
 
     @Override
-    public void decorate(Extensions extensions) {
+    public void decorate(ExtensionContainer extensionContainer) {
         for (String value : events) {
-            List<String> list = extensions.getEventListeners().get(value);
+            List<String> list = extensionContainer.getEventListeners().get(value);
             if(null != list){
                 list.add(listener);
             }else{
                 List<String> strings = new ArrayList<String>();
                 strings.add(listener);
-                extensions.getEventListeners().put(value,strings);
+                extensionContainer.getEventListeners().put(value,strings);
             }
         }
     }

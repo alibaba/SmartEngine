@@ -1,8 +1,6 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
@@ -10,13 +8,9 @@ import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.listener.EventListener;
-import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.model.assembly.Extensions;
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
 import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 
@@ -65,9 +59,9 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     }
 
     private void fireEvent(ExecutionContext context,String event) {
-        Extensions extensions = this.getModel().getExtensions();
-        if(null != extensions){
-            List<String> listenerList = extensions.getEventListeners().get(event);
+        ExtensionContainer extensionContainer = this.getModel().getExtensionContainer();
+        if(null != extensionContainer){
+            List<String> listenerList = extensionContainer.getEventListeners().get(event);
             if(CollectionUtil.isNotEmpty(listenerList)){
                 for (String listener : listenerList) {
                     EventListener newInstance = (EventListener)ClassLoaderUtil.createNewInstance(listener);

@@ -36,7 +36,7 @@ import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
-import com.alibaba.smart.framework.engine.model.assembly.Extensions;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
 import com.alibaba.smart.framework.engine.model.assembly.Process;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
@@ -373,9 +373,9 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
      */
     private void initElement(PvmElement pvmElement) {
         //Init extensions
-        Extensions extensions = pvmElement.getModel().getExtensions();
-        if (null != extensions) {
-            List<Extension> extensionList = extensions.getExtensions();
+        ExtensionContainer extensionContainer = pvmElement.getModel().getExtensionContainer();
+        if (null != extensionContainer) {
+            List<Extension> extensionList = extensionContainer.getExtensions();
             if (null != extensionList && !extensionList.isEmpty()) {
                 List<Invoker> prepareExtensionInvokers = new ArrayList<Invoker>();
                 List<Invoker> extensionInvokers = new ArrayList<Invoker>();

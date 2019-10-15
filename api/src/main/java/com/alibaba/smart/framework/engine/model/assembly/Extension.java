@@ -5,8 +5,8 @@ package com.alibaba.smart.framework.engine.model.assembly;
  * @author ettear 2016.04.13
  */
 
-public interface Extension extends BaseElement {
+public interface Extension extends NoneIdBasedElement {
 
-    void decorate(Extensions extensions);
+    void decorate(ExtensionContainer extensionContainer);
 
 }

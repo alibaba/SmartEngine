@@ -5,28 +5,26 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
-import com.alibaba.smart.framework.engine.model.assembly.Extensions;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
 @Data
-public class Properties implements Extension, BaseElement {
+public class Properties implements Extension {
     public final static QName type = new QName(SmartBase.SMART_NS, "properties");
 
     private List<Value> extensionList  = new ArrayList();
 
     @Override
-    public void decorate(Extensions extensions) {
+    public void decorate(ExtensionContainer extensionContainer) {
         for (Value value : extensionList) {
-            extensions.getProperties().put(value.getName(),value.getValue());
+            extensionContainer.getProperties().put(value.getName(),value.getValue());
         }
     }
 

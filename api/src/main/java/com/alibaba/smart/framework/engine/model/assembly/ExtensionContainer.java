@@ -13,7 +13,7 @@ import java.util.Map;
  * @author ettear 2016.04.13
  */
 @Data
-public class Extensions implements BaseElement {
+public class ExtensionContainer implements NoneIdBasedElement {
 
     private List<Extension> extensions = new ArrayList<Extension>();
     private Map<String,String> properties = new HashMap<String, String>();

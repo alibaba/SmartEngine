@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.model.assembly.ExecutePolicy;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
@@ -16,16 +15,10 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MultiInstanceLoopCharacteristics extends AbstractElement implements ExecutePolicy{
+public class MultiInstanceLoopCharacteristics extends AbstractElement {
 
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "multiInstanceLoopCharacteristics");
 
-
-    //private boolean isSequential;
-    //
-    //private LoopCollection loopCollection;
-    //
-    //private String inputDataItemName;
 
     private ConditionExpression completionCondition;
     private ConditionExpression abortCondition;

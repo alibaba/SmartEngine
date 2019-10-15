@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance;
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.NoneIdBasedElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
@@ -13,7 +14,7 @@ import lombok.Data;
  */
 
 @Data
-public class CompletionCondition implements BaseElement {
+public class CompletionCondition implements NoneIdBasedElement {
     public final static String ACTION_ABORT="abort";
     public final static String ACTION_CONTINUE="continue";
 

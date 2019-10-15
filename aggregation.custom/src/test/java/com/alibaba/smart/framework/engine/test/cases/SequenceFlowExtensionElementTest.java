@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.Extensions;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
@@ -65,8 +65,8 @@ public class SequenceFlowExtensionElementTest extends CustomBaseTestCase {
                 SequenceFlow sf = (SequenceFlow)baseElement;
                 if ("SequenceFlow_16ifyt3".equals(sf.getId())) {
                     found = true;
-                    Extensions extensions = sf.getExtensions();
-                    Assert.assertNotNull(extensions);
+                    ExtensionContainer extensionContainer = sf.getExtensionContainer();
+                    Assert.assertNotNull(extensionContainer);
                 }
 
             }

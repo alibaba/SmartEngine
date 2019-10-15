@@ -17,7 +17,7 @@ import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactor
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.model.assembly.Extensions;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -137,9 +137,9 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     protected void makeExtensionWorkAndExecuteBehavior(ExecutionContext context) {
         T model = this.getModel();
 
-        Extensions extensions = model.getExtensions();
-        if(null != extensions){
-            Map<String, String> extensionsProperties = extensions.getProperties();
+        ExtensionContainer extensionContainer = model.getExtensionContainer();
+        if(null != extensionContainer){
+            Map<String, String> extensionsProperties = extensionContainer.getProperties();
             if(extensionsProperties != null){
                 Map<String, Object> request = context.getRequest();
                 if(null == request){

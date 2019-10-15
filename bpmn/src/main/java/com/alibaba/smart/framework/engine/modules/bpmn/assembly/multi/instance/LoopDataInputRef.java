@@ -3,13 +3,14 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance;
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.NoneIdBasedElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 /**
  * @author ettear
  * Created by ettear on 16/10/2017.
  */
-public class LoopDataInputRef implements BaseElement {
+public class LoopDataInputRef implements NoneIdBasedElement {
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "loopDataInputRef");
     private String reference;
 
