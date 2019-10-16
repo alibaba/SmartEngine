@@ -11,6 +11,8 @@ import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceCon
  */
 public class Incoming implements NoneIdBasedElement {
 
+    //TUNE not supported element
+
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "incoming");
 
     private static final long serialVersionUID = -2660788294142169268L;

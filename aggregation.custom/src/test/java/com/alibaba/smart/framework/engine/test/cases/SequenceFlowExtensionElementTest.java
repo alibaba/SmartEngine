@@ -6,7 +6,7 @@ import java.util.List;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractElement;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTransition;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
 
 import org.junit.Assert;
@@ -38,8 +38,8 @@ public class SequenceFlowExtensionElementTest extends CustomBaseTestCase {
 
         List<BaseElement> baseElements = processDefinition.getProcess().getElements();
         for (BaseElement baseElement : baseElements) {
-            if (baseElement instanceof AbstractElement) {
-                AbstractElement element = (AbstractElement)baseElement;
+            if (baseElement instanceof AbstractTransition) {
+                AbstractTransition element = (AbstractTransition)baseElement;
                 if ("SequenceFlow_16ifyt3".equals(element.getId())) {
                     found = true;
                     Assert.assertEquals("提交机构准入", element.getName());
@@ -50,8 +50,8 @@ public class SequenceFlowExtensionElementTest extends CustomBaseTestCase {
 
         baseElements = processDefinition.getProcess().getElements();
         for (BaseElement baseElement : baseElements) {
-            if (baseElement instanceof AbstractElement) {
-                AbstractElement element = (AbstractElement)baseElement;
+            if (baseElement instanceof AbstractTransition) {
+                AbstractTransition element = (AbstractTransition)baseElement;
                 if ("InstitutionAdmit".equals(element.getId())) {
                     found = true;
                     Assert.assertEquals("机构准入中", element.getName());

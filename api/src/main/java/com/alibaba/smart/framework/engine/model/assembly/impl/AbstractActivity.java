@@ -3,7 +3,9 @@ package com.alibaba.smart.framework.engine.model.assembly.impl;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +13,14 @@ import lombok.Setter;
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public abstract class AbstractActivity extends AbstractElement implements Activity {
+@Data
+public abstract class AbstractActivity  implements Activity {
 
     private static final long serialVersionUID = 3558917263151685441L;
+
+    private String id;
+    private String name;
+    private ExtensionContainer extensionContainer;
 
     private boolean startActivity;
 

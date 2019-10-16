@@ -311,7 +311,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
                 PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
-                this.initElement(runtimeTransition);
+                //this.initElement(runtimeTransition);
 
                 Class aClass = extensionBindingResult.getBindings().get(TransitionBehavior.class.getName());
 
@@ -325,7 +325,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             for (Map.Entry<String, PvmActivity> pvmActivityEntry : pvmActivityMap.entrySet()) {
                 PvmActivity pvmActivity = pvmActivityEntry.getValue();
 
-                this.initElement(pvmActivity);
+                //this.initElement(pvmActivity);
 
                 Activity activity=pvmActivity.getModel();
 
@@ -365,37 +365,37 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         return pvmProcessDefinition;
     }
 
-    /**
-     * Init Element
-     *
-     *
-     * @param pvmElement element
-     */
-    private void initElement(PvmElement pvmElement) {
-        //Init extensions
-        ExtensionContainer extensionContainer = pvmElement.getModel().getExtensionContainer();
-        if (null != extensionContainer) {
-            List<Extension> extensionList = extensionContainer.getExtensions();
-            if (null != extensionList && !extensionList.isEmpty()) {
-                List<Invoker> prepareExtensionInvokers = new ArrayList<Invoker>();
-                List<Invoker> extensionInvokers = new ArrayList<Invoker>();
-                for (Extension extension : extensionList) {
-                    InvokerProviderFactory providerFactory = (InvokerProviderFactory)this.providerFactoryExtensionPoint
-                        .getProviderFactory(extension.getClass());
-                    if (null == providerFactory) {
-                        LOGGER.debug("No factory found for " + extension.getClass());
-                        continue;
-                    }
-                    Invoker extensionInvoker = providerFactory.createInvoker(extension);
-                        prepareExtensionInvokers.add(extensionInvoker);
-                        extensionInvokers.add(extensionInvoker);
-
-                }
-                //pvmElement.setPrepareExtensionInvokers(prepareExtensionInvokers);
-                //pvmElement.setExtensionInvokers(extensionInvokers);
-            }
-        }
-
-
-    }
+    ///**
+    // * Init Element
+    // *
+    // *
+    // * @param pvmElement element
+    // */
+    //private void initElement(PvmElement pvmElement) {
+    //    //Init extensions
+    //    ExtensionContainer extensionContainer = pvmElement.getModel().getExtensionContainer();
+    //    if (null != extensionContainer) {
+    //        List<Extension> extensionList = extensionContainer.getExtensions();
+    //        if (null != extensionList && !extensionList.isEmpty()) {
+    //            List<Invoker> prepareExtensionInvokers = new ArrayList<Invoker>();
+    //            List<Invoker> extensionInvokers = new ArrayList<Invoker>();
+    //            for (Extension extension : extensionList) {
+    //                InvokerProviderFactory providerFactory = (InvokerProviderFactory)this.providerFactoryExtensionPoint
+    //                    .getProviderFactory(extension.getClass());
+    //                if (null == providerFactory) {
+    //                    LOGGER.debug("No factory found for " + extension.getClass());
+    //                    continue;
+    //                }
+    //                Invoker extensionInvoker = providerFactory.createInvoker(extension);
+    //                    prepareExtensionInvokers.add(extensionInvoker);
+    //                    extensionInvokers.add(extensionInvoker);
+    //
+    //            }
+    //            //pvmElement.setPrepareExtensionInvokers(prepareExtensionInvokers);
+    //            //pvmElement.setExtensionInvokers(extensionInvokers);
+    //        }
+    //    }
+    //
+    //
+    //}
 }

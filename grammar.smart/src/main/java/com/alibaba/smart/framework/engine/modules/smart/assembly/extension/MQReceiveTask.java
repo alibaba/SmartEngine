@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.smart.assembly.extension;
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.AbstractTask;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 
 import com.taobao.metaq.client.MetaPushConsumer;
@@ -17,7 +18,7 @@ import org.slf4j.LoggerFactory;
 @Data
 @EqualsAndHashCode(callSuper = true)
 
-public class MQReceiveTask extends AbstractActivity {
+public class MQReceiveTask extends AbstractTask {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MQReceiveTask.class);
 
