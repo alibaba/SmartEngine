@@ -24,10 +24,7 @@ public abstract class AbstractActivity  implements Activity {
 
     private boolean startActivity;
 
-    @Getter
-    @Setter
     private Map<String,String> properties;
-
 
     @Override
     public boolean isStartActivity() {
