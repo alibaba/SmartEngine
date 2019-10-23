@@ -15,6 +15,8 @@ import java.util.Map;
 @Data
 public class ExtensionContainer implements NoneIdBasedElement {
 
+    //TUNE refator properties
+
     private List<Extension> extensions = new ArrayList<Extension>();
     private Map<String,String> properties = new HashMap<String, String>();
     private Map<String,List<String >> eventListeners = new HashMap<String, List<String >>();

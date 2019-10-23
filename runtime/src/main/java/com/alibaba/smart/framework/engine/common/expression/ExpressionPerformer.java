@@ -33,7 +33,7 @@ public abstract class ExpressionPerformer {
 
             Object result = expressionEvaluator.eval(expression, requestContext);
 
-            LOGGER.debug("expressionEvaluator.result result is {}, each param is {} {} ",result,expression,requestContext);
+            LOGGER.info("expressionEvaluator.result result is {}, each param is {} {} ",result,expression,requestContext);
 
             return result;
         } else {
