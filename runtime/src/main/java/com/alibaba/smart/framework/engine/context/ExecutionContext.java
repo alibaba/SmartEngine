@@ -62,6 +62,8 @@ public interface ExecutionContext {
     //
     //boolean isNested();
 
+    //这个方法的正确性。是否删除 TODO
+
     void setSourcePvmActivity(PvmActivity sourcePvmActivity);
 
     PvmActivity getSourcePvmActivity();

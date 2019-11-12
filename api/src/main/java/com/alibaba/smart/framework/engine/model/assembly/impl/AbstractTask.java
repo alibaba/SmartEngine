@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task;
+package com.alibaba.smart.framework.engine.model.assembly.impl;
 
 import java.util.Map;
 

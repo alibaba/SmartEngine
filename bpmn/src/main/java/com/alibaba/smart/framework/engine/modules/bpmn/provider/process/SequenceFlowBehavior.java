@@ -14,27 +14,14 @@ import com.alibaba.smart.framework.engine.provider.impl.AbstractTransitionBehavi
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 @ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = TransitionBehavior.class)
-
 public class SequenceFlowBehavior extends AbstractTransitionBehavior<SequenceFlow> {
 
+    //TUNE
     public SequenceFlowBehavior() {
-        super();
     }
 
-    private Performer matchPerformer;
     public SequenceFlowBehavior(ExtensionPointRegistry extensionPointRegistry, PvmTransition runtimeTransition) {
         super(extensionPointRegistry,runtimeTransition);
-
-        //Performable matchPerformable = getModel().getConditionExpression();
-        //if(null!=matchPerformable) {
-        //    ProviderFactoryExtensionPoint providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(
-        //        ProviderFactoryExtensionPoint.class);
-        //
-        //    PerformerProviderFactory matchPerformerProviderFactory
-        //        = (PerformerProviderFactory)providerFactoryExtensionPoint
-        //        .getProviderFactory(matchPerformable.getClass());
-        //    this.matchPerformer = matchPerformerProviderFactory.createPerformer(null, matchPerformable);
-        //}
     }
 
     @Override

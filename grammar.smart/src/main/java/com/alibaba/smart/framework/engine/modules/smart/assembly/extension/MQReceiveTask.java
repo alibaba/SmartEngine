@@ -2,11 +2,9 @@ package com.alibaba.smart.framework.engine.modules.smart.assembly.extension;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.AbstractTask;
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTask;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 
-import com.taobao.metaq.client.MetaPushConsumer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.slf4j.Logger;

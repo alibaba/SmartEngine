@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task;
 
 import javax.xml.namespace.QName;
 
+import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTask;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;

@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.model.assembly.impl;
 
+import com.alibaba.smart.framework.engine.annoation.WorkAround;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 
 import lombok.Data;
@@ -23,10 +24,11 @@ public abstract class AbstractProcessDefinition  implements ProcessDefinition {
     private com.alibaba.smart.framework.engine.model.assembly.Process process;
 
     @Override
+    @WorkAround
     public String getVersion(){
         if(null == version){
             //compatible for empty version
-            version = "1.0.0";
+                version = "1.0.0";
         }
         return this.version;
     }

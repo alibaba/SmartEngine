@@ -18,6 +18,7 @@ import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
+import com.alibaba.smart.framework.engine.test.process.sequece.RandomIdGenerator;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 
 import org.junit.After;
@@ -81,6 +82,7 @@ public class DatabaseBaseTestCase {
 
     protected void initProcessConfiguation() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        processEngineConfiguration.setIdGenerator(new RandomIdGenerator());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
     }
 

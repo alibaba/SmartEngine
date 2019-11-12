@@ -113,7 +113,6 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         try {
             bytes = uTF8ProcessDefinitionContent.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error(e.getMessage(),e);
             throw new EngineException(e);
         }
         InputStream stream = new ByteArrayInputStream(bytes);

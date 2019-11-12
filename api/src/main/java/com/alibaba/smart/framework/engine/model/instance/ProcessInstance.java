@@ -57,9 +57,7 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     void setSuspend(boolean suspend);
 
-//    Long getParentExecutionInstanceId();
-//
-//    void setParentExecutionInstanceId(Long parentExecutionInstanceId);
+
 //
 //    Long getParentActivityInstanceId();
 //

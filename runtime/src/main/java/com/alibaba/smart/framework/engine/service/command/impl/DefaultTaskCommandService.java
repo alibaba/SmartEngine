@@ -81,15 +81,19 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         }
         request.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,userId);
 
-        //TODO check priviage
+        //TODO check privilege
 
         complete(  taskId, request);
     }
 
 
+    //TODO
+    public void claim(Long taskId, String userId, Map<String, Object> variables) {
 
-    //@Override
-    //public void claim(Long taskId, String userId, Map<String, Object> variables) {
-    //
-    //}
+    }
+
+    public void transfer(Long taskId, String userId, Map<String, Object> variables) {
+
+    }
+
 }

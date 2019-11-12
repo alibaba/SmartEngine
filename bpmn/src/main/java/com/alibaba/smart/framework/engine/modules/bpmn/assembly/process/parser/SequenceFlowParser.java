@@ -15,7 +15,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 @ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = SequenceFlow.class)
 
 public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
-    private final static String DEFAULT_ACTION = PvmEventConstant.TRANSITION_EXECUTE.name();
 
 
     @Override

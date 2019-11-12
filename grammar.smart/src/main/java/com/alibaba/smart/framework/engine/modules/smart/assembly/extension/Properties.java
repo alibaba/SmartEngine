@@ -28,8 +28,4 @@ public class Properties implements Extension {
         }
     }
 
-    //@Override
-    //public boolean isPrepare() {
-    //    return false;
-    //}
 }

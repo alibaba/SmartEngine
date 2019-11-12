@@ -311,6 +311,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         context.setNeedPause(true);
     }
 
+    //TODO FIX
     protected Boolean evaluate(ExecutionContext context, ConditionExpression conditionExpression) {
 
         String type = conditionExpression.getExpressionType();

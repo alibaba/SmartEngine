@@ -27,30 +27,9 @@ public abstract class AbstractBpmnParser<M extends ExtensionBasedElement> extend
                 model.setExtensionContainer((ExtensionContainer)child);
             }
 
-            //fixme
-            //else if (child instanceof Performable) {
-            //    List<Performable> performers = model.getPerformers();
-            //    if (null == performers) {
-            //        performers = new ArrayList<Performable>();
-            //        model.setPerformers(performers);
-            //    }
-            //    Performable performable = (Performable)child;
-            //    if (StringUtil.isEmpty(performable.getAction())) {
-            //        performable.setAction(getDefaultActionName());
-            //    }
-            //    performers.add(performable);
-            //}
+
         }
     }
-
-    //@Override
-    //protected void singingMagic(M model, BaseElement child) throws ParseException {
-    //    if (child instanceof ExecutePolicy) {
-    //        model.setExecutePolicy((ExecutePolicy)child);
-    //    }else {
-    //        super.singingMagic(model, child);
-    //    }
-    //}
 
 
     /**
