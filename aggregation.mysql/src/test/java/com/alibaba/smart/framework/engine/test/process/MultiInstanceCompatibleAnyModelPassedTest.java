@@ -25,8 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class MultiInstanceCompatibleAnyModelPassedTest extends DatabaseBaseTestCase {
 
     @Override
-    protected void initProcessConfiguation() {
-        super.initProcessConfiguation();
+    protected void initProcessConfiguration() {
+        super.initProcessConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());

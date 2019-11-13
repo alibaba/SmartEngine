@@ -2,12 +2,8 @@ package com.alibaba.smart.framework.engine.test.api.service;
 
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
-import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.CustomVariablePersister;
@@ -35,8 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeploymentServiceTest extends DatabaseBaseTestCase {
 
     @Override
-    protected void initProcessConfiguation() {
-        super.initProcessConfiguation();
+    protected void initProcessConfiguration() {
+        super.initProcessConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());

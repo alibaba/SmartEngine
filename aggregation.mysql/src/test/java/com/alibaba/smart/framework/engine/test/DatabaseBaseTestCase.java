@@ -52,7 +52,7 @@ public class DatabaseBaseTestCase {
     public void setUp() {
         SimpleAnnotationScanner.clear();
 
-        initProcessConfiguation();
+        initProcessConfiguration();
 
         smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -80,7 +80,7 @@ public class DatabaseBaseTestCase {
 
     }
 
-    protected void initProcessConfiguation() {
+    protected void initProcessConfiguration() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new RandomIdGenerator());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());

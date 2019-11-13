@@ -2,10 +2,6 @@ package com.alibaba.smart.framework.engine.test.api.service;
 
 import java.util.Collection;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.CustomVariablePersister;
@@ -14,8 +10,6 @@ import com.alibaba.smart.framework.engine.test.process.DefaultMultiInstanceCount
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class RepositoryServiceTest extends DatabaseBaseTestCase {
 
     @Override
-    protected void initProcessConfiguation() {
-        super.initProcessConfiguation();
+    protected void initProcessConfiguration() {
+        super.initProcessConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());

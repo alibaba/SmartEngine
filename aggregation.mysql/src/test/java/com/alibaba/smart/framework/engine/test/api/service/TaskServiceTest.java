@@ -4,29 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
-import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.param.query.PaginateQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
-import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
-import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
-import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.CustomVariablePersister;
 import com.alibaba.smart.framework.engine.test.process.DefaultLockStrategy;
 import com.alibaba.smart.framework.engine.test.process.DefaultMultiInstanceCounter;
-import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.IdAndGroupTaskAssigneeDispatcher;
 
 import org.junit.Assert;
@@ -42,8 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class TaskServiceTest extends DatabaseBaseTestCase {
 
     @Override
-    protected void initProcessConfiguation() {
-        super.initProcessConfiguation();
+    protected void initProcessConfiguration() {
+        super.initProcessConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
         processEngineConfiguration.setTaskAssigneeDispatcher(new IdAndGroupTaskAssigneeDispatcher());
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());

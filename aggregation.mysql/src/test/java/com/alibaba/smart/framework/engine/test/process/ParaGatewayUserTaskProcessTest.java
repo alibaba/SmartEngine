@@ -1,30 +1,14 @@
 package com.alibaba.smart.framework.engine.test.process;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
-import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
-import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
-import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.service.param.query.PaginateQueryParam;
-import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
-import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
-import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
-import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
-import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 
@@ -43,8 +27,8 @@ import static org.junit.Assert.assertEquals;
 public class ParaGatewayUserTaskProcessTest extends DatabaseBaseTestCase {
 
     @Override
-    protected void initProcessConfiguation() {
-        super.initProcessConfiguation();
+    protected void initProcessConfiguration() {
+        super.initProcessConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
