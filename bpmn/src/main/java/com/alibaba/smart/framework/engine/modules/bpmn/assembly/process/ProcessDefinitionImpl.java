@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceCon
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
  */
-public class ProcessDefinition extends AbstractProcessDefinition {
+public class ProcessDefinitionImpl extends AbstractProcessDefinition {
 
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "definitions");
 

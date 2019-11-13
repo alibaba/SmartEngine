@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.model.assembly.impl;
 
 import com.alibaba.smart.framework.engine.annoation.WorkAround;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 
 import lombok.Data;
@@ -20,6 +21,8 @@ public abstract class AbstractProcessDefinition  implements ProcessDefinition {
 
     private String id;
     private String name;
+
+    private ExtensionContainer extensionContainer;
 
     private com.alibaba.smart.framework.engine.model.assembly.Process process;
 
