@@ -17,6 +17,7 @@ public abstract class AbstractTransition  implements Transition {
 
     private String id;
     private String name;
+
     private ExtensionContainer extensionContainer;
 
     private String sourceRef;

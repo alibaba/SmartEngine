@@ -6,7 +6,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
+import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpressionImpl;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.CompletionCondition;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -40,7 +41,7 @@ public class CompletionConditionParser extends AbstractElementParser<CompletionC
         completionCondition.setAction(action);
         String content = reader.getElementText();
         if (null != content) {
-            ConditionExpression expression = new ConditionExpression();
+            ConditionExpression expression = new ConditionExpressionImpl();
             expression.setExpressionContent(content);
             expression.setExpressionType(expressionType);
             completionCondition.setExpression(expression);

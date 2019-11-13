@@ -7,29 +7,29 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpressionImpl;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = ConditionExpression.class)
-public class ConditionExpressionParser extends AbstractElementParser<ConditionExpression>
+@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = ConditionExpressionImpl.class)
+public class ConditionExpressionParser extends AbstractElementParser<ConditionExpressionImpl>
       {
 
 
 
     @Override
     public QName getQname() {
-        return ConditionExpression.type;
+        return ConditionExpressionImpl.type;
     }
 
     @Override
-    public Class<ConditionExpression> getModelType() {
-        return ConditionExpression.class;
+    public Class<ConditionExpressionImpl> getModelType() {
+        return ConditionExpressionImpl.class;
     }
 
     @Override
-    public ConditionExpression parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
-        ConditionExpression conditionExpression = new ConditionExpression();
+    public ConditionExpressionImpl parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
+        ConditionExpressionImpl conditionExpression = new ConditionExpressionImpl();
 
         String type = XmlParseUtil.getString(reader, "type");
 

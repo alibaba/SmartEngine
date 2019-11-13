@@ -11,6 +11,10 @@ import lombok.Data;
 public interface ConditionExpression extends NoneIdBasedElement {
 
       String getExpressionType();
+      void setExpressionType(String type);
+
       String getExpressionContent();
+      void setExpressionContent(String content);
+
 
 }

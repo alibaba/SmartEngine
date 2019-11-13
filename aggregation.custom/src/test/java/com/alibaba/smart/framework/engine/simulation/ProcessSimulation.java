@@ -10,8 +10,9 @@ import com.alibaba.smart.framework.engine.common.expression.evaluator.MvelExpres
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpressionImpl;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.AbstractGateway;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ExclusiveGateway;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.gateway.ParallelGateway;

@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression;
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;
@@ -11,8 +12,7 @@ import lombok.Data;
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
  */
 @Data
-public class ConditionExpression  implements
-    com.alibaba.smart.framework.engine.model.assembly.ConditionExpression {
+public class ConditionExpressionImpl implements ConditionExpression {
 
     //TUNE 命名
 

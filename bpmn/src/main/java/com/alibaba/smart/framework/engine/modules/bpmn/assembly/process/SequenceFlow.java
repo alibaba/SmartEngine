@@ -2,8 +2,9 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process;
 
 import javax.xml.namespace.QName;
 
+import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTransition;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpression;
+import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpressionImpl;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;
