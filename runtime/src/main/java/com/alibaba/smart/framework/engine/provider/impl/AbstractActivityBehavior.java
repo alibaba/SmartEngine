@@ -17,7 +17,7 @@ import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactor
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -137,31 +137,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     protected void makeExtensionWorkAndExecuteBehavior(ExecutionContext context) {
         T model = this.getModel();
 
-        ExtensionContainer extensionContainer = model.getExtensionContainer();
-        if(null != extensionContainer){
-            Map<String, String> extensionsProperties = extensionContainer.getProperties();
-            if(extensionsProperties != null){
-                Map<String, Object> request = context.getRequest();
-                if(null == request){
-                    Map<String,Object> freshRequest = new HashMap<String, Object>();
-                    freshRequest.putAll(request);
-                    context.setRequest(freshRequest);
-                }else{
-                    for (Entry<String, String> stringStringEntry : extensionsProperties.entrySet()) {
-                        String key = stringStringEntry.getKey();
-                        String value = stringStringEntry.getValue();
 
-                        Object o = request.get(key);
-                        if(null != o){
-                            LOGGER.warn("The duplicated key found,the key: "+key+" is overidden by value:"+value);
-                        }
-                        request.put(key, value);
-
-                    }
-                }
-
-            }
-        }
 
         Map<String,String>  properties = model.getProperties();
         if(MapUtil.isNotEmpty(properties)){

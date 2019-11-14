@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test.cases;
+package com.alibaba.smart.framework.engine.test.cases.extensions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
+import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 import com.alibaba.smart.framework.engine.test.delegation.MultiValueAndEventListenerDelegation;
 
 import org.junit.Assert;

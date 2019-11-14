@@ -15,6 +15,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 public class Java implements NoneIdBasedElement {
+
+    //TODO
     public final static QName type = new QName(SmartBase.SMART_NS, "java");
     public final static QName classQName = new QName(SmartBase.SMART_NS, "class");
 

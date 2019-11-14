@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 
 import lombok.Data;
@@ -22,10 +22,17 @@ public class Properties implements Extension {
     private List<Value> extensionList  = new ArrayList();
 
     @Override
-    public void decorate(ExtensionContainer extensionContainer) {
+    public String getType() {
+        return "Properties";
+    }
+
+    @Override
+    public Object decorate(ExtensionElements extensionElements) {
         for (Value value : extensionList) {
-            extensionContainer.getProperties().put(value.getName(),value.getValue());
+            //FIXME
+            //extensionElements.getProperties().put(value.getName(),value.getValue());
         }
+        return "";
     }
 
 }

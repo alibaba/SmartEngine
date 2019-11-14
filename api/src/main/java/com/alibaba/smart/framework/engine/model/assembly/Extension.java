@@ -7,6 +7,8 @@ package com.alibaba.smart.framework.engine.model.assembly;
 
 public interface Extension extends NoneIdBasedElement {
 
-    void decorate(ExtensionContainer extensionContainer);
+    String getType();
+
+    Object decorate(ExtensionElements extensionElements);
 
 }

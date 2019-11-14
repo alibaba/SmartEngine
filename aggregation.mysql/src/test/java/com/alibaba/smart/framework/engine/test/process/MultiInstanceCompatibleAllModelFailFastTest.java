@@ -18,6 +18,7 @@ import com.alibaba.smart.framework.engine.service.command.RepositoryCommandServi
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import com.alibaba.smart.framework.engine.test.process.sequece.RandomIdGenerator;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 
 import org.junit.Assert;
@@ -42,6 +43,7 @@ public class MultiInstanceCompatibleAllModelFailFastTest {
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
+        processEngineConfiguration.setIdGenerator(new RandomIdGenerator());
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
 
         SmartEngine smartEngine = new DefaultSmartEngine();

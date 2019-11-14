@@ -31,7 +31,7 @@ public final class ClassLoaderUtil {
 
 
     /**
-     * Gets the <code>ClassLoader</code> that all classes in ehcache, and extensions, should use for classloading. All
+     * Gets the <code>ClassLoader</code> that all classes in ehcache, and extensionList, should use for classloading. All
      * ClassLoading in ehcache should use this one. This is the only thing that seems to work for all of the class
      * loading situations found in the wild.
      *
@@ -42,7 +42,7 @@ public final class ClassLoaderUtil {
     }
 
     /**
-     * Gets a fallback <code>ClassLoader</code> that all classes in ehcache, and extensions, should use for
+     * Gets a fallback <code>ClassLoader</code> that all classes in ehcache, and extensionList, should use for
      * classloading. This is used if the context class loader does not work.
      *
      * @return the <code>ClassLoaderUtil.class.getClassLoader();</code>

@@ -1,13 +1,14 @@
-package com.alibaba.smart.framework.engine.test.cases;
+package com.alibaba.smart.framework.engine.test.cases.extensions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTransition;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
+import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -65,8 +66,8 @@ public class SequenceFlowExtensionElementTest extends CustomBaseTestCase {
                 SequenceFlow sf = (SequenceFlow)baseElement;
                 if ("SequenceFlow_16ifyt3".equals(sf.getId())) {
                     found = true;
-                    ExtensionContainer extensionContainer = sf.getExtensionContainer();
-                    Assert.assertNotNull(extensionContainer);
+                    ExtensionElements extensionElements = sf.getExtensionElements();
+                    Assert.assertNotNull(extensionElements);
                 }
 
             }

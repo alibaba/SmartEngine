@@ -7,7 +7,7 @@ import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.annoation.WorkAround;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
@@ -31,7 +31,7 @@ public class ProcessDefinitionImpl implements ProcessDefinition {
 
     private String name;
 
-    private ExtensionContainer extensionContainer;
+    private ExtensionElements extensionElements;
 
     private List<BaseElement> baseElementList;
 

@@ -3,27 +3,31 @@ package com.alibaba.smart.framework.engine.modules.smart.assembly.extension;
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class Value extends Properties implements Extension {
+public class Value  implements Extension {
     public final static QName type = new QName(SmartBase.SMART_NS, "value");
 
     private String name;
     private String value;
 
+    @Override
+    public String getType() {
+        return "Value";
+    }
 
     @Override
-    public void decorate(ExtensionContainer extensionContainer) {
-        extensionContainer.getProperties().put(name,value);
+    public Object decorate(ExtensionElements extensionElements) {
+        //extensionElements.getProperties().put(name,value);
+        return "";
+        //FIMXE
     }
 }

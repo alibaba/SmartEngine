@@ -51,6 +51,8 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
             throw new EngineException("Scan config file " + extensionName + " failure!", e);
         }
         if (null != extensionConfigFiles) {
+
+
             while (extensionConfigFiles.hasMoreElements()) {
                 URL extensionConfigFile = extensionConfigFiles.nextElement();
                 LOGGER.debug("Load properties from the resource: " + extensionConfigFile);

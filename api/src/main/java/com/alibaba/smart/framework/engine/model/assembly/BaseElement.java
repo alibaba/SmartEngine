@@ -8,5 +8,5 @@ import java.util.List;
  * @author ettear 2016.04.13
  */
 public interface BaseElement extends Serializable {
-    
+
 }

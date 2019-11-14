@@ -1,9 +1,8 @@
 package com.alibaba.smart.framework.engine.test;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import com.alibaba.smart.framework.engine.listener.EventListener;
-import com.alibaba.smart.framework.engine.test.cases.MultiValueAndHelloListenerTest;
+import com.alibaba.smart.framework.engine.test.cases.extensions.MultiValueAndHelloListenerTest;
 
 public class HelloListener implements EventListener {
     @Override

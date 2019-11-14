@@ -6,8 +6,8 @@ package com.alibaba.smart.framework.engine.model.assembly;
  */
 public interface ExtensionBasedElement extends IdBasedElement{
 
-    ExtensionContainer getExtensionContainer();
+    ExtensionElements getExtensionElements();
 
-    void setExtensionContainer(ExtensionContainer extensionContainer);
+    void setExtensionElements(ExtensionElements extensionElements);
 
 }

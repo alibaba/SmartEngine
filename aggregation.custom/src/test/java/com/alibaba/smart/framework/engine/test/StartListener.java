@@ -1,12 +1,7 @@
 package com.alibaba.smart.framework.engine.test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import com.alibaba.smart.framework.engine.listener.EventListener;
-import com.alibaba.smart.framework.engine.test.cases.ExecutionListenerAndValueTest;
 
 /**
  * @author ettear

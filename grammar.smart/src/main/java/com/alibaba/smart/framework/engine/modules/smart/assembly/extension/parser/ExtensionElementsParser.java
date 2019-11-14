@@ -27,7 +27,7 @@
 //    @Override
 //    protected void singingMagic(ExtensionElements extensionElements, BaseElement child) {
 //        if (child instanceof Extension) {
-//            extensionElements.addExtension((Extension)child);
+//            extensionElements.addAndDecorateExtension((Extension)child);
 //        }
 //    }
 //

@@ -3,12 +3,13 @@ package com.alibaba.smart.framework.engine.pvm.impl;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
+import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.listener.EventListener;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
@@ -59,15 +60,18 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     }
 
     private void fireEvent(ExecutionContext context,String event) {
-        ExtensionContainer extensionContainer = this.getModel().getExtensionContainer();
-        if(null != extensionContainer){
-            List<String> listenerList = extensionContainer.getEventListeners().get(event);
-            if(CollectionUtil.isNotEmpty(listenerList)){
-                for (String listener : listenerList) {
-                    EventListener newInstance = (EventListener)ClassLoaderUtil.createNewInstance(listener);
-                    newInstance.execute(context);
-                }
-            }
+        ExtensionElements extensionElements = this.getModel().getExtensionElements();
+        if(null != extensionElements){
+
+            //FIXME
+            //EventList extension = extensionElements.getExtension(ExtensionElementsConstant.EXECUTION_LISTENER);
+            //List<String> listenerList = (List<String>)extension
+            //if(CollectionUtil.isNotEmpty(listenerList)){
+            //    for (String listener : listenerList) {
+            //        EventListener newInstance = (EventListener)ClassLoaderUtil.createNewInstance(listener);
+            //        newInstance.execute(context);
+            //    }
+            //}
         }
 
     }

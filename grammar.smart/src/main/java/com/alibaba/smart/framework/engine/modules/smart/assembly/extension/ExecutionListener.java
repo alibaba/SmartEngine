@@ -1,13 +1,18 @@
 package com.alibaba.smart.framework.engine.modules.smart.assembly.extension;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
+import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
+import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
+import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 
 import lombok.Data;
 
@@ -26,17 +31,39 @@ public class ExecutionListener  implements Extension {
     //private Map<String, List<EventListener>> map = new HashMap<String, List<EventListener>>();
 
     @Override
-    public void decorate(ExtensionContainer extensionContainer) {
-        for (String value : events) {
-            List<String> list = extensionContainer.getEventListeners().get(value);
-            if(null != list){
-                list.add(listener);
-            }else{
-                List<String> strings = new ArrayList<String>();
-                strings.add(listener);
-                extensionContainer.getEventListeners().put(value,strings);
-            }
+    public String getType() {
+        return ExtensionElementsConstant.EXECUTION_LISTENER;
+    }
+
+    @Override
+    public Object decorate(ExtensionElements extensionElements) {
+        EventListenerAggregation eventListenerAggregation =  (EventListenerAggregation)extensionElements.getExtension(getType());
+
+        if(null == eventListenerAggregation){
+            eventListenerAggregation = new EventListenerAggregation();
         }
+
+        for (String event : events) {
+
+            JavaDelegation listener = (JavaDelegation)ClassLoaderUtil.createNewInstance(this.listener);
+
+            Map<String, List<JavaDelegation>> eventListenerMap = eventListenerAggregation.getEventListenerMap();
+
+            List<JavaDelegation> javaDelegationList = eventListenerMap.get(event);
+
+                if(CollectionUtil.isNotEmpty(javaDelegationList)){
+                    javaDelegationList.add(listener );
+
+                }else{
+
+                    javaDelegationList =CollectionUtil.newArrayList();
+                    javaDelegationList.add(listener);
+                    eventListenerMap.put(event,javaDelegationList);
+
+                }
+
+            }
+        return eventListenerAggregation;
     }
 
 }

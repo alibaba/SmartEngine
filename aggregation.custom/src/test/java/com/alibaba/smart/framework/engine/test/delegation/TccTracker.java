@@ -1,13 +1,7 @@
 package com.alibaba.smart.framework.engine.test.delegation;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
-import com.alibaba.smart.framework.engine.delegation.TccDelegation;
-import com.alibaba.smart.framework.engine.delegation.TccResult;
-import com.alibaba.smart.framework.engine.test.cases.ExecutionListenerAndValueTest;
 
 /**
  * @author ettear

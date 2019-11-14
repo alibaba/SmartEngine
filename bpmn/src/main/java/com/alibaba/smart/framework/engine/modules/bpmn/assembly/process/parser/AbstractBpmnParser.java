@@ -8,9 +8,9 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionBasedElement;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
 
 import com.alibaba.smart.framework.engine.exception.ParseException;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 
@@ -23,8 +23,8 @@ public abstract class AbstractBpmnParser<M extends ExtensionBasedElement> extend
     @Override
     protected void singingMagic(M model, BaseElement child) {
         if(!this.parseModelChild(model, child)) {
-            if (child instanceof ExtensionContainer) {
-                model.setExtensionContainer((ExtensionContainer)child);
+            if (child instanceof ExtensionElements) {
+                model.setExtensionElements((ExtensionElements)child);
             }
 
 

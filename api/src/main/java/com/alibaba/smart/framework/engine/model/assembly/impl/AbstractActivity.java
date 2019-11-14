@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.model.assembly.impl;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 
 import lombok.Data;
 import lombok.Getter;
@@ -20,7 +20,8 @@ public abstract class AbstractActivity  implements Activity {
 
     private String id;
     private String name;
-    private ExtensionContainer extensionContainer;
+
+    private ExtensionElements extensionElements;
 
     private boolean startActivity;
 

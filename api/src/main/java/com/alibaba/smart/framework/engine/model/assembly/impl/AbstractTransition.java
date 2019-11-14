@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.model.assembly.impl;
 
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
 
 import lombok.Data;
@@ -22,6 +22,6 @@ public abstract class AbstractTransition  implements Transition {
     private String sourceRef;
     private String targetRef;
 
-    private ExtensionContainer extensionContainer;
+    private ExtensionElements extensionElements;
 
 }
