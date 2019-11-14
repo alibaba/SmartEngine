@@ -8,7 +8,7 @@ import javax.xml.namespace.QName;
 
 import lombok.Data;
 
-public interface ProcessDefinitionSource extends BaseElement {
+public interface ProcessDefinitionSource extends NoneIdBasedElement {
 
     List<ProcessDefinition> getProcessDefinitionList();
 
