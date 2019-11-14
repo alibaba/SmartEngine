@@ -115,7 +115,7 @@
 //                    ProcessDefinition processDefinition = smartEngine.getRepositoryQueryService()
 //                    .getCachedProcessDefinition(executionInstance.getProcessDefinitionIdAndVersion());
 //
-//                    List<BaseElement> baseElements =  processDefinition.getProcess().getElements();
+//                    List<BaseElement> baseElements =  processDefinition.getBaseElementList();
 //                    for (BaseElement baseElement : baseElements) {
 //                        if(baseElement instanceof ReceiveTask){
 //                            ReceiveTask receiveTask = (ReceiveTask)baseElement;

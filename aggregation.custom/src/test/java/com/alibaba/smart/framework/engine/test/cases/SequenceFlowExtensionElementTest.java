@@ -28,15 +28,15 @@ public class SequenceFlowExtensionElementTest extends CustomBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("new_sale.bpmn20.xml");
-        Assert.assertEquals(38, processDefinition.getProcess().getElements().size());
+            .deploy("new_sale.bpmn20.xml").getFirstProcessDefinition();
+        Assert.assertEquals(38, processDefinition.getBaseElementList().size());
 
         processDefinition = repositoryQueryService.getCachedProcessDefinition(processDefinition.getId(),
             processDefinition.getVersion());
 
         boolean found = false;
 
-        List<BaseElement> baseElements = processDefinition.getProcess().getElements();
+        List<BaseElement> baseElements = processDefinition.getBaseElementList();
         for (BaseElement baseElement : baseElements) {
             if (baseElement instanceof AbstractTransition) {
                 AbstractTransition element = (AbstractTransition)baseElement;
@@ -48,7 +48,7 @@ public class SequenceFlowExtensionElementTest extends CustomBaseTestCase {
             }
         }
 
-        baseElements = processDefinition.getProcess().getElements();
+        baseElements = processDefinition.getBaseElementList();
         for (BaseElement baseElement : baseElements) {
             if (baseElement instanceof AbstractTransition) {
                 AbstractTransition element = (AbstractTransition)baseElement;

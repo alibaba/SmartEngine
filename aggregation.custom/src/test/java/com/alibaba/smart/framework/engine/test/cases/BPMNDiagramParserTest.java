@@ -17,8 +17,8 @@ public class BPMNDiagramParserTest extends CustomBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("BPMNDiagramParserTest.bpmn.xml");
-        assertEquals(5, processDefinition.getProcess().getElements().size());
+            .deploy("BPMNDiagramParserTest.bpmn.xml").getFirstProcessDefinition();
+        assertEquals(5, processDefinition.getBaseElementList().size());
 
         //        PersisterSession.destroySession();
 

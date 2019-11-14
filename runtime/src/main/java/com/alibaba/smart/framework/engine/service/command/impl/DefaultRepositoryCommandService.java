@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +26,7 @@ import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFact
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
@@ -35,17 +35,11 @@ import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.Extension;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionContainer;
-import com.alibaba.smart.framework.engine.model.assembly.Process;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
-import com.alibaba.smart.framework.engine.provider.Invoker;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
-import com.alibaba.smart.framework.engine.provider.factory.InvokerProviderFactory;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.pvm.PvmElement;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmActivity;
@@ -82,11 +76,11 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @Override
-    public ProcessDefinition deploy( String classPathUri) throws DeployException {
+    public ProcessDefinitionSource deploy(String classPathUri) throws DeployException {
 
        ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
 
-        ProcessDefinition definition = this.parse(classLoader, classPathUri);
+        ProcessDefinitionSource definition = this.parse(classLoader, classPathUri);
 
         putIntoContainer( definition);
 
@@ -94,12 +88,12 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @Override
-    public ProcessDefinition deploy(InputStream inputStream) {
+    public ProcessDefinitionSource deploy(InputStream inputStream) {
         try {
-            ProcessDefinition processDefinition = parseStream(inputStream);
-            putIntoContainer( processDefinition);
+            ProcessDefinitionSource processDefinitionSource = parseStream(inputStream);
+            putIntoContainer( processDefinitionSource);
 
-            return processDefinition;
+            return processDefinitionSource;
         } catch (Exception e) {
             throw new DeployException("Parse process definition file failure!", e);
         } finally {
@@ -108,7 +102,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @Override
-    public ProcessDefinition deployWithUTF8Content(String uTF8ProcessDefinitionContent) {
+    public ProcessDefinitionSource deployWithUTF8Content(String uTF8ProcessDefinitionContent) {
         byte[] bytes ;
         try {
             bytes = uTF8ProcessDefinitionContent.getBytes("UTF-8");
@@ -116,8 +110,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             throw new EngineException(e);
         }
         InputStream stream = new ByteArrayInputStream(bytes);
-        ProcessDefinition processDefinition =  this.deploy(stream);
-        return  processDefinition;
+        ProcessDefinitionSource processDefinitionSource =  this.deploy(stream);
+        return  processDefinitionSource;
 
     }
 
@@ -135,7 +129,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
     }
 
-    private ProcessDefinition parse(ClassLoader classLoader, String uri) throws DeployException {
+    private ProcessDefinitionSource parse(ClassLoader classLoader, String uri) throws DeployException {
 
         InputStream inputStream = null;
         try {
@@ -145,8 +139,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 throw new IllegalArgumentException("Cant find any resources for the uri:"+uri);
             }
 
-            ProcessDefinition processDefinition = parseStream(inputStream);
-            return processDefinition;
+            ProcessDefinitionSource processDefinitionSource = parseStream(inputStream);
+            return processDefinitionSource;
 
         } catch (Exception e) {
             throw new DeployException("Read process definition file[" + uri + "] failure!", e);
@@ -155,7 +149,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         }
     }
 
-    private ProcessDefinition parseStream(InputStream inputStream) throws XMLStreamException, ParseException {
+    private ProcessDefinitionSource parseStream(InputStream inputStream) throws XMLStreamException, ParseException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
 
         XMLStreamReader reader = factory.createXMLStreamReader(inputStream);
@@ -176,83 +170,67 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
         if (findStart) {
             Object parseResult = this.xmlParserExtensionPoint.parseElement(reader, context);
-            return (ProcessDefinition)parseResult;
+            return (ProcessDefinitionSource)parseResult;
         } else {
             throw new DeployException("Read process definition file failure! Not found start element!");
         }
     }
 
     @SuppressWarnings("rawtypes")
-    private void putIntoContainer(ProcessDefinition processDefinition) {
+    private void putIntoContainer(ProcessDefinitionSource processDefinitionSource) {
 
-        if (null == processDefinition) {
-            throw new EngineException("null processDefinition found");
-        }
-
-        String processDefinitionId = processDefinition.getId();
-        String version = processDefinition.getVersion();
-
-
-
-        if (StringUtil.isEmpty(processDefinitionId) || StringUtil.isEmpty(version)) {
-            throw new EngineException("empty processDefinitionId or version");
+        if (null == processDefinitionSource) {
+            throw new EngineException("null processDefinitionSource found");
         }
 
 
-        PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(processDefinition, false);
+        List<ProcessDefinition> processDefinitionList =  processDefinitionSource.getProcessDefinitionList();
 
-        this.processContainer.install(pvmProcessDefinition, processDefinition);
+        for (ProcessDefinition processDefinition : processDefinitionList) {
+            String processDefinitionSourceId = processDefinition.getId();
+            String version = processDefinition.getVersion();
+
+
+
+            if (StringUtil.isEmpty(processDefinitionSourceId) || StringUtil.isEmpty(version)) {
+                throw new EngineException("empty processDefinitionSourceId or version");
+            }
+
+
+            PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(processDefinition, false);
+
+            this.processContainer.install(pvmProcessDefinition, processDefinition);
+
+        }
+
+
     }
 
     @SuppressWarnings("rawtypes")
     private PvmProcessDefinition buildPvmProcessDefinition(ProcessDefinition processDefinition,  boolean sub) {
 
 
-        Process process = processDefinition.getProcess();
-        String idPrefix = "";
-        if (sub) {
-            idPrefix = process.getId() + "_";
-        }
-
-        int index = 0;
-
         DefaultPvmProcessDefinition pvmProcessDefinition = new DefaultPvmProcessDefinition();
         pvmProcessDefinition.setId(processDefinition.getId());
         pvmProcessDefinition.setVersion(processDefinition.getVersion());
 
 
-        pvmProcessDefinition.setModel(process);
+        pvmProcessDefinition.setModel(processDefinition);
 
-        List<BaseElement> elements = process.getElements();
+        List<BaseElement> elements = processDefinition.getBaseElementList();
         if (null != elements && !elements.isEmpty()) {
 
             //TUNE ocp
             Map<String, PvmTransition> pvmTransitionMap = new HashMap<String, PvmTransition>();
             Map<String, PvmActivity> pvmActivityMap = new HashMap<String, PvmActivity>();
             for (BaseElement element : elements) {
-                if (element instanceof Process) {
-                    Process subProcess = (Process) element;
 
-                    if (StringUtil.isEmpty(subProcess.getId())) {
-                        subProcess.setId(idPrefix + "process" + index);
-                    }
-                    index++;
-
-//                    PvmProcessDefinition processDefinition = this.buildPvmProcessDefinition(subProcess, true);
-
-                    //TUNE support subProcess
-//                    pvmActivityMap.put(processDefinition.getModel().getId(), processDefinition);
-//
-//                    if (processDefinition.getModel().isStartActivity()) {
-//                        pvmProcessDefinition.setStartActivity(processDefinition);
-//                    }
-                } else if (element instanceof Transition) {
+                if (element instanceof Transition) {
                     Transition transition = (Transition) element;
 
                     if (StringUtil.isEmpty(transition.getId())) {
-                        transition.setId(idPrefix + "transition" + index);
+                        throw new ParseException("id cant be empty"+transition);
                     }
-                    index++;
 
                     DefaultPvmTransition pvmTransition = new DefaultPvmTransition(this.extensionPointRegistry);
                     pvmTransition.setModel(transition);
@@ -269,9 +247,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                     Activity activity = (Activity) element;
 
                     if (StringUtil.isEmpty(activity.getId())) {
-                        activity.setId(idPrefix + "activity" + index);
+                        throw new ParseException("id cant be empty"+activity);
                     }
-                    index++;
 
                     DefaultPvmActivity pvmActivity = new DefaultPvmActivity(this.extensionPointRegistry);
                     pvmActivity.setModel(activity);

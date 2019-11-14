@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.pvm.impl;
 
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.model.assembly.Process;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
@@ -28,7 +28,7 @@ public class DefaultPvmProcessDefinition implements PvmProcessDefinition {
 
     private PvmActivity startActivity;
 
-    private Process model;
+    private ProcessDefinition model;
 
 
 }

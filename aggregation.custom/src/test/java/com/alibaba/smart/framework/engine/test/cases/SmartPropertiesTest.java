@@ -20,8 +20,8 @@ public class SmartPropertiesTest extends CustomBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("smartPropertiesTest.bpmn.xml");
-        assertEquals(10, processDefinition.getProcess().getElements().size());
+            .deploy("smartPropertiesTest.bpmn.xml").getFirstProcessDefinition();
+        assertEquals(10, processDefinition.getBaseElementList().size());
 
         //4.启动流程实例
         Map<String, Object> request = new HashMap<String, Object>();

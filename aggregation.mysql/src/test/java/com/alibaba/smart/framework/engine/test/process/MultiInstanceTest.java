@@ -44,8 +44,8 @@ public class MultiInstanceTest extends DatabaseBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("multi-instance-test.bpmn20.xml");
-        assertEquals(9, processDefinition.getProcess().getElements().size());
+                .deploy("multi-instance-test.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(9, processDefinition.getBaseElementList().size());
 
 
         //4.启动流程实例
@@ -105,8 +105,8 @@ public class MultiInstanceTest extends DatabaseBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("failed-test-usertask-and-servicetask-exclusive.bpmn20.xml");
-        assertEquals(17, processDefinition.getProcess().getElements().size());
+                .deploy("failed-test-usertask-and-servicetask-exclusive.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(17, processDefinition.getBaseElementList().size());
 
         //4.启动流程实例
         ProcessInstance processInstance = processCommandService.start(

@@ -25,8 +25,8 @@ public class AliPayForeignExchange_ExceptionEndEventTest extends CustomBaseTestC
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("alipay-forex-end-event-extension.bpmn20.xml");
-        assertEquals(28, processDefinition.getProcess().getElements().size());
+            .deploy("alipay-forex-end-event-extension.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(28, processDefinition.getBaseElementList().size());
 
         //4.启动流程实例
         Map<String, Object> request = new HashMap<String, Object>();

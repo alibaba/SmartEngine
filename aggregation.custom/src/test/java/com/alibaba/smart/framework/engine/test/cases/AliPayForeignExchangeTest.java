@@ -27,8 +27,8 @@ public class AliPayForeignExchangeTest extends CustomBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("alipay-forex.bpmn20.xml");
-        assertEquals(28, processDefinition.getProcess().getElements().size());
+            .deploy("alipay-forex.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(28, processDefinition.getBaseElementList().size());
 
         //4.启动流程实例
         Map<String, Object> request = new HashMap<String, Object>();

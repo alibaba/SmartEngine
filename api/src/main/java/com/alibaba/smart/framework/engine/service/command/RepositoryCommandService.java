@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.service.command;
 
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource;
 
 import java.io.InputStream;
 
@@ -13,11 +13,11 @@ import java.io.InputStream;
  */
 public interface RepositoryCommandService {
 
-    ProcessDefinition deploy(String classPathUri) ;
+    ProcessDefinitionSource deploy(String classPathUri) ;
 
-    ProcessDefinition deploy(InputStream inputStream) ;
+    ProcessDefinitionSource deploy(InputStream inputStream) ;
 
-    ProcessDefinition deployWithUTF8Content(String uTF8ProcessDefinitionContent) ;
+    ProcessDefinitionSource deployWithUTF8Content(String uTF8ProcessDefinitionContent) ;
 
 
 }

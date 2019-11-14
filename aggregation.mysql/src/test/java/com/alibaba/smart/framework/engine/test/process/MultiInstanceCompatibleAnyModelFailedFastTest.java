@@ -40,7 +40,7 @@ public class MultiInstanceCompatibleAnyModelFailedFastTest extends DatabaseBaseT
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("compatible-any-passed.bpmn20.xml");
+                .deploy("compatible-any-passed.bpmn20.xml").getFirstProcessDefinition();
 
 
         //4.启动流程实例

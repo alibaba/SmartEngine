@@ -28,12 +28,12 @@ public class ProcessSimulationTest extends CustomBaseTestCase {
         RepositoryCommandService repositoryCommandService = smartEngine
             .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("simple-process-simulation.bpmn.xml");
-        assertEquals(14, processDefinition.getProcess().getElements().size());
+            .deploy("simple-process-simulation.bpmn.xml").getFirstProcessDefinition();
+        assertEquals(14, processDefinition.getBaseElementList().size());
 
         //List<Activity> activitieList = null;
 
-        List<Activity> activitieList = processSimulation.simulateOutcomingActivities("processSimulation", "1.0.0",
+        List<Activity> activitieList = processSimulation.simulateOutcomingActivities(processDefinition.getId(), processDefinition.getVersion(),
             "receiveTask0", null);
         Assert.assertNotNull(activitieList);
         Assert.assertEquals(1, activitieList.size());
@@ -46,7 +46,7 @@ public class ProcessSimulationTest extends CustomBaseTestCase {
 
         Map<String, Object> simulationContext = new HashMap<String, Object>(2);
         simulationContext.put("route", "a");
-        activitieList = processSimulation.simulateOutcomingActivities("processSimulation", "1.0.0", "receiveTask1",
+        activitieList = processSimulation.simulateOutcomingActivities("Process_1", "1.0.0", "receiveTask1",
             simulationContext);
         Assert.assertNotNull(activitieList);
         Assert.assertEquals(1, activitieList.size());
@@ -54,7 +54,7 @@ public class ProcessSimulationTest extends CustomBaseTestCase {
 
         simulationContext = new HashMap<String, Object>(2);
         simulationContext.put("route", "b");
-        activitieList = processSimulation.simulateOutcomingActivities("processSimulation", "1.0.0", "receiveTask1",
+        activitieList = processSimulation.simulateOutcomingActivities("Process_1", "1.0.0", "receiveTask1",
             simulationContext);
         Assert.assertNotNull(activitieList);
         Assert.assertEquals(1, activitieList.size());

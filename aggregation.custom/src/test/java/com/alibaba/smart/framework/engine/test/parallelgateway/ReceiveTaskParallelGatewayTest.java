@@ -27,8 +27,8 @@ public class ReceiveTaskParallelGatewayTest extends CustomBaseTestCase {
     public void testParallelGateway() throws Exception {
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("test-receivetask-parallel-gateway.bpmn20.xml");
-        assertEquals(14, processDefinition.getProcess().getElements().size());
+            .deploy("test-receivetask-parallel-gateway.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(14, processDefinition.getBaseElementList().size());
 
         Map<String, Object> request = new HashMap<String, Object>();
         request.put("input", 7);

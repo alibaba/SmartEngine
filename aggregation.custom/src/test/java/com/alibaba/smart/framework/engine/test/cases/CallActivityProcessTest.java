@@ -32,15 +32,15 @@ public class CallActivityProcessTest extends CustomBaseTestCase {
         // 部署流程定义
         RepositoryCommandService repositoryCommandService = smartEngine
             .getRepositoryCommandService();
-        ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("parent-callactivity-process.bpmn20.xml");
-        assertEquals(14, processDefinition.getProcess().getElements().size());
+        ProcessDefinition parentProcessDefinition = repositoryCommandService
+            .deploy("parent-callactivity-process.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(14, parentProcessDefinition.getBaseElementList().size());
 
-        processDefinition = repositoryCommandService
-            .deploy("child-callactivity-process.bpmn20.xml");
-        assertEquals(7, processDefinition.getProcess().getElements().size());
+        ProcessDefinition childProcessDefinition = repositoryCommandService
+            .deploy("child-callactivity-process.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(7, childProcessDefinition.getBaseElementList().size());
 
-        ProcessInstance processInstance = startProcess();
+        ProcessInstance processInstance = startParentProcess(  parentProcessDefinition);
 
         ExecutionInstance firstExecutionInstance = findAndAssertAtPreOrderPhase(processInstance);
 
@@ -135,7 +135,7 @@ public class CallActivityProcessTest extends CustomBaseTestCase {
 
     }
 
-    private ProcessInstance startProcess() {
+    private ProcessInstance startParentProcess(ProcessDefinition parentProcessDefinition) {
         PersisterSession.create();
 
         //4.启动流程实例
@@ -143,7 +143,7 @@ public class CallActivityProcessTest extends CustomBaseTestCase {
         request.put("smartEngineAction", "pre_order");
 
         ProcessInstance processInstance = processCommandService.start(
-            "parent-callactivity", "1.0.0", request
+            parentProcessDefinition.getId(), parentProcessDefinition.getVersion(), request
         );
         PersisterSession.destroySession();
 
@@ -180,15 +180,15 @@ public class CallActivityProcessTest extends CustomBaseTestCase {
         // 部署流程定义
         RepositoryCommandService repositoryCommandService = smartEngine
             .getRepositoryCommandService();
-        ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("parent-callactivity-process.bpmn20.xml");
-        assertEquals(14, processDefinition.getProcess().getElements().size());
+        ProcessDefinition parentProcessDefinition = repositoryCommandService
+            .deploy("parent-callactivity-process.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(14, parentProcessDefinition.getBaseElementList().size());
 
-        processDefinition = repositoryCommandService
-            .deploy("callactivity-servicetask-process.bpmn20.xml");
-        assertEquals(7, processDefinition.getProcess().getElements().size());
+        ProcessDefinition childProcessDefinition = repositoryCommandService
+            .deploy("callactivity-servicetask-process.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(7, childProcessDefinition.getBaseElementList().size());
 
-        ProcessInstance parentProcessInstance = startProcess();
+        ProcessInstance parentProcessInstance = startParentProcess(parentProcessDefinition);
 
         ExecutionInstance firstExecutionInstance = findAndAssertAtPreOrderPhase(parentProcessInstance);
 

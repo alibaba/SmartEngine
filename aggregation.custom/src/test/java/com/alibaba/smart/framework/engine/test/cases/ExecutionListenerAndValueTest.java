@@ -25,8 +25,8 @@ public class ExecutionListenerAndValueTest extends CustomBaseTestCase {
     public void testDemo() throws Exception {
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("execution_listener_and_value_test.bpmn20.xml");
-        Assert.assertEquals(7, processDefinition.getProcess().getElements().size());
+            .deploy("execution_listener_and_value_test.bpmn20.xml").getFirstProcessDefinition();
+        Assert.assertEquals(7, processDefinition.getBaseElementList().size());
 
         ProcessCommandService processService = smartEngine.getProcessCommandService();
 

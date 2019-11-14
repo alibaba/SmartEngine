@@ -1,8 +1,9 @@
 package com.alibaba.smart.framework.engine.pvm;
 
-import com.alibaba.smart.framework.engine.model.assembly.Process;
 
 import java.util.Map;
+
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -20,7 +21,7 @@ public interface PvmProcessDefinition {
 
     PvmActivity getStartActivity();
 
-    Process getModel();
+    ProcessDefinition getModel();
 
     Map<String, PvmActivity> getActivities();
 

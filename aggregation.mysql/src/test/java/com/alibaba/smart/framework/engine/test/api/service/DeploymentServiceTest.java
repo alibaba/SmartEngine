@@ -54,8 +54,8 @@ public class DeploymentServiceTest extends DatabaseBaseTestCase {
         String name = "name";
         String type = "type";
         String code = "code";
-        String processDefinitionId = "test-multi-instance-user-task";
-        String version = "1.0.1";
+        String processDefinitionId = "multi-instance-user-task";
+        String version = "1.0.2";
         String desc = "desc";
 
         //3. 部署流程定义

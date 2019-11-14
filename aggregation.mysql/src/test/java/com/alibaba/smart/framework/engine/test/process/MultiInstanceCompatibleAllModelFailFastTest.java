@@ -59,7 +59,7 @@ public class MultiInstanceCompatibleAllModelFailFastTest {
         RepositoryCommandService repositoryCommandService = smartEngine
                 .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("compatible-all-passed.bpmn20.xml");
+                .deploy("compatible-all-passed.bpmn20.xml").getFirstProcessDefinition();
 
 
         //4.启动流程实例

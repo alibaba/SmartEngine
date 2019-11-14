@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
              id="simple-usertask-process"
-             targetNamespace="smart" version="2.0.0">
-    <process id="Process_1" isExecutable="false">
+             targetNamespace="smart" version="1.0.0">
+    <process id="simple-usertask-process" isExecutable="false" version="2.0.0">
         <startEvent id="startEvent"/>
 
         <serviceTask id="createOrder" name="createOrder"/>

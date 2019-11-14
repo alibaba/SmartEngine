@@ -48,11 +48,11 @@ public class RepositoryServiceTest extends DatabaseBaseTestCase {
 
         repositoryCommandService.deploy("test-usertask-and-servicetask-exclusive.bpmn20.xml");
 
-        ProcessDefinition processDefinition = repositoryQueryService.getCachedProcessDefinition("test-multi-instance-user-task:1.0.1");
+        ProcessDefinition processDefinition = repositoryQueryService.getCachedProcessDefinition("exclusiveTest:1.0.0");
 
         Assert.assertNotNull(processDefinition);
 
-        processDefinition = repositoryQueryService.getCachedProcessDefinition("test-multi-instance-user-task","1.0.1");
+        processDefinition = repositoryQueryService.getCachedProcessDefinition("exclusiveTest","1.0.0");
 
         Assert.assertNotNull(processDefinition);
 

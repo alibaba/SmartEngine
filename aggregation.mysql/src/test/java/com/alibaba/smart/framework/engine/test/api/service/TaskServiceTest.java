@@ -45,7 +45,7 @@ public class TaskServiceTest extends DatabaseBaseTestCase {
     public void test() throws Exception {
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("user-task-id-and-group-test.bpmn20.xml");
+            .deploy("user-task-id-and-group-test.bpmn20.xml").getFirstProcessDefinition();
 
 
         //4.启动流程实例

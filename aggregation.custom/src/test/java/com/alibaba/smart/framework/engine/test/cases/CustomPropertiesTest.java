@@ -19,11 +19,11 @@ public class CustomPropertiesTest extends CustomBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("custom-properties.bpmn.xml");
-        assertEquals(9, processDefinition.getProcess().getElements().size());
+            .deploy("custom-properties.bpmn.xml").getFirstProcessDefinition();
+        assertEquals(9, processDefinition.getBaseElementList().size());
 
-        processDefinition = repositoryQueryService.getCachedProcessDefinition("custom-properties", "1.0.0");
-        assertEquals(9, processDefinition.getProcess().getElements().size());
+        processDefinition = repositoryQueryService.getCachedProcessDefinition(processDefinition.getId(), processDefinition.getVersion());
+        assertEquals(9, processDefinition.getBaseElementList().size());
 
         ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
         ProcessInstance processInstance = processCommandService.start(processDefinition.getId(),

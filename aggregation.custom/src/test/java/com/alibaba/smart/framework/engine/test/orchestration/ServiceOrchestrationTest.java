@@ -45,7 +45,7 @@ public class ServiceOrchestrationTest {
         try {
             PersisterSession.create();
             processInstance = processService.start(
-                "ServiceOrchestrationTest", "1.0.0",
+                "exclusiveTest", "1.0.0",
                 request);
         } finally {
             PersisterSession.destroySession();

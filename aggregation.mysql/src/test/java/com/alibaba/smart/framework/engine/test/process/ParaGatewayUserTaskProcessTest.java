@@ -41,11 +41,11 @@ public class ParaGatewayUserTaskProcessTest extends DatabaseBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("parallel-gateway-usertask-process.bpmn.xml");
+            .deploy("parallel-gateway-usertask-process.bpmn.xml").getFirstProcessDefinition();
 
 
         //4.启动流程实例
-        ProcessInstance processInstance = processCommandService.start("parallel-gateway-usertask-process","2.0.0");
+        ProcessInstance processInstance = processCommandService.start(processDefinition.getId(),"3.0.0");
         Assert.assertNotNull(processInstance);
 
         List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());

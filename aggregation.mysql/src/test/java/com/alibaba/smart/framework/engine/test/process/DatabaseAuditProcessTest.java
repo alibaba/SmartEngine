@@ -38,8 +38,8 @@ public class DatabaseAuditProcessTest extends DatabaseBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("test-usertask-and-servicetask-exclusive.bpmn20.xml");
-        assertEquals(17, processDefinition.getProcess().getElements().size());
+                .deploy("test-usertask-and-servicetask-exclusive.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(17, processDefinition.getBaseElementList().size());
 
         //4.启动流程实例
         ProcessInstance processInstance = processCommandService.start(
@@ -86,8 +86,8 @@ public class DatabaseAuditProcessTest extends DatabaseBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("failed-test-usertask-and-servicetask-exclusive.bpmn20.xml");
-        assertEquals(17, processDefinition.getProcess().getElements().size());
+                .deploy("failed-test-usertask-and-servicetask-exclusive.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(17, processDefinition.getBaseElementList().size());
 
         //4.启动流程实例
         ProcessInstance processInstance = processCommandService.start(

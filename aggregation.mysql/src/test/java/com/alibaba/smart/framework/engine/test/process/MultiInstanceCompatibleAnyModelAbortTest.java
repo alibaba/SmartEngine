@@ -40,7 +40,7 @@ public class MultiInstanceCompatibleAnyModelAbortTest extends DatabaseBaseTestCa
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("compatible-any-abort.bpmn20.xml");
+                .deploy("compatible-any-abort.bpmn20.xml").getFirstProcessDefinition();
 
 
         //4.启动流程实例

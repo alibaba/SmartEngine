@@ -51,8 +51,8 @@ public class OfcMarketPlaceTest {
         RepositoryCommandService repositoryCommandService = smartEngine
             .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("ofcMp.bpmn.xml");
-        assertEquals(16, processDefinition.getProcess().getElements().size());
+            .deploy("ofcMp.bpmn.xml").getFirstProcessDefinition();
+        assertEquals(16, processDefinition.getBaseElementList().size());
 
         //4.启动流程实例
         Map<String, Object> request = new HashMap<String, Object>();

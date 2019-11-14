@@ -80,9 +80,9 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
 
         processInstance =   processQueryService.findById(processInstance.getInstanceId());
         Assert.assertEquals("type",processInstance.getProcessDefinitionType());
-        Assert.assertEquals("test-multi-instance-user-task:1.0.1",processInstance.getProcessDefinitionIdAndVersion());
-        Assert.assertEquals("test-multi-instance-user-task",processInstance.getProcessDefinitionId());
-        Assert.assertEquals("1.0.1",processInstance.getProcessDefinitionVersion());
+        Assert.assertEquals("multi-instance-user-task:1.0.2",processInstance.getProcessDefinitionIdAndVersion());
+        Assert.assertEquals("multi-instance-user-task",processInstance.getProcessDefinitionId());
+        Assert.assertEquals("1.0.2",processInstance.getProcessDefinitionVersion());
 
         Assert.assertEquals("123",processInstance.getStartUserId());
         Assert.assertEquals(InstanceStatus.running,processInstance.getStatus());
@@ -262,7 +262,7 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
         processInstanceQueryParam.setProcessDefinitionType("type");
         processInstanceQueryParam.setStatus(InstanceStatus.running.name());
         processInstanceQueryParam.setStartUserId("123");
-        processInstanceQueryParam.setProcessDefinitionIdAndVersion("compatible-any-passed-process:1.0.0");
+        processInstanceQueryParam.setProcessDefinitionIdAndVersion("Process_1:1.0.0");
 
 
         //processInstanceQueryParam.setBizUniqueId("uniqueId");

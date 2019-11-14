@@ -63,7 +63,7 @@ public class MongoUserTaskTest {
         RepositoryCommandService repositoryCommandService = smartEngine
             .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("mongo_simple_userTask_test.xml");
+            .deploy("mongo_simple_userTask_test.xml").getFirstProcessDefinition();
 
 
         //4.启动流程实例

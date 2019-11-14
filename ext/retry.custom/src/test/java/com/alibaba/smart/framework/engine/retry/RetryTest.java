@@ -55,8 +55,8 @@ public class RetryTest {
 
         //3. 部署流程定义
         RepositoryCommandService repositoryCommandService = smartEngine.getRepositoryCommandService();
-        ProcessDefinition processDefinition = repositoryCommandService.deploy("diagram.bpmn");
-        Assert.assertEquals(11, processDefinition.getProcess().getElements().size());
+        ProcessDefinition processDefinition = repositoryCommandService.deploy("diagram.bpmn").getFirstProcessDefinition();
+        Assert.assertEquals(11, processDefinition.getBaseElementList().size());
 
         //4.启动流程实例
         Map<String, Object> request = new HashMap<String, Object>();

@@ -41,7 +41,7 @@ public class MysqlTransactionTest extends DatabaseBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("usertask-servicetask-rollback.bpmn20.xml");
+                .deploy("usertask-servicetask-rollback.bpmn20.xml").getFirstProcessDefinition();
 
         ProcessInstance processInstance = transactionHelper.start(processCommandService, processDefinition);
 

@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
              id="parallel-gateway-usertask-process"
              targetNamespace="smart" version="2.0.0">
-    <process id="Process_1" isExecutable="false">
+    <process id="Process_1" isExecutable="false" version="3.0.0">
         <startEvent id="startEvent"/>
 
         <serviceTask id="createOrder" name="createOrder"/>

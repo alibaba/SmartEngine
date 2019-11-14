@@ -4,7 +4,7 @@
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
              targetNamespace="Examples">
 
-    <process id="multi-instance-user-task">
+    <process id="multi-instance-user-task" version="1.0.2">
 
         <startEvent id="theStart"/>
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="multiUserTask"/>

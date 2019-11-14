@@ -40,7 +40,7 @@ public class MultiInstanceCompatibleAnyModelPassedTest extends DatabaseBaseTestC
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-                .deploy("compatible-any-passed.bpmn20.xml");
+                .deploy("compatible-any-passed.bpmn20.xml").getFirstProcessDefinition();
 
 
         //4.启动流程实例

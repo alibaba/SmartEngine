@@ -34,7 +34,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         String  processDefinitionContent = createDeploymentCommand.getProcessDefinitionContent();
 
-        ProcessDefinition processDefinition =  repositoryCommandService.deployWithUTF8Content(processDefinitionContent);
+        ProcessDefinition processDefinition =  repositoryCommandService.deployWithUTF8Content(processDefinitionContent).getFirstProcessDefinition();
 
         DeploymentInstance deploymentInstance  = new DefaultDeploymentInstance();
 

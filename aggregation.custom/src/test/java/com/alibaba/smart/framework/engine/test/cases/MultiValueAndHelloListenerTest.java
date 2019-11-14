@@ -25,8 +25,8 @@ public class MultiValueAndHelloListenerTest extends CustomBaseTestCase {
     public void testDemo() throws Exception {
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("MultiValueAndEventListenerTest.bpmn.xml");
-        Assert.assertEquals(7, processDefinition.getProcess().getElements().size());
+            .deploy("MultiValueAndEventListenerTest.bpmn.xml").getFirstProcessDefinition();
+        Assert.assertEquals(7, processDefinition.getBaseElementList().size());
 
 
         Map<String, Object> request = new HashMap<String, Object>();

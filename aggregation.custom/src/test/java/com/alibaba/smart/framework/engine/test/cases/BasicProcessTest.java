@@ -24,8 +24,8 @@ public class BasicProcessTest extends CustomBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("basic-process.bpmn.xml");
-        assertEquals(16, processDefinition.getProcess().getElements().size());
+            .deploy("basic-process.bpmn.xml").getFirstProcessDefinition();
+        assertEquals(16, processDefinition.getBaseElementList().size());
 
         //4.启动流程实例
         Map<String, Object> request = new HashMap<String, Object>();

@@ -4,7 +4,7 @@
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
              targetNamespace="Examples">
 
-    <process id="test" isExecutable="true">
+    <process id="simpleCallActivity" isExecutable="true" version="2.0.0">
 
         <startEvent id="theStart"></startEvent>
 

@@ -25,8 +25,8 @@ public class MockProcessInstanceTest extends CustomBaseTestCase {
 
 
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("mockProcessInstance.bpmn.xml");
-        assertEquals(12, processDefinition.getProcess().getElements().size());
+            .deploy("mockProcessInstance.bpmn.xml").getFirstProcessDefinition();
+        assertEquals(12, processDefinition.getBaseElementList().size());
 
         //4.启动流程实例
         Map<String, Object> request = new HashMap<String, Object>();
@@ -64,7 +64,7 @@ public class MockProcessInstanceTest extends CustomBaseTestCase {
     private ProcessInstance persisteAndUpdateThreadLocal(InstanceStatus instanceStatus,
                                                          String processDefinitionActivityId) {
 
-        ProcessInstance processInstance = InstanceSerializerFacade.mockSimpleProcessInstance("mock_trade_process_test",
+        ProcessInstance processInstance = InstanceSerializerFacade.mockSimpleProcessInstance("Process_1",
             "1.0.0", instanceStatus, processDefinitionActivityId);
         PersisterSession.currentSession().putProcessInstance(processInstance);
         return processInstance;
