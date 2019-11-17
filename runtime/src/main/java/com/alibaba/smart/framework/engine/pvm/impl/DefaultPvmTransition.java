@@ -42,7 +42,7 @@ public class DefaultPvmTransition extends AbstractPvmElement<Transition> impleme
     //    PvmActivity targetPvmActivity = this.getTarget();
     //    context.setSourcePvmActivity(this.getSource());
     //    //重要: 执行当前节点,会触发当前节点的行为执行
-    //    targetPvmActivity.enter(context);
+    //    targetPvmActivity.jump(context);
     //}
     //
     //@Override

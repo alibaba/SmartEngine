@@ -16,6 +16,11 @@ public interface ProcessDefinition extends ExtensionBasedElement {
     String getVersion();
     void setVersion(String version);
 
+    String getIdAndVersion();
+
+    void setIdAndVersion(String idAndVersion);
+    
+
     List<BaseElement> getBaseElementList();
 
     void setBaseElementList( List<BaseElement> elementList);

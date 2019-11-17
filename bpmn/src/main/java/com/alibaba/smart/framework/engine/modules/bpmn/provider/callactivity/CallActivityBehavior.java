@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
@@ -57,9 +58,9 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
         subContext.setProcessEngineConfiguration(processEngineConfiguration);
         subContext.setRequest(context.getRequest());
 
-        PvmProcessDefinition pvmProcessDefinition = this.extensionPointRegistry.getExtensionPoint(
-            ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinitionId, version);
-        subContext.setPvmProcessDefinition(pvmProcessDefinition);
+        ProcessDefinition pvmProcessDefinition = this.extensionPointRegistry.getExtensionPoint(
+            ProcessDefinitionContainer.class).getProcessDefinition(processDefinitionId, version);
+        subContext.setProcessDefinition(pvmProcessDefinition);
 
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();

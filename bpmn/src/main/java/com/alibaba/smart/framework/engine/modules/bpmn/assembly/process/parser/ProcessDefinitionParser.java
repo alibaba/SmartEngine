@@ -8,6 +8,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.common.util.IdAndVersionBuilder;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -39,10 +40,11 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
     @Override
     public ProcessDefinition parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
 
-        ProcessDefinition process = new ProcessDefinitionImpl();
-        process.setId(XmlParseUtil.getString(reader, "id"));
-        process.setVersion(XmlParseUtil.getString(reader, "version"));
-        process.setName(XmlParseUtil.getString(reader, "name"));
+        ProcessDefinition processDefinition = new ProcessDefinitionImpl();
+        processDefinition.setId(XmlParseUtil.getString(reader, "id"));
+        processDefinition.setVersion(XmlParseUtil.getString(reader, "version"));
+        processDefinition.setName(XmlParseUtil.getString(reader, "name"));
+        processDefinition.setIdAndVersion(IdAndVersionBuilder.buildProcessDefinitionKey(processDefinition.getId(),processDefinition.getVersion()));
 
 
         //TODO 去掉所有的 new list 调用
@@ -63,10 +65,10 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
             }
         }
 
-        process.setBaseElementList(elements);
-        process.setIdBasedElementMap(idBasedElementMap);
+        processDefinition.setBaseElementList(elements);
+        processDefinition.setIdBasedElementMap(idBasedElementMap);
 
-        return process;
+        return processDefinition;
     }
 
 }

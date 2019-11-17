@@ -50,7 +50,7 @@
 //    }
 //
 //    @Override
-//    public void enter(PvmActivity pvmActivity, ExecutionContext context) {
+//    public void jump(PvmActivity pvmActivity, ExecutionContext context) {
 //
 //        ActivityInstance activityInstance = context.getActivityInstance();
 //

@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 public class DefaultPvmProcessDefinition implements PvmProcessDefinition {
 
-    private String uri;
+    private String idAndVersion;
 
     private String id;
 

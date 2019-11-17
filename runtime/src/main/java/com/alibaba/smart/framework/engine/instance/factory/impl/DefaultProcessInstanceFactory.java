@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -19,7 +20,7 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
     @Override
     public ProcessInstance create(ExecutionContext executionContext) {
-        PvmProcessDefinition pvmProcessDefinition = executionContext.getPvmProcessDefinition();
+        ProcessDefinition   processDefinition = executionContext.getProcessDefinition();
         DefaultProcessInstance defaultProcessInstance = new DefaultProcessInstance();
         IdGenerator idGenerator = executionContext.getProcessEngineConfiguration().getIdGenerator();
 
@@ -27,9 +28,9 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
         defaultProcessInstance.setStatus(InstanceStatus.running);
         defaultProcessInstance.setStartTime(DateUtil.getCurrentDate());
 
-        defaultProcessInstance.setProcessDefinitionIdAndVersion(pvmProcessDefinition.getUri());
-        defaultProcessInstance.setProcessDefinitionId(pvmProcessDefinition.getId());
-        defaultProcessInstance.setProcessDefinitionVersion(pvmProcessDefinition.getVersion());
+        defaultProcessInstance.setProcessDefinitionIdAndVersion(processDefinition.getIdAndVersion());
+        defaultProcessInstance.setProcessDefinitionId(processDefinition.getId());
+        defaultProcessInstance.setProcessDefinitionVersion(processDefinition.getVersion());
 
         Map<String, Object> request = executionContext.getRequest();
         if (null != request) {

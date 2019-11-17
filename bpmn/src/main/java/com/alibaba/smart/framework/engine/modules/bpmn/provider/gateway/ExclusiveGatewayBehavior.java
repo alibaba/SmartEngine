@@ -58,28 +58,8 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<Exclusive
 
 
             }else {
-                throw new EngineException("outcomeTransitions size shoud >= 2");
+                throw new EngineException("outComing transitions size should >= 2");
             }
         }
-
-        //if (isNotEmpty(outcomeTransitions)) {
-        //    List<PvmTransition> matchedTransitions = new ArrayList<PvmTransition>(outcomeTransitions.size());
-        //    for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
-        //        PvmTransition pendingTransition = transitionEntry.getValue();
-        //        boolean matched = pendingTransition.match(context);
-        //
-        //        if (matched) {
-        //            matchedTransitions.add(pendingTransition);
-        //        }
-        //
-        //    }
-        //    //TODO 针对互斥和并行网关的线要检验,返回值只有一个或者多个。如果无则抛异常。
-        //
-        //    for (PvmTransition matchedPvmTransition : matchedTransitions) {
-        //        matchedPvmTransition.execute(context);
-        //    }
-        //}
-
-
 
 }

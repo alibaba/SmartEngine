@@ -45,7 +45,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
         //tune 删除setNeedPause？
         context.setNeedPause(needPause);
-        //this.executePolicyBehavior.enter(this,context);
+        //this.executePolicyBehavior.jump(this,context);
 
         if (context.isNeedPause()) {
 

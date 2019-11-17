@@ -18,6 +18,7 @@ import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStor
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -90,14 +91,14 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         executionContext.setResponse(response);
 
 
-        PvmProcessDefinition pvmProcessDefinition = this.processDefinitionContainer.getPvmProcessDefinition(processDefinitionId,
+        ProcessDefinition processDefinition = this.processDefinitionContainer.getProcessDefinition(processDefinitionId,
             processDefinitionVersion);
 
-        if(null == pvmProcessDefinition){
+        if(null == processDefinition){
             throw new EngineException("No ProcessDefinition found for processDefinitionId : "+processDefinitionId+",processDefinitionVersion : " +processDefinitionVersion);
         }
 
-        executionContext.setPvmProcessDefinition(pvmProcessDefinition);
+        executionContext.setProcessDefinition(processDefinition);
 
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();

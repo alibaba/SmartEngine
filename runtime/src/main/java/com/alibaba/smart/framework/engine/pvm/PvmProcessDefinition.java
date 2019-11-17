@@ -15,13 +15,11 @@ public interface PvmProcessDefinition {
 
     String getVersion();
 
-    String getUri();
+    String getIdAndVersion();
 
-    void setUri(String uri);
+    void setIdAndVersion(String idAndVersion);
 
     PvmActivity getStartActivity();
-
-    ProcessDefinition getModel();
 
     Map<String, PvmActivity> getActivities();
 

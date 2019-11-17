@@ -3,14 +3,12 @@ package com.alibaba.smart.framework.engine.context.impl;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,7 +25,7 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private ActivityInstance activityInstance;
 
-    private PvmProcessDefinition pvmProcessDefinition;
+    private ProcessDefinition processDefinition;
 
     private ProcessEngineConfiguration processEngineConfiguration;
 
@@ -43,6 +41,5 @@ public class DefaultInstanceContext implements ExecutionContext {
 
     private Long blockId;
 
-    private PvmActivity sourcePvmActivity;
 
 }

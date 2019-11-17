@@ -17,6 +17,7 @@ import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStora
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
@@ -103,13 +104,17 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(
                 processInstance.getProcessDefinitionIdAndVersion());
+
+            ProcessDefinition processDefinition = this.processContainer.getProcessDefinition(
+                processInstance.getProcessDefinitionIdAndVersion());
+
             String processDefinitionActivityId = executionInstance.getProcessDefinitionActivityId();
             PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(processDefinitionActivityId);
 
             ExecutionContext executionContext = this.instanceContextFactory.create();
             executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
             executionContext.setProcessEngineConfiguration(processEngineConfiguration);
-            executionContext.setPvmProcessDefinition(pvmProcessDefinition);
+            executionContext.setProcessDefinition(processDefinition);
             executionContext.setProcessInstance(processInstance);
             executionContext.setExecutionInstance(executionInstance);
             executionContext.setActivityInstance(activityInstance);
@@ -139,9 +144,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
     @Override
     public ProcessInstance jump(String executionInstanceId, String activityId, Map<String, Object> request) {
-        if (StringUtil.isEmpty(activityId)){
-            return signal(executionInstanceId, request);
-        }
+
 
         ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
@@ -179,21 +182,25 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(
                 processInstance.getProcessDefinitionIdAndVersion());
 
+            ProcessDefinition processDefinition = this.processContainer.getProcessDefinition(
+                processInstance.getProcessDefinitionIdAndVersion());
+
             PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
 
             ExecutionContext executionContext = this.instanceContextFactory.create();
             executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
             executionContext.setProcessEngineConfiguration(processEngineConfiguration);
-            executionContext.setPvmProcessDefinition(pvmProcessDefinition);
+            executionContext.setProcessDefinition(processDefinition);
             executionContext.setProcessInstance(processInstance);
             executionContext.setExecutionInstance(executionInstance);
             executionContext.setActivityInstance(activityInstance);
             executionContext.setRequest(request);
 
+
             // TUNE 减少不必要的对象创建
             PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
-            ProcessInstance newProcessInstance = pvmProcessInstance.enter(pvmActivity, executionContext);
+            ProcessInstance newProcessInstance = pvmProcessInstance.jump(pvmActivity, executionContext);
 
             CommonServiceHelper.updateAndPersist(executionInstanceId, newProcessInstance, request,
                 extensionPointRegistry);

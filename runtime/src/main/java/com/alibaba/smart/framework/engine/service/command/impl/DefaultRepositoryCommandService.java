@@ -80,18 +80,18 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
        ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
 
-        ProcessDefinitionSource definition = this.parse(classLoader, classPathUri);
+        ProcessDefinitionSource processDefinitionSource = this.parse(classLoader, classPathUri);
 
-        putIntoContainer( definition);
+        buildPvmDefinition( processDefinitionSource);
 
-        return definition;
+        return processDefinitionSource;
     }
 
     @Override
     public ProcessDefinitionSource deploy(InputStream inputStream) {
         try {
             ProcessDefinitionSource processDefinitionSource = parseStream(inputStream);
-            putIntoContainer( processDefinitionSource);
+            buildPvmDefinition( processDefinitionSource);
 
             return processDefinitionSource;
         } catch (Exception e) {
@@ -136,7 +136,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             inputStream = classLoader.getResourceAsStream(uri);
 
             if(null == inputStream){
-                throw new IllegalArgumentException("Cant find any resources for the uri:"+uri);
+                throw new IllegalArgumentException("Cant find any resources for the idAndVersion:"+uri);
             }
 
             ProcessDefinitionSource processDefinitionSource = parseStream(inputStream);
@@ -177,12 +177,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @SuppressWarnings("rawtypes")
-    private void putIntoContainer(ProcessDefinitionSource processDefinitionSource) {
-
-        if (null == processDefinitionSource) {
-            throw new EngineException("null processDefinitionSource found");
-        }
-
+    private void buildPvmDefinition(ProcessDefinitionSource processDefinitionSource) {
 
         List<ProcessDefinition> processDefinitionList =  processDefinitionSource.getProcessDefinitionList();
 
@@ -193,11 +188,11 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
 
             if (StringUtil.isEmpty(processDefinitionSourceId) || StringUtil.isEmpty(version)) {
-                throw new EngineException("empty processDefinitionSourceId or version");
+                throw new EngineException("empty processDefinitionSourceId or version"+processDefinitionSource);
             }
 
 
-            PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(processDefinition, false);
+            PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(processDefinition);
 
             this.processContainer.install(pvmProcessDefinition, processDefinition);
 
@@ -207,7 +202,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @SuppressWarnings("rawtypes")
-    private PvmProcessDefinition buildPvmProcessDefinition(ProcessDefinition processDefinition,  boolean sub) {
+    private PvmProcessDefinition buildPvmProcessDefinition(ProcessDefinition processDefinition) {
 
 
         DefaultPvmProcessDefinition pvmProcessDefinition = new DefaultPvmProcessDefinition();

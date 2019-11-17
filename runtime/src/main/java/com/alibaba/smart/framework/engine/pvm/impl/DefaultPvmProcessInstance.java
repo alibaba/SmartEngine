@@ -1,6 +1,8 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -15,13 +17,16 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
     @Override
     public ProcessInstance start(ExecutionContext executionContext) {
 
-        PvmProcessDefinition pvmProcessDefinition = executionContext.getPvmProcessDefinition();
+        ProcessDefinition processDefinition = executionContext.getProcessDefinition();
+
+        PvmProcessDefinition pvmProcessDefinition = executionContext
+            .getExtensionPointRegistry().getExtensionPoint(
+                ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinition.getId(),
+                processDefinition.getVersion());
+
         PvmActivity pvmActivity = pvmProcessDefinition.getStartActivity();
 
-        // execute ENTER method
-        pvmActivity.enter( executionContext);
-
-        return executionContext.getProcessInstance();
+        return this.jump(pvmActivity,executionContext);
 
     }
 
@@ -29,7 +34,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
     @Override
     public ProcessInstance signal(PvmActivity pvmActivity, ExecutionContext executionContext) {
 
-        // execute EXECUTE method
+        //NOTATION: execute EXECUTE method
         pvmActivity.execute( executionContext);
 
         return executionContext.getProcessInstance();
@@ -37,9 +42,11 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
     }
 
     @Override
-    public ProcessInstance enter(PvmActivity pvmActivity, ExecutionContext executionContext) {
+    public ProcessInstance jump(PvmActivity pvmActivity, ExecutionContext executionContext) {
+
         pvmActivity.enter(executionContext);
         return executionContext.getProcessInstance();
+
     }
 
 }

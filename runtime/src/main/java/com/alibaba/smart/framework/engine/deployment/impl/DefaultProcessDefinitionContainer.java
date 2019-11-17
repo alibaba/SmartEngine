@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.deployment.impl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.alibaba.smart.framework.engine.common.util.IdAndVersionBuilder;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -38,7 +39,8 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
         String processDefinitionId = pvmProcessDefinition.getId();
         String version = pvmProcessDefinition.getVersion();
 
-        String uniqueKey = this.buildProcessDefinitionKey(processDefinitionId, version);
+        String uniqueKey = IdAndVersionBuilder.buildProcessDefinitionKey(processDefinitionId, version);
+
         this.installPvmProcessDefinition(uniqueKey, pvmProcessDefinition);
         this.installProcessDefinition(uniqueKey,processDefinition);
 
@@ -46,7 +48,7 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     @Override
     public void uninstall(String processDefinitionId, String version) {
-        String uniqueKey = this.buildProcessDefinitionKey(processDefinitionId, version);
+        String uniqueKey = IdAndVersionBuilder.buildProcessDefinitionKey(processDefinitionId, version);
         this.pvmProcessDefinitionConcurrentHashMap.remove(uniqueKey);
         this.processDefinitionConcurrentHashMap.remove(uniqueKey);
 
@@ -54,7 +56,7 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     @Override
     public PvmProcessDefinition getPvmProcessDefinition(String processDefinitionId, String version) {
-        String uri = this.buildProcessDefinitionKey(processDefinitionId, version);
+        String uri = IdAndVersionBuilder.buildProcessDefinitionKey(processDefinitionId, version);
         return this.getPvmProcessDefinition(uri);
     }
 
@@ -66,7 +68,7 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     @Override
     public ProcessDefinition getProcessDefinition(String processDefinitionId, String version) {
-        String uri = this.buildProcessDefinitionKey(processDefinitionId, version);
+        String uri = IdAndVersionBuilder.buildProcessDefinitionKey(processDefinitionId, version);
         return this.getProcessDefinition(uri);
     }
 
@@ -76,7 +78,7 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
     }
 
     private void installPvmProcessDefinition(String uri, PvmProcessDefinition pvmProcessDefinition) {
-        pvmProcessDefinition.setUri(uri);
+        pvmProcessDefinition.setIdAndVersion(uri);
 
         PvmProcessDefinition existedPvmProcessDefinition = pvmProcessDefinitionConcurrentHashMap.get(uri);
         if(null!= existedPvmProcessDefinition){
@@ -97,13 +99,6 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
         this.processDefinitionConcurrentHashMap.put(uri, processDefinition);
     }
 
-    private String buildProcessDefinitionKey(String processDefinitionId, String version) {
-        StringBuilder uriBuilder = new StringBuilder();
-        uriBuilder.append(processDefinitionId);
-        uriBuilder.append(":").append(version);
-
-        return uriBuilder.toString();
-    }
 
 
 }

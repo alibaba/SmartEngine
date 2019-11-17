@@ -14,9 +14,5 @@ public interface PvmElement<M extends ExtensionBasedElement> extends Invoker, Li
 
     M getModel();
 
-    void setInvoker(Invoker invoker);
 
-    void setPrepareExtensionInvokers(List<Invoker> prepareExtensionInvokers);
-
-    void setExtensionInvokers(List<Invoker> extensionInvokers);
 }
