@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.modules.smart.assembly.extension;
+package com.alibaba.smart.framework.engine.listener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
+import com.alibaba.smart.framework.engine.listener.EventListener;
 
 import lombok.Data;
 
@@ -15,6 +16,6 @@ import lombok.Data;
 @Data
 public class EventListenerAggregation {
 
-    private Map<String, List<JavaDelegation>> eventListenerMap = MapUtil.newHashMap();
+    private Map<String, List<EventListener>> eventListenerMap = MapUtil.newHashMap();
 
 }

@@ -2,9 +2,12 @@ package com.alibaba.smart.framework.engine.modules.smart.assembly.extension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
+import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
@@ -23,16 +26,26 @@ public class Properties implements Extension {
 
     @Override
     public String getType() {
-        return "Properties";
+        return ExtensionElementsConstant.PROPERTIES;
     }
 
     @Override
-    public Object decorate(ExtensionElements extensionElements) {
-        for (Value value : extensionList) {
-            //FIXME
-            //extensionElements.getProperties().put(value.getName(),value.getValue());
+    public void decorate(ExtensionElements extensionElements) {
+        Map map =  (Map)extensionElements.getDecorationMap().get(getType());
+
+        if(null == map){
+            map = MapUtil.newHashMap();
+            extensionElements.getDecorationMap().put(this.getType(),map);
         }
-        return "";
+
+
+        for (Value value : extensionList) {
+            map.put(value.getName(),value.getValue());
+        }
+
+
     }
+
+
 
 }

@@ -11,7 +11,7 @@
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="create"/>
 
 
-        <serviceTask id="create" name="Create">
+        <serviceTask id="create" name="Create" smart:class="com.alibaba.smart.framework.engine.test.delegation.Tracker">
             <extensionElements>
                 <smart:value name="task1" value="Create task"/>
                 <smart:executionListener event="ACTIVITY_START"  class="com.alibaba.smart.framework.engine.test.StartListener"/>

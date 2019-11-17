@@ -9,6 +9,7 @@ import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.listener.EventListener;
+import com.alibaba.smart.framework.engine.listener.EventListenerAggregation;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -63,15 +64,18 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         ExtensionElements extensionElements = this.getModel().getExtensionElements();
         if(null != extensionElements){
 
-            //FIXME
-            //EventList extension = extensionElements.getExtension(ExtensionElementsConstant.EXECUTION_LISTENER);
-            //List<String> listenerList = (List<String>)extension
-            //if(CollectionUtil.isNotEmpty(listenerList)){
-            //    for (String listener : listenerList) {
-            //        EventListener newInstance = (EventListener)ClassLoaderUtil.createNewInstance(listener);
-            //        newInstance.execute(context);
-            //    }
-            //}
+            EventListenerAggregation extension = (EventListenerAggregation)extensionElements.getDecorationMap().get(ExtensionElementsConstant.EXECUTION_LISTENER);
+
+            if(null !=  extension){
+                List<EventListener> listenerList = extension.getEventListenerMap().get(event);
+                if(CollectionUtil.isNotEmpty(listenerList)){
+                    for (EventListener listener : listenerList) {
+                        listener.execute(context);
+                    }
+                }
+            }
+
+
         }
 
     }

@@ -89,6 +89,8 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             throw new ConcurrentException("The status of signaled executionInstance should be active");
 
         }
+
+
         try {
 
             //!!! 重要
@@ -111,14 +113,9 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             String processDefinitionActivityId = executionInstance.getProcessDefinitionActivityId();
             PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(processDefinitionActivityId);
 
-            ExecutionContext executionContext = this.instanceContextFactory.create();
-            executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
-            executionContext.setProcessEngineConfiguration(processEngineConfiguration);
-            executionContext.setProcessDefinition(processDefinition);
-            executionContext.setProcessInstance(processInstance);
-            executionContext.setExecutionInstance(executionInstance);
-            executionContext.setActivityInstance(activityInstance);
-            executionContext.setRequest(request);
+            ExecutionContext executionContext = createExecutionContext(request, processEngineConfiguration,
+                executionInstance,
+                activityInstance, processInstance, processDefinition);
             executionContext.setResponse(response);
 
             // TUNE 减少不必要的对象创建
@@ -187,15 +184,9 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
 
-            ExecutionContext executionContext = this.instanceContextFactory.create();
-            executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
-            executionContext.setProcessEngineConfiguration(processEngineConfiguration);
-            executionContext.setProcessDefinition(processDefinition);
-            executionContext.setProcessInstance(processInstance);
-            executionContext.setExecutionInstance(executionInstance);
-            executionContext.setActivityInstance(activityInstance);
-            executionContext.setRequest(request);
-
+            ExecutionContext executionContext = createExecutionContext(request, processEngineConfiguration,
+                executionInstance, activityInstance, processInstance,
+                processDefinition);
 
             // TUNE 减少不必要的对象创建
             PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
@@ -209,6 +200,23 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         } finally {
             unLock(processEngineConfiguration, executionInstance.getProcessInstanceId());
         }
+    }
+
+    protected ExecutionContext createExecutionContext(Map<String, Object> request,
+                                                      ProcessEngineConfiguration processEngineConfiguration,
+                                                      ExecutionInstance executionInstance,
+                                                      ActivityInstance activityInstance,
+                                                      ProcessInstance processInstance,
+                                                      ProcessDefinition processDefinition) {
+        ExecutionContext executionContext = this.instanceContextFactory.create();
+        executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
+        executionContext.setProcessEngineConfiguration(processEngineConfiguration);
+        executionContext.setProcessDefinition(processDefinition);
+        executionContext.setProcessInstance(processInstance);
+        executionContext.setExecutionInstance(executionInstance);
+        executionContext.setActivityInstance(activityInstance);
+        executionContext.setRequest(request);
+        return executionContext;
     }
 
     private void tryLock(ProcessEngineConfiguration processEngineConfiguration,

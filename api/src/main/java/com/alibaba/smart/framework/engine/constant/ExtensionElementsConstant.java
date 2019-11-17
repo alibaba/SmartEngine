@@ -7,4 +7,7 @@ public interface ExtensionElementsConstant {
 
     String EXECUTION_LISTENER ="ExecutionListener";
 
+    String PROPERTIES = "Properties";
+
+
 }

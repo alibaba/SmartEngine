@@ -12,6 +12,8 @@ import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by ettear on 16-4-29.
@@ -22,7 +24,6 @@ public class ExtensionElementsImpl implements ExtensionElements {
     private static final long serialVersionUID = -5080932640599337544L;
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "extensionElements");
 
-
     private List<Extension> extensionList = new ArrayList<Extension>();
 
     private Map<String,Object> decorationMap = new HashMap<String, Object>();
@@ -32,14 +33,9 @@ public class ExtensionElementsImpl implements ExtensionElements {
 
         this.extensionList.add(extension);
 
-        Object decorationResult = extension.decorate(this);
+        extension.decorate(this);
 
-        decorationMap.put(extension.getType(),decorationResult);
     }
 
-    @Override
-    public Object getExtension(String key) {
-        return decorationMap.get(key);
-    }
 
 }

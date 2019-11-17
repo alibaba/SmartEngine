@@ -6,7 +6,7 @@ import lombok.Setter;
 /**
  * @author 高海军 帝奇  2016.11.11
  */
-
+@Deprecated
 public class TccResult {
 
     private TccResult(){

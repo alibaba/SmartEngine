@@ -6,9 +6,9 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
-import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
-import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
+import com.alibaba.smart.framework.engine.listener.EventListener;
+import com.alibaba.smart.framework.engine.listener.EventListenerAggregation;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
@@ -36,20 +36,21 @@ public class ExecutionListener  implements Extension {
     }
 
     @Override
-    public Object decorate(ExtensionElements extensionElements) {
-        EventListenerAggregation eventListenerAggregation =  (EventListenerAggregation)extensionElements.getExtension(getType());
+    public void decorate(ExtensionElements extensionElements) {
+        EventListenerAggregation eventListenerAggregation =  (EventListenerAggregation)extensionElements.getDecorationMap().get(getType());
 
         if(null == eventListenerAggregation){
             eventListenerAggregation = new EventListenerAggregation();
+            extensionElements.getDecorationMap().put(this.getType(),eventListenerAggregation);
         }
 
         for (String event : events) {
 
-            JavaDelegation listener = (JavaDelegation)ClassLoaderUtil.createNewInstance(this.listener);
+            EventListener listener = (EventListener)ClassLoaderUtil.createNewInstance(this.listener);
 
-            Map<String, List<JavaDelegation>> eventListenerMap = eventListenerAggregation.getEventListenerMap();
+            Map<String, List<EventListener>> eventListenerMap = eventListenerAggregation.getEventListenerMap();
 
-            List<JavaDelegation> javaDelegationList = eventListenerMap.get(event);
+            List<EventListener> javaDelegationList = eventListenerMap.get(event);
 
                 if(CollectionUtil.isNotEmpty(javaDelegationList)){
                     javaDelegationList.add(listener );
@@ -63,7 +64,11 @@ public class ExecutionListener  implements Extension {
                 }
 
             }
-        return eventListenerAggregation;
+
+
     }
+
+
+
 
 }

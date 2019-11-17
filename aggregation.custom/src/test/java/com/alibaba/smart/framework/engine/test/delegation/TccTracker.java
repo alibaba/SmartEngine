@@ -2,16 +2,14 @@ package com.alibaba.smart.framework.engine.test.delegation;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
+import com.alibaba.smart.framework.engine.listener.EventListener;
 
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-public class TccTracker implements JavaDelegation {
-    public TccTracker() {
-        String text = "";
+public class TccTracker implements EventListener {
 
-    }
 
     @Override
     public void execute(ExecutionContext executionContext) {

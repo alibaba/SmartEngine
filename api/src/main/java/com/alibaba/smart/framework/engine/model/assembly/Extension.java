@@ -9,6 +9,6 @@ public interface Extension extends NoneIdBasedElement {
 
     String getType();
 
-    Object decorate(ExtensionElements extensionElements);
+    void decorate(ExtensionElements extensionElements);
 
 }

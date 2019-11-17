@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionBasedElement;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 
 import lombok.Getter;
 import org.junit.Assert;
@@ -21,10 +24,21 @@ public class RightJavaDelegation implements JavaDelegation {
 
     @Override
     public void execute(ExecutionContext executionContext) {
-        Map<String, Object> request = executionContext.getRequest();
-        if (null != request) {
-            Assert.assertEquals("right", request.get("value"));
-        }
+
+        String processDefinitionActivityId =  executionContext.getExecutionInstance().getProcessDefinitionActivityId();
+
+        ExtensionBasedElement idBasedElement = (ExtensionBasedElement)executionContext.getProcessDefinition().getIdBasedElementMap().get(
+            processDefinitionActivityId);
+
+        ExtensionElements extensionElements = idBasedElement.getExtensionElements();
+
+            Map map = (Map)extensionElements.getDecorationMap().get(
+                ExtensionElementsConstant.PROPERTIES);
+
+        Assert.assertEquals("right", map.get("value"));
+
+
+
 
     }
 
