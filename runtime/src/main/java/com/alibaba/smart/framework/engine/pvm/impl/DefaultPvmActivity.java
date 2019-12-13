@@ -11,7 +11,6 @@ import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFact
 import com.alibaba.smart.framework.engine.listener.EventListener;
 import com.alibaba.smart.framework.engine.listener.EventListenerAggregation;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
-import com.alibaba.smart.framework.engine.provider.ExecutePolicyBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
@@ -29,7 +28,6 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
     protected ActivityInstanceFactory activityInstanceFactory;
     protected ExecutionInstanceFactory executionInstanceFactory;
-    private ExecutePolicyBehavior executePolicyBehavior;
 
     public DefaultPvmActivity(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

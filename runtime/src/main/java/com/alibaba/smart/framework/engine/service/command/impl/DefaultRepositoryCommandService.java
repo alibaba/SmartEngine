@@ -276,8 +276,10 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                 runtimeTransition.setSource(source);
                 runtimeTransition.setTarget(target);
+
                 source.addOutcomeTransition(runtimeTransition.getModel().getId(), runtimeTransition);
                 target.addIncomeTransition(runtimeTransition.getModel().getId(), runtimeTransition);
+
             }
 
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
