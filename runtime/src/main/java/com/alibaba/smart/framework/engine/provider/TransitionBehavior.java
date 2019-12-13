@@ -11,6 +11,4 @@ public interface TransitionBehavior {
 
     boolean match(ExecutionContext context, ConditionExpression conditionExpression);
 
-    Object execute(ExecutionContext context);
-
 }
