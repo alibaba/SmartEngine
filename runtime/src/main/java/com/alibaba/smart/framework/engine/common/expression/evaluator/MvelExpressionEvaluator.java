@@ -7,7 +7,6 @@ import org.mvel2.compiler.ExecutableAccessor;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.alibaba.smart.framework.engine.common.util.MvelUtil;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;

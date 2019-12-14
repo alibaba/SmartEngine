@@ -268,30 +268,29 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
             // Process Transition Flow
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
-                DefaultPvmTransition runtimeTransition = (DefaultPvmTransition) runtimeTransitionEntry.getValue();
-                String sourceRef = runtimeTransition.getModel().getSourceRef();
-                String targetRef = runtimeTransition.getModel().getTargetRef();
+                DefaultPvmTransition pvmTransition = (DefaultPvmTransition) runtimeTransitionEntry.getValue();
+                String sourceRef = pvmTransition.getModel().getSourceRef();
+                String targetRef = pvmTransition.getModel().getTargetRef();
                 DefaultPvmActivity source = (DefaultPvmActivity) pvmActivityMap.get(sourceRef);
                 DefaultPvmActivity target = (DefaultPvmActivity) pvmActivityMap.get(targetRef);
 
-                runtimeTransition.setSource(source);
-                runtimeTransition.setTarget(target);
+                pvmTransition.setSource(source);
+                pvmTransition.setTarget(target);
 
-                source.addOutcomeTransition(runtimeTransition.getModel().getId(), runtimeTransition);
-                target.addIncomeTransition(runtimeTransition.getModel().getId(), runtimeTransition);
+                source.addOutcomeTransition(pvmTransition.getModel().getId(), pvmTransition);
+                target.addIncomeTransition(pvmTransition.getModel().getId(), pvmTransition);
 
             }
 
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
-                PvmTransition runtimeTransition = runtimeTransitionEntry.getValue();
-                //this.initElement(runtimeTransition);
+                PvmTransition pvmTransition = runtimeTransitionEntry.getValue();
 
                 Class aClass = extensionBindingResult.getBindings().get(TransitionBehavior.class.getName());
 
                 //TUNE 强转，使用instanceAcessor.
                 Object o = ClassLoaderUtil.createNewInstance(aClass);
 
-                runtimeTransition.setBehavior((TransitionBehavior)o);
+                pvmTransition.setBehavior((TransitionBehavior)o);
 
             }
 

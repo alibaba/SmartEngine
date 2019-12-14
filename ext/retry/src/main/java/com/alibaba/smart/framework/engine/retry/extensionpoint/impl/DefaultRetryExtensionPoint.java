@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.retry.extensionpoint.impl;
 
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.impl.AbstractPropertiesExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
@@ -15,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultRetryExtensionPoint extends AbstractPropertiesExtensionPointRegistry
     implements RetryExtensionPoint {
 
-    private Map<Class<?>, Object> retryFactories = new ConcurrentHashMap<Class<?>, Object>();
+    private Map<Class<?>, Object> retryFactories = MapUtil.newHashMap();
 
     public DefaultRetryExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

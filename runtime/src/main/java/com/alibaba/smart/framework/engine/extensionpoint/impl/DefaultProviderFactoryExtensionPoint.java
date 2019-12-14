@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
@@ -17,7 +18,7 @@ public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExte
     /**
      * Artifact处理器
      */
-    private Map<Class, ProviderFactory> providerFactories = new ConcurrentHashMap<Class, ProviderFactory>();
+    private Map<Class, ProviderFactory> providerFactories = MapUtil.newHashMap();
 
     public DefaultProviderFactoryExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

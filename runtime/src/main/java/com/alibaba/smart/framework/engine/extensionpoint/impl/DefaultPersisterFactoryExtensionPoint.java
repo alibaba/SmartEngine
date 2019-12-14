@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
@@ -12,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultPersisterFactoryExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements PersisterFactoryExtensionPoint {
 
 
-    private Map<Class<?>, Object> factories = new ConcurrentHashMap<Class<?>, Object>();
+    private Map<Class<?>, Object> factories = MapUtil.newHashMap();
 
     public DefaultPersisterFactoryExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
         super(extensionPointRegistry);

@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -23,9 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultXmlParserExtensionPoint  implements
     XmlParserExtensionPoint {
 
-    private Map<QName, ElementParser> artifactParsers = new ConcurrentHashMap<QName, ElementParser>();
+    private Map<QName, ElementParser> artifactParsers = MapUtil.newHashMap();
 
-    private Map<QName, AttributeParser> attributeParsers = new ConcurrentHashMap<QName, AttributeParser>();
+    private Map<QName, AttributeParser> attributeParsers = MapUtil.newHashMap();
 
     //public DefaultXmlParserExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
     //    super(extensionPointRegistry);

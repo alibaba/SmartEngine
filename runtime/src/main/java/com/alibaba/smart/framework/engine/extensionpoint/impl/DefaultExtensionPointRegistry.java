@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
@@ -18,7 +19,7 @@ public class DefaultExtensionPointRegistry extends AbstractPropertiesExtensionPo
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultExtensionPointRegistry.class);
 
-    private Map<Class<?>, Object> extensionPoints = new ConcurrentHashMap<Class<?>, Object>();
+    private Map<Class<?>, Object> extensionPoints = MapUtil.newHashMap();
 
     public DefaultExtensionPointRegistry(SmartEngine engine) {
         super.setExtensionPointRegistry(this);
