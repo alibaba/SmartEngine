@@ -30,14 +30,7 @@ public abstract class AbstractTransitionBehavior<T extends Transition> implement
         return false;
     }
 
-    @Override
-    public Object execute(ExecutionContext context) {
-        return null;
-    }
 
-    protected PvmTransition getRuntimeTransition() {
-        return runtimeTransition;
-    }
 
     protected T getModel() {
         return (T)this.runtimeTransition.getModel();

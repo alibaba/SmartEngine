@@ -14,10 +14,7 @@ import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.springframework.beans.BeansException;
-//import org.springframework.beans.factory.InitializingBean;
-//import org.springframework.context.ApplicationContext;
-//import org.springframework.context.ApplicationContextAware;
+
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -43,7 +40,6 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
     private MultiInstanceCounter multiInstanceCounter;
 
     private LockStrategy lockStrategy;
-    //protected boolean persisteVariableInstanceEnabled = false;
 
     private TableSchemaStrategy tableSchemaStrategy;
 
