@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.persister.mongo.service;
-import java.util.Date;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,14 +12,11 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant;
-import com.alibaba.smart.framework.engine.persister.mongo.entity.ProcessInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.mongo.entity.TaskAssigneeEntity;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
-import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,16 +25,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.ACTIVITY_INSTANCE_ID;
-import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.ASSIGNEE_USER_ID;
-import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.CLAIM_USER_ID;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.GMT_CREATE;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.MONGO_TEMPLATE;
-import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.PROCESS_DEFINITION_ACTIVITY_ID;
-import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.PROCESS_DEFINITION_TYPE;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.PROCESS_INSTANCE_ID;
-import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.STATUS;
-import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.TAG;
 
 /**
  * Created by 高海军 帝奇 74394 on 2018 October  21:52.

@@ -1,12 +1,11 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 @SuppressWarnings("rawtypes")

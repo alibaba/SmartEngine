@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.NoneIdBasedElement;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 

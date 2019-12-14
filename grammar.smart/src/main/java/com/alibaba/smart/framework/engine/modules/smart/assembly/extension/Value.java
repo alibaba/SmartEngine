@@ -6,7 +6,6 @@ import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
-import com.alibaba.smart.framework.engine.listener.EventListenerAggregation;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;

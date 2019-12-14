@@ -6,8 +6,6 @@ import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author 高海军 帝奇  2016.11.11

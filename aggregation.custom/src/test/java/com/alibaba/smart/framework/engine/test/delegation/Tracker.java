@@ -1,17 +1,12 @@
 package com.alibaba.smart.framework.engine.test.delegation;
 
-import java.util.List;
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
-import com.alibaba.smart.framework.engine.listener.EventListener;
-import com.alibaba.smart.framework.engine.listener.EventListenerAggregation;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionBasedElement;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
-import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 
 /**
  * @author ettear

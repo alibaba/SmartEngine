@@ -4,11 +4,11 @@
  */
 package com.alibaba.smart.framework.engine.persister.custom.session;
 
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
 /**
  * @author xuantian 2017-02-08 5:50 xuantian

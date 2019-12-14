@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.provider.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,7 +16,6 @@ import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactor
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;

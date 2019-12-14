@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -8,9 +10,6 @@ import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 默认扩展注册器实现 Created by ettear on 16-4-12.

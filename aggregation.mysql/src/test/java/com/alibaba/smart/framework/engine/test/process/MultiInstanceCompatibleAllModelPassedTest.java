@@ -8,8 +8,6 @@ import java.util.Map;
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
-import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
-import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -20,7 +18,9 @@ import com.alibaba.smart.framework.engine.service.param.command.CreateDeployment
 import com.alibaba.smart.framework.engine.service.param.query.PaginateQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
+import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
+import com.alibaba.smart.framework.engine.util.IOUtil;
 
 import org.junit.Assert;
 import org.junit.Test;

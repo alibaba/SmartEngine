@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 
 import com.alibaba.smart.framework.engine.persister.database.entity.RetryRecordEntity;
-import com.alibaba.smart.framework.engine.retry.model.instance.RetryRecord;
+
 import org.springframework.stereotype.Repository;
 
 /**

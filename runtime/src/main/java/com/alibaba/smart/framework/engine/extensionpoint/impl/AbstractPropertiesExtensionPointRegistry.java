@@ -1,12 +1,5 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
-import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
-import com.alibaba.smart.framework.engine.util.IOUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -14,6 +7,14 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
+
+import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
+import com.alibaba.smart.framework.engine.util.IOUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 配置文件扩展点 Created by ettear on 16-4-12.

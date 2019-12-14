@@ -1,9 +1,5 @@
 package com.alibaba.smart.framework.engine.model.assembly.impl;
 
-import java.util.Map;
-
-import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

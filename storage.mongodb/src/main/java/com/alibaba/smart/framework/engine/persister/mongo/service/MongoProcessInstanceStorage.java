@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.persister.mongo.service;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
@@ -12,11 +12,9 @@ import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
-import com.alibaba.smart.framework.engine.persister.mongo.entity.ExecutionInstanceEntity;
 import com.alibaba.smart.framework.engine.persister.mongo.entity.ProcessInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 
@@ -28,7 +26,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import static com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant.NOT_IMPLEMENT_INTENTIONALLY;
-import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.ACTIVITY_INSTANCE_ID;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.GMT_CREATE;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.MONGO_TEMPLATE;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.PROCESS_INSTANCE_ID;

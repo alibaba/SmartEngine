@@ -1,5 +1,9 @@
 package com.alibaba.smart.framework.engine.persister.util;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
@@ -7,10 +11,6 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  11:54.

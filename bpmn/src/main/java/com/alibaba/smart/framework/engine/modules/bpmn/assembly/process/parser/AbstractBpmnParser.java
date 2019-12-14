@@ -6,10 +6,9 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionBasedElement;
-
-import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;

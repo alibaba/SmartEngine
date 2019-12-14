@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.configuration;
 
-import java.util.Set;
-
 import com.alibaba.smart.framework.engine.exception.LockException;
 
 /**

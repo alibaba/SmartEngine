@@ -6,9 +6,9 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance.ActivitiCollection;
-import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.AttributeParser;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.AttributeParser;
+import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 
 /**
  * @author ettear

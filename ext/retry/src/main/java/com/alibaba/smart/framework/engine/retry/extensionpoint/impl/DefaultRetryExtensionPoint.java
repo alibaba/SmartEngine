@@ -1,13 +1,12 @@
 package com.alibaba.smart.framework.engine.retry.extensionpoint.impl;
 
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.extensionpoint.impl.AbstractPropertiesExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extensionpoint.impl.AbstractPropertiesExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.retry.RetryExtensionPoint;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author zhenhong.tzh

@@ -6,7 +6,6 @@ import com.alibaba.smart.framework.engine.model.assembly.Transition;
 import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

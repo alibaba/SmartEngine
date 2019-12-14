@@ -1,8 +1,7 @@
 package com.alibaba.smart.framework.engine.persister.mongo.service;
 
-import java.util.Collections;
 import java.util.ArrayList;
-
+import java.util.Collections;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;

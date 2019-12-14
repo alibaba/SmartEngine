@@ -7,9 +7,6 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
-import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
-import com.alibaba.smart.framework.engine.test.process.DefaultLockStrategy;
-import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -18,10 +15,13 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.param.command.CreateDeploymentCommand;
 import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
+import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.CustomVariablePersister;
+import com.alibaba.smart.framework.engine.test.process.DefaultLockStrategy;
 import com.alibaba.smart.framework.engine.test.process.DefaultMultiInstanceCounter;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
+import com.alibaba.smart.framework.engine.util.IOUtil;
 
 import org.junit.Assert;
 import org.junit.Test;

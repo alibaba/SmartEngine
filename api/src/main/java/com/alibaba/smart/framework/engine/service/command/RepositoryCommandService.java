@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.service.command;
 
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource;
-
 import java.io.InputStream;
+
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource;
 
 /**
  *

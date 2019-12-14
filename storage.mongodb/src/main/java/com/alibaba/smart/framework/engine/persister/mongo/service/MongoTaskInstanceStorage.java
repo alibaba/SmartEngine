@@ -1,26 +1,22 @@
 package com.alibaba.smart.framework.engine.persister.mongo.service;
-import java.util.Date;
-
-import com.alibaba.smart.framework.engine.common.util.DateUtil;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.persister.mongo.entity.TaskAssigneeEntity;
-import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
-import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
-import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
-import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
+import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
+import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant;
+import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
-import com.alibaba.smart.framework.engine.persister.mongo.entity.ProcessInstanceEntity;
+import com.alibaba.smart.framework.engine.persister.mongo.entity.TaskAssigneeEntity;
 import com.alibaba.smart.framework.engine.persister.mongo.entity.TaskInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
@@ -33,7 +29,15 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.*;
+import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.ACTIVITY_INSTANCE_ID;
+import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.CLAIM_USER_ID;
+import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.GMT_CREATE;
+import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.MONGO_TEMPLATE;
+import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.PROCESS_DEFINITION_ACTIVITY_ID;
+import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.PROCESS_DEFINITION_TYPE;
+import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.PROCESS_INSTANCE_ID;
+import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.STATUS;
+import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.TAG;
 
 
 /**

@@ -1,9 +1,9 @@
 package com.alibaba.smart.framework.engine.retry;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author zhenhong.tzh

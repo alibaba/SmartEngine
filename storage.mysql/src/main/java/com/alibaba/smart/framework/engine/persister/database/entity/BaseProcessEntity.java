@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.persister.database.entity;
 
-import lombok.Data;
-
 import java.util.Date;
+
+import lombok.Data;
 
 @Data
 public class BaseProcessEntity {

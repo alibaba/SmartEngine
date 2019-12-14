@@ -1,9 +1,9 @@
 package com.alibaba.smart.framework.engine.service.param.query;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.List;
 
 /**
  * Created by jerry.zzy on 2017/11/16.

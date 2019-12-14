@@ -4,7 +4,6 @@ import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.model.assembly.NoneIdBasedElement;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpressionImpl;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 /**

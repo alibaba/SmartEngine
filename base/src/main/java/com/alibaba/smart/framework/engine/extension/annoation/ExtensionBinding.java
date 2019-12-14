@@ -6,9 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.alibaba.smart.framework.engine.extension.lookup.AnnotationLookup;
-import com.alibaba.smart.framework.engine.extension.lookup.PlaceHolderAnnotationLookup;
-
 /**
  * Created by 高海军 帝奇 74394 on  2019-08-25 21:36.
  */

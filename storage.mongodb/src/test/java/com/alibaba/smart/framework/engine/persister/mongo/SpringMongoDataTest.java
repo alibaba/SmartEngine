@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.persister.mongo;
 
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.TableSchemaNaming;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;

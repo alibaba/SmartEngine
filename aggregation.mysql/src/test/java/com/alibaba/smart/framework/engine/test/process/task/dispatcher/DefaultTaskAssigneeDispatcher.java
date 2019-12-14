@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
-import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
-import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 January  18:03.

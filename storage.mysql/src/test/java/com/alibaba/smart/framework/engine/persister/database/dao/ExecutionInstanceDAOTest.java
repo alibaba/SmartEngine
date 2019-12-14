@@ -1,11 +1,12 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 
+import javax.annotation.Resource;
+
 import com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.annotation.Resource;
 
 public class ExecutionInstanceDAOTest extends BaseElementTest {
 

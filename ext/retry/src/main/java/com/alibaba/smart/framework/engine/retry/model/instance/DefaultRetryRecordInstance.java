@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.retry.model.instance;
 
-import lombok.Data;
-
 import java.util.Map;
+
+import lombok.Data;
 
 /**
  * @author zhenhong.tzh

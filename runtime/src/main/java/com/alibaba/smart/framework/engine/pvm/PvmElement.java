@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.pvm;
 
-import java.util.List;
-
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionBasedElement;
 

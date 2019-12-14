@@ -19,7 +19,6 @@ import com.alibaba.smart.framework.engine.service.command.RepositoryCommandServi
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.test.AliPayIdGenerator;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 

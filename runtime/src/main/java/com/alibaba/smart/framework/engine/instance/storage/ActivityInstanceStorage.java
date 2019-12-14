@@ -1,9 +1,9 @@
 package com.alibaba.smart.framework.engine.instance.storage;
 
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-
-import java.util.List;
 
 
 public interface ActivityInstanceStorage {

@@ -13,7 +13,6 @@ import com.alibaba.smart.framework.engine.listener.EventListenerAggregation;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
-import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

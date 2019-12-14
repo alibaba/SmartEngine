@@ -4,7 +4,6 @@ import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * @author 高海军 帝奇  2016.11.11

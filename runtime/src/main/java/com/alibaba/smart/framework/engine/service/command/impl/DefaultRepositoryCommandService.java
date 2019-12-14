@@ -21,39 +21,40 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extension.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
-import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
-import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
-import com.alibaba.smart.framework.engine.util.IOUtil;
-import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
+import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
+import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmActivity;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessDefinition;
-//import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
+import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
+import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
+import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+
+//import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 
 
 /**

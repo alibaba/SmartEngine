@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;

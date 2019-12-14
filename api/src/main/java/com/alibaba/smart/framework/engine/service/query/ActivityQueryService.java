@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.service.query;
 
-import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-
 import java.util.List;
+
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 
 /**
  * 流程节点查询服务，主要用来显示流程操作轨迹。

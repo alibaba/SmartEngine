@@ -1,7 +1,9 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
-import java.util.Date;
+
 import java.util.List;
 import java.util.Random;
+
+import javax.annotation.Resource;
 
 import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
@@ -10,8 +12,6 @@ import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.annotation.Resource;
 
 public class ProcessInstanceDAOTest extends BaseElementTest {
 

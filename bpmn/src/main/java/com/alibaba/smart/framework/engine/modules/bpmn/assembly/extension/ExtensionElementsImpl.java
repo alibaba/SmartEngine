@@ -12,8 +12,6 @@ import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Created by ettear on 16-4-29.

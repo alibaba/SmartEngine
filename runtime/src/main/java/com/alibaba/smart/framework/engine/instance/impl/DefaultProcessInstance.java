@@ -1,14 +1,15 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Default Process Instance Created by ettear on 16-4-12.

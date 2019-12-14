@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.service.param.query;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * Created by yueyu.yr on 2017/9/22.

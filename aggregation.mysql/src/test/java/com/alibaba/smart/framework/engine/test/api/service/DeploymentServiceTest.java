@@ -4,6 +4,12 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
+import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
+import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
+import com.alibaba.smart.framework.engine.service.param.command.CreateDeploymentCommand;
+import com.alibaba.smart.framework.engine.service.param.command.UpdateDeploymentCommand;
+import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
+import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.CustomVariablePersister;
@@ -11,12 +17,6 @@ import com.alibaba.smart.framework.engine.test.process.DefaultLockStrategy;
 import com.alibaba.smart.framework.engine.test.process.DefaultMultiInstanceCounter;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.util.IOUtil;
-import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
-import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
-import com.alibaba.smart.framework.engine.service.param.command.CreateDeploymentCommand;
-import com.alibaba.smart.framework.engine.service.param.command.UpdateDeploymentCommand;
-import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
-import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 
 import org.junit.Assert;
 import org.junit.Test;

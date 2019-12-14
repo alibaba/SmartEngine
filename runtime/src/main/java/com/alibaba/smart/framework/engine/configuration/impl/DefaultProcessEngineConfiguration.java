@@ -1,13 +1,13 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
-import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 

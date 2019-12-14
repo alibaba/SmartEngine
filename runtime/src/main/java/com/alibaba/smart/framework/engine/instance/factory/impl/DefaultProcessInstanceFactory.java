@@ -2,8 +2,8 @@ package com.alibaba.smart.framework.engine.instance.factory.impl;
 
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
@@ -11,7 +11,6 @@ import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 
 /**
  * 默认流程实例工厂实现 Created by ettear on 16-4-20.

@@ -5,14 +5,12 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:util="http://www.springframework.org/schema/util"
-       xmlns:mybatis="http://www.foo.com/schema/data/mybatis"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-        http://www.foo.com/schema/data/mybatis http://www.foo.com/schema/data/mybatis/spring-mybatis.xsd">
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 
     <context:component-scan base-package="com.alibaba.smart.framework.engine.test.process.helper"/>

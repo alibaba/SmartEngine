@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
-import java.util.List;
-
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionBasedElement;
 import com.alibaba.smart.framework.engine.pvm.PvmElement;

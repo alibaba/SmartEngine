@@ -27,7 +27,6 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.ConditionExpressionImpl;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;

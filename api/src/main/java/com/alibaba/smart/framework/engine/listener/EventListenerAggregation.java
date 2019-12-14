@@ -1,12 +1,9 @@
 package com.alibaba.smart.framework.engine.listener;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
-import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
-import com.alibaba.smart.framework.engine.listener.EventListener;
 
 import lombok.Data;
 

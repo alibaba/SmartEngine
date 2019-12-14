@@ -1,10 +1,8 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
+import java.util.UUID;
 
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
-
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  23:17.

@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression;
 
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.constant.BpmnNameSpaceConstant;
 

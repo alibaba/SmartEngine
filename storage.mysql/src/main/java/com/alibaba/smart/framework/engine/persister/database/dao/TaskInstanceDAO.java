@@ -2,14 +2,11 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
-import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 public interface TaskInstanceDAO {
 

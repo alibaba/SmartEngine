@@ -3,13 +3,11 @@ package com.alibaba.smart.framework.engine.pvm.impl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

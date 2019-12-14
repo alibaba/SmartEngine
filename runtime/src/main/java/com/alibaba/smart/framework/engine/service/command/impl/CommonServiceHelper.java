@@ -1,5 +1,10 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -21,11 +26,6 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  20:38.

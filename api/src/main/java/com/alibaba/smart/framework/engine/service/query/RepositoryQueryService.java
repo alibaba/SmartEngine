@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.service.query;
 
 import java.util.Collection;
-import java.util.List;
 
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 

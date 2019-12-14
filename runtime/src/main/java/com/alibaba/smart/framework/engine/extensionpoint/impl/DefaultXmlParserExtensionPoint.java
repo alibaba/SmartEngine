@@ -1,20 +1,22 @@
 package com.alibaba.smart.framework.engine.extensionpoint.impl;
 
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamReader;
+
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
-import com.alibaba.smart.framework.engine.xml.parser.*;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamReader;
-
-import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import com.alibaba.smart.framework.engine.xml.parser.AttributeParser;
+import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
 
 /**
  * 默认处理器扩展点 Created by ettear on 16-4-12.
