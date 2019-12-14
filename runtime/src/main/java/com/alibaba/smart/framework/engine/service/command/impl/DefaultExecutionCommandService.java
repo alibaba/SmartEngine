@@ -43,6 +43,8 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     private ActivityInstanceStorage activityInstanceStorage;
     private ExecutionInstanceStorage executionInstanceStorage;
 
+   private PvmProcessInstance pvmProcessInstance;
+
 
     public DefaultExecutionCommandService(ExtensionPointRegistry extensionPointRegistry) {
         this.extensionPointRegistry = extensionPointRegistry;
@@ -58,7 +60,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         this. processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
         this. activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
         this. executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
-
+        this.pvmProcessInstance = new DefaultPvmProcessInstance();
     }
 
     @Override
@@ -79,33 +81,15 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         try {
 
-            //!!! 重要
-            tryLock(processEngineConfiguration, executionInstance.getProcessInstanceId());
+            PreparePhase preparePhase = new PreparePhase(request, executionInstance).invoke();
+            PvmProcessDefinition pvmProcessDefinition = preparePhase.getPvmProcessDefinition();
+            ExecutionContext executionContext = preparePhase.getExecutionContext();
 
-            //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
-
-            //BE AWARE: 注意:针对 CUSTOM 场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
-            ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId(),
-                processEngineConfiguration);
-
-            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId(), processEngineConfiguration);
-
-            PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(
-                processInstance.getProcessDefinitionIdAndVersion());
-
-            ProcessDefinition processDefinition = this.processContainer.getProcessDefinition(
-                processInstance.getProcessDefinitionIdAndVersion());
-
-            String processDefinitionActivityId = executionInstance.getProcessDefinitionActivityId();
-            PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(processDefinitionActivityId);
-
-            ExecutionContext executionContext = createExecutionContext(request, processEngineConfiguration,
-                executionInstance,
-                activityInstance, processInstance, processDefinition);
             executionContext.setResponse(response);
 
-            // TUNE 减少不必要的对象创建
-            PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
+            String activityId = executionInstance.getProcessDefinitionActivityId();
+
+            PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
 
             ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
@@ -142,38 +126,17 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         ExecutionInstance executionInstance = queryExecutionInstance(executionInstanceId);
 
-
-
         try {
-            //!!! 重要
-            tryLock(processEngineConfiguration, executionInstance.getProcessInstanceId());
-
-            //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
-
-            //BE AWARE: 注意:针对TP,AliPay场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
-            ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId(),
-                processEngineConfiguration);
-
-            MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage,
-                processEngineConfiguration);
-            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId(), processEngineConfiguration);
-
-            PvmProcessDefinition pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(
-                processInstance.getProcessDefinitionIdAndVersion());
-
-            ProcessDefinition processDefinition = this.processContainer.getProcessDefinition(
-                processInstance.getProcessDefinitionIdAndVersion());
+            PreparePhase preparePhase = new PreparePhase(request, executionInstance).invoke();
+            PvmProcessDefinition pvmProcessDefinition = preparePhase.getPvmProcessDefinition();
+            ExecutionContext executionContext = preparePhase.getExecutionContext();
 
             PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
 
-            ExecutionContext executionContext = createExecutionContext(request, processEngineConfiguration,
-                executionInstance, activityInstance, processInstance,
-                processDefinition);
+            MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage,
+                processEngineConfiguration);
 
-            // TUNE 减少不必要的对象创建
-            PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
-
-            ProcessInstance newProcessInstance = pvmProcessInstance.jump(pvmActivity, executionContext);
+            ProcessInstance newProcessInstance = this.pvmProcessInstance.jump(pvmActivity, executionContext);
 
             CommonServiceHelper.updateAndPersist(executionInstanceId, newProcessInstance, request,
                 extensionPointRegistry);
@@ -184,7 +147,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
     }
 
-    protected ExecutionContext createExecutionContext(Map<String, Object> request,
+    private ExecutionContext createExecutionContext(Map<String, Object> request,
                                                       ProcessEngineConfiguration processEngineConfiguration,
                                                       ExecutionInstance executionInstance,
                                                       ActivityInstance activityInstance,
@@ -217,4 +180,48 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
     }
 
+    private class PreparePhase {
+        private Map<String, Object> request;
+        private ExecutionInstance executionInstance;
+        private PvmProcessDefinition pvmProcessDefinition;
+        private ExecutionContext executionContext;
+
+        public PreparePhase(Map<String, Object> request, ExecutionInstance executionInstance) {
+            this.request = request;
+            this.executionInstance = executionInstance;
+        }
+
+        public PvmProcessDefinition getPvmProcessDefinition() {
+            return pvmProcessDefinition;
+        }
+
+        public ExecutionContext getExecutionContext() {
+            return executionContext;
+        }
+
+        public PreparePhase invoke() {
+            //!!! 重要
+            tryLock(processEngineConfiguration, executionInstance.getProcessInstanceId());
+
+            //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
+
+            //BE AWARE: 注意:针对 CUSTOM 场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
+            ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId(),
+                processEngineConfiguration);
+
+            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId()
+                , processEngineConfiguration);
+
+            pvmProcessDefinition = DefaultExecutionCommandService.this.processContainer.getPvmProcessDefinition(
+                processInstance.getProcessDefinitionIdAndVersion());
+
+            ProcessDefinition processDefinition =
+                DefaultExecutionCommandService.this.processContainer.getProcessDefinition(
+                processInstance.getProcessDefinitionIdAndVersion());
+
+            executionContext = createExecutionContext(request, processEngineConfiguration,
+                executionInstance, activityInstance, processInstance, processDefinition);
+            return this;
+        }
+    }
 }
