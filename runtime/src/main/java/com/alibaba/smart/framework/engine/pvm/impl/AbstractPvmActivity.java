@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
@@ -20,8 +20,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public abstract class AbstractPvmActivity extends AbstractPvmElement<Activity> implements PvmActivity {
 
-    private Map<String, PvmTransition> incomeTransitions = new ConcurrentHashMap<String, PvmTransition>();
-    private Map<String, PvmTransition> outcomeTransitions = new ConcurrentHashMap<String, PvmTransition>();
+    private Map<String, PvmTransition> incomeTransitions = MapUtil.newLinkedHashMap();
+    private Map<String, PvmTransition> outcomeTransitions =  MapUtil.newLinkedHashMap();
 
     private ActivityBehavior behavior;
 

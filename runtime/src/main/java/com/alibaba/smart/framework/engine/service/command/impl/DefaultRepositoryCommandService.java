@@ -12,6 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
@@ -217,8 +218,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         if (null != elements && !elements.isEmpty()) {
 
             //TUNE ocp
-            Map<String, PvmTransition> pvmTransitionMap = new HashMap<String, PvmTransition>();
-            Map<String, PvmActivity> pvmActivityMap = new HashMap<String, PvmActivity>();
+            Map<String, PvmTransition> pvmTransitionMap = MapUtil.newLinkedHashMap();
+            Map<String, PvmActivity> pvmActivityMap = MapUtil.newLinkedHashMap();
             for (BaseElement element : elements) {
 
                 if (element instanceof Transition) {
