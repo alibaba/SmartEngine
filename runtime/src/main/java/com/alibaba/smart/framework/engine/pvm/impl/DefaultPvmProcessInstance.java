@@ -43,8 +43,10 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
 
     @Override
     public ProcessInstance jump(PvmActivity pvmActivity, ExecutionContext executionContext) {
-        //TUNE DELETE
+
+        //NOTATION: execute ENTER method
         pvmActivity.enter(executionContext);
+
         return executionContext.getProcessInstance();
 
     }
