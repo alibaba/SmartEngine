@@ -35,10 +35,10 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     private ExtensionPointRegistry extensionPointRegistry;
     private ProcessDefinitionContainer processContainer;
     private InstanceContextFactory instanceContextFactory;
+    private ProcessEngineConfiguration processEngineConfiguration;
 
-//    private ProcessInstanceStorage processInstanceStorage;
-//    private ActivityInstanceStorage activityInstanceStorage;
-//    private ExecutionInstanceStorage executionInstanceStorage;
+    private PersisterFactoryExtensionPoint persisterFactoryExtensionPoint;
+
 
 
     public DefaultExecutionCommandService(ExtensionPointRegistry extensionPointRegistry) {
@@ -49,10 +49,8 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     public void start() {
         this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
         this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
-
-//        this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
-//        this.activityInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceStorage.class);
-//        this.executionInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceStorage.class);
+        this.processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+        this.persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
     }
 
@@ -69,9 +67,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
     @Override
     public ProcessInstance signal(String executionInstanceId, Map<String, Object> request, Map<String, Object> response) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
         //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
         ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);

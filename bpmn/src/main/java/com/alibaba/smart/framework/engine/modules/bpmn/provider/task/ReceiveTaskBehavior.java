@@ -9,10 +9,6 @@ import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior
 @ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = ReceiveTask.class)
 public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
 
-    //public ReceiveTaskBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-    //    super(extensionPointRegistry, runtimeActivity);
-    //}
-
     public ReceiveTaskBehavior() {
         super();
     }
