@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process;
 
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
@@ -23,6 +25,9 @@ public class SequenceFlow extends AbstractTransition {
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "sequenceFlow");
 
     private ConditionExpression conditionExpression;
+
+    private Map<String,String> properties;
+
 
 
     @Override

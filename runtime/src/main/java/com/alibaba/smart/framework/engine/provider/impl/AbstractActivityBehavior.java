@@ -135,18 +135,11 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     protected void makeExtensionWorkAndExecuteBehavior(ExecutionContext context) {
         T model = this.getModel();
 
-
-
         Map<String,String>  properties = model.getProperties();
-        if(MapUtil.isNotEmpty(properties)){
-            String className  =  properties.get("class");
-            if(null != className){
-                BehaviorUtil.behavior(context, className,this.extensionPointRegistry,this.getPvmActivity());
-            }else {
-                //tune logger
-            }
-        }
+        BehaviorUtil.executionBehaviorIf(context, properties,this.extensionPointRegistry,this.pvmActivity);
     }
+
+
 
     @Override
     public void leave(PvmActivity pvmActivity,ExecutionContext context) {

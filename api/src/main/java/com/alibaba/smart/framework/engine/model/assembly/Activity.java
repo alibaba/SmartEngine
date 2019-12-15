@@ -10,6 +10,5 @@ public interface Activity extends ExtensionBasedElement {
 
     boolean isStartActivity();
 
-    Map<String,String> getProperties();
 
 }

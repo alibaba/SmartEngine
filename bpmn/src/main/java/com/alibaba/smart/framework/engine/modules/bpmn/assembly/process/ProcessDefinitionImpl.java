@@ -40,6 +40,9 @@ public class ProcessDefinitionImpl implements ProcessDefinition {
 
     private Map<String, IdBasedElement> idBasedElementMap;
 
+    private Map<String,String> properties;
+
+
 
     @Override
     @WorkAround

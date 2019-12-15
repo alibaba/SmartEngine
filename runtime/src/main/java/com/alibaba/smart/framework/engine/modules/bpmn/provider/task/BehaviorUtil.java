@@ -1,5 +1,8 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
 
+import java.util.Map;
+
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -17,7 +20,19 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
  */
 public class BehaviorUtil {
 
-    public static void behavior(ExecutionContext context, String className, ExtensionPointRegistry extensionPointRegistry,
+    public static    void executionBehaviorIf(ExecutionContext context, Map<String, String> properties,ExtensionPointRegistry extensionPointRegistry,
+                                              PvmActivity pvmActivity) {
+        if(MapUtil.isNotEmpty(properties)){
+            String className  =  properties.get("class");
+            if(null != className){
+                BehaviorUtil.behavior(context, className,extensionPointRegistry,pvmActivity);
+            }else {
+                //tune logger
+            }
+        }
+    }
+
+    private static void behavior(ExecutionContext context, String className, ExtensionPointRegistry extensionPointRegistry,
                                 PvmActivity pvmActivity) {
         ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
         ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();

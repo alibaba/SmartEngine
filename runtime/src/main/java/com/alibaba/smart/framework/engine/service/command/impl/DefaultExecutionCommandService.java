@@ -16,10 +16,12 @@ import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
+import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.modules.bpmn.provider.task.BehaviorUtil;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -82,6 +84,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         try {
 
             PreparePhase preparePhase = new PreparePhase(request, executionInstance).invoke();
+
             PvmProcessDefinition pvmProcessDefinition = preparePhase.getPvmProcessDefinition();
             ExecutionContext executionContext = preparePhase.getExecutionContext();
 
@@ -128,6 +131,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         try {
             PreparePhase preparePhase = new PreparePhase(request, executionInstance).invoke();
+
             PvmProcessDefinition pvmProcessDefinition = preparePhase.getPvmProcessDefinition();
             ExecutionContext executionContext = preparePhase.getExecutionContext();
 
@@ -145,6 +149,29 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         } finally {
             unLock(processEngineConfiguration, executionInstance.getProcessInstanceId());
         }
+    }
+
+
+    public void retry(String processInstanceId, String activityId, ExecutionContext executionContext) {
+        ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId
+            , processEngineConfiguration);
+
+
+        PvmProcessDefinition  pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(
+            processInstance.getProcessDefinitionIdAndVersion());
+
+        PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
+
+        ProcessDefinition processDefinition =
+            this.processContainer.getProcessDefinition(
+                processInstance.getProcessDefinitionIdAndVersion());
+
+        IdBasedElement idBasedElement = processDefinition.getIdBasedElementMap().get(activityId);
+
+        Map<String, String> properties = idBasedElement.getProperties();
+
+        BehaviorUtil.executionBehaviorIf(executionContext,properties,this.processEngineConfiguration.getExtensionPointRegistry(),pvmActivity);
+
     }
 
     private ExecutionContext createExecutionContext(Map<String, Object> request,
