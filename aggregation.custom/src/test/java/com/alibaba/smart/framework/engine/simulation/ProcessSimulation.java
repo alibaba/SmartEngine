@@ -94,7 +94,7 @@ public class ProcessSimulation {
                             ConditionExpression conditionExpression = sequenceFlow.getConditionExpression();
 
                             boolean matched = (Boolean)mvelExpressionEvaluator.eval(
-                                conditionExpression.getExpressionContent(), simulationContext);
+                                conditionExpression.getExpressionContent(), simulationContext,true);
 
                             if (matched) {
                                 Activity chosenActivity = pendingTransition.getTarget().getModel();

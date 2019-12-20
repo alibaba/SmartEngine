@@ -65,7 +65,7 @@ public abstract class MvelUtil {
     }
 
     public static Number getRightValueForBinaryOperationExpression(String expression) {
-        Serializable serializable= compileExp(expression);
+        Serializable serializable= compileExp(expression,true);
         ExecutableAccessor executableAccessor = (ExecutableAccessor)serializable;
         BinaryOperation binaryOperation = (BinaryOperation) executableAccessor.getNode();
         ASTNode right = binaryOperation.getRight();

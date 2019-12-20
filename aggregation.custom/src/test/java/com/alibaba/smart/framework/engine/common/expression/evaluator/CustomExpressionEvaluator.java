@@ -7,7 +7,7 @@ import java.util.Map;
  */
 public class CustomExpressionEvaluator implements ExpressionEvaluator {
     @Override
-    public Object eval(String expression, Map<String, Object> vars) {
+    public Object eval(String expression, Map<String, Object> vars,boolean needCached) {
         return true;
     }
 }
