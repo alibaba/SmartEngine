@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.modules.bpmn.provider.task;
+package com.alibaba.smart.framework.engine.delegation;
 
 import java.util.Map;
 
@@ -22,10 +22,12 @@ public class BehaviorUtil {
 
     public static    void executionBehaviorIf(ExecutionContext context, Map<String, String> properties,ExtensionPointRegistry extensionPointRegistry,
                                               PvmActivity pvmActivity) {
+
+        //TUNE 允许扩展
         if(MapUtil.isNotEmpty(properties)){
             String className  =  properties.get("class");
             if(null != className){
-                BehaviorUtil.behavior(context, className,extensionPointRegistry,pvmActivity);
+                behavior(context, className,extensionPointRegistry,pvmActivity);
             }else {
                 //tune logger
             }

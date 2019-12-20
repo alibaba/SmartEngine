@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractPvmElement<M extends ExtensionBasedElement> implements PvmElement<M> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPvmElement.class);
 
     private M model;
 

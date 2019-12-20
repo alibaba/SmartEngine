@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.configuration;
 
+import java.util.concurrent.ExecutorService;
+
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 
 /**
@@ -88,6 +90,9 @@ public interface ProcessEngineConfiguration {
     ExtensionPointRegistry getExtensionPointRegistry();
 
 
+    void setExecutorService(ExecutorService executorService);
+
+    ExecutorService getExecutorService();
 
 
     // 是否要干掉 用于配置扩展,默认可以为空。设计目的是根据自己的业务需求,来自定义存储(该机制会绕过引擎自带的各种Storage机制,powerful and a little UnSafe)。。

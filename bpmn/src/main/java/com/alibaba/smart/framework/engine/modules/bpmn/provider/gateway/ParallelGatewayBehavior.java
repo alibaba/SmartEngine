@@ -5,9 +5,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -19,13 +22,15 @@ import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = ParallelGateway.class)
 
 public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> {
 
-    //public ParallelGatewayBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-    //    super(extensionPointRegistry, runtimeActivity);
-    //}
+    private static final Logger LOGGER = LoggerFactory.getLogger(ParallelGatewayBehavior.class);
+
 
     public ParallelGatewayBehavior() {
         super();
@@ -50,83 +55,109 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         int inComeTransitionSize = incomeTransitions.size();
         if (outComeTransitionSize >= 2 && inComeTransitionSize == 1) {
             //fork
+            ExecutorService executorService = context.getProcessEngineConfiguration().getExecutorService();
+            if(null == executorService){
+                //顺序执行fork
+                for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
+                    PvmActivity target = pvmTransitionEntry.getValue().getTarget();
+                    target.enter(context);
+                }
+            }else{
+                //并发执行fork
 
-            //顺序执行
-            for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
-                PvmActivity target = pvmTransitionEntry.getValue().getTarget();
-                target.enter(context);
+                List<PvmActivityTask> tasks = new ArrayList<PvmActivityTask>(outcomeTransitions.size());
+
+                for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
+                    PvmActivity target = pvmTransitionEntry.getValue().getTarget();
+
+                    PvmActivityTask task = new PvmActivityTask(target,context);
+                    tasks.add(task);
+                }
+
+
+                try {
+                    executorService.invokeAll(tasks);
+                } catch (InterruptedException e) {
+                    throw new EngineException(e.getMessage(), e);
+                }
+
             }
-
-
-            //还是并发执行。
 
         } else if (outComeTransitionSize == 1 && inComeTransitionSize >= 2) {
-            //join
-            //fixme lock
+            //join 时必须使用分布式锁。
 
-            super.enter(context);
+            LockStrategy lockStrategy = context.getProcessEngineConfiguration().getLockStrategy();
+            String processInstanceId = context.getProcessInstance().getInstanceId();
+            try{
+                lockStrategy.tryLock(processInstanceId);
 
+            }finally {
 
-
-            Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
-
-
-            ProcessInstance processInstance = context.getProcessInstance();
-
-            //当前内存中的，新产生的 active ExecutionInstance
-            List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
+                super.enter(context);
 
 
-            //当前持久化介质中中，已产生的 active ExecutionInstance。
-            List<ExecutionInstance> executionInstanceListFromDB =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(), super.processEngineConfiguration);
 
-            //Merge 数据库中和内存中的EI。如果是 custom模式，则可能会存在重复记录，所以这里需要去重。 如果是 DataBase 模式，则不会有重复的EI.
-
-            List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
+                Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
 
 
-            for (ExecutionInstance instance : executionInstanceListFromDB) {
-                if (executionInstanceListFromMemory.contains(instance)){
-                    //ignore
-                }else {
-                    mergedExecutionInstanceList.add(instance);
-                }
-            }
+                ProcessInstance processInstance = context.getProcessInstance();
+
+                //当前内存中的，新产生的 active ExecutionInstance
+                List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
 
 
-            mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
+                //当前持久化介质中中，已产生的 active ExecutionInstance。
+                List<ExecutionInstance> executionInstanceListFromDB =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(), super.processEngineConfiguration);
+
+                //Merge 数据库中和内存中的EI。如果是 custom模式，则可能会存在重复记录，所以这里需要去重。 如果是 DataBase 模式，则不会有重复的EI.
+
+                List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
 
 
-            int reachedJoinCounter = 0;
-            List<ExecutionInstance> chosenExecutionInstances = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
-
-            if(null != mergedExecutionInstanceList){
-
-                for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
-
-                    if (executionInstance.getProcessDefinitionActivityId().equals(parallelGateway.getId())) {
-                        reachedJoinCounter++;
-                        chosenExecutionInstances.add(executionInstance);
-                    }
-                }
-            }
-
-
-            if(reachedJoinCounter == inComingPvmTransitions.size() ){
-                //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
-
-                if(null != chosenExecutionInstances){
-                    for (ExecutionInstance executionInstance : chosenExecutionInstances) {
-                        MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
-                            processEngineConfiguration);
+                for (ExecutionInstance instance : executionInstanceListFromDB) {
+                    if (executionInstanceListFromMemory.contains(instance)){
+                        //ignore
+                    }else {
+                        mergedExecutionInstanceList.add(instance);
                     }
                 }
 
-                return false;
 
-            }else{
-                //未完成的话,流程继续暂停
-                return true;
+                mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
+
+
+                int reachedJoinCounter = 0;
+                List<ExecutionInstance> chosenExecutionInstances = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
+
+                if(null != mergedExecutionInstanceList){
+
+                    for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
+
+                        if (executionInstance.getProcessDefinitionActivityId().equals(parallelGateway.getId())) {
+                            reachedJoinCounter++;
+                            chosenExecutionInstances.add(executionInstance);
+                        }
+                    }
+                }
+
+
+                if(reachedJoinCounter == inComingPvmTransitions.size() ){
+                    //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
+
+                    if(null != chosenExecutionInstances){
+                        for (ExecutionInstance executionInstance : chosenExecutionInstances) {
+                            MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
+                                processEngineConfiguration);
+                        }
+                    }
+
+                    return false;
+
+                }else{
+                    //未完成的话,流程继续暂停
+                    return true;
+                }
+
             }
 
         }else{
@@ -135,6 +166,26 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         return true;
 
+    }
+
+    class PvmActivityTask implements Callable<Void> {
+        private PvmActivity pvmActivity;
+        private ExecutionContext context;
+
+        PvmActivityTask(PvmActivity pvmActivity,ExecutionContext context) {
+            this.pvmActivity = pvmActivity;
+            this.context = context;
+        }
+
+        @Override
+        public Void call() {
+            try {
+                pvmActivity.enter(context);
+            } catch (Exception e) {
+                LOGGER.error( e.getMessage(),e);
+            }
+            return null;
+        }
     }
 
 
@@ -173,8 +224,8 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
             String sourcePvmActivityId = context.getSourcePvmActivity().getModel().getId();
 
-            for (PvmTransition pvmTransition : inComingPvmTransitions) {
-                String pvmTransitionSourceActivityId = pvmTransition.getSource().getModel().getId();
+            for (PvmTransition pvmActivity : inComingPvmTransitions) {
+                String pvmTransitionSourceActivityId = pvmActivity.getSource().getModel().getId();
                 boolean equals1 = pvmTransitionSourceActivityId.equals(sourcePvmActivityId);
                 if (equals1) {
                     ActivityInstance activityInstance = super.activityInstanceFactory.create(parallelGateway, context);
@@ -260,8 +311,8 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
     //        //遍历当前所有的活动实例
     //        for (ActivityInstance aliveActivityInstance : activityInstanceList) {
     //            //遍历当前join节点的incoming activityId
-    //            for (PvmTransition pvmTransition : pvmTransitions) {
-    //                String pvmTransitionSourceActivityId = pvmTransition.getSource().getModel().getId();
+    //            for (PvmTransition pvmActivity : pvmTransitions) {
+    //                String pvmTransitionSourceActivityId = pvmActivity.getSource().getModel().getId();
     //                String aliveActivityId = aliveActivityInstance.getActivityId();
     //                boolean equals1 = pvmTransitionSourceActivityId.equals(sourcePvmActivityId);
     //                //boolean equals2 = aliveActivityId.equals(pvmTransitionSourceActivityId);
@@ -294,8 +345,8 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
     //
     //        while (listIterator.hasNext()){
     //            ActivityInstance completeActivityInstance =listIterator.next();
-    //            for (PvmTransition pvmTransition : pvmTransitions) {
-    //                String activityId = pvmTransition.getSource().getModel().getId();
+    //            for (PvmTransition pvmActivity : pvmTransitions) {
+    //                String activityId = pvmActivity.getSource().getModel().getId();
     //
     //
     //                //如果相等,说明当前节点是join 网关的前置节点之一
@@ -317,8 +368,8 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
     //    //}
     //
     //    //for (ActivityInstance completeActivityInstance : activityInstanceList) {
-    //    //    for (PvmTransition pvmTransition : pvmTransitions) {
-    //    //        String activityId = pvmTransition.getSource().getModel().getId();
+    //    //    for (PvmTransition pvmActivity : pvmTransitions) {
+    //    //        String activityId = pvmActivity.getSource().getModel().getId();
     //    //
     //    //        //如果相等,说明当前节点是join 网关的前置节点之一
     //    //        if (activityId.equals(completeActivityInstance.getActivityId())) {
