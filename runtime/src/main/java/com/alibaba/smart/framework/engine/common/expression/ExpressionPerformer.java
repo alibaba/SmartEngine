@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 
 import org.slf4j.Logger;
@@ -21,17 +22,20 @@ public abstract class ExpressionPerformer {
     private static final String EXPRESSION_EVALUATOR = "ExpressionEvaluator";
 
     public static Object eval(String type, String expression, ExecutionContext context) {
+        ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
+
         String firstCharToUpperCase = Character.toUpperCase(type.charAt(0)) + type.substring(1);
 
         String className = PACKAGE_NAME + firstCharToUpperCase + EXPRESSION_EVALUATOR;
-        InstanceAccessor instanceAccessor = context.getProcessEngineConfiguration()
+        InstanceAccessor instanceAccessor = processEngineConfiguration
             .getInstanceAccessor();
         ExpressionEvaluator expressionEvaluator = (ExpressionEvaluator)instanceAccessor.access(className);
 
         if (null != expressionEvaluator) {
             Map<String,Object> requestContext=context.getRequest();
 
-            Object result = expressionEvaluator.eval(expression, requestContext);
+            Object result = expressionEvaluator.eval(expression, requestContext, processEngineConfiguration
+                .isExpressionCompileResultCached());
 
             LOGGER.info("expressionEvaluator.result result is {}, each param is {} {} ",result,expression,requestContext);
 

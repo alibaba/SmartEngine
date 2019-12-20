@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.common.util.MvelUtil;
 public class MvelExpressionEvaluator implements ExpressionEvaluator {
 
     @Override
-    public Object eval(String expression, Map<String, Object> vars) {
-        return MvelUtil.eval(expression,vars);
+    public Object eval(String expression, Map<String, Object> vars,boolean needCached) {
+        return MvelUtil.eval(expression,vars,  needCached);
     }
 }

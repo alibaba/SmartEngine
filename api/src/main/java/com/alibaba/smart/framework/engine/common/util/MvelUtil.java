@@ -19,9 +19,9 @@ public abstract class MvelUtil {
     private final static ConcurrentHashMap<String, Serializable> expCache =
         new ConcurrentHashMap<String, Serializable>(defaultCacheSize);
 
-    public static Object eval(String expression, Map<String, Object> vars) {
+    public static Object eval(String expression, Map<String, Object> vars,boolean needCached) {
         //编译表达式
-        Serializable compiledExp = compileExp(expression);
+        Serializable compiledExp = compileExp(expression,needCached);
         //执行表达式
         return MVEL.executeExpression(compiledExp, vars);
     }
@@ -42,7 +42,7 @@ public abstract class MvelUtil {
      * @param expression 表达式字符串
      * @return 编译后的表达式字符串
      */
-    private static Serializable compileExp(String expression) {
+    private static Serializable compileExp(String expression,boolean needCached) {
         String processedExp = expression.trim();
 
         // 兼容Activiti ${nrOfCompletedInstances >= 1} 这种 JUEL 表达式;通过下面的调用去掉首尾.
@@ -56,7 +56,10 @@ public abstract class MvelUtil {
         if (null == compiledExp) {
             compiledExp = MVEL.compileExpression(processedExp);
             // cache 缓存结果
-            expCache.put(processedExp, compiledExp);
+
+            if(needCached){
+                expCache.put(processedExp, compiledExp);
+            }
         }
         return compiledExp;
     }
