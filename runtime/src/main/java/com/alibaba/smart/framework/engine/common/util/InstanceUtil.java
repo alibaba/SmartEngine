@@ -17,7 +17,7 @@ public abstract class InstanceUtil {
         if(null==activityInstances){
             return null;
         }
-        //TUNE 扩容
+
         List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
         for (ActivityInstance activityInstance : activityInstances) {
             List<ExecutionInstance> executionInstances1 =    activityInstance.getExecutionInstanceList();

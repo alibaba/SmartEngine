@@ -25,20 +25,10 @@ public class MarkDoneUtil {
         executionInstance.setActive(false);
         executionInstance.setStatus(InstanceStatus.completed);
 
-        //TODO 产生了 DB 写，是否需要干掉。
         executionInstanceStorage.update(executionInstance, processEngineConfiguration);
         return executionInstance;
     }
 
-    //public static ExecutionInstance markDoneExecutionInstance(ExecutionInstance executionInstance) {
-    //    Date completeDate = DateUtil.getCurrentDate();
-    //    executionInstance.setCompleteTime(completeDate);
-    //    executionInstance.setActive(false);
-    //    executionInstance.setStatus(InstanceStatus.completed);
-    //
-    //
-    //    return executionInstance;
-    //}
 
     public static TaskInstance markDoneTaskInstance(TaskInstance taskInstance, String targetStatus, String sourceStatus,
                                                     Map<String, Object> variables,
