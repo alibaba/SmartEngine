@@ -15,8 +15,8 @@ public class DefaultMultiInstanceCounter implements MultiInstanceCounter {
 
 
     @Override
-    public Long countPassedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
-                                              SmartEngine smartEngine) {
+    public Integer countPassedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
+                                                 SmartEngine smartEngine) {
       TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
@@ -25,14 +25,14 @@ public class DefaultMultiInstanceCounter implements MultiInstanceCounter {
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setActivityInstanceId(activityInstanceId);
         taskInstanceQueryParam.setTag(VariableInstanceAndMultiInstanceTest.AGREE);
-        Long count  = taskQueryService.count(taskInstanceQueryParam);
+        Integer count  = taskQueryService.count(taskInstanceQueryParam).intValue();
         return  count;
 
     }
 
     @Override
-    public Long countRejectedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
-                                                SmartEngine smartEngine) {
+    public Integer countRejectedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
+                                                   SmartEngine smartEngine) {
         TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
@@ -41,7 +41,7 @@ public class DefaultMultiInstanceCounter implements MultiInstanceCounter {
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setActivityInstanceId(activityInstanceId);
         taskInstanceQueryParam.setTag(VariableInstanceAndMultiInstanceTest.DISAGREE);
-        Long count  = taskQueryService.count(taskInstanceQueryParam);
+        Integer count  = taskQueryService.count(taskInstanceQueryParam).intValue();
         return  count;
 
     }

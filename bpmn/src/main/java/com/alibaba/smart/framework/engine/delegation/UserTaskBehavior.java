@@ -155,16 +155,15 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration()
                 .getMultiInstanceCounter();
 
-            Long passedTaskInstanceNumber = multiInstanceCounter.countPassedTaskInstanceNumber(
+            Integer passedTaskInstanceNumber = multiInstanceCounter.countPassedTaskInstanceNumber(
                 activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
                 smartEngine);
 
-            Long rejectedTaskInstanceNumber = multiInstanceCounter.countRejectedTaskInstanceNumber(
+            Integer rejectedTaskInstanceNumber = multiInstanceCounter.countRejectedTaskInstanceNumber(
                 activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
                 smartEngine);
 
-            //TUNE 类型转换
-            Long totalInstanceCount = Long.valueOf(totalExecutionInstanceList.size());
+            Integer totalInstanceCount = totalExecutionInstanceList.size();
 
 
             Map<String,Object> requestContext=context.getRequest();

@@ -7,10 +7,10 @@ import com.alibaba.smart.framework.engine.SmartEngine;
  */
 public interface MultiInstanceCounter {
 
-    Long countPassedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
-                                       SmartEngine smartEngine);
+    Integer countPassedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
+                                          SmartEngine smartEngine);
 
-    Long countRejectedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
-                                         SmartEngine smartEngine);
+    Integer countRejectedTaskInstanceNumber(String processInstanceId, String activityInstanceId,
+                                            SmartEngine smartEngine);
 
 }
