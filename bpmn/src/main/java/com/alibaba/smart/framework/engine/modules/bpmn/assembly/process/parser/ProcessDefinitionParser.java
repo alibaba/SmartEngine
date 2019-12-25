@@ -8,6 +8,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.IdAndVersionBuilder;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -47,8 +48,7 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
         processDefinition.setIdAndVersion(IdAndVersionBuilder.buildProcessDefinitionKey(processDefinition.getId(),processDefinition.getVersion()));
 
 
-        //TODO 去掉所有的 new list 调用
-        List<BaseElement> elements = new ArrayList<BaseElement>();
+        List<BaseElement> elements = CollectionUtil.newArrayList();
 
         Map<String, IdBasedElement> idBasedElementMap = MapUtil.newLinkedHashMap();
 

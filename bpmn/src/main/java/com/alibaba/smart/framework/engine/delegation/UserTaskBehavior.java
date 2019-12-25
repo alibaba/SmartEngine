@@ -171,13 +171,12 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 requestContext = new HashMap<String, Object>();
             }
 
-            // TUNE 不变式  nrOfCompletedInstances+ nrOfRejectedInstance <= nrOfInstances
+            // 不变式  nrOfCompletedInstances+ nrOfRejectedInstance <= nrOfInstances
             requestContext.put("nrOfCompletedInstances", passedTaskInstanceNumber);
             requestContext.put("nrOfRejectedInstance", rejectedTaskInstanceNumber);
             requestContext.put("nrOfInstances", totalInstanceCount);
 
-            //TUNE 任务处理的并发性，需要业务程序来控制。
-
+            // 注意：任务处理的并发性，需要业务程序来控制。
             boolean abortMatched = false;
 
             ConditionExpression abortCondition = multiInstanceLoopCharacteristics.getAbortCondition();
@@ -206,7 +205,6 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                             }
 
                             // Find all task
-                            //TODO ADD INDEX
                             TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
                             List<String> processInstanceIdList = new ArrayList<String>(2);
                             processInstanceIdList.add(executionInstance.getProcessInstanceId());

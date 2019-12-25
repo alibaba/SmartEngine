@@ -51,10 +51,7 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
                 break;
             }
         }
-        //TODO why? review by ettear
-        //if(null != matchedActivityInstance){
-        //    throw new EngineException("No ActivityInstance found : "+activityInstanceId);
-        //}
+
 
         return matchedActivityInstance;
     }

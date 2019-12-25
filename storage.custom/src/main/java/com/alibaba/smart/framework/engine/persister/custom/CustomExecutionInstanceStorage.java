@@ -29,38 +29,6 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
     @Override
     public void update(ExecutionInstance executionInstance,
                        ProcessEngineConfiguration processEngineConfiguration) {
-        //Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
-        //
-        //boolean matched= false;
-        //
-        //for (ProcessInstance processInstance : processInstances) {
-        //    List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
-        //
-        //    for (ActivityInstance activityInstance : activityInstances) {
-        //        List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
-        //        for (ExecutionInstance tempExecutionInstance : executionInstances) {
-        //            if (null != tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(
-        //                executionInstance.getInstanceId())) {
-        //
-        //                //TODO check logic
-        //                tempExecutionInstance = executionInstance;
-        //                //activityInstance.setExecutionInstance(executionInstance);
-        //
-        //                matched = true;
-        //                break;
-        //
-        //            }
-        //        }
-        //
-        //    }
-        //    if (matched) {
-        //        break;
-        //    }
-        //}
-        //
-        //if(!matched){
-        //    throw new EngineException("No ExecutionInstance found : "+executionInstance);
-        //}
 
     }
 
@@ -142,8 +110,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
         if (null == activityInstances) {
             return null;
         }
-        //TUNE 扩容
-        List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
+
         for (ActivityInstance activityInstance : activityInstances) {
             if (activityInstance.getInstanceId().equals(activityInstanceId)) {
                 return activityInstance.getExecutionInstanceList();

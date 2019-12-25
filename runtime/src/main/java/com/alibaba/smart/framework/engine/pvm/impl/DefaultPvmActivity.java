@@ -41,19 +41,13 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
         boolean needPause= this.getBehavior().enter(context);
 
-        //tune 删除setNeedPause？
-        context.setNeedPause(needPause);
-        //this.executePolicyBehavior.jump(this,context);
 
-        if (context.isNeedPause()) {
+        if (needPause) {
 
-            //FIXME why ??
-            context.setNeedPause(false);
             // break;
             return;
         }
 
-            //TODO ettear 以下逻辑待迁移到ExecutionPolicy中去
         this.execute(context);
     }
 
@@ -84,53 +78,17 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
         this.getBehavior().execute(context);
 
-        //tune 删除setNeedPause？
-      //  context.setNeedPause(needPause);
-
-
-        //this.executePolicyBehavior.execute(this,context);
-
         if (context.isNeedPause()) {
-            context.setNeedPause(false);
+
             // break;
             return;
         }
-        //TODO ettear 以下逻辑待迁移到ExecutionPolicy中去
-        //this.invoke(PvmEventConstant.ACTIVITY_END.name(), context);
-        //this.executeRecursively(context);
 
         fireEvent(context,PvmEventConstant.ACTIVITY_END.name());
-
 
         this.getBehavior().leave(this,context);
 
     }
-
-
-
-    //private void executeRecursively(ExecutionContext context) {
-    //
-    //    //执行每个节点的hook方法
-    //    Map<String, PvmTransition> outcomeTransitions = this.getOutcomeTransitions();
-    //
-    //    if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
-    //        List<PvmTransition> matchedTransitions = new ArrayList<PvmTransition>(outcomeTransitions.size());
-    //        for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
-    //            PvmTransition pendingTransition = transitionEntry.getValue();
-    //            boolean matched = pendingTransition.match(context);
-    //
-    //            if (matched) {
-    //                matchedTransitions.add(pendingTransition);
-    //            }
-    //
-    //        }
-    //        //TODO 针对互斥和并行网关的线要检验,返回值只有一个或者多个。如果无则抛异常。
-    //
-    //        for (PvmTransition matchedPvmTransition : matchedTransitions) {
-    //            matchedPvmTransition.execute(context);
-    //        }
-    //    }
-    //}
 
 
 

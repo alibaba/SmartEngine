@@ -34,20 +34,7 @@ public class LoopCardinalityParser extends AbstractElementParser<LoopCardinality
     @Override
     public LoopCardinality parseElement(XMLStreamReader reader, ParseContext context) {
 
-        //TUNE 父类
-
         throw new EngineException("Not supported");
 
-        //LoopCardinality loopCardinality = new LoopCardinality();
-        //
-        //String expressionType = XmlParseUtil.getString(reader, "type");
-        //String content = reader.getElementText();
-        //if (null != content) {
-        //    ConditionExpression expression = new ConditionExpression();
-        //    expression.setExpressionContent(content);
-        //    expression.setExpressionType(expressionType);
-        //    loopCardinality.setCardinalityExpression(expression);
-        //}
-        //return loopCardinality;
     }
 }
