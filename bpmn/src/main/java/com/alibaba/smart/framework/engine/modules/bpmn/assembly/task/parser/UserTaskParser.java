@@ -44,9 +44,9 @@ public class UserTaskParser extends AbstractBpmnParser<UserTask>  {
     }
 
     @Override
-    protected void singingMagic(UserTask model, BaseElement child) {
+    protected void decorateChild(UserTask userTask, BaseElement child) {
         if (child instanceof MultiInstanceLoopCharacteristics) {
-            model.setMultiInstanceLoopCharacteristics((MultiInstanceLoopCharacteristics) child);
+            userTask.setMultiInstanceLoopCharacteristics((MultiInstanceLoopCharacteristics) child);
         }
     }
 

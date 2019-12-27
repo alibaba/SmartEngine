@@ -25,7 +25,7 @@
 //    }
 //
 //    @Override
-//    protected void singingMagic(ExtensionElements extensionElements, BaseElement child) {
+//    protected void decorateChild(ExtensionElements extensionElements, BaseElement child) {
 //        if (child instanceof Extension) {
 //            extensionElements.addAndDecorateExtension((Extension)child);
 //        }

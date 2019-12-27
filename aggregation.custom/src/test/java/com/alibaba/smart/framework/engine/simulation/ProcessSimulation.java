@@ -28,7 +28,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 public class ProcessSimulation {
 
     private SmartEngine smartEngine;
-    //TODO 应该是单例
+
     private MvelExpressionEvaluator mvelExpressionEvaluator = new MvelExpressionEvaluator();
 
     public ProcessSimulation(SmartEngine smartEngine) {

@@ -20,7 +20,7 @@ public abstract class AbstractBpmnParser<M extends ExtensionBasedElement> extend
 
 
     @Override
-    protected void singingMagic(M model, BaseElement child) {
+    protected void decorateChild(M model, BaseElement child) {
         if(!this.parseModelChild(model, child)) {
             if (child instanceof ExtensionElements) {
                 model.setExtensionElements((ExtensionElements)child);

@@ -41,7 +41,7 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
     }
 
     @Override
-    protected void singingMagic(MultiInstanceLoopCharacteristics model, BaseElement child) {
+    protected void decorateChild(MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics, BaseElement child) {
           if (child instanceof InputDataItem) {
             //ignore
         }
@@ -49,10 +49,10 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
              CompletionCondition condition = (CompletionCondition)child;
 
             if (CompletionCondition.ACTION_ABORT.equals(condition.getAction())) {
-                model.setAbortCondition(condition.getExpression());
+                multiInstanceLoopCharacteristics.setAbortCondition(condition.getExpression());
             } else if (StringUtil.isEmpty(condition.getAction())) {
                 // Default
-                model.setCompletionCondition(condition.getExpression());
+                multiInstanceLoopCharacteristics.setCompletionCondition(condition.getExpression());
             }
         }
         else {

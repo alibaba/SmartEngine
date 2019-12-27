@@ -24,9 +24,9 @@ public class ExtensionElementsParser extends AbstractElementParser<ExtensionElem
     }
 
     @Override
-    protected void singingMagic(ExtensionElementsImpl model, BaseElement child) {
+    protected void decorateChild(ExtensionElementsImpl extensionElements, BaseElement child) {
         if (child instanceof Extension) {
-            model.decorate((Extension) child);
+            extensionElements.decorate((Extension) child);
         } else {
             throw  new EngineException("Should be a instance of Extension :"+child.getClass());
         }

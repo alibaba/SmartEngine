@@ -38,9 +38,9 @@ public class ProcessDefinitionSourceParser extends AbstractElementParser<Process
     }
 
     @Override
-    protected void singingMagic(ProcessDefinitionSourceImpl model, BaseElement child) {
+    protected void decorateChild(ProcessDefinitionSourceImpl processDefinitionSource, BaseElement child) {
         if (child instanceof ProcessDefinition) {
-            model.getProcessDefinitionList().add((ProcessDefinition) child);
+            processDefinitionSource.getProcessDefinitionList().add((ProcessDefinition) child);
         }else{
             LOGGER.warn("NOT SUPPORTED:"+child);
         }

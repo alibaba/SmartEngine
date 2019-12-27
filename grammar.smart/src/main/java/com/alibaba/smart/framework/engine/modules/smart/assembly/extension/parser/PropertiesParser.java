@@ -28,7 +28,7 @@ public class PropertiesParser extends AbstractElementParser<Properties> {
     }
 
     @Override
-    protected void singingMagic(Properties properties, BaseElement child) {
+    protected void decorateChild(Properties properties, BaseElement child) {
         if (child instanceof Extension) {
             properties.getExtensionList().add((Value)child);
         }

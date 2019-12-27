@@ -42,14 +42,7 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
         }
     }
 
-    @Override
-    protected void singingMagic(ExecutionListener model, BaseElement child) {
-
-        //fixme
-        //if (child instanceof Performable) {
-        //    model.setPerformable((Performable)child);
-        //}
-    }
+   
 
     @Override
     public QName getQname() {

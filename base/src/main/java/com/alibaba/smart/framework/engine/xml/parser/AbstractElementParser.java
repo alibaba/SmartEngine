@@ -77,11 +77,9 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
     }
 
 
-    protected   M parseModel(XMLStreamReader reader, ParseContext context) {
-       throw  new EngineException("should be overridden");
+    protected    M parseModel(XMLStreamReader reader, ParseContext context) {
+              throw  new EngineException("should be overridden");
     }
-
-
 
     private void parseMultiAttributes(M model, XMLStreamReader reader, ParseContext context) {
         int attributeCount=reader.getAttributeCount();
@@ -90,7 +88,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
                 QName attributeQName=reader.getAttributeName(i);
                 Object value=this.parseSingleAttribute(attributeQName,reader, context);
                 if(null!=value && value instanceof BaseElement){
-                    this.singingMagic(model, (BaseElement) value);
+                    this.decorateChild(model, (BaseElement) value);
                 }else{
                     LOGGER.debug(attributeQName +" is ignored when parsing attribute from "+ model);
                 }
@@ -118,13 +116,12 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
         while (XmlParseUtil.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
             if (element instanceof BaseElement) {
-                this.singingMagic(model, (BaseElement) element);
+                this.decorateChild(model, (BaseElement) element);
             }
         }
     }
 
-    //TUNE rename
-    protected void singingMagic(M model, BaseElement child) {
+    protected void decorateChild(M model, BaseElement child) {
 
     }
 
