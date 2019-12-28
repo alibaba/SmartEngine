@@ -24,22 +24,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractElementParser.class);
 
-    //private ExtensionPointRegistry extensionPointRegistry;
-    //private XmlParserExtensionPoint xmlParserExtensionPoint;
-    //
-    //// GETTER & SETTER
-    //
-    //protected ExtensionPointRegistry getExtensionPointRegistry() {
-    //    return extensionPointRegistry;
-    //}
-    //
-    //protected XmlParserExtensionPoint getXmlParserExtensionPoint() {
-    //    return xmlParserExtensionPoint;
-    //}
 
-    //public AbstractElementParser(ExtensionPointRegistry extensionPointRegistry) {
-    //    this.extensionPointRegistry = extensionPointRegistry;
-    //}
 
     @Override
     public void start() {
@@ -108,7 +93,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
         ExtensionBindingResult extensionBindingResult = SimpleAnnotationScanner.getMap().get(
             ExtensionConstant.EXTENSION_POINT);
         Class aClass = extensionBindingResult.getBindings().get(XmlParserExtensionPoint.class.getName());
-        Object o = ClassLoaderUtil.createNewInstance(aClass);
+        Object o = ClassLoaderUtil.createOrGetInstance(aClass);
         return (XmlParserExtensionPoint)o;
     }
 

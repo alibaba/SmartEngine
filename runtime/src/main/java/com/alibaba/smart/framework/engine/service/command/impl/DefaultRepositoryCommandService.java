@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +79,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     @Override
     public ProcessDefinitionSource deploy(String classPathUri) throws DeployException {
 
-       ClassLoader classLoader = ClassLoaderUtil.getStandardClassLoader();
+       ClassLoader classLoader = ClassLoaderUtil.getContextClassLoader();
 
         ProcessDefinitionSource processDefinitionSource = this.parse(classLoader, classPathUri);
 

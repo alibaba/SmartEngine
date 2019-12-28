@@ -46,7 +46,7 @@ public class ExecutionListener  implements Extension {
 
         for (String event : events) {
 
-            EventListener listener = (EventListener)ClassLoaderUtil.createNewInstance(this.listener);
+            EventListener listener = (EventListener)ClassLoaderUtil.createOrGetInstance(this.listener);
 
             Map<String, List<EventListener>> eventListenerMap = eventListenerAggregation.getEventListenerMap();
 

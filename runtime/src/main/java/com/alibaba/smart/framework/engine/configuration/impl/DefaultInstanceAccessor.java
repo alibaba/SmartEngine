@@ -12,7 +12,7 @@ public class DefaultInstanceAccessor implements InstanceAccessor {
 
     @Override
     public Object access(String classNameOrBeanName) {
-        Object instance = ClassLoaderUtil.createOrGetInstanceWithASM(classNameOrBeanName);
+        Object instance = ClassLoaderUtil.createOrGetInstance(classNameOrBeanName);
         return instance;
     }
 }

@@ -45,7 +45,7 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
         ClassLoader classLoader;
 
         try {
-            classLoader = ClassLoaderUtil.getStandardClassLoader();
+            classLoader = ClassLoaderUtil.getContextClassLoader();
             String resourceName = "smart/" + extensionName + ".properties";
             extensionConfigFiles = classLoader.getResources(resourceName);
         } catch (IOException e) {
