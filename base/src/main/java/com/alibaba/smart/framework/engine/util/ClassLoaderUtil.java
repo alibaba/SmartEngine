@@ -36,12 +36,8 @@ public abstract  class ClassLoaderUtil {
 
 
     public static Object createOrGetInstance(Class clazz) {
-        //lock.lock();
 
-        try{
             Object object = objectMap.get(clazz);
-
-            //FIXME lock1
 
             if(object == null){
                 ConstructorAccess access = ConstructorAccess.get(clazz);
@@ -51,9 +47,7 @@ public abstract  class ClassLoaderUtil {
             }else{
                 return object;
             }
-        }finally {
-            //lock.unlock();
-        }
+
     }
 
     public static Object createOrGetInstance(String className) throws EngineException {
