@@ -263,7 +263,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 }
             }
 
-            ExtensionBindingResult extensionBindingResult = SimpleAnnotationScanner.getMap().get(
+            ExtensionBindingResult extensionBindingResult = SimpleAnnotationScanner.getScanResult().get(
                 ExtensionConstant.ACTIVITY_BEHAVIOR);
 
             // Process Transition Flow
@@ -285,7 +285,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
                 PvmTransition pvmTransition = runtimeTransitionEntry.getValue();
 
-                Class aClass = extensionBindingResult.getBindings().get(TransitionBehavior.class.getName());
+                Class aClass = extensionBindingResult.getBindingMap().get(TransitionBehavior.class.getName());
 
                 Object o = ClassLoaderUtil.createNewInstance(aClass);
 
@@ -301,7 +301,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 Activity activity=pvmActivity.getModel();
 
                 String name = activity.getClass().getName();
-                Class aClass = extensionBindingResult.getBindings().get(name);
+                Class aClass = extensionBindingResult.getBindingMap().get(name);
 
                 if(null == aClass){
                     throw new EngineException("Behavior class can't be null for "+name);

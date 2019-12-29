@@ -81,8 +81,8 @@ public class DefaultXmlParserExtensionPoint  implements
         QName nodeQname = reader.getName();
 
         //FIXME cache
-        Map<String, Class> bindings = SimpleAnnotationScanner.getMap().get(
-            ExtensionConstant.ELEMENT_PARSER).getBindings();
+        Map<String, Class> bindings = SimpleAnnotationScanner.getScanResult().get(
+            ExtensionConstant.ELEMENT_PARSER).getBindingMap();
         Set<Entry<String, Class>> entries = bindings.entrySet();
         QName qName = null;
         for (Entry<String, Class> entry : entries) {

@@ -89,9 +89,9 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
 
     private XmlParserExtensionPoint acquireXmlParserExtensionPoint() {
-        ExtensionBindingResult extensionBindingResult = SimpleAnnotationScanner.getMap().get(
+        ExtensionBindingResult extensionBindingResult = SimpleAnnotationScanner.getScanResult().get(
             ExtensionConstant.EXTENSION_POINT);
-        Class aClass = extensionBindingResult.getBindings().get(XmlParserExtensionPoint.class.getName());
+        Class aClass = extensionBindingResult.getBindingMap().get(XmlParserExtensionPoint.class.getName());
         Object o = ClassLoaderUtil.createOrGetInstance(aClass);
         return (XmlParserExtensionPoint)o;
     }

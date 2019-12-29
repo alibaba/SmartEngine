@@ -11,6 +11,6 @@ import lombok.Data;
 @Data
 public class ExtensionBindingResult {
 
-    private Map<String,Class>  bindings;
+    private Map<String,Class> bindingMap;
 
 }

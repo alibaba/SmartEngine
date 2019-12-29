@@ -17,13 +17,10 @@ import java.util.jar.JarFile;
 
 import com.alibaba.smart.framework.engine.configuration.AnnotationScanner;
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -35,15 +32,15 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
     public static final String UTF_8 = "UTF-8";
 
     @Getter
-    private static Map<String, ExtensionBindingResult> map = new HashMap<String, ExtensionBindingResult>();
+    private static Map<String, ExtensionBindingResult> scanResult = new HashMap<String, ExtensionBindingResult>();
 
     public static void clear() {
-        map.clear();
+        scanResult.clear();
     }
 
     public  void scan(String packageName, Class<? extends Annotation> bindingAnnotationClazz) {
 
-        Set<Class<?>> classSet = null;
+        Set<Class<?>> classSet ;
         try {
             classSet = scan(packageName);
         } catch (IOException e) {
@@ -59,22 +56,22 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
                 ExtensionBinding bindAnnotation =  (ExtensionBinding)clazz.getAnnotation(bindingAnnotationClazz);
                 String type = bindAnnotation.type();
 
-                ExtensionBindingResult extensionBindingResult = map.get(type);
+                ExtensionBindingResult extensionBindingResult = scanResult.get(type);
                 if (null == extensionBindingResult) {
 
                     extensionBindingResult = new ExtensionBindingResult();
 
-                    Map<String, Class> classMap = new HashMap<String, Class>();
-                    extensionBindingResult.setBindings(classMap);
+                    Map<String, Class> bindingMap = new HashMap<String, Class>();
+                    extensionBindingResult.setBindingMap(bindingMap);
 
-                    map.put(type, extensionBindingResult);
+                    scanResult.put(type, extensionBindingResult);
                 }
 
-                Map<String, Class> bindings = extensionBindingResult.getBindings();
+                Map<String, Class> bindingMap = extensionBindingResult.getBindingMap();
                 String name = bindAnnotation.bindingTo().getName();
 
-                if (bindings.get(name) == null) {
-                    bindings.put(name, clazz);
+                if (bindingMap.get(name) == null) {
+                    bindingMap.put(name, clazz);
                 } else {
                     throw new EngineException(
                         "Duplicated key found for " + name + ",because of duplicated annotation or init twice.");

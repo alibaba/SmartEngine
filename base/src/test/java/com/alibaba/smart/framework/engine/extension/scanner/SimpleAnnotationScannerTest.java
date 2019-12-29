@@ -27,13 +27,13 @@ public class SimpleAnnotationScannerTest {
        new SimpleAnnotationScanner().scan("com.alibaba.smart.framework.engine.extension.scanner",
             ExtensionBinding.class);
 
-        Map<String,ExtensionBindingResult> resultClass =SimpleAnnotationScanner.getMap();
+        Map<String,ExtensionBindingResult> resultClass =SimpleAnnotationScanner.getScanResult();
         Assert.assertEquals(2,resultClass.size());
         ExtensionBindingResult parser = resultClass.get("ELEMENT_PARSER");
-        Assert.assertEquals(2, parser.getBindings().entrySet().size());
+        Assert.assertEquals(2, parser.getBindingMap().entrySet().size());
 
         parser = resultClass.get("Behavior");
-        Assert.assertEquals(2, parser.getBindings().entrySet().size());
+        Assert.assertEquals(2, parser.getBindingMap().entrySet().size());
 
     }
 }
