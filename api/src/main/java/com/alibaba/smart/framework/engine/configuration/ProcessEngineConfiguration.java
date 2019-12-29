@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.configuration;
 
 import java.util.concurrent.ExecutorService;
 
+import com.alibaba.smart.framework.engine.annoation.Experiment;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 
 /**
@@ -56,12 +57,16 @@ public interface ProcessEngineConfiguration {
 
     TaskAssigneeDispatcher getTaskAssigneeDispatcher();
 
+    /**
+     * 主要用于持久化变量数据。
+     * @param variablePersister
+     */
     void setVariablePersister(VariablePersister variablePersister);
 
     VariablePersister getVariablePersister();
 
     /**
-     *
+     * 用于会签场景的扩展。
      * @param multiInstanceCounter
      */
     void setMultiInstanceCounter(MultiInstanceCounter multiInstanceCounter);
@@ -73,10 +78,11 @@ public interface ProcessEngineConfiguration {
     LockStrategy getLockStrategy();
 
     /**
-     * 服务于 MongoDB 模式 Only。
+     * 目前仅用于 MongoDB 模式
      *
      * @param tableSchemaStrategy
      */
+    @Experiment
     void setTableSchemaStrategy(TableSchemaStrategy tableSchemaStrategy);
 
     TableSchemaStrategy getTableSchemaStrategy();
@@ -90,12 +96,20 @@ public interface ProcessEngineConfiguration {
     ExtensionPointRegistry getExtensionPointRegistry();
 
 
+    /**
+     * 目前仅用于并发执行并行网关的fork行为。
+     * @param executorService
+     */
     void setExecutorService(ExecutorService executorService);
 
     ExecutorService getExecutorService();
 
     boolean isExpressionCompileResultCached();
 
+    /**
+     * 目前仅用于cache 表达式的解析结果。一般来说，是需要cache的。但是如果表达式字面内容完全相同，但是变量的类型的不同，会导致运行时错误，这种情况下则需要设置为false。
+     * @param cached
+     */
     void setExpressionCompileResultCached(boolean cached);
 
 
