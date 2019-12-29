@@ -27,6 +27,8 @@ public abstract class MvelUtil {
     }
 
 
+
+
     //public static boolean staticEval(String expression, Map<String, Object> vars) {
     //    //编译表达式
     //    Serializable compiledExp = compileExp(expression);

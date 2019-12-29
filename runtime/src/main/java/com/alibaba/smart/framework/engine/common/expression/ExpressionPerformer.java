@@ -6,6 +6,7 @@ import com.alibaba.smart.framework.engine.common.expression.evaluator.Expression
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,25 @@ public abstract class ExpressionPerformer {
 
     private static final String PACKAGE_NAME = "com.alibaba.smart.framework.engine.common.expression.evaluator.";
     private static final String EXPRESSION_EVALUATOR = "ExpressionEvaluator";
+
+    public static Boolean eval(ExecutionContext context, ConditionExpression conditionExpression) {
+        String type = conditionExpression.getExpressionType();
+
+        if (null != type) {
+            int expressionTypeSplitIndex = type.indexOf(":");
+            if (expressionTypeSplitIndex >= 0) {
+                type = type.substring(expressionTypeSplitIndex + 1);
+            }
+        } else {
+            type = "mvel";
+        }
+
+        Object eval = ExpressionPerformer.eval(type,
+            conditionExpression.getExpressionContent(), context);
+
+        return (Boolean)eval;
+    }
+
 
     public static Object eval(String type, String expression, ExecutionContext context) {
         ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();

@@ -15,15 +15,7 @@ public abstract class AbstractTransitionBehavior<T extends Transition> implement
 
     private PvmTransition runtimeTransition;
 
-    private ExtensionPointRegistry extensionPointRegistry;
 
-    public AbstractTransitionBehavior(ExtensionPointRegistry extensionPointRegistry,PvmTransition runtimeTransition) {
-        this.extensionPointRegistry=extensionPointRegistry;
-        this.runtimeTransition = runtimeTransition;
-    }
-
-    public AbstractTransitionBehavior() {
-    }
 
     @Override
     public boolean match(ExecutionContext context, ConditionExpression conditionExpression) {

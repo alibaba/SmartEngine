@@ -311,21 +311,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
     //TODO FIX
     protected Boolean evaluate(ExecutionContext context, ConditionExpression conditionExpression) {
 
-        String type = conditionExpression.getExpressionType();
-
-        if (null != type) {
-            int expressionTypeSplitIndex = type.indexOf(":");
-            if (expressionTypeSplitIndex >= 0) {
-                type = type.substring(expressionTypeSplitIndex + 1);
-            }
-        } else {
-            type = "mvel";
-        }
-
-        Object eval = ExpressionPerformer.eval(type,
-            conditionExpression.getExpressionContent(), context);
-
-        return (Boolean)eval;
+        return ExpressionPerformer.eval(context, conditionExpression);
     }
+
 
 }
