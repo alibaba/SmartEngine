@@ -30,7 +30,7 @@ public class BehaviorUtil {
     public static    void executionBehaviorIf(ExecutionContext context, Map<String, String> properties,ExtensionPointRegistry extensionPointRegistry,
                                               PvmActivity pvmActivity) {
 
-        //TUNE 允许扩展
+        //TODO 允许扩展
         if(MapUtil.isNotEmpty(properties)){
             String className  =  properties.get("class");
             if(null != className){

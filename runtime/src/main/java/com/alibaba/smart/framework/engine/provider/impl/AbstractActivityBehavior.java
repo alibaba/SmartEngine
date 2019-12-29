@@ -9,6 +9,7 @@ import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
@@ -96,9 +97,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         return activityInstance;
     }
 
-    //private void buildInstanceRelationShip(ExecutionContext context){
-    //
-    //}
 
     @Override
     public void execute(ExecutionContext context) {
@@ -136,7 +134,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
         if(MapUtil.isEmpty(outcomeTransitions)){
 
-            //TUNE log debug ,more log
+            LOGGER.info("No outcomeTransitions found for activity id: "+pvmActivity.getModel().getId()+", it's just fine, it should be the last activity of the process");
+
             return;
         }else{
 
@@ -146,55 +145,16 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
                     target.enter(context);
                 }
             }else {
-                //TUNE default throw exception，exclude gateway behavior
+
+                throw new EngineException("The outcomeTransitions.size() should only be 1 for the activity id :"+pvmActivity.getModel().getId());
             }
         }
 
-        //if (isNotEmpty(outcomeTransitions)) {
-        //    List<PvmTransition> matchedTransitions = new ArrayList<PvmTransition>(outcomeTransitions.size());
-        //    for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
-        //        PvmTransition pendingTransition = transitionEntry.getValue();
-        //        boolean matched = pendingTransition.match(context);
-        //
-        //        if (matched) {
-        //            matchedTransitions.add(pendingTransition);
-        //        }
-        //
-        //    }
-        //    //TODO 针对互斥和并行网关的线要检验,返回值只有一个或者多个。如果无则抛异常。
-        //
-        //    for (PvmTransition matchedPvmTransition : matchedTransitions) {
-        //        matchedPvmTransition.execute(context);
-        //    }
-        //}
 
     }
 
 
 
-    //private void executeRecursively(ExecutionContext context) {
-    //
-    //    //执行每个节点的hook方法
-    //    Map<String, PvmTransition> outcomeTransitions = this.getOutcomeTransitions();
-    //
-    //    if (null != outcomeTransitions && !outcomeTransitions.isEmpty()) {
-    //        List<PvmTransition> matchedTransitions = new ArrayList<PvmTransition>(outcomeTransitions.size());
-    //        for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
-    //            PvmTransition pendingTransition = transitionEntry.getValue();
-    //            boolean matched = pendingTransition.match(context);
-    //
-    //            if (matched) {
-    //                matchedTransitions.add(pendingTransition);
-    //            }
-    //
-    //        }
-    //        //TODO 针对互斥和并行网关的线要检验,返回值只有一个或者多个。如果无则抛异常。
-    //
-    //        for (PvmTransition matchedPvmTransition : matchedTransitions) {
-    //            matchedPvmTransition.execute(context);
-    //        }
-    //    }
-    //}
 
 
     protected T getModel() {

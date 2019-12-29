@@ -11,6 +11,7 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.IdAndVersionBuilder;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
@@ -59,8 +60,13 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
                 if(element instanceof IdBasedElement){
                     IdBasedElement idBasedElement = (IdBasedElement)element;
 
-                    //TUNE 去重
-                    idBasedElementMap.put(idBasedElement.getId(), idBasedElement);
+                    if(null != idBasedElementMap.get(idBasedElement.getId())){
+                        throw new EngineException("duplicated id found:"+idBasedElement.getId());
+                    }else{
+                        idBasedElementMap.put(idBasedElement.getId(), idBasedElement);
+
+                    }
+
                 }
             }
         }

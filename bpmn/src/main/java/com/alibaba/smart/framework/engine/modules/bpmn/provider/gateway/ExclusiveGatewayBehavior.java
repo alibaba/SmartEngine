@@ -56,9 +56,8 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<Exclusive
                 }
 
 
-
             }else {
-                throw new EngineException("outComing transitions size should >= 2");
+                throw new EngineException("the outcomeTransitions.size() should >= 2");
             }
         }
 

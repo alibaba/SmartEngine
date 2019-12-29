@@ -170,7 +170,6 @@ public class InstanceSerializerV1 {
 
         ExecutionInstance executionInstance = buildExecutionInstance(st1, activityId,   activityInstance,  processInstance);
 
-        //TODO 有点问题、
         List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(2);
         executionInstanceList.add(executionInstance);
         activityInstance.setExecutionInstanceList(executionInstanceList);
