@@ -40,6 +40,10 @@ public interface ProcessEngineConfiguration {
 
     DelegationExecutor getDelegationExecutor();
 
+    void setAnnotationScanner(AnnotationScanner annotationScanner);
+
+    AnnotationScanner getAnnotationScanner();
+
     /**
      * 主要用于外部扩展。
      * 可选扩展。

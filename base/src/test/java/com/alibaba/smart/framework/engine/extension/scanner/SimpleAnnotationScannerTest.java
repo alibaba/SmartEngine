@@ -24,7 +24,7 @@ public class SimpleAnnotationScannerTest {
 
     @Test
     public void scan() {
-        SimpleAnnotationScanner.scan("com.alibaba.smart.framework.engine.extension.scanner",
+       new SimpleAnnotationScanner().scan("com.alibaba.smart.framework.engine.extension.scanner",
             ExtensionBinding.class);
 
         Map<String,ExtensionBindingResult> resultClass =SimpleAnnotationScanner.getMap();

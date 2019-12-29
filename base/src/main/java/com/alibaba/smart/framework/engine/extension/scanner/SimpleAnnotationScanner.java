@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.extension.scanner;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -14,6 +15,7 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import com.alibaba.smart.framework.engine.configuration.AnnotationScanner;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -26,13 +28,11 @@ import org.slf4j.LoggerFactory;
 /**
  *
  */
-public class SimpleAnnotationScanner {
+public class SimpleAnnotationScanner implements AnnotationScanner {
 
     public static final String JAR = "jar";
     public static final String FILE = "file";
     public static final String UTF_8 = "UTF-8";
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleAnnotationScanner.class);
 
     @Getter
     private static Map<String, ExtensionBindingResult> map = new HashMap<String, ExtensionBindingResult>();
@@ -41,13 +41,13 @@ public class SimpleAnnotationScanner {
         map.clear();
     }
 
-    public static void scan(String packageName, Class<? extends ExtensionBinding> bindingAnnotationClazz) {
+    public  void scan(String packageName, Class<? extends Annotation> bindingAnnotationClazz) {
 
         Set<Class<?>> classSet = null;
         try {
             classSet = scan(packageName);
         } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
+            throw new EngineException(e.getMessage(),e);
         }
 
         for (Class<?> clazz : classSet) {
@@ -56,7 +56,7 @@ public class SimpleAnnotationScanner {
 
             if (present) {
 
-                ExtensionBinding bindAnnotation = clazz.getAnnotation(bindingAnnotationClazz);
+                ExtensionBinding bindAnnotation =  (ExtensionBinding)clazz.getAnnotation(bindingAnnotationClazz);
                 String type = bindAnnotation.type();
 
                 ExtensionBindingResult extensionBindingResult = map.get(type);
@@ -76,7 +76,7 @@ public class SimpleAnnotationScanner {
                 if (bindings.get(name) == null) {
                     bindings.put(name, clazz);
                 } else {
-                    throw new ParseException(
+                    throw new EngineException(
                         "Duplicated key found for " + name + ",because of duplicated annotation or init twice.");
                 }
 

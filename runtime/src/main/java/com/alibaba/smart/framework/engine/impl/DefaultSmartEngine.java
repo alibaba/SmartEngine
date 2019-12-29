@@ -42,7 +42,8 @@ public class DefaultSmartEngine implements SmartEngine {
         this.setProcessEngineConfiguration(processEngineConfiguration);
 
         String name = SmartEngine.class.getPackage().getName();
-        SimpleAnnotationScanner.scan(name, ExtensionBinding.class);
+
+        processEngineConfiguration.getAnnotationScanner().scan(name,ExtensionBinding.class);
 
         this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
         this.extensionPointRegistry.register();

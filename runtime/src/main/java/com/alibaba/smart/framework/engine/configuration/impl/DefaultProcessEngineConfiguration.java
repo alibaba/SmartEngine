@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.configuration.impl;
 
 import java.util.concurrent.ExecutorService;
 
+import com.alibaba.smart.framework.engine.configuration.AnnotationScanner;
 import com.alibaba.smart.framework.engine.configuration.DelegationExecutor;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
@@ -12,6 +13,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
+import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 
 import lombok.Data;
@@ -36,6 +38,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private DelegationExecutor delegationExecutor;
 
+    private AnnotationScanner annotationScanner;
+
     private ExceptionProcessor exceptionProcessor;
 
     private TaskAssigneeDispatcher taskAssigneeDispatcher;
@@ -59,6 +63,7 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         this.idGenerator = new DefaultIdGenerator();
         this.instanceAccessor = new DefaultInstanceAccessor();
         this.delegationExecutor = new DefaultDelegationExecutor();
+        this.annotationScanner = new SimpleAnnotationScanner();
         this.variablePersister = new DefaultVariablePersister();
         this.tableSchemaStrategy = new DefaultTableSchemaStrategy();
         this.expressionCompileResultCached = true;
