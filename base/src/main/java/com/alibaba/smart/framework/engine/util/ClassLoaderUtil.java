@@ -28,6 +28,7 @@ public abstract  class ClassLoaderUtil {
         return ClassLoaderUtil.class.getClassLoader();
     }
 
+    //FIXME
     public static Object createNewInstance(Class clazz) {
 
             ConstructorAccess access = ConstructorAccess.get(clazz);

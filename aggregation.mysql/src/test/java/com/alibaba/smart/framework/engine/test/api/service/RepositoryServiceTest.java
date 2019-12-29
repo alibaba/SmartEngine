@@ -38,10 +38,6 @@ public class RepositoryServiceTest extends DatabaseBaseTestCase {
     @Test
     public void testSimple() throws Exception {
 
-        //TODO 增加对本地内存的 tc。
-
-
-
         String content = IOUtil.readResourceFileAsUTF8String("multi-instance-test.bpmn20.xml");
         repositoryCommandService.deployWithUTF8Content(content);
 

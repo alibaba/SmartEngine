@@ -38,7 +38,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
 
     protected Object readElement(XMLStreamReader reader, ParseContext context) {
-        XmlParserExtensionPoint xmlParserExtensionPoint = getXmlParserExtensionPoint1();
+        XmlParserExtensionPoint xmlParserExtensionPoint = acquireXmlParserExtensionPoint();
         return xmlParserExtensionPoint.parseElement(reader, context);
     }
 
@@ -83,13 +83,12 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     private Object parseSingleAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) {
 
-        XmlParserExtensionPoint xmlParserExtensionPoint = getXmlParserExtensionPoint1();
+        XmlParserExtensionPoint xmlParserExtensionPoint = acquireXmlParserExtensionPoint();
         return xmlParserExtensionPoint.parseAttribute(attributeName,reader, context);
     }
 
 
-    //TUNE CACHE
-    private XmlParserExtensionPoint getXmlParserExtensionPoint1() {
+    private XmlParserExtensionPoint acquireXmlParserExtensionPoint() {
         ExtensionBindingResult extensionBindingResult = SimpleAnnotationScanner.getMap().get(
             ExtensionConstant.EXTENSION_POINT);
         Class aClass = extensionBindingResult.getBindings().get(XmlParserExtensionPoint.class.getName());

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.common.expression.ExpressionPerformer;
+import com.alibaba.smart.framework.engine.common.expression.ExpressionEvaluator;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
@@ -182,7 +182,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             ConditionExpression abortCondition = multiInstanceLoopCharacteristics.getAbortCondition();
 
             if (null != abortCondition) {
-                abortMatched = evaluate(context, abortCondition);
+                abortMatched = ExpressionEvaluator.eval(context, abortCondition);
             }
 
             //此时，尚未触发订单abort逻辑
@@ -190,7 +190,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 ConditionExpression completionCondition = multiInstanceLoopCharacteristics.getCompletionCondition();
 
                 if(null != completionCondition){
-                    boolean passedMatched  = evaluate(context, completionCondition) ;
+                    boolean passedMatched  = ExpressionEvaluator.eval(context, completionCondition) ;
 
                     long finishedTaskCount = passedTaskInstanceNumber + rejectedTaskInstanceNumber;
                     if(finishedTaskCount < totalInstanceCount){
@@ -307,12 +307,5 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             InstanceStatus.aborted.name());
         context.setNeedPause(true);
     }
-
-    //TODO FIX
-    protected Boolean evaluate(ExecutionContext context, ConditionExpression conditionExpression) {
-
-        return ExpressionPerformer.eval(context, conditionExpression);
-    }
-
 
 }

@@ -104,7 +104,6 @@ public abstract  class CommonServiceHelper {
 
         PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        //TUNE 可以在对象创建时初始化,但是这里依赖稍微优化下。
         ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
         ProcessInstance newProcessInstance=   processInstanceStorage.update(processInstance,processEngineConfiguration );
@@ -131,7 +130,6 @@ public abstract  class CommonServiceHelper {
         List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
         for (ActivityInstance activityInstance : activityInstances) {
 
-            //TUNE 这里重新赋值了,id还是统一由数据库分配.
             activityInstance.setProcessInstanceId(processInstance.getInstanceId());
             activityInstanceStorage.insert(activityInstance,processEngineConfiguration );
 

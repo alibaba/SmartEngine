@@ -216,7 +216,6 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         List<BaseElement> elements = processDefinition.getBaseElementList();
         if (null != elements && !elements.isEmpty()) {
 
-            //TUNE ocp
             Map<String, PvmTransition> pvmTransitionMap = MapUtil.newLinkedHashMap();
             Map<String, PvmActivity> pvmActivityMap = MapUtil.newLinkedHashMap();
             for (BaseElement element : elements) {
@@ -288,7 +287,6 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                 Class aClass = extensionBindingResult.getBindings().get(TransitionBehavior.class.getName());
 
-                //TUNE 强转，使用instanceAcessor.
                 Object o = ClassLoaderUtil.createNewInstance(aClass);
 
                 pvmTransition.setBehavior((TransitionBehavior)o);

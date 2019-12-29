@@ -81,7 +81,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         }
         request.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,userId);
 
-        //TODO check privilege
+        //TUNE check privilege
 
         complete(  taskId, request);
     }

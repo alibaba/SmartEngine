@@ -34,25 +34,6 @@ public class DefaultPvmTransition extends AbstractPvmElement<Transition> impleme
         return this.behavior.match(context,model.getConditionExpression());
     }
 
-    //@Override
-    //public void execute(ExecutionContext context) {
-    //    this.invoke(PvmEventConstant.TRANSITION_EXECUTE.name(), context);
-    //
-    //    PvmActivity targetPvmActivity = this.getTarget();
-    //    context.setSourcePvmActivity(this.getSource());
-    //    //重要: 执行当前节点,会触发当前节点的行为执行
-    //    targetPvmActivity.jump(context);
-    //}
-    //
-    //@Override
-    //protected Object invokeBehavior(String event, ExecutionContext context) {
-    //    if (PvmEventConstant.TRANSITION_EXECUTE.name().equals(event)) {
-    //         return this.behavior.execute(context);
-    //    }
-    //    // TUNE XXX
-    //    return  null;
-    //}
-
     @Override
     public void start() {
 

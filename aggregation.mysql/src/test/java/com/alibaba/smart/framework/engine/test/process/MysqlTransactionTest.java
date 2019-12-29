@@ -45,7 +45,6 @@ public class MysqlTransactionTest extends DatabaseBaseTestCase {
 
         ProcessInstance processInstance = transactionHelper.start(processCommandService, processDefinition);
 
-        //TUNE 增加对事务的查询判断。
         TaskInstance submitTaskInstance = transactionHelper.signal(taskCommandService, taskQueryService, processInstance);
 
        //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.

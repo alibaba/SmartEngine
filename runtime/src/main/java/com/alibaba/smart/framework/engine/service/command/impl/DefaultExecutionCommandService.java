@@ -230,7 +230,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             //!!! 重要
             tryLock(processEngineConfiguration, executionInstance.getProcessInstanceId());
 
-            //TODO 校验是否有子流程的执行实例依赖这个父执行实例。
+            //TUNE 校验是否有子流程的执行实例依赖这个父执行实例。
 
             //BE AWARE: 注意:针对 CUSTOM 场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
             ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId(),

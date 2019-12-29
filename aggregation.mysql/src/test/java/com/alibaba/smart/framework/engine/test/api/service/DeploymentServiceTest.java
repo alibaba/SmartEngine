@@ -44,9 +44,6 @@ public class DeploymentServiceTest extends DatabaseBaseTestCase {
     @Test
     public void testSimple() throws Exception {
 
-        //TODO 增加对本地内存的 tc。
-
-
         //2.获得常用服务
         DeploymentCommandService deploymentCommandService = smartEngine.getDeploymentCommandService();
         DeploymentQueryService deploymentQueryService =  smartEngine.getDeploymentQueryService();
@@ -142,8 +139,6 @@ public class DeploymentServiceTest extends DatabaseBaseTestCase {
 
     @Test
     public void testComplex() throws Exception {
-
-        //TODO 增加对本地内存的 tc。
 
 
         //2.获得常用服务
