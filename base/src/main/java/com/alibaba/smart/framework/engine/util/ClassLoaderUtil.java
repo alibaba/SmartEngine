@@ -22,8 +22,6 @@ public abstract  class ClassLoaderUtil {
         return  Thread.currentThread().getContextClassLoader();
     }
 
-
-
     public static ClassLoader getFallbackClassLoader() {
         return ClassLoaderUtil.class.getClassLoader();
     }
@@ -67,17 +65,12 @@ public abstract  class ClassLoaderUtil {
 
 
     public static Object createOrGetInstance(String className, Class[] argTypes, Object[] args) throws EngineException {
-        Class clazz;
+        Class clazz = loadClass(className);
         Object newInstance;
-        try {
-            clazz = loadClass(className);
-        } catch (ClassNotFoundException e) {
-            throw new EngineException("Unable to load class " + className + ". Initial cause was " + e.getMessage(), e);
-        }
 
         try {
             Constructor constructor = clazz.getConstructor(argTypes);
-            newInstance = constructor.newInstance(args);
+              newInstance = constructor.newInstance(args);
         } catch (IllegalAccessException e) {
             throw new EngineException("Unable to load class " + className + ". Initial cause was " + e.getMessage(), e);
         } catch (InstantiationException e) {
@@ -96,13 +89,19 @@ public abstract  class ClassLoaderUtil {
     }
 
 
-    public static Class loadClass(String className) throws ClassNotFoundException {
+    public static Class loadClass(String className)  {
         Class clazz;
+
         try {
             clazz = Class.forName(className, true, getContextClassLoader());
         } catch (ClassNotFoundException e) {
             //   fallback
-            clazz = Class.forName(className, true, getFallbackClassLoader());
+            try {
+                clazz = Class.forName(className, true, getFallbackClassLoader());
+            } catch (ClassNotFoundException e1) {
+                throw new EngineException("Unable to load class " + className + ". Initial cause was "
+                    + e.getCause().getMessage(), e.getCause());
+            }
         }
 
         return clazz;
