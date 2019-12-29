@@ -8,6 +8,8 @@ import java.util.Map;
  */
 public interface Activity extends ExtensionBasedElement {
 
+
+    //TODO
     boolean isStartActivity();
 
 

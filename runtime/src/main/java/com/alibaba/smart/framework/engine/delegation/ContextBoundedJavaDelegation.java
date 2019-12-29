@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.delegation;
 
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.pvm.PvmElement;
 
 import lombok.Getter;
@@ -16,7 +17,7 @@ public abstract class ContextBoundedJavaDelegation implements JavaDelegation {
     protected String className;
     @Getter
     @Setter
-    protected PvmElement pvmElement;
+    protected Activity activity;
     @Getter
     @Setter
     protected ExtensionPointRegistry extensionPointRegistry;

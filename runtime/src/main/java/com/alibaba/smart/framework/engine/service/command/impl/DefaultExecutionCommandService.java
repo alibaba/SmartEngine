@@ -16,12 +16,12 @@ import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.delegation.BehaviorUtil;
 import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -157,20 +157,13 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             , processEngineConfiguration);
 
 
-        PvmProcessDefinition  pvmProcessDefinition = this.processContainer.getPvmProcessDefinition(
+        ProcessDefinition  definition = this.processContainer.getProcessDefinition(
             processInstance.getProcessDefinitionIdAndVersion());
 
-        PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
+        IdBasedElement idBasedElement = definition.getIdBasedElementMap().get(activityId);
 
-        ProcessDefinition processDefinition =
-            this.processContainer.getProcessDefinition(
-                processInstance.getProcessDefinitionIdAndVersion());
 
-        IdBasedElement idBasedElement = processDefinition.getIdBasedElementMap().get(activityId);
-
-        Map<String, String> properties = idBasedElement.getProperties();
-
-        BehaviorUtil.executionBehaviorIf(executionContext,properties,this.extensionPointRegistry,pvmActivity);
+        processEngineConfiguration.getDelegationExecutor().execute(executionContext,(Activity)idBasedElement);
 
     }
 

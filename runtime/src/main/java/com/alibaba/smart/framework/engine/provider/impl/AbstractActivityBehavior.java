@@ -21,7 +21,6 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.delegation.BehaviorUtil;
 import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
@@ -121,7 +120,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         T model = this.getModel();
 
         Map<String,String>  properties = model.getProperties();
-        BehaviorUtil.executionBehaviorIf(context, properties,this.extensionPointRegistry,this.pvmActivity);
+        context.getProcessEngineConfiguration().getDelegationExecutor().execute(context, model);
     }
 
 

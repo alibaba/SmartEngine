@@ -35,6 +35,11 @@ public interface ProcessEngineConfiguration {
 
     InstanceAccessor getInstanceAccessor();
 
+
+    void setDelegationExecutor(DelegationExecutor delegationExecutor);
+
+    DelegationExecutor getDelegationExecutor();
+
     /**
      * 主要用于外部扩展。
      * 可选扩展。

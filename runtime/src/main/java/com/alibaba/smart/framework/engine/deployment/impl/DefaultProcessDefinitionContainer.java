@@ -56,47 +56,47 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     @Override
     public PvmProcessDefinition getPvmProcessDefinition(String processDefinitionId, String version) {
-        String uri = IdAndVersionBuilder.buildProcessDefinitionKey(processDefinitionId, version);
-        return this.getPvmProcessDefinition(uri);
+        String uniqueKey = IdAndVersionBuilder.buildProcessDefinitionKey(processDefinitionId, version);
+        return this.getPvmProcessDefinition(uniqueKey);
     }
 
 
     @Override
-    public PvmProcessDefinition getPvmProcessDefinition(String uri) {
-        return this.pvmProcessDefinitionConcurrentHashMap.get(uri);
+    public PvmProcessDefinition getPvmProcessDefinition(String uniqueKey) {
+        return this.pvmProcessDefinitionConcurrentHashMap.get(uniqueKey);
     }
 
     @Override
     public ProcessDefinition getProcessDefinition(String processDefinitionId, String version) {
-        String uri = IdAndVersionBuilder.buildProcessDefinitionKey(processDefinitionId, version);
-        return this.getProcessDefinition(uri);
+        String uniqueKey = IdAndVersionBuilder.buildProcessDefinitionKey(processDefinitionId, version);
+        return this.getProcessDefinition(uniqueKey);
     }
 
     @Override
-    public ProcessDefinition getProcessDefinition(String uri) {
-        return this.processDefinitionConcurrentHashMap.get(uri);
+    public ProcessDefinition getProcessDefinition(String uniqueKey) {
+        return this.processDefinitionConcurrentHashMap.get(uniqueKey);
     }
 
-    private void installPvmProcessDefinition(String uri, PvmProcessDefinition pvmProcessDefinition) {
-        pvmProcessDefinition.setIdAndVersion(uri);
+    private void installPvmProcessDefinition(String uniqueKey, PvmProcessDefinition pvmProcessDefinition) {
+        pvmProcessDefinition.setIdAndVersion(uniqueKey);
 
-        PvmProcessDefinition existedPvmProcessDefinition = pvmProcessDefinitionConcurrentHashMap.get(uri);
+        PvmProcessDefinition existedPvmProcessDefinition = pvmProcessDefinitionConcurrentHashMap.get(uniqueKey);
         if(null!= existedPvmProcessDefinition){
-            LOGGER.warn(" Duplicated processDefinitionId and version found for unique key "+uri+" , but it's ok for deploy the process definition repeatedly. BUT this message should be NOTICED. ");
+            LOGGER.warn(" Duplicated processDefinitionId and version found for unique key "+uniqueKey+" , but it's ok for deploy the process definition repeatedly. BUT this message should be NOTICED. ");
         }
 
-        this.pvmProcessDefinitionConcurrentHashMap.put(uri, pvmProcessDefinition);
+        this.pvmProcessDefinitionConcurrentHashMap.put(uniqueKey, pvmProcessDefinition);
     }
 
 
-    private void installProcessDefinition(String uri, ProcessDefinition processDefinition) {
+    private void installProcessDefinition(String uniqueKey, ProcessDefinition processDefinition) {
 
-        ProcessDefinition existedPvmProcessDefinition = processDefinitionConcurrentHashMap.get(uri);
+        ProcessDefinition existedPvmProcessDefinition = processDefinitionConcurrentHashMap.get(uniqueKey);
         if(null!= existedPvmProcessDefinition){
-            LOGGER.warn(" Duplicated processDefinitionId and version found for unique key "+uri+" , but it's ok for deploy the process definition repeatedly. BUT this message should be NOTICED. ");
+            LOGGER.warn(" Duplicated processDefinitionId and version found for unique key "+uniqueKey+" , but it's ok for deploy the process definition repeatedly. BUT this message should be NOTICED. ");
         }
 
-        this.processDefinitionConcurrentHashMap.put(uri, processDefinition);
+        this.processDefinitionConcurrentHashMap.put(uniqueKey, processDefinition);
     }
 
 
