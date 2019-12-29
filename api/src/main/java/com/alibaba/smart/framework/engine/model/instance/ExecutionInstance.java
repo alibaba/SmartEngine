@@ -29,7 +29,6 @@ public interface ExecutionInstance extends LifeCycleInstance {
     void setActivityInstanceId(String activityInstanceId);
 
 
-    //TUNE 这种对象关联需要在service处理,感觉有点不太好.
     void setTaskInstance(TaskInstance taskInstance);
 
     TaskInstance getTaskInstance();

@@ -14,11 +14,18 @@ import com.alibaba.smart.framework.engine.delegation.TccResult;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.service.command.impl.DefaultRepositoryCommandService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by 高海军 帝奇 74394 on  2019-08-30 16:08.
  */
 public class BehaviorUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BehaviorUtil.class);
+
 
     public static    void executionBehaviorIf(ExecutionContext context, Map<String, String> properties,ExtensionPointRegistry extensionPointRegistry,
                                               PvmActivity pvmActivity) {
@@ -29,7 +36,7 @@ public class BehaviorUtil {
             if(null != className){
                 behavior(context, className,extensionPointRegistry,pvmActivity);
             }else {
-                //tune logger
+                LOGGER.info("No behavior found:"+pvmActivity.getModel().getId());
             }
         }
     }
@@ -42,7 +49,7 @@ public class BehaviorUtil {
         InstanceAccessor instanceAccessor = processEngineConfiguration
             .getInstanceAccessor();
         Object delegation = instanceAccessor.access(className);
-        //TUNE 允许扩展
+
         if (delegation instanceof ContextBoundedJavaDelegation) {
             ContextBoundedJavaDelegation contextBoundedJavaDelegation = (ContextBoundedJavaDelegation)delegation;
             contextBoundedJavaDelegation.setClassName(className);
@@ -56,7 +63,7 @@ public class BehaviorUtil {
             javaDelegation.execute(context);
 
         } else if (delegation instanceof TccDelegation) {
-            //TODO TCC目前只实现了try
+
             TccDelegation tccDelegation = (TccDelegation)delegation;
 
             TccResult tccResult = null;

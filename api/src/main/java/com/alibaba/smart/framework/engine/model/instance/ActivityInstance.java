@@ -64,10 +64,6 @@ public interface ActivityInstance extends Instance {
 
     void setStartTime(Date startTime);
 
-    Date getCompleteTime();
-
-    void setCompleteTime(Date completeTime);
-
     String getBlockId();
 
     void setBlockId(String blockId);

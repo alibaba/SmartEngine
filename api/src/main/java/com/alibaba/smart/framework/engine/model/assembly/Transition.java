@@ -11,6 +11,5 @@ public interface Transition extends ExtensionBasedElement {
 
     String getTargetRef();
 
-    //TUNE 重名
     ConditionExpression getConditionExpression();
 }

@@ -25,10 +25,8 @@ public class ExecutionListener  implements Extension {
     public final static QName type = new QName(SmartBase.SMART_NS, "executionListener");
 
     private String[] events;
-    private String listener;//fixme 转成Listener这个对象，并且需要将context 提格。
+    private String listener;
 
-    //FIXME 不必要每次实例化，统一处理机制，运行懒加载，或者托管。
-    //private Map<String, List<EventListener>> map = new HashMap<String, List<EventListener>>();
 
     @Override
     public String getType() {

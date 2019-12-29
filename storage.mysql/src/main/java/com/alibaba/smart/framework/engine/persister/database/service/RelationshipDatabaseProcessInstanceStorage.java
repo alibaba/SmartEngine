@@ -39,7 +39,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
 
         buildEntityToInstance(processInstance, processInstanceEntity1);
 
-        //TUNE 不能使用下面这种方式,因为下面这张方式没有新建了ProcessInstance 对象,并没有修改原来的引用. 但是 SmartEngine 整体依赖大量的内存传参. 所以这是不能使用下面的这个 API,有点 tricky.
+        //注意：不能使用下面这种方式,因为下面这张方式没有新建了ProcessInstance 对象,并没有修改原来的引用. 但是 SmartEngine 整体依赖大量的内存传参. 所以这是不能使用下面的这个 API,有点 tricky.
         //processInstance = buildProcessInstanceFromEntity(  processInstanceEntity1);
 
         return processInstance;

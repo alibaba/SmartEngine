@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.persister.database.dao.ActivityInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity;
+
+import static com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant.NOT_IMPLEMENT_INTENTIONALLY;
 
 public class RelationshipDatabaseActivityInstanceStorage implements ActivityInstanceStorage {
 
@@ -45,7 +48,6 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         ActivityInstanceEntity activityInstanceEntityToBePersisted = new ActivityInstanceEntity();
         activityInstanceEntityToBePersisted.setProcessDefinitionIdAndVersion(activityInstance.getProcessDefinitionIdAndVersion());
 
-        //TUNE 命名不统一
         activityInstanceEntityToBePersisted.setProcessDefinitionActivityId(activityInstance.getProcessDefinitionActivityId());
         activityInstanceEntityToBePersisted.setProcessInstanceId(Long.valueOf(activityInstance.getProcessInstanceId()));
         activityInstanceEntityToBePersisted.setId(Long.valueOf(activityInstance.getInstanceId()));
@@ -55,11 +57,9 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
     @Override
     public ActivityInstance update(ActivityInstance activityInstance,
                                    ProcessEngineConfiguration processEngineConfiguration) {
-        //TUNE no need to persister
-//        ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
-//        ActivityInstanceEntity processInstanceEntity = buildProcessInstanceEntity(processInstance);
-//        activityInstanceDAO.update(processInstanceEntity);
-        return activityInstance;    }
+
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
+    }
 
     @Override
     public ActivityInstance find(String instanceId,
@@ -73,11 +73,6 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         activityInstance.setInstanceId(activityInstanceEntity.getId().toString());
         activityInstance.setProcessInstanceId(activityInstanceEntity.getProcessInstanceId().toString());
         activityInstance.setProcessDefinitionActivityId(activityInstanceEntity.getProcessDefinitionActivityId());
-
-        //TUNE 意义不准确?
-        activityInstance.setCompleteTime(activityInstanceEntity.getGmtModified());
-
-
 
         return activityInstance;
     }

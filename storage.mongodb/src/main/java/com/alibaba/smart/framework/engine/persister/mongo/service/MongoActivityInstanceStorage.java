@@ -89,7 +89,6 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
         activityInstance.setProcessDefinitionActivityId(entity.getProcessDefinitionActivityId());
         activityInstance.setProcessInstanceId(entity.getProcessInstanceId());
         activityInstance.setStartTime(entity.getGmtCreate());
-        activityInstance.setCompleteTime(entity.getGmtModified());
         return activityInstance;
     }
 

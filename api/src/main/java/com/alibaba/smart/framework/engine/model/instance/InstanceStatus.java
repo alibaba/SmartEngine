@@ -5,7 +5,6 @@ package com.alibaba.smart.framework.engine.model.instance;
  */
 public enum InstanceStatus {
 
-    //TUNE 定义suspended
     running, suspended, aborted,completed;
 
 

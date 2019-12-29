@@ -58,7 +58,6 @@ public class SpringMongoDataTest {
         activityInstance.setProcessDefinitionIdAndVersion("version");
         activityInstance.setProcessInstanceId("processInstanceid");
         activityInstance.setStartTime(DateUtil.getCurrentDate());
-        activityInstance.setCompleteTime(DateUtil.getCurrentDate());
 
 
         mongoActivityInstanceStorage.insert(activityInstance, processEngineConfiguration);
