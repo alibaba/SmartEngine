@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.process;
 
-import com.alibaba.smart.framework.engine.common.expression.ExpressionEvaluator;
+import com.alibaba.smart.framework.engine.common.expression.ExpressionUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -17,7 +17,7 @@ public class SequenceFlowBehavior extends AbstractTransitionBehavior<SequenceFlo
     public boolean match(ExecutionContext context, ConditionExpression conditionExpression) {
 
         if (null != conditionExpression) {
-            return ExpressionEvaluator.eval(context, conditionExpression);
+            return ExpressionUtil.eval(context, conditionExpression);
         }else{
             throw new EngineException("SHOULD NOT TOUCH THIS");
         }

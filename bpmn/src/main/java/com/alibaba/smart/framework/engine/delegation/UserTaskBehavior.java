@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.common.expression.ExpressionEvaluator;
+import com.alibaba.smart.framework.engine.common.expression.ExpressionUtil;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
@@ -182,7 +182,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             ConditionExpression abortCondition = multiInstanceLoopCharacteristics.getAbortCondition();
 
             if (null != abortCondition) {
-                abortMatched = ExpressionEvaluator.eval(context, abortCondition);
+                abortMatched = ExpressionUtil.eval(context, abortCondition);
             }
 
             //此时，尚未触发订单abort逻辑
@@ -190,7 +190,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 ConditionExpression completionCondition = multiInstanceLoopCharacteristics.getCompletionCondition();
 
                 if(null != completionCondition){
-                    boolean passedMatched  = ExpressionEvaluator.eval(context, completionCondition) ;
+                    boolean passedMatched  = ExpressionUtil.eval(context, completionCondition) ;
 
                     long finishedTaskCount = passedTaskInstanceNumber + rejectedTaskInstanceNumber;
                     if(finishedTaskCount < totalInstanceCount){

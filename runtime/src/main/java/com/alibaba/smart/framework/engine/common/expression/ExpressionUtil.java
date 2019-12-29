@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public abstract class ExpressionEvaluator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExpressionEvaluator.class);
+public abstract class ExpressionUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExpressionUtil.class);
 
 
     private static final String PACKAGE_NAME = "com.alibaba.smart.framework.engine.common.expression.evaluator.";
@@ -30,7 +30,7 @@ public abstract class ExpressionEvaluator {
             type = "mvel";
         }
 
-        Object eval = ExpressionEvaluator.eval(type,
+        Object eval = ExpressionUtil.eval(type,
             conditionExpression.getExpressionContent(), context);
 
         return (Boolean)eval;
