@@ -7,7 +7,6 @@ import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfi
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
@@ -40,9 +39,6 @@ public class DefaultRepositoryQueryService  implements RepositoryQueryService, L
         return processDefinitionContainer.getProcessDefinitionConcurrentHashMap().values();
 
     }
-
-    private ExtensionPointRegistry extensionPointRegistry;
-
 
 
     @Override

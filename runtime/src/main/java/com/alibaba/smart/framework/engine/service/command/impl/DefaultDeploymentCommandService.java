@@ -10,7 +10,6 @@ import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultDeploymentInstance;
 import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceStorage;
@@ -162,9 +161,6 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         processDefinitionContainer.uninstall(currentDeploymentInstance.getProcessDefinitionId(),currentDeploymentInstance.getProcessDefinitionVersion());
 
     }
-
-
-    private ExtensionPointRegistry extensionPointRegistry;
 
 
     private ProcessDefinitionContainer processDefinitionContainer;

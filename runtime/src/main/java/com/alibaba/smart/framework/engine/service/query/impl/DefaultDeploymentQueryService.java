@@ -2,17 +2,14 @@ package com.alibaba.smart.framework.engine.service.query.impl;
 
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
-import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 
 /**
@@ -24,7 +21,6 @@ import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 public class DefaultDeploymentQueryService implements DeploymentQueryService ,
     ProcessEngineConfigurationAware, LifeCycleHook {
 
-    private ExtensionPointRegistry extensionPointRegistry;
 
     private  DeploymentInstanceStorage deploymentInstanceStorage;
 

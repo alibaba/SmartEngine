@@ -6,7 +6,6 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -21,7 +20,6 @@ import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 public class DefaultExecutionQueryService implements ExecutionQueryService, LifeCycleHook ,
     ProcessEngineConfigurationAware {
 
-    private ExtensionPointRegistry extensionPointRegistry;
     private ExecutionInstanceStorage executionInstanceStorage;
 
     @Override

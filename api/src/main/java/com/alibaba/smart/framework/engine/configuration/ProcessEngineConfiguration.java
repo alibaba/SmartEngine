@@ -5,7 +5,6 @@ import java.util.concurrent.ExecutorService;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.annoation.Experiment;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 
 /**
  * @author 高海军 帝奇  2016.11.11

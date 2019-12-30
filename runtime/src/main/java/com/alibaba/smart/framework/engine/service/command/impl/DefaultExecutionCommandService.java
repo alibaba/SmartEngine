@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -15,7 +14,6 @@ import com.alibaba.smart.framework.engine.exception.ConcurrentException;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
@@ -30,7 +28,6 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
-import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 
 /**
@@ -41,7 +38,6 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 public class DefaultExecutionCommandService implements ExecutionCommandService, LifeCycleHook,
     ProcessEngineConfigurationAware {
 
-    private ExtensionPointRegistry extensionPointRegistry;
     private ProcessDefinitionContainer processContainer;
     private InstanceContextFactory instanceContextFactory;
     private ProcessEngineConfiguration processEngineConfiguration;

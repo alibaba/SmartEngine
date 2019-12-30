@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -37,8 +36,6 @@ public class DefaultInstanceContext implements ExecutionContext {
     private boolean needPause;
 
     private boolean nested;
-
-    private ExtensionPointRegistry extensionPointRegistry;
 
     private Long blockId;
 

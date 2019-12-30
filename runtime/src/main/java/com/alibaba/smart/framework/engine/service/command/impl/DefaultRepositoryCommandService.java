@@ -10,7 +10,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -22,8 +21,6 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
@@ -49,9 +46,6 @@ import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
@@ -70,7 +64,6 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 
     private  XmlParserExtensionPoint xmlParserExtensionPoint;
-    private ExtensionPointRegistry extensionPointRegistry;
 
     private ProcessDefinitionContainer processContainer;
 

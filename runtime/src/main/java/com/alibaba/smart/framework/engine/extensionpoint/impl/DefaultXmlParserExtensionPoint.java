@@ -28,6 +28,8 @@ import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
 public class DefaultXmlParserExtensionPoint  implements
     XmlParserExtensionPoint, ProcessEngineConfigurationAware {
 
+    //TODO RENAME
+
     private Map<QName, ElementParser> artifactParsers = MapUtil.newHashMap();
 
     private Map<QName, AttributeParser> attributeParsers = MapUtil.newHashMap();
@@ -37,23 +39,23 @@ public class DefaultXmlParserExtensionPoint  implements
     @Override
     public void start() {
 
-        for (ElementParser stAXArtifactParser : artifactParsers.values()) {
-            stAXArtifactParser.start();
-        }
-        for (AttributeParser attributeParser : attributeParsers.values()) {
-            attributeParser.start();
-        }
+        //for (ElementParser stAXArtifactParser : artifactParsers.values()) {
+        //    stAXArtifactParser.start();
+        //}
+        //for (AttributeParser attributeParser : attributeParsers.values()) {
+        //    attributeParser.start();
+        //}
 
     }
 
     @Override
     public void stop() {
-        for (ElementParser stAXArtifactParser : artifactParsers.values()) {
-            stAXArtifactParser.stop();
-        }
-        for (AttributeParser attributeParser : attributeParsers.values()) {
-            attributeParser.stop();
-        }
+        //for (ElementParser stAXArtifactParser : artifactParsers.values()) {
+        //    stAXArtifactParser.stop();
+        //}
+        //for (AttributeParser attributeParser : attributeParsers.values()) {
+        //    attributeParser.stop();
+        //}
     }
 
 

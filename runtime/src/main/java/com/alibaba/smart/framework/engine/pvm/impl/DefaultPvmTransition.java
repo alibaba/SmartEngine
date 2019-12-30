@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.pvm.impl;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
 import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;

@@ -9,8 +9,6 @@ import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanne
 import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.extensionpoint.impl.DefaultExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
@@ -35,8 +33,6 @@ import lombok.Setter;
  */
 public class DefaultSmartEngine implements SmartEngine {
 
-
-    private ExtensionPointRegistry extensionPointRegistry;
 
     @Getter
     @Setter
@@ -81,7 +77,8 @@ public class DefaultSmartEngine implements SmartEngine {
 
     @Override
     public void destroy() {
-        this.extensionPointRegistry.stop();
+
+        //TODO
     }
 
 

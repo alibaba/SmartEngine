@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.modules.compatible.activiti.assembly.multi.instance.ActivitiCollection;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
@@ -14,12 +13,10 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
  * @author ettear
  * Created by ettear on 15/10/2017.
  */
+
+//TODO
 public class ActivitiCollectionParser extends AbstractElementParser<ActivitiCollection> implements
     AttributeParser<ActivitiCollection> {
-
-    public ActivitiCollectionParser(
-        ExtensionPointRegistry extensionPointRegistry) {
-    }
 
     @Override
     public ActivitiCollection parseAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) {

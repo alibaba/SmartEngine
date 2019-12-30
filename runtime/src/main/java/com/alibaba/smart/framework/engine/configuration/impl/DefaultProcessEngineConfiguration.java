@@ -15,7 +15,6 @@ import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 
 import lombok.Data;
 import org.slf4j.Logger;
@@ -32,8 +31,6 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProcessEngineConfiguration.class);
 
     private SmartEngine smartEngine;
-
-    private ExtensionPointRegistry extensionPointRegistry;
 
     private IdGenerator idGenerator;
 
