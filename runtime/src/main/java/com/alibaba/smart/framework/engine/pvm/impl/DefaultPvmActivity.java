@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.listener.EventListener;
 import com.alibaba.smart.framework.engine.listener.EventListenerAggregation;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
-import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
+import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
@@ -29,7 +29,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         fireEvent(context,PvmEventConstant.ACTIVITY_START.name());
 
         ActivityBehavior behavior = this.getBehavior();
-        boolean needPause= behavior.enter(this, context );
+        boolean needPause= behavior.enter(context, this);
 
 
         if (needPause) {
@@ -66,7 +66,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         fireEvent(context,PvmEventConstant.ACTIVITY_EXECUTE.name());
 
 
-        this.getBehavior().execute(context,this.getModel());
+        this.getBehavior().execute(context,this);
 
         if (context.isNeedPause()) {
 
@@ -76,7 +76,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
         fireEvent(context,PvmEventConstant.ACTIVITY_END.name());
 
-        this.getBehavior().leave(this,context);
+        this.getBehavior().leave(context, this);
 
     }
 

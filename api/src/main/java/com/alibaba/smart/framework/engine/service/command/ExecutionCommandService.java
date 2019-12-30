@@ -22,10 +22,6 @@ public interface ExecutionCommandService {
     /**
      * 驱动流程转向自由节点
      *
-     * TODO 测试 jumpFrom,jumpTo
-     *
-     *
-     *
      * @param executionInstanceId
      * @param activityId
      * @param request

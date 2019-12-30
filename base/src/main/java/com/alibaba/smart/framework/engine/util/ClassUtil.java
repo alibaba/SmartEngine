@@ -12,8 +12,7 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 
 
-//TODO RENMAE TO CLASSUTIL
-public abstract  class ClassLoaderUtil {
+public abstract  class ClassUtil {
 
 
 
@@ -25,7 +24,7 @@ public abstract  class ClassLoaderUtil {
     }
 
     public static ClassLoader getFallbackClassLoader() {
-        return ClassLoaderUtil.class.getClassLoader();
+        return ClassUtil.class.getClassLoader();
     }
 
     public static Object createNewInstance(Class clazz) {

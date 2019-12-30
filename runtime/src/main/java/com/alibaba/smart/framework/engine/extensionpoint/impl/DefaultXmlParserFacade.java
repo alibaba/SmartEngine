@@ -17,17 +17,15 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.xml.parser.AttributeParser;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParserFacade;
 
 /**
  * 默认处理器扩展点 Created by ettear on 16-4-12.
  */
 @SuppressWarnings("rawtypes")
-@ExtensionBinding(group = ExtensionConstant.EXTENSION_POINT, bindKey = XmlParserExtensionPoint.class)
-public class DefaultXmlParserExtensionPoint  implements
-    XmlParserExtensionPoint, ProcessEngineConfigurationAware {
-
-    //TODO RENAME
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = XmlParserFacade.class)
+public class DefaultXmlParserFacade implements
+    XmlParserFacade, ProcessEngineConfigurationAware {
 
     private Map<QName, ElementParser> artifactParsers = MapUtil.newHashMap();
 

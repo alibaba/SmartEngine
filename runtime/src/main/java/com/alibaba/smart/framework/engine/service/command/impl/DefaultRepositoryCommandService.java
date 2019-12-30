@@ -32,7 +32,7 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
-import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
+import com.alibaba.smart.framework.engine.behavior.TransitionBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
@@ -41,10 +41,10 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmActivity;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
+import com.alibaba.smart.framework.engine.util.ClassUtil;
 import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParserFacade;
 
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
@@ -59,11 +59,10 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 @ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = RepositoryCommandService.class)
         public class DefaultRepositoryCommandService implements RepositoryCommandService, ProcessEngineConfigurationAware, LifeCycleHook {
 
-    //TODO ProcessEngineConfigurationAware LifeCycleHook 组合使用。
     private ProcessEngineConfiguration processEngineConfiguration;
 
 
-    private  XmlParserExtensionPoint xmlParserExtensionPoint;
+    private XmlParserFacade xmlParserExtensionPoint;
 
     private ProcessDefinitionContainer processContainer;
 
@@ -73,7 +72,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
     @Override
     public ProcessDefinitionSource deploy(String classPathUri) throws DeployException {
 
-       ClassLoader classLoader = ClassLoaderUtil.getContextClassLoader();
+       ClassLoader classLoader = ClassUtil.getContextClassLoader();
 
         ProcessDefinitionSource processDefinitionSource = this.parse(classLoader, classPathUri);
 
@@ -303,7 +302,8 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
     public void start() {
 
         this.annotationScanner = processEngineConfiguration.getAnnotationScanner();
-        this.xmlParserExtensionPoint = annotationScanner.getExtensionPoint(ExtensionConstant.EXTENSION_POINT,XmlParserExtensionPoint.class);
+        this.xmlParserExtensionPoint = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,
+            XmlParserFacade.class);
         //this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
         this.processContainer = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
         //this.defaultExecutePolicyBehavior=extensionPointRegistry.getExtensionPoint(ExecutePolicyBehavior.class);

@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.listener.EventListenerAggregation;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
-import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
+import com.alibaba.smart.framework.engine.util.ClassUtil;
 
 import lombok.Data;
 
@@ -44,7 +44,7 @@ public class ExecutionListener  implements Extension {
 
         for (String event : events) {
 
-            EventListener listener = (EventListener)ClassLoaderUtil.createOrGetInstance(this.listener);
+            EventListener listener = (EventListener)ClassUtil.createOrGetInstance(this.listener);
 
             Map<String, List<EventListener>> eventListenerMap = eventListenerAggregation.getEventListenerMap();
 

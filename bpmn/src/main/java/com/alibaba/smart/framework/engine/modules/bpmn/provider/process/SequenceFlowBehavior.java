@@ -7,7 +7,7 @@ import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.SequenceFlow;
-import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
+import com.alibaba.smart.framework.engine.behavior.TransitionBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractTransitionBehavior;
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = TransitionBehavior.class)

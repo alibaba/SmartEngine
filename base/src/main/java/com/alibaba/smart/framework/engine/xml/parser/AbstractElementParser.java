@@ -28,7 +28,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     protected ProcessEngineConfiguration processEngineConfiguration;
 
-    private XmlParserExtensionPoint xmlParserExtensionPoint;
+    private XmlParserFacade xmlParserFacade;
 
     @Override
     public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
@@ -38,7 +38,8 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
     @Override
     public void start() {
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
-        this.xmlParserExtensionPoint =  annotationScanner.getExtensionPoint(ExtensionConstant.EXTENSION_POINT,XmlParserExtensionPoint.class);
+        this.xmlParserFacade =  annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,
+            XmlParserFacade.class);
     }
 
     @Override
@@ -48,7 +49,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
 
     protected Object readElement(XMLStreamReader reader, ParseContext context) {
-        return xmlParserExtensionPoint.parseElement(reader, context);
+        return xmlParserFacade.parseElement(reader, context);
     }
 
 
@@ -92,7 +93,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     private Object parseSingleAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) {
 
-        return xmlParserExtensionPoint.parseAttribute(attributeName,reader, context);
+        return xmlParserFacade.parseAttribute(attributeName,reader, context);
     }
 
 

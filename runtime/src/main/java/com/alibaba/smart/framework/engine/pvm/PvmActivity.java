@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
+import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 
 /**
  * @author 高海军 帝奇  2016.11.11

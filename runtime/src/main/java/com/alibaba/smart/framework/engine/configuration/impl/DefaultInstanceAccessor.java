@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
-import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
+import com.alibaba.smart.framework.engine.util.ClassUtil;
 
 /**
  *
@@ -12,7 +12,7 @@ public class DefaultInstanceAccessor implements InstanceAccessor {
 
     @Override
     public Object access(String classNameOrBeanName) {
-        Object instance = ClassLoaderUtil.createOrGetInstance(classNameOrBeanName);
+        Object instance = ClassUtil.createOrGetInstance(classNameOrBeanName);
         return instance;
     }
 }

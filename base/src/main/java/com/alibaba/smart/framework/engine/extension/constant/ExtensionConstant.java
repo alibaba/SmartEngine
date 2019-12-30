@@ -6,7 +6,6 @@ package com.alibaba.smart.framework.engine.extension.constant;
 public interface ExtensionConstant {
     String COMMON = "common";
 
-
     String SERVICE = "SERVICE";
 
     String ELEMENT_PARSER = "element-parser";
@@ -14,8 +13,5 @@ public interface ExtensionConstant {
     String ATTRIBUTE_PARSER = "attribute-parser";
 
     String ACTIVITY_BEHAVIOR = "activity-behavior";
-
-    //TODO
-    String EXTENSION_POINT = "extension-point";
 
 }

@@ -15,9 +15,9 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
     }
 
     @Override
-    public boolean enter(PvmActivity pvmActivity, ExecutionContext context) {
+    public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
 
-        super.enter(pvmActivity, context);
+        super.enter(context, pvmActivity);
 
         return true;
     }

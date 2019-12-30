@@ -21,7 +21,7 @@ import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanne
 import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
-import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
+import com.alibaba.smart.framework.engine.util.ClassUtil;
 
 import lombok.Getter;
 
@@ -43,7 +43,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
         String formattedPackageDirName = packageName.replace('.', '/');
 
-        Enumeration<URL> dirs = ClassLoaderUtil.getContextClassLoader().getResources(formattedPackageDirName);
+        Enumeration<URL> dirs = ClassUtil.getContextClassLoader().getResources(formattedPackageDirName);
 
         while (dirs.hasMoreElements()) {
 
@@ -78,7 +78,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
                                 String className = entryName.substring(packageName.length() + 1,
                                     entryName.length() - 6);
 
-                                classes.add(ClassLoaderUtil.loadClass(packageName + '.' + className));
+                                classes.add(ClassUtil.loadClass(packageName + '.' + className));
 
                             }
                         }
@@ -119,7 +119,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
                 String className = file.getName().substring(0, file.getName().length() - 6);
 
                 classes.add(
-                    ClassLoaderUtil.loadClass(packageName + '.' + className));
+                    ClassUtil.loadClass(packageName + '.' + className));
 
             }
         }
@@ -202,7 +202,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
 
 
-                    Object newInstance  = ClassLoaderUtil.createNewInstance(clazz);
+                    Object newInstance  = ClassUtil.createNewInstance(clazz);
                     if (pecFound) {
                         ((ProcessEngineConfigurationAware)newInstance).setProcessEngineConfiguration(
                             processEngineConfiguration);

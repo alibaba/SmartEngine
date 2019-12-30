@@ -55,7 +55,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
     }
 
     @Override
-    public boolean enter(PvmActivity pvmActivity, ExecutionContext context) {
+    public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
         UserTask userTask = (UserTask)pvmActivity.getModel();
 
         List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = getTaskAssigneeCandidateInstances(
@@ -92,7 +92,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
         } else {
 
-            super.enter(pvmActivity, context);
+            super.enter(context, pvmActivity);
 
             if (null != taskAssigneeCandidateInstanceList) {
                 ExecutionInstance executionInstance = context.getExecutionInstance();
@@ -126,8 +126,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
     }
 
     @Override
-    public void execute(ExecutionContext context, Activity activity) {
-        UserTask userTask = (UserTask) activity;
+    public void execute(ExecutionContext context, PvmActivity pvmActivity) {
+        UserTask userTask = (UserTask) pvmActivity.getModel();
 
         super.makeExtensionWorkAndExecuteBehavior(context,userTask);
 

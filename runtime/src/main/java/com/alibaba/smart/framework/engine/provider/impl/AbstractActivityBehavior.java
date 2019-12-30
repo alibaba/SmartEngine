@@ -20,7 +20,7 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
+import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
@@ -54,7 +54,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
 
     @Override
-    public boolean enter(PvmActivity pvmActivity, ExecutionContext context) {
+    public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
 
         ActivityInstance activityInstance = createSingleActivityInstance(context, pvmActivity.getModel());
 
@@ -83,8 +83,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
 
     @Override
-    public void execute(ExecutionContext context,Activity activity) {
-        makeExtensionWorkAndExecuteBehavior(context,activity);
+    public void execute(ExecutionContext context,PvmActivity pvmActivity) {
+        makeExtensionWorkAndExecuteBehavior(context,pvmActivity.getModel());
 
         commonUpdateExecutionInstance(context);
 
@@ -109,7 +109,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
 
     @Override
-    public void leave(PvmActivity pvmActivity,ExecutionContext context) {
+    public void leave(ExecutionContext context, PvmActivity pvmActivity) {
 
         //执行每个节点的hook方法
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();

@@ -28,9 +28,9 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
     }
 
     @Override
-    public boolean enter(PvmActivity pvmActivity, ExecutionContext context) {
+    public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
 
-        super.enter(pvmActivity, context);
+        super.enter(context, pvmActivity);
 
 
         CallActivity callActivity = (CallActivity)pvmActivity.getModel();

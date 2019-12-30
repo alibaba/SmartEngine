@@ -42,10 +42,10 @@ public class CustomRetryRecordStorage implements RetryRecordStorage {
                 processEngineConfiguration.setIdGenerator(new DefaultIdGenerator());
                 SmartEngine smartEngine = new DefaultSmartEngine();
                 smartEngine.init(processEngineConfiguration);
-                RetryExtensionPoint retryExtensionPoint = processEngineConfiguration.getAnnotationScanner()
-                    .getExtensionPoint(ExtensionConstant.EXTENSION_POINT,RetryExtensionPoint.class);
-                RetryListener retryListener = retryExtensionPoint.getExtensionPoint(RetryListener.class);
-                retryListener.onMessage(retryRecord);
+                //RetryExtensionPoint retryExtensionPoint = processEngineConfiguration.getAnnotationScanner()
+                //    .getExtensionPoint(ExtensionConstant.EXTENSION_POINT,RetryExtensionPoint.class);
+                //RetryListener retryListener = retryExtensionPoint.getExtensionPoint(RetryListener.class);
+                //retryListener.onMessage(retryRecord);
             }
         };
         //new Timer().schedule(timerTask, 1000);

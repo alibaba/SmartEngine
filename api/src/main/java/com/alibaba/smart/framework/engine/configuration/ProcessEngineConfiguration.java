@@ -47,7 +47,6 @@ public interface ProcessEngineConfiguration {
     void setAnnotationScanner(AnnotationScanner annotationScanner);
 
 
-    //TODO 静态调用
     AnnotationScanner getAnnotationScanner();
 
     /**

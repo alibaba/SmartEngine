@@ -22,7 +22,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by 高海军 帝奇 74394 on 2017 May  16:31.
  *
- * FIXME
  */
 public class CallActivityProcessTest extends CustomBaseTestCase {
 
@@ -68,7 +67,7 @@ public class CallActivityProcessTest extends CustomBaseTestCase {
 
         //END 111
 
-        //TODO 这里需要断言父子数据均是正确。
+        // 这里需要断言父子数据均是正确。
 
         // 主流程在callActivity节点
         List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(
@@ -84,7 +83,7 @@ public class CallActivityProcessTest extends CustomBaseTestCase {
         ExecutionInstance firstSubExecutionInstance = subExecutionInstanceList.get(0);
         assertTrue("debit".equals(firstSubExecutionInstance.getProcessDefinitionActivityId()));
 
-        // TODO ettear 如果这时执行主流程应该异常
+        // 如果这时执行主流程应该异常
         //processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
 
         //完成下单确认,将流程驱动到等待资金到账环节。

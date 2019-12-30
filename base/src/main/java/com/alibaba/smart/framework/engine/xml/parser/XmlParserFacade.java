@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 /**
  * XML处理器扩展点 Created by ettear on 16-4-12.
  */
-public interface XmlParserExtensionPoint extends LifeCycleHook {
+public interface XmlParserFacade extends LifeCycleHook {
 
     /**
      * Reads a model from an XMLStreamReader.

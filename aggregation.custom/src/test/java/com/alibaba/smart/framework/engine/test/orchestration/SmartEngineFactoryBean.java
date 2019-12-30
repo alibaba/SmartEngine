@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngin
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
-import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
+import com.alibaba.smart.framework.engine.util.ClassUtil;
 import com.alibaba.smart.framework.engine.util.IOUtil;
 
 import org.springframework.beans.factory.FactoryBean;
@@ -76,7 +76,7 @@ public class SmartEngineFactoryBean implements FactoryBean<SmartEngine>, Initial
         @Override
         public Object access(String classNameOrBeanName) {
             try {
-                Class clazz = ClassLoaderUtil.getContextClassLoader().loadClass(classNameOrBeanName);
+                Class clazz = ClassUtil.getContextClassLoader().loadClass(classNameOrBeanName);
                 Object bean = ApplicationContextUtil.getBean(clazz);
                 return bean;
             } catch (NoSuchBeanDefinitionException e) {

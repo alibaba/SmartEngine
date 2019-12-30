@@ -27,7 +27,7 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<Exclusive
 
 
     @Override
-    public void leave(PvmActivity pvmActivity, ExecutionContext context) {
+    public void leave(ExecutionContext context, PvmActivity pvmActivity) {
 
         //执行每个节点的hook方法
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();

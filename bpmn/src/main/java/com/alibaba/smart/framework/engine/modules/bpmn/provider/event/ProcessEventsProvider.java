@@ -5,7 +5,7 @@
 //import com.alibaba.smart.framework.engine.invocation.Invoker;
 //import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.ProcessEvents;
 //import com.alibaba.smart.framework.engine.modules.bpmn.provider.process.AbstractBpmnActivityBehavior;
-//import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
+//import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 //import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 //
 ///**
