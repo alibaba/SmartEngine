@@ -1,62 +1,62 @@
-package com.alibaba.smart.framework.engine.extensionpoint.impl;
-
-import java.util.Map;
-
-import com.alibaba.smart.framework.engine.common.util.MapUtil;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
-import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
-import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
-
-/**
- * 默认Provider工厂扩展点 Created by ettear on 16-4-12.
- */
-@SuppressWarnings("rawtypes")
-public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements ProviderFactoryExtensionPoint {
-
-    /**
-     * Artifact处理器
-     */
-    private Map<Class, ProviderFactory> providerFactories = MapUtil.newHashMap();
-
-    public DefaultProviderFactoryExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
-
-    @Override
-    public void start() {
-        for (ProviderFactory providerFactory : providerFactories.values()) {
-            if (providerFactory instanceof LifeCycleHook) {
-                ((LifeCycleHook) providerFactory).start();
-            }
-        }
-    }
-
-    @Override
-    public void stop() {
-        for (ProviderFactory providerFactory : providerFactories.values()) {
-            if (providerFactory instanceof LifeCycleHook) {
-                ((LifeCycleHook) providerFactory).stop();
-            }
-        }
-    }
-
-    @Override
-    protected void initExtension(ClassLoader classLoader, String type, Object providerFactoryObject) {
-        if (providerFactoryObject instanceof ProviderFactory) {
-            ProviderFactory providerFactory = (ProviderFactory) providerFactoryObject;
-            this.providerFactories.put(providerFactory.getModelType(), providerFactory);
-        }
-    }
-
-    @Override
-    protected String getExtensionName() {
-        return "provider-factory";
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public ProviderFactory getProviderFactory(Class<?> modelType) {
-        return this.providerFactories.get(modelType);
-    }
-}
+//package com.alibaba.smart.framework.engine.extensionpoint.impl;
+//
+//import java.util.Map;
+//
+//import com.alibaba.smart.framework.engine.common.util.MapUtil;
+//import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
+//import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
+//import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
+//import com.alibaba.smart.framework.engine.provider.factory.ProviderFactory;
+//
+///**
+// * 默认Provider工厂扩展点 Created by ettear on 16-4-12.
+// */
+//@SuppressWarnings("rawtypes")
+//public class DefaultProviderFactoryExtensionPoint extends AbstractPropertiesExtensionPointRegistry implements ProviderFactoryExtensionPoint {
+//
+//    /**
+//     * Artifact处理器
+//     */
+//    private Map<Class, ProviderFactory> providerFactories = MapUtil.newHashMap();
+//
+//    public DefaultProviderFactoryExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
+//        super(extensionPointRegistry);
+//    }
+//
+//    @Override
+//    public void start() {
+//        for (ProviderFactory providerFactory : providerFactories.values()) {
+//            if (providerFactory instanceof LifeCycleHook) {
+//                ((LifeCycleHook) providerFactory).start();
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void stop() {
+//        for (ProviderFactory providerFactory : providerFactories.values()) {
+//            if (providerFactory instanceof LifeCycleHook) {
+//                ((LifeCycleHook) providerFactory).stop();
+//            }
+//        }
+//    }
+//
+//    @Override
+//    protected void initExtension(ClassLoader classLoader, String group, Object providerFactoryObject) {
+//        if (providerFactoryObject instanceof ProviderFactory) {
+//            ProviderFactory providerFactory = (ProviderFactory) providerFactoryObject;
+//            this.providerFactories.put(providerFactory.getModelType(), providerFactory);
+//        }
+//    }
+//
+//    @Override
+//    protected String getExtensionName() {
+//        return "provider-factory";
+//    }
+//
+//    @Override
+//    @SuppressWarnings("unchecked")
+//    public ProviderFactory getProviderFactory(Class<?> modelType) {
+//        return this.providerFactories.get(modelType);
+//    }
+//}

@@ -10,12 +10,17 @@ import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.alibaba.smart.framework.engine.configuration.AnnotationScanner;
+import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
+import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
@@ -32,58 +37,9 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
     public static final String UTF_8 = "UTF-8";
 
     @Getter
-    private static Map<String, ExtensionBindingResult> scanResult = new HashMap<String, ExtensionBindingResult>();
+    private Map<String, ExtensionBindingResult> scanResult = new HashMap<String, ExtensionBindingResult>();
 
-    public static void clear() {
-        scanResult.clear();
-    }
-
-    public  void scan(String packageName, Class<? extends Annotation> bindingAnnotationClazz) {
-
-        Set<Class<?>> classSet ;
-        try {
-            classSet = scan(packageName);
-        } catch (IOException e) {
-            throw new EngineException(e.getMessage(),e);
-        }
-
-        for (Class<?> clazz : classSet) {
-
-            boolean present = clazz.isAnnotationPresent(bindingAnnotationClazz);
-
-            if (present) {
-
-                ExtensionBinding bindAnnotation =  (ExtensionBinding)clazz.getAnnotation(bindingAnnotationClazz);
-                String type = bindAnnotation.type();
-
-                ExtensionBindingResult extensionBindingResult = scanResult.get(type);
-                if (null == extensionBindingResult) {
-
-                    extensionBindingResult = new ExtensionBindingResult();
-
-                    Map<String, Class> bindingMap = new HashMap<String, Class>();
-                    extensionBindingResult.setBindingMap(bindingMap);
-
-                    scanResult.put(type, extensionBindingResult);
-                }
-
-                Map<String, Class> bindingMap = extensionBindingResult.getBindingMap();
-                String name = bindAnnotation.bindingTo().getName();
-
-                if (bindingMap.get(name) == null) {
-                    bindingMap.put(name, clazz);
-                } else {
-                    throw new EngineException(
-                        "Duplicated key found for " + name + ",because of duplicated annotation or init twice.");
-                }
-
-            }
-
-        }
-
-    }
-
-    private static Set<Class<?>> scan(String packageName) throws IOException {
+    protected static Set<Class<?>> scan(String packageName) throws IOException {
 
         Set<Class<?>> classes = new LinkedHashSet();
 
@@ -169,6 +125,114 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
             }
         }
+    }
+
+    public void clear() {
+        scanResult.clear();
+    }
+
+    public void scan(
+        ProcessEngineConfiguration processEngineConfiguration,
+        String packageName, Class<? extends Annotation> bindingAnnotationClazz) {
+
+        Set<Class<?>> classSet;
+        try {
+            classSet = scan(packageName);
+        } catch (IOException e) {
+            throw new EngineException(e.getMessage(), e);
+        }
+
+        for (Class<?> clazz : classSet) {
+
+            boolean present = clazz.isAnnotationPresent(bindingAnnotationClazz);
+
+            if (present) {
+
+                ExtensionBinding bindAnnotation = (ExtensionBinding)clazz.getAnnotation(bindingAnnotationClazz);
+                String group = bindAnnotation.group();
+
+                ExtensionBindingResult extensionBindingResult = scanResult.get(group);
+                if (null == extensionBindingResult) {
+
+                    extensionBindingResult = new ExtensionBindingResult();
+
+                    Map<Class, Object> bindingMap = new HashMap<Class, Object>();
+                    extensionBindingResult.setBindingMap(bindingMap);
+
+                    scanResult.put(group, extensionBindingResult);
+                }
+
+                Map<Class, Object> bindingMap = extensionBindingResult.getBindingMap();
+
+                Class bindKeyClass = bindAnnotation.bindKey();
+
+                if (bindingMap.get(bindKeyClass) == null) {
+
+                    boolean pecFound = false;
+
+
+                    Class tempClazz = clazz;
+
+                    //do{
+                    //    Class<?>[] interfaces = tempClazz.getInterfaces();
+                    //    for (Class<?> anInterface : interfaces) {
+                    //        if (anInterface.equals(ProcessEngineConfigurationAware.class)) {
+                    //            pecFound = true;
+                    //            break;
+                    //        }
+                    //    }
+                    //
+                    //    if(pecFound){
+                    //        break;
+                    //    }
+                    //
+                    //    tempClazz  = clazz.getSuperclass();
+                    //}while ();
+
+
+                    while (tempClazz != null && !tempClazz.equals(Object.class)){
+
+                        Class<?>[] interfaces = tempClazz.getInterfaces();
+                        for (Class<?> anInterface : interfaces) {
+                            if (anInterface.equals(ProcessEngineConfigurationAware.class)) {
+                                pecFound = true;
+                                break;
+                            }
+                        }
+                        tempClazz = tempClazz.getSuperclass();
+                    }
+
+
+
+                    Object newInstance  = ClassLoaderUtil.createNewInstance(clazz);
+                    if (pecFound) {
+                        ((ProcessEngineConfigurationAware)newInstance).setProcessEngineConfiguration(
+                            processEngineConfiguration);
+                    }
+
+                    bindingMap.put(bindKeyClass, newInstance);
+
+                } else {
+                    throw new EngineException(
+                        "Duplicated bindKeyClass  found " + bindKeyClass + " for group " + group
+                            + ", because of duplicated annotation or init twice.");
+                }
+
+            }
+
+        }
+
+    }
+
+    public <T> T getExtensionPoint(String group, Class<T> clazz) {
+        ExtensionBindingResult extensionBindingResult = this.scanResult.get(group);
+        Map<Class, Object> bindingMap = extensionBindingResult.getBindingMap();
+        return (T)bindingMap.get(clazz);
+    }
+
+    public Object getObject(String group, Class clazz) {
+        return this.scanResult.get(group).getBindingMap().get(clazz);
+
     }
 
 }

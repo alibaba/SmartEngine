@@ -54,7 +54,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest extends DatabaseBas
         createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         createDeploymentCommand.setProcessDefinitionDesc("desc");
         createDeploymentCommand.setProcessDefinitionName("name");
-        createDeploymentCommand.setProcessDefinitionType("type");
+        createDeploymentCommand.setProcessDefinitionType("group");
 
         DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
 
@@ -63,7 +63,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest extends DatabaseBas
 
         Map<String, Object> request = new HashMap();
         request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
-        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"group");
         request.put("processVariable","processVariableValue");
 
 
@@ -71,7 +71,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest extends DatabaseBas
             deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
               ,request  );
         Assert.assertNotNull(processInstance);
-        Assert.assertEquals("type",processInstance.getProcessDefinitionType());
+        Assert.assertEquals("group",processInstance.getProcessDefinitionType());
 
 
 
@@ -91,7 +91,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest extends DatabaseBas
         submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,"5");
         submitFormRequest.put("text","123");
 
-        //submitFormRequest.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        //submitFormRequest.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"group");
 
 
 
@@ -168,7 +168,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest extends DatabaseBas
         createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         createDeploymentCommand.setProcessDefinitionDesc("desc");
         createDeploymentCommand.setProcessDefinitionName("name");
-        createDeploymentCommand.setProcessDefinitionType("type");
+        createDeploymentCommand.setProcessDefinitionType("group");
 
         DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
 
@@ -177,7 +177,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest extends DatabaseBas
 
         Map<String, Object> request = new HashMap();
         request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
-        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"group");
         request.put("processVariable","processVariableValue");
 
 
@@ -185,7 +185,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest extends DatabaseBas
             deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
             ,request  );
         Assert.assertNotNull(processInstance);
-        Assert.assertEquals("type",processInstance.getProcessDefinitionType());
+        Assert.assertEquals("group",processInstance.getProcessDefinitionType());
 
 
         List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
@@ -203,7 +203,7 @@ public class CompatibleActivitiAndCustomExtensionProcessTest extends DatabaseBas
         submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG, VariableInstanceAndMultiInstanceTest.DISAGREE);
         submitFormRequest.put("text","123");
 
-        //submitFormRequest.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        //submitFormRequest.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"group");
 
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 

@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = ServiceTask.class)
+@ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = ServiceTask.class)
 
 public class ServiceTaskBehavior extends AbstractActivityBehavior<ServiceTask> {
 

@@ -4,8 +4,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.alibaba.smart.framework.engine.common.util.IdAndVersionBuilder;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 
 import lombok.Getter;
@@ -16,7 +21,8 @@ import org.slf4j.LoggerFactory;
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public class DefaultProcessDefinitionContainer implements ProcessDefinitionContainer {
+@ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = ProcessDefinitionContainer.class)
+public class DefaultProcessDefinitionContainer implements ProcessDefinitionContainer, ProcessEngineConfigurationAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProcessDefinitionContainer.class);
 
@@ -99,6 +105,12 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
         this.processDefinitionConcurrentHashMap.put(uniqueKey, processDefinition);
     }
 
+    private ProcessEngineConfiguration processEngineConfiguration;
+
+    @Override
+    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
+    }
 
 
 }

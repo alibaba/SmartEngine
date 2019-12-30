@@ -10,6 +10,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
@@ -22,17 +24,15 @@ import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
  * 默认处理器扩展点 Created by ettear on 16-4-12.
  */
 @SuppressWarnings("rawtypes")
-@ExtensionBinding(type = ExtensionConstant.EXTENSION_POINT, bindingTo = XmlParserExtensionPoint.class)
+@ExtensionBinding(group = ExtensionConstant.EXTENSION_POINT, bindKey = XmlParserExtensionPoint.class)
 public class DefaultXmlParserExtensionPoint  implements
-    XmlParserExtensionPoint {
+    XmlParserExtensionPoint, ProcessEngineConfigurationAware {
 
     private Map<QName, ElementParser> artifactParsers = MapUtil.newHashMap();
 
     private Map<QName, AttributeParser> attributeParsers = MapUtil.newHashMap();
 
-    //public DefaultXmlParserExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
-    //    super(extensionPointRegistry);
-    //}
+    private ProcessEngineConfiguration processEngineConfiguration;
 
     @Override
     public void start() {
@@ -56,45 +56,26 @@ public class DefaultXmlParserExtensionPoint  implements
         }
     }
 
-    //@Override
-    //protected void initExtension(ClassLoader classLoader, String extensionEntryKey, Object artifactParseObject) {
-    //    if (artifactParseObject instanceof ElementParser) {
-    //        ElementParser artifactParser = (ElementParser) artifactParseObject;
-    //        QName artifactType = artifactParser.getQname();
-    //        this.artifactParsers.put(artifactType, artifactParser);
-    //        //this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
-    //    }
-    //    if (artifactParseObject instanceof AttributeParser) {
-    //        AttributeParser artifactParser = (AttributeParser) artifactParseObject;
-    //        this.attributeParsers.put(artifactParser.getQname(), artifactParser);
-    //        //this.resolveArtifactParsers.put(artifactParser.getModelType(), artifactParser);
-    //    }
-    //}
-    //
-    //@Override
-    //protected String getExtensionName() {
-    //    return "assembly-parser";
-    //}
 
     @Override
     public Object parseElement(XMLStreamReader reader, ParseContext context) {
         QName nodeQname = reader.getName();
 
+
         //FIXME cache
-        Map<String, Class> bindings = SimpleAnnotationScanner.getScanResult().get(
+        Map<Class,Object> bindings = processEngineConfiguration.getAnnotationScanner().getScanResult().get(
             ExtensionConstant.ELEMENT_PARSER).getBindingMap();
-        Set<Entry<String, Class>> entries = bindings.entrySet();
-        QName qName = null;
-        for (Entry<String, Class> entry : entries) {
-            String key = entry.getKey();
-            Class<?> aClass = null;
+        Set<Entry<Class, Object>> entries = bindings.entrySet();
+
+        for (Entry<Class, Object> entry : entries) {
+
             try {
-                aClass = Class.forName(key);
+                Class aClass = entry.getKey();
                 Object o = aClass.newInstance();
-                Field type = aClass.getField("type");
-                qName=   (QName)type.get(o);
+                Field field = aClass.getField("type");
+                QName qName=   (QName)field.get(o);
                 if(nodeQname.equals( qName)){
-                    ElementParser artifactParser = (ElementParser)  entry.getValue().newInstance();
+                    ElementParser artifactParser = (ElementParser)  entry.getValue();
                     return artifactParser.parseElement(reader, context);
 
                 }
@@ -108,12 +89,7 @@ public class DefaultXmlParserExtensionPoint  implements
         throw new RuntimeException("No ElementParser found for QName: " + nodeQname);
 
 
-        //ElementParser artifactParser = this.artifactParsers.get(nodeQname);
-        //if (null != artifactParser) {
-        //    return artifactParser.parseElement(reader, context);
-        //} else {
-        //    throw new RuntimeException("No ElementParser found for QName: " + nodeQname);
-        //}
+
     }
 
     @Override
@@ -150,5 +126,8 @@ public class DefaultXmlParserExtensionPoint  implements
         }
     }
 
-
+    @Override
+    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
+    }
 }

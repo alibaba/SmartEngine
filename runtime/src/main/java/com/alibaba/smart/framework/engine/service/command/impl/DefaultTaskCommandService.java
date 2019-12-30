@@ -6,8 +6,12 @@ import java.util.Map;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
@@ -15,14 +19,17 @@ import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStor
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
+import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 
 /**
  * @author 高海军 帝奇  2016.11.11
  */
-public class DefaultTaskCommandService implements TaskCommandService, LifeCycleHook {
+@ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = TaskCommandService.class)
+
+public class DefaultTaskCommandService implements TaskCommandService, LifeCycleHook ,
+    ProcessEngineConfigurationAware {
 
     private ExtensionPointRegistry extensionPointRegistry;
 
@@ -31,17 +38,15 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
     private ExecutionInstanceStorage executionInstanceStorage;
     private ExecutionCommandService executionCommandService;
 
-
-    public DefaultTaskCommandService(ExtensionPointRegistry extensionPointRegistry) {
-        this.extensionPointRegistry = extensionPointRegistry;
-    }
-
     @Override
     public void start() {
-        this.executionCommandService = this.extensionPointRegistry.getExtensionPoint(ExecutionCommandService.class);
-        this.processInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceStorage.class);
-        this.activityInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceStorage.class);
-        this.executionInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceStorage.class);
+
+        AnnotationScanner annotationScanner = this.processEngineConfiguration.getAnnotationScanner();
+        this.executionCommandService = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,ExecutionCommandService.class);
+        this.processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
+        this.activityInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ActivityInstanceStorage.class);
+        this.executionInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
+        this.taskInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,TaskInstanceStorage.class);
 
     }
 
@@ -53,14 +58,8 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
     @Override
     public void complete(String taskId, Map<String, Object> request, Map<String, Object> response) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
-            SmartEngine.class).getProcessEngineConfiguration();
 
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(
-            PersisterFactoryExtensionPoint.class);
 
-        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(
-            TaskInstanceStorage.class);
         TaskInstance taskInstance = taskInstanceStorage.find(taskId,processEngineConfiguration );
         MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
             request, taskInstanceStorage, processEngineConfiguration);
@@ -96,4 +95,11 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
     }
 
+    private ProcessEngineConfiguration processEngineConfiguration;
+    private TaskInstanceStorage taskInstanceStorage;
+
+    @Override
+    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
+    }
 }

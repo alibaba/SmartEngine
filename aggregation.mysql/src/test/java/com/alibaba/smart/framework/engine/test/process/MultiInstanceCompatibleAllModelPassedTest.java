@@ -52,7 +52,7 @@ public class MultiInstanceCompatibleAllModelPassedTest extends DatabaseBaseTestC
 
         String deploymentUserId = "123";
         String name = "name";
-        String type = "type";
+        String type = "group";
         String code = "code";
         String processDefinitionId = "test-multi-instance-user-task";
         String version = "1.0.1";
@@ -100,7 +100,7 @@ public class MultiInstanceCompatibleAllModelPassedTest extends DatabaseBaseTestC
         //6.流程流转:处理 submitTask,完成任务申请.
         PendingTaskQueryParam pendingTaskQueryParam = new PendingTaskQueryParam();
         pendingTaskQueryParam.setAssigneeUserId("1");
-        pendingTaskQueryParam.setProcessDefinitionType("type");
+        pendingTaskQueryParam.setProcessDefinitionType("group");
         PaginateQueryParam paginateQueryParam = new  PaginateQueryParam ();
         paginateQueryParam.setPageSize(10);
         paginateQueryParam.setPageOffset(0);
@@ -140,7 +140,7 @@ public class MultiInstanceCompatibleAllModelPassedTest extends DatabaseBaseTestC
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
         taskInstanceQueryParam.setClaimUserId("1");
-        taskInstanceQueryParam.setProcessDefinitionType("type");
+        taskInstanceQueryParam.setProcessDefinitionType("group");
         taskInstanceQueryParam.setTag(VariableInstanceAndMultiInstanceTest.AGREE);
 
         List<String> processInstanceIdList = new ArrayList<String>(2);

@@ -9,8 +9,9 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.constant.AdHocConstant;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
@@ -32,16 +33,15 @@ import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoi
  */
 public abstract  class CommonServiceHelper {
 
-    public static ProcessInstance insertAndPersist(ProcessInstance processInstance,Map<String, Object> request,ExtensionPointRegistry extensionPointRegistry) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+    public static ProcessInstance insertAndPersist(ProcessInstance processInstance, Map<String, Object> request,
+                                                   ProcessEngineConfiguration processEngineConfiguration) {
 
 
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-
-        ProcessInstance newProcessInstance = null;
+        ProcessInstance newProcessInstance ;
 
         //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
-        ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
+        ProcessInstanceStorage processInstanceStorage =processEngineConfiguration.getAnnotationScanner().getExtensionPoint(
+            ExtensionConstant.COMMON,ProcessInstanceStorage.class);
 
         LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
         if(null != lockStrategy){
@@ -56,22 +56,20 @@ public abstract  class CommonServiceHelper {
         }
 
 
-        persisteVariableInstanceIfPossible(request, processEngineConfiguration, persisterFactoryExtensionPoint,
+        persisteVariableInstanceIfPossible(request, processEngineConfiguration,
             newProcessInstance, AdHocConstant.DEFAULT_ZERO_VALUE);
 
-        persist(newProcessInstance,    extensionPointRegistry,processEngineConfiguration);
+        persist(newProcessInstance,processEngineConfiguration);
 
         return newProcessInstance;
     }
 
     private static void persisteVariableInstanceIfPossible(Map<String, Object> request,
                                                            ProcessEngineConfiguration processEngineConfiguration,
-                                                           PersisterFactoryExtensionPoint
-                                                               persisterFactoryExtensionPoint,
                                                            ProcessInstance newProcessInstance,String executionInstanceId) {
         VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
         if( variablePersister.isPersisteVariableInstanceEnabled() && null!= request ){
-            VariableInstanceStorage variableInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(VariableInstanceStorage.class);
+            VariableInstanceStorage variableInstanceStorage =processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,VariableInstanceStorage.class);
             for (Entry<String, Object> entry : request.entrySet()) {
                 String key = entry.getKey();
 
@@ -99,32 +97,31 @@ public abstract  class CommonServiceHelper {
         }
     }
 
-    public static  ProcessInstance updateAndPersist(String executionInstanceId,ProcessInstance processInstance,Map<String, Object> request,ExtensionPointRegistry extensionPointRegistry) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
+    public static  ProcessInstance updateAndPersist(String executionInstanceId, ProcessInstance processInstance, Map<String, Object> request,
+                                                    ProcessEngineConfiguration processEngineConfiguration) {
 
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
+        ProcessInstanceStorage processInstanceStorage =processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
 
         ProcessInstance newProcessInstance=   processInstanceStorage.update(processInstance,processEngineConfiguration );
 
-        persisteVariableInstanceIfPossible(request, processEngineConfiguration, persisterFactoryExtensionPoint,
+        persisteVariableInstanceIfPossible(request, processEngineConfiguration,
             newProcessInstance,executionInstanceId);
 
-        persist(processInstance,    extensionPointRegistry,  processEngineConfiguration );
+        persist(processInstance   ,  processEngineConfiguration );
 
         return newProcessInstance;
     }
 
 
 
-    private static void persist(ProcessInstance processInstance,  ExtensionPointRegistry extensionPointRegistry,ProcessEngineConfiguration processEngineConfiguration ) {
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+    private static void persist(ProcessInstance processInstance, ProcessEngineConfiguration processEngineConfiguration ) {
 
-        ActivityInstanceStorage activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
-        ExecutionInstanceStorage executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
-        TaskInstanceStorage taskInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
-        TaskAssigneeStorage taskAssigneeStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+        ActivityInstanceStorage activityInstanceStorage= annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ActivityInstanceStorage.class);
+        ExecutionInstanceStorage executionInstanceStorage=annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
+        TaskInstanceStorage taskInstanceStorage=annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,TaskInstanceStorage.class);
+        TaskAssigneeStorage taskAssigneeStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,TaskAssigneeStorage.class);
 
 
         List<ActivityInstance> activityInstances = processInstance.getActivityInstances();

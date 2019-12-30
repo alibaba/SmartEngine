@@ -49,7 +49,7 @@ public class DeploymentServiceTest extends DatabaseBaseTestCase {
         DeploymentQueryService deploymentQueryService =  smartEngine.getDeploymentQueryService();
         String deploymentUserId = "123";
         String name = "name";
-        String type = "type";
+        String type = "group";
         String code = "code";
         String processDefinitionId = "multi-instance-user-task";
         String version = "1.0.2";
@@ -146,7 +146,7 @@ public class DeploymentServiceTest extends DatabaseBaseTestCase {
         DeploymentQueryService deploymentQueryService =  smartEngine.getDeploymentQueryService();
         String deploymentUserId = "123";
         String name = "name";
-        String type = "type";
+        String type = "group";
         String code = "code";
         String processDefinitionId = "test-exclusive";
         String version = "1.0.1";
@@ -181,7 +181,7 @@ public class DeploymentServiceTest extends DatabaseBaseTestCase {
 
 
         DeploymentInstanceQueryParam deploymentInstanceQueryParam = new DeploymentInstanceQueryParam();
-        deploymentInstanceQueryParam.setProcessDefinitionType("type");
+        deploymentInstanceQueryParam.setProcessDefinitionType("group");
         List<DeploymentInstance>  deploymentInstanceList = deploymentQueryService.findList(deploymentInstanceQueryParam);
         Assert.assertEquals(3,deploymentInstanceList.size());
 

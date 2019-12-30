@@ -16,14 +16,6 @@ public abstract class AbstractPvmElement<M extends ExtensionBasedElement> implem
 
     private M model;
 
-     
-
-    protected ExtensionPointRegistry extensionPointRegistry;
-
-    protected AbstractPvmElement(ExtensionPointRegistry extensionPointRegistry){
-        this.extensionPointRegistry=extensionPointRegistry;
-    }
-
     @Override
     public M getModel() {
         return this.model;

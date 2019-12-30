@@ -14,7 +14,7 @@
 ///**
 // * Extension Elements Parser Created by ettear on 16-4-14.
 // */
-//@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = ExtensionElements.class)
+//@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = ExtensionElements.class)
 //
 //public class ExtensionElementsParser extends AbstractElementParser<ExtensionElements> {
 //
@@ -33,7 +33,7 @@
 //
 //    @Override
 //    public QName getQname() {
-//        return ExtensionElements.type;
+//        return ExtensionElements.group;
 //    }
 //
 //    @Override

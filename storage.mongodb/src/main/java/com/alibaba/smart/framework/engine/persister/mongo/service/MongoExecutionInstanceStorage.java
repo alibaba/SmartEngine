@@ -8,6 +8,8 @@ import java.util.List;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -27,6 +29,8 @@ import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoC
 /**
  * Created by 高海军 帝奇 74394 on 2018 October  21:52.
  */
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = ExecutionInstanceStorage.class)
+
 public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage {
 
     private static final String INSTANCE = "se_execution_instance";

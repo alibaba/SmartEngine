@@ -9,6 +9,8 @@ import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
@@ -43,6 +45,8 @@ import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoC
 /**
  * Created by 高海军 帝奇 74394 on 2018 October  21:52.
  */
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = TaskInstanceStorage.class)
+
 public class MongoTaskInstanceStorage implements TaskInstanceStorage {
 
     private static final String INSTANCE = "se_task_instance";
@@ -180,9 +184,8 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
         // 3. 删除或者 abort 流程实例时，对应的冗余数据也需要处理掉。
 
         //下面的待办逻辑是：先从 TaskAssignee 中查询
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = processEngineConfiguration.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        TaskAssigneeStorage  taskAssigneeStorage =  persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
+        TaskAssigneeStorage  taskAssigneeStorage =  processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,TaskAssigneeStorage.class);
         List<TaskAssigneeInstance>  taskAssigneeInstanceList =  taskAssigneeStorage.findPendingTaskAssigneeList(pendingTaskQueryParam,processEngineConfiguration);
 
         if(CollectionUtil.isNotEmpty(taskAssigneeInstanceList)){
@@ -206,7 +209,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
     public Long countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
                                      ProcessEngineConfiguration processEngineConfiguration) {
 
-        TaskAssigneeStorage  taskAssigneeStorage =  processEngineConfiguration.getExtensionPointRegistry().getExtensionPoint(TaskAssigneeStorage.class);
+        TaskAssigneeStorage  taskAssigneeStorage =  processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,TaskAssigneeStorage.class);
 
         Long  counter =  taskAssigneeStorage.countPendingTaskAssigneeList(pendingTaskQueryParam,processEngineConfiguration);
         return counter;
@@ -367,12 +370,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
 
         save(taskInstance, processEngineConfiguration);
 
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = processEngineConfiguration.getExtensionPointRegistry().getExtensionPoint(PersisterFactoryExtensionPoint.class);
-
-
-        TaskAssigneeStorage  taskAssigneeStorage =  persisterFactoryExtensionPoint.getExtensionPoint(TaskAssigneeStorage.class);
-
-
+        TaskAssigneeStorage  taskAssigneeStorage =  processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,TaskAssigneeStorage.class);
 
         taskAssigneeStorage.removeAll(taskInstance.getInstanceId(),processEngineConfiguration);
 

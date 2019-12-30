@@ -32,9 +32,11 @@ public class CustomBaseTestCase {
     protected ExecutionCommandService executionCommandService;
     protected RepositoryQueryService repositoryQueryService ;
 
+    private   SimpleAnnotationScanner simpleAnnotationScanner ;
+
     @Before
     public void setUp() {
-        SimpleAnnotationScanner.clear();
+        this.simpleAnnotationScanner = new SimpleAnnotationScanner();
 
 
         PersisterSession.create();
@@ -66,7 +68,7 @@ public class CustomBaseTestCase {
     @After
     public void clear() {
         PersisterSession.destroySession();
-        SimpleAnnotationScanner.clear();
+        simpleAnnotationScanner.clear();
 
     }
 

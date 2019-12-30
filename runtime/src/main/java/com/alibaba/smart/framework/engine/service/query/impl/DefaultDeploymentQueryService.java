@@ -4,32 +4,33 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
+import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
+import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  07:48.
  */
-public class DefaultDeploymentQueryService implements DeploymentQueryService {
+
+@ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = DeploymentQueryService.class)
+
+public class DefaultDeploymentQueryService implements DeploymentQueryService ,
+    ProcessEngineConfigurationAware, LifeCycleHook {
 
     private ExtensionPointRegistry extensionPointRegistry;
 
-
-    public DefaultDeploymentQueryService(ExtensionPointRegistry extensionPointRegistry) {
-        this.extensionPointRegistry = extensionPointRegistry;
-    }
+    private  DeploymentInstanceStorage deploymentInstanceStorage;
 
     @Override
     public DeploymentInstance findById(String deploymentInstanceId) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
-            SmartEngine.class).getProcessEngineConfiguration();
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
         DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,
             processEngineConfiguration);
@@ -38,11 +39,7 @@ public class DefaultDeploymentQueryService implements DeploymentQueryService {
 
     @Override
     public List<DeploymentInstance> findList(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-
-        DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
         List<DeploymentInstance> deploymentInstanceList = deploymentInstanceStorage.findByPage(
             deploymentInstanceQueryParam, processEngineConfiguration);
@@ -51,14 +48,28 @@ public class DefaultDeploymentQueryService implements DeploymentQueryService {
 
     @Override
     public Integer count(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
 
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        DeploymentInstanceStorage deploymentInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
         int count = deploymentInstanceStorage.count(deploymentInstanceQueryParam, processEngineConfiguration);
         return count;
     }
 
+    private ProcessEngineConfiguration processEngineConfiguration;
+
+    @Override
+    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
+    }
+
+    @Override
+    public void start() {
+       this. deploymentInstanceStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,DeploymentInstanceStorage.class);
+
+    }
+
+    @Override
+    public void stop() {
+
+    }
 }

@@ -4,12 +4,16 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 
 /**
  * Created by 高海军 帝奇 74394 on 2018 October  21:52.
  */
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = VariableInstanceStorage.class)
+
 public class MongoVariableInstanceStorage implements VariableInstanceStorage {
 
 

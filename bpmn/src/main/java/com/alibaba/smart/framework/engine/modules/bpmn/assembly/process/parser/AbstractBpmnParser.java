@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.ParseException;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionBasedElement;
@@ -17,6 +18,7 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
  * Created by ettear on 16-4-29.
  */
 public abstract class AbstractBpmnParser<M extends ExtensionBasedElement> extends AbstractElementParser<M> {
+
 
 
     @Override

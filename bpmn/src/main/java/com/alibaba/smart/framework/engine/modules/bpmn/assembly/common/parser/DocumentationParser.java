@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 /**
  * Created by 高海军 帝奇 74394 on 2017 August  10:02.
  */
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = Documentation.class)
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = Documentation.class)
 
 public class DocumentationParser extends AbstractElementParser<Documentation>   {
 

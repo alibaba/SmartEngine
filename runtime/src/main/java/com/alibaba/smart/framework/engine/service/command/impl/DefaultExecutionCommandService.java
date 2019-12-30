@@ -6,11 +6,15 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.ConcurrentException;
 import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
@@ -22,24 +26,25 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
+import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 
 /**
  * @author 高海军 帝奇  2016.11.11
  */
-public class DefaultExecutionCommandService implements ExecutionCommandService, LifeCycleHook {
+@ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = ExecutionCommandService.class)
+
+public class DefaultExecutionCommandService implements ExecutionCommandService, LifeCycleHook,
+    ProcessEngineConfigurationAware {
 
     private ExtensionPointRegistry extensionPointRegistry;
     private ProcessDefinitionContainer processContainer;
     private InstanceContextFactory instanceContextFactory;
     private ProcessEngineConfiguration processEngineConfiguration;
-
-    private PersisterFactoryExtensionPoint persisterFactoryExtensionPoint;
 
     private  ProcessInstanceStorage processInstanceStorage;
     private ActivityInstanceStorage activityInstanceStorage;
@@ -48,20 +53,18 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
    private PvmProcessInstance pvmProcessInstance;
 
 
-    public DefaultExecutionCommandService(ExtensionPointRegistry extensionPointRegistry) {
-        this.extensionPointRegistry = extensionPointRegistry;
-    }
-
     @Override
     public void start() {
-        this.processContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
-        this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
-        this.processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
-        this.persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
 
-        this. processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
-        this. activityInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ActivityInstanceStorage.class);
-        this. executionInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
+        this.processContainer = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
+        this.instanceContextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,InstanceContextFactory.class);
+
+        this. processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
+        this. activityInstanceStorage= annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ActivityInstanceStorage.class);
+        this. executionInstanceStorage= annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
+
+        //TODO 单例
         this.pvmProcessInstance = new DefaultPvmProcessInstance();
     }
 
@@ -96,8 +99,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
-            CommonServiceHelper.updateAndPersist(executionInstanceId, newProcessInstance, request,
-                extensionPointRegistry);
+            CommonServiceHelper.updateAndPersist(executionInstanceId, newProcessInstance, request,processEngineConfiguration);
 
             return newProcessInstance;
         } finally {
@@ -143,7 +145,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             ProcessInstance newProcessInstance = this.pvmProcessInstance.jump(pvmActivity, executionContext);
 
             CommonServiceHelper.updateAndPersist(executionInstanceId, newProcessInstance, request,
-                extensionPointRegistry);
+                processEngineConfiguration);
 
             return newProcessInstance;
         } finally {
@@ -174,7 +176,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
                                                       ProcessInstance processInstance,
                                                       ProcessDefinition processDefinition) {
         ExecutionContext executionContext = this.instanceContextFactory.create();
-        executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
         executionContext.setProcessEngineConfiguration(processEngineConfiguration);
         executionContext.setProcessDefinition(processDefinition);
         executionContext.setProcessInstance(processInstance);
@@ -243,5 +244,11 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
                 executionInstance, activityInstance, processInstance, processDefinition);
             return this;
         }
+    }
+
+
+    @Override
+    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
     }
 }

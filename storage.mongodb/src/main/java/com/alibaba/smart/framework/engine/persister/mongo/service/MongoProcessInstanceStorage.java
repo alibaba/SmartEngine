@@ -10,6 +10,8 @@ import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
 import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -33,6 +35,8 @@ import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoC
 /**
  * Created by 高海军 帝奇 74394 on 2018 October  21:52.
  */
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = ProcessInstanceStorage.class)
+
 public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
 
     private static final String INSTANCE = "se_process_instance";

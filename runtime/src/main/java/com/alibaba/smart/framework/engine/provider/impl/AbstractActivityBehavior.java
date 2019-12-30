@@ -40,10 +40,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     private PvmActivity pvmActivity;
 
     @Setter
-    @Getter
-    protected ExtensionPointRegistry extensionPointRegistry;
-
-    @Setter
     protected ProcessInstanceFactory processInstanceFactory;
     @Setter
     protected ExecutionInstanceFactory executionInstanceFactory;
@@ -119,7 +115,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     protected void makeExtensionWorkAndExecuteBehavior(ExecutionContext context) {
         T model = this.getModel();
 
-        Map<String,String>  properties = model.getProperties();
         context.getProcessEngineConfiguration().getDelegationExecutor().execute(context, model);
     }
 
@@ -151,9 +146,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
 
     }
-
-
-
 
 
     protected T getModel() {

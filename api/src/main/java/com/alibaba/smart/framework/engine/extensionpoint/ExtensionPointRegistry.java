@@ -16,6 +16,6 @@ public interface ExtensionPointRegistry extends LifeCycleHook {
      * @param extensionPointType 扩展点类型
      * @return 扩展点
      */
-    <T> T getExtensionPoint(Class<T> extensionPointType);
+    //<T> T getExtensionPoint(Class<T> extensionPointType);
 
 }

@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
@@ -15,6 +17,7 @@ import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryPa
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = TaskInstanceStorage.class)
 
 public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStorage {
 

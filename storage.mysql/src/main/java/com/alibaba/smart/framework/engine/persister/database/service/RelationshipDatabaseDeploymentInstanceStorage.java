@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultDeploymentInstance;
 import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
@@ -20,6 +22,8 @@ import org.springframework.util.CollectionUtils;
  * @author yueyu.yr
  * @date 2017/09/22
  */
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = DeploymentInstanceStorage.class)
+
 public class RelationshipDatabaseDeploymentInstanceStorage implements DeploymentInstanceStorage {
 
 

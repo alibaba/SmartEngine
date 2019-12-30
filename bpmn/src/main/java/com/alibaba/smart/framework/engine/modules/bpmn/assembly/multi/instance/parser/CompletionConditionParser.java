@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:26.
  */
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = CompletionCondition.class)
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = CompletionCondition.class)
 public class CompletionConditionParser extends AbstractElementParser<CompletionCondition>
 {
 
@@ -35,7 +35,7 @@ public class CompletionConditionParser extends AbstractElementParser<CompletionC
     public CompletionCondition parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
         CompletionCondition completionCondition = new CompletionCondition();
 
-        String expressionType = XmlParseUtil.getString(reader, "type");
+        String expressionType = XmlParseUtil.getString(reader, "group");
         String action = XmlParseUtil.getString(reader, "action");
 
         completionCondition.setAction(action);

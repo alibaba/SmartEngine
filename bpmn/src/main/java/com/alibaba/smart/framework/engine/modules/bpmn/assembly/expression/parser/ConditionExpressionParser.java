@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.expression.Condi
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = ConditionExpressionImpl.class)
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = ConditionExpressionImpl.class)
 public class ConditionExpressionParser extends AbstractElementParser<ConditionExpressionImpl>
       {
 
@@ -31,10 +31,10 @@ public class ConditionExpressionParser extends AbstractElementParser<ConditionEx
     public ConditionExpressionImpl parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
         ConditionExpressionImpl conditionExpression = new ConditionExpressionImpl();
 
-        String type = XmlParseUtil.getString(reader, "type");
+        String type = XmlParseUtil.getString(reader, "group");
 
-        String type0 =  reader.getAttributeValue("xsi", "type");
-        String type1 =  reader.getAttributeValue(null, "type");
+        String type0 =  reader.getAttributeValue("xsi", "group");
+        String type1 =  reader.getAttributeValue(null, "group");
         String type2 =  reader.getAttributeValue(0);
 
 
@@ -56,11 +56,11 @@ public class ConditionExpressionParser extends AbstractElementParser<ConditionEx
 
         String finalExpressionType = conditionExpression.getExpressionType();
         if(null == finalExpressionType){
-            throw new EngineException("type should not be empty for expression content:"+ finalExpressionType);
+            throw new EngineException("group should not be empty for expression content:"+ finalExpressionType);
         }
 
 //        Script script = new Script();
-//        script.setType(type);
+//        script.setType(group);
 //        script.setContent(content);
 //        conditionExpression.setHandler(script);
         // this.skipToEndElement(reader);

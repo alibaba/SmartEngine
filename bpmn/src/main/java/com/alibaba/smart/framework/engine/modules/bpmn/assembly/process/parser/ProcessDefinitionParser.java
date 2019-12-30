@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +10,7 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.IdAndVersionBuilder;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -23,9 +23,10 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = ProcessDefinitionImpl.class)
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = ProcessDefinitionImpl.class)
 
-public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefinition>  {
+public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefinition> implements
+    ProcessEngineConfigurationAware {
 
 
 

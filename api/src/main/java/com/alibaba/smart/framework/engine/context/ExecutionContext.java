@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.engine.context;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -42,9 +41,7 @@ public interface ExecutionContext {
 
     Map<String, Object> getResponse();
 
-    ExtensionPointRegistry getExtensionPointRegistry();
 
-    void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
 
     ProcessEngineConfiguration getProcessEngineConfiguration();
 

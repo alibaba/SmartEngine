@@ -57,7 +57,7 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
         createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         createDeploymentCommand.setProcessDefinitionDesc("desc");
         createDeploymentCommand.setProcessDefinitionName("name");
-        createDeploymentCommand.setProcessDefinitionType("type");
+        createDeploymentCommand.setProcessDefinitionType("group");
         createDeploymentCommand.setProcessDefinitionCode("code");
 
         DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
@@ -68,7 +68,7 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
 
         Map<String, Object> request = new HashMap();
         request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
-        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"group");
         request.put("processVariable","processVariableValue");
 
 
@@ -76,10 +76,10 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
             deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
             ,request  );
         Assert.assertNotNull(processInstance);
-        Assert.assertEquals("type",processInstance.getProcessDefinitionType());
+        Assert.assertEquals("group",processInstance.getProcessDefinitionType());
 
         processInstance =   processQueryService.findById(processInstance.getInstanceId());
-        Assert.assertEquals("type",processInstance.getProcessDefinitionType());
+        Assert.assertEquals("group",processInstance.getProcessDefinitionType());
         Assert.assertEquals("multi-instance-user-task:1.0.2",processInstance.getProcessDefinitionIdAndVersion());
         Assert.assertEquals("multi-instance-user-task",processInstance.getProcessDefinitionId());
         Assert.assertEquals("1.0.2",processInstance.getProcessDefinitionVersion());
@@ -116,7 +116,7 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
         createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         createDeploymentCommand.setProcessDefinitionDesc("desc");
         createDeploymentCommand.setProcessDefinitionName("name");
-        createDeploymentCommand.setProcessDefinitionType("type");
+        createDeploymentCommand.setProcessDefinitionType("group");
         createDeploymentCommand.setProcessDefinitionCode("code");
 
         DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
@@ -127,7 +127,7 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
 
         Map<String, Object> request = new HashMap();
         request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
-        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"group");
         request.put("processVariable","processVariableValue");
 
 
@@ -135,7 +135,7 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
             deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
             ,request  );
         Assert.assertNotNull(processInstance);
-        Assert.assertEquals("type",processInstance.getProcessDefinitionType());
+        Assert.assertEquals("group",processInstance.getProcessDefinitionType());
 
 
         processCommandService.abort(processInstance.getInstanceId());
@@ -164,7 +164,7 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
         createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         createDeploymentCommand.setProcessDefinitionDesc("desc");
         createDeploymentCommand.setProcessDefinitionName("name");
-        createDeploymentCommand.setProcessDefinitionType("type");
+        createDeploymentCommand.setProcessDefinitionType("group");
         createDeploymentCommand.setProcessDefinitionCode("code");
 
         DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
@@ -175,7 +175,7 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
 
         Map<String, Object> request = new HashMap();
         request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
-        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"group");
         request.put("processVariable","processVariableValue");
 
 
@@ -183,7 +183,7 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
             deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
             ,request  );
         Assert.assertNotNull(processInstance);
-        Assert.assertEquals("type",processInstance.getProcessDefinitionType());
+        Assert.assertEquals("group",processInstance.getProcessDefinitionType());
 
         Map<String,Object> abortRequest = new HashMap<String,Object>();
         abortRequest.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_ABORT_REASON,"abort_reason");
@@ -228,7 +228,7 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
         createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         createDeploymentCommand.setProcessDefinitionDesc("desc");
         createDeploymentCommand.setProcessDefinitionName("name");
-        createDeploymentCommand.setProcessDefinitionType("type");
+        createDeploymentCommand.setProcessDefinitionType("group");
         createDeploymentCommand.setProcessDefinitionCode("code");
 
         DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
@@ -252,14 +252,14 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
 
 
         request.put(RequestMapSpecialKeyConstant.PROCESS_BIZ_UNIQUE_ID,"uniqueId");
-        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"group");
 
         processCommandService.start(
             deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
             ,request  );
 
         ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam ();
-        processInstanceQueryParam.setProcessDefinitionType("type");
+        processInstanceQueryParam.setProcessDefinitionType("group");
         processInstanceQueryParam.setStatus(InstanceStatus.running.name());
         processInstanceQueryParam.setStartUserId("123");
         processInstanceQueryParam.setProcessDefinitionIdAndVersion("Process_1:1.0.0");

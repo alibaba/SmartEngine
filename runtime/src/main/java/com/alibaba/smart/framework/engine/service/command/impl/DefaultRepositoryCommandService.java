@@ -13,13 +13,16 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.DeployException;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ParseException;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extension.scanner.ExtensionBindingResult;
-import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
+import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
@@ -32,8 +35,6 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource;
 import com.alibaba.smart.framework.engine.model.assembly.Transition;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
-import com.alibaba.smart.framework.engine.provider.ProviderFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -61,20 +62,18 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public class DefaultRepositoryCommandService implements RepositoryCommandService, LifeCycleHook {
+@ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = RepositoryCommandService.class)
+        public class DefaultRepositoryCommandService implements RepositoryCommandService, ProcessEngineConfigurationAware, LifeCycleHook {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRepositoryCommandService.class);
+    //TODO ProcessEngineConfigurationAware LifeCycleHook 组合使用。
+    private ProcessEngineConfiguration processEngineConfiguration;
 
 
+    private  XmlParserExtensionPoint xmlParserExtensionPoint;
     private ExtensionPointRegistry extensionPointRegistry;
 
-    private XmlParserExtensionPoint xmlParserExtensionPoint;
-    private ProviderFactoryExtensionPoint providerFactoryExtensionPoint;
     private ProcessDefinitionContainer processContainer;
 
-    public DefaultRepositoryCommandService(ExtensionPointRegistry extensionPointRegistry) {
-        this.extensionPointRegistry = extensionPointRegistry;
-    }
 
     @Override
     public ProcessDefinitionSource deploy(String classPathUri) throws DeployException {
@@ -116,19 +115,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
     }
 
-    @Override
-    public void start() {
 
-        this.xmlParserExtensionPoint = extensionPointRegistry.getExtensionPoint(XmlParserExtensionPoint.class);
-        this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
-        this.processContainer = extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
-        //this.defaultExecutePolicyBehavior=extensionPointRegistry.getExtensionPoint(ExecutePolicyBehavior.class);
-    }
-
-    @Override
-    public void stop() {
-
-    }
 
     private ProcessDefinitionSource parse(ClassLoader classLoader, String uri) throws DeployException {
 
@@ -137,7 +124,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             inputStream = classLoader.getResourceAsStream(uri);
 
             if(null == inputStream){
-                throw new IllegalArgumentException("Cant find any resources for the idAndVersion:"+uri);
+                throw new IllegalArgumentException("Cant find any resources for the uri:"+uri);
             }
 
             ProcessDefinitionSource processDefinitionSource = parseStream(inputStream);
@@ -186,12 +173,9 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
             String processDefinitionSourceId = processDefinition.getId();
             String version = processDefinition.getVersion();
 
-
-
             if (StringUtil.isEmpty(processDefinitionSourceId) || StringUtil.isEmpty(version)) {
                 throw new EngineException("empty processDefinitionSourceId or version"+processDefinitionSource);
             }
-
 
             PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(processDefinition);
 
@@ -218,16 +202,13 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
             Map<String, PvmTransition> pvmTransitionMap = MapUtil.newLinkedHashMap();
             Map<String, PvmActivity> pvmActivityMap = MapUtil.newLinkedHashMap();
+
             for (BaseElement element : elements) {
 
                 if (element instanceof Transition) {
                     Transition transition = (Transition) element;
 
-                    if (StringUtil.isEmpty(transition.getId())) {
-                        throw new ParseException("id cant be empty"+transition);
-                    }
-
-                    DefaultPvmTransition pvmTransition = new DefaultPvmTransition(this.extensionPointRegistry);
+                    DefaultPvmTransition pvmTransition = new DefaultPvmTransition();
                     pvmTransition.setModel(transition);
 
                     String id = pvmTransition.getModel().getId();
@@ -241,11 +222,7 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 } else if (element instanceof Activity) {
                     Activity activity = (Activity) element;
 
-                    if (StringUtil.isEmpty(activity.getId())) {
-                        throw new ParseException("id cant be empty"+activity);
-                    }
-
-                    DefaultPvmActivity pvmActivity = new DefaultPvmActivity(this.extensionPointRegistry);
+                    DefaultPvmActivity pvmActivity = new DefaultPvmActivity();
                     pvmActivity.setModel(activity);
 
                     String id = pvmActivity.getModel().getId();
@@ -263,69 +240,57 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 }
             }
 
-            ExtensionBindingResult extensionBindingResult = SimpleAnnotationScanner.getScanResult().get(
-                ExtensionConstant.ACTIVITY_BEHAVIOR);
+            AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+
 
             // Process Transition Flow
-            for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
-                DefaultPvmTransition pvmTransition = (DefaultPvmTransition) runtimeTransitionEntry.getValue();
+            for (Map.Entry<String, PvmTransition> pvmTransitionEntry : pvmTransitionMap.entrySet()) {
+
+                DefaultPvmTransition pvmTransition = (DefaultPvmTransition) pvmTransitionEntry.getValue();
                 String sourceRef = pvmTransition.getModel().getSourceRef();
                 String targetRef = pvmTransition.getModel().getTargetRef();
-                DefaultPvmActivity source = (DefaultPvmActivity) pvmActivityMap.get(sourceRef);
-                DefaultPvmActivity target = (DefaultPvmActivity) pvmActivityMap.get(targetRef);
+                DefaultPvmActivity sourcePvmActivity = (DefaultPvmActivity) pvmActivityMap.get(sourceRef);
+                DefaultPvmActivity targetPvmActivity = (DefaultPvmActivity) pvmActivityMap.get(targetRef);
 
-                pvmTransition.setSource(source);
-                pvmTransition.setTarget(target);
+                pvmTransition.setSource(sourcePvmActivity);
+                pvmTransition.setTarget(targetPvmActivity);
 
-                source.addOutcomeTransition(pvmTransition.getModel().getId(), pvmTransition);
-                target.addIncomeTransition(pvmTransition.getModel().getId(), pvmTransition);
+                sourcePvmActivity.addOutcomeTransition(pvmTransition.getModel().getId(), pvmTransition);
+                targetPvmActivity.addIncomeTransition(pvmTransition.getModel().getId(), pvmTransition);
 
             }
 
-            for (Map.Entry<String, PvmTransition> runtimeTransitionEntry : pvmTransitionMap.entrySet()) {
-                PvmTransition pvmTransition = runtimeTransitionEntry.getValue();
+            for (Map.Entry<String, PvmTransition> pvmTransitionEntry : pvmTransitionMap.entrySet()) {
+                PvmTransition pvmTransition = pvmTransitionEntry.getValue();
 
-                Class aClass = extensionBindingResult.getBindingMap().get(TransitionBehavior.class.getName());
+                TransitionBehavior transitionBehavior = annotationScanner.getExtensionPoint(ExtensionConstant.ACTIVITY_BEHAVIOR,TransitionBehavior.class);
 
-                Object o = ClassLoaderUtil.createNewInstance(aClass);
-
-                pvmTransition.setBehavior((TransitionBehavior)o);
+                pvmTransition.setBehavior(transitionBehavior);
 
             }
 
             for (Map.Entry<String, PvmActivity> pvmActivityEntry : pvmActivityMap.entrySet()) {
                 PvmActivity pvmActivity = pvmActivityEntry.getValue();
 
-                //this.initElement(pvmActivity);
-
                 Activity activity=pvmActivity.getModel();
 
-                String name = activity.getClass().getName();
-                Class aClass = extensionBindingResult.getBindingMap().get(name);
-
-                if(null == aClass){
-                    throw new EngineException("Behavior class can't be null for "+name);
-                }
-
-                //TUNE initliazer
-
-                Object o = ClassLoaderUtil.createNewInstance(aClass);
-
-                AbstractActivityBehavior activityBehavior = (AbstractActivityBehavior)o;
-                activityBehavior.setPvmActivity(pvmActivity);
-                activityBehavior.setExtensionPointRegistry(extensionPointRegistry);
-
-                activityBehavior.setProcessInstanceFactory(extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class));
-                activityBehavior.setExecutionInstanceFactory(extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class));
-                activityBehavior.setActivityInstanceFactory(extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class));
-                activityBehavior.setTaskInstanceFactory(extensionPointRegistry.getExtensionPoint(TaskInstanceFactory.class));
-                activityBehavior.setProcessEngineConfiguration( extensionPointRegistry.getExtensionPoint(
-                    SmartEngine.class).getProcessEngineConfiguration());
-                PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-                activityBehavior.setExecutionInstanceStorage(persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class));
-
+                AbstractActivityBehavior activityBehavior = (AbstractActivityBehavior) annotationScanner.getObject(ExtensionConstant.ACTIVITY_BEHAVIOR,activity.getClass());
 
                 pvmActivity.setBehavior(activityBehavior);
+                activityBehavior.setPvmActivity(pvmActivity);
+
+
+                activityBehavior.setProcessInstanceFactory(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceFactory.class));
+                activityBehavior.setExecutionInstanceFactory(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceFactory.class));
+                activityBehavior.setActivityInstanceFactory(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ActivityInstanceFactory.class));
+                activityBehavior.setTaskInstanceFactory(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,TaskInstanceFactory.class));
+
+
+                activityBehavior.setProcessEngineConfiguration( processEngineConfiguration);
+
+                activityBehavior.setExecutionInstanceStorage(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class));
+
+
 
 
             }
@@ -336,5 +301,23 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         return pvmProcessDefinition;
     }
 
+    @Override
+    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
+    }
+
+    @Override
+    public void start() {
+
+        this.xmlParserExtensionPoint = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.EXTENSION_POINT,XmlParserExtensionPoint.class);
+        //this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
+        this.processContainer = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
+        //this.defaultExecutePolicyBehavior=extensionPointRegistry.getExtensionPoint(ExecutePolicyBehavior.class);
+    }
+
+    @Override
+    public void stop() {
+
+    }
 
 }

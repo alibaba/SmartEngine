@@ -4,10 +4,14 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ParseException;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extension.scanner.ExtensionBindingResult;
+import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
@@ -20,14 +24,22 @@ import org.slf4j.LoggerFactory;
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-public abstract class AbstractElementParser<M extends BaseElement> implements ElementParser<M> {
+
+public abstract class AbstractElementParser<M extends BaseElement> implements ElementParser<M> ,
+    ProcessEngineConfigurationAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractElementParser.class);
 
+    protected ProcessEngineConfiguration processEngineConfiguration;
 
+    @Override
+    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
+    }
 
     @Override
     public void start() {
+
         //this.xmlParserExtensionPoint = this.extensionPointRegistry.getExtensionPoint(XmlParserExtensionPoint.class);
     }
 
@@ -89,11 +101,9 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
 
     private XmlParserExtensionPoint acquireXmlParserExtensionPoint() {
-        ExtensionBindingResult extensionBindingResult = SimpleAnnotationScanner.getScanResult().get(
-            ExtensionConstant.EXTENSION_POINT);
-        Class aClass = extensionBindingResult.getBindingMap().get(XmlParserExtensionPoint.class.getName());
-        Object o = ClassLoaderUtil.createOrGetInstance(aClass);
-        return (XmlParserExtensionPoint)o;
+
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+        return  annotationScanner.getExtensionPoint(ExtensionConstant.EXTENSION_POINT,XmlParserExtensionPoint.class);
     }
 
     private void parseMultiChildren(M model, XMLStreamReader reader, ParseContext context) throws XMLStreamException {

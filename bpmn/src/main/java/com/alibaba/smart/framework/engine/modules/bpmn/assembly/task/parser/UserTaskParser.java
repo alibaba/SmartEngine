@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = UserTask.class)
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = UserTask.class)
 
 public class UserTaskParser extends AbstractBpmnParser<UserTask>  {
 

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTransitionInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
@@ -14,6 +16,7 @@ import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUti
 import com.alibaba.smart.framework.engine.persister.database.dao.ExecutionInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity;
 
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = ExecutionInstanceStorage.class)
 public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionInstanceStorage {
 
 

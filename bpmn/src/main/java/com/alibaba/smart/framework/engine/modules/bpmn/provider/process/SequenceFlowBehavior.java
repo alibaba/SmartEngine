@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Sequence
 import com.alibaba.smart.framework.engine.provider.TransitionBehavior;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractTransitionBehavior;
 
-@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = TransitionBehavior.class)
+@ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = TransitionBehavior.class)
 public class SequenceFlowBehavior extends AbstractTransitionBehavior<SequenceFlow> {
 
     @Override

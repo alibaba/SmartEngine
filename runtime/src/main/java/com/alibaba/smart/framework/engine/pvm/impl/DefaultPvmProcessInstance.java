@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.pvm.impl;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -19,9 +20,11 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
 
         ProcessDefinition processDefinition = executionContext.getProcessDefinition();
 
-        PvmProcessDefinition pvmProcessDefinition = executionContext
-            .getExtensionPointRegistry().getExtensionPoint(
-                ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinition.getId(),
+        ProcessDefinitionContainer processDefinitionContainer = executionContext
+            .getProcessEngineConfiguration().getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE,
+                ProcessDefinitionContainer.class);
+
+        PvmProcessDefinition pvmProcessDefinition = processDefinitionContainer.getPvmProcessDefinition(processDefinition.getId(),
                 processDefinition.getVersion());
 
         PvmActivity pvmActivity = pvmProcessDefinition.getStartActivity();

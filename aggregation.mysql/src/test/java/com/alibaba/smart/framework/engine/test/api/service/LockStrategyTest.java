@@ -75,7 +75,7 @@ public class LockStrategyTest extends DatabaseBaseTestCase{
         createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         createDeploymentCommand.setProcessDefinitionDesc("desc");
         createDeploymentCommand.setProcessDefinitionName("name");
-        createDeploymentCommand.setProcessDefinitionType("type");
+        createDeploymentCommand.setProcessDefinitionType("group");
         createDeploymentCommand.setProcessDefinitionCode("code");
 
         DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
@@ -86,7 +86,7 @@ public class LockStrategyTest extends DatabaseBaseTestCase{
 
         Map<String, Object> request = new HashMap();
         request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
-        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"group");
         request.put("processVariable","processVariableValue");
 
 
@@ -94,10 +94,10 @@ public class LockStrategyTest extends DatabaseBaseTestCase{
             deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
             ,request  );
         Assert.assertNotNull(processInstance);
-        Assert.assertEquals("type",processInstance.getProcessDefinitionType());
+        Assert.assertEquals("group",processInstance.getProcessDefinitionType());
 
         processInstance =   processQueryService.findById(processInstance.getInstanceId());
-        Assert.assertEquals("type",processInstance.getProcessDefinitionType());
+        Assert.assertEquals("group",processInstance.getProcessDefinitionType());
         Assert.assertEquals("multi-instance-user-task:1.0.2",processInstance.getProcessDefinitionIdAndVersion());
         Assert.assertEquals("multi-instance-user-task",processInstance.getProcessDefinitionId());
         Assert.assertEquals("1.0.2",processInstance.getProcessDefinitionVersion());

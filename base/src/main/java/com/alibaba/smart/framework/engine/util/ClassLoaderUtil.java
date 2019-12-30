@@ -11,6 +11,8 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 
+
+//TODO RENMAE TO CLASSUTIL
 public abstract  class ClassLoaderUtil {
 
 
@@ -63,18 +65,33 @@ public abstract  class ClassLoaderUtil {
     }
 
 
-    public static Object createOrGetInstance(String className, Class[] argTypes, Object[] args) throws EngineException {
-        Class clazz = loadClass(className);
-        Object newInstance;
+    public static Constructor getConstruct(Class clazz, Class... argTypes) throws EngineException {
+        String className = clazz.getName();
 
         try {
             Constructor constructor = clazz.getConstructor(argTypes);
-              newInstance = constructor.newInstance(args);
+            return constructor;
+        } catch (NoSuchMethodException e) {
+            throw new EngineException("Unable to load class " + className + ". Initial cause was " + e.getMessage(), e);
+        } catch (SecurityException e) {
+            throw new EngineException("Unable to load class " + className + ". Initial cause was " + e.getMessage(), e);
+        } catch (IllegalArgumentException e) {
+            throw new EngineException("Unable to load class " + className + ". Initial cause was " + e.getMessage(), e);
+        }
+
+    }
+
+
+    public static Object createNewInstance(Constructor constructor, Object... args) throws EngineException {
+        String className =  constructor.getClass().getName();
+
+        try {
+            Object newInstance = constructor.newInstance(args);
+            return newInstance;
+
         } catch (IllegalAccessException e) {
             throw new EngineException("Unable to load class " + className + ". Initial cause was " + e.getMessage(), e);
         } catch (InstantiationException e) {
-            throw new EngineException("Unable to load class " + className + ". Initial cause was " + e.getMessage(), e);
-        } catch (NoSuchMethodException e) {
             throw new EngineException("Unable to load class " + className + ". Initial cause was " + e.getMessage(), e);
         } catch (SecurityException e) {
             throw new EngineException("Unable to load class " + className + ". Initial cause was " + e.getMessage(), e);
@@ -84,8 +101,8 @@ public abstract  class ClassLoaderUtil {
             throw new EngineException("Unable to load class " + className + ". Initial cause was "
                 + e.getCause().getMessage(), e.getCause());
         }
-        return newInstance;
     }
+
 
 
     public static Class loadClass(String className)  {

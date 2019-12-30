@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 
 
-@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = EndEvent.class)
+@ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = EndEvent.class)
 public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
 
     public EndEventBehavior() {
@@ -46,8 +46,7 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
         if (null != parentExecutionInstanceId) {
             //如果上下文中有父上下文，说明父子在同一线程中，父线程本身就会执行，所以不需要启动
             if (null == context.getParent()) {
-                ExecutionCommandService executionCommandService =context.getExtensionPointRegistry().getExtensionPoint(
-                    SmartEngine.class).getExecutionCommandService();
+                ExecutionCommandService executionCommandService =context.getProcessEngineConfiguration().getSmartEngine().getExecutionCommandService();
                 executionCommandService.signal(parentExecutionInstanceId);
             }
         }

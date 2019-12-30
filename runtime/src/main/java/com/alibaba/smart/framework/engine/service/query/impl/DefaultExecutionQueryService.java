@@ -2,32 +2,32 @@ package com.alibaba.smart.framework.engine.service.query.impl;
 
 import java.util.List;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 
 /**
  * Created by 高海军 帝奇 74394 on 2016 November  22:10.
  */
-public class DefaultExecutionQueryService implements ExecutionQueryService, LifeCycleHook {
+
+@ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = ExecutionQueryService.class)
+
+public class DefaultExecutionQueryService implements ExecutionQueryService, LifeCycleHook ,
+    ProcessEngineConfigurationAware {
 
     private ExtensionPointRegistry extensionPointRegistry;
     private ExecutionInstanceStorage executionInstanceStorage;
 
-
-    public DefaultExecutionQueryService(ExtensionPointRegistry extensionPointRegistry) {
-        this.extensionPointRegistry = extensionPointRegistry;
-    }
-
     @Override
     public void start() {
 
-//        this.executionInstanceStorage = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceStorage.class);
+        this. executionInstanceStorage= processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
 
     }
 
@@ -39,12 +39,15 @@ public class DefaultExecutionQueryService implements ExecutionQueryService, Life
 
     @Override
     public List<ExecutionInstance> findActiveExecutionList(String processInstanceId) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
-            SmartEngine.class).getProcessEngineConfiguration();
 
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-        ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
 
         return executionInstanceStorage.findActiveExecution(processInstanceId, processEngineConfiguration);
+    }
+
+    private ProcessEngineConfiguration processEngineConfiguration;
+
+    @Override
+    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
     }
 }

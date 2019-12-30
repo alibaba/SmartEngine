@@ -25,10 +25,6 @@ public abstract class AbstractPvmActivity extends AbstractPvmElement<Activity> i
 
     private ActivityBehavior behavior;
 
-    protected AbstractPvmActivity(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
-
 
     public void addIncomeTransition(String transitionId, PvmTransition income) {
         this.incomeTransitions.put(transitionId, income);

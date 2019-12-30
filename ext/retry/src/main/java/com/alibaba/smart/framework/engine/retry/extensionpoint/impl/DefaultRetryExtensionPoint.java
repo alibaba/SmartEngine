@@ -4,22 +4,24 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.extensionpoint.impl.AbstractPropertiesExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.retry.RetryExtensionPoint;
+import com.alibaba.smart.framework.engine.xml.parser.XmlParserExtensionPoint;
 
 /**
  * @author zhenhong.tzh
  * @date 2019-04-27
  */
+@ExtensionBinding(group = ExtensionConstant.EXTENSION_POINT, bindKey = RetryExtensionPoint.class)
+
 public class DefaultRetryExtensionPoint extends AbstractPropertiesExtensionPointRegistry
     implements RetryExtensionPoint {
 
     private Map<Class<?>, Object> retryFactories = MapUtil.newHashMap();
 
-    public DefaultRetryExtensionPoint(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-    }
 
     @Override
     public void start() {

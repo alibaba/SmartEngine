@@ -27,12 +27,7 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
      */
     private ExtensionPointRegistry extensionPointRegistry;
 
-    public AbstractPropertiesExtensionPointRegistry() {
-    }
 
-    public AbstractPropertiesExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry) {
-        this.extensionPointRegistry = extensionPointRegistry;
-    }
 
     /**
      * 扫描和加载class loader内扩展点配置
@@ -125,7 +120,6 @@ public abstract class AbstractPropertiesExtensionPointRegistry implements Extens
         this.extensionPointRegistry = extensionPointRegistry;
     }
 
-    @Override
     public <T> T getExtensionPoint(Class<T> extensionPointType) {
         throw new RuntimeException("not implemented");
     }

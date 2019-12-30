@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser.A
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = StartEvent.class)
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = StartEvent.class)
 
 public class StartEventParser extends AbstractBpmnParser<StartEvent>   {
 

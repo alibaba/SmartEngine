@@ -17,7 +17,7 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:01.
  */
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = MultiInstanceLoopCharacteristics.class)
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = MultiInstanceLoopCharacteristics.class)
 
 public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParser<MultiInstanceLoopCharacteristics>
 {

@@ -10,6 +10,8 @@ import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
@@ -32,6 +34,8 @@ import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoC
 /**
  * Created by 高海军 帝奇 74394 on 2018 October  21:52.
  */
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = TaskAssigneeStorage.class)
+
 public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
     private static final String INSTANCE = "se_task_assignee_instance";

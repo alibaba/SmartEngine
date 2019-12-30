@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.Sequence
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = SequenceFlow.class)
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = SequenceFlow.class)
 
 public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
 

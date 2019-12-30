@@ -1,6 +1,9 @@
 package com.alibaba.smart.framework.engine.retry.impl;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.retry.RetryExtensionPoint;
@@ -14,14 +17,9 @@ import com.alibaba.smart.framework.engine.retry.service.command.RetryService;
  * @author zhenhong.tzh
  * @date 2019-04-27
  */
-public class DefaultListenerHook implements RetryListener, LifeCycleHook {
+public class DefaultListenerHook implements RetryListener, LifeCycleHook, ProcessEngineConfigurationAware {
 
-    private final ExtensionPointRegistry extensionPointRegistry;
     private RetryService retryService;
-
-    public DefaultListenerHook(ExtensionPointRegistry extensionPointRegistry) {
-        this.extensionPointRegistry = extensionPointRegistry;
-    }
 
     @Override
     public void onMessage(RetryRecord retryRecord) {
@@ -35,13 +33,20 @@ public class DefaultListenerHook implements RetryListener, LifeCycleHook {
 
     @Override
     public void start() {
-        RetryExtensionPoint retryExtensionPoint = this.extensionPointRegistry
-            .getExtensionPoint(RetryExtensionPoint.class);
+        RetryExtensionPoint retryExtensionPoint = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(
+            ExtensionConstant.EXTENSION_POINT,RetryExtensionPoint.class);
         this.retryService = retryExtensionPoint.getExtensionPoint(RetryService.class);
     }
 
     @Override
     public void stop() {
 
+    }
+
+    private ProcessEngineConfiguration processEngineConfiguration;
+
+    @Override
+    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
     }
 }

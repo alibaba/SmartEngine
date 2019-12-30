@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFact
 import com.alibaba.smart.framework.engine.listener.EventListener;
 import com.alibaba.smart.framework.engine.listener.EventListenerAggregation;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
+import com.alibaba.smart.framework.engine.provider.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
@@ -28,18 +29,14 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     protected ActivityInstanceFactory activityInstanceFactory;
     protected ExecutionInstanceFactory executionInstanceFactory;
 
-    public DefaultPvmActivity(ExtensionPointRegistry extensionPointRegistry) {
-        super(extensionPointRegistry);
-        this.executionInstanceFactory = extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
-        this.activityInstanceFactory = extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
-    }
 
     @Override
     public void enter(ExecutionContext context) {
 
         fireEvent(context,PvmEventConstant.ACTIVITY_START.name());
 
-        boolean needPause= this.getBehavior().enter(context);
+        ActivityBehavior behavior = this.getBehavior();
+        boolean needPause= behavior.enter(context);
 
 
         if (needPause) {

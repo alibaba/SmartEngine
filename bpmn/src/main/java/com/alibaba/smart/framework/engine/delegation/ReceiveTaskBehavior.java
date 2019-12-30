@@ -6,7 +6,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ReceiveTask;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 
-@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = ReceiveTask.class)
+@ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = ReceiveTask.class)
 public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
 
     public ReceiveTaskBehavior() {

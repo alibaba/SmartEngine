@@ -29,11 +29,10 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
-@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = UserTask.class)
+@ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = UserTask.class)
 
 public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
@@ -150,7 +149,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage,
                 this.processEngineConfiguration);
 
-            SmartEngine smartEngine = this.extensionPointRegistry.getExtensionPoint(SmartEngine.class);
+            SmartEngine smartEngine = processEngineConfiguration.getSmartEngine();
 
             MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration()
                 .getMultiInstanceCounter();
@@ -211,12 +210,9 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                             taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
                             taskInstanceQueryParam.setActivityInstanceId(executionInstance.getActivityInstanceId());
 
-                            PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry
-                                .getExtensionPoint(
-                                    PersisterFactoryExtensionPoint.class);
 
-                            TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(
-                                TaskInstanceStorage.class);
+                            TaskInstanceStorage taskInstanceStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(
+                                ExtensionConstant.COMMON,TaskInstanceStorage.class);
                             List<TaskInstance> allTaskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam,
                                 this.processEngineConfiguration);
 

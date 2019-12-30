@@ -23,10 +23,6 @@ public class DefaultPvmTransition extends AbstractPvmElement<Transition> impleme
 
     private TransitionBehavior behavior;
 
-    public DefaultPvmTransition(ExtensionPointRegistry extensionPointRegistry){
-        super(extensionPointRegistry);
-    }
-
     @Override
     public boolean match(ExecutionContext context) {
         Transition model = this.getModel();

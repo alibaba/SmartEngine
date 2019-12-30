@@ -2,7 +2,9 @@ package com.alibaba.smart.framework.engine.configuration;
 
 import java.util.concurrent.ExecutorService;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.annoation.Experiment;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 
 /**
@@ -12,6 +14,9 @@ import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
  */
 public interface ProcessEngineConfiguration {
 
+    SmartEngine getSmartEngine();
+
+    void setSmartEngine(SmartEngine smartEngine);
     /**
      * 主要用于外部扩展。
      * 在生产环境下必须设置。
@@ -42,6 +47,8 @@ public interface ProcessEngineConfiguration {
 
     void setAnnotationScanner(AnnotationScanner annotationScanner);
 
+
+    //TODO 静态调用
     AnnotationScanner getAnnotationScanner();
 
     /**
@@ -96,13 +103,13 @@ public interface ProcessEngineConfiguration {
 
     TableSchemaStrategy getTableSchemaStrategy();
 
-    /**
-     * 内部执行需要，不需要客户端 API 感知。
-     * @param extensionPointRegistry
-     */
-    void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
-
-    ExtensionPointRegistry getExtensionPointRegistry();
+    ///**
+    // * 内部执行需要，不需要客户端 API 感知。
+    // * @param extensionPointRegistry
+    // */
+    //void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
+    //
+    //ExtensionPointRegistry getExtensionPointRegistry();
 
 
     /**

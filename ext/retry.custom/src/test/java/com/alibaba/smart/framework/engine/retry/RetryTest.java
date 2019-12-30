@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultIdGenerator;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -50,8 +51,8 @@ public class RetryTest {
         ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
-        RetryExtensionPoint retryExtensionPoint = processEngineConfiguration.getExtensionPointRegistry()
-            .getExtensionPoint(RetryExtensionPoint.class);
+        RetryExtensionPoint retryExtensionPoint = processEngineConfiguration.getAnnotationScanner()
+            .getExtensionPoint(ExtensionConstant.EXTENSION_POINT,RetryExtensionPoint.class);
         RetryService retryService = retryExtensionPoint.getExtensionPoint(RetryService.class);
 
         //3. 部署流程定义

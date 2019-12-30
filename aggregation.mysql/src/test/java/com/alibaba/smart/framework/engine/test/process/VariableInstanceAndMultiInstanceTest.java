@@ -74,7 +74,7 @@ public class VariableInstanceAndMultiInstanceTest extends DatabaseBaseTestCase {
         createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         createDeploymentCommand.setProcessDefinitionDesc("desc");
         createDeploymentCommand.setProcessDefinitionName("name");
-        createDeploymentCommand.setProcessDefinitionType("type");
+        createDeploymentCommand.setProcessDefinitionType("group");
         createDeploymentCommand.setProcessDefinitionCode("code");
 
         DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
@@ -85,7 +85,7 @@ public class VariableInstanceAndMultiInstanceTest extends DatabaseBaseTestCase {
 
         Map<String, Object> request = new HashMap();
         request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
-        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"group");
         request.put("processVariable","processVariableValue");
 
 
@@ -93,7 +93,7 @@ public class VariableInstanceAndMultiInstanceTest extends DatabaseBaseTestCase {
             deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
               ,request  );
         Assert.assertNotNull(processInstance);
-        Assert.assertEquals("type",processInstance.getProcessDefinitionType());
+        Assert.assertEquals("group",processInstance.getProcessDefinitionType());
 
 
         ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
@@ -103,7 +103,7 @@ public class VariableInstanceAndMultiInstanceTest extends DatabaseBaseTestCase {
         Assert.assertNotNull(processInstanceList);
         Assert.assertTrue(processInstanceList.size()>=1 );
 
-        processInstanceQueryParam.setProcessDefinitionType("type");
+        processInstanceQueryParam.setProcessDefinitionType("group");
         processInstanceList = processQueryService.findList(
             processInstanceQueryParam);
         Assert.assertNotNull(processInstanceList);
@@ -151,7 +151,7 @@ public class VariableInstanceAndMultiInstanceTest extends DatabaseBaseTestCase {
         submitFormRequest.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG,AGREE);
         submitFormRequest.put("text","123");
 
-        //submitFormRequest.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"type");
+        //submitFormRequest.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"group");
 
 
 
@@ -166,7 +166,7 @@ public class VariableInstanceAndMultiInstanceTest extends DatabaseBaseTestCase {
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.COMPLETED);
         //taskInstanceQueryParam.setClaimUserId("1");
         taskInstanceQueryParam.setTag(AGREE);
-        taskInstanceQueryParam.setProcessDefinitionType("type");
+        taskInstanceQueryParam.setProcessDefinitionType("group");
 
 
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIds);

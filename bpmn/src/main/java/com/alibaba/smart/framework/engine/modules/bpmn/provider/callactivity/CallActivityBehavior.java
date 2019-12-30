@@ -20,7 +20,7 @@ import com.alibaba.smart.framework.engine.service.command.impl.CommonServiceHelp
 /**
  * Created by 高海军 帝奇 74394 on 2017 May  16:07.
  */
-@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = CallActivity.class)
+@ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = CallActivity.class)
 public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity> {
 
     public CallActivityBehavior() {
@@ -47,17 +47,14 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
         String processDefinitionId =  callActivity.getCalledElement();
         String version = callActivity.getCalledElementVersion();
 
-
-        ExecutionContext subContext = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class)
+        ExecutionContext subContext = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,InstanceContextFactory.class)
             .create();
         subContext.setParent(context);
-        subContext.setExtensionPointRegistry(this.extensionPointRegistry);
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(
-            SmartEngine.class).getProcessEngineConfiguration();
+
         subContext.setProcessEngineConfiguration(processEngineConfiguration);
         subContext.setRequest(context.getRequest());
 
-        ProcessDefinition pvmProcessDefinition = this.extensionPointRegistry.getExtensionPoint(
+        ProcessDefinition pvmProcessDefinition = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE,
             ProcessDefinitionContainer.class).getProcessDefinition(processDefinitionId, version);
         subContext.setProcessDefinition(pvmProcessDefinition);
 
@@ -72,7 +69,7 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
 
         subProcessInstance = pvmProcessInstance.start(subContext);
 
-        subProcessInstance = CommonServiceHelper.insertAndPersist(subProcessInstance, context.getRequest(), extensionPointRegistry);
+        subProcessInstance = CommonServiceHelper.insertAndPersist(subProcessInstance, context.getRequest(), processEngineConfiguration);
 
         return InstanceStatus.completed!=subProcessInstance.getStatus();
     }

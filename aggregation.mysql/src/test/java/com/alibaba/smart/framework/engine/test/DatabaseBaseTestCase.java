@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.test;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
@@ -48,9 +49,11 @@ public class DatabaseBaseTestCase {
     protected VariableQueryService variableQueryService;
     protected TaskAssigneeQueryService taskAssigneeQueryService;
 
+    private AnnotationScanner annotationScanner;
+
     @Before
     public void setUp() {
-        SimpleAnnotationScanner.clear();
+        this.annotationScanner = new SimpleAnnotationScanner();
 
         initProcessConfiguration();
 
@@ -88,7 +91,7 @@ public class DatabaseBaseTestCase {
 
     @After
     public void clear() {
-        SimpleAnnotationScanner.clear();
+        annotationScanner.clear();
 
     }
 

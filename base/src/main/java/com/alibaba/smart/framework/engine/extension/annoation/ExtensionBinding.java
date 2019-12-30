@@ -14,9 +14,9 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ExtensionBinding {
 
-    String type();
+    String group();
 
-    Class bindingTo();
+    Class bindKey();
 
     //AnnotationLookup lookup()  ;
 

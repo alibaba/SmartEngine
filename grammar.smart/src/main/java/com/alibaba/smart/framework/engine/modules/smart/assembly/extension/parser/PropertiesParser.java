@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
  * Extension Elements Parser Created by ettear on 16-4-14.
  */
 
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = Properties.class)
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = Properties.class)
 
 public class PropertiesParser extends AbstractElementParser<Properties> {
 

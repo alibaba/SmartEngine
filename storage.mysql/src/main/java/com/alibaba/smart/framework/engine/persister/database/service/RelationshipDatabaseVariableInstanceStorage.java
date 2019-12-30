@@ -6,6 +6,8 @@ import java.util.List;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
 import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
@@ -16,6 +18,7 @@ import com.alibaba.smart.framework.engine.persister.database.entity.VariableInst
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = VariableInstanceStorage.class)
 public class RelationshipDatabaseVariableInstanceStorage implements VariableInstanceStorage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RelationshipDatabaseVariableInstanceStorage.class);
@@ -56,9 +59,9 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
         } else if (isAssignableFromDouble(fieldType)) {
             variableInstanceEntity.setFieldDoubleValue((Double)value);
         } else if (byte.class.isAssignableFrom(fieldType) || byte[].class.isAssignableFrom(fieldType)) {
-            throw new EngineException("NOT support byte type so far");
+            throw new EngineException("NOT support byte group so far");
         } else if (char.class.isAssignableFrom(fieldType) || char[].class.isAssignableFrom(fieldType)) {
-            throw new EngineException("NOT support char type so far");
+            throw new EngineException("NOT support char group so far");
         } else {
             //ASSUME the others are all pojos.
             String serializedValue = variablePersister.serialize(value);

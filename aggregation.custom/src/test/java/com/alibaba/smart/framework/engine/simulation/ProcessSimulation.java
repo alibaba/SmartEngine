@@ -9,6 +9,7 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.MvelExpressionEvaluator;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.event.EndEvent;
@@ -48,7 +49,7 @@ public class ProcessSimulation {
                                                       String currentActivityId, Map<String, Object> simulationContext) {
 
         PvmProcessDefinition pvmProcessDefinition = smartEngine.getProcessEngineConfiguration()
-            .getExtensionPointRegistry().getExtensionPoint(
+            .getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE,
                 ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinitionId,
                 processDefinitionVersion);
 

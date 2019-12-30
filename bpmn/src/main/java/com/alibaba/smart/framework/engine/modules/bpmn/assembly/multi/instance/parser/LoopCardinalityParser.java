@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
  * @author ettear
  * Created by ettear on 15/10/2017.
  */
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = LoopCardinality.class)
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = LoopCardinality.class)
 
 public class LoopCardinalityParser extends AbstractElementParser<LoopCardinality>
       {

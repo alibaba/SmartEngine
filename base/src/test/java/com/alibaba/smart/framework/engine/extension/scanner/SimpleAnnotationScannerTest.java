@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.extension.scanner;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -24,10 +25,11 @@ public class SimpleAnnotationScannerTest {
 
     @Test
     public void scan() {
-       new SimpleAnnotationScanner().scan("com.alibaba.smart.framework.engine.extension.scanner",
-            ExtensionBinding.class);
+        SimpleAnnotationScanner simpleAnnotationScanner = new SimpleAnnotationScanner();
+        simpleAnnotationScanner.scan(null,
+            "com.alibaba.smart.framework.engine.extension.scanner", ExtensionBinding.class);
 
-        Map<String,ExtensionBindingResult> resultClass =SimpleAnnotationScanner.getScanResult();
+        Map<String, ExtensionBindingResult> resultClass = simpleAnnotationScanner.getScanResult();
         Assert.assertEquals(2,resultClass.size());
         ExtensionBindingResult parser = resultClass.get("ELEMENT_PARSER");
         Assert.assertEquals(2, parser.getBindingMap().entrySet().size());

@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.process.parser;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
@@ -14,9 +15,10 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@ExtensionBinding(type = ExtensionConstant.ELEMENT_PARSER, bindingTo = ProcessDefinitionSourceImpl.class)
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = ProcessDefinitionSourceImpl.class)
 
-public class ProcessDefinitionSourceParser extends AbstractElementParser<ProcessDefinitionSourceImpl>  {
+public class ProcessDefinitionSourceParser extends AbstractElementParser<ProcessDefinitionSourceImpl>
+  implements   ProcessEngineConfigurationAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDefinitionSourceParser.class);
 

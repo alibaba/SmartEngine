@@ -3,17 +3,19 @@ package com.alibaba.smart.framework.engine.service.command.impl;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultDeploymentInstance;
 import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.param.command.CreateDeploymentCommand;
@@ -22,15 +24,16 @@ import com.alibaba.smart.framework.engine.service.param.command.UpdateDeployment
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  07:47.
  */
-public class DefaultDeploymentCommandService implements DeploymentCommandService, LifeCycleHook {
+@ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = DeploymentCommandService.class)
+
+public class DefaultDeploymentCommandService implements DeploymentCommandService, LifeCycleHook,
+    ProcessEngineConfigurationAware {
 
     @Override
     public DeploymentInstance createDeployment(CreateDeploymentCommand createDeploymentCommand) {
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
+        SmartEngine smartEngine = processEngineConfiguration.getSmartEngine();
         RepositoryCommandService repositoryCommandService =  smartEngine.getRepositoryCommandService();
-        DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
         String  processDefinitionContent = createDeploymentCommand.getProcessDefinitionContent();
 
@@ -38,7 +41,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         DeploymentInstance deploymentInstance  = new DefaultDeploymentInstance();
 
-        String id = smartEngine.getProcessEngineConfiguration().getIdGenerator().getId();
+        String id = processEngineConfiguration.getIdGenerator().getId();
         deploymentInstance.setInstanceId(id);
         deploymentInstance.setProcessDefinitionContent(processDefinitionContent);
         deploymentInstance.setProcessDefinitionId(processDefinition.getId());
@@ -61,12 +64,6 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
     @Override
     public DeploymentInstance updateDeployment(UpdateDeploymentCommand updateDeploymentCommand) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
-
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-
-        DeploymentInstanceStorage deploymentInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
-
 
         String   deployInstanceId =  updateDeploymentCommand.getDeployInstanceId();
         DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deployInstanceId,
@@ -84,8 +81,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         if(DeploymentStatusConstant.ACTIVE.equals(deploymentInstance.getDeploymentStatus())){
             String processDefinitionContent = updateDeploymentCommand.getProcessDefinitionContent();
             if(StringUtil.isNotEmpty(processDefinitionContent)){
-                SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
-                RepositoryCommandService repositoryCommandService =  smartEngine.getRepositoryCommandService();
+                RepositoryCommandService repositoryCommandService =  processEngineConfiguration.getSmartEngine().getRepositoryCommandService();
                 repositoryCommandService.deployWithUTF8Content(processDefinitionContent);
 
             }
@@ -115,10 +111,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
     @Override
     public void inactivateDeploymentInstance(String deploymentInstanceId) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        DeploymentInstanceStorage deploymentInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
         DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,
             processEngineConfiguration);
@@ -135,12 +128,8 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
     @Override
     public void activateDeploymentInstance(String deploymentInstanceId) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-        SmartEngine smartEngine = extensionPointRegistry.getExtensionPoint(SmartEngine.class);
-        RepositoryCommandService repositoryCommandService =  smartEngine.getRepositoryCommandService();
-        DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
+        RepositoryCommandService repositoryCommandService =  processEngineConfiguration.getSmartEngine().getRepositoryCommandService();
 
         DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,
             processEngineConfiguration);
@@ -158,10 +147,6 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
     @Override
     public void deleteDeploymentInstanceLogically(String deploymentInstanceId) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-
-        DeploymentInstanceStorage deploymentInstanceStorage=persisterFactoryExtensionPoint.getExtensionPoint(DeploymentInstanceStorage.class);
 
         DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,
             processEngineConfiguration);
@@ -182,21 +167,26 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
     private ExtensionPointRegistry extensionPointRegistry;
 
 
-    public DefaultDeploymentCommandService(ExtensionPointRegistry extensionPointRegistry) {
-        this.extensionPointRegistry = extensionPointRegistry;
-    }
-
-
     private ProcessDefinitionContainer processDefinitionContainer;
 
 
     @Override
     public void start() {
-        this.processDefinitionContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
+        this.processDefinitionContainer = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
+         deploymentInstanceStorage=processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,DeploymentInstanceStorage.class);
+
     }
 
     @Override
     public void stop() {
 
+    }
+
+    private ProcessEngineConfiguration processEngineConfiguration;
+    private  DeploymentInstanceStorage deploymentInstanceStorage;
+
+    @Override
+    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
     }
 }

@@ -6,6 +6,8 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultIdGenerator;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.retry.RetryExtensionPoint;
 import com.alibaba.smart.framework.engine.retry.RetryListener;
@@ -17,6 +19,8 @@ import com.alibaba.smart.framework.engine.retry.service.command.RetryPersistence
  * @author zhenhong.tzh
  * @date 2019-04-27
  */
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = RetryRecordStorage.class)
+
 public class MemoryRetryRecordStorage implements RetryRecordStorage {
 
     private RetryRecord retryRecord;
@@ -38,8 +42,8 @@ public class MemoryRetryRecordStorage implements RetryRecordStorage {
                 processEngineConfiguration.setIdGenerator(new DefaultIdGenerator());
                 SmartEngine smartEngine = new DefaultSmartEngine();
                 smartEngine.init(processEngineConfiguration);
-                RetryExtensionPoint retryExtensionPoint = processEngineConfiguration.getExtensionPointRegistry()
-                    .getExtensionPoint(RetryExtensionPoint.class);
+                RetryExtensionPoint retryExtensionPoint = processEngineConfiguration.getAnnotationScanner()
+                    .getExtensionPoint(ExtensionConstant.EXTENSION_POINT,RetryExtensionPoint.class);
                 RetryListener retryListener = retryExtensionPoint.getExtensionPoint(RetryListener.class);
                 retryListener.onMessage(retryRecord);
             }

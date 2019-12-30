@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.extension.scanner;
+package com.alibaba.smart.framework.engine.configuration.scanner;
 
 import java.util.Map;
 
@@ -11,6 +11,6 @@ import lombok.Data;
 @Data
 public class ExtensionBindingResult {
 
-    private Map<String,Class> bindingMap;
+    private Map<Class,Object> bindingMap;
 
 }

@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.persister.database.dao.RetryRecordDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.RetryRecordEntity;
@@ -12,6 +14,8 @@ import com.alibaba.smart.framework.engine.retry.service.command.RetryPersistence
  * @author zhenhong.tzh
  * @date 2019-04-27
  */
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = RetryRecordStorage.class)
+
 public class RelationshipDatabaseRetryRecordStorage implements RetryRecordStorage {
 
     @Override

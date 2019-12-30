@@ -6,6 +6,8 @@ import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
@@ -15,6 +17,8 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 /**
  * 默认流程实例工厂实现 Created by ettear on 16-4-20.
  */
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = ProcessInstanceFactory.class)
+
 public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
     @Override

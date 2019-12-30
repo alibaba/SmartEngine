@@ -25,7 +25,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@ExtensionBinding(type = ExtensionConstant.ACTIVITY_BEHAVIOR, bindingTo = ParallelGateway.class)
+@ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = ParallelGateway.class)
 
 public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> {
 

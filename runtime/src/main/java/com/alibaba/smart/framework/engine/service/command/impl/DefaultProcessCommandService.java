@@ -9,17 +9,22 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.extensionpoint.ExtensionPointRegistry;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
+import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
@@ -29,9 +34,9 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
+import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
@@ -41,7 +46,10 @@ import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
  * @author 高海军 帝奇  2016.11.11
  * @author ettear 2016.04.13
  */
-public class DefaultProcessCommandService implements ProcessCommandService, LifeCycleHook {
+
+@ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = ProcessCommandService.class)
+public class DefaultProcessCommandService implements ProcessCommandService, LifeCycleHook,
+    ProcessEngineConfigurationAware {
 
     private ExtensionPointRegistry extensionPointRegistry;
 
@@ -49,23 +57,22 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     private InstanceContextFactory instanceContextFactory;
     private ProcessInstanceFactory processInstanceFactory;
-    private ExecutionInstanceFactory executionInstanceFactory;
-    private ActivityInstanceFactory activityInstanceFactory;
+    private ProcessDefinitionContainer processContainer;
 
-
-
-    public DefaultProcessCommandService(ExtensionPointRegistry extensionPointRegistry) {
-        this.extensionPointRegistry = extensionPointRegistry;
-    }
 
     @Override
     public void start() {
-        this.processDefinitionContainer = this.extensionPointRegistry.getExtensionPoint(ProcessDefinitionContainer.class);
-        this.instanceContextFactory = this.extensionPointRegistry.getExtensionPoint(InstanceContextFactory.class);
-        this.processInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ProcessInstanceFactory.class);
-        this.executionInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ExecutionInstanceFactory.class);
-        this.activityInstanceFactory = this.extensionPointRegistry.getExtensionPoint(ActivityInstanceFactory.class);
 
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+
+        this.processDefinitionContainer = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
+
+        this.instanceContextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,InstanceContextFactory.class);
+        this.processInstanceFactory =annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceFactory.class);
+        this.processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
+
+        this.taskInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,TaskInstanceStorage.class);
+        this.executionInstanceStorage= annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
     }
 
     @Override
@@ -83,8 +90,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     public ProcessInstance start(String processDefinitionId, String processDefinitionVersion, Map<String, Object> request, Map<String, Object> response) {
 
         ExecutionContext executionContext = this.instanceContextFactory.create();
-        executionContext.setExtensionPointRegistry(this.extensionPointRegistry);
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
         executionContext.setProcessEngineConfiguration(processEngineConfiguration);
         executionContext.setRequest(request);
         executionContext.setResponse(response);
@@ -111,7 +116,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
             processInstance = pvmProcessInstance.start(executionContext);
 
-            processInstance = CommonServiceHelper.insertAndPersist(processInstance, request, extensionPointRegistry);
+            processInstance = CommonServiceHelper.insertAndPersist(processInstance, request, processEngineConfiguration);
 
             return processInstance;
         } finally {
@@ -127,9 +132,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
         if(null != lockStrategy){
 
-            PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
 
-            ProcessInstanceStorage processInstanceStorage =persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
 
             ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance, processEngineConfiguration);
 
@@ -150,7 +153,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     @Override
     public ProcessInstance startWith(String deploymentInstanceId, String userId, Map<String, Object> request,Map<String, Object> response) {
-        DeploymentQueryService deploymentQueryService = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getDeploymentQueryService();
+        DeploymentQueryService deploymentQueryService = processEngineConfiguration.getSmartEngine().getDeploymentQueryService();
         DeploymentInstance deploymentInstance = deploymentQueryService.findById(deploymentInstanceId);
 
         if(null == request){
@@ -193,9 +196,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     @Override
     public void abort(String processInstanceId, Map<String, Object> request) {
-        ProcessEngineConfiguration processEngineConfiguration = extensionPointRegistry.getExtensionPoint(SmartEngine.class).getProcessEngineConfiguration();
-        PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = this.extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
-        ProcessInstanceStorage processInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ProcessInstanceStorage.class);
         ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId,processEngineConfiguration );
         processInstance.setStatus(InstanceStatus.aborted);
         String  reason = null;
@@ -206,7 +206,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         processInstance.setReason(reason);
         processInstanceStorage.update(processInstance, processEngineConfiguration);
 
-        ExecutionInstanceStorage executionInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(ExecutionInstanceStorage.class);
         List<ExecutionInstance> executionInstanceList = executionInstanceStorage.findActiveExecution(processInstanceId, processEngineConfiguration);
 
         if(null != executionInstanceList){
@@ -217,7 +216,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
             }
         }
 
-        TaskInstanceStorage taskInstanceStorage = persisterFactoryExtensionPoint.getExtensionPoint(TaskInstanceStorage.class);
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
         List<String> processInstanceIdList = new ArrayList<String>(2);
@@ -237,4 +235,14 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     }
 
+
+    private ProcessEngineConfiguration processEngineConfiguration;
+    private  ProcessInstanceStorage processInstanceStorage;
+    private TaskInstanceStorage taskInstanceStorage;
+    private  ExecutionInstanceStorage executionInstanceStorage;
+
+    @Override
+    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
+    }
 }
