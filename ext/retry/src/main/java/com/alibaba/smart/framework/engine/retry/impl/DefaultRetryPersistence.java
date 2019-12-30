@@ -5,7 +5,6 @@ import java.util.Map;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.retry.service.command.RetryPersistence;
-import com.alibaba.smart.framework.engine.retry.service.command.RetryService;
 
 /**
  * @author zhenhong.tzh

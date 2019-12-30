@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.callactivity;
 
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
@@ -46,14 +47,16 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
         String processDefinitionId =  callActivity.getCalledElement();
         String version = callActivity.getCalledElementVersion();
 
-        ExecutionContext subContext = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,InstanceContextFactory.class)
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+
+        ExecutionContext subContext = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,InstanceContextFactory.class)
             .create();
         subContext.setParent(context);
 
         subContext.setProcessEngineConfiguration(processEngineConfiguration);
         subContext.setRequest(context.getRequest());
 
-        ProcessDefinition pvmProcessDefinition = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE,
+        ProcessDefinition pvmProcessDefinition = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,
             ProcessDefinitionContainer.class).getProcessDefinition(processDefinitionId, version);
         subContext.setProcessDefinition(pvmProcessDefinition);
 

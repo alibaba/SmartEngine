@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
@@ -26,7 +25,6 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
-import com.alibaba.smart.framework.engine.persister.PersisterFactoryExtensionPoint;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  20:38.
@@ -40,7 +38,8 @@ public abstract  class CommonServiceHelper {
         ProcessInstance newProcessInstance ;
 
         //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
-        ProcessInstanceStorage processInstanceStorage =processEngineConfiguration.getAnnotationScanner().getExtensionPoint(
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+        ProcessInstanceStorage processInstanceStorage = annotationScanner.getExtensionPoint(
             ExtensionConstant.COMMON,ProcessInstanceStorage.class);
 
         LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
@@ -69,7 +68,8 @@ public abstract  class CommonServiceHelper {
                                                            ProcessInstance newProcessInstance,String executionInstanceId) {
         VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
         if( variablePersister.isPersisteVariableInstanceEnabled() && null!= request ){
-            VariableInstanceStorage variableInstanceStorage =processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,VariableInstanceStorage.class);
+            AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+            VariableInstanceStorage variableInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,VariableInstanceStorage.class);
             for (Entry<String, Object> entry : request.entrySet()) {
                 String key = entry.getKey();
 
@@ -100,8 +100,8 @@ public abstract  class CommonServiceHelper {
     public static  ProcessInstance updateAndPersist(String executionInstanceId, ProcessInstance processInstance, Map<String, Object> request,
                                                     ProcessEngineConfiguration processEngineConfiguration) {
 
-
-        ProcessInstanceStorage processInstanceStorage =processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+        ProcessInstanceStorage processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
 
         ProcessInstance newProcessInstance=   processInstanceStorage.update(processInstance,processEngineConfiguration );
 

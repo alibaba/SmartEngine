@@ -2,11 +2,11 @@ package com.alibaba.smart.framework.engine.retry.impl;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.retry.RetryExtensionPoint;
 import com.alibaba.smart.framework.engine.retry.instance.storage.RetryRecordStorage;
 import com.alibaba.smart.framework.engine.retry.model.instance.RetryRecord;
 import com.alibaba.smart.framework.engine.retry.service.command.RetryPersistence;
@@ -45,12 +45,13 @@ public class DefaultRetryService implements RetryService, LifeCycleHook , Proces
         if (executionCommandService == null) {
             executionCommandService = processEngineConfiguration.getSmartEngine().getExecutionCommandService();
         }
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
         if (retryRecordStorage == null) {
 
-            retryRecordStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,RetryRecordStorage.class);
+            retryRecordStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,RetryRecordStorage.class);
         }
         if (retryPersistence == null) {
-            retryPersistence = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,RetryPersistence.class);
+            retryPersistence = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,RetryPersistence.class);
         }
     }
 

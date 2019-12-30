@@ -9,12 +9,8 @@ import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfi
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ParseException;
-import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
-import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.util.ClassLoaderUtil;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 import org.slf4j.Logger;
@@ -32,6 +28,8 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     protected ProcessEngineConfiguration processEngineConfiguration;
 
+    private XmlParserExtensionPoint xmlParserExtensionPoint;
+
     @Override
     public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
         this.processEngineConfiguration = processEngineConfiguration;
@@ -39,8 +37,8 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     @Override
     public void start() {
-
-        //this.xmlParserExtensionPoint = this.extensionPointRegistry.getExtensionPoint(XmlParserExtensionPoint.class);
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+        this.xmlParserExtensionPoint =  annotationScanner.getExtensionPoint(ExtensionConstant.EXTENSION_POINT,XmlParserExtensionPoint.class);
     }
 
     @Override
@@ -50,7 +48,6 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
 
     protected Object readElement(XMLStreamReader reader, ParseContext context) {
-        XmlParserExtensionPoint xmlParserExtensionPoint = acquireXmlParserExtensionPoint();
         return xmlParserExtensionPoint.parseElement(reader, context);
     }
 
@@ -95,16 +92,10 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     private Object parseSingleAttribute(QName attributeName, XMLStreamReader reader, ParseContext context) {
 
-        XmlParserExtensionPoint xmlParserExtensionPoint = acquireXmlParserExtensionPoint();
         return xmlParserExtensionPoint.parseAttribute(attributeName,reader, context);
     }
 
 
-    private XmlParserExtensionPoint acquireXmlParserExtensionPoint() {
-
-        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
-        return  annotationScanner.getExtensionPoint(ExtensionConstant.EXTENSION_POINT,XmlParserExtensionPoint.class);
-    }
 
     private void parseMultiChildren(M model, XMLStreamReader reader, ParseContext context) throws XMLStreamException {
         while (XmlParseUtil.nextChildElement(reader)) {

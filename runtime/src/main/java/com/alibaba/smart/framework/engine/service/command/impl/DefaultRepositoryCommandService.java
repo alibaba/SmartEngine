@@ -67,6 +67,8 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
     private ProcessDefinitionContainer processContainer;
 
+    private AnnotationScanner annotationScanner;
+
 
     @Override
     public ProcessDefinitionSource deploy(String classPathUri) throws DeployException {
@@ -233,7 +235,6 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
                 }
             }
 
-            AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
 
 
             // Process Transition Flow
@@ -301,9 +302,10 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
     @Override
     public void start() {
 
-        this.xmlParserExtensionPoint = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.EXTENSION_POINT,XmlParserExtensionPoint.class);
+        this.annotationScanner = processEngineConfiguration.getAnnotationScanner();
+        this.xmlParserExtensionPoint = annotationScanner.getExtensionPoint(ExtensionConstant.EXTENSION_POINT,XmlParserExtensionPoint.class);
         //this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
-        this.processContainer = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
+        this.processContainer = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
         //this.defaultExecutePolicyBehavior=extensionPointRegistry.getExtensionPoint(ExecutePolicyBehavior.class);
     }
 

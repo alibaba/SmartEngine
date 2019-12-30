@@ -4,6 +4,7 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
@@ -168,8 +169,9 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
     @Override
     public void start() {
-        this.processDefinitionContainer = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
-         deploymentInstanceStorage=processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,DeploymentInstanceStorage.class);
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+        this.processDefinitionContainer = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
+        this.deploymentInstanceStorage=annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,DeploymentInstanceStorage.class);
 
     }
 

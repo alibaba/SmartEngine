@@ -14,7 +14,6 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.xml.parser.AttributeParser;
 import com.alibaba.smart.framework.engine.xml.parser.ElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -36,15 +35,13 @@ public class DefaultXmlParserExtensionPoint  implements
 
     private ProcessEngineConfiguration processEngineConfiguration;
 
+    private Map<Class,Object> bindings;
+
     @Override
     public void start() {
 
-        //for (ElementParser stAXArtifactParser : artifactParsers.values()) {
-        //    stAXArtifactParser.start();
-        //}
-        //for (AttributeParser attributeParser : attributeParsers.values()) {
-        //    attributeParser.start();
-        //}
+        this.bindings = processEngineConfiguration.getAnnotationScanner().getScanResult().get(
+            ExtensionConstant.ELEMENT_PARSER).getBindingMap();
 
     }
 
@@ -64,9 +61,6 @@ public class DefaultXmlParserExtensionPoint  implements
         QName nodeQname = reader.getName();
 
 
-        //FIXME cache
-        Map<Class,Object> bindings = processEngineConfiguration.getAnnotationScanner().getScanResult().get(
-            ExtensionConstant.ELEMENT_PARSER).getBindingMap();
         Set<Entry<Class, Object>> entries = bindings.entrySet();
 
         for (Entry<Class, Object> entry : entries) {

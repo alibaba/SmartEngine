@@ -2,8 +2,8 @@ package com.alibaba.smart.framework.engine.extension.scanner;
 
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 
 import org.junit.After;
 import org.junit.Assert;

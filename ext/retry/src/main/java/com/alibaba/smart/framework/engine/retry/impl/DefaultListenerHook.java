@@ -6,10 +6,8 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
-import com.alibaba.smart.framework.engine.retry.RetryExtensionPoint;
 import com.alibaba.smart.framework.engine.retry.RetryListener;
 import com.alibaba.smart.framework.engine.retry.model.instance.RetryRecord;
-import com.alibaba.smart.framework.engine.retry.service.command.RetryPersistence;
 import com.alibaba.smart.framework.engine.retry.service.command.RetryService;
 
 /**
