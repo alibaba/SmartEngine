@@ -15,7 +15,6 @@ import com.alibaba.smart.framework.engine.retry.service.command.RetryPersistence
  * @date 2019-04-27
  */
 @ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = RetryRecordStorage.class)
-
 public class RelationshipDatabaseRetryRecordStorage implements RetryRecordStorage {
 
     @Override

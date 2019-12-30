@@ -51,9 +51,7 @@ public class RetryTest {
         ExecutionQueryService executionQueryService = smartEngine.getExecutionQueryService();
         ExecutionCommandService executionCommandService = smartEngine.getExecutionCommandService();
 
-        RetryExtensionPoint retryExtensionPoint = processEngineConfiguration.getAnnotationScanner()
-            .getExtensionPoint(ExtensionConstant.EXTENSION_POINT,RetryExtensionPoint.class);
-        RetryService retryService = retryExtensionPoint.getExtensionPoint(RetryService.class);
+        RetryService retryService = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,RetryService.class);
 
         //3. 部署流程定义
         RepositoryCommandService repositoryCommandService = smartEngine.getRepositoryCommandService();
@@ -87,7 +85,7 @@ public class RetryTest {
         }
 
         // 模拟通过metaQ接收消息，执行重试
-        RetryListener retryListener = retryExtensionPoint.getExtensionPoint(RetryListener.class);
+        RetryListener retryListener = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,RetryListener.class);
         retryListener.onMessage(retryRecord);
 
         // 校验流程是否正确流转到报名环节

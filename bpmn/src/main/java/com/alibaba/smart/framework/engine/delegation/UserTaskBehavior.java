@@ -20,6 +20,7 @@ import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -30,6 +31,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = UserTask.class)
@@ -53,15 +55,15 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
     }
 
     @Override
-    public boolean enter(ExecutionContext context) {
-        UserTask userTask = this.getModel();
+    public boolean enter(PvmActivity pvmActivity, ExecutionContext context) {
+        UserTask userTask = (UserTask)pvmActivity.getModel();
 
         List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = getTaskAssigneeCandidateInstances(
             context, userTask);
 
         if (null != userTask.getMultiInstanceLoopCharacteristics()) {
 
-            ActivityInstance activityInstance = super.createSingleActivityInstance(context);
+            ActivityInstance activityInstance = super.createSingleActivityInstance(context,userTask);
 
             List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(
                 taskAssigneeCandidateInstanceList.size());
@@ -74,7 +76,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 executionInstanceList.add(executionInstance);
                 context.setExecutionInstance(executionInstance);
 
-                TaskInstance taskInstance = super.taskInstanceFactory.create(this.getModel(), executionInstance,
+                TaskInstance taskInstance = super.taskInstanceFactory.create(userTask, executionInstance,
                     context);
 
                 List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
@@ -90,12 +92,12 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
         } else {
 
-            super.enter(context);
+            super.enter(pvmActivity, context);
 
             if (null != taskAssigneeCandidateInstanceList) {
                 ExecutionInstance executionInstance = context.getExecutionInstance();
 
-                TaskInstance taskInstance = super.taskInstanceFactory.create(this.getModel(), executionInstance,
+                TaskInstance taskInstance = super.taskInstanceFactory.create(userTask, executionInstance,
                     context);
 
                 List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
@@ -124,10 +126,10 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
     }
 
     @Override
-    public void execute(ExecutionContext context) {
-        UserTask userTask = this.getModel();
+    public void execute(ExecutionContext context, Activity activity) {
+        UserTask userTask = (UserTask) activity;
 
-        super.makeExtensionWorkAndExecuteBehavior(context);
+        super.makeExtensionWorkAndExecuteBehavior(context,userTask);
 
         MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = userTask
             .getMultiInstanceLoopCharacteristics();

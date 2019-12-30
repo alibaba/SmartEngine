@@ -5,6 +5,7 @@ import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.ReceiveTask;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = ReceiveTask.class)
 public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
@@ -14,9 +15,9 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
     }
 
     @Override
-    public boolean enter(ExecutionContext context) {
+    public boolean enter(PvmActivity pvmActivity, ExecutionContext context) {
 
-        super.enter(context);
+        super.enter(pvmActivity, context);
 
         return true;
     }

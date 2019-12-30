@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.retry.impl;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
+import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
@@ -21,6 +22,7 @@ import org.slf4j.LoggerFactory;
  * @author zhenhong.tzh
  * @date 2019-04-30
  */
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = RetryService.class)
 public class DefaultRetryService implements RetryService, LifeCycleHook , ProcessEngineConfigurationAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRetryService.class);
@@ -48,8 +50,7 @@ public class DefaultRetryService implements RetryService, LifeCycleHook , Proces
             retryRecordStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,RetryRecordStorage.class);
         }
         if (retryPersistence == null) {
-            RetryExtensionPoint retryExtensionPoint = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.EXTENSION_POINT,RetryExtensionPoint.class);
-            retryPersistence = retryExtensionPoint.getExtensionPoint(RetryPersistence.class);
+            retryPersistence = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,RetryPersistence.class);
         }
     }
 

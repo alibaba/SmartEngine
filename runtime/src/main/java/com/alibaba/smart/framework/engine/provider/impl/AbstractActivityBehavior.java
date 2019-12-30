@@ -34,8 +34,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractActivityBehavior<T extends Activity> implements ActivityBehavior {
 
-    @Setter
-    private PvmActivity pvmActivity;
+
 
     @Setter
     protected ProcessInstanceFactory processInstanceFactory;
@@ -52,20 +51,12 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractActivityBehavior.class);
 
-    public AbstractActivityBehavior() {
-        //FIXME
-    }
 
-
-
-    protected PvmActivity getPvmActivity() {
-        return pvmActivity;
-    }
 
     @Override
-    public boolean enter(ExecutionContext context) {
+    public boolean enter(PvmActivity pvmActivity, ExecutionContext context) {
 
-        ActivityInstance activityInstance = createSingleActivityInstance(context);
+        ActivityInstance activityInstance = createSingleActivityInstance(context, pvmActivity.getModel());
 
         ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
         List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(1);
@@ -81,10 +72,10 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         return false;
     }
 
-    protected ActivityInstance createSingleActivityInstance(ExecutionContext context) {
+    protected ActivityInstance createSingleActivityInstance(ExecutionContext context, Activity activity) {
         ProcessInstance processInstance = context.getProcessInstance();
 
-        ActivityInstance activityInstance = this.activityInstanceFactory.create(this.getModel(), context);
+        ActivityInstance activityInstance = this.activityInstanceFactory.create(activity, context);
         processInstance.addActivityInstance(activityInstance);
         context.setActivityInstance(activityInstance);
         return activityInstance;
@@ -92,8 +83,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
 
     @Override
-    public void execute(ExecutionContext context) {
-        makeExtensionWorkAndExecuteBehavior(context);
+    public void execute(ExecutionContext context,Activity activity) {
+        makeExtensionWorkAndExecuteBehavior(context,activity);
 
         commonUpdateExecutionInstance(context);
 
@@ -110,10 +101,9 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         }
     }
 
-    protected void makeExtensionWorkAndExecuteBehavior(ExecutionContext context) {
-        T model = this.getModel();
+    protected void makeExtensionWorkAndExecuteBehavior(ExecutionContext context,Activity activity) {
 
-        context.getProcessEngineConfiguration().getDelegationExecutor().execute(context, model);
+        context.getProcessEngineConfiguration().getDelegationExecutor().execute(context, activity);
     }
 
 
@@ -146,7 +136,4 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     }
 
 
-    protected T getModel() {
-        return (T)this.pvmActivity.getModel();
-    }
 }

@@ -25,17 +25,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivity {
 
-    protected ActivityInstanceFactory activityInstanceFactory;
-    protected ExecutionInstanceFactory executionInstanceFactory;
-
-
     @Override
     public void enter(ExecutionContext context) {
 
         fireEvent(context,PvmEventConstant.ACTIVITY_START.name());
 
         ActivityBehavior behavior = this.getBehavior();
-        boolean needPause= behavior.enter(context);
+        boolean needPause= behavior.enter(this, context );
 
 
         if (needPause) {
@@ -72,7 +68,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         fireEvent(context,PvmEventConstant.ACTIVITY_EXECUTE.name());
 
 
-        this.getBehavior().execute(context);
+        this.getBehavior().execute(context,this.getModel());
 
         if (context.isNeedPause()) {
 

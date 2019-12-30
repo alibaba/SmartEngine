@@ -65,14 +65,7 @@ public class DefaultSmartEngine implements SmartEngine {
 
         }
 
-        //SmartEngine.class.getPackage().getName();
-        //this.extensionPointRegistry = new DefaultExtensionPointRegistry(this);
-        //this.extensionPointRegistry.register();
 
-        //this.extensionPointRegistry.start();
-
-        //TODO
-        //processEngineConfiguration.setExtensionPointRegistry(extensionPointRegistry);
     }
 
     @Override

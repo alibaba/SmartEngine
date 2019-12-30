@@ -37,7 +37,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
     }
 
     @Override
-    public boolean enter(ExecutionContext context) {
+    public boolean enter(PvmActivity pvmActivity, ExecutionContext context) {
 
         //算法说明:ParallelGatewayBehavior 同时承担 fork 和 join 职责。所以说,如何判断是 fork 还是 join ?
         // 目前主要原则就看pvmActivity节点的 incomeTransition 和 outcomeTransition 的比较。
@@ -45,8 +45,11 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         // 如果 outcome 为 1 ,则为 fork 节点。
         // 重要:在流程定义解析时,需要判断如果是 fork,则 outcome >=2, income=1; 类似的,如果是 join,则 outcome = 1,income>=2
 
-        ParallelGateway parallelGateway = this.getModel();
-        PvmActivity pvmActivity = this.getPvmActivity();
+        ParallelGateway parallelGateway = (ParallelGateway)pvmActivity.getModel();
+
+        //PvmActivity pvmActivity = this.getPvmActivity();
+        //PvmActivity pvmActivity = null; //FIXME
+
 
         Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
@@ -93,7 +96,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
             }finally {
 
-                super.enter(context);
+                super.enter(pvmActivity, context);
 
 
 

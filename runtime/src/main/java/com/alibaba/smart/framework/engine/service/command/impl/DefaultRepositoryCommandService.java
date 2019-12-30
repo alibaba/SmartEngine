@@ -270,7 +270,6 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
                 AbstractActivityBehavior activityBehavior = (AbstractActivityBehavior) annotationScanner.getObject(ExtensionConstant.ACTIVITY_BEHAVIOR,activity.getClass());
 
                 pvmActivity.setBehavior(activityBehavior);
-                activityBehavior.setPvmActivity(pvmActivity);
 
 
                 activityBehavior.setProcessInstanceFactory(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceFactory.class));

@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.modules.bpmn.provider.callactivity;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
@@ -13,6 +11,7 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.modules.bpmn.assembly.callactivity.CallActivity;
 import com.alibaba.smart.framework.engine.provider.impl.AbstractActivityBehavior;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.impl.CommonServiceHelper;
@@ -28,12 +27,12 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
     }
 
     @Override
-    public boolean enter(ExecutionContext context) {
+    public boolean enter(PvmActivity pvmActivity, ExecutionContext context) {
 
-        super.enter(context);
+        super.enter(pvmActivity, context);
 
 
-        CallActivity callActivity = this.getModel();
+        CallActivity callActivity = (CallActivity)pvmActivity.getModel();
 
         ProcessInstance processInstance = context.getProcessInstance();
         ExecutionInstance executionInstance = context.getExecutionInstance();

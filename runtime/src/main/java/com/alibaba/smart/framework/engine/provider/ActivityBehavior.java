@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.provider;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 /**
@@ -9,9 +10,11 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
  */
 public interface ActivityBehavior {
 
-    boolean enter(ExecutionContext context);
 
-    void execute(ExecutionContext context);
+    //TODO
+    boolean enter(PvmActivity pvmActivity, ExecutionContext context);
+
+    void execute(ExecutionContext context, Activity activity);
 
     void leave(PvmActivity pvmActivity,ExecutionContext context);
 
