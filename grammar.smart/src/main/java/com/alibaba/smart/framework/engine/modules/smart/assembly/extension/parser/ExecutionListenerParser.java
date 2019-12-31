@@ -33,8 +33,7 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
             String[] events = event.split(",");
             executionListener.setEvents(events);
 
-            //FIXME 统一通过 instanceAccceor ,都是单例。
-            executionListener.setListener(listener);
+            executionListener.setListenerClass(listener);
             return executionListener;
         }else{
             throw new EngineException("Events can not be empty for ExecutionListener");

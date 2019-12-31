@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.common.expression;
 
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
@@ -45,8 +46,7 @@ public abstract class ExpressionUtil {
         String className = PACKAGE_NAME + firstCharToUpperCase + EXPRESSION_EVALUATOR;
         InstanceAccessor instanceAccessor = processEngineConfiguration
             .getInstanceAccessor();
-        com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator
-            expressionEvaluator = (com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator)instanceAccessor.access(className);
+        ExpressionEvaluator expressionEvaluator = (ExpressionEvaluator)instanceAccessor.access(className);
 
         if (null != expressionEvaluator) {
             Map<String,Object> requestContext=context.getRequest();

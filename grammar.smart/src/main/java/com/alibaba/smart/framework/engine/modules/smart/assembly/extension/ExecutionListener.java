@@ -25,7 +25,7 @@ public class ExecutionListener  implements Extension {
     public final static QName type = new QName(SmartBase.SMART_NS, "executionListener");
 
     private String[] events;
-    private String listener;
+    private String listenerClass;
 
 
     @Override
@@ -44,21 +44,18 @@ public class ExecutionListener  implements Extension {
 
         for (String event : events) {
 
-            EventListener listener = (EventListener)ClassUtil.createOrGetInstance(this.listener);
+            EventListener listener = (EventListener)ClassUtil.createOrGetInstance(this.listenerClass);
 
             Map<String, List<EventListener>> eventListenerMap = eventListenerAggregation.getEventListenerMap();
 
-            List<EventListener> javaDelegationList = eventListenerMap.get(event);
+            List<EventListener> eventListenerList = eventListenerMap.get(event);
 
-                if(CollectionUtil.isNotEmpty(javaDelegationList)){
-                    javaDelegationList.add(listener );
-
+                if(CollectionUtil.isNotEmpty(eventListenerList)){
+                    eventListenerList.add(listener );
                 }else{
-
-                    javaDelegationList =CollectionUtil.newArrayList();
-                    javaDelegationList.add(listener);
-                    eventListenerMap.put(event,javaDelegationList);
-
+                    eventListenerList =CollectionUtil.newArrayList();
+                    eventListenerList.add(listener);
+                    eventListenerMap.put(event,eventListenerList);
                 }
 
             }
