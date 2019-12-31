@@ -3,10 +3,11 @@ package com.alibaba.smart.framework.engine.pvm.impl;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
+import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.listener.EventListener;
-import com.alibaba.smart.framework.engine.listener.EventListenerAggregation;
+import com.alibaba.smart.framework.engine.listener.Listener;
+import com.alibaba.smart.framework.engine.listener.ListenerAggregation;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -45,12 +46,16 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         ExtensionElements extensionElements = this.getModel().getExtensionElements();
         if(null != extensionElements){
 
-            EventListenerAggregation extension = (EventListenerAggregation)extensionElements.getDecorationMap().get(ExtensionElementsConstant.EXECUTION_LISTENER);
+            ListenerAggregation extension = (ListenerAggregation)extensionElements.getDecorationMap().get(ExtensionElementsConstant.EXECUTION_LISTENER);
 
             if(null !=  extension){
-                List<EventListener> listenerList = extension.getEventListenerMap().get(event);
-                if(CollectionUtil.isNotEmpty(listenerList)){
-                    for (EventListener listener : listenerList) {
+                List<String> listenerClassNameList = extension.getEventListenerMap().get(event);
+                if(CollectionUtil.isNotEmpty(listenerClassNameList)){
+                    InstanceAccessor instanceAccessor = context.getProcessEngineConfiguration()
+                        .getInstanceAccessor();
+                    for (String listenerClassName : listenerClassNameList) {
+
+                        Listener listener = (Listener)instanceAccessor.access(listenerClassName);
                         listener.execute(context);
                     }
                 }

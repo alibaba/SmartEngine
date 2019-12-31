@@ -1,13 +1,13 @@
 package com.alibaba.smart.framework.engine.test.delegation;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.listener.EventListener;
+import com.alibaba.smart.framework.engine.listener.Listener;
 
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
  */
-public class TccTracker implements EventListener {
+public class TccTracker implements Listener {
 
 
     @Override

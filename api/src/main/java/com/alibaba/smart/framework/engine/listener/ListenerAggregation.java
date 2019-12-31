@@ -11,8 +11,8 @@ import lombok.Data;
  * Created by 高海军 帝奇 74394 on  2019-11-14 16:37.
  */
 @Data
-public class EventListenerAggregation {
+public class ListenerAggregation {
 
-    private Map<String, List<EventListener>> eventListenerMap = MapUtil.newHashMap();
+    private Map<String, List<String>> eventListenerMap = MapUtil.newHashMap();
 
 }

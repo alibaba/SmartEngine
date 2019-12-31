@@ -7,8 +7,8 @@ import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
-import com.alibaba.smart.framework.engine.listener.EventListener;
-import com.alibaba.smart.framework.engine.listener.EventListenerAggregation;
+import com.alibaba.smart.framework.engine.listener.Listener;
+import com.alibaba.smart.framework.engine.listener.ListenerAggregation;
 import com.alibaba.smart.framework.engine.model.assembly.Extension;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.modules.smart.assembly.SmartBase;
@@ -35,27 +35,27 @@ public class ExecutionListener  implements Extension {
 
     @Override
     public void decorate(ExtensionElements extensionElements) {
-        EventListenerAggregation eventListenerAggregation =  (EventListenerAggregation)extensionElements.getDecorationMap().get(getType());
+        ListenerAggregation eventListenerAggregation =  (ListenerAggregation)extensionElements.getDecorationMap().get(getType());
 
         if(null == eventListenerAggregation){
-            eventListenerAggregation = new EventListenerAggregation();
+            eventListenerAggregation = new ListenerAggregation();
             extensionElements.getDecorationMap().put(this.getType(),eventListenerAggregation);
         }
 
         for (String event : events) {
 
-            EventListener listener = (EventListener)ClassUtil.createOrGetInstance(this.listenerClass);
+            //Listener listener = (Listener)ClassUtil.createOrGetInstance(this.listenerClass);
 
-            Map<String, List<EventListener>> eventListenerMap = eventListenerAggregation.getEventListenerMap();
+            Map<String, List<String>> eventListenerMap = eventListenerAggregation.getEventListenerMap();
 
-            List<EventListener> eventListenerList = eventListenerMap.get(event);
+            List<String> listenerList = eventListenerMap.get(event);
 
-                if(CollectionUtil.isNotEmpty(eventListenerList)){
-                    eventListenerList.add(listener );
+                if(CollectionUtil.isNotEmpty(listenerList)){
+                    listenerList.add(this.listenerClass );
                 }else{
-                    eventListenerList =CollectionUtil.newArrayList();
-                    eventListenerList.add(listener);
-                    eventListenerMap.put(event,eventListenerList);
+                    listenerList =CollectionUtil.newArrayList();
+                    listenerList.add(this.listenerClass);
+                    eventListenerMap.put(event,listenerList);
                 }
 
             }
