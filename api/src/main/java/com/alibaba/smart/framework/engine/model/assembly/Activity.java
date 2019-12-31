@@ -7,7 +7,6 @@ package com.alibaba.smart.framework.engine.model.assembly;
 public interface Activity extends ExtensionBasedElement {
 
 
-    //TODO
     boolean isStartActivity();
 
 
