@@ -40,19 +40,20 @@ public class DefaultSmartEngine implements SmartEngine {
 
     @Override
     public void init(ProcessEngineConfiguration processEngineConfiguration) {
-
+        this.setProcessEngineConfiguration(processEngineConfiguration);
         processEngineConfiguration.setSmartEngine(this);
 
-        this.setProcessEngineConfiguration(processEngineConfiguration);
-
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
-
         String packageName = SmartEngine.class.getPackage().getName();
-
         annotationScanner.scan(processEngineConfiguration, packageName, ExtensionBinding.class);
 
         Map<String, ExtensionBindingResult> scanResult = annotationScanner.getScanResult();
 
+        lifeCycleStarted(scanResult);
+
+    }
+
+    protected void lifeCycleStarted(Map<String, ExtensionBindingResult> scanResult) {
         for (Entry<String, ExtensionBindingResult> stringExtensionBindingResultEntry : scanResult.entrySet()) {
             ExtensionBindingResult bindingResult = stringExtensionBindingResultEntry.getValue();
             Map<Class, Object> bindingMap = bindingResult.getBindingMap();
@@ -64,8 +65,6 @@ public class DefaultSmartEngine implements SmartEngine {
             }
 
         }
-
-
     }
 
     @Override
