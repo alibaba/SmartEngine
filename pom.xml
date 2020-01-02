@@ -44,7 +44,6 @@
         <module>storage.common</module>
         <module>storage.mysql</module>
         <module>storage.custom</module>
-        <module>compatible.activiti</module>
         <module>aggregation.mysql</module>
         <module>aggregation.custom</module>
         <module>storage.mongodb</module>

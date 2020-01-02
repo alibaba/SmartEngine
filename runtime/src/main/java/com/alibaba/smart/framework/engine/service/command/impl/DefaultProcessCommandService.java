@@ -50,7 +50,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     private InstanceContextFactory instanceContextFactory;
     private ProcessInstanceFactory processInstanceFactory;
-    private ProcessDefinitionContainer processContainer;
 
 
     @Override
