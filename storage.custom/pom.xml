@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>smart-engine-storage-custom</artifactId>
-    <name>Smart Engine Modules - Custom Storage Example</name>
+    <name>Smart Engine Modules - Custom Storage</name>
 
     <dependencies>
         <dependency>
