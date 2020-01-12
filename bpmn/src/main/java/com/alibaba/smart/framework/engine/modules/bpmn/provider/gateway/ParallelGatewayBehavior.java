@@ -90,8 +90,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             try{
                 lockStrategy.tryLock(processInstanceId);
 
-            }finally {
-
                 super.enter(context, pvmActivity);
 
 
@@ -157,10 +155,13 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                     return true;
                 }
 
+            }finally {
+
+                lockStrategy.unLock(processInstanceId);
             }
 
         }else{
-            throw new EngineException("should touch here");
+            throw new EngineException("should touch here:"+pvmActivity);
         }
 
         return true;

@@ -123,7 +123,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     @Override
-    public ProcessInstance jump(String executionInstanceId, String activityId, Map<String, Object> request) {
+    public ProcessInstance jumpFrom(String executionInstanceId, String activityId, Map<String, Object> request) {
 
         ExecutionInstance executionInstance = queryExecutionInstance(executionInstanceId);
 
@@ -149,6 +149,12 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
     }
 
+    @Override
+    public ProcessInstance jumpTo(String executionInstanceId, String activityId, Map<String, Object> request) {
+
+        //FIXME
+        return null;
+    }
 
     public void retry(String processInstanceId, String activityId, ExecutionContext executionContext) {
         ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId

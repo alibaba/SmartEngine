@@ -54,8 +54,8 @@ public class JumpFreeNode1Test  extends CustomBaseTestCase {
             }
         }
 
-        //jump task1
-        this.executionCommandService.jump(executionInstances.get(0).getInstanceId(), "task1", null);
+        //jumpFrom task1
+        this.executionCommandService.jumpFrom(executionInstances.get(0).getInstanceId(), "task1", null);
 
         //assert task1
         Assert.assertEquals(1, session.getProcessInstances().values().size());

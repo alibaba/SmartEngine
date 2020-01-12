@@ -77,8 +77,8 @@ public class JumpFreeNode2Test extends CustomBaseTestCase {
         Assert.assertNotNull(executionInstance2);
         Assert.assertTrue(executionInstance2.isActive());
 
-        // jump task1
-        this.executionCommandService.jump(executionInstance1.getInstanceId(), "task1", null);
+        // jumpFrom task1
+        this.executionCommandService.jumpFrom(executionInstance1.getInstanceId(), "task1", null);
 
         // assert task1 task2
         executionInstances = this.executionQueryService.findActiveExecutionList(processInstanceId);
@@ -118,7 +118,7 @@ public class JumpFreeNode2Test extends CustomBaseTestCase {
         Assert.assertTrue(executionInstance2.isActive());
 
         // jump2
-        this.executionCommandService.jump(executionInstance2.getInstanceId(), "task2", null);
+        this.executionCommandService.jumpFrom(executionInstance2.getInstanceId(), "task2", null);
 
         // assert task1 task2
         executionInstances = this.executionQueryService.findActiveExecutionList(processInstanceId);
