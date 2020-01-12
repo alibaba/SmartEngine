@@ -98,16 +98,22 @@ public class VariableInstanceAndMultiInstanceTest extends DatabaseBaseTestCase {
 
         ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
         processInstanceQueryParam.setStartUserId("123");
+
+        List<String> processInstanceIdList = new ArrayList<String>();
+        processInstanceIdList.add(processInstance.getInstanceId());
+        processInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
+
+
         List<ProcessInstance> processInstanceList = processQueryService.findList(
             processInstanceQueryParam);
         Assert.assertNotNull(processInstanceList);
-        Assert.assertTrue(processInstanceList.size()>=1 );
+        Assert.assertTrue(processInstanceList.size() == 1 );
 
         processInstanceQueryParam.setProcessDefinitionType("group");
         processInstanceList = processQueryService.findList(
             processInstanceQueryParam);
         Assert.assertNotNull(processInstanceList);
-        Assert.assertTrue(processInstanceList.size()>=1 );
+        Assert.assertTrue(processInstanceList.size() == 1  );
 
 
         List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
@@ -129,6 +135,7 @@ public class VariableInstanceAndMultiInstanceTest extends DatabaseBaseTestCase {
         assigneeGroupIdList.add("a");
         assigneeGroupIdList.add("b");
         pendingTaskQueryParam.setAssigneeGroupIdList(assigneeGroupIdList);
+        pendingTaskQueryParam.setProcessInstanceIdList(processInstanceIdList);
 
 
 

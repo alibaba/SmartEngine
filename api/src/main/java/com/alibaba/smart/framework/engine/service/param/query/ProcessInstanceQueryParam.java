@@ -23,5 +23,5 @@ public class ProcessInstanceQueryParam extends PaginateQueryParam {
     /**
      * 流程引擎实例id列表
      */
-    private List<Long> processInstanceIdList;
+    private List<String> processInstanceIdList;
 }

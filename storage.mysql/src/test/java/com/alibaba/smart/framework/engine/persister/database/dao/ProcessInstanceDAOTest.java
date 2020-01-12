@@ -57,7 +57,7 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
     public void testFindByProcessInstanceIdList() {
         dao.insert(entity);
         ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
-        processInstanceQueryParam.setProcessInstanceIdList(Lists.newArrayList(entity.getId()));
+        processInstanceQueryParam.setProcessInstanceIdList(Lists.newArrayList(entity.getId().toString()));
         List<ProcessInstanceEntity> result = dao.find(processInstanceQueryParam);
         Assert.assertEquals("title",result.get(0).getTitle());
         Assert.assertEquals("tag",result.get(0).getTag());
