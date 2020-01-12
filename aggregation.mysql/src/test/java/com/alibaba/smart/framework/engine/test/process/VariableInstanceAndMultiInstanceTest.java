@@ -47,7 +47,7 @@ public class VariableInstanceAndMultiInstanceTest extends DatabaseBaseTestCase {
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
         processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
-        processEngineConfiguration.setLockStrategy(new DefaultLockStrategy());
+        processEngineConfiguration.setLockStrategy(new DoNothingLockStrategy());
 
         trace.clear();
     }

@@ -149,12 +149,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
     }
 
-    @Override
-    public ProcessInstance jumpTo(String executionInstanceId, String activityId, Map<String, Object> request) {
 
-        //FIXME
-        return null;
-    }
 
     public void retry(String processInstanceId, String activityId, ExecutionContext executionContext) {
         ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId

@@ -15,8 +15,6 @@
                   alibaba:approvalType="anyone"
                   smart:class="com.alibaba.smart.framework.engine.test.process.delegation.UserTaskTestDelegation">
 
-            <!--${nrOfCompletedInstances/nrOfInstances >= 0.6 }-->
-
             <multiInstanceLoopCharacteristics activiti:collection="" isSequential="false">
                 <inputDataItem name="assignee"/>
                 <completionCondition><![CDATA[nrOfCompletedInstances >=1]]></completionCondition>

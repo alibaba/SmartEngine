@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * Created by 高海军 帝奇 74394 on 2017 January  18:03.
  */
 @Service
-public class DefaultLockStrategy implements LockStrategy {
+public class DoNothingLockStrategy implements LockStrategy {
 
     @Autowired
     private  SmartEngine smartEngine;

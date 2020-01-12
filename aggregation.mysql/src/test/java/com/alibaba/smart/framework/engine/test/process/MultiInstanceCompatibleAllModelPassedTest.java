@@ -42,7 +42,7 @@ public class MultiInstanceCompatibleAllModelPassedTest extends DatabaseBaseTestC
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
         processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
-        processEngineConfiguration.setLockStrategy(new DefaultLockStrategy());
+        processEngineConfiguration.setLockStrategy(new DoNothingLockStrategy());
     }
 
 

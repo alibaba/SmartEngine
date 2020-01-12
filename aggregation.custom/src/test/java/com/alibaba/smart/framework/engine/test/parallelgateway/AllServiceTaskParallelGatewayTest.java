@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.configuration.LockStrategy;
+import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
+import com.alibaba.smart.framework.engine.test.DoNothingLockStrategy;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 
 import org.junit.Assert;
@@ -21,7 +24,11 @@ public class AllServiceTaskParallelGatewayTest extends CustomBaseTestCase {
     private long orderId = 123456L;
 
 
-
+    protected void initProcessConfiguation() {
+        processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
+        processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
+    }
 
     @Test
     public void testParallelGateway() throws Exception {

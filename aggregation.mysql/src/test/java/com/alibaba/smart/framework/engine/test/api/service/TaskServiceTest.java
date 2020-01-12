@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.CustomVariablePersister;
-import com.alibaba.smart.framework.engine.test.process.DefaultLockStrategy;
+import com.alibaba.smart.framework.engine.test.process.DoNothingLockStrategy;
 import com.alibaba.smart.framework.engine.test.process.DefaultMultiInstanceCounter;
 import com.alibaba.smart.framework.engine.test.process.task.dispatcher.IdAndGroupTaskAssigneeDispatcher;
 
@@ -37,7 +37,7 @@ public class TaskServiceTest extends DatabaseBaseTestCase {
         processEngineConfiguration.setTaskAssigneeDispatcher(new IdAndGroupTaskAssigneeDispatcher());
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
         processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
-        processEngineConfiguration.setLockStrategy(new DefaultLockStrategy());
+        processEngineConfiguration.setLockStrategy(new DoNothingLockStrategy());
     }
 
 

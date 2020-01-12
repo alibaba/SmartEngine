@@ -30,15 +30,6 @@ public interface ExecutionCommandService {
      */
     ProcessInstance jumpFrom(String executionInstanceId, String activityId, Map<String, Object> request);
 
-    /**
-     * 驱动流程到指定环节
-     *
-     * @param executionInstanceId
-     * @param activityId
-     * @param request
-     * @return
-     */
-    ProcessInstance jumpTo(String executionInstanceId, String activityId, Map<String, Object> request);
 
 
     void retry(String processInstanceId, String activityId, ExecutionContext executionContext);

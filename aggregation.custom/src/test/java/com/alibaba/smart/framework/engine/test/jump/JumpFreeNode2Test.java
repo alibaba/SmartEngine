@@ -3,9 +3,12 @@ package com.alibaba.smart.framework.engine.test.jump;
 import java.util.HashMap;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.configuration.LockStrategy;
+import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
+import com.alibaba.smart.framework.engine.test.DoNothingLockStrategy;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 
 import org.junit.Assert;
@@ -17,9 +20,16 @@ import org.junit.Test;
  */
 public class JumpFreeNode2Test extends CustomBaseTestCase {
 
+    protected void initProcessConfiguation() {
+        processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
+        processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
+    }
 
     @Test
     public void test() {
+        super.initProcessConfiguation();
+
         PersisterSession session = PersisterSession.currentSession();
         Assert.assertNotNull(session);
 
