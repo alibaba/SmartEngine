@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -8,7 +9,6 @@ import javax.annotation.Resource;
 import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 
-import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +57,11 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
     public void testFindByProcessInstanceIdList() {
         dao.insert(entity);
         ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
-        processInstanceQueryParam.setProcessInstanceIdList(Lists.newArrayList(entity.getId().toString()));
+
+        List<String>  processInstanceIdList = new ArrayList();
+        processInstanceIdList.add(entity.getId().toString());
+
+        processInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         List<ProcessInstanceEntity> result = dao.find(processInstanceQueryParam);
         Assert.assertEquals("title",result.get(0).getTitle());
         Assert.assertEquals("tag",result.get(0).getTag());

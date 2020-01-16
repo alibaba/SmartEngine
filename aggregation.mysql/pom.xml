@@ -99,15 +99,11 @@
 
         </dependency>
 
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
 
-        <dependency>
-            <groupId>com.taobao.tddl</groupId>
-            <artifactId>tddl-sequence</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.taobao.tddl</groupId>
-            <artifactId>tddl-client</artifactId>
-        </dependency>
 
     </dependencies>
 </project>

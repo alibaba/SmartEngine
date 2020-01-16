@@ -177,13 +177,7 @@
             </dependency>
 
 
-            <!-- 使用MessageQueueReceiveTask 才会依赖这个特性 -->
-            <dependency>
-                <groupId>com.taobao.metaq.final</groupId>
-                <artifactId>metaq-client</artifactId>
-                <version>3.6.2.Final</version>
-                <scope>provided</scope>
-            </dependency>
+
 
             <!-- spring AOP 包 -->
 
@@ -226,18 +220,11 @@
 
 
             <dependency>
-                <groupId>com.taobao.tddl</groupId>
-                <artifactId>tddl-sequence</artifactId>
-                <version>5.1.17</version>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.6</version>
                 <scope>provided</scope>
             </dependency>
-            <dependency>
-                <groupId>com.taobao.tddl</groupId>
-                <artifactId>tddl-client</artifactId>
-                <version>5.1.17</version>
-                <scope>provided</scope>
-            </dependency>
-
 
 
             <!--<dependency>-->

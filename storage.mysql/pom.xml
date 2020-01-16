@@ -102,17 +102,6 @@
 
         </dependency>
 
-
-
-        <dependency>
-            <groupId>com.taobao.tddl</groupId>
-            <artifactId>tddl-sequence</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.taobao.tddl</groupId>
-            <artifactId>tddl-client</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
@@ -122,14 +111,9 @@
             <artifactId>mybatis-spring</artifactId>
         </dependency>
 
-
-
-
-        <!-- spring AOP 包 end -->
-
         <dependency>
-            <groupId>com.taobao.metaq.final</groupId>
-            <artifactId>metaq-client</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
 

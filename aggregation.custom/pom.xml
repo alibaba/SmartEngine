@@ -37,18 +37,6 @@
             <scope>test</scope>
         </dependency>
         
-        <dependency>
-            <groupId>com.alibaba.rocketmq</groupId>
-            <artifactId>rocketmq-client</artifactId>
-            <version>3.6.2.Final</version>
-            <scope>test</scope>
-        </dependency>
 
-        <dependency>
-            <groupId>com.taobao.metaq.final</groupId>
-            <artifactId>metaq-client</artifactId>
-            <version>3.6.2.Final</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>
