@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions id="lst-marketing"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-             xmlns:smart="http://smart.alibaba-inc.com/schema/process"
+             xmlns:smart="http://smart.example/schema/process"
              xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
              xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="smart">

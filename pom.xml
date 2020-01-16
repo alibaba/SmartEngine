@@ -3,18 +3,8 @@
 
 
     <modelVersion>4.0.0</modelVersion>
-    <!--
-    <parent>
-        <groupId>com.alibaba.com.alibaba.tradeplatform.icbu</groupId>
-        <artifactId>parent-pom</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-    </parent>
-    -->
-    <parent>
-        <groupId>com.taobao</groupId>
-        <artifactId>parent</artifactId>
-        <version>1.0.3</version>
-    </parent>
+
+
     <groupId>com.alibaba.smart.framework</groupId>
     <artifactId>smart-engine</artifactId>
     <!--  mvn versions:set -DnewVersion=2.0.0-SNAPSHOT -DgenerateBackupPoms=false  -->

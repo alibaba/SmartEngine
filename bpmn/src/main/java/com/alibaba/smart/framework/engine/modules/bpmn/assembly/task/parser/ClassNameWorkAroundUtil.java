@@ -2,6 +2,8 @@ package com.alibaba.smart.framework.engine.modules.bpmn.assembly.task.parser;
 
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.constant.SmartBase;
+
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  20:53.
  */
@@ -24,7 +26,7 @@ public abstract class ClassNameWorkAroundUtil {
             return  className4;
         }
 
-        String className3 =   reader.getAttributeValue("http://smart.alibaba-inc.com/schema/process","class");
+        String className3 =   reader.getAttributeValue(SmartBase.SMART_NS,"class");
         if(null != className3){
             return  className3;
         }

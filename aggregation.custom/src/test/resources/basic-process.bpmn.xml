@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smart.alibaba-inc.com/schema/process"
+<definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smart.example/schema/process"
              xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="processSimulation"
              version="1.0.0"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" targetNamespace="smart">
