@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class DoNothingLockStrategy implements LockStrategy {
 
-    @Autowired
-    private  SmartEngine smartEngine;
 
     @Override
     public void tryLock(String processInstanceId) throws LockException {

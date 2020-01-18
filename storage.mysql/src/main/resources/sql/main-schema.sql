@@ -14,7 +14,7 @@ CREATE TABLE `se_deployment_instance` (
   `logic_status` varchar(64) NOT NULL ,
 
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 ;
+)  ;
 
 CREATE TABLE `se_process_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT  ,
@@ -32,7 +32,7 @@ CREATE TABLE `se_process_instance` (
   `tag` varchar(255) DEFAULT NULL ,
 
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ;
+)   ;
 
 CREATE TABLE `se_activity_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT  ,
@@ -42,7 +42,7 @@ CREATE TABLE `se_activity_instance` (
   `process_definition_id_and_version` varchar(255) NOT NULL  ,
   `process_definition_activity_id` varchar(64) NOT NULL  ,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5910 DEFAULT CHARSET=utf8 ;
+)  ;
 
 CREATE TABLE `se_task_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT  ,
@@ -65,7 +65,7 @@ CREATE TABLE `se_task_instance` (
   `extension` varchar(255) DEFAULT NULL ,
 
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 ;
+)   ;
 
 CREATE TABLE `se_execution_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT  ,
@@ -77,7 +77,7 @@ CREATE TABLE `se_execution_instance` (
   `activity_instance_id` bigint(20) unsigned NOT NULL  ,
   `active` tinyint(4) NOT NULL COMMENT '1:active 0:inactive',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=335814 DEFAULT CHARSET=utf8 ;
+)   ;
 
 
 CREATE TABLE `se_task_assignee_instance` (
@@ -89,7 +89,7 @@ CREATE TABLE `se_task_assignee_instance` (
   `assignee_id` varchar(255) NOT NULL  ,
   `assignee_type` varchar(128) NOT NULL  ,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6243 DEFAULT CHARSET=utf8 ;
+)  ;
 
 
 CREATE TABLE `se_variable_instance` (
@@ -104,35 +104,4 @@ CREATE TABLE `se_variable_instance` (
   `field_long_value` bigint(20) DEFAULT NULL  ,
   `field_string_value` varchar(4000) DEFAULT NULL ,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 ;
-
-alter table `se_execution_instance`
-add key `idx_process_instance_id_and_status` (process_instance_id,active),
-add key `idx_process_instance_id_and_activity_instance_id` (process_instance_id,activity_instance_id);
-
-alter table `se_task_assignee_instance`
-add key `idx_task_instance_id` (task_instance_id),
-add key `idx_assignee_id_and_type` (assignee_id,assignee_type);
-
-alter table `se_activity_instance`
-add key `idx_process_instance_id` (process_instance_id);
-
-alter table `se_deployment_instance`
-add key `idx_user_id_and_logic_status` (logic_status,deployment_user_id);
-
-alter table `se_process_instance`
-add key `idx_start_user_id` (start_user_id),
-add key `idx_status` (status);
-
-alter table `se_task_instance`
-add key `idx_status` (status),
-add key `idx_process_instance_id_and_status` (process_instance_id,status),
-add key `idx_process_definition_type` (process_definition_type),
-add key `idx_process_instance_id` (process_instance_id),
-add key `idx_claim_user_id` (claim_user_id),
-add key `idx_tag` (tag),
-add key `idx_activity_instance_id` (activity_instance_id),
-add key `idx_process_definition_activity_id` (process_definition_activity_id);
-
-alter table `se_variable_instance`
-add key `idx_process_instance_id_and_execution_instance_id` (process_instance_id,execution_instance_id);
+)  ;

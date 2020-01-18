@@ -53,6 +53,7 @@ public class DatabaseBaseTestCase {
 
     @Before
     public void setUp() {
+
         this.annotationScanner = new SimpleAnnotationScanner();
 
         initProcessConfiguration();

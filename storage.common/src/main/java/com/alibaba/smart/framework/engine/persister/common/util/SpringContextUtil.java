@@ -13,42 +13,41 @@ import org.springframework.stereotype.Service;
 @Service
 public class SpringContextUtil implements ApplicationContextAware, BeanFactoryPostProcessor {
 
-    private static ApplicationContext appContext;
-    private static ConfigurableListableBeanFactory factory;
+    private static ApplicationContext applicationContext;
+    private static ConfigurableListableBeanFactory beanFactory;
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory factory) throws BeansException {
-        SpringContextUtil.factory = factory;
+        SpringContextUtil.beanFactory = factory;
     }
 
     @Override
     public void setApplicationContext(ApplicationContext c) throws BeansException {
-        SpringContextUtil.appContext = c;
+        SpringContextUtil.applicationContext = c;
     }
 
     public static Object getBean(String name) {
-        return appContext.getBean(name);
+        return applicationContext.getBean(name);
     }
 
     public static <T> T  getBean(String name, Class<T> requiredType) {
-        return appContext.getBean(name,requiredType);
+        return applicationContext.getBean(name,requiredType);
     }
 
-
     public static ApplicationContext getAppContext() {
-        return appContext;
+        return applicationContext;
     }
 
     public static void setAppContext(ApplicationContext appContext) {
-        appContext = appContext;
+        applicationContext = appContext;
     }
 
     public static ConfigurableListableBeanFactory getFactory() {
-        return factory;
+        return beanFactory;
     }
 
     public static void setFactory(ConfigurableListableBeanFactory factory) {
-        factory = factory;
+        beanFactory = factory;
     }
 
 }
