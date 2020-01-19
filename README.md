@@ -1,61 +1,41 @@
-# 新一代流程引擎 SmartEngine 
+
+# SmartEngine
+
+SmartEngine is a lightweight business orchestration engine. It's used widely in Alibaba Group.
+It can be used to orchestrate multiple service in micro service architecture, start/signal a process instance in a very high performance way with low-storage cost , and also can be used in  traditional process approval scenario.
+
+## Design Philosophy
+
+0. KISS(Keep It Simple, Stupid)
+1. Standardization: embrace BPMN2.0 , specify ubiquitous language.
+2. Extensible: such as parser,behavior, storage, user integration etc. 
+3. High Performance: provide a simple  way to improve performance and reduce storage cost in some simple process scenario.
+4. Less Dependent: at the very beginning , we try our best to avoid JAR hell .
+
+ 
+## Main Feature
+
+0. CQRS-style APIs to start,sginal,query process instance，task，activity.
+1. Support basic BPMN symbols : startEvent,endEvent,sequenceFlow,exclusiveGateway,serviceTask,ReceiveTask
+2. Provide a simple  way to improve performance and reduce storage cost in some simple process scenario.
+3. Other：Process Jump; VariablePersister;TaskAssigneeDispatcher;Countersign.
 
 
-SmartEngine 是一款业务治理和服务编排引擎。业务治理引擎专注于解决互联网场景下和传统工作流行业的流程相关问题，服务编排引擎专注于用统一的标准来解决复杂链路服务上的服务编排问题。
-
-SmartEngine是一个开放性的，以社区化方式运作的流程引擎，目前主要的contributor主要是ICBU与共享交易平台。
-
-它的主要技术特点是以微内核与高扩展性，流程节点解析，执行，存储等机制都是遵循插拔与扩展的；遵循BPM 领域标准 BPMN2.0；功能上支持互斥和并行网关，ServiceTask 和 ReceiverTask ，子流程，会签 等特性。 
-
-## 当前服务的客户（不完整列表，需要上榜的同学也请联系我 :）
-
-1. TP3
-2. 蚂蚁金服结算
-3. 蚂蚁保险业务
-4. Lazada 纠纷和营销
-5. ICBU 交易
-6. 1688 采购
-7. AE 纠纷
-8. 零售通供应链管理
-9. 猫超
-10. 人工智能实验室
-11. 飞猪拍卖
-12. 集团供应链-库存管理
-13. 企业金融-风控
-14. 企业金融-贷款
-
-## 设计目标
-
-1. 标准化:支持BPMN标准主要节点,降低业务人员和开发人员沟通成本
-2. 功能强大:支持互斥和并行网关,子流程特性
-2. 高性能:流程定义启动时加载解析,运行时使用无/弱锁化设计,优化反射性能处理
-4. 高扩展性:每个节点解析和执行都是扩展
-5. 灵活存储模式: 支持内存和持久化运行模式(传统和自定义)
-7. 易使用: API简单清晰,领域职责明确单一
+## Documentation
+- [Documentation Home](https://github.com/alibaba/SmartEngine/wiki)
 
 
-强调一点，我们认为在当今业界里，遵循业界标准这点非常重要。无论哪个业务平台，都不想把自己业务捆绑在特定的引擎上面。并且，通常来讲，标准规范意味着这个行业的最佳实践。 还有一点，就是 BPMN 语义非常业务化，便于人们理解。 这也就是我们为什么SmartEngine要遵循 BPMN2.0的标准原因了。
+## License
+SmartEngine is released under the Apache 2.0 license.
 
-## 分层逻辑架构
-
-
-* base：负责xml解析和引擎内部的扩展点，属于公共基础类。
-* parser：负责从多种介质获取 xml 以及将各个节点的 xml 解析成 pvm 运行时对象
-* pvm：负责流程流转时的内部逻辑，实现各种节点的流转和网关路径选择。
-* api：负责提供流程定义部署，流程实例流转，任务处理和实例查询等服务 
-
-## SmartEngineCommunity 钉钉群 (群号： 21952257 群名称：SmartEngineCommunity )
-
-<font color=red>强烈建议使用 SmartEngine 的同学加入此群，以便及时同步最新进展以及BugFix进展。</font>
-
-![LOGO](http://ata2-img.cn-hangzhou.img-pub.aliyun-inc.com/701aebc9ecd30b24e59e6e51f197306f.png)
+## Contact
 
 
-## SmartEngineCommunity 钉钉群 (群号： 21952257 群名称：SmartEngineCommunity )
+| DingDing Group                               | GitHub issues |  WeChat Id|
+|-------------------------------------|--------------|---------|
+| [DingDing]( https://qr.dingtalk.com/action/joingroup?code=v1,k1,zPYFGl1XPAasEk4eO9s9xmTuNX/9hHP03Oww8uhlvCk=&_dt_no_comment=1&origin=11) | [issues]     | geecoodeer|
 
+[issues]: https://github.com/alibaba/SmartEngine/issues
 
-
-## 注意事项
-
-* 下载代码后，需要安装Lombok插件，才能保证在IDE中正常编译。
-
+## Thanks 
+Inspired by Activiti,MyBatis,Netty etc.
