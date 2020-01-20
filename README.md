@@ -15,8 +15,8 @@ It can be used to orchestrate multiple service in micro service architecture, st
  
 ## Main Feature
 
-0. CQRS-style APIs to start,sginal,query process instance，task，activity.
-1. Support basic BPMN symbols : startEvent,endEvent,sequenceFlow,exclusiveGateway,serviceTask,ReceiveTask
+0. CQRS-style APIs to start,signal,query process instance，task，activity.
+1. Support basic BPMN symbols : StartEvent,EndEvent,SequenceFlow,ExclusiveGateway,ServiceTask,ReceiveTask.
 2. Provide a simple  way to improve performance and reduce storage cost in some simple process scenario.
 3. Other：Process Jump; VariablePersister;TaskAssigneeDispatcher;Countersign.
 
@@ -33,7 +33,7 @@ SmartEngine is released under the Apache 2.0 license.
 
 | DingDing Group                               | GitHub issues |  WeChat Id|
 |-------------------------------------|--------------|---------|
-| [DingDing]( https://qr.dingtalk.com/action/joingroup?code=v1,k1,zPYFGl1XPAasEk4eO9s9xmTuNX/9hHP03Oww8uhlvCk=&_dt_no_comment=1&origin=11) | [issues]     | geecoodeer|
+| SmartEngineOpenSourceCommunity | [Issues]     | geecoodeer|
 
 [issues]: https://github.com/alibaba/SmartEngine/issues
 
