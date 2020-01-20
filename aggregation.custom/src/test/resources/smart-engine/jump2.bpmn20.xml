@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="jump2-process" version="1.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             targetNamespace="Examples">
+    <process id="jump2-process" isExecutable="true">
+        <startEvent id="start"/>
+
+        <sequenceFlow id="flow1" sourceRef="start" targetRef="fork"/>
+
+        <parallelGateway id="fork"/>
+
+        <receiveTask id="task1" name="Task 1"/>
+
+        <receiveTask id="task2" name="Task 2"/>
+
+        <sequenceFlow id="fork1_1" sourceRef="fork" targetRef="task1"/>
+        <sequenceFlow id="fork1_2" sourceRef="fork" targetRef="task2"/>
+        <sequenceFlow id="join1_1" sourceRef="task1" targetRef="join"/>
+        <sequenceFlow id="join1_2" sourceRef="task2" targetRef="join"/>
+
+        <parallelGateway id="join"/>
+
+        <sequenceFlow id="join_3" sourceRef="join" targetRef="task3"/>
+
+        <receiveTask id="task3" name="Task 3"/>
+
+        <sequenceFlow id="to_end" sourceRef="task3" targetRef="end"/>
+
+        <endEvent id="end" name="End"/>
+    </process>
+
+</definitions>

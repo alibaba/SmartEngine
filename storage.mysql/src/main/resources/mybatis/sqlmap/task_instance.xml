@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.TaskInstanceDAO">
+
+    <sql id="baseColumn">
+        id, gmt_create, gmt_modified,process_instance_id, process_definition_id_and_version,process_definition_type,
+        activity_instance_id, process_definition_activity_id, execution_instance_id,claim_user_id,priority,tag,claim_time,complete_time,status,comment,extension,title
+    </sql>
+
+
+
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity"   keyProperty="id">
+        insert into se_task_instance(<include refid="baseColumn"/>)
+        values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},#{processDefinitionType},
+        #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status},#{comment},#{extension},#{title})
+    </insert>
+
+    <delete id="delete" parameterType="long">
+        delete from se_task_instance where id=#{id}
+    </delete>
+
+    <sql id="update_sql">
+        <set>
+            gmt_modified=now()
+            <if test="taskInstanceEntity.claimUserId != null">,claim_user_id = #{taskInstanceEntity.claimUserId}</if>
+            <if test="taskInstanceEntity.priority != null">,priority = #{taskInstanceEntity.priority}</if>
+            <if test="taskInstanceEntity.claimTime != null">,claim_time = #{taskInstanceEntity.claimTime}</if>
+            <if test="taskInstanceEntity.completeTime != null">,complete_time = #{taskInstanceEntity.completeTime}</if>
+            <if test="taskInstanceEntity.status != null">,status = #{taskInstanceEntity.status}</if>
+            <if test="taskInstanceEntity.tag != null">, tag = #{taskInstanceEntity.tag} </if>
+            <if test="taskInstanceEntity.comment != null">, comment = #{taskInstanceEntity.comment} </if>
+            <if test="taskInstanceEntity.extension != null">, extension = #{taskInstanceEntity.extension} </if>
+            <if test="taskInstanceEntity.title != null">, title = #{taskInstanceEntity.title} </if>
+
+        </set>
+    </sql>
+
+    <update id="update" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity">
+        update se_task_instance
+       <include refid="update_sql"/>
+        where id=#{taskInstanceEntity.id}
+    </update>
+
+    <update id="updateFromStatus">
+        update se_task_instance
+        <include refid="update_sql"/>
+        where id=#{taskInstanceEntity.id} and status = #{fromStatus}
+    </update>
+
+
+
+    <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from se_task_instance where id=#{id}
+    </select>
+
+    <select id="findTaskByProcessInstanceIdAndStatus" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity" >
+        select
+        <include refid="baseColumn"/>
+        from se_task_instance where process_instance_id = #{param1} and status = #{param2}
+    </select>
+
+    <select id="findTaskByAssignee" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity" parameterType="com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam">
+        select distinct task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
+        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
+        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
+
+        <if test = "status != null" > and task.status = #{status} </if>
+
+        <include refid="pending_where_condition"/>
+
+        <include refid="pending_task_assignee_choose_sql"/>
+
+        order by task.gmt_modified desc
+
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+
+    </select>
+
+
+    <select id="countTaskByAssignee" resultType="int" parameterType="com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam">
+        select  count(distinct task.id)
+        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
+
+        <if test = "status != null" > and task.status = #{status} </if>
+
+        <include refid="pending_where_condition"/>
+
+        <include refid="pending_task_assignee_choose_sql"/>
+
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+
+    </select>
+
+    <sql id="pending_task_assignee_choose_sql">
+        <choose>
+            <when test="assigneeUserId != null and assigneeGroupIdList != null">
+                and (      (assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user') or (assignee.assignee_id in
+                <foreach item="item" index="index" separator="," open="(" close=")"  collection="assigneeGroupIdList">
+                    #{item}
+                </foreach>
+                and assignee.assignee_type = 'group')    )
+            </when>
+            <when test="assigneeUserId != null">
+                and assignee.assignee_id =  #{assigneeUserId} and assignee.assignee_type = 'user'
+            </when>
+
+            <when test="assigneeGroupIdList != null">
+                and assignee.assignee_id in
+                <foreach item="item" index="index" separator="," open="(" close=")"  collection="assigneeGroupIdList">
+                    #{item}
+                </foreach>
+                and assignee.assignee_type = 'group'
+            </when>
+
+            <otherwise>
+
+            </otherwise>
+        </choose>
+
+    </sql>
+
+    <sql id="pending_where_condition">
+        <if test="processDefinitionType != null">  and  task.process_definition_type = #{processDefinitionType} </if>
+        <if test="processInstanceIdList != null">
+            and task.process_instance_id in
+            <foreach item="item" index="index" separator="," open="(" close=")"  collection="processInstanceIdList">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+
+
+    <select id="findTaskList" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity" parameterType="com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam">
+        select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
+        activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
+        from  se_task_instance task  where 1=1
+        <include refid="where_condition"/>
+
+        order by task.gmt_modified desc
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+
+    </select>
+
+
+    <select id="count" resultType="int" parameterType="com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam">
+        select  count(task.id)
+        from  se_task_instance task where 1=1
+        <include refid="where_condition"/>
+
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+
+    </select>
+
+
+    <sql id="where_condition">
+        <if test="status != null">  and task.status = #{status} </if>
+        <if test="processDefinitionType != null">  and  task.process_definition_type = #{processDefinitionType} </if>
+        <if test="claimUserId != null">  and  task.claim_user_id = #{claimUserId} </if>
+        <if test="tag != null">  and  task.tag = #{tag} </if>
+        <if test="activityInstanceId != null">  and  task.activity_instance_id = #{activityInstanceId} </if>
+        <if test="processDefinitionActivityId != null">  and  task.process_definition_activity_id = #{processDefinitionActivityId} </if>
+        <if test="processInstanceIdList != null">
+            and task.process_instance_id in
+            <foreach item="item" index="index" separator="," open="(" close=")"  collection="processInstanceIdList">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+</mapper>
+

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:smart="http://smart.example/schema/process"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="test-exclusive" targetNamespace="Examples"
+             version="1.0.0">
+
+    <process id="Process_1" isExecutable="false">
+        <startEvent id="start"/>
+
+        <sequenceFlow id="start_to_service" sourceRef="start" targetRef="service"/>
+
+        <serviceTask id="service"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.MultiValueAndEventListenerDelegation">
+            <extensionElements>
+                <smart:properties>
+                    <smart:value name="key1" value="value1"/>
+                    <smart:value name="key2" value="value2"/>
+                </smart:properties>
+                <smart:executionListener event="ACTIVITY_START,ACTIVITY_END"
+                                         class="com.alibaba.smart.framework.engine.test.HelloListener"/>
+            </extensionElements>
+        </serviceTask>
+
+        <sequenceFlow id="to_receive" sourceRef="service" targetRef="receive"/>
+
+
+        <receiveTask id="receive"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.MultiValueAndEventListenerDelegation">
+            <extensionElements>
+                <smart:properties>
+                    <smart:value name="key3" value="value3"/>
+                    <smart:value name="key4" value="value4"/>
+                </smart:properties>
+                <smart:executionListener event="ACTIVITY_START,ACTIVITY_END"
+                                         class="com.alibaba.smart.framework.engine.test.HelloListener"/>
+            </extensionElements>
+        </receiveTask>
+
+
+        <sequenceFlow id="to_end" sourceRef="receive" targetRef="end"/>
+
+        <endEvent id="end"/>
+    </process>
+
+</definitions>

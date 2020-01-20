@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             id="simple-usertask-process"
+             targetNamespace="smart" version="1.0.0">
+    <process id="simple-usertask-process" isExecutable="false" version="2.0.0">
+        <startEvent id="startEvent"/>
+
+        <serviceTask id="createOrder" name="createOrder"/>
+
+        <userTask id="processPayment" name="processPayment"/>
+
+        <endEvent id="end"/>
+
+        <sequenceFlow id="initSeq" sourceRef="startEvent" targetRef="createOrder"/>
+        <sequenceFlow id="createOrderToProcessPayment" sourceRef="createOrder" targetRef="processPayment"/>
+        <sequenceFlow id="processPaymentToEnd" sourceRef="processPayment" targetRef="end"/>
+    </process>
+
+</definitions>

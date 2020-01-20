@@ -1,0 +1,42 @@
+<definitions xmlns:smart="http://smart.example/schema/process" xmlns:activiti="http://activiti.org/bpmn"
+             xmlns:alibaba="http://smart.alibaba.com/schema/alibaba"
+             id="test-multi-instance-user-task" version="1.0.1"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             targetNamespace="Examples">
+
+    <process id="multi-instance-user-task" version="1.0.2">
+
+        <startEvent id="theStart"/>
+        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="multiUserTask"/>
+
+        <userTask id="multiUserTask" name="My User Task"
+                  alibaba:approvalUserDatas="{'accountId':3400633088,'userId':3400633088,'userName':'dongyulong','deptName':'es_财务科','dutyName':'主管1235','roleName':'1688客服'}|{'accountId':3400620217,'userId':3400620217,'userName':'赋祎','deptName':'部门31','dutyName':'','roleName':''}"
+                  alibaba:approvalRole="USER" alibaba:approvalUser="3400633088,3400620217"
+                  alibaba:approvalType="anyone"
+                  smart:class="com.alibaba.smart.framework.engine.test.process.delegation.UserTaskTestDelegation">
+
+            <multiInstanceLoopCharacteristics activiti:collection="" isSequential="false">
+                <inputDataItem name="assignee"/>
+                <completionCondition><![CDATA[nrOfCompletedInstances >=1]]></completionCondition>
+            </multiInstanceLoopCharacteristics>
+        </userTask>
+
+        <sequenceFlow id="flow2" sourceRef="multiUserTask" targetRef="normalReceiverTask"/>
+
+        <receiveTask id="normalReceiverTask"/>
+
+        <sequenceFlow id="flow3" sourceRef="normalReceiverTask" targetRef="normalUserTask"/>
+
+        <userTask id="normalUserTask" name="Normal User Task"
+                  smart:class="com.alibaba.smart.framework.engine.test.process.delegation.UserTaskTestDelegation">
+
+        </userTask>
+
+        <sequenceFlow id="flow4" sourceRef="normalUserTask" targetRef="end"/>
+
+        <endEvent id="end"/>
+
+
+    </process>
+
+</definitions>

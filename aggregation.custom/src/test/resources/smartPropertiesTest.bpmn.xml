@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:smart="http://smart.example/schema/process" id="smartPropertiesTest" version="1.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             targetNamespace="smart">
+    <process id="Process_1" isExecutable="false">
+        <startEvent id="StartEvent_1"/>
+        <exclusiveGateway id="ExclusiveGateway_1otbxkp"/>
+        <serviceTask id="ServiceTask_056ab4g" name="Right"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.RightJavaDelegation">
+            <extensionElements>
+                <smart:properties>
+                    <smart:value name="value" value="right"/>
+                </smart:properties>
+                <smart:executionListener event="ACTIVITY_START,ACTIVITY_END"
+                                         class="com.alibaba.smart.framework.engine.test.StartListener"/>
+            </extensionElements>
+        </serviceTask>
+        <sequenceFlow id="SequenceFlow_1mxsbfh" sourceRef="StartEvent_1" targetRef="ExclusiveGateway_1otbxkp"/>
+        <sequenceFlow id="SequenceFlow_1q5d0bb" sourceRef="ExclusiveGateway_1otbxkp" targetRef="ServiceTask_056ab4g">
+            <conditionExpression type="mvel"><![CDATA["right".equals(input)]]></conditionExpression>
+        </sequenceFlow>
+        <endEvent id="EndEvent_1uof7f8"/>
+        <sequenceFlow id="SequenceFlow_0nrw22m" sourceRef="ServiceTask_056ab4g" targetRef="EndEvent_1uof7f8"/>
+        <serviceTask id="ServiceTask_1le00ez" name="Wrong">
+            <extensionElements>
+                <smart:properties>
+                    <smart:value name="value" value="wrong"/>
+                </smart:properties>
+            </extensionElements>
+        </serviceTask>
+        <sequenceFlow id="SequenceFlow_03y3oxa" sourceRef="ExclusiveGateway_1otbxkp" targetRef="ServiceTask_1le00ez">
+            <conditionExpression type="mvel"><![CDATA["wrong".equals(input)]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="SequenceFlow_0ve344a" sourceRef="ServiceTask_1le00ez" targetRef="EndEvent_1uof7f8"/>
+    </process>
+
+</definitions>

@@ -1,0 +1,16 @@
+target
+*.class
+*.classpath
+*.project
+*.iml
+*.idea
+.idea
+*.swp
+*.swo
+bin
+.settings/
+test-output/
+src/generated/*
+logs/
+.DS_Store
+pom.xml.versionsBackup

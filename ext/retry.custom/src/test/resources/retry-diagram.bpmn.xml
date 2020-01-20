@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="lst-marketing"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:smart="http://smart.example/schema/process"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="smart">
+    <process id="Process_1" isExecutable="true">
+        <startEvent id="StartEvent_1"/>
+        <receiveTask id="createActivity" name="创建活动"
+                     smart:class="com.alibaba.smart.framework.engine.retry.RetryDelegation"/>
+        <sequenceFlow id="SequenceFlow_06ih1kj" sourceRef="StartEvent_1" targetRef="createActivity"/>
+        <receiveTask id="enroll" name="报名商品"/>
+        <sequenceFlow id="SequenceFlow_1m4c83y" sourceRef="createActivity" targetRef="enroll"/>
+        <receiveTask id="audit" name="审核"/>
+        <sequenceFlow id="SequenceFlow_0yjbohj" sourceRef="enroll" targetRef="audit"/>
+        <receiveTask id="publish" name="发布"/>
+        <sequenceFlow id="SequenceFlow_19sv63j" sourceRef="audit" targetRef="publish"/>
+        <endEvent id="EndEvent_1rl02ek"/>
+        <sequenceFlow id="SequenceFlow_02dawxg" sourceRef="publish" targetRef="EndEvent_1rl02ek"/>
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+                <dc:Bounds x="78" y="255" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="51" y="291" width="90" height="20"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="createActivity_di" bpmnElement="createActivity">
+                <dc:Bounds x="194" y="233" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_06ih1kj_di" bpmnElement="SequenceFlow_06ih1kj">
+                <di:waypoint type="dc:Point" x="114" y="273"/>
+                <di:waypoint type="dc:Point" x="155" y="273"/>
+                <di:waypoint type="dc:Point" x="155" y="273"/>
+                <di:waypoint type="dc:Point" x="194" y="273"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="170" y="266.5" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="enroll_di" bpmnElement="enroll">
+                <dc:Bounds x="350" y="233" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_1m4c83y_di" bpmnElement="SequenceFlow_1m4c83y">
+                <di:waypoint type="dc:Point" x="294" y="273"/>
+                <di:waypoint type="dc:Point" x="350" y="273"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="322" y="251" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="audit_di" bpmnElement="audit">
+                <dc:Bounds x="515" y="233" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_0yjbohj_di" bpmnElement="SequenceFlow_0yjbohj">
+                <di:waypoint type="dc:Point" x="450" y="273"/>
+                <di:waypoint type="dc:Point" x="515" y="273"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="482.5" y="251" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="publish_di" bpmnElement="publish">
+                <dc:Bounds x="683" y="233" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_19sv63j_di" bpmnElement="SequenceFlow_19sv63j">
+                <di:waypoint type="dc:Point" x="615" y="273"/>
+                <di:waypoint type="dc:Point" x="683" y="273"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="649" y="251" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="EndEvent_1rl02ek_di" bpmnElement="EndEvent_1rl02ek">
+                <dc:Bounds x="845" y="255" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="863" y="294" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_02dawxg_di" bpmnElement="SequenceFlow_02dawxg">
+                <di:waypoint type="dc:Point" x="783" y="273"/>
+                <di:waypoint type="dc:Point" x="845" y="273"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="814" y="251.5" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

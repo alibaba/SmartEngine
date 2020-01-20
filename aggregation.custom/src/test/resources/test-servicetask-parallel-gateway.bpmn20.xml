@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:smart="http://smart.example/schema/process" id="test-exclusive"
+             version="1.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             targetNamespace="Examples">
+
+    <process id="exclusiveTest">
+
+        <startEvent id="theStart">
+        </startEvent>
+
+        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="theTask0"/>
+
+        <serviceTask id="theTask0" name="theTask0"
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+        </serviceTask>
+
+        <sequenceFlow id="flowTask0" sourceRef="theTask0" targetRef="fork"/>
+
+        <parallelGateway id="fork" name="ForkGateway"/>
+
+        <sequenceFlow id="flow2" sourceRef="fork"
+                      targetRef="theTask1">
+        </sequenceFlow>
+
+        <sequenceFlow id="flow3" sourceRef="fork"
+                      targetRef="theTask2">
+        </sequenceFlow>
+
+        <serviceTask id="theTask1" name="Task1"
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+        </serviceTask>
+
+        <serviceTask id="theTask2" name="Task2"
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+        </serviceTask>
+
+        <sequenceFlow id="flow5" sourceRef="theTask1" targetRef="join"/>
+
+        <sequenceFlow id="flow6" sourceRef="theTask2" targetRef="join"/>
+
+
+        <parallelGateway id="join" name="JoinGateWay">
+        </parallelGateway>
+
+
+        <sequenceFlow id="flow7" sourceRef="join"
+                      targetRef="theTask3">
+        </sequenceFlow>
+
+        <receiveTask id="theTask3" name="Task3"
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+        </receiveTask>
+
+        <sequenceFlow id="flow4" sourceRef="theTask3" targetRef="theEnd"/>
+
+        <endEvent id="theEnd"/>
+
+    </process>
+
+</definitions>

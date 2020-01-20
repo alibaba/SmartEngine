@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.VariableInstanceDAO">
+
+    <sql id="baseColumn">
+        id, gmt_create, gmt_modified,process_instance_id,
+         execution_instance_id,field_key,field_type,field_long_value,field_double_value,field_string_value
+    </sql>
+
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity"   keyProperty="id">
+        insert into se_variable_instance (<include refid="baseColumn"/>)
+        values (#{id}, now(), now(), #{processInstanceId}, #{executionInstanceId},
+        #{fieldKey},#{fieldType},#{fieldLongValue},#{fieldDoubleValue},#{fieldStringValue} )
+    </insert>
+
+    <delete id="delete" parameterType="long">
+        delete from se_variable_instance where id=#{id}
+    </delete>
+
+    <update id="update" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity">
+        update se_variable_instance
+        <set>
+            gmt_modified=now()
+            <if test="fieldLongValue != null">,field_long_value = #{fieldLongValue}</if>
+            <if test="fieldDoubleValue != null">,field_double_value = #{fieldDoubleValue}</if>
+            <if test="fieldStringValue != null">,field_string_value = #{fieldStringValue}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from se_variable_instance where id=#{id}
+    </select>
+
+    <select id="findList" resultType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from  se_variable_instance
+        <include refid="condition"/>
+    </select>
+
+    <sql id="condition">
+        <where>
+            <if test="processInstanceId != null">and process_instance_id = #{processInstanceId}</if>
+            <if test="executionInstanceId != null">and execution_instance_id = #{executionInstanceId}</if>
+        </where>
+    </sql>
+
+</mapper>

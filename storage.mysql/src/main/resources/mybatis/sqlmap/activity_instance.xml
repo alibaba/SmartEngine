@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.ActivityInstanceDAO">
+
+    <sql id="baseColumn">
+        id, gmt_create, gmt_modified,
+        process_instance_id,process_definition_id_and_version,process_definition_activity_id
+    </sql>
+
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity"  keyProperty="id">
+        insert into  se_activity_instance(<include refid="baseColumn"/>)
+        values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},
+        #{processDefinitionActivityId})
+    </insert>
+
+    <delete id="delete" parameterType="long">
+        delete from  se_activity_instance where id=#{id}
+    </delete>
+
+    <!--     <update id="update" parameterType="ActivityInstanceEntity">
+            update  se_activity_instance
+            <set>
+                gmt_modified=now()
+                <if test="status != null"> ,status = #{status}</if>
+                <if test="parentProcessInstanceId != null"> ,parent_process_instance_id = #{parentProcessInstanceId}</if>
+            </set>
+            where id=#{id}
+        </update> -->
+
+    <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from  se_activity_instance where id=#{id}
+    </select>
+
+    <select id="findAllActivity" resultType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from  se_activity_instance where process_instance_id=#{processInstanceId}
+        order by gmt_modified desc
+
+    </select>
+
+</mapper>

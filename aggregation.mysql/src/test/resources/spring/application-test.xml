@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <context:component-scan base-package="com.alibaba.smart.framework.engine.persister"/>
+    <context:component-scan base-package="com.alibaba.smart.framework.engine.test"/>
+
+    <!-- Mapper接口所在包名，Spring会自动查找其下的Mapper -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.alibaba.smart.framework.engine.persister.database" />
+    </bean>
+
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8"/>-->
+        <!--<property name="username" value="root"/>-->
+        <!--<property name="password" value="ghj"/>-->
+    <!--</bean>-->
+
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:mem:public;MODE=MYSQL;DATABASE_TO_UPPER=false;INIT=CREATE SCHEMA IF NOT EXISTS public"/>
+        <property name="username" value="sa"/>
+    </bean>
+
+    <jdbc:embedded-database id="dataSource" type="H2">
+        <jdbc:script location="classpath:sql/main-schema.sql"  />
+    </jdbc:embedded-database>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:configLocation="classpath:mybatis/mybatis-config.xml"
+          p:mapperLocations="classpath:mybatis/sqlmap/*.xml"/>
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+
+    <!-- 事务管理器 -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
+
+
+
+    <!-- 事物传播特性 -->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="create*" propagation="REQUIRED"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+
+            <tx:method name="delete*" propagation="REQUIRED"/>
+
+            <tx:method name="modify*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="alter*" propagation="REQUIRED"/>
+            <tx:method name="reset*" propagation="REQUIRED"/>
+
+            <tx:method name="find*" propagation="REQUIRED"/>
+            <tx:method name="query*" propagation="REQUIRED"/>
+            <tx:method name="list*" propagation="REQUIRED"/>
+            <tx:method name="count*" propagation="REQUIRED"/>
+
+            <tx:method name="batchDelete*" propagation="REQUIRED"/>
+            <tx:method name="batchInsert*" propagation="REQUIRED"/>
+            <tx:method name="batchUpdate*" propagation="REQUIRED"/>
+
+            <tx:method name="assign*" propagation="REQUIRED"/>
+            <tx:method name="generate*" propagation="REQUIRED"/>
+            <tx:method name="clear*" propagation="REQUIRED"/>
+
+
+            <tx:method name="*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+
+
+
+</beans>

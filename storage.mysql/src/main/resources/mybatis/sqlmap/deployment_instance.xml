@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.DeploymentInstanceDAO">
+
+    <sql id="baseColumn">
+        id, gmt_create, gmt_modified,process_definition_id,process_definition_version,
+        process_definition_type,process_definition_code,process_definition_name,process_definition_desc,process_definition_content,
+        deployment_user_id,deployment_status,logic_status
+    </sql>
+
+    <sql id="condition">
+        <where>
+            <if test="id != null">and id = #{id}</if>
+            <if test="processDefinitionVersion != null">and process_definition_version = #{processDefinitionVersion}</if>
+            <if test="processDefinitionType != null">and process_definition_type = #{processDefinitionType}</if>
+            <if test="processDefinitionCode != null">and process_definition_code = #{processDefinitionCode}</if>
+            <if test="processDefinitionName != null">and process_definition_name = #{processDefinitionName}</if>
+            <if test="deploymentUserId != null">and deployment_user_id = #{deploymentUserId}</if>
+            <if test="deploymentStatus != null">and deployment_status = #{deploymentStatus}</if>
+            <if test="logicStatus != null">and logic_status = #{logicStatus}</if>
+
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity"  keyProperty="id">
+        insert into  se_deployment_instance(<include refid="baseColumn"/>)
+        values (#{id}, now(), now(), #{processDefinitionId}, #{processDefinitionVersion},#{processDefinitionType},#{processDefinitionCode},
+        #{processDefinitionName},#{processDefinitionDesc},#{processDefinitionContent},
+        #{deploymentUserId},#{deploymentStatus} , #{logicStatus})
+    </insert>
+
+    <delete id="delete" parameterType="long">
+        delete from se_deployment_instance where id=#{id}
+    </delete>
+
+    <update id="update"  parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity">
+        update se_deployment_instance set
+        gmt_modified = now()
+        <if test="processDefinitionId != null"> ,process_definition_id = #{processDefinitionId}</if>
+        <if test="processDefinitionVersion != null"> ,process_definition_version = #{processDefinitionVersion}</if>
+        <if test="processDefinitionType != null"> ,process_definition_type = #{processDefinitionType}</if>
+        <if test="processDefinitionCode != null"> , process_definition_code = #{processDefinitionCode}</if>
+        <if test="processDefinitionName != null"> ,process_definition_name = #{processDefinitionName}</if>
+        <if test="processDefinitionDesc != null"> ,process_definition_desc = #{processDefinitionDesc}</if>
+        <if test="processDefinitionContent != null"> ,process_definition_content = #{processDefinitionContent}</if>
+        <if test="deploymentUserId != null"> ,deployment_user_id = #{deploymentUserId}</if>
+        <if test="deploymentStatus != null"> ,deployment_status = #{deploymentStatus}</if>
+        <if test="logicStatus != null"> ,logic_status = #{logicStatus}</if>
+
+        where id=#{id}
+    </update>
+
+    <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from  se_deployment_instance where id=#{id}
+    </select>
+
+
+    <select id="findByPage" resultType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity" parameterType="com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam">
+        select
+        <include refid="baseColumn"/>
+        from  se_deployment_instance
+        <include refid="condition"/>
+        order by gmt_modified desc
+        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+
+    </select>
+
+    <select id="count" resultType="int" parameterType="com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam">
+        select count(1) from  se_deployment_instance  <include refid="condition"/> <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+    </select>
+
+
+</mapper>

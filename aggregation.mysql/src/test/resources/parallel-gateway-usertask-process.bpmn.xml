@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             id="parallel-gateway-usertask-process"
+             targetNamespace="smart" version="2.0.0">
+    <process id="Process_1" isExecutable="false" version="3.0.0">
+        <startEvent id="startEvent"/>
+
+        <serviceTask id="createOrder" name="createOrder"/>
+
+        <parallelGateway id="fork"/>
+        <userTask id="processPayment" name="processPayment"/>
+        <userTask id="processDelivery" name="processDelivery"/>
+        <parallelGateway id="join"/>
+
+        <userTask id="confirmReceiveGoods" name="confirmReceiveGoods"/>
+
+        <endEvent id="EndEvent_0g966oy"/>
+
+        <sequenceFlow id="startEventToCreateOrder" sourceRef="startEvent" targetRef="createOrder"/>
+        <sequenceFlow id="createOrderToFork" sourceRef="createOrder" targetRef="fork"/>
+        <sequenceFlow id="SequenceFlow_1d3zlmf" sourceRef="fork" targetRef="processPayment"/>
+        <sequenceFlow id="SequenceFlow_0i0c73q" sourceRef="fork" targetRef="processDelivery"/>
+        <sequenceFlow id="SequenceFlow_10t8l6i" sourceRef="processDelivery" targetRef="join"/>
+        <sequenceFlow id="SequenceFlow_1iiw28s" sourceRef="processPayment" targetRef="join"/>
+        <sequenceFlow id="SequenceFlow_1lno5bz" sourceRef="join" targetRef="confirmReceiveGoods"/>
+        <sequenceFlow id="SequenceFlow_0ra0jw4" sourceRef="confirmReceiveGoods" targetRef="EndEvent_0g966oy"/>
+    </process>
+
+</definitions>
