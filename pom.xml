@@ -13,6 +13,24 @@
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
+    <description>SmartEngine is a lightweight business orchestration engine written in Java</description>
+
+    <url>https://github.com/alibaba/SmartEngine</url>
+    <inceptionYear>2016</inceptionYear>
+
+    <scm>
+        <url>https://github.com/alibaba/SmartEngine</url>
+        <connection>scm:git@github.com:alibaba/SmartEngine.git</connection>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
 
     <properties>
         <java.source.version>1.6</java.source.version>
