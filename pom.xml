@@ -7,9 +7,9 @@
 
     <groupId>com.alibaba.smart.framework</groupId>
     <artifactId>smart-engine</artifactId>
-    <!--  mvn versions:set -DnewVersion=2.0.0.Alpha1 -DgenerateBackupPoms=false  -->
+    <!--  mvn versions:set -DnewVersion=2.0.0 -DgenerateBackupPoms=false  -->
     <!--  mvn versions:set -DnewVersion=1.6.3 -DgenerateBackupPoms=false  -->
-    <version>2.0.0.Alpha1</version>
+    <version>2.0.0</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
@@ -19,9 +19,19 @@
     <inceptionYear>2016</inceptionYear>
 
     <scm>
+        <connection>scm:git:git@github.com:alibaba/SmartEngine.git</connection>
+        <developerConnection>scm:git:git@github.com:alibaba/SmartEngine.git</developerConnection>
         <url>https://github.com/alibaba/SmartEngine</url>
-        <connection>scm:git@github.com:alibaba/SmartEngine.git</connection>
+        <tag>HEAD</tag>
     </scm>
+
+    <developers>
+        <developer>
+            <id>vai</id>
+            <name>Haijun Gao</name>
+            <email>ghjapple@163.com</email>
+        </developer>
+    </developers>
 
     <licenses>
         <license>
@@ -32,6 +42,19 @@
         </license>
     </licenses>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>OSS Snapshots Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <name>OSS Staging Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
     <properties>
         <java.source.version>1.6</java.source.version>
         <java.target.version>1.6</java.target.version>
@@ -41,6 +64,7 @@
         <file_encoding>UTF-8</file_encoding>
         <springframework.version>5.2.3.RELEASE</springframework.version>
         <slf4j.version>1.7.13</slf4j.version>
+        <gpg.skip>true</gpg.skip>
     </properties>
 
     <modules>
@@ -272,26 +296,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5</version>
+                <version>3.8.0</version>
                 <configuration>
                     <source>${java.source.version}</source>
                     <target>${java.target.version}</target>
                     <encoding>${java.file.encoding}</encoding>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.5</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-	        <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>2.1</version>
-            </plugin>
+
             <plugin>
                 <!-- COPY FROM https://github.com/EsotericSoftware/kryo/blob/master/pom-shaded.xml -->
 
@@ -329,7 +341,67 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                 <groupId>org.codehaus.mojo</groupId>
+                 <artifactId>versions-maven-plugin</artifactId>
+                 <version>2.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <configuration>
+                    <skip>${gpg.skip}</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
         </plugins>
     </build>
