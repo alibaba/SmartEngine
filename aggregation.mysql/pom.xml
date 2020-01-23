@@ -81,10 +81,7 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
         </dependency>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
         <dependency>

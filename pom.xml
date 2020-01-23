@@ -118,11 +118,7 @@
                 <artifactId>cglib-nodep</artifactId>
                 <version>2.2.2</version>
             </dependency>
-            <dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib</artifactId>
-                <version>99.0-does-not-exist</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
