@@ -14,3 +14,5 @@ src/generated/*
 logs/
 .DS_Store
 pom.xml.versionsBackup
+release.properties
+**.xml.releaseBackup
