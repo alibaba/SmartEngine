@@ -19,7 +19,7 @@
 
     <scm>
         <connection>scm:git:https://git@github.com/alibaba/SmartEngine.git</connection>
-        <!--<developerConnection>scm:git:git@github.com:alibaba/SmartEngine.git</developerConnection>-->
+        <developerConnection>scm:git:git@github.com:alibaba/SmartEngine.git</developerConnection>
         <url>https://github.com/alibaba/SmartEngine</url>
         <tag>smart-engine-2.0.0</tag>
     </scm>
