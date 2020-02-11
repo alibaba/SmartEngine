@@ -393,6 +393,7 @@
 
             <plugin>
                 <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.4</version>
                 <configuration>
                     <skip>${gpg.skip}</skip>
                 </configuration>
