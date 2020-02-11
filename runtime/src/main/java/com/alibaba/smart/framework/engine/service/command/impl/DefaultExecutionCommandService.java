@@ -151,6 +151,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
 
 
+    @Override
     public void retry(String processInstanceId, String activityId, ExecutionContext executionContext) {
         ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId
             , processEngineConfiguration);
