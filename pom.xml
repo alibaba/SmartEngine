@@ -70,9 +70,6 @@
     <modules>
         <module>core</module>
 
-        <module>aggregation.mysql</module>
-        <module>aggregation.custom</module>
-
         <module>extension/retry/retry-common</module>
         <module>extension/retry/retry-custom</module>
         <module>extension/retry/retry-mysql</module>

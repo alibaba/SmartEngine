@@ -13,13 +13,20 @@
 		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd">
 
 
-<context:component-scan base-package="com.alibaba.smart.framework.engine.test.process.helper"/>
     <context:component-scan base-package="com.alibaba.smart.framework.engine.persister"/>
+    <context:component-scan base-package="com.alibaba.smart.framework.engine.test"/>
 
     <!-- Mapper接口所在包名，Spring会自动查找其下的Mapper -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.alibaba.smart.framework.engine.persister.database"/>
+        <property name="basePackage" value="com.alibaba.smart.framework.engine.persister.database" />
     </bean>
+
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8"/>-->
+        <!--<property name="username" value="root"/>-->
+        <!--<property name="password" value="ghj"/>-->
+    <!--</bean>-->
 
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -46,16 +53,13 @@
           p:dataSource-ref="dataSource"/>
 
 
-    <!-- 事务传播特性 -->
+
+    <!-- 事物传播特性 -->
     <tx:advice id="txAdvice" transaction-manager="txManager">
         <tx:attributes>
-            <tx:method name="complete" propagation="REQUIRED"/>
-
-
             <tx:method name="create*" propagation="REQUIRED"/>
             <tx:method name="save*" propagation="REQUIRED"/>
             <tx:method name="insert*" propagation="REQUIRED"/>
-
 
             <tx:method name="delete*" propagation="REQUIRED"/>
 
@@ -78,11 +82,11 @@
             <tx:method name="clear*" propagation="REQUIRED"/>
 
 
-            <!--<tx:method name="*" propagation="SUPPORTS" read-only="true"/>-->
+            <tx:method name="*" propagation="SUPPORTS" read-only="true"/>
         </tx:attributes>
     </tx:advice>
 
-    <tx:annotation-driven proxy-target-class="false" transaction-manager="txManager"/>
+
 
 
 </beans>

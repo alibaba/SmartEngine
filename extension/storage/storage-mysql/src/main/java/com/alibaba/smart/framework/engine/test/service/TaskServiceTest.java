@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test.api.service;
+package com.alibaba.smart.framework.engine.test.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
