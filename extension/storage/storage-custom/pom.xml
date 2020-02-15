@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>smart-engine-extension-storage-custom</artifactId>
-    <name>Smart Engine Modules - Custom Storage</name>
+    <name>Smart Engine Extension Storage Custom</name>
 
     <dependencies>
         <dependency>

@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>smart-engine-extension-storage-mysql</artifactId>
-    <name>Smart Engine Modules - Database Storage</name>
+    <name>Smart Engine Extension Storage Mysql</name>
 
     <dependencies>
 

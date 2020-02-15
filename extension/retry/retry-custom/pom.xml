@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>smart-engine-retry-storage-custom</artifactId>
-    <name>Smart Engine Extends - Retry.storage.custom</name>
+    <name>Smart Engine Extension Retry Custom</name>
 
     <dependencies>
         <dependency>
