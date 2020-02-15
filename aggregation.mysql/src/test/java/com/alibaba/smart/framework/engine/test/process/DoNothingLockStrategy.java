@@ -1,12 +1,10 @@
 package com.alibaba.smart.framework.engine.test.process;
 
-import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.exception.LockException;
 import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.persister.database.dao.ProcessInstanceDAO;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**

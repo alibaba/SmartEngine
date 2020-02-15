@@ -4,7 +4,7 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
-import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
+import com.alibaba.smart.framework.engine.configuration.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;

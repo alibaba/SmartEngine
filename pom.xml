@@ -69,10 +69,7 @@
 
     <modules>
         <module>api</module>
-        <module>base</module>
-        <module>runtime</module>
-        <module>bpmn</module>
-        <module>grammar.smart</module>
+
         <module>storage.common</module>
         <module>storage.mysql</module>
         <module>storage.custom</module>

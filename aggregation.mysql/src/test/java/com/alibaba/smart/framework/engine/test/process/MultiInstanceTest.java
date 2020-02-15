@@ -70,12 +70,12 @@ public class MultiInstanceTest extends DatabaseBaseTestCase {
         taskCommandService.complete(submitTaskInstance.getInstanceId(),submitFormRequest);
 
        TaskInstance taskInstance = taskQueryService.findOne(submitTaskInstance.getInstanceId());
-        Assert.assertEquals("1",taskInstance.getClaimUserId());
+        assertEquals("1",taskInstance.getClaimUserId());
 
 
         // 驱动 ReceiverTask
         List<ExecutionInstance> activeExecutions = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
-        Assert.assertEquals(1,activeExecutions.size());
+        assertEquals(1,activeExecutions.size());
         executionCommandService.signal(activeExecutions.get(0).getInstanceId());
 
 
@@ -94,7 +94,7 @@ public class MultiInstanceTest extends DatabaseBaseTestCase {
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
-        Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
+        assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
 
     }
@@ -141,7 +141,7 @@ public class MultiInstanceTest extends DatabaseBaseTestCase {
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
-        Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
+        assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
 
     }

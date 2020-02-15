@@ -8,7 +8,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultInstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.impl.DefaultSmartEngine;
+import com.alibaba.smart.framework.engine.configuration.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.util.ClassUtil;
 import com.alibaba.smart.framework.engine.util.IOUtil;

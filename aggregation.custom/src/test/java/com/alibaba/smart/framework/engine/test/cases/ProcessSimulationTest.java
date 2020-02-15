@@ -36,8 +36,8 @@ public class ProcessSimulationTest extends CustomBaseTestCase {
         List<Activity> activitieList = processSimulation.simulateOutcomingActivities(processDefinition.getId(), processDefinition.getVersion(),
             "receiveTask0", null);
         Assert.assertNotNull(activitieList);
-        Assert.assertEquals(1, activitieList.size());
-        Assert.assertEquals("receiveTask1", activitieList.get(0).getId());
+        assertEquals(1, activitieList.size());
+        assertEquals("receiveTask1", activitieList.get(0).getId());
 
         //activitieList =  processSimulation.simulateOutcomingActivities("processSimulation","1.0.0","receiveTask1",
         // null);
@@ -49,16 +49,16 @@ public class ProcessSimulationTest extends CustomBaseTestCase {
         activitieList = processSimulation.simulateOutcomingActivities("Process_1", "1.0.0", "receiveTask1",
             simulationContext);
         Assert.assertNotNull(activitieList);
-        Assert.assertEquals(1, activitieList.size());
-        Assert.assertEquals("receiveTask_a", activitieList.get(0).getId());
+        assertEquals(1, activitieList.size());
+        assertEquals("receiveTask_a", activitieList.get(0).getId());
 
         simulationContext = new HashMap<String, Object>(2);
         simulationContext.put("route", "b");
         activitieList = processSimulation.simulateOutcomingActivities("Process_1", "1.0.0", "receiveTask1",
             simulationContext);
         Assert.assertNotNull(activitieList);
-        Assert.assertEquals(1, activitieList.size());
-        Assert.assertEquals("receiveTask_b", activitieList.get(0).getId());
+        assertEquals(1, activitieList.size());
+        assertEquals("receiveTask_b", activitieList.get(0).getId());
 
     }
 

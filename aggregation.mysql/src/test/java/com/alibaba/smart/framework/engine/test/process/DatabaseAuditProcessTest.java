@@ -75,7 +75,7 @@ public class DatabaseAuditProcessTest extends DatabaseBaseTestCase {
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
-        Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
+        assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
 
     }
@@ -122,7 +122,7 @@ public class DatabaseAuditProcessTest extends DatabaseBaseTestCase {
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
-        Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
+        assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
 
     }

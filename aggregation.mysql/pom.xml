@@ -20,17 +20,9 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>smart-engine-bpmn</artifactId>
+            <artifactId>smart-engine-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-engine-grammar-smart</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-
 
         <dependency>
             <groupId>com.alibaba</groupId>

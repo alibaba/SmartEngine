@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
+
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -48,7 +49,7 @@ public class MixedAuditProcessTest extends DatabaseBaseTestCase {
         //5.测试:断言流程节点正确
         List<ActivityInstance>  activityInstanceList =  activityQueryService.findAll(processInstance.getInstanceId());
         Assert.assertNotNull(activityInstanceList);
-        Assert.assertEquals(2,activityInstanceList.size() );
+        assertEquals(2,activityInstanceList.size() );
 
 
         //6.测试:断言任务数正确
@@ -69,7 +70,7 @@ public class MixedAuditProcessTest extends DatabaseBaseTestCase {
         //8.测试:新流程节点数据正确
         activityInstanceList =  activityQueryService.findAll(processInstance.getInstanceId());
         Assert.assertNotNull(activityInstanceList);
-        Assert.assertEquals(3,activityInstanceList.size() );
+        assertEquals(3,activityInstanceList.size() );
 
         taskInstanceList = taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
         Assert.assertNotNull(taskInstanceList);
@@ -85,7 +86,7 @@ public class MixedAuditProcessTest extends DatabaseBaseTestCase {
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
         ProcessInstance finalProcessInstance = processQueryService.findById(approveTaskInstance.getProcessInstanceId());
-        Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
+        assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
         Assert.assertNotNull(finalProcessInstance.getCompleteTime());
 
 
