@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>storage.mongodb</artifactId>
+    <artifactId>smart-engine-extension-storage-mongodb</artifactId>
     <name>Smart Engine Modules - MongoDB Storage</name>
 
 

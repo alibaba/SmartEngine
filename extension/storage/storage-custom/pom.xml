@@ -8,7 +8,7 @@
         <version>2.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>smart-engine-storage-custom</artifactId>
+    <artifactId>smart-engine-extension-storage-custom</artifactId>
     <name>Smart Engine Modules - Custom Storage</name>
 
     <dependencies>
