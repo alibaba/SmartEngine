@@ -13,7 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>smart-engine-retry</artifactId>
+            <artifactId>smart-engine-extension-retry-common</artifactId>
             <version>${project.version}</version>
         </dependency>
 
