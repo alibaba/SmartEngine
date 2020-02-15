@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.bpmn.provider.event;
+package com.alibaba.smart.framework.engine.bpmn.behavior.event;
 
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.event.StartEvent;

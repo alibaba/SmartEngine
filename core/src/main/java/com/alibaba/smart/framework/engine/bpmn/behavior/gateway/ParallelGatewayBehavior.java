@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.bpmn.provider.gateway;
+package com.alibaba.smart.framework.engine.bpmn.behavior.gateway;
 
 import java.util.ArrayList;
 import java.util.Collection;

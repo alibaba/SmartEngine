@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.bpmn.provider.callactivity;
+package com.alibaba.smart.framework.engine.bpmn.behavior.callactivity;
 
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.callactivity.CallActivity;

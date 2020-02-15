@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.bpmn.provider.process;
+package com.alibaba.smart.framework.engine.bpmn.behavior.process;
 
 import com.alibaba.smart.framework.engine.behavior.TransitionBehavior;
 import com.alibaba.smart.framework.engine.behavior.base.AbstractTransitionBehavior;
