@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>smart-engine-retry</artifactId>
+    <artifactId>smart-engine-extension-retry-common</artifactId>
     <name>Smart Engine Extension Retry Common</name>
 
     <dependencies>
