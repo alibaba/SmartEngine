@@ -303,9 +303,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
         this.annotationScanner = processEngineConfiguration.getAnnotationScanner();
         this.xmlParserExtensionPoint = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,
             XmlParserFacade.class);
-        //this.providerFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(ProviderFactoryExtensionPoint.class);
         this.processContainer = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
-        //this.defaultExecutePolicyBehavior=extensionPointRegistry.getExtensionPoint(ExecutePolicyBehavior.class);
     }
 
     @Override

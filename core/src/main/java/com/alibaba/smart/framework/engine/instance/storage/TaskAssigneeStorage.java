@@ -25,13 +25,13 @@ public interface TaskAssigneeStorage {
     TaskAssigneeInstance insert(TaskAssigneeInstance taskAssigneeInstance,
                                 ProcessEngineConfiguration processEngineConfiguration);
 
-    TaskAssigneeInstance update(String taskAssigneeId, String assigneeId,
+    TaskAssigneeInstance update(String taskAssigneeInstanceId, String assigneeId,
                                 ProcessEngineConfiguration processEngineConfiguration);
 
     TaskAssigneeInstance findOne(String taskAssigneeId,
                                  ProcessEngineConfiguration processEngineConfiguration);
 
-    void remove(String taskAssigneeId,
+    void remove(String taskAssigneeInstanceId,
                 ProcessEngineConfiguration processEngineConfiguration);
 
     void removeAll(String taskInstanceId,

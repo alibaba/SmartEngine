@@ -3,16 +3,19 @@ package com.alibaba.smart.framework.engine.configuration.impl;
 import java.util.concurrent.ExecutorService;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.DelegationExecutor;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
+import com.alibaba.smart.framework.engine.configuration.OptionContainer;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
+import com.alibaba.smart.framework.engine.configuration.impl.option.DefaultOptionContainer;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 
@@ -55,7 +58,7 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private boolean expressionCompileResultCached;
 
-
+    private OptionContainer optionContainer ;
 
     public DefaultProcessEngineConfiguration() {
         //说明:先默认设置一个id生成器,业务使用方可以根据自己的需要再覆盖掉这个值。
@@ -65,8 +68,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         this.annotationScanner = new SimpleAnnotationScanner();
         this.variablePersister = new DefaultVariablePersister();
         this.tableSchemaStrategy = new DefaultTableSchemaStrategy();
-        this.expressionCompileResultCached = true;
-
+        this.optionContainer = new DefaultOptionContainer();
+        optionContainer.put(ConfigurationOption.EXPRESSION_COMPILE_RESULT_CACHED_OPTION);
     }
 
 

@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
+import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
@@ -24,6 +25,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
@@ -56,9 +58,9 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         this.processContainer = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
         this.instanceContextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,InstanceContextFactory.class);
 
-        this. processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
-        this. activityInstanceStorage= annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ActivityInstanceStorage.class);
-        this. executionInstanceStorage= annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
+        this.processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
+        this.activityInstanceStorage= annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ActivityInstanceStorage.class);
+        this.executionInstanceStorage= annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
 
         //TODO 单例
         this.pvmProcessInstance = new DefaultPvmProcessInstance();
@@ -164,6 +166,14 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
 
         processEngineConfiguration.getDelegationExecutor().execute(executionContext,(Activity)idBasedElement);
+
+    }
+
+
+    public void markDone(String executionInstanceId) {
+        ExecutionInstance executionInstance = queryExecutionInstance(executionInstanceId);
+        MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
+            processEngineConfiguration);
 
     }
 

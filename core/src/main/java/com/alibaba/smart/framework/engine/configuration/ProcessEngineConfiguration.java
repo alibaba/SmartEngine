@@ -101,15 +101,6 @@ public interface ProcessEngineConfiguration {
 
     TableSchemaStrategy getTableSchemaStrategy();
 
-    ///**
-    // * 内部执行需要，不需要客户端 API 感知。
-    // * @param extensionPointRegistry
-    // */
-    //void setExtensionPointRegistry(ExtensionPointRegistry extensionPointRegistry);
-    //
-    //ExtensionPointRegistry getExtensionPointRegistry();
-
-
     /**
      * 目前仅用于并发执行并行网关的fork行为。
      * @param executorService
@@ -118,14 +109,9 @@ public interface ProcessEngineConfiguration {
 
     ExecutorService getExecutorService();
 
-    boolean isExpressionCompileResultCached();
+    void setOptionContainer(OptionContainer optionContainer);
 
-    /**
-     * 目前仅用于cache 表达式的解析结果。一般来说，是需要cache的。但是如果表达式字面内容完全相同，但是变量的类型的不同，会导致运行时错误，这种情况下则需要设置为false。
-     * @param cached
-     */
-    void setExpressionCompileResultCached(boolean cached);
-
+    OptionContainer getOptionContainer();
 
     // 是否要干掉 用于配置扩展,默认可以为空。设计目的是根据自己的业务需求,来自定义存储(该机制会绕过引擎自带的各种Storage机制,powerful and a little UnSafe)。。
     //void setPersisterStrategy(PersisterStrategy persisterStrategy);

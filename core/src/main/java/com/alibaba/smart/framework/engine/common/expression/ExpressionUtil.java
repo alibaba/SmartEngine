@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.common.expression;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
+import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
@@ -50,8 +51,12 @@ public abstract class ExpressionUtil {
         if (null != expressionEvaluator) {
             Map<String,Object> requestContext=context.getRequest();
 
-            Object result = expressionEvaluator.eval(expression, requestContext, processEngineConfiguration
-                .isExpressionCompileResultCached());
+            ConfigurationOption configurationOption = processEngineConfiguration
+                .getOptionContainer().get(ConfigurationOption.EXPRESSION_COMPILE_RESULT_CACHED_OPTION.getId());
+
+
+
+            Object result = expressionEvaluator.eval(expression, requestContext, configurationOption.isEnabled());
 
             LOGGER.info("expressionEvaluator.result result is {}, each param is {} {} ",result,expression,requestContext);
 

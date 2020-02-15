@@ -9,9 +9,6 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 
 public class StartEventBehavior extends AbstractActivityBehavior<StartEvent> {
 
-    //public StartEventBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-    //    super(extensionPointRegistry, runtimeActivity);
-    //}
 
     public StartEventBehavior() {
         super();
