@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smart.example/schema/process"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="processSimulation"
+             version="1.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" targetNamespace="smart">
+    <process id="Process_1" isExecutable="false">
+
+        <startEvent id="startEvent"/>
+        <sequenceFlow id="seq0" sourceRef="startEvent" targetRef="serviceTask0"/>
+        <serviceTask id="serviceTask0"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.ServiceTask0Delegation"/>
+
+        <sequenceFlow id="seq1" sourceRef="serviceTask0" targetRef="serviceTask1"/>
+        <serviceTask id="serviceTask1"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.ServiceTask1Delegation"/>
+
+        <sequenceFlow id="seq2" sourceRef="serviceTask1" targetRef="serviceTask2"/>
+        <serviceTask id="serviceTask2"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.ServiceTask2Delegation"/>
+
+
+        <sequenceFlow id="seq3" sourceRef="serviceTask2" targetRef="endEvent"/>
+        <endEvent id="endEvent"/>
+
+    </process>
+
+</definitions>

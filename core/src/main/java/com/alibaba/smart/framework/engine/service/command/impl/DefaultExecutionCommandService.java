@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
@@ -7,7 +9,6 @@ import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
-import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
@@ -16,6 +17,9 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
@@ -24,8 +28,8 @@ import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
@@ -44,23 +48,28 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     private InstanceContextFactory instanceContextFactory;
     private ProcessEngineConfiguration processEngineConfiguration;
 
-    private  ProcessInstanceStorage processInstanceStorage;
+    private ProcessInstanceStorage processInstanceStorage;
     private ActivityInstanceStorage activityInstanceStorage;
     private ExecutionInstanceStorage executionInstanceStorage;
 
-   private PvmProcessInstance pvmProcessInstance;
-
+    private PvmProcessInstance pvmProcessInstance;
+    private static final String ID = "1";
 
     @Override
     public void start() {
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
 
-        this.processContainer = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
-        this.instanceContextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,InstanceContextFactory.class);
+        this.processContainer = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,
+            ProcessDefinitionContainer.class);
+        this.instanceContextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,
+            InstanceContextFactory.class);
 
-        this.processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
-        this.activityInstanceStorage= annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ActivityInstanceStorage.class);
-        this.executionInstanceStorage= annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
+        this.processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,
+            ProcessInstanceStorage.class);
+        this.activityInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,
+            ActivityInstanceStorage.class);
+        this.executionInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,
+            ExecutionInstanceStorage.class);
 
         //TODO 单例
         this.pvmProcessInstance = new DefaultPvmProcessInstance();
@@ -73,12 +82,13 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
     @Override
     public ProcessInstance signal(String executionInstanceId, Map<String, Object> request
-                                 ) {
-        return this.signal(executionInstanceId,request,null);
+    ) {
+        return this.signal(executionInstanceId, request, null);
     }
 
     @Override
-    public ProcessInstance signal(String executionInstanceId, Map<String, Object> request, Map<String, Object> response) {
+    public ProcessInstance signal(String executionInstanceId, Map<String, Object> request,
+                                  Map<String, Object> response) {
 
         ExecutionInstance executionInstance = queryExecutionInstance(executionInstanceId);
 
@@ -97,7 +107,8 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
-            CommonServiceHelper.updateAndPersist(executionInstanceId, newProcessInstance, request,processEngineConfiguration);
+            CommonServiceHelper.updateAndPersist(executionInstanceId, newProcessInstance, request,
+                processEngineConfiguration);
 
             return newProcessInstance;
         } finally {
@@ -106,13 +117,14 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     protected ExecutionInstance queryExecutionInstance(String executionInstanceId) {
-        ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId, processEngineConfiguration);
+        ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId,
+            processEngineConfiguration);
 
-        if(null == executionInstance){
-            throw new EngineException("No executionInstance found for id "+executionInstanceId);
+        if (null == executionInstance) {
+            throw new EngineException("No executionInstance found for id " + executionInstanceId);
         }
 
-        if(!executionInstance.isActive()){
+        if (!executionInstance.isActive()) {
             throw new ConcurrentException("The status of signaled executionInstance should be active");
 
         }
@@ -125,64 +137,108 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     @Override
-    public ProcessInstance jumpFrom(String executionInstanceId, String activityId, Map<String, Object> request) {
+    public ProcessInstance jumpFrom(ProcessInstance processInstance, String activityId, String executionInstanceId,
+                                    Map<String, Object> request) {
 
-        ExecutionInstance executionInstance = queryExecutionInstance(executionInstanceId);
+        //NOTATION1：should markDone all active excutioninstances and activityinstances by hands.
+        PvmProcessDefinition pvmProcessDefinition = DefaultExecutionCommandService.this.processContainer
+            .getPvmProcessDefinition(
+                processInstance.getProcessDefinitionIdAndVersion());
 
-        try {
-            PreparePhase preparePhase = new PreparePhase(request, executionInstance).invoke();
+        ProcessDefinition processDefinition =
+            DefaultExecutionCommandService.this.processContainer.getProcessDefinition(
+                processInstance.getProcessDefinitionIdAndVersion());
 
-            PvmProcessDefinition pvmProcessDefinition = preparePhase.getPvmProcessDefinition();
-            ExecutionContext executionContext = preparePhase.getExecutionContext();
-
-            PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
-
-            MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage,
+        //NOTATION2：executionInstance,activityInstance maybe  set to null for jump case
+        ExecutionInstance executionInstance = null;
+        ActivityInstance activityInstance = null;
+        if (null != executionInstanceId) {
+            executionInstance = queryExecutionInstance(executionInstanceId);
+            //BE AWARE: 注意:针对 CUSTOM 场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
+            activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId(),
                 processEngineConfiguration);
-
-            ProcessInstance newProcessInstance = this.pvmProcessInstance.jump(pvmActivity, executionContext);
-
-            CommonServiceHelper.updateAndPersist(executionInstanceId, newProcessInstance, request,
-                processEngineConfiguration);
-
-            return newProcessInstance;
-        } finally {
-            unLock(processEngineConfiguration, executionInstance.getProcessInstanceId());
         }
+
+        ExecutionContext executionContext = createExecutionContext(request, processEngineConfiguration,
+            executionInstance, activityInstance, processInstance, processDefinition);
+
+        PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
+
+        ProcessInstance newProcessInstance = this.pvmProcessInstance.jump(pvmActivity, executionContext);
+
+        //NOTATION3：executionInstance is set to null for jump case
+        CommonServiceHelper.updateAndPersist(executionInstanceId, newProcessInstance, request,
+            processEngineConfiguration);
+
+        return newProcessInstance;
+
     }
 
+    @Override
+   public ProcessInstance jumpTo(String processInstanceId, String  processDefinitionId, String version,
+                                 InstanceStatus instanceStatus, String processDefinitionActivityId) {
 
+        ProcessInstance processInstance = new DefaultProcessInstance();
+        processInstance.setProcessDefinitionIdAndVersion(processDefinitionId+":"+version);
+        processInstance.setProcessDefinitionId(processDefinitionId);
+        processInstance.setProcessDefinitionVersion(version);
+        processInstance.setStatus(instanceStatus);
+        processInstance.setInstanceId(processInstanceId);
+
+
+        ActivityInstance activityInstance = new DefaultActivityInstance();
+        activityInstance.setProcessDefinitionActivityId(processDefinitionActivityId);
+        activityInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
+        activityInstance.setProcessInstanceId(processInstance.getInstanceId());
+        activityInstance.setInstanceId(ID);
+
+        ExecutionInstance executionInstance = new DefaultExecutionInstance();
+        executionInstance.setProcessInstanceId(processInstance.getInstanceId());
+        executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
+        executionInstance.setProcessDefinitionActivityId(processDefinitionActivityId);
+        executionInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
+        executionInstance.setInstanceId(ID);
+        executionInstance.setActive(true);
+
+        List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>();
+        executionInstanceList.add(executionInstance);
+
+        activityInstance.setExecutionInstanceList(executionInstanceList);
+        processInstance.getActivityInstances().add(activityInstance);
+
+        //NOTATION3：executionInstance is set to null for jump case
+        CommonServiceHelper.updateAndPersist(executionInstance.getInstanceId(), processInstance, null,
+            processEngineConfiguration);
+
+        return processInstance;
+
+    }
 
     @Override
-    public void retry(String processInstanceId, String activityId, ExecutionContext executionContext) {
-        ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId
-            , processEngineConfiguration);
+    public void retry(ProcessInstance processInstance, String activityId, ExecutionContext executionContext) {
 
-
-        ProcessDefinition  definition = this.processContainer.getProcessDefinition(
+        ProcessDefinition definition = this.processContainer.getProcessDefinition(
             processInstance.getProcessDefinitionIdAndVersion());
 
         IdBasedElement idBasedElement = definition.getIdBasedElementMap().get(activityId);
 
-
-        processEngineConfiguration.getDelegationExecutor().execute(executionContext,(Activity)idBasedElement);
+        processEngineConfiguration.getDelegationExecutor().execute(executionContext, (Activity)idBasedElement);
 
     }
 
-
     public void markDone(String executionInstanceId) {
         ExecutionInstance executionInstance = queryExecutionInstance(executionInstanceId);
-        MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
+        MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage,
             processEngineConfiguration);
 
     }
 
     private ExecutionContext createExecutionContext(Map<String, Object> request,
-                                                      ProcessEngineConfiguration processEngineConfiguration,
-                                                      ExecutionInstance executionInstance,
-                                                      ActivityInstance activityInstance,
-                                                      ProcessInstance processInstance,
-                                                      ProcessDefinition processDefinition) {
+                                                    ProcessEngineConfiguration processEngineConfiguration,
+                                                    ExecutionInstance executionInstance,
+                                                    ActivityInstance activityInstance,
+                                                    ProcessInstance processInstance,
+                                                    ProcessDefinition processDefinition) {
         ExecutionContext executionContext = this.instanceContextFactory.create();
         executionContext.setProcessEngineConfiguration(processEngineConfiguration);
         executionContext.setProcessDefinition(processDefinition);
@@ -207,6 +263,11 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         if (null != lockStrategy) {
             lockStrategy.unLock(processInstanceId);
         }
+    }
+
+    @Override
+    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
     }
 
     private class PreparePhase {
@@ -246,17 +307,11 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             ProcessDefinition processDefinition =
                 DefaultExecutionCommandService.this.processContainer.getProcessDefinition(
-                processInstance.getProcessDefinitionIdAndVersion());
+                    processInstance.getProcessDefinitionIdAndVersion());
 
             executionContext = createExecutionContext(request, processEngineConfiguration,
                 executionInstance, activityInstance, processInstance, processDefinition);
             return this;
         }
-    }
-
-
-    @Override
-    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
-        this.processEngineConfiguration = processEngineConfiguration;
     }
 }

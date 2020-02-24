@@ -33,42 +33,37 @@ public class JumpFreeNode1Test  extends CustomBaseTestCase {
         Assert.assertNotNull(processInstance);
 
         String processInstanceId = processInstance.getInstanceId();
-        List<ExecutionInstance> executionInstances;
 
         //assert task1
-        executionInstances = this.executionQueryService.findActiveExecutionList(processInstanceId);
+        List<ExecutionInstance>   executionInstances = this.executionQueryService.findActiveExecutionList(processInstanceId);
         Assert.assertEquals(1, executionInstances.size());
 
         Assert.assertEquals("task1", executionInstances.get(0).getProcessDefinitionActivityId());
 
         //signal task1
-        this.executionCommandService.signal(executionInstances.get(0).getInstanceId(), null);
+        processInstance =  this.executionCommandService.signal(executionInstances.get(0).getInstanceId(), null);
 
         //assert task2
-        Assert.assertEquals(1, session.getProcessInstances().values().size());
-        for (ProcessInstance instance : session.getProcessInstances().values()) {
-            if (processInstanceId.equals(instance.getInstanceId())) {
-                Assert.assertTrue(InstanceStatus.running == instance.getStatus());
-                executionInstances = this.executionQueryService.findActiveExecutionList(instance.getInstanceId());
+                Assert.assertTrue(InstanceStatus.running == processInstance.getStatus());
+                executionInstances = this.executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
                 Assert.assertEquals("task2", executionInstances.get(0).getProcessDefinitionActivityId());
-            }
-        }
 
-        //jumpFrom task1
-        this.executionCommandService.jumpFrom(executionInstances.get(0).getInstanceId(), "task1", null);
+        //jumpTo task1
+        processInstance = processQueryService.findById(executionInstances.get(0).getProcessInstanceId());
+
+        //String processInstanceId, String  processDefinitionId, String version,
+        //                                 InstanceStatus instanceStatus, String processDefinitionActivityId
+        processInstance = this.executionCommandService.jumpTo(processInstance.getInstanceId(),processInstance.getProcessDefinitionId(), processInstance.getProcessDefinitionVersion(),InstanceStatus.running,"task1");
 
         //assert task1
-        Assert.assertEquals(1, session.getProcessInstances().values().size());
+                Assert.assertTrue(InstanceStatus.running == processInstance.getStatus());
 
-        for (ProcessInstance instance : session.getProcessInstances().values()) {
-            if (processInstanceId.equals(instance.getInstanceId())) {
-                Assert.assertTrue(InstanceStatus.running == instance.getStatus());
-                executionInstances = this.executionQueryService.findActiveExecutionList(instance.getInstanceId());
+                session.putProcessInstance(processInstance);
+                executionInstances = this.executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
                 Assert.assertEquals("task1", executionInstances.get(0).getProcessDefinitionActivityId());
-            }
-        }
 
         //signal task1
+
         this.executionCommandService.signal(executionInstances.get(0).getInstanceId(), null);
         Assert.assertEquals(1, session.getProcessInstances().values().size());
 
