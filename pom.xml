@@ -3,6 +3,11 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>com.taobao</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.3</version>
+    </parent>
 
     <groupId>com.alibaba.smart.framework</groupId>
     <artifactId>smart-engine</artifactId>
