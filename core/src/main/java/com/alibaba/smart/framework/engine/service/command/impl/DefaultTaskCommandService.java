@@ -96,7 +96,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         complete(  taskId, request);
     }
 
-
+    @Override
     public void transfer(String taskId, String fromUserId, String toUserId) {
 
         ConfigurationOption configurationOption = processEngineConfiguration
@@ -136,6 +136,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
     }
 
+    @Override
     public void addTaskAssigneeCandidate(String taskId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
 
         TaskInstance taskInstance = taskInstanceStorage.find(taskId,processEngineConfiguration );
@@ -159,6 +160,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
     }
 
+    @Override
     public void removeTaskAssigneeCandidate(String taskId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
 
 
@@ -189,6 +191,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
     }
 
+    @Override
     public void markDone(String taskId, Map<String, Object> request) {
 
         TaskInstance taskInstance = taskInstanceStorage.find(taskId,processEngineConfiguration );

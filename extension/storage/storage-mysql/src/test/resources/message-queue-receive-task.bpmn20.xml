@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
              xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-             xmlns:smart="http://smart.example/schema/process"
+             xmlns:smart="http://smartengine.org/schema/process"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="smart" version="1.0.0" id="CREDIT_APPLICATION">
     <process id="CreditApplication_process" name="授信申请流程" isExecutable="false">
         <startEvent id="StartEvent_1" />

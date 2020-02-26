@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
-             xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:smart="http://smart.example/schema/process"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:smart="http://smartengine.org/schema/process"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="test-exclusive" targetNamespace="Examples"
              version="1.0.0">
     <process id="exclusiveTest">

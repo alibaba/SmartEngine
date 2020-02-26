@@ -6,6 +6,6 @@ package com.alibaba.smart.framework.engine.constant;
  */
 public interface SmartBase {
 
-       String SMART_NS = "http://smart.example/schema/process";
+       String SMART_NS = "http://smartengine.org/schema/process";
 
 }

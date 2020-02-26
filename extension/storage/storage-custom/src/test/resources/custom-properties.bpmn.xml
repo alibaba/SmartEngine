@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns:smart="http://smart.example/schema/process"
+<definitions xmlns:smart="http://smartengine.org/schema/process"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="custom-properties" targetNamespace="smart">
     <process id="Process_1" isExecutable="false">
         <startEvent id="StartEvent_1"/>
