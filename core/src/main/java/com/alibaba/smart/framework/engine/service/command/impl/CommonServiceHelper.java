@@ -103,7 +103,7 @@ public abstract  class CommonServiceHelper {
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
         ProcessInstanceStorage processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
 
-        ProcessInstance newProcessInstance=   processInstanceStorage.update(processInstance,processEngineConfiguration );
+        ProcessInstance newProcessInstance = processInstanceStorage.update(processInstance,processEngineConfiguration );
 
         persisteVariableInstanceIfPossible(request, processEngineConfiguration,
             newProcessInstance,executionInstanceId);

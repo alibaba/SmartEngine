@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
@@ -53,7 +54,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     private ExecutionInstanceStorage executionInstanceStorage;
 
     private PvmProcessInstance pvmProcessInstance;
-    private static final String ID = "1";
 
     @Override
     public void start() {
@@ -177,6 +177,8 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     @Override
    public ProcessInstance jumpTo(String processInstanceId, String  processDefinitionId, String version,
                                  InstanceStatus instanceStatus, String processDefinitionActivityId) {
+        IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
+
 
         ProcessInstance processInstance = new DefaultProcessInstance();
         processInstance.setProcessDefinitionIdAndVersion(processDefinitionId+":"+version);
@@ -190,14 +192,14 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         activityInstance.setProcessDefinitionActivityId(processDefinitionActivityId);
         activityInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
-        activityInstance.setInstanceId(ID);
+        activityInstance.setInstanceId(idGenerator.getId());
 
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
         executionInstance.setProcessInstanceId(processInstance.getInstanceId());
         executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
         executionInstance.setProcessDefinitionActivityId(processDefinitionActivityId);
         executionInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
-        executionInstance.setInstanceId(ID);
+        executionInstance.setInstanceId(idGenerator.getId());
         executionInstance.setActive(true);
 
         List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>();
@@ -206,7 +208,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         activityInstance.setExecutionInstanceList(executionInstanceList);
         processInstance.getActivityInstances().add(activityInstance);
 
-        //NOTATION3：executionInstance is set to null for jump case
         CommonServiceHelper.updateAndPersist(executionInstance.getInstanceId(), processInstance, null,
             processEngineConfiguration);
 

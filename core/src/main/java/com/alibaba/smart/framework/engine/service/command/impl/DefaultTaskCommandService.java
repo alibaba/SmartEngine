@@ -21,11 +21,14 @@ import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
@@ -134,6 +137,56 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
         taskAssigneeStorage.update(matchedTaskAssigneeInstance.getInstanceId(),toUserId,processEngineConfiguration);
 
+    }
+
+    @Override
+    public TaskInstance createTask(ExecutionInstance executionInstance, InstanceStatus instanceStatus,Map<String, Object> request) {
+        TaskInstance taskInstance = new DefaultTaskInstance();
+        taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
+        taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
+        taskInstance.setProcessDefinitionActivityId(executionInstance.getProcessDefinitionActivityId());
+        taskInstance.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
+        taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
+
+        taskInstance.setStatus(instanceStatus.name());
+
+
+        if(null != request){
+
+            String processDefinitionType = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE);
+            taskInstance.setProcessDefinitionType(processDefinitionType);
+
+            Date startTime = (Date)request.get(RequestMapSpecialKeyConstant.TASK_START_TIME);
+            taskInstance.setStartTime(startTime);
+
+            Date completeTime = (Date)request.get(RequestMapSpecialKeyConstant.TASK_COMPLETE_TIME);
+            taskInstance.setCompleteTime(completeTime);
+
+            String comment = (String)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT);
+            taskInstance.setComment(comment);
+
+            String extension = (String)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_EXTENSION);
+            taskInstance.setExtension(extension);
+
+            Integer priority = (Integer)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_PRIORITY);
+            taskInstance.setPriority(priority);
+
+            String tag = (String)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG);
+            taskInstance.setTag(tag);
+
+            String title = (String)request.get(RequestMapSpecialKeyConstant.TASK_TITLE);
+            taskInstance.setTitle(title);
+
+            String claimUserId = (String)request.get(RequestMapSpecialKeyConstant.CLAIM_USER_ID);
+            taskInstance.setClaimUserId(claimUserId);
+
+            Date claimTime = (Date)request.get(RequestMapSpecialKeyConstant.CLAIM_USER_TIME);
+            taskInstance.setClaimTime(claimTime);
+        }
+
+
+        taskInstanceStorage.insert(taskInstance,processEngineConfiguration);
+        return taskInstance;
     }
 
     @Override
