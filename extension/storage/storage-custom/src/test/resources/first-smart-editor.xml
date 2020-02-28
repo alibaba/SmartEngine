@@ -1,0 +1,122 @@
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smartengine.org/schema/process" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="smart">
+    <process id="process_1" isExecutable="true">
+        <startEvent id="startNode" name="开始"/>
+        <endEvent id="endNode" name="结束"/>
+        <exclusiveGateway id="exclusiveGateway-1582902588950" name="排他网关"/>
+        <serviceTask id="serviceTask-1582902608654" name="服务任务" smart:class="com.alibaba.smart.framework.engine.test.delegation.BasicServiceTaskDelegation">
+            <extensionElements>
+                <smart:properties>
+                    <smart:value name="a" value="1"/>
+                </smart:properties>
+            </extensionElements>
+        </serviceTask>
+        <serviceTask id="serviceTask-1582902623532" name="服务任务"/>
+        <receiveTask id="receiveTask-1582902718596" name="接受消息任务"/>
+        <sequenceFlow id="xxx" sourceRef="startNode" targetRef="exclusiveGateway-1582902588950" sourceAnchor="1" targetAnchor="0"/>
+        <sequenceFlow id="addEdge-1582902588956" sourceRef="exclusiveGateway-1582902588950" targetRef="serviceTask-1582902623532" sourceAnchor="1" targetAnchor="0">
+            <conditionExpression type="mvel">a&lt;1</conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="addEdge-1582902608698" sourceRef="serviceTask-1582902608654" targetRef="endNode" sourceAnchor="1" targetAnchor="0"/>
+        <sequenceFlow id="aaa" sourceRef="exclusiveGateway-1582902588950" targetRef="serviceTask-1582902608654" sourceAnchor="1" targetAnchor="0">
+            <conditionExpression type="mvel">a&gt;1</conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sdf" sourceRef="serviceTask-1582902623532" targetRef="receiveTask-1582902718596" sourceAnchor="1" targetAnchor="0"/>
+        <sequenceFlow id="addEdge-1582902718600" sourceRef="receiveTask-1582902718596" targetRef="endNode" sourceAnchor="1" targetAnchor="0"/>
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+            <bpmndi:BPMNShape id="startNode_di" bpmnElement="startNode">
+                <dc:Bounds x="32.06598487058894" y="152.03734796417882" width="120" height="40"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="-17.281223993593642" y="238.66722147000198" width="33" height="17"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="endNode_di" bpmnElement="endNode">
+                <dc:Bounds x="66.8636505966069" y="151.1607840273378" width="120" height="40"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="845.3545726539567" y="37.08941834641496" width="33" height="17"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="exclusiveGateway-1582902588950_di" bpmnElement="exclusiveGateway-1582902588950">
+                <dc:Bounds x="97.01730133371306" y="141.08637681841128" width="120" height="40"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="-59.56884796803092" y="106.15548065320735" width="65" height="17"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="serviceTask-1582902608654_di" bpmnElement="serviceTask-1582902608654">
+                <dc:Bounds x="171.52603669873693" y="96.45300218586985" width="120" height="40"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="114.54688167290192" y="25.815408442917885" width="65" height="17"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="serviceTask-1582902623532_di" bpmnElement="serviceTask-1582902623532">
+                <dc:Bounds x="254.60920532121872" y="216.50308647887869" width="119.99999999999994" height="40"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="485.8088751514593" y="190.47722591909417" width="65" height="17"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="receiveTask-1582902718596_di" bpmnElement="receiveTask-1582902718596">
+                <dc:Bounds x="260.7618765789194" y="215.86603081434976" width="120" height="40"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="-100.82927184932498" y="203.0447466938008" width="97" height="17"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="undefined_di">
+                <di:waypoint type="dc:Point" x="213.21877600640636" y="303.667221470002"/>
+                <di:waypoint type="dc:Point" x="213.21877600640636" y="307.9113510616047"/>
+                <di:waypoint type="dc:Point" x="213.21877600640636" y="312.15548065320735"/>
+                <di:waypoint type="dc:Point" x="216.07496401918772" y="312.15548065320735"/>
+                <di:waypoint type="dc:Point" x="218.93115203196908" y="312.15548065320735"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="203.21877600640636" y="308.667221470002" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="addEdge-1582902588956_di" bpmnElement="addEdge-1582902588956">
+                <di:waypoint type="dc:Point" x="369.9311520319691" y="312.15548065320735"/>
+                <di:waypoint type="dc:Point" x="403.5498141818283" y="312.15548065320735"/>
+                <di:waypoint type="dc:Point" x="437.1684763316876" y="312.15548065320735"/>
+                <di:waypoint type="dc:Point" x="437.1684763316876" y="460.7626404093104"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="359.9311520319691" y="317.15548065320735" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="addEdge-1582902608698_di" bpmnElement="addEdge-1582902608698">
+                <di:waypoint type="dc:Point" x="744.0468816729019" y="231.81540844291789"/>
+                <di:waypoint type="dc:Point" x="834.4507271634293" y="231.81540844291789"/>
+                <di:waypoint type="dc:Point" x="924.8545726539567" y="231.81540844291789"/>
+                <di:waypoint type="dc:Point" x="924.8545726539567" y="352.08941834641496"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="734.0468816729019" y="236.81540844291789" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="undefined_di">
+                <di:waypoint type="dc:Point" x="369.9311520319691" y="312.15548065320735"/>
+                <di:waypoint type="dc:Point" x="481.4890168524355" y="312.15548065320735"/>
+                <di:waypoint type="dc:Point" x="593.0468816729019" y="312.15548065320735"/>
+                <di:waypoint type="dc:Point" x="593.0468816729019" y="231.81540844291789"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="359.9311520319691" y="317.15548065320735" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="undefined_di">
+                <di:waypoint type="dc:Point" x="588.1684763316875" y="460.7626404093104"/>
+                <di:waypoint type="dc:Point" x="588.1684763316875" y="458.47501219796817"/>
+                <di:waypoint type="dc:Point" x="588.1684763316875" y="456.18738398662595"/>
+                <di:waypoint type="dc:Point" x="592.9200219548791" y="456.18738398662595"/>
+                <di:waypoint type="dc:Point" x="597.6715675780705" y="456.18738398662595"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="578.1684763316875" y="465.7626404093104" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="addEdge-1582902718600_di" bpmnElement="addEdge-1582902718600">
+                <di:waypoint type="dc:Point" x="748.6715675780705" y="456.18738398662595"/>
+                <di:waypoint type="dc:Point" x="836.7630701160135" y="456.18738398662595"/>
+                <di:waypoint type="dc:Point" x="924.8545726539567" y="456.18738398662595"/>
+                <di:waypoint type="dc:Point" x="924.8545726539567" y="352.08941834641496"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="738.6715675780705" y="461.18738398662595" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>
