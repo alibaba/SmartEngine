@@ -178,5 +178,14 @@ public abstract  class CommonServiceHelper {
 
         }
     }
+    
+    
+	public static void updateAndPersist(ExecutionInstance executionInstance, ProcessEngineConfiguration processEngineConfiguration) {
+		AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+		ExecutionInstanceStorage executionInstanceStorage=annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
+		if (null != executionInstance) {
+            executionInstanceStorage.insert(executionInstance,processEngineConfiguration );
+        }
+	}
 
 }

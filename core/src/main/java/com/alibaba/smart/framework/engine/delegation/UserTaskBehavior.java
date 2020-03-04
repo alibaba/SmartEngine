@@ -1,6 +1,8 @@
 package com.alibaba.smart.framework.engine.delegation;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +13,7 @@ import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior
 import com.alibaba.smart.framework.engine.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
 import com.alibaba.smart.framework.engine.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.common.expression.ExpressionUtil;
+import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
@@ -22,6 +25,7 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
+import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
@@ -59,24 +63,25 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
         List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = getTaskAssigneeCandidateInstances(
             context, userTask);
+        
 
         if (null != userTask.getMultiInstanceLoopCharacteristics()) {
 
             ActivityInstance activityInstance = super.createSingleActivityInstance(context,userTask);
 
-            List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(
-                taskAssigneeCandidateInstanceList.size());
+            List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(taskAssigneeCandidateInstanceList.size());
             activityInstance.setExecutionInstanceList(executionInstanceList);
+            
+            List<TaskAssigneeCandidateInstance> newTaskAssigneeCandidateInstanceList = findLowPriorityTaskAssigneeList(taskAssigneeCandidateInstanceList);
 
-            for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : taskAssigneeCandidateInstanceList) {
+            for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : newTaskAssigneeCandidateInstanceList) {
 
-                ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance,
-                    context);
+                ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
                 executionInstanceList.add(executionInstance);
                 context.setExecutionInstance(executionInstance);
 
-                TaskInstance taskInstance = super.taskInstanceFactory.create(userTask, executionInstance,
-                    context);
+                TaskInstance taskInstance = super.taskInstanceFactory.create(userTask, executionInstance, context);
+                taskInstance.setPriority(taskAssigneeCandidateInstance.getPriority());
 
                 List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
 
@@ -114,6 +119,44 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         return true;
     }
 
+    /**
+     * 查找低优先级的审批人
+     * @param taskAssigneeCandidateInstanceList
+     * @return
+     */
+	private List<TaskAssigneeCandidateInstance> findLowPriorityTaskAssigneeList(List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList) {
+		if(CollectionUtil.isEmpty(taskAssigneeCandidateInstanceList)) {
+			return new ArrayList<TaskAssigneeCandidateInstance>(0);
+		}
+		int taskAssigneeCandidateInstanceSize = taskAssigneeCandidateInstanceList.size();
+		//排序
+		if(CollectionUtil.isNotEmpty(taskAssigneeCandidateInstanceList)) {
+			Collections.sort(taskAssigneeCandidateInstanceList, new Comparator<TaskAssigneeCandidateInstance>() {
+				@Override
+				public int compare(TaskAssigneeCandidateInstance one, TaskAssigneeCandidateInstance two) {
+					return one.getPriority() - two.getPriority();
+				}
+			});
+		}
+		//优先级低的和所有相同的
+		List<TaskAssigneeCandidateInstance> newTaskAssigneeCandidateInstanceList = new ArrayList<TaskAssigneeCandidateInstance>(taskAssigneeCandidateInstanceSize);
+		int minPriority = 0;
+		for(int i = 0; i < taskAssigneeCandidateInstanceSize; i++) {
+			TaskAssigneeCandidateInstance instance = taskAssigneeCandidateInstanceList.get(i);
+			if(i == 0) {
+				minPriority = instance.getPriority();
+				newTaskAssigneeCandidateInstanceList.add(instance);
+			}else {
+				if(instance.getPriority() == minPriority) {
+					newTaskAssigneeCandidateInstanceList.add(instance);
+				}else {
+					break;
+				}
+			}
+		}
+		return newTaskAssigneeCandidateInstanceList;
+	}
+
     private void buildTaskAssigneeInstance(TaskAssigneeCandidateInstance taskAssigneeCandidateInstance,
                                            List<TaskAssigneeInstance> taskAssigneeInstanceList,
                                            IdGenerator idGenerator) {
@@ -126,6 +169,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
     @Override
     public void execute(ExecutionContext context, PvmActivity pvmActivity) {
+
         UserTask userTask = (UserTask) pvmActivity.getModel();
 
         super.makeExtensionWorkAndExecuteBehavior(context,userTask);
@@ -163,18 +207,30 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
                 smartEngine);
 
-            Integer totalInstanceCount = totalExecutionInstanceList.size();
+            Integer totalInstanceCount = 0;//totalExecutionInstanceList.size();
 
 
             Map<String,Object> requestContext=context.getRequest();
             if(null == requestContext){
                 requestContext = new HashMap<String, Object>();
             }
+            //取所有审批人
+            List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = processEngineConfiguration.getTaskAssigneeDispatcher()
+            		.getTaskAssigneeCandidateInstance(userTask, context.getRequest());
+            Map<String, TaskAssigneeCandidateInstance> taskAssigneeMap = new HashMap<String, TaskAssigneeCandidateInstance>();
+            if(taskAssigneeCandidateInstanceList != null) {
+            	totalInstanceCount = taskAssigneeCandidateInstanceList.size();
+            	for(TaskAssigneeCandidateInstance item : taskAssigneeCandidateInstanceList) {
+            		taskAssigneeMap.put(item.getAssigneeId(), item);
+            	}
+            }
 
             // 不变式  nrOfCompletedInstances+ nrOfRejectedInstance <= nrOfInstances
             requestContext.put("nrOfCompletedInstances", passedTaskInstanceNumber);
             requestContext.put("nrOfRejectedInstance", rejectedTaskInstanceNumber);
             requestContext.put("nrOfInstances", totalInstanceCount);
+            
+            
 
             // 注意：任务处理的并发性，需要业务程序来控制。
             boolean abortMatched = false;
@@ -240,6 +296,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
                         }else{
                             context.setNeedPause(true);
+                            //生成新节点
+                            generateExecutionAndTaskForMultiInstance(context, userTask, activityInstance, executionInstance, taskAssigneeMap);
 
                         }
 
@@ -269,6 +327,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                     //completionCondition 为空时，则表示是all 模式， 则需要所有任务都完成后，才做判断。
                     if(passedTaskInstanceNumber < totalInstanceCount  ){
                         context.setNeedPause(true);
+                        //生成新节点
+                        generateExecutionAndTaskForMultiInstance(context, userTask, activityInstance, executionInstance, taskAssigneeMap);
                     }
                     else  if(passedTaskInstanceNumber.equals(totalInstanceCount)  ){
                         context.setNeedPause(false);
@@ -279,13 +339,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
                     }
 
-
                 }
-
-
-
-
-
 
             } else {
                 abort(context, executionInstance, smartEngine);
@@ -296,7 +350,70 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             super.commonUpdateExecutionInstance(context);
         }
 
+    
     }
+
+    /**
+     * 会签生成新任务
+     * @param context
+     * @param userTask
+     * @param activityInstance
+     * @param executionInstance
+     * @param taskAssigneeMap
+     */
+	private void generateExecutionAndTaskForMultiInstance(ExecutionContext context, UserTask userTask,
+			ActivityInstance activityInstance, ExecutionInstance executionInstance,
+			Map<String, TaskAssigneeCandidateInstance> taskAssigneeMap) {
+		TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
+		List<String> processInstanceIdList = new ArrayList<String>(2);
+		processInstanceIdList.add(executionInstance.getProcessInstanceId());
+		taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
+		taskInstanceQueryParam.setActivityInstanceId(executionInstance.getActivityInstanceId());
+		TaskInstanceStorage taskInstanceStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(
+		    ExtensionConstant.COMMON,TaskInstanceStorage.class);
+		List<TaskInstance> allTaskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam,
+		    this.processEngineConfiguration);
+		List<String> taskInstanceIdList = new ArrayList<String>();
+		if(CollectionUtil.isNotEmpty(allTaskInstanceList)) {
+			for(TaskInstance taskInstance : allTaskInstanceList) {
+				taskInstanceIdList.add(taskInstance.getInstanceId());
+			}
+		}
+		TaskAssigneeStorage taskAssigneeStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(
+		        ExtensionConstant.COMMON, TaskAssigneeStorage.class);
+		Map<String, List<TaskAssigneeInstance>> taskAssigneeInstanceMap = taskAssigneeStorage.findAssigneeOfInstanceList(taskInstanceIdList, processEngineConfiguration);
+		if(taskAssigneeInstanceMap != null) {
+			for(List<TaskAssigneeInstance> instanceList : taskAssigneeInstanceMap.values()) {
+				if(CollectionUtil.isNotEmpty(instanceList)) {
+					for(TaskAssigneeInstance instance : instanceList) {
+						if(taskAssigneeMap.containsKey(instance.getAssigneeId())) {
+							taskAssigneeMap.remove(instance.getAssigneeId());
+						}
+					}
+				}
+			}
+		}
+		if(taskAssigneeMap.size() > 0) {
+			List<TaskAssigneeCandidateInstance> newTaskAssigneeList = findLowPriorityTaskAssigneeList(new ArrayList<TaskAssigneeCandidateInstance>(taskAssigneeMap.values()));
+		    for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : newTaskAssigneeList) {
+		        ExecutionInstance newExecutionInstance = this.executionInstanceFactory.create(activityInstance, context);
+		        executionInstanceStorage.insert(newExecutionInstance, processEngineConfiguration);
+
+		        TaskInstance taskInstance = super.taskInstanceFactory.create(userTask, newExecutionInstance, context);
+		        taskInstance.setPriority(taskAssigneeCandidateInstance.getPriority());
+		        taskInstanceStorage.insert(taskInstance, processEngineConfiguration);
+		        
+		        List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
+		        IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
+		        buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
+		        for(TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstanceList) {
+		        	taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
+		        	taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
+		        	taskAssigneeStorage.insert(taskAssigneeInstance, processEngineConfiguration);
+		        }
+		    }
+		}
+	}
 
     protected void abort(ExecutionContext context, ExecutionInstance executionInstance, SmartEngine smartEngine) {
         context.getProcessInstance().setStatus(InstanceStatus.aborted);

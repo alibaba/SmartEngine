@@ -21,11 +21,13 @@ public class IdAndGroupTaskAssigneeDispatcher implements TaskAssigneeDispatcher 
         TaskAssigneeCandidateInstance taskAssigneeCandidateInstance = new TaskAssigneeCandidateInstance();
         taskAssigneeCandidateInstance.setAssigneeId("testuser1");
         taskAssigneeCandidateInstance.setAssigneeType(AssigneeTypeConstant.USER);
+        taskAssigneeCandidateInstance.setPriority(200);
         taskAssigneeCandidateInstanceList.add(taskAssigneeCandidateInstance);
 
         TaskAssigneeCandidateInstance taskAssigneeCandidateInstance1 = new TaskAssigneeCandidateInstance();
         taskAssigneeCandidateInstance1.setAssigneeId("testuser3");
         taskAssigneeCandidateInstance1.setAssigneeType(AssigneeTypeConstant.USER);
+        taskAssigneeCandidateInstance.setPriority(300);
         taskAssigneeCandidateInstanceList.add(taskAssigneeCandidateInstance1);
 
 

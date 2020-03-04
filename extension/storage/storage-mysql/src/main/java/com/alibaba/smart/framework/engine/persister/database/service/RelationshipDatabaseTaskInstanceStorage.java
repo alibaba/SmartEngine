@@ -216,6 +216,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstance.setComment(taskInstanceEntity.getComment());
         taskInstance.setExtension(taskInstanceEntity.getExtension());
         taskInstance.setTitle(taskInstanceEntity.getTitle());
+        taskInstance.setPriority(taskInstanceEntity.getPriority());
         return taskInstance;
     }
 

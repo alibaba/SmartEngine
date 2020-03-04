@@ -9,13 +9,13 @@ import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
-import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ValidationException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -28,7 +28,6 @@ import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorag
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
@@ -140,7 +139,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
     }
 
     @Override
-    public TaskInstance createTask(ExecutionInstance executionInstance, InstanceStatus instanceStatus,Map<String, Object> request) {
+    public TaskInstance createTask(ExecutionInstance executionInstance, String taskInstanceStatus,Map<String, Object> request) {
+    	IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
+    	
         TaskInstance taskInstance = new DefaultTaskInstance();
         taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
         taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
@@ -148,7 +149,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         taskInstance.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
         taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
 
-        taskInstance.setStatus(instanceStatus.name());
+        taskInstance.setStatus(taskInstanceStatus);
+        String id = idGenerator.getId();
+        taskInstance.setInstanceId(id);
 
 
         if(null != request){

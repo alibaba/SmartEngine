@@ -11,4 +11,7 @@ public class TaskAssigneeCandidateInstance {
     private String assigneeId;
 
     private String assigneeType;
+    
+    private int priority = 500;
+    
 }

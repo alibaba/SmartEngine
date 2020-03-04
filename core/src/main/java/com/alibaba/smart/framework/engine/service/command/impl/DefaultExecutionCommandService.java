@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
@@ -315,4 +316,21 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             return this;
         }
     }
+
+	public ExecutionInstance createExecution(ActivityInstance activityInstance) {
+		IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
+        ExecutionInstance executionInstance = new DefaultExecutionInstance();
+        executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
+        executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
+        executionInstance.setProcessDefinitionActivityId(activityInstance.getProcessDefinitionActivityId());
+        executionInstance.setProcessDefinitionIdAndVersion(activityInstance.getProcessDefinitionIdAndVersion());
+        executionInstance.setInstanceId(idGenerator.getId());
+        executionInstance.setActive(true);
+        
+        if(CollectionUtil.isNotEmpty(activityInstance.getExecutionInstanceList())) {
+        	activityInstance.getExecutionInstanceList().add(executionInstance);
+        }
+        CommonServiceHelper.updateAndPersist(executionInstance, processEngineConfiguration);
+		return executionInstance;
+	}
 }
