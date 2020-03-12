@@ -173,42 +173,40 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         UserTask userTask = (UserTask) pvmActivity.getModel();
 
         super.makeExtensionWorkAndExecuteBehavior(context,userTask);
+        
+        MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration().getMultiInstanceCounter();
+        
+        ActivityInstance activityInstance = context.getActivityInstance();
+        
+        SmartEngine smartEngine = processEngineConfiguration.getSmartEngine();
+        
+        //1. 当前的所有的 totalExecutionInstanceList，包含所有状态的。
+        List<ExecutionInstance> totalExecutionInstanceList = executionInstanceStorage.findByActivityInstanceId(
+            activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
+            this.processEngineConfiguration);
+
+        //1.1 重新写回内存。
+        activityInstance.setExecutionInstanceList(totalExecutionInstanceList);
+
+        //2. 完成当前ExecutionInstance的状态更新
+        ExecutionInstance executionInstance = context.getExecutionInstance();
+        //只负责完成当前executionInstance的状态更新,此时产生了 DB 写.
+        MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage,
+            this.processEngineConfiguration);
+        
+        Integer passedTaskInstanceNumber = 0;
+        Integer rejectedTaskInstanceNumber = 0;
+        Integer totalInstanceCount = totalExecutionInstanceList.size();
+        if(multiInstanceCounter != null) {
+        	passedTaskInstanceNumber = multiInstanceCounter.countPassedTaskInstanceNumber(
+                    activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), smartEngine);
+            rejectedTaskInstanceNumber = multiInstanceCounter.countRejectedTaskInstanceNumber(
+                    activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), smartEngine);
+        }
 
         MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = userTask
             .getMultiInstanceLoopCharacteristics();
         if (null != multiInstanceLoopCharacteristics) {
-
-            ActivityInstance activityInstance = context.getActivityInstance();
-
-            //1. 当前的所有的 totalExecutionInstanceList，包含所有状态的。
-            List<ExecutionInstance> totalExecutionInstanceList = executionInstanceStorage.findByActivityInstanceId(
-                activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
-                this.processEngineConfiguration);
-
-            //1.1 重新写回内存。
-            activityInstance.setExecutionInstanceList(totalExecutionInstanceList);
-
-            //2. 完成当前ExecutionInstance的状态更新
-            ExecutionInstance executionInstance = context.getExecutionInstance();
-            //只负责完成当前executionInstance的状态更新,此时产生了 DB 写.
-            MarkDoneUtil.markDoneExecutionInstance(executionInstance, this.executionInstanceStorage,
-                this.processEngineConfiguration);
-
-            SmartEngine smartEngine = processEngineConfiguration.getSmartEngine();
-
-            MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration()
-                .getMultiInstanceCounter();
-
-            Integer passedTaskInstanceNumber = multiInstanceCounter.countPassedTaskInstanceNumber(
-                activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
-                smartEngine);
-
-            Integer rejectedTaskInstanceNumber = multiInstanceCounter.countRejectedTaskInstanceNumber(
-                activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
-                smartEngine);
-
-            Integer totalInstanceCount = 0;//totalExecutionInstanceList.size();
-
 
             Map<String,Object> requestContext=context.getRequest();
             if(null == requestContext){
@@ -296,22 +294,17 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
                         }else{
                             context.setNeedPause(true);
-                            //生成新节点
+                            //生成新节点，硬编码需优化
                             generateExecutionAndTaskForMultiInstance(context, userTask, activityInstance, executionInstance, taskAssigneeMap);
-
                         }
 
-
                     }else if(finishedTaskCount == totalInstanceCount){
-
 
                         if(passedMatched){
                             context.setNeedPause(false);
                         }else {
                             abort(context, executionInstance, smartEngine);
                         }
-
-
 
                     }else{
                         String message =
@@ -323,7 +316,6 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
                 }
                 else{
-
                     //completionCondition 为空时，则表示是all 模式， 则需要所有任务都完成后，才做判断。
                     if(passedTaskInstanceNumber < totalInstanceCount  ){
                         context.setNeedPause(true);
@@ -347,9 +339,16 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             }
 
         } else {
-            super.commonUpdateExecutionInstance(context);
+        	//普通节点多任务时只支持all-pass
+    		if(rejectedTaskInstanceNumber > 0) {
+            	abort(context, executionInstance, smartEngine);
+            }
+        	if(passedTaskInstanceNumber < totalInstanceCount  ){
+                context.setNeedPause(true);
+            } else{
+                context.setNeedPause(false);
+            }
         }
-
     
     }
 
