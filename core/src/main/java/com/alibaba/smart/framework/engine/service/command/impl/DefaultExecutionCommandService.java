@@ -108,7 +108,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
-            CommonServiceHelper.updateAndPersist(executionInstanceId, newProcessInstance, request,
+            CommonServiceHelper.createExecution(executionInstanceId, newProcessInstance, request,
                 processEngineConfiguration);
 
             return newProcessInstance;
@@ -168,7 +168,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         ProcessInstance newProcessInstance = this.pvmProcessInstance.jump(pvmActivity, executionContext);
 
         //NOTATION3：executionInstance is set to null for jump case
-        CommonServiceHelper.updateAndPersist(executionInstanceId, newProcessInstance, request,
+        CommonServiceHelper.createExecution(executionInstanceId, newProcessInstance, request,
             processEngineConfiguration);
 
         return newProcessInstance;
@@ -209,7 +209,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         activityInstance.setExecutionInstanceList(executionInstanceList);
         processInstance.getActivityInstances().add(activityInstance);
 
-        CommonServiceHelper.updateAndPersist(executionInstance.getInstanceId(), processInstance, null,
+        CommonServiceHelper.createExecution(executionInstance.getInstanceId(), processInstance, null,
             processEngineConfiguration);
 
         return processInstance;
@@ -330,7 +330,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         if(CollectionUtil.isNotEmpty(activityInstance.getExecutionInstanceList())) {
         	activityInstance.getExecutionInstanceList().add(executionInstance);
         }
-        CommonServiceHelper.updateAndPersist(executionInstance, processEngineConfiguration);
+        CommonServiceHelper.createExecution(executionInstance, processEngineConfiguration);
 		return executionInstance;
 	}
 }

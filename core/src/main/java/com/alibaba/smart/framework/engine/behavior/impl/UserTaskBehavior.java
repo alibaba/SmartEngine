@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.delegation;
+package com.alibaba.smart.framework.engine.behavior.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,23 +45,11 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         super();
     }
 
-    private List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstances(ExecutionContext context,
-                                                                                  UserTask userTask) {
-        TaskAssigneeDispatcher taskAssigneeDispatcher = context.getProcessEngineConfiguration()
-            .getTaskAssigneeDispatcher();
-
-        if (null == taskAssigneeDispatcher) {
-            throw new EngineException("The taskAssigneeService can't be null for UserTask feature");
-        }
-
-        return taskAssigneeDispatcher.getTaskAssigneeCandidateInstance(userTask, context.getRequest());
-    }
-
     @Override
     public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
         UserTask userTask = (UserTask)pvmActivity.getModel();
 
-        List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = getTaskAssigneeCandidateInstances(
+        List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = UserTaskBehaviorUtil.getTaskAssigneeCandidateInstances(
             context, userTask);
         
 
@@ -72,7 +60,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(taskAssigneeCandidateInstanceList.size());
             activityInstance.setExecutionInstanceList(executionInstanceList);
             
-            List<TaskAssigneeCandidateInstance> newTaskAssigneeCandidateInstanceList = findLowPriorityTaskAssigneeList(taskAssigneeCandidateInstanceList);
+            List<TaskAssigneeCandidateInstance> newTaskAssigneeCandidateInstanceList = UserTaskBehaviorUtil.findLowPriorityTaskAssigneeList(taskAssigneeCandidateInstanceList);
 
             for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : newTaskAssigneeCandidateInstanceList) {
 
@@ -87,7 +75,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
                 IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
 
-                buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
+                UserTaskBehaviorUtil.buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
 
                 taskInstance.setTaskAssigneeInstanceList(taskAssigneeInstanceList);
                 executionInstance.setTaskInstance(taskInstance);
@@ -109,7 +97,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
 
                 for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : taskAssigneeCandidateInstanceList) {
-                    buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
+                    UserTaskBehaviorUtil.buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
                 }
                 taskInstance.setTaskAssigneeInstanceList(taskAssigneeInstanceList);
                 executionInstance.setTaskInstance(taskInstance);
@@ -119,53 +107,9 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         return true;
     }
 
-    /**
-     * 查找低优先级的审批人
-     * @param taskAssigneeCandidateInstanceList
-     * @return
-     */
-	private List<TaskAssigneeCandidateInstance> findLowPriorityTaskAssigneeList(List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList) {
-		if(CollectionUtil.isEmpty(taskAssigneeCandidateInstanceList)) {
-			return new ArrayList<TaskAssigneeCandidateInstance>(0);
-		}
-		int taskAssigneeCandidateInstanceSize = taskAssigneeCandidateInstanceList.size();
-		//排序
-		if(CollectionUtil.isNotEmpty(taskAssigneeCandidateInstanceList)) {
-			Collections.sort(taskAssigneeCandidateInstanceList, new Comparator<TaskAssigneeCandidateInstance>() {
-				@Override
-				public int compare(TaskAssigneeCandidateInstance one, TaskAssigneeCandidateInstance two) {
-					return one.getPriority() - two.getPriority();
-				}
-			});
-		}
-		//优先级低的和所有相同的
-		List<TaskAssigneeCandidateInstance> newTaskAssigneeCandidateInstanceList = new ArrayList<TaskAssigneeCandidateInstance>(taskAssigneeCandidateInstanceSize);
-		int minPriority = 0;
-		for(int i = 0; i < taskAssigneeCandidateInstanceSize; i++) {
-			TaskAssigneeCandidateInstance instance = taskAssigneeCandidateInstanceList.get(i);
-			if(i == 0) {
-				minPriority = instance.getPriority();
-				newTaskAssigneeCandidateInstanceList.add(instance);
-			}else {
-				if(instance.getPriority() == minPriority) {
-					newTaskAssigneeCandidateInstanceList.add(instance);
-				}else {
-					break;
-				}
-			}
-		}
-		return newTaskAssigneeCandidateInstanceList;
-	}
 
-    private void buildTaskAssigneeInstance(TaskAssigneeCandidateInstance taskAssigneeCandidateInstance,
-                                           List<TaskAssigneeInstance> taskAssigneeInstanceList,
-                                           IdGenerator idGenerator) {
-        TaskAssigneeInstance taskAssigneeInstance = new DefaultTaskAssigneeInstance();
-        taskAssigneeInstance.setAssigneeId(taskAssigneeCandidateInstance.getAssigneeId());
-        taskAssigneeInstance.setAssigneeType(taskAssigneeCandidateInstance.getAssigneeType());
-        taskAssigneeInstance.setInstanceId(idGenerator.getId());
-        taskAssigneeInstanceList.add(taskAssigneeInstance);
-    }
+
+
 
     @Override
     public void execute(ExecutionContext context, PvmActivity pvmActivity) {
@@ -179,8 +123,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         ActivityInstance activityInstance = context.getActivityInstance();
         
         SmartEngine smartEngine = processEngineConfiguration.getSmartEngine();
-        
-        //1. 当前的所有的 totalExecutionInstanceList，包含所有状态的。
+
+        //1. 当前的所有的 totalExecutionInstanceList，包含所有状态的。 可能不全。
         List<ExecutionInstance> totalExecutionInstanceList = executionInstanceStorage.findByActivityInstanceId(
             activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
             this.processEngineConfiguration);
@@ -197,6 +141,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         Integer passedTaskInstanceNumber = 0;
         Integer rejectedTaskInstanceNumber = 0;
         Integer totalInstanceCount = totalExecutionInstanceList.size();
+
+
         if(multiInstanceCounter != null) {
         	passedTaskInstanceNumber = multiInstanceCounter.countPassedTaskInstanceNumber(
                     activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), smartEngine);
@@ -319,7 +265,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                     //completionCondition 为空时，则表示是all 模式， 则需要所有任务都完成后，才做判断。
                     if(passedTaskInstanceNumber < totalInstanceCount  ){
                         context.setNeedPause(true);
-                        //生成新节点
+                        //生成新节点 ???
                         generateExecutionAndTaskForMultiInstance(context, userTask, activityInstance, executionInstance, taskAssigneeMap);
                     }
                     else  if(passedTaskInstanceNumber.equals(totalInstanceCount)  ){
@@ -339,15 +285,17 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             }
 
         } else {
-        	//普通节点多任务时只支持all-pass
-    		if(rejectedTaskInstanceNumber > 0) {
-            	abort(context, executionInstance, smartEngine);
-            }
-        	if(passedTaskInstanceNumber < totalInstanceCount  ){
-                context.setNeedPause(true);
-            } else{
-                context.setNeedPause(false);
-            }
+        	////普通节点多任务时只支持all-pass
+    		//if(rejectedTaskInstanceNumber > 0) {
+            //	abort(context, executionInstance, smartEngine);
+            //}
+        	//if(passedTaskInstanceNumber < totalInstanceCount  ){
+            //    context.setNeedPause(true);
+            //} else{
+            //    context.setNeedPause(false);
+            //}
+
+            super.commonUpdateExecutionInstance(context);
         }
     
     }
@@ -393,7 +341,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 			}
 		}
 		if(taskAssigneeMap.size() > 0) {
-			List<TaskAssigneeCandidateInstance> newTaskAssigneeList = findLowPriorityTaskAssigneeList(new ArrayList<TaskAssigneeCandidateInstance>(taskAssigneeMap.values()));
+			List<TaskAssigneeCandidateInstance> newTaskAssigneeList = UserTaskBehaviorUtil.findLowPriorityTaskAssigneeList(new ArrayList<TaskAssigneeCandidateInstance>(taskAssigneeMap.values()));
 		    for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : newTaskAssigneeList) {
 		        ExecutionInstance newExecutionInstance = this.executionInstanceFactory.create(activityInstance, context);
 		        executionInstanceStorage.insert(newExecutionInstance, processEngineConfiguration);
@@ -404,7 +352,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 		        
 		        List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
 		        IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
-		        buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
+                UserTaskBehaviorUtil.buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
 		        for(TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstanceList) {
 		        	taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
 		        	taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
