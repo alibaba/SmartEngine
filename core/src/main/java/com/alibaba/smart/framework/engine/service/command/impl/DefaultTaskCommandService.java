@@ -9,23 +9,25 @@ import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
+import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
-import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ValidationException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
@@ -96,7 +98,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         complete(  taskId, request);
     }
 
-
+    @Override
     public void transfer(String taskId, String fromUserId, String toUserId) {
 
         ConfigurationOption configurationOption = processEngineConfiguration
@@ -136,6 +138,61 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
     }
 
+    @Override
+    public TaskInstance createTask(ExecutionInstance executionInstance, String taskInstanceStatus,Map<String, Object> request) {
+    	IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
+    	
+        TaskInstance taskInstance = new DefaultTaskInstance();
+        taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
+        taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
+        taskInstance.setProcessDefinitionActivityId(executionInstance.getProcessDefinitionActivityId());
+        taskInstance.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
+        taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
+
+        taskInstance.setStatus(taskInstanceStatus);
+        String id = idGenerator.getId();
+        taskInstance.setInstanceId(id);
+
+
+        if(null != request){
+
+            String processDefinitionType = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE);
+            taskInstance.setProcessDefinitionType(processDefinitionType);
+
+            Date startTime = (Date)request.get(RequestMapSpecialKeyConstant.TASK_START_TIME);
+            taskInstance.setStartTime(startTime);
+
+            Date completeTime = (Date)request.get(RequestMapSpecialKeyConstant.TASK_COMPLETE_TIME);
+            taskInstance.setCompleteTime(completeTime);
+
+            String comment = (String)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT);
+            taskInstance.setComment(comment);
+
+            String extension = (String)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_EXTENSION);
+            taskInstance.setExtension(extension);
+
+            Integer priority = (Integer)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_PRIORITY);
+            taskInstance.setPriority(priority);
+
+            String tag = (String)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG);
+            taskInstance.setTag(tag);
+
+            String title = (String)request.get(RequestMapSpecialKeyConstant.TASK_TITLE);
+            taskInstance.setTitle(title);
+
+            String claimUserId = (String)request.get(RequestMapSpecialKeyConstant.CLAIM_USER_ID);
+            taskInstance.setClaimUserId(claimUserId);
+
+            Date claimTime = (Date)request.get(RequestMapSpecialKeyConstant.CLAIM_USER_TIME);
+            taskInstance.setClaimTime(claimTime);
+        }
+
+
+        taskInstanceStorage.insert(taskInstance,processEngineConfiguration);
+        return taskInstance;
+    }
+
+    @Override
     public void addTaskAssigneeCandidate(String taskId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
 
         TaskInstance taskInstance = taskInstanceStorage.find(taskId,processEngineConfiguration );
@@ -159,6 +216,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
     }
 
+    @Override
     public void removeTaskAssigneeCandidate(String taskId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
 
 
@@ -189,6 +247,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
     }
 
+    @Override
     public void markDone(String taskId, Map<String, Object> request) {
 
         TaskInstance taskInstance = taskInstanceStorage.find(taskId,processEngineConfiguration );

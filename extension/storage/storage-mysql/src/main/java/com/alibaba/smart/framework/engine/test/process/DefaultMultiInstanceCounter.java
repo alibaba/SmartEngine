@@ -24,6 +24,8 @@ public class DefaultMultiInstanceCounter implements MultiInstanceCounter {
         processInstanceIdList.add(processInstanceId);
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setActivityInstanceId(activityInstanceId);
+
+        //fixme
         taskInstanceQueryParam.setTag(VariableInstanceAndMultiInstanceTest.AGREE);
         Integer count  = taskQueryService.count(taskInstanceQueryParam).intValue();
         return  count;

@@ -3,6 +3,8 @@ package com.alibaba.smart.framework.engine.service.command;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
@@ -43,5 +45,12 @@ public interface ExecutionCommandService {
      *
      */
     void retry(ProcessInstance processInstance, String activityId, ExecutionContext executionContext);
+    
+    /**
+     * create new executionInstance for specific activity only.
+     *
+     * instance status is active default.
+     */
+    ExecutionInstance createExecution(ActivityInstance activityInstance);
 
 }

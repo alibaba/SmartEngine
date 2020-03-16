@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions id="test-exclusive" version="1.0.0"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-             xmlns:smart="http://smart.example/schema/process"
+             xmlns:smart="http://smartengine.org/schema/process"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="Examples">
 
     <process id="exclusiveTest">

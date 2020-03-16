@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.delegation;
+package com.alibaba.smart.framework.engine.behavior.impl;
 
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.task.ServiceTask;

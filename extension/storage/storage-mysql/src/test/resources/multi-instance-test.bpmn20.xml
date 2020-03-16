@@ -1,4 +1,4 @@
-<definitions xmlns:smart="http://smart.example/schema/process" xmlns:activiti="http://activiti.org/bpmn"
+<definitions xmlns:smart="http://smartengine.org/schema/process" xmlns:activiti="http://activiti.org/bpmn"
              xmlns:alibaba="http://smart.alibaba.com/schema/alibaba"
              id="test-multi-instance-user-task" version="1.0.1"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"

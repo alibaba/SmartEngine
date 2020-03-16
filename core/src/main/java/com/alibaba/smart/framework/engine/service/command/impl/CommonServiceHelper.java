@@ -97,13 +97,13 @@ public abstract  class CommonServiceHelper {
         }
     }
 
-    public static  ProcessInstance updateAndPersist(String executionInstanceId, ProcessInstance processInstance, Map<String, Object> request,
-                                                    ProcessEngineConfiguration processEngineConfiguration) {
+    public static  ProcessInstance createExecution(String executionInstanceId, ProcessInstance processInstance, Map<String, Object> request,
+                                                   ProcessEngineConfiguration processEngineConfiguration) {
 
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
         ProcessInstanceStorage processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
 
-        ProcessInstance newProcessInstance=   processInstanceStorage.update(processInstance,processEngineConfiguration );
+        ProcessInstance newProcessInstance = processInstanceStorage.update(processInstance,processEngineConfiguration );
 
         persisteVariableInstanceIfPossible(request, processEngineConfiguration,
             newProcessInstance,executionInstanceId);
@@ -178,5 +178,14 @@ public abstract  class CommonServiceHelper {
 
         }
     }
+    
+    
+	public static void createExecution(ExecutionInstance executionInstance, ProcessEngineConfiguration processEngineConfiguration) {
+		AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+		ExecutionInstanceStorage executionInstanceStorage=annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
+		if (null != executionInstance) {
+            executionInstanceStorage.insert(executionInstance,processEngineConfiguration );
+        }
+	}
 
 }
