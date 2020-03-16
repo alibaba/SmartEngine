@@ -21,6 +21,7 @@ public class BasicProcessTest extends CustomBaseTestCase {
 
     @Test
     public void test() throws Exception {
+        BasicServiceTaskDelegation.resetCounter();
 
 
         ProcessDefinition processDefinition = repositoryCommandService
