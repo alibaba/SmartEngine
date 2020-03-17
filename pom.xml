@@ -17,11 +17,11 @@
     <inceptionYear>2016</inceptionYear>
 
     <scm>
-        <connection>scm:git:git@github.com:alibaba/SmartEngine.git</connection>
-        <developerConnection>scm:git:git@github.com:alibaba/SmartEngine.git</developerConnection>
+        <connection>scm:git@github.com:alibaba/SmartEngine.git</connection>
+        <developerConnection>scm:git@github.com:alibaba/SmartEngine.git</developerConnection>
         <url>https://github.com/alibaba/SmartEngine</url>
-      <tag>smart-engine-2.0.2</tag>
-  </scm>
+        <tag>smart-engine-2.0.2</tag>
+    </scm>
 
     <developers>
         <developer>
@@ -389,20 +389,29 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.4</version>
-                <configuration>
-                    <!--<skip>${gpg.skip}</skip>-->
-                </configuration>
+                <version>1.6</version>
                 <executions>
                     <execution>
-                        <id>sign-artifacts</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
             </plugin>
 
         </plugins>
