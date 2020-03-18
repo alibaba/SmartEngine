@@ -17,6 +17,7 @@ public class MultiInstanceLoopCharacteristics implements NoneIdBasedElement {
 
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "multiInstanceLoopCharacteristics");
 
+    private boolean sequential;
 
     private ConditionExpression completionCondition;
     private ConditionExpression abortCondition;

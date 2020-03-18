@@ -72,7 +72,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         this.executionInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,
             ExecutionInstanceStorage.class);
 
-        //TODO 单例
         this.pvmProcessInstance = new DefaultPvmProcessInstance();
     }
 

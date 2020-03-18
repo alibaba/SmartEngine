@@ -13,6 +13,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 September  21:01.
@@ -36,7 +37,7 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
     @Override
     protected MultiInstanceLoopCharacteristics parseModel(XMLStreamReader reader, ParseContext context) {
         MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = new MultiInstanceLoopCharacteristics();
-        //multiInstanceLoopCharacteristics.setSequential(XmlParseUtil.getBoolean(reader, "isSequential", false));
+        multiInstanceLoopCharacteristics.setSequential(XmlParseUtil.getBoolean(reader, "isSequential", false));
         return multiInstanceLoopCharacteristics;
     }
 
