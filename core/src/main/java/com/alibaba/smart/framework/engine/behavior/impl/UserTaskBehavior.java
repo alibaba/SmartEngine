@@ -146,145 +146,149 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
         if (null != multiInstanceLoopCharacteristics) {
 
-            ActivityInstance activityInstance = context.getActivityInstance();
+            handleMultiInstance(context, executionInstance, userTask, multiInstanceLoopCharacteristics);
 
-            SmartEngine smartEngine = processEngineConfiguration.getSmartEngine();
+        } else {
 
-            //1. 当前的数据库中所有的 totalExecutionInstanceList，包含所有状态的。 但是此时，由于顺序会签的问题，totalExecutionInstanceList 不再是所有的ExecutionList了。
-            List<ExecutionInstance> totalExecutionInstanceList = executionInstanceStorage.findByActivityInstanceId(
-                activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
-                this.processEngineConfiguration);
+            handleSingleInstance(context);
+        }
+    
+    }
 
-            //取所有审批人
-            List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = UserTaskBehaviorHelper
-                .getTaskAssigneeCandidateInstances( context,userTask);
+    protected void handleMultiInstance(ExecutionContext context, ExecutionInstance executionInstance, UserTask userTask,
+                                     MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics) {
+        ActivityInstance activityInstance = context.getActivityInstance();
 
-            Integer totalInstanceCount ;
+        SmartEngine smartEngine = processEngineConfiguration.getSmartEngine();
 
-            if(multiInstanceLoopCharacteristics.isSequential()){
-                totalInstanceCount = taskAssigneeCandidateInstanceList.size();
-            }else {
-                totalInstanceCount = totalExecutionInstanceList.size();
+        //1. 当前的数据库中所有的 totalExecutionInstanceList，包含所有状态的。 但是此时，由于顺序会签的问题，totalExecutionInstanceList 不再是所有的ExecutionList了。
+        List<ExecutionInstance> totalExecutionInstanceList = executionInstanceStorage.findByActivityInstanceId(
+            activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
+            this.processEngineConfiguration);
+
+        //取所有审批人
+        List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = UserTaskBehaviorHelper
+            .getTaskAssigneeCandidateInstances( context,userTask);
+
+        Integer totalInstanceCount ;
+
+        if(multiInstanceLoopCharacteristics.isSequential()){
+            totalInstanceCount = taskAssigneeCandidateInstanceList.size();
+        }else {
+            totalInstanceCount = totalExecutionInstanceList.size();
+        }
+
+        Integer passedTaskInstanceCount = 0;
+        Integer rejectedTaskInstanceCount = 0;
+
+        MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration().getMultiInstanceCounter();
+
+        if(multiInstanceCounter != null) {
+            passedTaskInstanceCount = multiInstanceCounter.countPassedTaskInstanceNumber(
+                activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), smartEngine);
+            rejectedTaskInstanceCount = multiInstanceCounter.countRejectedTaskInstanceNumber(
+                activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), smartEngine);
+        } else {
+            throw new ValidationException("MultiInstanceCounter can NOT be null for multiInstanceLoopCharacteristics");
+        }
+
+        Map<String, TaskAssigneeCandidateInstance> taskAssigneeMap = new HashMap<String, TaskAssigneeCandidateInstance>();
+
+        if(taskAssigneeCandidateInstanceList != null) {
+            for(TaskAssigneeCandidateInstance item : taskAssigneeCandidateInstanceList) {
+                taskAssigneeMap.put(item.getAssigneeId(), item);
             }
+        }
 
+        // 不变式  nrOfCompletedInstances+ nrOfRejectedInstance <= nrOfInstances
+        Map<String,Object> requestContext =  new HashMap<String, Object>();
+        requestContext.put("nrOfCompletedInstances", passedTaskInstanceCount);
+        requestContext.put("nrOfRejectedInstance", rejectedTaskInstanceCount);
+        requestContext.put("nrOfInstances", totalInstanceCount);
 
-            Integer passedTaskInstanceCount = 0;
-            Integer rejectedTaskInstanceCount = 0;
+        // 注意：任务处理的并发性，需要业务程序来控制。
+        boolean abortMatched = false;
 
-            MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration().getMultiInstanceCounter();
+        ConditionExpression abortCondition = multiInstanceLoopCharacteristics.getAbortCondition();
 
-            if(multiInstanceCounter != null) {
-                passedTaskInstanceCount = multiInstanceCounter.countPassedTaskInstanceNumber(
-                    activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), smartEngine);
-                rejectedTaskInstanceCount = multiInstanceCounter.countRejectedTaskInstanceNumber(
-                    activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), smartEngine);
-            } else {
-                throw new ValidationException ("MultiInstanceCounter can NOT be null for multiInstanceLoopCharacteristics");
-            }
+        if (null != abortCondition) {
+            abortMatched = ExpressionUtil.eval(requestContext, abortCondition,context.getProcessEngineConfiguration());
+        }
 
+        //此时，尚未触发订单abort逻辑
+        if (!abortMatched) {
+            ConditionExpression completionCondition = multiInstanceLoopCharacteristics.getCompletionCondition();
 
+            if(null != completionCondition){
+                boolean passedMatched  = ExpressionUtil.eval(requestContext, completionCondition,context.getProcessEngineConfiguration()) ;
 
-            Map<String, TaskAssigneeCandidateInstance> taskAssigneeMap = new HashMap<String, TaskAssigneeCandidateInstance>();
+                Integer completedTaskInstanceCount = passedTaskInstanceCount + rejectedTaskInstanceCount;
+                if(completedTaskInstanceCount < totalInstanceCount){
 
-            if(taskAssigneeCandidateInstanceList != null) {
-            	for(TaskAssigneeCandidateInstance item : taskAssigneeCandidateInstanceList) {
-            		taskAssigneeMap.put(item.getAssigneeId(), item);
-            	}
-            }
-
-            // 不变式  nrOfCompletedInstances+ nrOfRejectedInstance <= nrOfInstances
-            Map<String,Object> requestContext =  new HashMap<String, Object>();
-            requestContext.put("nrOfCompletedInstances", passedTaskInstanceCount);
-            requestContext.put("nrOfRejectedInstance", rejectedTaskInstanceCount);
-            requestContext.put("nrOfInstances", totalInstanceCount);
-            
-            
-
-            // 注意：任务处理的并发性，需要业务程序来控制。
-            boolean abortMatched = false;
-
-            ConditionExpression abortCondition = multiInstanceLoopCharacteristics.getAbortCondition();
-
-            if (null != abortCondition) {
-                abortMatched = ExpressionUtil.eval(requestContext, abortCondition,context.getProcessEngineConfiguration());
-            }
-
-            //此时，尚未触发订单abort逻辑
-            if (!abortMatched) {
-                ConditionExpression completionCondition = multiInstanceLoopCharacteristics.getCompletionCondition();
-
-                if(null != completionCondition){
-                    boolean passedMatched  = ExpressionUtil.eval(requestContext, completionCondition,context.getProcessEngineConfiguration()) ;
-
-                    Integer completedTaskInstanceCount = passedTaskInstanceCount + rejectedTaskInstanceCount;
-                    if(completedTaskInstanceCount < totalInstanceCount){
-
-                        if(passedMatched){
-                            UserTaskBehaviorHelper.markDoneEIAndCancelTI(context, executionInstance, totalExecutionInstanceList,executionInstanceStorage,processEngineConfiguration);
-
-                            context.setNeedPause(false);
-
-                        } else {
-                            context.setNeedPause(true);
-                            //生成顺序型会签，需要补偿创建任务。
-                            if(multiInstanceLoopCharacteristics.isSequential()){
-                                UserTaskBehaviorHelper.compensateExecutionAndTask(context, userTask, activityInstance, executionInstance, taskAssigneeMap,executionInstanceStorage,executionInstanceFactory,taskInstanceFactory,processEngineConfiguration);
-                            }else{
-                                // do nothing
-                            }
-                        }
-
-                    }else if(completedTaskInstanceCount == totalInstanceCount){
-
-                        if(passedMatched){
-                            context.setNeedPause(false);
-                        }else {
-                            UserTaskBehaviorHelper.abortAndSetNeedPause(context, executionInstance, smartEngine);
-                        }
-
-                    }else{
-                        handleException(totalInstanceCount, passedTaskInstanceCount, rejectedTaskInstanceCount);
-                    }
-
-                }
-                else{
-                    //completionCondition 为空时，则表示是all模式 （兼容历史逻辑）， 则需要所有任务都完成后，才做判断。
-
-                    if(rejectedTaskInstanceCount >= 1){
-
-                        UserTaskBehaviorHelper.abortAndSetNeedPause(context, executionInstance, smartEngine);
+                    if(passedMatched){
                         UserTaskBehaviorHelper.markDoneEIAndCancelTI(context, executionInstance, totalExecutionInstanceList,executionInstanceStorage,processEngineConfiguration);
 
-                    } else if(passedTaskInstanceCount < totalInstanceCount  ){
-                        context.setNeedPause(true);
+                        context.setNeedPause(false);
 
+                    } else {
+                        context.setNeedPause(true);
+                        //生成顺序型会签，需要补偿创建任务。
                         if(multiInstanceLoopCharacteristics.isSequential()){
                             UserTaskBehaviorHelper.compensateExecutionAndTask(context, userTask, activityInstance, executionInstance, taskAssigneeMap,executionInstanceStorage,executionInstanceFactory,taskInstanceFactory,processEngineConfiguration);
-                        } else {
-                            //do nothing
+                        }else{
+                            // do nothing
                         }
                     }
-                    else  if(passedTaskInstanceCount.equals(totalInstanceCount)  ){
-                        context.setNeedPause(false);
-                    }else{
-                        handleException(totalInstanceCount, passedTaskInstanceCount, rejectedTaskInstanceCount);
 
+                }else if(completedTaskInstanceCount == totalInstanceCount){
+
+                    if(passedMatched){
+                        context.setNeedPause(false);
+                    }else {
+                        UserTaskBehaviorHelper.abortAndSetNeedPause(context, executionInstance, smartEngine);
                     }
 
+                }else{
+                    handleException(totalInstanceCount, passedTaskInstanceCount, rejectedTaskInstanceCount);
                 }
 
-            } else {
+            }
+            else{
+                //completionCondition 为空时，则表示是all模式 （兼容历史逻辑）， 则需要所有任务都完成后，才做判断。
 
-                UserTaskBehaviorHelper.abortAndSetNeedPause(context, executionInstance, smartEngine);
-                UserTaskBehaviorHelper.markDoneEIAndCancelTI(context, executionInstance, totalExecutionInstanceList,executionInstanceStorage,processEngineConfiguration);
+                if(rejectedTaskInstanceCount >= 1){
+
+                    UserTaskBehaviorHelper.abortAndSetNeedPause(context, executionInstance, smartEngine);
+                    UserTaskBehaviorHelper.markDoneEIAndCancelTI(context, executionInstance, totalExecutionInstanceList,executionInstanceStorage,processEngineConfiguration);
+
+                } else if(passedTaskInstanceCount < totalInstanceCount  ){
+                    context.setNeedPause(true);
+
+                    if(multiInstanceLoopCharacteristics.isSequential()){
+                        UserTaskBehaviorHelper.compensateExecutionAndTask(context, userTask, activityInstance, executionInstance, taskAssigneeMap,executionInstanceStorage,executionInstanceFactory,taskInstanceFactory,processEngineConfiguration);
+                    } else {
+                        //do nothing
+                    }
+                }
+                else  if(passedTaskInstanceCount.equals(totalInstanceCount)  ){
+                    context.setNeedPause(false);
+                }else{
+                    handleException(totalInstanceCount, passedTaskInstanceCount, rejectedTaskInstanceCount);
+
+                }
 
             }
 
         } else {
 
-            super.commonUpdateExecutionInstance(context);
+            UserTaskBehaviorHelper.abortAndSetNeedPause(context, executionInstance, smartEngine);
+            UserTaskBehaviorHelper.markDoneEIAndCancelTI(context, executionInstance, totalExecutionInstanceList,executionInstanceStorage,processEngineConfiguration);
+
         }
-    
+    }
+
+    protected void handleSingleInstance(ExecutionContext context) {
+        super.commonUpdateExecutionInstance(context);
     }
 
     private void handleException(Integer totalInstanceCount, Integer passedTaskInstanceCount,
