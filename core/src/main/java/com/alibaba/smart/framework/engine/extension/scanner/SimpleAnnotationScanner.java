@@ -10,6 +10,7 @@ import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
@@ -25,9 +26,6 @@ import com.alibaba.smart.framework.engine.util.ClassUtil;
 
 import lombok.Getter;
 
-/**
- *
- */
 public class SimpleAnnotationScanner implements AnnotationScanner {
 
     public static final String JAR = "jar";
@@ -37,59 +35,68 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
     @Getter
     private Map<String, ExtensionBindingResult> scanResult = new HashMap<String, ExtensionBindingResult>();
 
-    protected static Set<Class<?>> scan(String packageName) throws IOException {
+    private String[] packageNameList;
+
+    public SimpleAnnotationScanner(String... packageNameList) {this.packageNameList = packageNameList;}
+
+    protected static Set<Class<?>> scan(String... packageNames) throws IOException {
 
         Set<Class<?>> classes = new LinkedHashSet();
 
-        String formattedPackageDirName = packageName.replace('.', '/');
+        for (String packageName : packageNames) {
 
-        Enumeration<URL> dirs = ClassUtil.getContextClassLoader().getResources(formattedPackageDirName);
+            String formattedPackageDirName = packageName.replace('.', '/');
 
-        while (dirs.hasMoreElements()) {
+            Enumeration<URL> dirs = ClassUtil.getContextClassLoader().getResources(formattedPackageDirName);
 
-            URL url = dirs.nextElement();
-            String protocol = url.getProtocol();
+            while (dirs.hasMoreElements()) {
 
-            if (FILE.equals(protocol)) {
-                String filePath = URLDecoder.decode(url.getFile(), UTF_8);
+                URL url = dirs.nextElement();
+                String protocol = url.getProtocol();
 
-                scanFiles(packageName, filePath, true, classes);
+                if (FILE.equals(protocol)) {
+                    String filePath = URLDecoder.decode(url.getFile(), UTF_8);
 
-            } else if (JAR.equals(protocol)) {
+                    scanFiles(packageName, filePath, true, classes);
 
-                JarFile jar = ((JarURLConnection)url.openConnection()).getJarFile();
+                } else if (JAR.equals(protocol)) {
 
-                Enumeration<JarEntry> entries = jar.entries();
+                    JarFile jar = ((JarURLConnection)url.openConnection()).getJarFile();
 
-                while (entries.hasMoreElements()) {
+                    Enumeration<JarEntry> entries = jar.entries();
 
-                    JarEntry entry = entries.nextElement();
-                    String entryName = entry.getName();
+                    while (entries.hasMoreElements()) {
 
-                    if (entryName.startsWith(formattedPackageDirName)) {
-                        int idx = entryName.lastIndexOf('/');
+                        JarEntry entry = entries.nextElement();
+                        String entryName = entry.getName();
 
-                        if (idx != -1) {
+                        if (entryName.startsWith(formattedPackageDirName)) {
+                            int idx = entryName.lastIndexOf('/');
 
-                            packageName = entryName.substring(0, idx).replace('/', '.');
+                            if (idx != -1) {
 
-                            if (entryName.endsWith(".class") && !entry.isDirectory()) {
+                                packageName = entryName.substring(0, idx).replace('/', '.');
 
-                                String className = entryName.substring(packageName.length() + 1,
-                                    entryName.length() - 6);
+                                if (entryName.endsWith(".class") && !entry.isDirectory()) {
 
-                                classes.add(ClassUtil.loadClass(packageName + '.' + className));
+                                    String className = entryName.substring(packageName.length() + 1,
+                                        entryName.length() - 6);
 
+                                    classes.add(ClassUtil.loadClass(packageName + '.' + className));
+
+                                }
                             }
+
                         }
-
                     }
-                }
 
-            } else {
-                throw new EngineException("Not supported protocol: " + protocol);
+                } else {
+                    throw new EngineException("Not supported protocol: " + protocol);
+                }
             }
         }
+
+
 
         return classes;
     }
@@ -130,12 +137,11 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
     }
 
     public void scan(
-        ProcessEngineConfiguration processEngineConfiguration,
-        String packageName, Class<? extends Annotation> bindingAnnotationClazz) {
+        ProcessEngineConfiguration processEngineConfiguration, Class<? extends Annotation> bindingAnnotationClazz) {
 
         Set<Class<?>> classSet;
         try {
-            classSet = scan(packageName);
+            classSet = scan(this.packageNameList);
         } catch (IOException e) {
             throw new EngineException(e.getMessage(), e);
         }
@@ -171,23 +177,6 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
                     Class tempClazz = clazz;
 
-                    //do{
-                    //    Class<?>[] interfaces = tempClazz.getInterfaces();
-                    //    for (Class<?> anInterface : interfaces) {
-                    //        if (anInterface.equals(ProcessEngineConfigurationAware.class)) {
-                    //            pecFound = true;
-                    //            break;
-                    //        }
-                    //    }
-                    //
-                    //    if(pecFound){
-                    //        break;
-                    //    }
-                    //
-                    //    tempClazz  = clazz.getSuperclass();
-                    //}while ();
-
-
                     while (tempClazz != null && !tempClazz.equals(Object.class)){
 
                         Class<?>[] interfaces = tempClazz.getInterfaces();
@@ -211,15 +200,19 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
                     bindingMap.put(bindKeyClass, newInstance);
 
                 } else {
-                    throw new EngineException(
-                        "Duplicated bindKeyClass  found " + bindKeyClass + " for group " + group
-                            + ", because of duplicated annotation or init twice.");
+                    handleDuplicatedKey(group, bindKeyClass);
                 }
 
             }
 
         }
 
+    }
+
+    protected void handleDuplicatedKey(String group, Class bindKeyClass) {
+        throw new EngineException(
+            "Duplicated bindKeyClass  found " + bindKeyClass + " for group " + group
+                + ", because of duplicated annotation or init twice.");
     }
 
     public <T> T getExtensionPoint(String group, Class<T> clazz) {

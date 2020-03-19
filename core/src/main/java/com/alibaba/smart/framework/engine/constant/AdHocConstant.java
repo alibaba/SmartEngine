@@ -9,4 +9,10 @@ package com.alibaba.smart.framework.engine.constant;
 public   interface  AdHocConstant {
 
    String DEFAULT_ZERO_VALUE = "0";
+
+   String AGREE = "agree";
+
+   String DISAGREE = "disagree";
+
+   String MVEL= "mvel";
 }

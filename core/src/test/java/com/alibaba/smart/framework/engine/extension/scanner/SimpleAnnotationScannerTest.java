@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.extension.scanner;
 
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 
@@ -25,9 +26,9 @@ public class SimpleAnnotationScannerTest {
 
     @Test
     public void scan() {
-        SimpleAnnotationScanner simpleAnnotationScanner = new SimpleAnnotationScanner();
+        SimpleAnnotationScanner simpleAnnotationScanner = new SimpleAnnotationScanner("com.alibaba.smart.framework.engine.extension.scanner");
         simpleAnnotationScanner.scan(null,
-            "com.alibaba.smart.framework.engine.extension.scanner", ExtensionBinding.class);
+             ExtensionBinding.class);
 
         Map<String, ExtensionBindingResult> resultClass = simpleAnnotationScanner.getScanResult();
         Assert.assertEquals(2,resultClass.size());

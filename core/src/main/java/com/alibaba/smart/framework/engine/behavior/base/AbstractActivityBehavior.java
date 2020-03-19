@@ -84,7 +84,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     @Override
     public void execute(ExecutionContext context,PvmActivity pvmActivity) {
-        makeExtensionWorkAndExecuteBehavior(context,pvmActivity.getModel());
+        executeDelegation(context,pvmActivity.getModel());
 
         commonUpdateExecutionInstance(context);
 
@@ -101,7 +101,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         }
     }
 
-    protected void makeExtensionWorkAndExecuteBehavior(ExecutionContext context,Activity activity) {
+    protected void executeDelegation(ExecutionContext context, Activity activity) {
 
         context.getProcessEngineConfiguration().getDelegationExecutor().execute(context, activity);
     }

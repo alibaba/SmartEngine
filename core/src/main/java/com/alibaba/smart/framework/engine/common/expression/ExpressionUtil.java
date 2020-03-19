@@ -6,7 +6,9 @@ import com.alibaba.smart.framework.engine.common.expression.evaluator.Expression
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.constant.AdHocConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 
 import org.slf4j.Logger;
@@ -22,24 +24,35 @@ public abstract class ExpressionUtil {
     public static Boolean eval(ExecutionContext context, ConditionExpression conditionExpression) {
         String type = conditionExpression.getExpressionType();
 
+        Object eval = ExpressionUtil.eval( context.getRequest(),type,
+            conditionExpression.getExpressionContent(),context.getProcessEngineConfiguration());
+
+        return (Boolean)eval;
+    }
+
+    public static Boolean eval( Map<String,Object> requestContext, ConditionExpression conditionExpression, ProcessEngineConfiguration processEngineConfiguration) {
+        String type = conditionExpression.getExpressionType();
+        String expressionContent = conditionExpression.getExpressionContent();
+
+        Object eval = ExpressionUtil.eval(requestContext,type,
+            expressionContent, processEngineConfiguration);
+
+        return (Boolean)eval;
+    }
+
+
+
+    private static Object eval( Map<String,Object> requestContext,String type, String expression,  ProcessEngineConfiguration processEngineConfiguration) {
+
+        // 兼容
         if (null != type) {
             int expressionTypeSplitIndex = type.indexOf(":");
             if (expressionTypeSplitIndex >= 0) {
                 type = type.substring(expressionTypeSplitIndex + 1);
             }
         } else {
-            type = "mvel";
+            type = AdHocConstant.MVEL;
         }
-
-        Object eval = ExpressionUtil.eval(type,
-            conditionExpression.getExpressionContent(), context);
-
-        return (Boolean)eval;
-    }
-
-
-    private static Object eval(String type, String expression, ExecutionContext context) {
-        ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
 
         String firstCharToUpperCase = Character.toUpperCase(type.charAt(0)) + type.substring(1);
 
@@ -49,12 +62,9 @@ public abstract class ExpressionUtil {
         ExpressionEvaluator expressionEvaluator = (ExpressionEvaluator)instanceAccessor.access(className);
 
         if (null != expressionEvaluator) {
-            Map<String,Object> requestContext=context.getRequest();
 
             ConfigurationOption configurationOption = processEngineConfiguration
                 .getOptionContainer().get(ConfigurationOption.EXPRESSION_COMPILE_RESULT_CACHED_OPTION.getId());
-
-
 
             Object result = expressionEvaluator.eval(expression, requestContext, configurationOption.isEnabled());
 
@@ -62,7 +72,8 @@ public abstract class ExpressionUtil {
 
             return result;
         } else {
-            return null;
+
+            throw  new EngineException("No Expression Evaluator found for "+ className);
         }
     }
 }

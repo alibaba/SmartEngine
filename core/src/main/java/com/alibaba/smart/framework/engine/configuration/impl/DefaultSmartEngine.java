@@ -44,8 +44,7 @@ public class DefaultSmartEngine implements SmartEngine {
         processEngineConfiguration.setSmartEngine(this);
 
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
-        String packageName = SmartEngine.class.getPackage().getName();
-        annotationScanner.scan(processEngineConfiguration, packageName, ExtensionBinding.class);
+        annotationScanner.scan(processEngineConfiguration,  ExtensionBinding.class);
 
         Map<String, ExtensionBindingResult> scanResult = annotationScanner.getScanResult();
 

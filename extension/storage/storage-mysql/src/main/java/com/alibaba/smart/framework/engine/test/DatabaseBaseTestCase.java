@@ -54,7 +54,7 @@ public class DatabaseBaseTestCase {
     @Before
     public void setUp() {
 
-        this.annotationScanner = new SimpleAnnotationScanner();
+        this.annotationScanner = new SimpleAnnotationScanner(SmartEngine.class.getPackage().getName());
 
         initProcessConfiguration();
 

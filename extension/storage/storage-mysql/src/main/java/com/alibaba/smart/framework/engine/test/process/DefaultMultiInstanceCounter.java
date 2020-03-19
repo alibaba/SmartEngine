@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
+import com.alibaba.smart.framework.engine.constant.AdHocConstant;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
@@ -25,8 +26,7 @@ public class DefaultMultiInstanceCounter implements MultiInstanceCounter {
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setActivityInstanceId(activityInstanceId);
 
-        //fixme
-        taskInstanceQueryParam.setTag(VariableInstanceAndMultiInstanceTest.AGREE);
+        taskInstanceQueryParam.setTag(AdHocConstant.AGREE);
         Integer count  = taskQueryService.count(taskInstanceQueryParam).intValue();
         return  count;
 
@@ -42,7 +42,7 @@ public class DefaultMultiInstanceCounter implements MultiInstanceCounter {
         processInstanceIdList.add(processInstanceId);
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setActivityInstanceId(activityInstanceId);
-        taskInstanceQueryParam.setTag(VariableInstanceAndMultiInstanceTest.DISAGREE);
+        taskInstanceQueryParam.setTag(AdHocConstant.DISAGREE);
         Integer count  = taskQueryService.count(taskInstanceQueryParam).intValue();
         return  count;
 

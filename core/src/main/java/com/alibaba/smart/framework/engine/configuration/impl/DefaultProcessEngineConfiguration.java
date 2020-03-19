@@ -65,7 +65,7 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         this.idGenerator = new DefaultIdGenerator();
         this.instanceAccessor = new DefaultInstanceAccessor();
         this.delegationExecutor = new DefaultDelegationExecutor();
-        this.annotationScanner = new SimpleAnnotationScanner();
+        this.annotationScanner = new SimpleAnnotationScanner(SmartEngine.class.getPackage().getName());
         this.variablePersister = new DefaultVariablePersister();
         this.tableSchemaStrategy = new DefaultTableSchemaStrategy();
         this.optionContainer = new DefaultOptionContainer();

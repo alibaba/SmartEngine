@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
 public interface AnnotationScanner {
 
      void scan(ProcessEngineConfiguration processEngineConfiguration,
-               String packageName, Class<? extends Annotation> bindingAnnotationClazz);
+               Class<? extends Annotation> bindingAnnotationClazz);
 
      Map<String, ExtensionBindingResult> getScanResult();
 
