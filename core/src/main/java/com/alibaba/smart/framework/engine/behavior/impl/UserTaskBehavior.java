@@ -168,15 +168,15 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             }
 
 
-            Integer passedTaskInstanceNumber = 0;
-            Integer rejectedTaskInstanceNumber = 0;
+            Integer passedTaskInstanceCount = 0;
+            Integer rejectedTaskInstanceCount = 0;
 
             MultiInstanceCounter multiInstanceCounter = context.getProcessEngineConfiguration().getMultiInstanceCounter();
 
             if(multiInstanceCounter != null) {
-                passedTaskInstanceNumber = multiInstanceCounter.countPassedTaskInstanceNumber(
+                passedTaskInstanceCount = multiInstanceCounter.countPassedTaskInstanceNumber(
                     activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), smartEngine);
-                rejectedTaskInstanceNumber = multiInstanceCounter.countRejectedTaskInstanceNumber(
+                rejectedTaskInstanceCount = multiInstanceCounter.countRejectedTaskInstanceNumber(
                     activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(), smartEngine);
             } else {
                 throw new ValidationException ("MultiInstanceCounter can NOT be null for multiInstanceLoopCharacteristics");
@@ -194,8 +194,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
             // 不变式  nrOfCompletedInstances+ nrOfRejectedInstance <= nrOfInstances
             Map<String,Object> requestContext =  new HashMap<String, Object>();
-            requestContext.put("nrOfCompletedInstances", passedTaskInstanceNumber);
-            requestContext.put("nrOfRejectedInstance", rejectedTaskInstanceNumber);
+            requestContext.put("nrOfCompletedInstances", passedTaskInstanceCount);
+            requestContext.put("nrOfRejectedInstance", rejectedTaskInstanceCount);
             requestContext.put("nrOfInstances", totalInstanceCount);
             
             
@@ -216,7 +216,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 if(null != completionCondition){
                     boolean passedMatched  = ExpressionUtil.eval(requestContext, completionCondition,context.getProcessEngineConfiguration()) ;
 
-                    Integer completedTaskInstanceCount = passedTaskInstanceNumber + rejectedTaskInstanceNumber;
+                    Integer completedTaskInstanceCount = passedTaskInstanceCount + rejectedTaskInstanceCount;
                     if(completedTaskInstanceCount < totalInstanceCount){
 
                         if(passedMatched){
@@ -243,19 +243,19 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                         }
 
                     }else{
-                        handleException(totalInstanceCount, passedTaskInstanceNumber, rejectedTaskInstanceNumber);
+                        handleException(totalInstanceCount, passedTaskInstanceCount, rejectedTaskInstanceCount);
                     }
 
                 }
                 else{
                     //completionCondition 为空时，则表示是all模式 （兼容历史逻辑）， 则需要所有任务都完成后，才做判断。
 
-                    if(rejectedTaskInstanceNumber >= 1){
+                    if(rejectedTaskInstanceCount >= 1){
 
                         UserTaskBehaviorHelper.abortAndSetNeedPause(context, executionInstance, smartEngine);
                         UserTaskBehaviorHelper.markDoneEIAndCancelTI(context, executionInstance, totalExecutionInstanceList,executionInstanceStorage,processEngineConfiguration);
 
-                    } else if(passedTaskInstanceNumber < totalInstanceCount  ){
+                    } else if(passedTaskInstanceCount < totalInstanceCount  ){
                         context.setNeedPause(true);
 
                         if(multiInstanceLoopCharacteristics.isSequential()){
@@ -264,10 +264,10 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                             //do nothing
                         }
                     }
-                    else  if(passedTaskInstanceNumber.equals(totalInstanceCount)  ){
+                    else  if(passedTaskInstanceCount.equals(totalInstanceCount)  ){
                         context.setNeedPause(false);
                     }else{
-                        handleException(totalInstanceCount, passedTaskInstanceNumber, rejectedTaskInstanceNumber);
+                        handleException(totalInstanceCount, passedTaskInstanceCount, rejectedTaskInstanceCount);
 
                     }
 
@@ -287,11 +287,11 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
     
     }
 
-    private void handleException(Integer totalInstanceCount, Integer passedTaskInstanceNumber,
-                                 Integer rejectedTaskInstanceNumber) {
+    private void handleException(Integer totalInstanceCount, Integer passedTaskInstanceCount,
+                                 Integer rejectedTaskInstanceCount) {
         String message =
-            "Error args: passedTaskInstanceNumber, rejectedTaskInstanceNumber, totalInstanceCount each is :"
-                + passedTaskInstanceNumber+"," + rejectedTaskInstanceNumber+"," + totalInstanceCount+".";
+            "Error args: passedTaskInstanceCount, rejectedTaskInstanceCount, totalInstanceCount each is :"
+                + passedTaskInstanceCount+"," + rejectedTaskInstanceCount+"," + totalInstanceCount+".";
         throw new EngineException(message);
     }
 

@@ -10,6 +10,7 @@ import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
@@ -33,6 +34,10 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
     @Getter
     private Map<String, ExtensionBindingResult> scanResult = new HashMap<String, ExtensionBindingResult>();
+
+    private String[] packageNameList;
+
+    public SimpleAnnotationScanner(String... packageNameList) {this.packageNameList = packageNameList;}
 
     protected static Set<Class<?>> scan(String... packageNames) throws IOException {
 
@@ -132,12 +137,11 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
     }
 
     public void scan(
-        ProcessEngineConfiguration processEngineConfiguration,
-        String packageName, Class<? extends Annotation> bindingAnnotationClazz) {
+        ProcessEngineConfiguration processEngineConfiguration, Class<? extends Annotation> bindingAnnotationClazz) {
 
         Set<Class<?>> classSet;
         try {
-            classSet = scan(packageName);
+            classSet = scan(this.packageNameList);
         } catch (IOException e) {
             throw new EngineException(e.getMessage(), e);
         }

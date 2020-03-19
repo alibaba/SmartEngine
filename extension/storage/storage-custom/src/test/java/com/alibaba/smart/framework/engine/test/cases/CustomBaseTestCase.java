@@ -36,7 +36,7 @@ public class CustomBaseTestCase {
 
     @Before
     public void setUp() {
-        this.simpleAnnotationScanner = new SimpleAnnotationScanner();
+        this.simpleAnnotationScanner = new SimpleAnnotationScanner(SmartEngine.class.getPackage().getName());
 
 
         PersisterSession.create();
