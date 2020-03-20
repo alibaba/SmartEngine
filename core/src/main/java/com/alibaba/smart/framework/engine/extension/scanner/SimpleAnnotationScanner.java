@@ -200,7 +200,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
                     bindingMap.put(bindKeyClass, newInstance);
 
                 } else {
-                    handleDuplicatedKey(group, bindKeyClass);
+                    handleDuplicatedKey(bindingMap, group, bindKeyClass, clazz);
                 }
 
             }
@@ -209,7 +209,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
     }
 
-    protected void handleDuplicatedKey(String group, Class bindKeyClass) {
+    protected void handleDuplicatedKey(Map<Class, Object> bindingMap, String group, Class bindKeyClass, Class targetClass) {
         throw new EngineException(
             "Duplicated bindKeyClass  found " + bindKeyClass + " for group " + group
                 + ", because of duplicated annotation or init twice.");
