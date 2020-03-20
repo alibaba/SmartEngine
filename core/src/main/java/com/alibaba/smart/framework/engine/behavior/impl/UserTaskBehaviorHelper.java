@@ -34,7 +34,7 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
 /**
  * Created by 高海军 帝奇 74394 on  2020-03-16 00:19.
  */
- abstract class UserTaskBehaviorHelper {
+public class UserTaskBehaviorHelper {
 
     static List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstances(ExecutionContext context,
                                                                                   UserTask userTask) {
@@ -97,7 +97,7 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
         taskAssigneeInstanceList.add(taskAssigneeInstance);
     }
 
-    static void markDoneEIAndCancelTI(ExecutionContext context, ExecutionInstance executionInstance,
+    public static void markDoneEIAndCancelTI(ExecutionContext context, ExecutionInstance executionInstance,
                                 List<ExecutionInstance> totalExecutionInstanceList, ExecutionInstanceStorage executionInstanceStorage, ProcessEngineConfiguration processEngineConfiguration) {
         // Complete all execution
         for (ExecutionInstance instance : totalExecutionInstanceList) {
@@ -194,7 +194,7 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
         }
     }
 
-    static void abortAndSetNeedPause(ExecutionContext context, ExecutionInstance executionInstance, SmartEngine smartEngine) {
+    public static void abortAndSetNeedPause(ExecutionContext context, ExecutionInstance executionInstance, SmartEngine smartEngine) {
         context.getProcessInstance().setStatus(InstanceStatus.aborted);
         smartEngine.getProcessCommandService().abort(executionInstance.getProcessInstanceId(),
             InstanceStatus.aborted.name());
