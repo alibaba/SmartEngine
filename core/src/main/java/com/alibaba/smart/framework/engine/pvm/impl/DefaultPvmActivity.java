@@ -27,10 +27,11 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     @Override
     public void enter(ExecutionContext context) {
 
-        fireEvent(context,PvmEventConstant.ACTIVITY_START.name());
 
         ActivityBehavior behavior = this.getBehavior();
         boolean needPause= behavior.enter(context, this);
+
+        fireEvent(context,PvmEventConstant.ACTIVITY_START.name());
 
 
         if (needPause) {
@@ -68,10 +69,11 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
     @Override
     public void execute(ExecutionContext context) {
-        fireEvent(context,PvmEventConstant.ACTIVITY_EXECUTE.name());
 
 
         this.getBehavior().execute(context,this);
+
+        fireEvent(context,PvmEventConstant.ACTIVITY_EXECUTE.name());
 
         if (context.isNeedPause()) {
 
