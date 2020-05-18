@@ -14,7 +14,6 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = ExclusiveGateway.class)
-
 public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<ExclusiveGateway> {
 
     public ExclusiveGatewayBehavior() {

@@ -15,6 +15,7 @@ public class RetryDelegation implements JavaDelegation {
 
     @Override
     public void execute(ExecutionContext executionContext) {
+
         if (retryTimes.getAndIncrement() < 1) {
             throw new RuntimeException("Execute occurs error.");
         }

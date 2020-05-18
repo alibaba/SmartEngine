@@ -18,6 +18,8 @@ public @interface ExtensionBinding {
 
     Class bindKey();
 
+    int priority() default 0;
+
     //AnnotationLookup lookup()  ;
 
     //Class<? extends AnnotationLookup> lookup() default PlaceHolderAnnotationLookup.class;
