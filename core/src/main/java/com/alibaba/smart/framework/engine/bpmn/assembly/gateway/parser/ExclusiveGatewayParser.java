@@ -30,6 +30,8 @@ public class ExclusiveGatewayParser extends AbstractBpmnParser<ExclusiveGateway>
     public ExclusiveGateway parseModel(XMLStreamReader reader, ParseContext context) {
         ExclusiveGateway exclusiveGateway = new ExclusiveGateway();
         exclusiveGateway.setId(XmlParseUtil.getString(reader, "id"));
+        exclusiveGateway.setName(XmlParseUtil.getString(reader, "name"));
+
 
         Map<String, String> properties = super.parseExtendedProperties(reader,  context);
         exclusiveGateway.setProperties(properties);

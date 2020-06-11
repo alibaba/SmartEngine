@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.constant.AdHocConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
+import com.alibaba.smart.framework.engine.util.ClassUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,9 +58,8 @@ public abstract class ExpressionUtil {
         String firstCharToUpperCase = Character.toUpperCase(type.charAt(0)) + type.substring(1);
 
         String className = PACKAGE_NAME + firstCharToUpperCase + EXPRESSION_EVALUATOR;
-        InstanceAccessor instanceAccessor = processEngineConfiguration
-            .getInstanceAccessor();
-        ExpressionEvaluator expressionEvaluator = (ExpressionEvaluator)instanceAccessor.access(className);
+
+        ExpressionEvaluator expressionEvaluator = (ExpressionEvaluator)ClassUtil.createOrGetInstance(className);
 
         if (null != expressionEvaluator) {
 

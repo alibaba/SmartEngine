@@ -22,7 +22,6 @@ public class AllServiceTaskJumpFromTest extends CustomBaseTestCase {
     @Test
     public void test() throws Exception {
 
-
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("all-simple-servicetask.bpmn.xml").getFirstProcessDefinition();
         assertEquals(9, processDefinition.getBaseElementList().size());
@@ -33,10 +32,6 @@ public class AllServiceTaskJumpFromTest extends CustomBaseTestCase {
         processInstance =   executionCommandService.jumpFrom(processInstance,"serviceTask1",null,null);
 
         Assert.assertEquals(InstanceStatus.completed,processInstance.getStatus());
-    }
-
-    private void persisteAndUpdateThreadLocal(ProcessInstance processInstance) {
-        PersisterSession.currentSession().putProcessInstance(processInstance);
     }
 
 }

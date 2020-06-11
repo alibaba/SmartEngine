@@ -33,6 +33,8 @@ public class ParallelGatewayParser extends AbstractBpmnParser<ParallelGateway> {
 
         ParallelGateway parallelGateway = new ParallelGateway();
         parallelGateway.setId(XmlParseUtil.getString(reader, "id"));
+        parallelGateway.setName(XmlParseUtil.getString(reader, "name"));
+
 
         Map<String, String> properties = super.parseExtendedProperties(reader,  context);
         parallelGateway.setProperties(properties);

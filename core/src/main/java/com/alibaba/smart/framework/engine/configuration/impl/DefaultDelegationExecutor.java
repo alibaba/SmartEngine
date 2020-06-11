@@ -47,44 +47,32 @@ public class DefaultDelegationExecutor implements DelegationExecutor {
             .getInstanceAccessor();
         Object delegation = instanceAccessor.access(className);
 
-        if (delegation instanceof ContextBoundedJavaDelegation) {
-            ContextBoundedJavaDelegation contextBoundedJavaDelegation = (ContextBoundedJavaDelegation)delegation;
-            contextBoundedJavaDelegation.setClassName(className);
-            contextBoundedJavaDelegation.setActivity(activity);
+        try{
+            if (delegation instanceof ContextBoundedJavaDelegation) {
+                ContextBoundedJavaDelegation contextBoundedJavaDelegation = (ContextBoundedJavaDelegation)delegation;
+                contextBoundedJavaDelegation.setClassName(className);
+                contextBoundedJavaDelegation.setActivity(activity);
 
-            contextBoundedJavaDelegation.execute(context);
+                contextBoundedJavaDelegation.execute(context);
 
-        } else if (delegation instanceof JavaDelegation) {
-            JavaDelegation javaDelegation = (JavaDelegation)delegation;
-            javaDelegation.execute(context);
+            } else if (delegation instanceof JavaDelegation) {
+                JavaDelegation javaDelegation = (JavaDelegation)delegation;
+                javaDelegation.execute(context);
 
-        } else if (delegation instanceof TccDelegation) {
+            } else if (delegation instanceof TccDelegation) {
 
-            TccDelegation tccDelegation = (TccDelegation)delegation;
+                TccDelegation tccDelegation = (TccDelegation)delegation;
 
-            TccResult tccResult = null;
-            try {
-                tccResult = tccDelegation.tryExecute(context);
-            } catch (Exception e) {
-                dealException(exceptionProcessor, e,context);
+                tccDelegation.tryExecute(context);
+
+            } else {
+                throw new EngineException("The delegation is not support : " + delegation.getClass());
             }
 
-            if (tccResult != null) {
-                if (tccResult.isSucessful()) {
-                    tccResult.getTarget();
-                } else {
-
-                    Object target = tccResult.getTarget();
-                    Exception exception = new Exception(target.toString());
-
-                    dealException(exceptionProcessor, exception,context);
-
-                }
-            }
-
-        } else {
-            throw new EngineException("The delegation not support : " + delegation.getClass());
+        }catch (Exception e){
+            dealException(exceptionProcessor, e,context);
         }
+
     }
 
     private static void dealException(ExceptionProcessor exceptionProcessor, Exception exception,ExecutionContext context) {

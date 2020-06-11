@@ -74,6 +74,13 @@
 
         </dependency>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- spring AOP 包 -->
 
         <dependency>

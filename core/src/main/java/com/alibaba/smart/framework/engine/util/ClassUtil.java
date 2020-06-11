@@ -16,6 +16,9 @@ public abstract  class ClassUtil {
 
 
     private  static Map<Class,Object> objectMap = new ConcurrentHashMap<Class, Object>();
+
+    private  static Map<String,Class> classMap = new ConcurrentHashMap<String, Class>();
+
     private static Lock lock = new ReentrantLock();
 
     public static ClassLoader getContextClassLoader() {
@@ -51,7 +54,14 @@ public abstract  class ClassUtil {
     public static Object createOrGetInstance(String className) throws EngineException {
         Class clazz;
         try {
-            clazz = getContextClassLoader().loadClass(className);
+
+            clazz = classMap.get(className);
+
+            if(null == clazz){
+                clazz = getContextClassLoader().loadClass(className);
+                classMap.put(className,clazz);
+            }
+
         } catch (ClassNotFoundException e) {
             throw new EngineException(e);
         }
