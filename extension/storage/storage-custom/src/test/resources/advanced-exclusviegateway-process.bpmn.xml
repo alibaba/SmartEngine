@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smartengine.org/schema/process"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="processSimulation"
+             version="1.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" targetNamespace="smart">
+    <process id="Process_1" isExecutable="false">
+        <startEvent id="startEvent"/>
+        <sequenceFlow id="seq0" sourceRef="startEvent" targetRef="serviceTask0"/>
+        <serviceTask id="serviceTask0"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.BasicServiceTaskDelegation"/>
+        <sequenceFlow id="seq2" sourceRef="serviceTask0" targetRef="receiveTask0"/>
+        <receiveTask id="receiveTask0"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.BasicServiceTaskDelegation"/>
+        <receiveTask id="receiveTask1"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.BasicServiceTaskDelegation"/>
+        <sequenceFlow id="seq_receiveTask0_to_receiveTask1" sourceRef="receiveTask0" targetRef="receiveTask1"/>
+        <exclusiveGateway id="exclusiveGateway" smart:class="com.alibaba.smart.framework.engine.test.delegation.ExclusiveGatewayDelegation"/>
+        <sequenceFlow id="seq_receiveTask0_to_exclusiveGateway" sourceRef="receiveTask1" targetRef="exclusiveGateway"/>
+        <receiveTask id="receiveTask_a"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.ExclusiveTaskDelegation"/>
+        <sequenceFlow id="seq_exclusiveGateway_to_receiveTask_a" sourceRef="exclusiveGateway" targetRef="receiveTask_a">
+            <conditionExpression type="mvel"><![CDATA[route.equals("a")]]></conditionExpression>
+        </sequenceFlow>
+        <receiveTask id="receiveTask_b"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.BasicServiceTaskDelegation"/>
+        <sequenceFlow id="seq_exclusiveGateway_to_receiveTask_b" sourceRef="exclusiveGateway" targetRef="receiveTask_b">
+            <conditionExpression type="mvel"><![CDATA[route.equals("b")]]></conditionExpression>
+        </sequenceFlow>
+        <endEvent id="endEvent"/>
+        <sequenceFlow id="SequenceFlow_01fp4jv" sourceRef="receiveTask_b" targetRef="endEvent"/>
+        <sequenceFlow id="SequenceFlow_0gzfhhs" sourceRef="receiveTask_a" targetRef="endEvent"/>
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="startEvent">
+                <dc:Bounds x="80" y="240" width="36" height="36"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="ReceiveTask_0flckx9_di" bpmnElement="receiveTask0">
+                <dc:Bounds x="207" y="230" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="seq_startEvent_to_receiveTask0_di" bpmnElement="seq_startEvent_to_receiveTask0">
+                <di:waypoint type="dc:Point" x="116" y="258"/>
+                <di:waypoint type="dc:Point" x="162" y="258"/>
+                <di:waypoint type="dc:Point" x="162" y="270"/>
+                <di:waypoint type="dc:Point" x="207" y="270"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="177" y="257" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="ReceiveTask_09p7gmq_di" bpmnElement="receiveTask1">
+                <dc:Bounds x="370" y="230" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="seq_receiveTask0_to_receiveTask1_di" bpmnElement="seq_receiveTask0_to_receiveTask1">
+                <di:waypoint type="dc:Point" x="307" y="270"/>
+                <di:waypoint type="dc:Point" x="370" y="270"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="338.5" y="248" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="exclusiveGateway_di" bpmnElement="exclusiveGateway" isMarkerVisible="true">
+                <dc:Bounds x="631" y="233" width="50" height="50"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="656" y="286" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="seq_receiveTask0_to_exclusiveGateway_di"
+                             bpmnElement="seq_receiveTask0_to_exclusiveGateway">
+                <di:waypoint type="dc:Point" x="470" y="270"/>
+                <di:waypoint type="dc:Point" x="551" y="270"/>
+                <di:waypoint type="dc:Point" x="551" y="258"/>
+                <di:waypoint type="dc:Point" x="631" y="258"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="566" y="257" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="ReceiveTask_0x1q1h7_di" bpmnElement="receiveTask_a">
+                <dc:Bounds x="742" y="142" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="seq_exclusiveGateway_to_receiveTask_a_di"
+                             bpmnElement="seq_exclusiveGateway_to_receiveTask_a">
+                <di:waypoint type="dc:Point" x="656" y="233"/>
+                <di:waypoint type="dc:Point" x="656" y="182"/>
+                <di:waypoint type="dc:Point" x="742" y="182"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="671" y="200.5" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="ReceiveTask_0kzo9ap_di" bpmnElement="receiveTask_b">
+                <dc:Bounds x="751" y="292" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="seq_exclusiveGateway_to_receiveTask_b_di"
+                             bpmnElement="seq_exclusiveGateway_to_receiveTask_b">
+                <di:waypoint type="dc:Point" x="656" y="283"/>
+                <di:waypoint type="dc:Point" x="656" y="332"/>
+                <di:waypoint type="dc:Point" x="751" y="332"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="671" y="300.5" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="EndEvent_0p4mofw_di" bpmnElement="endEvent">
+                <dc:Bounds x="896" y="240" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="914" y="279" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="SequenceFlow_01fp4jv_di" bpmnElement="SequenceFlow_01fp4jv">
+                <di:waypoint type="dc:Point" x="851" y="332"/>
+                <di:waypoint type="dc:Point" x="874" y="332"/>
+                <di:waypoint type="dc:Point" x="874" y="258"/>
+                <di:waypoint type="dc:Point" x="896" y="258"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="889" y="288" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="SequenceFlow_0gzfhhs_di" bpmnElement="SequenceFlow_0gzfhhs">
+                <di:waypoint type="dc:Point" x="842" y="182"/>
+                <di:waypoint type="dc:Point" x="869" y="182"/>
+                <di:waypoint type="dc:Point" x="869" y="258"/>
+                <di:waypoint type="dc:Point" x="896" y="258"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="884" y="213" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

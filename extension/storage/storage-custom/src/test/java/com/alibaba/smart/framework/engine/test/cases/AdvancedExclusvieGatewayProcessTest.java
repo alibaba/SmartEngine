@@ -16,7 +16,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-public class BasicProcessTest extends CommonTestCode {
+
+public class AdvancedExclusvieGatewayProcessTest extends CommonTestCode {
 
     @Override
     public void setUp() {
@@ -29,16 +30,11 @@ public class BasicProcessTest extends CommonTestCode {
     @Test
     public void test() throws Exception {
 
-        ExecutionInstance executionInstance = common_a("basic-process.bpmn.xml");
+        ExecutionInstance executionInstance = common_a("advanced-exclusviegateway-process.bpmn.xml");
 
-        Map<String, Object> ha = new HashMap<String, Object>();
-        ha.put("route", "a");
 
-        commonCode(ha, executionInstance);
+        commonCode(null, executionInstance);
 
     }
-
-
-
 
 }

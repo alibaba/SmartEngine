@@ -21,6 +21,10 @@ public class ExclusiveTaskDelegation implements TccDelegation {
         return counter.get();
     }
 
+    public static void resetCounter() {
+        counter.set(100L);
+    }
+
     @Override
     public TccResult tryExecute(ExecutionContext executionContext) {
         List<ActivityInstance> activityInstances = executionContext.getProcessInstance().getActivityInstances();
