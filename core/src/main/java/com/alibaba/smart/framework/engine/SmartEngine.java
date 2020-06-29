@@ -35,17 +35,18 @@ public interface SmartEngine {
 
     DeploymentCommandService getDeploymentCommandService();
 
+    DeploymentQueryService getDeploymentQueryService();
+
     ProcessCommandService getProcessCommandService();
+
+    ProcessQueryService getProcessQueryService();
+
+    ActivityQueryService getActivityQueryService();
 
     ExecutionCommandService getExecutionCommandService();
 
     TaskCommandService getTaskCommandService();
 
-    DeploymentQueryService getDeploymentQueryService();
-
-    ProcessQueryService getProcessQueryService();
-
-    ActivityQueryService getActivityQueryService();
 
     ExecutionQueryService getExecutionQueryService();
 

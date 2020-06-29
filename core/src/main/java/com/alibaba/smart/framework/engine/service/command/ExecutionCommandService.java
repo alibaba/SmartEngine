@@ -23,9 +23,15 @@ public interface ExecutionCommandService {
 
     ProcessInstance signal(String executionInstanceId);
 
+    /**
+     * UNSAFE!!!
+     *
+     */
     void markDone(String executionInstanceId);
 
     /**
+     * UNSAFE!!!
+     *
      * Signal processInstance from the specific activity
      *
      * executionInstanceId，request may be null
@@ -33,6 +39,8 @@ public interface ExecutionCommandService {
     ProcessInstance jumpFrom(ProcessInstance processInstance,String activityId,String executionInstanceId, Map<String, Object> request);
 
     /**
+     * UNSAFE!!!
+     *
      * Just jump to the specific activity only.
      *
      * executionInstanceId，request may be null
@@ -41,12 +49,16 @@ public interface ExecutionCommandService {
                            InstanceStatus instanceStatus, String processDefinitionActivityId);
 
     /**
+     * UNSAFE!!!
+     *
      * Just execute the delegation of the activity only, not signal process instance.
      *
      */
     void retry(ProcessInstance processInstance, String activityId, ExecutionContext executionContext);
     
     /**
+     * UNSAFE!!!
+     *
      * create new executionInstance for specific activity only.
      *
      * instance status is active default.

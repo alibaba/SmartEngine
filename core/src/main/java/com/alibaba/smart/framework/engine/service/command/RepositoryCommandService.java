@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource
  */
 public interface RepositoryCommandService {
 
-    ProcessDefinitionSource deploy(String classPathUri) ;
+    ProcessDefinitionSource deploy(String classPathResource) ;
 
     ProcessDefinitionSource deploy(InputStream inputStream) ;
 

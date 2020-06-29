@@ -99,7 +99,7 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
             entityId = Long.valueOf(taskAssigneeInstance.getInstanceId());
         }
 
-        TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(taskAssigneeEntity.getId().toString(),processEngineConfiguration );
+        TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(entityId.toString(),processEngineConfiguration );
         return resultTaskAssigneeInstance;
     }
 

@@ -42,7 +42,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
             entityId = Long.valueOf(deploymentInstance.getInstanceId());
         }
 
-        deploymentInstance = findById(entity.getId().toString(), processEngineConfiguration);
+        deploymentInstance = findById(entityId.toString(), processEngineConfiguration);
 
         return deploymentInstance;
     }

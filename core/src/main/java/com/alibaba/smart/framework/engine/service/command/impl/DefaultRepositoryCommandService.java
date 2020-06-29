@@ -69,11 +69,11 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 
     @Override
-    public ProcessDefinitionSource deploy(String classPathUri) throws DeployException {
+    public ProcessDefinitionSource deploy(String classPathResource) throws DeployException {
 
        ClassLoader classLoader = ClassUtil.getContextClassLoader();
 
-        ProcessDefinitionSource processDefinitionSource = this.parse(classLoader, classPathUri);
+        ProcessDefinitionSource processDefinitionSource = this.parse(classLoader, classPathResource);
 
         buildPvmDefinition( processDefinitionSource);
 

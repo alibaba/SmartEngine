@@ -11,7 +11,6 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.ContextBoundedJavaDelegation;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import com.alibaba.smart.framework.engine.delegation.TccDelegation;
-import com.alibaba.smart.framework.engine.delegation.TccResult;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 
@@ -32,14 +31,14 @@ public class DefaultDelegationExecutor implements DelegationExecutor {
         if(MapUtil.isNotEmpty(properties)){
             String className  =  properties.get("class");
             if(null != className){
-                behavior(context, className,activity);
+                execute(context, className,activity);
             }else {
                 LOGGER.info("No behavior found:"+activity.getId());
             }
         }
     }
 
-    private static void behavior(ExecutionContext context, String className, Activity activity) {
+    private static void execute(ExecutionContext context, String className, Activity activity) {
         ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
         ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();
 
