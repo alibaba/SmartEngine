@@ -73,7 +73,7 @@ public abstract  class CommonServiceHelper {
             for (Entry<String, Object> entry : request.entrySet()) {
                 String key = entry.getKey();
 
-                Set<String> blackList = variablePersister.getBlackList();
+                Set<String> blackList = variablePersister.getBlockList();
                 if(null!= blackList && blackList.contains(key)){
                     continue;
                 }

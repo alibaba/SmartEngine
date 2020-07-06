@@ -15,7 +15,7 @@ public class DefaultVariablePersister implements VariablePersister {
     }
 
     @Override
-    public Set<String> getBlackList() {
+    public Set<String> getBlockList() {
         return null;
     }
 

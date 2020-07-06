@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
@@ -77,6 +78,13 @@ public class DatabaseAuditProcessTest extends DatabaseBaseTestCase {
         ProcessInstance finalProcessInstance = processQueryService.findById(auditTaskInstance.getProcessInstanceId());
         assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
+
+        List<ActivityInstance> activityInstanceList =  activityQueryService.findAll(processInstance.getInstanceId());
+        Assert.assertEquals(6,activityInstanceList.size());
+
+        ActivityInstance activityInstance = activityInstanceList.get(0);
+
+        Assert.assertNotNull(activityInstance.getStartTime());
 
     }
 

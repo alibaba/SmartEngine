@@ -18,7 +18,7 @@ public interface VariablePersister {
      *
      * @return
      */
-    Set<String>  getBlackList();
+    Set<String> getBlockList();
 
     /**
      * 序列化.

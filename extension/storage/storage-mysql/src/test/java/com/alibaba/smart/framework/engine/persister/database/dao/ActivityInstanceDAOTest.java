@@ -53,6 +53,8 @@ public class ActivityInstanceDAOTest extends BaseElementTest {
 
         result = dao.findOne(entity.getId());
         Assert.assertNull(result);
+
+
     }
 
 }

@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 public class CustomVariablePersister implements VariablePersister {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomVariablePersister.class);
 
-    private static  Set<String> hashSet = new HashSet();
+    private static  Set<String> blockSet = new HashSet();
 
    static {
 
@@ -25,14 +25,14 @@ public class CustomVariablePersister implements VariablePersister {
            Field[] declaredFields = RequestMapSpecialKeyConstant.class.getDeclaredFields();
            for (Field declaredField : declaredFields) {
                String key= (String)declaredField.get(declaredField.getName());
-               hashSet.add(key);
+               blockSet.add(key);
            }
        } catch (IllegalAccessException e) {
            LOGGER.error(e.getMessage(),e);
        }
 
         //do something else.
-       hashSet.add("text");
+       blockSet.add("text");
    }
 
 
@@ -45,10 +45,10 @@ public class CustomVariablePersister implements VariablePersister {
 
 
     @Override
-    public Set<String> getBlackList() {
+    public Set<String> getBlockList() {
 
 
-        return hashSet;
+        return blockSet;
     }
 
     @Override

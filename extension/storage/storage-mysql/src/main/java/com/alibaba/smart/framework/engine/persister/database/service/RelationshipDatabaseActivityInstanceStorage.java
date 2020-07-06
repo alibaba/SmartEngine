@@ -1,8 +1,10 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -71,16 +73,23 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
         ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(Long.valueOf(instanceId));
 
-        ActivityInstance activityInstance  = new DefaultActivityInstance();
-        activityInstance.setStartTime(activityInstanceEntity.getGmtCreate());
-        activityInstance.setProcessDefinitionIdAndVersion(activityInstanceEntity.getProcessDefinitionIdAndVersion());
-        activityInstance.setInstanceId(activityInstanceEntity.getId().toString());
-        activityInstance.setProcessInstanceId(activityInstanceEntity.getProcessInstanceId().toString());
-        activityInstance.setProcessDefinitionActivityId(activityInstanceEntity.getProcessDefinitionActivityId());
+        ActivityInstance activityInstance = buildActivityInstanceFromEntity(activityInstanceEntity);
 
         return activityInstance;
     }
 
+    private ActivityInstance buildActivityInstanceFromEntity(ActivityInstanceEntity activityInstanceEntity) {
+        ActivityInstance activityInstance  = new DefaultActivityInstance();
+
+        activityInstance.setStartTime(activityInstanceEntity.getGmtCreate());
+        ((DefaultActivityInstance)activityInstance).setCompleteTime(activityInstanceEntity.getGmtModified());
+
+        activityInstance.setProcessDefinitionIdAndVersion(activityInstanceEntity.getProcessDefinitionIdAndVersion());
+        activityInstance.setInstanceId(activityInstanceEntity.getId().toString());
+        activityInstance.setProcessInstanceId(activityInstanceEntity.getProcessInstanceId().toString());
+        activityInstance.setProcessDefinitionActivityId(activityInstanceEntity.getProcessDefinitionActivityId());
+        return activityInstance;
+    }
 
     @Override
     public void remove(String instanceId,
@@ -95,19 +104,26 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
     public List<ActivityInstance> findAll(String processInstanceId,
                                           ProcessEngineConfiguration processEngineConfiguration) {
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
+
+
         List<ActivityInstanceEntity> activityInstanceEntities  = activityInstanceDAO.findAllActivity(Long.valueOf(processInstanceId));
 
-        List<ActivityInstance> activityInstanceList= new ArrayList<ActivityInstance>();
+        if(CollectionUtil.isNotEmpty(activityInstanceEntities)){
 
-        for (ActivityInstanceEntity activityInstanceEntity : activityInstanceEntities) {
-            ActivityInstance activityInstance = new DefaultActivityInstance();
+            List<ActivityInstance> activityInstanceList= new ArrayList<ActivityInstance>(activityInstanceEntities.size());
 
-            activityInstance.setProcessDefinitionIdAndVersion(activityInstanceEntity.getProcessDefinitionIdAndVersion());
-            activityInstance.setProcessInstanceId(processInstanceId);
-            activityInstance.setProcessDefinitionActivityId(activityInstanceEntity.getProcessDefinitionActivityId());
-            activityInstanceList.add(activityInstance);
+            for (ActivityInstanceEntity activityInstanceEntity : activityInstanceEntities) {
+
+                ActivityInstance activityInstance = buildActivityInstanceFromEntity(activityInstanceEntity);
+
+                activityInstanceList.add(activityInstance);
+            }
+
+            return activityInstanceList;
+        }else {
+            return Collections.emptyList();
         }
 
-        return activityInstanceList;
+
     }
 }

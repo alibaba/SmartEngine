@@ -6,8 +6,8 @@
     <groupId>com.alibaba.smart.framework</groupId>
     <artifactId>smart-engine</artifactId>
     <!--  mvn versions:set -DnewVersion=2.0.8-SNAPSHOT -DgenerateBackupPoms=false  -->
-    <!--  mvn versions:set -DnewVersion=2.0.9 -DgenerateBackupPoms=false  -->
-    <version>2.0.9</version>
+    <!--  mvn versions:set -DnewVersion=2.1.0 -DgenerateBackupPoms=false  -->
+    <version>2.1.0</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
@@ -20,12 +20,11 @@
         <connection>scm:git:ssh://git@github.com:alibaba/SmartEngine.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:alibaba/SmartEngine.git</developerConnection>
         <url>https://github.com/alibaba/SmartEngine/tree/master</url>
-        <tag>smart-engine-2.0.4</tag>
     </scm>
 
     <developers>
         <developer>
-            <id>vai</id>
+            <id>geecoodeer</id>
             <name>Haijun Gao</name>
             <email>ghjapple@163.com</email>
         </developer>
