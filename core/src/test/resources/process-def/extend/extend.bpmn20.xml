@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:process="http://test.com/process" targetNamespace="http://bpm.taobao.com/26/ae_dispute" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+
+    <bpmn2:process id="extend" name="流程111" isExecutable="true" process:versionTag="8">
+        <bpmn2:extensionElements>
+            <process:field name="inputParams">
+                <process:string>[{"key":"userId","type":"java.lang.Long"}]</process:string>
+            </process:field>
+            <process:field name="outputParams">
+                <process:string>[{"key":"orderId","type":"java.lang.Long"}]</process:string>
+            </process:field>
+        </bpmn2:extensionElements>
+        <bpmn2:startEvent id="StartEvent_1" name="开始节点">
+        </bpmn2:startEvent>
+        <bpmn2:endEvent id="EndEvent_0sy5sik">
+        </bpmn2:endEvent>
+        <bpmn2:sequenceFlow id="SequenceFlow_15ehs7q" sourceRef="StartEvent_1" targetRef="EndEvent_0sy5sik"/>
+    </bpmn2:process>
+</bpmn2:definitions>
