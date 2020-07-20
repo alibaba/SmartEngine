@@ -16,7 +16,7 @@ It can be used to orchestrate multiple service in micro service architecture, st
 ## Main Feature
 
 0. CQRS-style APIs to start,signal,query process instance，task，activity.
-1. Support basic BPMN symbols : StartEvent,EndEvent,SequenceFlow,ExclusiveGateway,ServiceTask,ReceiveTask.
+1. Support basic BPMN symbols : StartEvent,EndEvent,SequenceFlow,ExclusiveGateway,ScriptTask,ReceiveTask.
 2. Provide a simple  way to improve performance and reduce storage cost in some simple process scenario.
 3. Other：Process Jump; VariablePersister;TaskAssigneeDispatcher;Countersign.
 
