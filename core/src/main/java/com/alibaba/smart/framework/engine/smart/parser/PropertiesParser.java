@@ -6,7 +6,7 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.Extension;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionDecorator;
 import com.alibaba.smart.framework.engine.smart.Properties;
 import com.alibaba.smart.framework.engine.smart.Value;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
@@ -29,7 +29,7 @@ public class PropertiesParser extends AbstractElementParser<Properties> {
 
     @Override
     protected void decorateChild(Properties properties, BaseElement child) {
-        if (child instanceof Extension) {
+        if (child instanceof ExtensionDecorator) {
             properties.getExtensionList().add((Value)child);
         }
     }

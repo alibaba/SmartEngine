@@ -16,6 +16,7 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
@@ -56,6 +57,12 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
         while (XmlParseUtil.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
             if (element instanceof BaseElement) {
+
+                if(element instanceof ExtensionElements){
+                    processDefinition.setExtensionElements((ExtensionElements)element);
+                }
+
+
                 elements.add((BaseElement) element);
                 if(element instanceof IdBasedElement){
                     IdBasedElement idBasedElement = (IdBasedElement)element;

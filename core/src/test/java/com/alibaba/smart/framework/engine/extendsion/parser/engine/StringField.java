@@ -1,13 +1,8 @@
 package com.alibaba.smart.framework.engine.extendsion.parser.engine;
 
-import java.util.Map;
-
 import javax.xml.namespace.QName;
 
-import com.alibaba.smart.framework.engine.common.util.MapUtil;
-import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
-import com.alibaba.smart.framework.engine.model.assembly.Extension;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
+import com.alibaba.smart.framework.engine.model.assembly.NoneIdBasedElement;
 
 import lombok.Data;
 
@@ -16,7 +11,7 @@ import lombok.Data;
  * @create 2020-07-16 11:41 下午
  */
 @Data
-public class StringField implements Extension {
+public class StringField implements NoneIdBasedElement {
     static String PROCESS_NS ="http://test.com/process";
 
     private static final long serialVersionUID = -5129848456612155165L;
@@ -25,22 +20,7 @@ public class StringField implements Extension {
 
     private String value;
 
-    @Override
-    public String getType() {
-        return ExtensionElementsConstant.PROPERTIES;
-    }
 
-    @Override
-    public void decorate(ExtensionElements extensionElements) {
-        Map map =  (Map)extensionElements.getDecorationMap().get(getType());
-
-        if(null == map){
-            map = MapUtil.newHashMap();
-            extensionElements.getDecorationMap().put(this.getType(),map);
-        }
-
-        map.put("value",this.getValue());
-    }
 }
 
 

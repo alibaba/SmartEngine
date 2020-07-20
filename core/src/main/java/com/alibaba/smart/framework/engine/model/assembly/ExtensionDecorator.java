@@ -5,7 +5,7 @@ package com.alibaba.smart.framework.engine.model.assembly;
  * @author ettear 2016.04.13
  */
 
-public interface Extension extends NoneIdBasedElement {
+public interface ExtensionDecorator extends NoneIdBasedElement {
 
     String getType();
 

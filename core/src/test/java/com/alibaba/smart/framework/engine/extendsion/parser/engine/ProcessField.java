@@ -6,7 +6,7 @@ import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
-import com.alibaba.smart.framework.engine.model.assembly.Extension;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionDecorator;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 
 import lombok.Data;
@@ -16,7 +16,7 @@ import lombok.Data;
  * @create 2020-07-16 9:42 下午
  */
 @Data
-public class ProcessField implements Extension {
+public class ProcessField implements ExtensionDecorator {
     static String PROCESS_NS ="http://test.com/process";
 
     private static final long serialVersionUID = -5129848456612155165L;
@@ -34,14 +34,13 @@ public class ProcessField implements Extension {
 
     @Override
     public void decorate(ExtensionElements extensionElements) {
-        Map map =  (Map)extensionElements.getDecorationMap().get(getType());
+        Map map = (Map)extensionElements.getDecorationMap().get(getType());
 
-        if(null == map){
+        if (null == map) {
             map = MapUtil.newHashMap();
-            extensionElements.getDecorationMap().put(this.getType(),map);
+            extensionElements.getDecorationMap().put(this.getType(), map);
         }
 
-        map.put(this.getName(),this.getValue());
-
+        map.put(this.getName(), this.getValue());
     }
 }

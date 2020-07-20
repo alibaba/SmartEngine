@@ -6,8 +6,9 @@ import com.alibaba.smart.framework.engine.configuration.impl.DefaultIdGenerator;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource;
-import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
@@ -21,7 +22,7 @@ import org.junit.Test;
  * @author zilong.jiangzl
  * @create 2020-07-17 2:29 下午
  */
-public class TestSmartEngineExt {
+public class ExtenstionTest {
 
 
     private SmartEngine smartEngine;
@@ -43,7 +44,7 @@ public class TestSmartEngineExt {
         processEngineConfiguration.setAnnotationScanner(
             new SimpleAnnotationScanner(
                 SmartEngine.class.getPackage().getName(),
-                TestSmartEngineExt.class.getPackage().getName()));
+                ExtenstionTest.class.getPackage().getName()));
         smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 
@@ -57,13 +58,13 @@ public class TestSmartEngineExt {
     @Test
     public void testServiceTask() throws Exception {
         //1. 部署流程定义
-        ProcessDefinitionSource processDefinition = repositoryCommandService
+        ProcessDefinitionSource processDefinitionSource = repositoryCommandService
                 .deploy("process-def/extend/extend.bpmn20.xml");
 
-        //2.启动流程实例
-        ProcessInstance processInstance = processCommandService.start(
-            processDefinition.getFirstProcessDefinition().getId(),  processDefinition.getFirstProcessDefinition().getVersion()
-        );
-        Assert.assertNotNull(processInstance);
+        ProcessDefinition processDefinition = processDefinitionSource.getProcessDefinitionList().get(0);
+
+        Assert.assertNotNull(processDefinition);
+        ExtensionElements extensionElements = processDefinition.getExtensionElements();
+        Assert.assertNotNull(extensionElements);
     }
 }

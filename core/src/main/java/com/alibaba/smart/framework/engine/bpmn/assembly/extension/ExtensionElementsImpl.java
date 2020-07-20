@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.bpmn.constant.BpmnNameSpaceConstant;
-import com.alibaba.smart.framework.engine.model.assembly.Extension;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionDecorator;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 
 import lombok.Data;
@@ -22,12 +22,12 @@ public class ExtensionElementsImpl implements ExtensionElements {
     private static final long serialVersionUID = -5080932640599337544L;
     public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "extensionElements");
 
-    private List<Extension> extensionList = new ArrayList<Extension>();
+    private List<ExtensionDecorator> extensionList = new ArrayList<ExtensionDecorator>();
 
     private Map<String,Object> decorationMap = new HashMap<String, Object>();
 
     @Override
-    public void decorate(Extension extension) {
+    public void decorate(ExtensionDecorator extension) {
 
         this.extensionList.add(extension);
 

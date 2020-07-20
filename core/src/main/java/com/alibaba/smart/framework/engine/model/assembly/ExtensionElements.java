@@ -5,10 +5,10 @@ import java.util.Map;
 
 public interface ExtensionElements extends NoneIdBasedElement {
 
-    void decorate(Extension extension);
+    void decorate(ExtensionDecorator extension);
 
 
-    List<Extension> getExtensionList();
+    List<ExtensionDecorator> getExtensionList();
 
     //void setExtensionList(List<Extension> extensionList);
 
