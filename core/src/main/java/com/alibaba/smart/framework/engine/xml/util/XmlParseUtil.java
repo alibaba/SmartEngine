@@ -4,7 +4,15 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class XmlParseUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractElementParser.class);
+
 
     public static String getString(XMLStreamReader reader, String name) {
         return reader.getAttributeValue((String)null, name);
@@ -55,4 +63,38 @@ public class XmlParseUtil {
             }
         }
     }
+
+    //public static void skipToStartElementEvent(XMLStreamReader reader) throws XMLStreamException {
+    //
+    //    while (reader.hasNext()) {
+    //
+    //        int event = reader.next();
+    //
+    //        LOGGER.info(event + reader.getEventType() + "");
+    //        if (event == XMLStreamConstants.START_ELEMENT) {
+    //
+    //            LOGGER.info("!!!BREAK!!!!"+event + reader.getEventType() + "");
+    //
+    //            break;
+    //        }
+    //
+    //    }
+    //}
+    //
+    //public static void skipToEndElementEvent(XMLStreamReader reader) throws XMLStreamException {
+    //
+    //    while (reader.hasNext()) {
+    //
+    //        int event = reader.next();
+    //
+    //        LOGGER.info(event + reader.getEventType() + "");
+    //        if (event == XMLStreamConstants.END_ELEMENT) {
+    //
+    //            LOGGER.info("!!!BREAK!!!!"+event + reader.getEventType() + "");
+    //
+    //            break;
+    //        }
+    //
+    //    }
+    //}
 }

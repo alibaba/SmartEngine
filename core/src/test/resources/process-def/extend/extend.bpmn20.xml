@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:process="http://test.com/process" targetNamespace="http://bpm.alibaba.com/" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+<bpmn2:process id="test_process" name="事件流程" isExecutable="true" process:versionTag="8">
+    <bpmn2:extensionElements>
+        <process:field name="inputParams">
+            <process:string>[{"key":"buyerOrderMessageCount","type":"java.lang.Long"}]</process:string>
+        </process:field>
+        <process:field name="outputParams">
+            <process:string>[{"key":"logisticsSpecialEventExtendDay","type":"java.lang.Long"}]</process:string>
+        </process:field>
+    </bpmn2:extensionElements>
+    <bpmn2:startEvent id="StartEvent_1" name="开始节点">
+        <bpmn2:outgoing>SequenceFlow_1bvtmc7</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_1bvtmc7" sourceRef="StartEvent_1" targetRef="Task_149cc1c"/>
+    <bpmn2:businessRuleTask id="Task_149cc1c" name="决策事件规则" process:code="ruleTask" process:class="com.test.delegate.DecisionRuleTask">
+        <bpmn2:extensionElements>
+            <process:field name="engineType" stringValue="rule-expression"/>
+            <process:field name="timeout" integerValue="12000"/>
+            <process:field name="times" integerValue="3"/>
+            <process:field name="interval" stringValue="1000"/>
+            <process:field name="tactics" stringValue="sameTimes"/>
+            <process:field name="outputParams">
+                <process:string>[{"key":"xruleName","source":"xruleName"},{"key":"roLogisticsSpecialEventExtendDay","source":"roLogisticsSpecialEventExtendDay"}]</process:string>
+            </process:field>
+            <process:field name="ruleId" stringValue="334"/>
+            <process:field name="ruleName" stringValue="决策事件规则"/>
+            <process:field name="inputParams">
+                <process:string>[{"key":"sendGoodsTime"},{"key":"receiptCountry"},{"key":"logisticsProcessTrackPoint"},{"key":"logisticsDeliveryResCode"},{"key":"caseBizType"},{"key":"logisticsServiceChannel"}]</process:string>
+            </process:field>
+            <process:field name="processOutputParams">
+                <process:string>[{"key":"logisticsSpecialEventExtendDay","type":"java.lang.Long","children":[],"assignmentType":"variable","source":"roLogisticsSpecialEventExtendDay"}]</process:string>
+            </process:field>
+        </bpmn2:extensionElements>
+        <bpmn2:incoming>SequenceFlow_1bvtmc7</bpmn2:incoming>
+        <bpmn2:outgoing>SequenceFlow_15ehs7q</bpmn2:outgoing>
+    </bpmn2:businessRuleTask>
+    <bpmn2:endEvent id="EndEvent_0sy5sik">
+        <bpmn2:incoming>SequenceFlow_15ehs7q</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_15ehs7q" sourceRef="Task_149cc1c" targetRef="EndEvent_0sy5sik"/>
+</bpmn2:process>
+</bpmn2:definitions>

@@ -7,7 +7,7 @@ import java.util.Map;
 import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionBasedElement;
+import com.alibaba.smart.framework.engine.model.assembly.ExtensionElementContainer;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 
 import lombok.Getter;
@@ -27,7 +27,7 @@ public class RightJavaDelegation implements JavaDelegation {
 
         String processDefinitionActivityId =  executionContext.getExecutionInstance().getProcessDefinitionActivityId();
 
-        ExtensionBasedElement idBasedElement = (ExtensionBasedElement)executionContext.getProcessDefinition().getIdBasedElementMap().get(
+        ExtensionElementContainer idBasedElement = (ExtensionElementContainer)executionContext.getProcessDefinition().getIdBasedElementMap().get(
             processDefinitionActivityId);
 
         ExtensionElements extensionElements = idBasedElement.getExtensionElements();

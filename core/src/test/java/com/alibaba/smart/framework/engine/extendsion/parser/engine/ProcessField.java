@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.smart;
+package com.alibaba.smart.framework.engine.extendsion.parser.engine;
 
 import java.util.Map;
 
@@ -6,22 +6,26 @@ import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
-import com.alibaba.smart.framework.engine.constant.SmartBase;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionDecorator;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 
 import lombok.Data;
 
 /**
- * @author ettear
- * Created by ettear on 06/08/2017.
+ * @author zilong.jiangzl
+ * @create 2020-07-16 9:42 下午
  */
 @Data
-public class Value  implements ExtensionDecorator {
-    public final static QName type = new QName(SmartBase.SMART_NS, "value");
+public class ProcessField implements ExtensionDecorator {
+    static String PROCESS_NS ="http://test.com/process";
+
+    private static final long serialVersionUID = -5129848456612155165L;
+
+    public final static QName type = new QName(PROCESS_NS, "field");
 
     private String name;
     private String value;
+    private String valueType;
 
     @Override
     public String getType() {
@@ -30,15 +34,13 @@ public class Value  implements ExtensionDecorator {
 
     @Override
     public void decorate(ExtensionElements extensionElements) {
+        Map map = (Map)extensionElements.getDecorationMap().get(getType());
 
-        Map map =  (Map)extensionElements.getDecorationMap().get(getType());
-
-        if(null == map){
+        if (null == map) {
             map = MapUtil.newHashMap();
-            extensionElements.getDecorationMap().put(this.getType(),map);
+            extensionElements.getDecorationMap().put(this.getType(), map);
         }
 
-         map.put(this.getName(),this.getValue());
-
+        map.put(this.getName(), this.getValue());
     }
 }
