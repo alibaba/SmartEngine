@@ -9,7 +9,6 @@ import com.alibaba.smart.framework.engine.extendsion.parser.engine.StringField;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionDecorator;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
@@ -28,6 +27,12 @@ public class ProcessFieldParser extends AbstractBpmnParser<ProcessField> {
         value.setValue(XmlParseUtil.getString(reader, "stringValue"));
         if (value.getValue() != null) {
             value.setValueType("string");
+            return value;
+        }
+
+        value.setValue(XmlParseUtil.getString(reader, "integerValue"));
+        if (value.getValue() != null) {
+            value.setValueType("integer");
             return value;
         }
 
