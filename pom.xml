@@ -70,8 +70,6 @@
     <modules>
         <module>core</module>
 
-        <module>extension/integration/spring-starter</module>
-
         <module>extension/storage/storage-common</module>
         <module>extension/storage/storage-custom</module>
         <module>extension/storage/storage-mysql</module>
