@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.smart.parser;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
@@ -32,6 +33,8 @@ public class PropertiesParser extends AbstractElementParser<Properties> {
     protected void decorateChild(Properties properties, BaseElement child) {
         if (child instanceof PropertiesElementMarker) {
             properties.getExtensionList().add((PropertiesElementMarker)child);
+        }else{
+            throw  new EngineException("Should be a instance of PropertiesElementMarker:" + child.getClass());
         }
     }
 
