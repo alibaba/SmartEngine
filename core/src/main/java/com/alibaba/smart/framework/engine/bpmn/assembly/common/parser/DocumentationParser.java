@@ -23,7 +23,7 @@ public class DocumentationParser extends AbstractElementParser<Documentation>   
 
     @Override
     public QName getQname() {
-        return Documentation.type;
+        return Documentation.qtype;
     }
 
     @Override

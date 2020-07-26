@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractTask;
  */
 public class SendTask extends AbstractTask {
 
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "sendTask");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "sendTask");
     private static final long serialVersionUID = 4322119220754998002L;
 
     @Override

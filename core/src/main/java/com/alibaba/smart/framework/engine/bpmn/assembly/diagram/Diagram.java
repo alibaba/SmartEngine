@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.model.assembly.NoneIdBasedElement;
  */
 public class Diagram implements NoneIdBasedElement {
 
-    public final static QName type = new QName(BpmnNameSpaceConstant.BPMNDI_NAME_SPACE, "BPMNDiagram");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.BPMNDI_NAME_SPACE, "BPMNDiagram");
 
     private static final long serialVersionUID = -2660788294142169268L;
 

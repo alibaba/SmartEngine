@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionDecorator;
 import com.alibaba.smart.framework.engine.smart.Properties;
+import com.alibaba.smart.framework.engine.smart.PropertiesElementMarker;
 import com.alibaba.smart.framework.engine.smart.Value;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
@@ -29,14 +30,14 @@ public class PropertiesParser extends AbstractElementParser<Properties> {
 
     @Override
     protected void decorateChild(Properties properties, BaseElement child) {
-        if (child instanceof ExtensionDecorator) {
-            properties.getExtensionList().add((Value)child);
+        if (child instanceof PropertiesElementMarker) {
+            properties.getExtensionList().add((PropertiesElementMarker)child);
         }
     }
 
     @Override
     public QName getQname() {
-        return Properties.type;
+        return Properties.qtype;
     }
 
     @Override

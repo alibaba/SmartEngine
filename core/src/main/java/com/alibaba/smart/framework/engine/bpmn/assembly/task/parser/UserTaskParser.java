@@ -21,7 +21,7 @@ public class UserTaskParser extends AbstractBpmnParser<UserTask> {
 
     @Override
     public QName getQname() {
-        return UserTask.type;
+        return UserTask.qtype;
     }
 
     @Override

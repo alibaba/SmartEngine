@@ -18,7 +18,7 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
 
     @Override
     public QName getQname() {
-        return SequenceFlow.type;
+        return SequenceFlow.qtype;
     }
 
     @Override

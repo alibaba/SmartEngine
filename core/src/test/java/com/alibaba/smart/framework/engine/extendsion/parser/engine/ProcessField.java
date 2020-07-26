@@ -21,24 +21,24 @@ public class ProcessField implements ExtensionDecorator {
 
     private static final long serialVersionUID = -5129848456612155165L;
 
-    public final static QName type = new QName(PROCESS_NS, "field");
+    public final static QName qtype = new QName(PROCESS_NS, "field");
 
     private String name;
     private String value;
     private String valueType;
 
     @Override
-    public String getType() {
+    public String getDecoratorType() {
         return ExtensionElementsConstant.PROPERTIES;
     }
 
     @Override
     public void decorate(ExtensionElements extensionElements) {
-        Map map = (Map)extensionElements.getDecorationMap().get(getType());
+        Map map = (Map)extensionElements.getDecorationMap().get(getDecoratorType());
 
         if (null == map) {
             map = MapUtil.newHashMap();
-            extensionElements.getDecorationMap().put(this.getType(), map);
+            extensionElements.getDecorationMap().put(this.getDecoratorType(), map);
         }
 
         map.put(this.getName(), this.getValue());

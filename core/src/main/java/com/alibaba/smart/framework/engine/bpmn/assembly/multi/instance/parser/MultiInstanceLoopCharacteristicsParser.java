@@ -26,7 +26,7 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
 
     @Override
     public QName getQname() {
-        return MultiInstanceLoopCharacteristics.type;
+        return MultiInstanceLoopCharacteristics.qtype;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class ServiceTaskParser extends AbstractBpmnParser<ServiceTask> {
 
     @Override
     public QName getQname() {
-        return ServiceTask.type;
+        return ServiceTask.qtype;
     }
 
     @Override

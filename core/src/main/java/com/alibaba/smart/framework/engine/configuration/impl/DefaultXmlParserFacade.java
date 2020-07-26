@@ -67,7 +67,7 @@ public class DefaultXmlParserFacade implements
             try {
                 Class aClass = entry.getKey();
                 Object o = aClass.newInstance();
-                Field field = aClass.getField("type");
+                Field field = aClass.getField("qtype");
                 QName qName=   (QName)field.get(o);
                 if(nodeQname.equals( qName)){
                     ElementParser artifactParser = (ElementParser)  entry.getValue();

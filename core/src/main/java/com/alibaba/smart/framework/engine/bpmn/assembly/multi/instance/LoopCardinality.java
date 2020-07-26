@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.model.assembly.NoneIdBasedElement;
  * Created by ettear on 15/10/2017.
  */
 public class LoopCardinality implements NoneIdBasedElement {
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "loopCardinality");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "loopCardinality");
 
     private ConditionExpression cardinalityExpression;
 

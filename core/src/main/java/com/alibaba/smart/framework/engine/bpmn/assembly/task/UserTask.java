@@ -19,7 +19,7 @@ public class UserTask extends AbstractTask {
     private static final long serialVersionUID = 2241766485621486315L;
 
 
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "userTask");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "userTask");
 
     private MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics;
 

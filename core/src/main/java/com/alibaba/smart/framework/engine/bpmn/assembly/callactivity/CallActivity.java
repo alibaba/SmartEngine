@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class CallActivity extends AbstractActivity {
 
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "callActivity");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "callActivity");
 
     private String calledElement;
 

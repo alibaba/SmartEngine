@@ -24,7 +24,7 @@ public class ProcessDefinitionSourceParser extends AbstractElementParser<Process
 
     @Override
     public QName getQname() {
-        return ProcessDefinitionSourceImpl.type;
+        return ProcessDefinitionSourceImpl.qtype;
     }
 
     @Override

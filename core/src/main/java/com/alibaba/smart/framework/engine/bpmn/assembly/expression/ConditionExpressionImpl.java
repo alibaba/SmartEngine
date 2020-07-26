@@ -15,7 +15,7 @@ public class ConditionExpressionImpl implements ConditionExpression {
 
 
     private static final long serialVersionUID = -6152070683207905381L;
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "conditionExpression");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "conditionExpression");
 
     private String expressionType;
     private String expressionContent;

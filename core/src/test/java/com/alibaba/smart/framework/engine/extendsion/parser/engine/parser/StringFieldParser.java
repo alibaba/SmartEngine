@@ -46,7 +46,7 @@ public class StringFieldParser extends AbstractElementParser<StringField> {
 
     @Override
     public QName getQname() {
-        return StringField.type;
+        return StringField.qtype;
     }
 
     @Override

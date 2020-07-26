@@ -20,7 +20,7 @@ public class ConditionExpressionParser extends AbstractElementParser<ConditionEx
 
     @Override
     public QName getQname() {
-        return ConditionExpressionImpl.type;
+        return ConditionExpressionImpl.qtype;
     }
 
     @Override

@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class EndEvent extends AbstractEvent {
 
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "endEvent");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "endEvent");
 
     private static final long serialVersionUID = 3529827842581828898L;
 

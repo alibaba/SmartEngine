@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.model.assembly.NoneIdBasedElement;
  * Created by ettear on 16/10/2017.
  */
 public class InputDataItem implements NoneIdBasedElement {
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "inputDataItem");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "inputDataItem");
 
     private String name;
 

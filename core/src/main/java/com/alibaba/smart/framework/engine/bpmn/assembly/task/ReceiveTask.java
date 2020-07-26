@@ -18,7 +18,7 @@ public class ReceiveTask extends AbstractTask {
     private static final long serialVersionUID = 5926063576480176197L;
 
 
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "receiveTask");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "receiveTask");
 
     @Override
     public String toString() {

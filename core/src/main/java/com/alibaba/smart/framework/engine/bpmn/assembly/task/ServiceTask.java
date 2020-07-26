@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class ServiceTask extends AbstractTask {
 
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "serviceTask");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "serviceTask");
     private static final long serialVersionUID = 2900871220232200586L;
 
 

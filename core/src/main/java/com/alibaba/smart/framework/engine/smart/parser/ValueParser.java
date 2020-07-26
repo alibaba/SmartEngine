@@ -19,8 +19,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class ValueParser extends AbstractElementParser<Value> {
 
-
-
     @Override
     protected Value parseModel(XMLStreamReader reader, ParseContext context) {
         Value value = new Value();
@@ -32,7 +30,7 @@ public class ValueParser extends AbstractElementParser<Value> {
 
     @Override
     public QName getQname() {
-        return Value.type;
+        return Value.qtype;
     }
 
     @Override

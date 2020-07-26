@@ -20,7 +20,7 @@ import lombok.Data;
 public class ExtensionElementsImpl implements ExtensionElements {
 
     private static final long serialVersionUID = -5080932640599337544L;
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "extensionElements");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "extensionElements");
 
     private List<ExtensionDecorator> extensionList = new ArrayList<ExtensionDecorator>();
 

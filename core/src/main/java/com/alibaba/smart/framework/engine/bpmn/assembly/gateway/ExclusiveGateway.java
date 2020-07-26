@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class ExclusiveGateway extends AbstractGateway {
 
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "exclusiveGateway");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "exclusiveGateway");
     /**
      *
      */

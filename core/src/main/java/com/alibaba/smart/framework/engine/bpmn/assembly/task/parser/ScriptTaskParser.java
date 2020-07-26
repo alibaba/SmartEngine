@@ -22,7 +22,7 @@ public class ScriptTaskParser extends AbstractBpmnParser<ScriptTask> {
 
     @Override
     public QName getQname() {
-        return ScriptTask.type;
+        return ScriptTask.qtype;
     }
 
     @Override

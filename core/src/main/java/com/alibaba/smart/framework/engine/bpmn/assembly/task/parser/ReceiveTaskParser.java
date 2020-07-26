@@ -19,7 +19,7 @@ public class ReceiveTaskParser extends AbstractBpmnParser<ReceiveTask> {
 
     @Override
     public QName getQname() {
-        return ReceiveTask.type;
+        return ReceiveTask.qtype;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class EndEventParser extends AbstractBpmnParser<EndEvent> {
 
     @Override
     public QName getQname() {
-        return EndEvent.type;
+        return EndEvent.qtype;
     }
 
     @Override

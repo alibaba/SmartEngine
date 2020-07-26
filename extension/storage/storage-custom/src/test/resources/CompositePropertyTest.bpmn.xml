@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:smart="http://smartengine.org/schema/process" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="SimpleProcessTest" name="简单测试" isExecutable="true" smart:versionTag="1.0.0" smart:historyTimeToLive="2020-7-23">
+    <bpmn:documentation>简单测试流程</bpmn:documentation>
+    <bpmn:extensionElements>
+      <smart:properties>
+        <smart:property type="json" name="key" value="{}"/>
+        <smart:property name="inParam2" />
+        <smart:property name="outParam1" />
+        <smart:property name="outParam2" />
+      </smart:properties>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="theStarter" name="开始&#10;">
+      <bpmn:documentation>开始</bpmn:documentation>
+      <bpmn:outgoing>Flow_0bngvff</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0bngvff" sourceRef="theStarter" targetRef="task1" />
+    <bpmn:serviceTask id="task1" name="自动测试任务&#10;" smart:class="com.alibaba.smart.framework.engine.test.delegation.serviceTaskBusinessDelegation1">
+      <bpmn:documentation>自动执行的测试任务，取得流程对应的输入参数，并进行打印，同时给流程的返回参数进行赋值。
+</bpmn:documentation>
+      <bpmn:extensionElements>
+        <smart:properties>
+          <smart:property name="task1InParam1" value="process.inParam1" />
+          <smart:property name="task1InParam2" value="process.inParam2" />
+          <smart:property name="task1OutParam1" />
+          <smart:property name="task1OutParam2" />
+          <smart:property name="process.outParam1" value="task1OutParam2" />
+        </smart:properties>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0vo9cmf</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="theEnd" name="结束">
+      <bpmn:documentation>结束</bpmn:documentation>
+      <bpmn:incoming>Flow_1bcjsi8</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0vo9cmf" sourceRef="task1" targetRef="task2" />
+    <bpmn:sequenceFlow id="Flow_1bcjsi8" sourceRef="task2" targetRef="theEnd" />
+    <bpmn:serviceTask id="task2" name="自动测试任务2&#10;" smart:class="com.alibaba.smart.framework.engine.test.delegation.serviceTaskBusinessDelegation2">
+      <bpmn:documentation>自动测试任务2</bpmn:documentation>
+      <bpmn:extensionElements>
+        <smart:properties>
+          <smart:property name="task2InParam" value="task1.task1OutParam1" />
+          <smart:property name="task2OutParam" />
+          <smart:property name="process.outParam2" value="task2OutParam" />
+        </smart:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0vo9cmf</bpmn:incoming>
+      <bpmn:outgoing>Flow_1bcjsi8</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+
+</bpmn:definitions>

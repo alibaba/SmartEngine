@@ -20,27 +20,36 @@ import lombok.Data;
  */
 @Data
 public class Properties implements ExtensionDecorator {
-    public final static QName type = new QName(SmartBase.SMART_NS, "properties");
+    public final static QName qtype = new QName(SmartBase.SMART_NS, "properties");
 
-    private List<Value> extensionList  = new ArrayList();
+    private List<PropertiesElementMarker> extensionList  = new ArrayList();
 
     @Override
-    public String getType() {
+    public String getDecoratorType() {
         return ExtensionElementsConstant.PROPERTIES;
     }
 
     @Override
     public void decorate(ExtensionElements extensionElements) {
-        Map map =  (Map)extensionElements.getDecorationMap().get(getType());
+        Map map =  (Map)extensionElements.getDecorationMap().get(getDecoratorType());
 
         if(null == map){
             map = MapUtil.newHashMap();
-            extensionElements.getDecorationMap().put(this.getType(),map);
+            extensionElements.getDecorationMap().put(this.getDecoratorType(),map);
         }
 
 
-        for (Value value : extensionList) {
-            map.put(value.getName(),value.getValue());
+
+        for (PropertiesElementMarker extensionDecorator : extensionList) {
+
+            if(extensionDecorator instanceof  Value){
+                Value value = (Value)extensionDecorator;
+                map.put(value.getName(),value.getValue());
+            }else if (extensionDecorator instanceof  Property){
+                Property property = (Property)extensionDecorator;
+                map.put(new PropertyCompositeKey(property.getType(),property.getName()),property.getValue());
+            }
+
         }
 
 

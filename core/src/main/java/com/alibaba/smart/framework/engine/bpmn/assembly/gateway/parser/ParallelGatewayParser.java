@@ -20,7 +20,7 @@ public class ParallelGatewayParser extends AbstractBpmnParser<ParallelGateway> {
 
     @Override
     public QName getQname() {
-        return ParallelGateway.type;
+        return ParallelGateway.qtype;
     }
 
     @Override

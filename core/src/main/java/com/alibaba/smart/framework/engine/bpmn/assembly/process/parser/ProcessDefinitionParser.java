@@ -32,7 +32,7 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
 
     @Override
     public QName getQname() {
-        return ProcessDefinitionImpl.type;
+        return ProcessDefinitionImpl.qtype;
     }
 
     @Override

@@ -23,7 +23,7 @@ public class OutgoingParser extends AbstractElementParser<Outgoing>  {
 
     @Override
     public QName getQname() {
-        return Outgoing.type;
+        return Outgoing.qtype;
     }
 
     @Override

@@ -18,7 +18,7 @@ public class ExclusiveGatewayParser extends AbstractBpmnParser<ExclusiveGateway>
 
     @Override
     public QName getQname() {
-        return ExclusiveGateway.type;
+        return ExclusiveGateway.qtype;
     }
 
     @Override

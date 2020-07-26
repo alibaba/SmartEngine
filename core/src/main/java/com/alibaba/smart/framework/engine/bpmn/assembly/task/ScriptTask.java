@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class ScriptTask extends AbstractTask {
 
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "scriptTask");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "scriptTask");
     private static final long serialVersionUID = 2155118199015424897L;
 
     @Override

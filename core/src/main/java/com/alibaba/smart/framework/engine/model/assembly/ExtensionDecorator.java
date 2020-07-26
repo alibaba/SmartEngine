@@ -7,7 +7,9 @@ package com.alibaba.smart.framework.engine.model.assembly;
 
 public interface ExtensionDecorator extends NoneIdBasedElement {
 
-    String getType();
+    //Object getKey();
+
+    String getDecoratorType();
 
     void decorate(ExtensionElements extensionElements);
 

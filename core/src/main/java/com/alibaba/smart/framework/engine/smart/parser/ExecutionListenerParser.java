@@ -44,7 +44,7 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
 
     @Override
     public QName getQname() {
-        return ExecutionListener.type;
+        return ExecutionListener.qtype;
     }
 
     @Override

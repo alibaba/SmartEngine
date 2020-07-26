@@ -20,7 +20,7 @@ public class StartEventParser extends AbstractBpmnParser<StartEvent> {
 
     @Override
     public QName getQname() {
-        return StartEvent.type;
+        return StartEvent.qtype;
     }
 
     @Override

@@ -14,7 +14,7 @@ import lombok.Data;
 @Data
 public class ProcessDefinitionSourceImpl implements ProcessDefinitionSource {
 
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "definitions");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "definitions");
 
     private static final long serialVersionUID = -7973338663278156625L;
 

@@ -16,7 +16,7 @@ public class StringField implements NoneIdBasedElement {
 
     private static final long serialVersionUID = -5129848456612155165L;
 
-    public final static QName type = new QName(PROCESS_NS, "string");
+    public final static QName qtype = new QName(PROCESS_NS, "string");
 
     private String value;
 

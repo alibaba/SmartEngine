@@ -20,24 +20,25 @@ import lombok.Data;
  */
 @Data
 public class ExecutionListener  implements ExtensionDecorator {
-    public final static QName type = new QName(SmartBase.SMART_NS, "executionListener");
+    public final static QName qtype = new QName(SmartBase.SMART_NS, "executionListener");
 
     private String[] events;
     private String listenerClass;
 
 
     @Override
-    public String getType() {
+    public String getDecoratorType() {
         return ExtensionElementsConstant.EXECUTION_LISTENER;
     }
 
     @Override
     public void decorate(ExtensionElements extensionElements) {
-        ListenerAggregation eventListenerAggregation =  (ListenerAggregation)extensionElements.getDecorationMap().get(getType());
+        ListenerAggregation eventListenerAggregation =  (ListenerAggregation)extensionElements.getDecorationMap().get(
+            getDecoratorType());
 
         if(null == eventListenerAggregation){
             eventListenerAggregation = new ListenerAggregation();
-            extensionElements.getDecorationMap().put(this.getType(),eventListenerAggregation);
+            extensionElements.getDecorationMap().put(this.getDecoratorType(),eventListenerAggregation);
         }
 
         for (String event : events) {

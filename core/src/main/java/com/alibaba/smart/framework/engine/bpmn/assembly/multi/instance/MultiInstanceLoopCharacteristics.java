@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 public class MultiInstanceLoopCharacteristics implements NoneIdBasedElement {
 
-    public final static QName type = new QName(BpmnNameSpaceConstant.NAME_SPACE, "multiInstanceLoopCharacteristics");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "multiInstanceLoopCharacteristics");
 
     private boolean sequential;
 

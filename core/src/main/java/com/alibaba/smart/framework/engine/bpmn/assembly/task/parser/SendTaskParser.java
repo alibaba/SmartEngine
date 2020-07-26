@@ -22,7 +22,7 @@ public class SendTaskParser extends AbstractBpmnParser<SendTask> {
 
     @Override
     public QName getQname() {
-        return SendTask.type;
+        return SendTask.qtype;
     }
 
     @Override
