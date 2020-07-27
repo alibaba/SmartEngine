@@ -36,11 +36,25 @@ public class DefaultXmlParserFacade implements
 
     private Map<Class,Object> bindings;
 
+    private Map<QName, Object> bindingsWithQName = MapUtil.newHashMap();
+
     @Override
     public void start() {
-
         this.bindings = processEngineConfiguration.getAnnotationScanner().getScanResult().get(
             ExtensionConstant.ELEMENT_PARSER).getBindingMap();
+        Set<Entry<Class, Object>> entries = bindings.entrySet();
+        for (Entry<Class, Object> entry : entries) {
+            try {
+                Class aClass = entry.getKey();
+                Object o = aClass.newInstance();
+                Field field = aClass.getField("qtype");
+                QName qName=   (QName)field.get(o);
+                bindingsWithQName.put(qName, entry.getValue());
+            } catch (Exception e) {
+                //TUNE 堆栈有些乱
+                throw new RuntimeException(e);
+            }
+        }
 
     }
 
@@ -58,33 +72,17 @@ public class DefaultXmlParserFacade implements
     @Override
     public Object parseElement(XMLStreamReader reader, ParseContext context) {
         QName nodeQname = reader.getName();
-
-
-        Set<Entry<Class, Object>> entries = bindings.entrySet();
-
-        for (Entry<Class, Object> entry : entries) {
-
-            try {
-                Class aClass = entry.getKey();
-                Object o = aClass.newInstance();
-                Field field = aClass.getField("qtype");
-                QName qName=   (QName)field.get(o);
-                if(nodeQname.equals( qName)){
-                    ElementParser artifactParser = (ElementParser)  entry.getValue();
-                    return artifactParser.parseElement(reader, context);
-
-                }
-            } catch (Exception e) {
-
-                //TUNE 堆栈有些乱
-                throw new RuntimeException(e);
+        ElementParser artifactParser = (ElementParser)  bindingsWithQName.get(nodeQname);
+        try {
+            if(null != artifactParser){
+                return artifactParser.parseElement(reader, context);
             }
+        } catch (Exception e) {
+            //TUNE 堆栈有些乱
+            throw new RuntimeException(e);
         }
 
         throw new EngineException("No parser found for QName: " + nodeQname);
-
-
-
     }
 
     @Override
