@@ -32,7 +32,7 @@ public class RightJavaDelegation implements JavaDelegation {
 
         ExtensionElements extensionElements = idBasedElement.getExtensionElements();
 
-            Map map = (Map)extensionElements.getDecorationMap().get(
+        Map map = (Map)extensionElements.getDecorationMap().get(
                 ExtensionElementsConstant.PROPERTIES);
 
         Assert.assertEquals("right", map.get("value"));
