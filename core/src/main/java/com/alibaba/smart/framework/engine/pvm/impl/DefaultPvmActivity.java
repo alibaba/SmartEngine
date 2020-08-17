@@ -31,7 +31,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         ActivityBehavior behavior = this.getBehavior();
         boolean needPause= behavior.enter(context, this);
 
-        fireEvent(context,PvmEventConstant.ACTIVITY_START.name());
+        fireEvent(context,PvmEventConstant.ACTIVITY_START);
 
 
         if (needPause) {
@@ -43,21 +43,24 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         this.execute(context);
     }
 
-    private void fireEvent(ExecutionContext context,String event) {
+    private void fireEvent(ExecutionContext context,PvmEventConstant event) {
+
+        String eventName = event.name();
+
         ExtensionElements extensionElements = this.getModel().getExtensionElements();
         if(null != extensionElements){
 
             ListenerAggregation extension = (ListenerAggregation)extensionElements.getDecorationMap().get(ExtensionElementsConstant.EXECUTION_LISTENER);
 
             if(null !=  extension){
-                List<String> listenerClassNameList = extension.getEventListenerMap().get(event);
+                List<String> listenerClassNameList = extension.getEventListenerMap().get(eventName);
                 if(CollectionUtil.isNotEmpty(listenerClassNameList)){
                     InstanceAccessor instanceAccessor = context.getProcessEngineConfiguration()
                         .getInstanceAccessor();
                     for (String listenerClassName : listenerClassNameList) {
 
                         Listener listener = (Listener)instanceAccessor.access(listenerClassName);
-                        listener.execute(context);
+                        listener.execute(event, context);
                     }
                 }
             }
@@ -73,7 +76,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
         this.getBehavior().execute(context,this);
 
-        fireEvent(context,PvmEventConstant.ACTIVITY_EXECUTE.name());
+        fireEvent(context,PvmEventConstant.ACTIVITY_EXECUTE);
 
         if (context.isNeedPause()) {
 
@@ -81,7 +84,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
             return;
         }
 
-        fireEvent(context,PvmEventConstant.ACTIVITY_END.name());
+        fireEvent(context,PvmEventConstant.ACTIVITY_END);
 
         this.getBehavior().leave(context, this);
 
