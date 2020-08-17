@@ -19,6 +19,10 @@ public abstract class MvelUtil {
     private final static ConcurrentHashMap<String, Serializable> expCache =
         new ConcurrentHashMap<String, Serializable>(defaultCacheSize);
 
+
+    private static final String START_TAG = "${";
+    private static final String END_TAG = "}";
+
     public static Object eval(String expression, Map<String, Object> vars,boolean needCached) {
         //编译表达式
         Serializable compiledExp = compileExp(expression,needCached);
@@ -48,8 +52,11 @@ public abstract class MvelUtil {
         String processedExp = expression.trim();
 
         // 兼容Activiti ${nrOfCompletedInstances >= 1} 这种 JUEL 表达式;通过下面的调用去掉首尾.
-        processedExp =  StringUtil.removeStart(processedExp.trim(),"${");
-        processedExp =  StringUtil.removeEnd(processedExp.trim(),"}");
+
+        if(processedExp.startsWith(START_TAG)){
+            processedExp =  StringUtil.removeStart(processedExp, START_TAG);
+            processedExp =  StringUtil.removeEnd(processedExp, END_TAG);
+        }
 
 
         //首先从缓存里取，取不到则新编译。
