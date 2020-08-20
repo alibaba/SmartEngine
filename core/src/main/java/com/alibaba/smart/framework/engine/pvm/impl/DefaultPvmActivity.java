@@ -45,28 +45,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
     private void fireEvent(ExecutionContext context,PvmEventConstant event) {
 
-        String eventName = event.name();
-
-        ExtensionElements extensionElements = this.getModel().getExtensionElements();
-        if(null != extensionElements){
-
-            ListenerAggregation extension = (ListenerAggregation)extensionElements.getDecorationMap().get(ExtensionElementsConstant.EXECUTION_LISTENER);
-
-            if(null !=  extension){
-                List<String> listenerClassNameList = extension.getEventListenerMap().get(eventName);
-                if(CollectionUtil.isNotEmpty(listenerClassNameList)){
-                    InstanceAccessor instanceAccessor = context.getProcessEngineConfiguration()
-                        .getInstanceAccessor();
-                    for (String listenerClassName : listenerClassNameList) {
-
-                        Listener listener = (Listener)instanceAccessor.access(listenerClassName);
-                        listener.execute(event, context);
-                    }
-                }
-            }
-
-
-        }
+        context.getProcessEngineConfiguration().getListenerExecutor().execute(event,this.getModel(),context);
 
     }
 

@@ -44,6 +44,11 @@ public interface ProcessEngineConfiguration {
 
     DelegationExecutor getDelegationExecutor();
 
+    void setListenerExecutor(ListenerExecutor listenerExecutor);
+
+    ListenerExecutor getListenerExecutor();
+
+
     void setAnnotationScanner(AnnotationScanner annotationScanner);
 
 
