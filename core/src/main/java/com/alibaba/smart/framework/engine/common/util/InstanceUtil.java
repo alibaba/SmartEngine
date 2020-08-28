@@ -21,9 +21,11 @@ public abstract class InstanceUtil {
         List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
         for (ActivityInstance activityInstance : activityInstances) {
             List<ExecutionInstance> executionInstances1 =    activityInstance.getExecutionInstanceList();
-            for (ExecutionInstance executionInstance : executionInstances1) {
-                if(null != executionInstance && executionInstance.isActive()){
-                    executionInstances.add(executionInstance);
+            if (CollectionUtil.isNotEmpty(executionInstances1)) {
+                for (ExecutionInstance executionInstance : executionInstances1) {
+                    if (null != executionInstance && executionInstance.isActive()) {
+                        executionInstances.add(executionInstance);
+                    }
                 }
             }
 
