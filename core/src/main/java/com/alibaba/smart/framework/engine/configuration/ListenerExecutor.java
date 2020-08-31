@@ -11,6 +11,6 @@ import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
  */
 public interface ListenerExecutor {
 
-    void execute(PvmEventConstant event, ExtensionElementContainer extensionElementContaine, ExecutionContext context);
+    void execute(PvmEventConstant event, ExtensionElementContainer extensionElementContainer, ExecutionContext context);
 
 }

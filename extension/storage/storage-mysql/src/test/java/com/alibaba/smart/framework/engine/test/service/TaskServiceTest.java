@@ -12,11 +12,11 @@ import com.alibaba.smart.framework.engine.service.param.query.PaginateQueryParam
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
-import com.alibaba.smart.framework.engine.test.process.CustomExceptioinProcessor;
-import com.alibaba.smart.framework.engine.test.process.CustomVariablePersister;
-import com.alibaba.smart.framework.engine.test.process.DefaultMultiInstanceCounter;
-import com.alibaba.smart.framework.engine.test.process.DoNothingLockStrategy;
-import com.alibaba.smart.framework.engine.test.process.task.dispatcher.IdAndGroupTaskAssigneeDispatcher;
+import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
+import com.alibaba.smart.framework.engine.test.process.helper.CustomVariablePersister;
+import com.alibaba.smart.framework.engine.test.process.helper.DefaultMultiInstanceCounter;
+import com.alibaba.smart.framework.engine.test.process.helper.DoNothingLockStrategy;
+import com.alibaba.smart.framework.engine.test.process.helper.dispatcher.IdAndGroupTaskAssigneeDispatcher;
 
 import org.junit.Assert;
 import org.junit.Test;

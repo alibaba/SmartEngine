@@ -19,8 +19,8 @@ import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
-import com.alibaba.smart.framework.engine.test.process.sequece.RandomIdGenerator;
-import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
+import com.alibaba.smart.framework.engine.test.process.helper.sequece.RandomIdGenerator;
+import com.alibaba.smart.framework.engine.test.process.helper.dispatcher.DefaultTaskAssigneeDispatcher;
 
 import org.junit.After;
 import org.junit.Before;

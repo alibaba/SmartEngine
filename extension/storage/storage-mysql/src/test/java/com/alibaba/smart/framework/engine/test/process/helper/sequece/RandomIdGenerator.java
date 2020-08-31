@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test.process.sequece;
+package com.alibaba.smart.framework.engine.test.process.helper.sequece;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;

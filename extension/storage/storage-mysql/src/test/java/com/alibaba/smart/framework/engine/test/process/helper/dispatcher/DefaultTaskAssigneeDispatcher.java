@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test.process.task.dispatcher;
+package com.alibaba.smart.framework.engine.test.process.helper.dispatcher;
 
 import java.util.ArrayList;
 import java.util.List;
