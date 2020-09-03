@@ -55,8 +55,11 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             .getMultiInstanceLoopCharacteristics();
 
         if (null != multiInstanceLoopCharacteristics) {
+            ActivityInstance activityInstance ;
 
-            ActivityInstance activityInstance = super.createSingleActivityInstance(context,userTask);
+            synchronized (context){
+                 activityInstance = super.createSingleActivityInstanceAndAttachToProcessInstance(context,userTask);
+            }
 
             List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(allTaskAssigneeCandidateInstanceList.size());
             activityInstance.setExecutionInstanceList(executionInstanceList);

@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.configuration;
 
 import com.alibaba.smart.framework.engine.configuration.impl.option.DisabledOption;
 import com.alibaba.smart.framework.engine.configuration.impl.option.ExpressionCompileResultCachedOption;
+import com.alibaba.smart.framework.engine.configuration.impl.option.ServiceOrchestrationEnabledOption;
 import com.alibaba.smart.framework.engine.configuration.impl.option.TransferEnabledOption;
 
 /**
@@ -14,6 +15,8 @@ public interface ConfigurationOption {
     ConfigurationOption TRANSFER_ENABLED_OPTION = new TransferEnabledOption();
 
     ConfigurationOption EXPRESSION_COMPILE_RESULT_CACHED_OPTION = new ExpressionCompileResultCachedOption();
+
+    ConfigurationOption SERVICE_ORCHESTRATION_OPTION = new ServiceOrchestrationEnabledOption(  );
 
     boolean isEnabled();
 

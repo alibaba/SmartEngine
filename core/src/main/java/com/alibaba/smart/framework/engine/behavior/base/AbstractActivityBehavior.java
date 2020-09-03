@@ -56,28 +56,35 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     @Override
     public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
 
-        ActivityInstance activityInstance = createSingleActivityInstance(context, pvmActivity.getModel());
+        ProcessInstance processInstance = context.getProcessInstance();
 
-        ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
-        List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(1);
-        executionInstanceList.add(executionInstance);
+        synchronized (processInstance){
 
-        activityInstance.setExecutionInstanceList(executionInstanceList);
-        context.setExecutionInstance(executionInstance);
+            ActivityInstance activityInstance = createSingleActivityInstanceAndAttachToProcessInstance(context, pvmActivity.getModel());
 
-        if (context.isNeedPause()) {
-            executionInstance.setStatus(InstanceStatus.suspended);
+            ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
+            List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(1);
+            executionInstanceList.add(executionInstance);
+
+            activityInstance.setExecutionInstanceList(executionInstanceList);
+            context.setExecutionInstance(executionInstance);
+
+            if (context.isNeedPause()) {
+                executionInstance.setStatus(InstanceStatus.suspended);
+            }
+
+            return false;
         }
 
-        return false;
     }
 
-    protected ActivityInstance createSingleActivityInstance(ExecutionContext context, Activity activity) {
+    protected ActivityInstance createSingleActivityInstanceAndAttachToProcessInstance(ExecutionContext context, Activity activity) {
         ProcessInstance processInstance = context.getProcessInstance();
 
         ActivityInstance activityInstance = this.activityInstanceFactory.create(activity, context);
         processInstance.addActivityInstance(activityInstance);
         context.setActivityInstance(activityInstance);
+
         return activityInstance;
     }
 
