@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.instance.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -59,7 +60,10 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     }
 
 
-    private List<ActivityInstance> activityInstances = new ArrayList<ActivityInstance>();
+    /**
+     * 防止多线程并发读写，出现ConcurrentModificationException异常
+      */
+    private List<ActivityInstance> activityInstances = new CopyOnWriteArrayList<ActivityInstance>();
 
 
     @Override
