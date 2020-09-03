@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -53,6 +55,80 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         int outComeTransitionSize = outcomeTransitions.size();
         int inComeTransitionSize = incomeTransitions.size();
+
+        ConfigurationOption serviceOrchestrationOption = processEngineConfiguration
+            .getOptionContainer().get(ConfigurationOption.SERVICE_ORCHESTRATION_OPTION.getId());
+
+        if(null != serviceOrchestrationOption && serviceOrchestrationOption.isEnabled()){
+
+            return serviceOrchestration(context, pvmActivity, outcomeTransitions, outComeTransitionSize,
+                inComeTransitionSize);
+
+        }else {
+            return defaultLogic(context, pvmActivity, parallelGateway, incomeTransitions, outcomeTransitions,
+                outComeTransitionSize,
+                inComeTransitionSize);
+        }
+
+
+
+    }
+
+    private boolean serviceOrchestration(ExecutionContext context, PvmActivity pvmActivity,
+                                         Map<String, PvmTransition> outcomeTransitions, int outComeTransitionSize,
+                                         int inComeTransitionSize) {
+
+        final CountDownLatch latch = new CountDownLatch(outComeTransitionSize);
+
+        if (outComeTransitionSize >= 2 && inComeTransitionSize == 1) {
+            //fork
+                ExecutorService executorService = context.getProcessEngineConfiguration().getExecutorService();
+
+                //并发执行fork
+
+                List<PvmActivityTask> tasks = new ArrayList<PvmActivityTask>(outComeTransitionSize);
+
+                for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
+                    PvmActivity target = pvmTransitionEntry.getValue().getTarget();
+
+                    PvmActivityTask task = new PvmActivityTask(target,context,latch);
+                    tasks.add(task);
+                }
+
+
+                try {
+                    executorService.invokeAll(tasks);
+                } catch (InterruptedException e) {
+                    throw new EngineException(e.getMessage(), e);
+                }
+
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                throw new EngineException(e.getMessage(), e);
+            }
+
+                return false;
+
+        } else if (outComeTransitionSize == 1 && inComeTransitionSize >= 2) {
+
+            //try {
+            //    latch.await();
+            //} catch (InterruptedException e) {
+            //    throw new EngineException(e.getMessage(), e);
+            //}
+            return false;
+
+
+        }else{
+            throw new EngineException("should touch here:"+pvmActivity);
+        }
+    }
+
+    private boolean defaultLogic(ExecutionContext context, PvmActivity pvmActivity, ParallelGateway parallelGateway,
+                                 Map<String, PvmTransition> incomeTransitions,
+                                 Map<String, PvmTransition> outcomeTransitions, int outComeTransitionSize,
+                                 int inComeTransitionSize) {
         if (outComeTransitionSize >= 2 && inComeTransitionSize == 1) {
             //fork
             ExecutorService executorService = context.getProcessEngineConfiguration().getExecutorService();
@@ -166,22 +242,34 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         }
 
         return true;
-
     }
 
     class PvmActivityTask extends InheritableTaskWithCache {
         private PvmActivity pvmActivity;
         private ExecutionContext context;
+        private CountDownLatch latch;
 
         PvmActivityTask(PvmActivity pvmActivity,ExecutionContext context) {
             this.pvmActivity = pvmActivity;
             this.context = context;
         }
 
+
+        PvmActivityTask(PvmActivity pvmActivity,ExecutionContext context,CountDownLatch latch) {
+            this.pvmActivity = pvmActivity;
+            this.context = context;
+            this.latch = latch;
+        }
+
+
         @Override
         public void runTask() {
             try {
                 pvmActivity.enter(context);
+                if(null !=  latch){
+                    latch.countDown();
+
+                }
             } catch (Exception e) {
                 LOGGER.error( e.getMessage(),e);
             }
