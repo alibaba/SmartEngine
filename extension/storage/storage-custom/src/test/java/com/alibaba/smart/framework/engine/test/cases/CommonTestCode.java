@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class CommonTestCode extends CustomBaseTestCase{
 
-    protected ExecutionInstance common_a(String fileName) {
+    protected ExecutionInstance commonCodeSnippet(String fileName) {
         BasicServiceTaskDelegation.resetCounter();
 
         ProcessDefinition processDefinition = repositoryCommandService

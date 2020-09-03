@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
+import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class DatabaseAuditProcessTest extends DatabaseBaseTestCase {
+public class DataBaseAuditProcessExample extends DatabaseBaseTestCase {
 
     @Override
     protected void initProcessConfiguration() {

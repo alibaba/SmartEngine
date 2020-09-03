@@ -23,6 +23,7 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.util.InheritableTaskWithCache;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -243,7 +244,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         return true;
     }
 
-    class PvmActivityTask implements Callable<Void> {
+    class PvmActivityTask extends InheritableTaskWithCache {
         private PvmActivity pvmActivity;
         private ExecutionContext context;
         private CountDownLatch latch;
@@ -262,7 +263,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
 
         @Override
-        public Void call() {
+        public void runTask() {
             try {
                 pvmActivity.enter(context);
                 if(null !=  latch){
@@ -272,7 +273,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             } catch (Exception e) {
                 LOGGER.error( e.getMessage(),e);
             }
-            return null;
         }
     }
 

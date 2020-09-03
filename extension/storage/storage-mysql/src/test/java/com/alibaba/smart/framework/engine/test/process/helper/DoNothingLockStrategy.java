@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test.process;
+package com.alibaba.smart.framework.engine.test.process.helper;
 
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.exception.LockException;

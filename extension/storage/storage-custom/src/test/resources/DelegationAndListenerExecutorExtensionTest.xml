@@ -1,0 +1,18 @@
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smartengine.org/schema/process" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="smart" id="test">
+    <process id="process_1" isExecutable="true">
+        <startEvent id="start-event-1597930095237" name="开始"/>
+        <serviceTask id="service-task-1597930100181" name="服务任务" smart:class="com.alibaba.smart.framework.engine.test.delegation.OrchestrationAdapterImplement">
+
+            <extensionElements>
+                <smart:executionListener event="ACTIVITY_START"
+                                         class="com.alibaba.smart.framework.engine.test.delegation.OrchestrationAdapterImplement"/>
+            </extensionElements>
+
+        </serviceTask>
+
+        <endEvent id="end-event-1597930105383" name="结束"/>
+        <sequenceFlow id="seqflow-1597930100183" sourceRef="start-event-1597930095237" targetRef="service-task-1597930100181"/>
+        <sequenceFlow id="seqflow-1597930105384" sourceRef="service-task-1597930100181" targetRef="end-event-1597930105383"/>
+    </process>
+
+</definitions>

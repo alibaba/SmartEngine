@@ -18,8 +18,10 @@ import com.alibaba.smart.framework.engine.service.command.RepositoryCommandServi
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
-import com.alibaba.smart.framework.engine.test.process.sequece.RandomIdGenerator;
-import com.alibaba.smart.framework.engine.test.process.task.dispatcher.DefaultTaskAssigneeDispatcher;
+import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
+import com.alibaba.smart.framework.engine.test.process.helper.DefaultMultiInstanceCounter;
+import com.alibaba.smart.framework.engine.test.process.helper.sequece.RandomIdGenerator;
+import com.alibaba.smart.framework.engine.test.process.helper.dispatcher.DefaultTaskAssigneeDispatcher;
 
 import org.junit.Assert;
 import org.junit.Test;

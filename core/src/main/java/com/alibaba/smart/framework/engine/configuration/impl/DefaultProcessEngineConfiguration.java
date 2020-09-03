@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.configuration.DelegationExecutor;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
+import com.alibaba.smart.framework.engine.configuration.ListenerExecutor;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
 import com.alibaba.smart.framework.engine.configuration.OptionContainer;
@@ -40,6 +41,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private DelegationExecutor delegationExecutor;
 
+    private ListenerExecutor listenerExecutor;
+
     private AnnotationScanner annotationScanner;
 
     private ExceptionProcessor exceptionProcessor;
@@ -65,6 +68,7 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         this.idGenerator = new DefaultIdGenerator();
         this.instanceAccessor = new DefaultInstanceAccessor();
         this.delegationExecutor = new DefaultDelegationExecutor();
+        this.listenerExecutor = new DefaultListenerExecutor();
         this.annotationScanner = new SimpleAnnotationScanner(SmartEngine.class.getPackage().getName());
         this.variablePersister = new DefaultVariablePersister();
         this.tableSchemaStrategy = new DefaultTableSchemaStrategy();
