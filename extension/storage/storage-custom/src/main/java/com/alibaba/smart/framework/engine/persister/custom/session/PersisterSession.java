@@ -7,6 +7,7 @@ package com.alibaba.smart.framework.engine.persister.custom.session;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
@@ -21,7 +22,7 @@ public class PersisterSession {
      */
     private static InheritableThreadLocal<Stack<PersisterSession>> sessionThreadLocal = new InheritableThreadLocal<Stack<PersisterSession>>();
 
-    private Map<String, ProcessInstance> processInstances = new HashMap<String, ProcessInstance>(4);
+    private Map<String, ProcessInstance> processInstances = new ConcurrentHashMap<String, ProcessInstance>(8);
 
     public static PersisterSession create() {
         PersisterSession session = new PersisterSession();
