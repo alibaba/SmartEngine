@@ -6,8 +6,8 @@
     <groupId>com.alibaba.smart.framework</groupId>
     <artifactId>smart-engine</artifactId>
     <!--  mvn versions:set -DnewVersion=2.0.8-SNAPSHOT -DgenerateBackupPoms=false  -->
-    <!--  mvn versions:set -DnewVersion=2.1.5 -DgenerateBackupPoms=false  -->
-    <version>2.1.5</version>
+    <!--  mvn versions:set -DnewVersion=2.2.0 -DgenerateBackupPoms=false  -->
+    <version>2.2.0</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
@@ -61,6 +61,7 @@
         <file_encoding>UTF-8</file_encoding>
         <springframework.version>5.2.3.RELEASE</springframework.version>
         <slf4j.version>1.7.13</slf4j.version>
+        <jmh.version>1.25.2</jmh.version>
         <gpg.skip>true</gpg.skip>
         <javadoc.opts>-Xdoclint:none</javadoc.opts>
         <maven.test.skip>true</maven.test.skip>
@@ -105,6 +106,18 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
         </dependency>
 
 
@@ -285,6 +298,25 @@
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
                 <version>5.6.2</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-core</artifactId>
+                <version>${jmh.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-generator-annprocess</artifactId>
+                <version>${jmh.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-math3</artifactId>
+                <version>3.6.1</version>
                 <scope>test</scope>
             </dependency>
 

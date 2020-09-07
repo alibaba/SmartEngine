@@ -29,7 +29,6 @@ import static org.junit.Assert.assertTrue;
 
 public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase {
 
-    public static ConcurrentMap<String,ThreadExecutionResult> map = new ConcurrentHashMap<String, ThreadExecutionResult>();
 
 
     protected void initProcessConfiguation() {
@@ -74,11 +73,11 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
         Assert.assertNotNull(processInstance.getCompleteTime());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
-        Set<Entry<String, ThreadExecutionResult>> entries = map.entrySet();
+        Set<Entry<String, Object>> entries = request.entrySet();
         Assert.assertEquals(2,entries.size());
 
-        ThreadExecutionResult service1 = map.get(service1ActivityId);
-        ThreadExecutionResult service2 = map.get(service2ActivityId);
+        ThreadExecutionResult service1 = (ThreadExecutionResult)request.get(service1ActivityId);
+        ThreadExecutionResult service2 = (ThreadExecutionResult)request.get(service2ActivityId);
 
         Assert.assertEquals(service1SleepTime, service1.getPayload());
         Assert.assertEquals(service2SleepTime, service2.getPayload());

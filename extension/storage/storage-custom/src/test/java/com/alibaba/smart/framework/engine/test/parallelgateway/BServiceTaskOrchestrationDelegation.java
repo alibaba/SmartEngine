@@ -24,7 +24,7 @@ public class BServiceTaskOrchestrationDelegation implements JavaDelegation {
         Long sleepTime = (Long)request.get( processDefinitionActivityId);
 
         long id = Thread.currentThread().getId();
-        ServiceOrchestrationParallelGatewayTest.map.put(processDefinitionActivityId,new ThreadExecutionResult(id,sleepTime));
+        request.put(processDefinitionActivityId,new ThreadExecutionResult(id,sleepTime));
 
         try {
             Thread.sleep(sleepTime);
