@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanne
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.context.factory.InstanceContextFactory;
+import com.alibaba.smart.framework.engine.context.factory.ContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -47,7 +47,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     private ProcessDefinitionContainer processDefinitionContainer;
 
-    private InstanceContextFactory instanceContextFactory;
+    private ContextFactory instanceContextFactory;
     private ProcessInstanceFactory processInstanceFactory;
 
 
@@ -58,7 +58,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         this.processDefinitionContainer = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
 
-        this.instanceContextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,InstanceContextFactory.class);
+        this.instanceContextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, ContextFactory.class);
         this.processInstanceFactory =annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceFactory.class);
         this.processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
 

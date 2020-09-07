@@ -21,6 +21,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
@@ -47,7 +48,10 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         List<TaskAssigneeCandidateInstance> allTaskAssigneeCandidateInstanceList = UserTaskBehaviorHelper.getTaskAssigneeCandidateInstances(
             context, userTask);
 
-        LOGGER.info("The taskAssigneeCandidateInstance are "+allTaskAssigneeCandidateInstanceList +" for PI:"+context.getProcessInstance().getInstanceId() +" and AI id: "+pvmActivity.getModel().getId() );
+        ProcessInstance processInstance = context.getProcessInstance();
+
+        LOGGER.info("The taskAssigneeCandidateInstance are "+allTaskAssigneeCandidateInstanceList +" for PI:"+ processInstance
+            .getInstanceId() +" and AI id: "+pvmActivity.getModel().getId() );
 
         
         //1. 开启了会签特性
@@ -55,11 +59,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             .getMultiInstanceLoopCharacteristics();
 
         if (null != multiInstanceLoopCharacteristics) {
-            ActivityInstance activityInstance ;
+            ActivityInstance activityInstance  = super.createSingleActivityInstanceAndAttachToProcessInstance(context,userTask);
 
-            synchronized (context){
-                 activityInstance = super.createSingleActivityInstanceAndAttachToProcessInstance(context,userTask);
-            }
 
             List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(allTaskAssigneeCandidateInstanceList.size());
             activityInstance.setExecutionInstanceList(executionInstanceList);

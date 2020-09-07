@@ -117,12 +117,10 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     @Override
     public void leave(ExecutionContext context, PvmActivity pvmActivity) {
-
         //执行每个节点的hook方法
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
 
         if(MapUtil.isEmpty(outcomeTransitions)){
-
             LOGGER.info("No outcomeTransitions found for activity id: "+pvmActivity.getModel().getId()+", it's just fine, it should be the last activity of the process");
 
             return;
@@ -139,8 +137,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             }
         }
 
-
     }
+
 
 
 }

@@ -1,10 +1,11 @@
 package com.alibaba.smart.framework.engine.test.parallelgateway;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -14,14 +15,12 @@ import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
-import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
 import com.alibaba.smart.framework.engine.test.DoNothingLockStrategy;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 
+import lombok.Getter;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,6 +28,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase {
+
+    public static ConcurrentMap<String,ThreadExecutionResult> map = new ConcurrentHashMap<String, ThreadExecutionResult>();
 
 
     protected void initProcessConfiguation() {
@@ -42,13 +43,26 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
     @Test
     public void testParallelGateway() throws Exception {
 
+
+
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("ServiceOrchestrationParallelGatewayTest.xml").getFirstProcessDefinition();
         assertEquals(12, processDefinition.getBaseElementList().size());
 
         Map<String, Object> request = new HashMap<String, Object>();
-        request.put("service1", 2000L);
-        request.put("service2", 1200L);
+
+        long service1SleepTime = 400L;
+        String service1ActivityId = "service1";
+
+        long service2SleepTime = 500L;
+        String service2ActivityId = "service2";
+
+        request.put(service1ActivityId, service1SleepTime);
+        request.put(service2ActivityId, service2SleepTime);
+
+        long start = System.currentTimeMillis();
+
+
         ProcessInstance processInstance = processCommandService.start(
             processDefinition.getId(), processDefinition.getVersion(),
             request);
@@ -60,10 +74,25 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
         Assert.assertNotNull(processInstance.getCompleteTime());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
-        Set<Entry<Long, Long>> entries = ServiceTaskOrchestrationDelegation.getMap().entrySet();
+        Set<Entry<String, ThreadExecutionResult>> entries = map.entrySet();
         Assert.assertEquals(2,entries.size());
 
+        ThreadExecutionResult service1 = map.get(service1ActivityId);
+        ThreadExecutionResult service2 = map.get(service2ActivityId);
 
+        Assert.assertEquals(service1SleepTime, service1.getPayload());
+        Assert.assertEquals(service2SleepTime, service2.getPayload());
+
+        Assert.assertNotEquals(service1.getThreadId(),service2.getThreadId());
+
+        long end = System.currentTimeMillis();
+
+        long duration = end-start;
+
+        //简单拍个数据，用于表示该程序非串式执行的
+        long maxExecutionTime = service1SleepTime + service2SleepTime - 100L;
+
+        Assert.assertTrue(duration< maxExecutionTime);
     }
 
 

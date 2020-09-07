@@ -15,12 +15,11 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ServiceTaskOrchestrationDelegation implements JavaDelegation {
+public class AServiceTaskOrchestrationDelegation implements JavaDelegation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceTaskDelegation.class);
 
-    @Getter
-    private static ConcurrentMap<Long,Long>  map = new ConcurrentHashMap<Long, Long>();
+
 
     @Override
     public void execute(ExecutionContext executionContext) {
@@ -30,7 +29,7 @@ public class ServiceTaskOrchestrationDelegation implements JavaDelegation {
         Long sleepTime = (Long)request.get( processDefinitionActivityId);
 
         long id = Thread.currentThread().getId();
-        map.put(id,sleepTime);
+        ServiceOrchestrationParallelGatewayTest.map.put(processDefinitionActivityId,new ThreadExecutionResult(id,sleepTime));
 
         try {
             Thread.sleep(sleepTime);

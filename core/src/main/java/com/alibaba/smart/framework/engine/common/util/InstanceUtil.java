@@ -18,18 +18,18 @@ public abstract class InstanceUtil {
             return null;
         }
 
-        List<ExecutionInstance> executionInstances = new ArrayList<ExecutionInstance>(activityInstances.size());
+        List<ExecutionInstance> matchedExecutionInstanceList = new ArrayList<ExecutionInstance>(activityInstances.size());
         for (ActivityInstance activityInstance : activityInstances) {
-            List<ExecutionInstance> executionInstances1 = activityInstance.getExecutionInstanceList();
-            if (CollectionUtil.isNotEmpty(executionInstances1)) {
-                for (ExecutionInstance executionInstance : executionInstances1) {
+            List<ExecutionInstance> executionInstancesOfAI = activityInstance.getExecutionInstanceList();
+            if (CollectionUtil.isNotEmpty(executionInstancesOfAI)) {
+                for (ExecutionInstance executionInstance : executionInstancesOfAI) {
                     if (null != executionInstance && executionInstance.isActive()) {
-                        executionInstances.add(executionInstance);
+                        matchedExecutionInstanceList.add(executionInstance);
                     }
                 }
             }
         }
 
-        return executionInstances;
+        return matchedExecutionInstanceList;
     }
 }

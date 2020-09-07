@@ -27,4 +27,6 @@ public interface PvmActivity extends PvmElement<Activity> {
 
     void setBehavior(ActivityBehavior activityBehavior);
 
+    ActivityBehavior getBehavior();
+
 }
