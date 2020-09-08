@@ -33,13 +33,19 @@ public class DefaultContextFactory implements ContextFactory {
         subContext.setParent(parentContext);
 
         subContext.setProcessEngineConfiguration(processEngineConfiguration);
-        subContext.setRequest(parentContext.getRequest());
+
+
 
         ProcessDefinition pvmProcessDefinition = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,
             ProcessDefinitionContainer.class).getProcessDefinition(processInstance.getProcessDefinitionId(), processInstance.getProcessDefinitionVersion());
 
         subContext.setProcessDefinition(pvmProcessDefinition);
+
+
+        //SHARED!!!
         subContext.setProcessInstance(processInstance);
+        subContext.setRequest(parentContext.getRequest());
+        subContext.setResponse(parentContext.getResponse());
 
         return subContext;
     }

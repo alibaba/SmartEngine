@@ -21,4 +21,11 @@ public class MapUtil {
     public static boolean isEmpty(Map map) {
         return !isNotEmpty(map);
     }
+
+    public static Object safeGet(Map map,String key){
+        if (null == map) {
+            return null;
+        }
+        return map.get(key);
+    }
 }

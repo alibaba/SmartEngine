@@ -42,5 +42,6 @@ public class RequestMapSpecialKeyConstant {
 
     public static final  String CLAIM_USER_TIME = $_SMART_ENGINE_$_PREFIX + "claimUserTime";
 
+    public static final  String LATCH_WAIT_TIME_IN_MILLISECOND = $_SMART_ENGINE_$_PREFIX + "latchWaitTime";
 
 }

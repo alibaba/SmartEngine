@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
@@ -92,6 +93,64 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
         long maxExecutionTime = service1SleepTime + service2SleepTime - 100L;
 
         Assert.assertTrue(duration< maxExecutionTime);
+    }
+
+    @Test
+    public void testLatchWaitTimeOut() throws Exception {
+
+
+        ProcessDefinition processDefinition = repositoryCommandService
+            .deploy("ServiceOrchestrationParallelGatewayTest.xml").getFirstProcessDefinition();
+        assertEquals(12, processDefinition.getBaseElementList().size());
+
+        Map<String, Object> request = new HashMap<String, Object>();
+
+        long service1SleepTime = 4000L;
+        String service1ActivityId = "service1";
+
+        long service2SleepTime = 5000L;
+        String service2ActivityId = "service2";
+
+        request.put(service1ActivityId, service1SleepTime);
+        request.put(service2ActivityId, service2SleepTime);
+
+        long start = System.currentTimeMillis();
+
+
+        request.put(RequestMapSpecialKeyConstant.LATCH_WAIT_TIME_IN_MILLISECOND,200L);
+
+        ProcessInstance processInstance = processCommandService.start(
+            processDefinition.getId(), processDefinition.getVersion(),
+            request);
+
+
+        // 流程启动后,正确状态断言
+        Assert.assertNotNull(processInstance);
+
+        Assert.assertNotNull(processInstance.getCompleteTime());
+        assertEquals(InstanceStatus.completed, processInstance.getStatus());
+
+        Set<Entry<String, Object>> entries = request.entrySet();
+        Assert.assertEquals(3,entries.size());
+
+        ThreadExecutionResult service1 = (ThreadExecutionResult)request.get(service1ActivityId);
+        ThreadExecutionResult service2 = (ThreadExecutionResult)request.get(service2ActivityId);
+
+        Assert.assertEquals(service1SleepTime, service1.getPayload());
+        Assert.assertEquals(service2SleepTime, service2.getPayload());
+
+        Assert.assertNotEquals(service1.getThreadId(),service2.getThreadId());
+
+        long end = System.currentTimeMillis();
+
+        long duration = end-start;
+
+        //简单拍个数据，用于表示该程序非串式执行的
+        long maxExecutionTime = service1SleepTime + service2SleepTime - 100L;
+
+        //Assert.assertTrue(duration< maxExecutionTime);
+
+
     }
 
 

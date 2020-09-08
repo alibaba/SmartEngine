@@ -10,15 +10,18 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.ContextFactory;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -64,11 +67,13 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         ConfigurationOption serviceOrchestrationOption = processEngineConfiguration
             .getOptionContainer().get(ConfigurationOption.SERVICE_ORCHESTRATION_OPTION.getId());
 
+        //此处，针对基于并行网关的服务编排做了特殊优化处理。
         if(serviceOrchestrationOption.isEnabled()){
 
              serviceOrchestration(context, pvmActivity, outcomeTransitions, outComeTransitionSize,
                 inComeTransitionSize);
 
+             //由于这里仅是服务编排，所以这里直接返回`暂停`信号。
             return true;
 
         }else {
@@ -82,17 +87,15 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
     }
 
-    private boolean serviceOrchestration(ExecutionContext context, PvmActivity pvmActivity,
+    private void serviceOrchestration(ExecutionContext context, PvmActivity pvmActivity,
                                          Map<String, PvmTransition> outcomeTransitions, int outComeTransitionSize,
                                          int inComeTransitionSize) {
 
         final CountDownLatch latch = new CountDownLatch(outComeTransitionSize);
 
         if (outComeTransitionSize >= 2 && inComeTransitionSize == 1) {
-            //fork
+            //并发执行fork
                 ExecutorService executorService = context.getProcessEngineConfiguration().getExecutorService();
-
-                //并发执行fork
 
                 List<PvmActivityTask> tasks = new ArrayList<PvmActivityTask>(outComeTransitionSize);
 
@@ -104,40 +107,48 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
                     PvmActivity target = pvmTransitionEntry.getValue().getTarget();
 
+                    //从ParentContext 复制相关Context到子线程内。这里得注意下线程安全。
                     ExecutionContext subThreadContext = contextFactory.createFromParentContext(context);
 
                     PvmActivityTask task = new PvmActivityTask(target, subThreadContext,latch);
+
                     tasks.add(task);
                 }
 
 
                 try {
-                    List<Future<PvmActivity>> futures = executorService.invokeAll(tasks);
+                    List<Future<PvmActivity>> futureExecutionResultList = executorService.invokeAll(tasks);
 
-                    latch.await();
+                    Long latchWaitTime = (Long)MapUtil.safeGet(context.getRequest(),
+                        RequestMapSpecialKeyConstant.LATCH_WAIT_TIME_IN_MILLISECOND);
 
-                    PvmActivity futureJoinParallelGateWay = futures.get(0).get();
+                    if(null != latchWaitTime){
+                        latch.await(latchWaitTime, TimeUnit.MILLISECONDS);
+                    }else {
+                        latch.await();
+                    }
+
+                    //注意这里的逻辑：这里假设是子线程在执行某个fork分支的逻辑后，然后会在join节点时返回。这个join节点就是 futureJoinParallelGateWay。
+                    // 当await 执行结束后，这里的假设不变式：所有子线程都已经到达了join节点。
+                    Future<PvmActivity> pvmActivityFuture = futureExecutionResultList.get(0);
+                    PvmActivity futureJoinParallelGateWay = pvmActivityFuture.get();
                     ActivityBehavior behavior = futureJoinParallelGateWay.getBehavior();
+
+                    //模拟正常流程的继续驱动，将继续推进caller thread 执行后续节点。
                     behavior.leave(context,futureJoinParallelGateWay);
 
                 } catch (Exception e) {
-                    throw new EngineException(e.getMessage(), e);
+                    throw new EngineException(e);
                 }
 
 
-
-                return false;
-
         } else if (outComeTransitionSize == 1 && inComeTransitionSize >= 2) {
 
+            //在服务编排场景，仅是子线程在执行到最后一个节点后，会进入到并行网关的join节点。CallerThread 不会执行到这里的逻辑。
             GatewaySticker.create().setPvmActivity(pvmActivity);
 
-
-            return false;
-
-
         }else{
-            throw new EngineException("should touch here:"+pvmActivity);
+            throw new EngineException("Should not touch here:"+pvmActivity);
         }
     }
 
@@ -282,16 +293,18 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         public PvmActivity call() {
             PvmActivity pvmActivity ;
             try {
+
+                //忽略了子线程的返回值
                 this.pvmActivity.enter(context);
+
+                pvmActivity = GatewaySticker.currentSession().getPvmActivity();
+
+            }finally {
 
                 if(null !=  latch){
                     latch.countDown();
                 }
 
-                pvmActivity = GatewaySticker.currentSession().getPvmActivity();
-
-
-            }finally {
                 GatewaySticker.destroySession();
             }
 
