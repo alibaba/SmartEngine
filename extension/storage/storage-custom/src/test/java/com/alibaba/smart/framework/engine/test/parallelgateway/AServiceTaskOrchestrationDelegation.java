@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import com.alibaba.smart.framework.engine.delegation.TccDelegation;
 import com.alibaba.smart.framework.engine.delegation.TccResult;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class AServiceTaskOrchestrationDelegation implements JavaDelegation {
         try {
             Thread.sleep(sleepTime);
         } catch (InterruptedException e) {
-            LOGGER.error(e.getMessage(),e);
+            throw new EngineException(e);
         }
 
     }

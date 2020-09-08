@@ -58,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -149,7 +150,7 @@ public class SmartEngineBenchmark {
 
 
 
-        Map<String, Object> request = new HashMap<String, Object>();
+        Map<String, Object> request = new ConcurrentHashMap<String, Object>();
 
         long service1SleepTime = 400L;
         String service1ActivityId = "service1";

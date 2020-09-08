@@ -91,7 +91,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                                          Map<String, PvmTransition> outcomeTransitions, int outComeTransitionSize,
                                          int inComeTransitionSize) {
 
-        final CountDownLatch latch = new CountDownLatch(outComeTransitionSize);
 
         if (outComeTransitionSize >= 2 && inComeTransitionSize == 1) {
             //并发执行fork
@@ -107,25 +106,25 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
                     PvmActivity target = pvmTransitionEntry.getValue().getTarget();
 
-                    //从ParentContext 复制相关Context到子线程内。这里得注意下线程安全。
+                    //从ParentContext 复制父Context到子线程内。这里得注意下线程安全。
                     ExecutionContext subThreadContext = contextFactory.createFromParentContext(context);
 
-                    PvmActivityTask task = new PvmActivityTask(target, subThreadContext,latch);
+                    PvmActivityTask task = new PvmActivityTask(target, subThreadContext);
 
                     tasks.add(task);
                 }
 
 
                 try {
-                    List<Future<PvmActivity>> futureExecutionResultList = executorService.invokeAll(tasks);
 
                     Long latchWaitTime = (Long)MapUtil.safeGet(context.getRequest(),
                         RequestMapSpecialKeyConstant.LATCH_WAIT_TIME_IN_MILLISECOND);
 
+                    List<Future<PvmActivity>> futureExecutionResultList = null;
                     if(null != latchWaitTime){
-                        latch.await(latchWaitTime, TimeUnit.MILLISECONDS);
+                         futureExecutionResultList = executorService.invokeAll(tasks,latchWaitTime, TimeUnit.MILLISECONDS);
                     }else {
-                        latch.await();
+                         futureExecutionResultList = executorService.invokeAll(tasks);
                     }
 
                     //注意这里的逻辑：这里假设是子线程在执行某个fork分支的逻辑后，然后会在join节点时返回。这个join节点就是 futureJoinParallelGateWay。
@@ -274,18 +273,10 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
     class PvmActivityTask implements Callable<PvmActivity> {
         private PvmActivity pvmActivity;
         private ExecutionContext context;
-        private CountDownLatch latch;
 
         PvmActivityTask(PvmActivity pvmActivity,ExecutionContext context) {
             this.pvmActivity = pvmActivity;
             this.context = context;
-        }
-
-
-        PvmActivityTask(PvmActivity pvmActivity,ExecutionContext context,CountDownLatch latch) {
-            this.pvmActivity = pvmActivity;
-            this.context = context;
-            this.latch = latch;
         }
 
 
@@ -300,10 +291,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 pvmActivity = GatewaySticker.currentSession().getPvmActivity();
 
             }finally {
-
-                if(null !=  latch){
-                    latch.countDown();
-                }
 
                 GatewaySticker.destroySession();
             }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
@@ -27,6 +28,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase {
 
@@ -92,6 +94,8 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
         //简单拍个数据，用于表示该程序非串式执行的
         long maxExecutionTime = service1SleepTime + service2SleepTime - 100L;
 
+        //System.out.println(duration);
+
         Assert.assertTrue(duration< maxExecutionTime);
     }
 
@@ -113,42 +117,15 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
 
         request.put(service1ActivityId, service1SleepTime);
         request.put(service2ActivityId, service2SleepTime);
-
-        long start = System.currentTimeMillis();
-
-
         request.put(RequestMapSpecialKeyConstant.LATCH_WAIT_TIME_IN_MILLISECOND,200L);
 
-        ProcessInstance processInstance = processCommandService.start(
-            processDefinition.getId(), processDefinition.getVersion(),
-            request);
-
-
-        // 流程启动后,正确状态断言
-        Assert.assertNotNull(processInstance);
-
-        Assert.assertNotNull(processInstance.getCompleteTime());
-        assertEquals(InstanceStatus.completed, processInstance.getStatus());
-
-        Set<Entry<String, Object>> entries = request.entrySet();
-        Assert.assertEquals(3,entries.size());
-
-        ThreadExecutionResult service1 = (ThreadExecutionResult)request.get(service1ActivityId);
-        ThreadExecutionResult service2 = (ThreadExecutionResult)request.get(service2ActivityId);
-
-        Assert.assertEquals(service1SleepTime, service1.getPayload());
-        Assert.assertEquals(service2SleepTime, service2.getPayload());
-
-        Assert.assertNotEquals(service1.getThreadId(),service2.getThreadId());
-
-        long end = System.currentTimeMillis();
-
-        long duration = end-start;
-
-        //简单拍个数据，用于表示该程序非串式执行的
-        long maxExecutionTime = service1SleepTime + service2SleepTime - 100L;
-
-        //Assert.assertTrue(duration< maxExecutionTime);
+        try{
+            ProcessInstance processInstance = processCommandService.start(
+                processDefinition.getId(), processDefinition.getVersion(),
+                request);
+        }catch (Exception e){
+            Assert.assertTrue(e.getCause() instanceof CancellationException);
+        }
 
 
     }

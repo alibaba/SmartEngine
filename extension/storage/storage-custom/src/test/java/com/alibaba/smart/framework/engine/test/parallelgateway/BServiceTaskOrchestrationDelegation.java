@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class BServiceTaskOrchestrationDelegation implements JavaDelegation {
         try {
             Thread.sleep(sleepTime);
         } catch (InterruptedException e) {
-            LOGGER.error(e.getMessage(),e);
+            throw new EngineException(e);
         }
 
     }
