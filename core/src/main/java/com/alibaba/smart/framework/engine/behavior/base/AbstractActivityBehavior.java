@@ -69,10 +69,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             activityInstance.setExecutionInstanceList(executionInstanceList);
             context.setExecutionInstance(executionInstance);
 
-            if (context.isNeedPause()) {
-                executionInstance.setStatus(InstanceStatus.suspended);
-            }
-
             return false;
         }
 
@@ -102,9 +98,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             ExecutionInstance executionInstance = context.getExecutionInstance();
             MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
                 processEngineConfiguration);
-        }else{
-            ExecutionInstance executionInstance = context.getExecutionInstance();
-            executionInstance.setStatus(InstanceStatus.suspended);
         }
     }
 

@@ -33,21 +33,5 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     TaskInstance getTaskInstance();
 
-    /**
-     * 获取进入活动的关联
-     *
-     * @return 进入活动的关联
-     */
-    TransitionInstance getIncomeTransition();
 
-    /**
-     * 设置进入活动的关联
-     *
-     * @param transitionInstance 进入活动的关联
-     */
-    void setIncomeTransition(TransitionInstance transitionInstance);
-
-    InstanceStatus getStatus();
-
-    void setStatus(InstanceStatus status);
 }

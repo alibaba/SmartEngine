@@ -30,7 +30,6 @@ public class DefaultExecutionInstanceFactory implements ExecutionInstanceFactory
         defaultExecutionInstance.setProcessDefinitionIdAndVersion(activityInstance.getProcessDefinitionIdAndVersion());
         defaultExecutionInstance.setStartTime(DateUtil.getCurrentDate());
         defaultExecutionInstance.setActive(true);
-        defaultExecutionInstance.setStatus(InstanceStatus.running);
 
         return defaultExecutionInstance;
     }

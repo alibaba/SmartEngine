@@ -21,8 +21,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ReceiveTaskParallelGatewayTest extends CustomBaseTestCase {
+public class BasicParallelGatewayTest extends CustomBaseTestCase {
     private long orderId = 123456L;
+
 
     protected void initProcessConfiguation() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
@@ -31,7 +32,42 @@ public class ReceiveTaskParallelGatewayTest extends CustomBaseTestCase {
     }
 
     @Test
-    public void testParallelGateway() throws Exception {
+    public void testServiceTaskParallelGateway() throws Exception {
+
+        ProcessDefinition processDefinition = repositoryCommandService
+            .deploy("test-servicetask-parallel-gateway.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(16, processDefinition.getBaseElementList().size());
+
+        Map<String, Object> request = new HashMap<String, Object>();
+        request.put("input", 7);
+        ProcessInstance processInstance = processCommandService.start(
+            processDefinition.getId(), processDefinition.getVersion(),
+            request);
+
+        persisteAndUpdateThreadLocal(orderId, processInstance);
+
+        // 流程启动后,正确状态断言
+        Assert.assertNotNull(processInstance);
+
+        List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(
+            processInstance.getInstanceId());
+        assertEquals(1, executionInstanceList.size());
+
+        ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
+
+        assertTrue(("theTask3".equals(firstExecutionInstance.getProcessDefinitionActivityId())));
+
+        persisteAndUpdateThreadLocal(orderId, processInstance);
+
+        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
+
+        Assert.assertNotNull(processInstance.getCompleteTime());
+        assertEquals(InstanceStatus.completed, processInstance.getStatus());
+
+    }
+
+    @Test
+    public void testReceiveTaskParallelGateway() throws Exception {
 
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("test-receivetask-parallel-gateway.bpmn20.xml").getFirstProcessDefinition();

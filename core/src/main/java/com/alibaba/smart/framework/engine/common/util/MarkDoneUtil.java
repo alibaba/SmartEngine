@@ -23,7 +23,6 @@ public class MarkDoneUtil {
         Date completeDate = DateUtil.getCurrentDate();
         executionInstance.setCompleteTime(completeDate);
         executionInstance.setActive(false);
-        executionInstance.setStatus(InstanceStatus.completed);
 
         executionInstanceStorage.update(executionInstance, processEngineConfiguration);
         return executionInstance;

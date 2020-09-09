@@ -51,13 +51,14 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
         executionInstanceEntity.setProcessInstanceId(Long.valueOf(executionInstance.getProcessInstanceId()));
         executionInstanceEntity.setActivityInstanceId(Long.valueOf(executionInstance.getActivityInstanceId()));
         executionInstanceEntity.setProcessDefinitionActivityId(executionInstance.getProcessDefinitionActivityId());
-        TransitionInstance incomeTransition=executionInstance.getIncomeTransition();
-        if(null!=incomeTransition){
-            executionInstanceEntity.setIncomeTransitionId(incomeTransition.getTransitionId());
-            executionInstanceEntity.setIncomeActivityInstanceId(Long.valueOf(incomeTransition.getSourceActivityInstanceId()));
 
-
-        }
+        //TransitionInstance incomeTransition=executionInstance.getIncomeTransition();
+        //if(null!=incomeTransition){
+        //    executionInstanceEntity.setIncomeTransitionId(incomeTransition.getTransitionId());
+        //    executionInstanceEntity.setIncomeActivityInstanceId(Long.valueOf(incomeTransition.getSourceActivityInstanceId()));
+        //
+        //
+        //}
         return executionInstanceEntity;
     }
 
@@ -90,7 +91,7 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
             TransitionInstance incomeTransition= new DefaultTransitionInstance();
             incomeTransition.setTransitionId(incomeTransitionId);
             incomeTransition.setSourceActivityInstanceId(incomeActivityInstanceId.toString());
-            executionInstance.setIncomeTransition(incomeTransition);
+            //executionInstance.setIncomeTransition(incomeTransition);
         }
         return executionInstance;
     }

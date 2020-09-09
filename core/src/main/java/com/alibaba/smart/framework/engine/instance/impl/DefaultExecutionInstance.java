@@ -8,9 +8,7 @@ import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * DefaultExecutionInstance Created by ettear on 16-4-19.
- */
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class DefaultExecutionInstance extends AbstractLifeCycleInstance implements ExecutionInstance {
@@ -25,12 +23,8 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
 
     private TaskInstance taskInstance;
 
-    private TransitionInstance incomeTransition;
-
-    private InstanceStatus status;
-
     @Override
     public String toString() {
-        return this.getInstanceId()+":"+this.getProcessDefinitionActivityId()+":"+this.getStatus();
+        return this.getInstanceId()+":"+this.getProcessDefinitionActivityId()+":"+this.isActive();
     }
 }

@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.test.parallelgateway;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -17,8 +18,11 @@ import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
+import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
 import com.alibaba.smart.framework.engine.test.DoNothingLockStrategy;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 
@@ -32,8 +36,6 @@ import static org.junit.Assert.fail;
 
 public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase {
 
-
-
     protected void initProcessConfiguation() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
         LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
@@ -43,7 +45,7 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
     }
 
     @Test
-    public void testParallelGateway() throws Exception {
+    public void testMultiThreadExecution() throws Exception {
 
 
 
@@ -129,6 +131,33 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
 
 
     }
+
+    @Test
+    public void testSequentialExecution() throws Exception {
+
+        ProcessDefinition processDefinition = repositoryCommandService
+            .deploy("test-all-servicetask-parallel-gateway.bpmn20.xml").getFirstProcessDefinition();
+        assertEquals(16, processDefinition.getBaseElementList().size());
+
+        Map<String, Object> request = new HashMap<String, Object>();
+        request.put("input", 7);
+        ProcessInstance processInstance = processCommandService.start(
+            processDefinition.getId(), processDefinition.getVersion(),
+            request);
+
+        // 流程启动后,正确状态断言
+        Assert.assertNotNull(processInstance);
+
+        List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(
+            processInstance.getInstanceId());
+        assertEquals(0, executionInstanceList.size());
+
+        Assert.assertNotNull(processInstance.getCompleteTime());
+        assertEquals(InstanceStatus.completed, processInstance.getStatus());
+
+    }
+
+
 
 
     //dont use in production code

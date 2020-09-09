@@ -50,7 +50,6 @@ public class CountDownTest {
 
 
         latch.await();
-        latch.await();
         //latch.await();
 
         System.out.println("here");
