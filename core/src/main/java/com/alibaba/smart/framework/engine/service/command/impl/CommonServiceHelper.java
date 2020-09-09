@@ -44,12 +44,9 @@ public abstract  class CommonServiceHelper {
 
         LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
         if(null != lockStrategy){
-            // 这个时候，流程实例可能已经完成或者终止。
-            if(!InstanceStatus.running.equals(processInstance.getStatus())){
-                newProcessInstance =  processInstanceStorage.update(processInstance, processEngineConfiguration);
-            }else {
-                newProcessInstance = processInstance;
-            }
+
+            newProcessInstance =  processInstanceStorage.update(processInstance, processEngineConfiguration);
+
         }else{
              newProcessInstance =  processInstanceStorage.insert(processInstance, processEngineConfiguration);
         }

@@ -196,7 +196,7 @@ public class SmartEngineBenchmark {
 
         // 注意:在执行之前,更新下ThreadLocal。另外,在线上环境,使用完毕后需要clean 下 ThreadLocal。
         processInstance =  InstanceSerializerFacade.deserializeAll(string);
-        PersisterSession.currentSession().setProcessInstance(processInstance);
+        PersisterSession.currentSession().putProcessInstance(processInstance);
     }
 
     //dont use in production code

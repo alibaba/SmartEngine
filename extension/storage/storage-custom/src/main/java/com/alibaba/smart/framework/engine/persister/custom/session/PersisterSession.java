@@ -78,10 +78,6 @@ public class PersisterSession {
     }
 
 
-    public void setProcessInstance(ProcessInstance processInstance) {
-            putProcessInstance( processInstance) ;
-    }
-
     public void putProcessInstance(ProcessInstance processInstance) {
         this.processInstances.put(processInstance.getInstanceId(), processInstance);
     }

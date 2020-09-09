@@ -44,8 +44,9 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
 
         ProcessInstance processInstance = context.getProcessInstance();
         ExecutionInstance executionInstance = context.getExecutionInstance();
-        return this.call(processInstance.getInstanceId(), executionInstance.getInstanceId(),
+        boolean call = this.call(processInstance.getInstanceId(), executionInstance.getInstanceId(),
             callActivity, context);
+        return call;
     }
 
     //FIXME ettear 与DefaultProcessCommandService的逻辑合并
