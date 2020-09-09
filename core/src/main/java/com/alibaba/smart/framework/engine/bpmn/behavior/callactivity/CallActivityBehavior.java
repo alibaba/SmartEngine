@@ -2,10 +2,15 @@ package com.alibaba.smart.framework.engine.bpmn.behavior.callactivity;
 
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.callactivity.CallActivity;
+import com.alibaba.smart.framework.engine.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
+import com.alibaba.smart.framework.engine.bpmn.assembly.task.UserTask;
+import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.ContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
+import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.exception.SignalException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
@@ -16,6 +21,8 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.impl.CommonServiceHelper;
+
+import com.sun.xml.internal.ws.api.pipe.Engine;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 May  16:07.
@@ -41,7 +48,7 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
             callActivity, context);
     }
 
-    //TODO ettear 与DefaultProcessCommandService的逻辑合并
+    //FIXME ettear 与DefaultProcessCommandService的逻辑合并
     private boolean call(String parentInstanceId, String parentExecutionInstanceId,CallActivity callActivity, ExecutionContext context) {
 
         String processDefinitionId =  callActivity.getCalledElement();
@@ -78,4 +85,12 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
 
         return InstanceStatus.completed!=subProcessInstance.getStatus();
     }
+
+    //@Override
+    //public void execute(ExecutionContext context, PvmActivity pvmActivity) {
+    //
+    //   throw new SignalException("cant be signal");
+    //
+    //}
+
 }

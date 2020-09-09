@@ -14,13 +14,14 @@
 
         <!-- ======== Parallel 1 ======== -->
         <parallelGateway id="fork_1" />
+        <receiveTask id="parallel_1_task" name="Parallel Task 1" />
+        <callActivity id="parallel_1_subprocess" name="Parallel Sub-Process 1" calledElement="sub-process" calledElementVersion="1.0.0" />
+
 
         <sequenceFlow id="flow_fork_1_task" sourceRef="fork_1" targetRef="parallel_1_task"/>
-        <receiveTask id="parallel_1_task" name="Parallel Task 1" />
         <sequenceFlow id="flow_join_1_task" sourceRef="parallel_1_task" targetRef="join_1"/>
 
         <sequenceFlow id="flow_fork_1_subprocess" sourceRef="fork_1" targetRef="parallel_1_subprocess"/>
-        <callActivity id="parallel_1_subprocess" name="Parallel Sub-Process 1" calledElement="sub-process" calledElementVersion="1.0.0" />
         <sequenceFlow id="flow_join_1_subprocess" sourceRef="parallel_1_subprocess" targetRef="join_1"/>
 
         <parallelGateway id="join_1" />
