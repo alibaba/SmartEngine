@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +18,7 @@ import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
+import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
@@ -117,7 +119,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                     Long latchWaitTime = (Long)MapUtil.safeGet(context.getRequest(),
                         RequestMapSpecialKeyConstant.LATCH_WAIT_TIME_IN_MILLISECOND);
 
-                    List<Future<PvmActivity>> futureExecutionResultList = null;
+                    List<Future<PvmActivity>> futureExecutionResultList ;
                     if(null != latchWaitTime){
                          futureExecutionResultList = executorService.invokeAll(tasks,latchWaitTime, TimeUnit.MILLISECONDS);
                     }else {
@@ -126,6 +128,19 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
                     //注意这里的逻辑：这里假设是子线程在执行某个fork分支的逻辑后，然后会在join节点时返回。这个join节点就是 futureJoinParallelGateWay。
                     // 当await 执行结束后，这里的假设不变式：所有子线程都已经到达了join节点。
+                    ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();
+
+                    for (Future<PvmActivity> pvmActivityFuture : futureExecutionResultList) {
+                        try{
+                            pvmActivityFuture.get();
+                        }catch (InterruptedException e){
+                            exceptionProcessor.process(e,context);
+                        }catch (ExecutionException e){
+                            exceptionProcessor.process(e,context);
+                        }
+                    }
+
+
                     Future<PvmActivity> pvmActivityFuture = futureExecutionResultList.get(0);
                     PvmActivity futureJoinParallelGateWay = pvmActivityFuture.get();
                     ActivityBehavior behavior = futureJoinParallelGateWay.getBehavior();
@@ -279,8 +294,10 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         @Override
         public PvmActivity call() {
+
             PvmActivity pvmActivity ;
             try {
+                GatewaySticker.create();
 
                 //忽略了子线程的返回值
                 this.pvmActivity.enter(context);

@@ -40,7 +40,7 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
         LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
         processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
-        processEngineConfiguration.setExecutorService(newFixedThreadPool(10));
+        processEngineConfiguration.setExecutorService(newFixedThreadPool(4));
         processEngineConfiguration.getOptionContainer().put(ConfigurationOption.SERVICE_ORCHESTRATION_OPTION);
     }
 
@@ -154,6 +154,42 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
 
         Assert.assertNotNull(processInstance.getCompleteTime());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
+
+    }
+
+
+    @Test
+    public void testException() throws Exception {
+
+
+
+        ProcessDefinition processDefinition = repositoryCommandService
+            .deploy("ServiceOrchestrationExceptionParallelGatewayTest.xml").getFirstProcessDefinition();
+        assertEquals(12, processDefinition.getBaseElementList().size());
+
+        Map<String, Object> request = new HashMap<String, Object>();
+
+        long service1SleepTime = 400L;
+        String service1ActivityId = "service1";
+
+        long service2SleepTime = 500L;
+        String service2ActivityId = "service2";
+
+        request.put(service1ActivityId, service1SleepTime);
+        request.put(service2ActivityId, service2SleepTime);
+
+        try{
+             processCommandService.start(
+                processDefinition.getId(), processDefinition.getVersion(),
+                request);
+        }catch (Exception e){
+            Throwable cause = e.getCause().getCause().getCause().getCause();
+            Assert.assertTrue(cause instanceof  IllegalArgumentException);
+        }
+
+
+
+
 
     }
 

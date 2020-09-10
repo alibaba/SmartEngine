@@ -66,6 +66,7 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
     public DefaultProcessEngineConfiguration() {
         //说明:先默认设置一个id生成器,业务使用方可以根据自己的需要再覆盖掉这个值。
         this.idGenerator = new DefaultIdGenerator();
+        this.exceptionProcessor = new DefaultExceptionProcessor();
         this.instanceAccessor = new DefaultInstanceAccessor();
         this.delegationExecutor = new DefaultDelegationExecutor();
         this.listenerExecutor = new DefaultListenerExecutor();

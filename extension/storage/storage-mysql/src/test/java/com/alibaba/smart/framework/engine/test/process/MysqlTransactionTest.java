@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.test.process;
 
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
@@ -38,7 +39,7 @@ public class MysqlTransactionTest extends DatabaseBaseTestCase {
     @Autowired
     private TransactionHelper transactionHelper;
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = EngineException.class)
    //@Test
     public void exception() throws Exception {
 
