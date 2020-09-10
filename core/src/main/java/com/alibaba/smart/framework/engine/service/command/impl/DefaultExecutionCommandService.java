@@ -93,7 +93,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         try {
 
-            PreparePhase preparePhase = new PreparePhase(request, executionInstance).invoke();
+            PreparePhase preparePhase = new PreparePhase(request, executionInstance,instanceContextFactory).invoke();
 
             PvmProcessDefinition pvmProcessDefinition = preparePhase.getPvmProcessDefinition();
             ExecutionContext executionContext = preparePhase.getExecutionContext();
@@ -158,7 +158,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
                 processEngineConfiguration);
         }
 
-        ExecutionContext executionContext = createExecutionContext(request, processEngineConfiguration,
+        ExecutionContext executionContext = this.instanceContextFactory.createExecutionContext(request, processEngineConfiguration,
             executionInstance, activityInstance, processInstance, processDefinition);
 
         PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
@@ -233,21 +233,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
     }
 
-    private ExecutionContext createExecutionContext(Map<String, Object> request,
-                                                    ProcessEngineConfiguration processEngineConfiguration,
-                                                    ExecutionInstance executionInstance,
-                                                    ActivityInstance activityInstance,
-                                                    ProcessInstance processInstance,
-                                                    ProcessDefinition processDefinition) {
-        ExecutionContext executionContext = this.instanceContextFactory.create();
-        executionContext.setProcessEngineConfiguration(processEngineConfiguration);
-        executionContext.setProcessDefinition(processDefinition);
-        executionContext.setProcessInstance(processInstance);
-        executionContext.setExecutionInstance(executionInstance);
-        executionContext.setActivityInstance(activityInstance);
-        executionContext.setRequest(request);
-        return executionContext;
-    }
+
 
     private void tryLock(ProcessEngineConfiguration processEngineConfiguration,
                          String processInstanceId) {
@@ -275,10 +261,12 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         private ExecutionInstance executionInstance;
         private PvmProcessDefinition pvmProcessDefinition;
         private ExecutionContext executionContext;
+        private ContextFactory contextFactory;
 
-        public PreparePhase(Map<String, Object> request, ExecutionInstance executionInstance) {
+        public PreparePhase(Map<String, Object> request, ExecutionInstance executionInstance,ContextFactory instanceContextFactory) {
             this.request = request;
             this.executionInstance = executionInstance;
+            this.contextFactory =instanceContextFactory;
         }
 
         public PvmProcessDefinition getPvmProcessDefinition() {
@@ -309,7 +297,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
                 DefaultExecutionCommandService.this.processContainer.getProcessDefinition(
                     processInstance.getProcessDefinitionIdAndVersion());
 
-            executionContext = createExecutionContext(request, processEngineConfiguration,
+            executionContext = instanceContextFactory.createExecutionContext(request, processEngineConfiguration,
                 executionInstance, activityInstance, processInstance, processDefinition);
             return this;
         }

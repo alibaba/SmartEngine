@@ -3,7 +3,9 @@ package com.alibaba.smart.framework.engine.instance.factory.impl;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.common.util.IdAndVersionUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -22,20 +24,18 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
     @Override
-    public ProcessInstance create(ExecutionContext executionContext) {
-        ProcessDefinition   processDefinition = executionContext.getProcessDefinition();
+    public ProcessInstance create( ProcessEngineConfiguration processEngineConfiguration,String processDefinitionId, String processDefinitionVersion, Map<String, Object> request) {
         DefaultProcessInstance defaultProcessInstance = new DefaultProcessInstance();
-        IdGenerator idGenerator = executionContext.getProcessEngineConfiguration().getIdGenerator();
+        IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
 
         defaultProcessInstance.setInstanceId(idGenerator.getId());
         defaultProcessInstance.setStatus(InstanceStatus.running);
         defaultProcessInstance.setStartTime(DateUtil.getCurrentDate());
 
-        defaultProcessInstance.setProcessDefinitionIdAndVersion(processDefinition.getIdAndVersion());
-        defaultProcessInstance.setProcessDefinitionId(processDefinition.getId());
-        defaultProcessInstance.setProcessDefinitionVersion(processDefinition.getVersion());
+        defaultProcessInstance.setProcessDefinitionIdAndVersion(IdAndVersionUtil.buildProcessDefinitionKey(processDefinitionId,processDefinitionVersion));
+        defaultProcessInstance.setProcessDefinitionId(processDefinitionId);
+        defaultProcessInstance.setProcessDefinitionVersion(processDefinitionVersion);
 
-        Map<String, Object> request = executionContext.getRequest();
         if (null != request) {
             String startUserId = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID);
             defaultProcessInstance.setStartUserId(startUserId);
@@ -54,6 +54,19 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
         }
 
         return defaultProcessInstance;
+    }
+
+    @Override
+    public ProcessInstance createChild(ProcessEngineConfiguration processEngineConfiguration,
+                                       String processDefinitionId, String processDefinitionVersion,
+                                       Map<String, Object> request, String parentInstanceId,
+                                       String parentExecutionInstanceId) {
+        ProcessInstance childProcessInstance = this.create(processEngineConfiguration,   processDefinitionId,processDefinitionVersion,
+            request);
+        childProcessInstance.setParentInstanceId(parentInstanceId);
+        childProcessInstance.setParentExecutionInstanceId(parentExecutionInstanceId);
+
+        return childProcessInstance;
     }
 
 }

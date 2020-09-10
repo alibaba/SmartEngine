@@ -29,7 +29,7 @@ public class ProcessDefinitionImpl implements ProcessDefinition {
 
     private String version;
 
-    private String idAndVersion;
+    //private String idAndVersion;
 
 
     private String name;

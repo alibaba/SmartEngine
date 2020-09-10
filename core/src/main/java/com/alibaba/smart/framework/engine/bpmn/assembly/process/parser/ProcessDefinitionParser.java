@@ -9,7 +9,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.bpmn.assembly.process.ProcessDefinitionImpl;
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
-import com.alibaba.smart.framework.engine.common.util.IdAndVersionBuilder;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -47,7 +46,7 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
         processDefinition.setId(XmlParseUtil.getString(reader, "id"));
         processDefinition.setVersion(XmlParseUtil.getString(reader, "version"));
         processDefinition.setName(XmlParseUtil.getString(reader, "name"));
-        processDefinition.setIdAndVersion(IdAndVersionBuilder.buildProcessDefinitionKey(processDefinition.getId(),processDefinition.getVersion()));
+        //processDefinition.setIdAndVersion(IdAndVersionBuilder.buildProcessDefinitionKey(processDefinition.getId(),processDefinition.getVersion()));
 
 
         List<BaseElement> elements = CollectionUtil.newArrayList();

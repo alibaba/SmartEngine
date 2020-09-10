@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -31,7 +29,6 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.util.InheritableTaskWithCache;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,7 +104,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                     PvmActivity target = pvmTransitionEntry.getValue().getTarget();
 
                     //从ParentContext 复制父Context到子线程内。这里得注意下线程安全。
-                    ExecutionContext subThreadContext = contextFactory.createFromParentContext(context);
+                    ExecutionContext subThreadContext = contextFactory.createChildThreadContext(context);
 
                     PvmActivityTask task = new PvmActivityTask(target, subThreadContext);
 

@@ -12,10 +12,10 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import lombok.Data;
 
 /**
- * DefaultInstanceContext Created by ettear on 16-4-19.
+ *  Created by ettear on 16-4-19.
  */
 @Data
-public class DefaultInstanceContext implements ExecutionContext {
+public class DefaultExecutionContext implements ExecutionContext {
 
     private ExecutionContext parent;
 

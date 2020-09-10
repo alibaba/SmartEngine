@@ -15,7 +15,6 @@ import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.ContextFactory;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
-import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
@@ -23,7 +22,6 @@ import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactor
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -80,30 +78,18 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     @Override
     public ProcessInstance start(String processDefinitionId, String processDefinitionVersion, Map<String, Object> request, Map<String, Object> response) {
 
-        ExecutionContext executionContext = this.instanceContextFactory.create();
-        executionContext.setProcessEngineConfiguration(processEngineConfiguration);
-        executionContext.setRequest(request);
-        executionContext.setResponse(response);
 
+        ProcessInstance processInstance = processInstanceFactory.create(  processEngineConfiguration,    processDefinitionId,processDefinitionVersion,   request);
 
-        ProcessDefinition processDefinition = this.processDefinitionContainer.getProcessDefinition(processDefinitionId,
-            processDefinitionVersion);
-
-        if(null == processDefinition){
-            throw new EngineException("No ProcessDefinition found for processDefinitionId : "+processDefinitionId+",processDefinitionVersion : " +processDefinitionVersion);
-        }
-
-        executionContext.setProcessDefinition(processDefinition);
+        ExecutionContext executionContext = this.instanceContextFactory.create(processEngineConfiguration, processInstance,
+            request, response, null);
 
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
-        ProcessInstance processInstance = processInstanceFactory.create(executionContext);
         try {
             //!!! 重要
-            tryInsertProcessInstanceAndLock(processEngineConfiguration, processInstance);
-
-            executionContext.setProcessInstance(processInstance);
+            tryInsertProcessInstanceIfNeedLock(processEngineConfiguration, processInstance);
 
             processInstance = pvmProcessInstance.start(executionContext);
 
@@ -118,11 +104,10 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         }
     }
 
-    private void tryInsertProcessInstanceAndLock(ProcessEngineConfiguration processEngineConfiguration,
-                                                 ProcessInstance processInstance) {
+    private void tryInsertProcessInstanceIfNeedLock(ProcessEngineConfiguration processEngineConfiguration,
+                                                    ProcessInstance processInstance) {
         LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
         if(null != lockStrategy){
-
 
 
             ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance, processEngineConfiguration);

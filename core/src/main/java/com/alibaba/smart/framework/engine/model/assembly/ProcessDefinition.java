@@ -16,9 +16,9 @@ public interface ProcessDefinition extends ExtensionElementContainer,IdBasedElem
     String getVersion();
     void setVersion(String version);
 
-    String getIdAndVersion();
-
-    void setIdAndVersion(String idAndVersion);
+    //String getIdAndVersion();
+    //
+    //void setIdAndVersion(String idAndVersion);
     
 
     List<BaseElement> getBaseElementList();

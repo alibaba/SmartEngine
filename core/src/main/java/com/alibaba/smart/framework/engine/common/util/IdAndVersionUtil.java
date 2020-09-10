@@ -3,7 +3,7 @@ package com.alibaba.smart.framework.engine.common.util;
 /**
  * Created by 高海军 帝奇 74394 on  2019-11-17 15:55.
  */
-public abstract class IdAndVersionBuilder {
+public abstract class IdAndVersionUtil {
 
     public static String buildProcessDefinitionKey(String processDefinitionId, String version) {
 
