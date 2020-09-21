@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smart.alibaba-inc.com/schema/process" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="abcxx" targetNamespace="smart">
+    <process id="exclusive-without-gateway" isExecutable="false">
+        <startEvent id="StartEvent_1" />
+        <serviceTask id="yang" smart:class = "com.alibaba.smart.framework.engine.test.delegation.CommonGatewayDelegation"/>
+        <serviceTask id="yin" smart:class = "com.alibaba.smart.framework.engine.test.delegation.CommonGatewayDelegation"/>
+        <sequenceFlow id="SequenceFlow_1wigmma" sourceRef="StartEvent_1" targetRef="yin" >
+             <conditionExpression type="mvel"><![CDATA[request.equals("yin")]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="SequenceFlow_0g07fgd" sourceRef="StartEvent_1" targetRef="yang">
+            <conditionExpression type="mvel"><![CDATA[request.equals("yang")]]></conditionExpression>
+        </sequenceFlow>
+        <serviceTask id="one" smart:class = "com.alibaba.smart.framework.engine.test.delegation.CommonGatewayDelegation"/>
+        <sequenceFlow id="SequenceFlow_1jbsx0g" sourceRef="yang" targetRef="one" />
+        <sequenceFlow id="SequenceFlow_1148bt5" sourceRef="yin" targetRef="one" />
+        <endEvent id="EndEvent_0hvj1jr" />
+        <sequenceFlow id="SequenceFlow_0mi7nqj" sourceRef="one" targetRef="EndEvent_0hvj1jr" />
+    </process>
+
+</definitions>

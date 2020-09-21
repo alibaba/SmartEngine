@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.bpmn.behavior.gateway;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
@@ -29,30 +27,13 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<Exclusive
 
             if( outcomeTransitions.size() >=2){
 
-                List<PvmTransition> matchedTransitions = new ArrayList<PvmTransition>(outcomeTransitions.size());
-                for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
-                    PvmTransition pendingTransition = transitionEntry.getValue();
-                    boolean matched = pendingTransition.match(context);
-
-                    if (matched) {
-                        matchedTransitions.add(pendingTransition);
-                    }
-
-                }
-
-                if(1 != matchedTransitions.size()){
-                    throw new EngineException("Multiple Transitions matched: "+matchedTransitions);
-                }
-
-                for (PvmTransition matchedPvmTransition : matchedTransitions) {
-                    PvmActivity target = matchedPvmTransition.getTarget();
-                    target.enter(context);
-                }
-
+                ExclusiveGatewayBehaviorHelper.chooseOnlyOne(context, outcomeTransitions);
 
             }else {
                 throw new EngineException("the outcomeTransitions.size() should >= 2");
             }
         }
+
+
 
 }

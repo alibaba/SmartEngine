@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
+import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.ExclusiveGatewayBehaviorHelper;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
@@ -19,7 +19,6 @@ import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStor
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
@@ -126,7 +125,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
                 }
             }else {
 
-                throw new EngineException("The outcomeTransitions.size() should only be 1 for the activity id :"+pvmActivity.getModel().getId());
+                 ExclusiveGatewayBehaviorHelper.chooseOnlyOne(context, outcomeTransitions);
+
             }
         }
 
