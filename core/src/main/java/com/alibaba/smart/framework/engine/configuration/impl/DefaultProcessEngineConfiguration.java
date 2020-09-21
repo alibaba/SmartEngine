@@ -3,6 +3,8 @@ package com.alibaba.smart.framework.engine.configuration.impl;
 import java.util.concurrent.ExecutorService;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
+import com.alibaba.smart.framework.engine.common.expression.evaluator.MvelExpressionEvaluator;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.DelegationExecutor;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
@@ -39,6 +41,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private InstanceAccessor instanceAccessor;
 
+    private ExpressionEvaluator expressionEvaluator;
+
     private DelegationExecutor delegationExecutor;
 
     private ListenerExecutor listenerExecutor;
@@ -69,6 +73,7 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         this.exceptionProcessor = new DefaultExceptionProcessor();
         this.instanceAccessor = new DefaultInstanceAccessor();
         this.delegationExecutor = new DefaultDelegationExecutor();
+        this.expressionEvaluator = new MvelExpressionEvaluator();
         this.listenerExecutor = new DefaultListenerExecutor();
         this.annotationScanner = new SimpleAnnotationScanner(SmartEngine.class.getPackage().getName());
         this.variablePersister = new DefaultVariablePersister();

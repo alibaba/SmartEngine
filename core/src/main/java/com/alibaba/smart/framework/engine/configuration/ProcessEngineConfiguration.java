@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutorService;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.annoation.Experiment;
+import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 
 /**
@@ -39,16 +40,32 @@ public interface ProcessEngineConfiguration {
 
     InstanceAccessor getInstanceAccessor();
 
+    /**
+     * 默认不需要扩展。默认使用MVEL表达式引擎。
+     *
+     * @param expressionEvaluator
+     *
+     */
+    void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator);
 
+    ExpressionEvaluator getExpressionEvaluator();
+
+    /**
+     * 默认不需要扩展。
+     */
     void setDelegationExecutor(DelegationExecutor delegationExecutor);
 
     DelegationExecutor getDelegationExecutor();
-
+    /**
+     * 默认不需要扩展。
+     */
     void setListenerExecutor(ListenerExecutor listenerExecutor);
 
     ListenerExecutor getListenerExecutor();
 
-
+    /**
+     * 默认不需要扩展。但是生产环境也可以使用Spring的AnnotationScanner实现。
+     */
     void setAnnotationScanner(AnnotationScanner annotationScanner);
 
 

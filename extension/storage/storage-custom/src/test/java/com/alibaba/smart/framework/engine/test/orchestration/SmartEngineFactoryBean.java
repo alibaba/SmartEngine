@@ -15,7 +15,6 @@ import com.alibaba.smart.framework.engine.util.IOUtil;
 
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Component;
@@ -78,9 +77,6 @@ public class SmartEngineFactoryBean implements FactoryBean<SmartEngine>, Initial
             try {
                 Class clazz = ClassUtil.getContextClassLoader().loadClass(classNameOrBeanName);
                 Object bean = ApplicationContextUtil.getBean(clazz);
-                return bean;
-            } catch (NoSuchBeanDefinitionException e) {
-                Object bean = defaultInstanceAccessService.access(classNameOrBeanName);
                 return bean;
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);

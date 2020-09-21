@@ -45,35 +45,15 @@ public abstract class ExpressionUtil {
 
     private static Object eval( Map<String,Object> requestContext,String type, String expression,  ProcessEngineConfiguration processEngineConfiguration) {
 
-        // 兼容
-        if (null != type) {
-            int expressionTypeSplitIndex = type.indexOf(":");
-            if (expressionTypeSplitIndex >= 0) {
-                type = type.substring(expressionTypeSplitIndex + 1);
-            }
-        } else {
-            type = AdHocConstant.MVEL;
-        }
+        ConfigurationOption configurationOption = processEngineConfiguration
+            .getOptionContainer().get(ConfigurationOption.EXPRESSION_COMPILE_RESULT_CACHED_OPTION.getId());
 
-        String firstCharToUpperCase = Character.toUpperCase(type.charAt(0)) + type.substring(1);
+        ExpressionEvaluator expressionEvaluator = processEngineConfiguration.getExpressionEvaluator();
+        Object result = expressionEvaluator.eval(expression, requestContext, configurationOption.isEnabled());
 
-        String className = PACKAGE_NAME + firstCharToUpperCase + EXPRESSION_EVALUATOR;
+        LOGGER.info("expressionEvaluator.result result is {}, each param is {} {} ",result,expression,requestContext);
 
-        ExpressionEvaluator expressionEvaluator = (ExpressionEvaluator)ClassUtil.createOrGetInstance(className);
+        return result;
 
-        if (null != expressionEvaluator) {
-
-            ConfigurationOption configurationOption = processEngineConfiguration
-                .getOptionContainer().get(ConfigurationOption.EXPRESSION_COMPILE_RESULT_CACHED_OPTION.getId());
-
-            Object result = expressionEvaluator.eval(expression, requestContext, configurationOption.isEnabled());
-
-            LOGGER.info("expressionEvaluator.result result is {}, each param is {} {} ",result,expression,requestContext);
-
-            return result;
-        } else {
-
-            throw  new EngineException("No Expression Evaluator found for "+ className);
-        }
     }
 }

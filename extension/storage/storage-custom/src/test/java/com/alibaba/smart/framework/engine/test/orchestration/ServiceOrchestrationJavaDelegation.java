@@ -10,7 +10,9 @@ import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ServiceOrchestrationJavaDelegation implements JavaDelegation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceOrchestrationJavaDelegation.class);
