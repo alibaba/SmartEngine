@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.configuration.ListenerExecutor;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
 import com.alibaba.smart.framework.engine.configuration.OptionContainer;
+import com.alibaba.smart.framework.engine.configuration.ParallelServiceOrchestration;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
@@ -51,6 +52,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private ExceptionProcessor exceptionProcessor;
 
+    private ParallelServiceOrchestration parallelServiceOrchestration;
+
     private TaskAssigneeDispatcher taskAssigneeDispatcher;
 
     private VariablePersister variablePersister;
@@ -74,6 +77,7 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         this.instanceAccessor = new DefaultInstanceAccessor();
         this.delegationExecutor = new DefaultDelegationExecutor();
         this.expressionEvaluator = new MvelExpressionEvaluator();
+        this.parallelServiceOrchestration = new DefaultParallelServiceOrchestration();
         this.listenerExecutor = new DefaultListenerExecutor();
         this.annotationScanner = new SimpleAnnotationScanner(SmartEngine.class.getPackage().getName());
         this.variablePersister = new DefaultVariablePersister();

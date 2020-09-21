@@ -5,25 +5,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
-import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
-import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
-import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
-import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
-import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
+import com.alibaba.smart.framework.engine.configuration.ParallelServiceOrchestration;
+import com.alibaba.smart.framework.engine.configuration.impl.PvmActivityTask;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.context.factory.ContextFactory;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -57,11 +49,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         ParallelGateway parallelGateway = (ParallelGateway)pvmActivity.getModel();
 
-        Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();
-        Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
 
-        int outComeTransitionSize = outcomeTransitions.size();
-        int inComeTransitionSize = incomeTransitions.size();
 
         ConfigurationOption serviceOrchestrationOption = processEngineConfiguration
             .getOptionContainer().get(ConfigurationOption.SERVICE_ORCHESTRATION_OPTION.getId());
@@ -69,104 +57,35 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         //此处，针对基于并行网关的服务编排做了特殊优化处理。
         if(serviceOrchestrationOption.isEnabled()){
 
-             serviceOrchestration(context, pvmActivity, outcomeTransitions, outComeTransitionSize,
-                inComeTransitionSize);
+            ParallelServiceOrchestration parallelServiceOrchestration = context.getProcessEngineConfiguration()
+                .getParallelServiceOrchestration();
+
+            parallelServiceOrchestration.orchestrateService(context, pvmActivity);
 
              //由于这里仅是服务编排，所以这里直接返回`暂停`信号。
             return true;
 
         }else {
 
-            return defaultLogic(context, pvmActivity, parallelGateway, incomeTransitions, outcomeTransitions,
-                outComeTransitionSize,
-                inComeTransitionSize);
+
+            return defaultLogic(context, pvmActivity, parallelGateway);
         }
 
 
 
     }
 
-    private void serviceOrchestration(ExecutionContext context, PvmActivity pvmActivity,
-                                         Map<String, PvmTransition> outcomeTransitions, int outComeTransitionSize,
-                                         int inComeTransitionSize) {
 
 
-        if (outComeTransitionSize >= 2 && inComeTransitionSize == 1) {
-            //并发执行fork
-                ExecutorService executorService = context.getProcessEngineConfiguration().getExecutorService();
-
-                List<PvmActivityTask> tasks = new ArrayList<PvmActivityTask>(outComeTransitionSize);
-
-                AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
-
-                ContextFactory contextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,
-                ContextFactory.class);
-
-                for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
-                    PvmActivity target = pvmTransitionEntry.getValue().getTarget();
-
-                    //从ParentContext 复制父Context到子线程内。这里得注意下线程安全。
-                    ExecutionContext subThreadContext = contextFactory.createChildThreadContext(context);
-
-                    PvmActivityTask task = new PvmActivityTask(target, subThreadContext);
-
-                    tasks.add(task);
-                }
+    private boolean defaultLogic(ExecutionContext context, PvmActivity pvmActivity, ParallelGateway parallelGateway) {
 
 
-                try {
+        Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();
+        Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
 
-                    Long latchWaitTime = (Long)MapUtil.safeGet(context.getRequest(),
-                        RequestMapSpecialKeyConstant.LATCH_WAIT_TIME_IN_MILLISECOND);
+        int outComeTransitionSize = outcomeTransitions.size();
+        int inComeTransitionSize = incomeTransitions.size();
 
-                    List<Future<PvmActivity>> futureExecutionResultList ;
-                    if(null != latchWaitTime){
-                         futureExecutionResultList = executorService.invokeAll(tasks,latchWaitTime, TimeUnit.MILLISECONDS);
-                    }else {
-                         futureExecutionResultList = executorService.invokeAll(tasks);
-                    }
-
-                    //注意这里的逻辑：这里假设是子线程在执行某个fork分支的逻辑后，然后会在join节点时返回。这个join节点就是 futureJoinParallelGateWay。
-                    // 当await 执行结束后，这里的假设不变式：所有子线程都已经到达了join节点。
-                    ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();
-
-                    for (Future<PvmActivity> pvmActivityFuture : futureExecutionResultList) {
-                        try{
-                            pvmActivityFuture.get();
-                        }catch (InterruptedException e){
-                            exceptionProcessor.process(e,context);
-                        }catch (ExecutionException e){
-                            exceptionProcessor.process(e,context);
-                        }
-                    }
-
-
-                    Future<PvmActivity> pvmActivityFuture = futureExecutionResultList.get(0);
-                    PvmActivity futureJoinParallelGateWay = pvmActivityFuture.get();
-                    ActivityBehavior behavior = futureJoinParallelGateWay.getBehavior();
-
-                    //模拟正常流程的继续驱动，将继续推进caller thread 执行后续节点。
-                    behavior.leave(context,futureJoinParallelGateWay);
-
-                } catch (Exception e) {
-                    throw new EngineException(e);
-                }
-
-
-        } else if (outComeTransitionSize == 1 && inComeTransitionSize >= 2) {
-
-            //在服务编排场景，仅是子线程在执行到最后一个节点后，会进入到并行网关的join节点。CallerThread 不会执行到这里的逻辑。
-            GatewaySticker.create().setPvmActivity(pvmActivity);
-
-        }else{
-            throw new EngineException("Should not touch here:"+pvmActivity);
-        }
-    }
-
-    private boolean defaultLogic(ExecutionContext context, PvmActivity pvmActivity, ParallelGateway parallelGateway,
-                                 Map<String, PvmTransition> incomeTransitions,
-                                 Map<String, PvmTransition> outcomeTransitions, int outComeTransitionSize,
-                                 int inComeTransitionSize) {
         if (outComeTransitionSize >= 2 && inComeTransitionSize == 1) {
             //fork
             ExecutorService executorService = context.getProcessEngineConfiguration().getExecutorService();
@@ -282,38 +201,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         return true;
     }
 
-    class PvmActivityTask implements Callable<PvmActivity> {
-        private PvmActivity pvmActivity;
-        private ExecutionContext context;
-
-        PvmActivityTask(PvmActivity pvmActivity,ExecutionContext context) {
-            this.pvmActivity = pvmActivity;
-            this.context = context;
-        }
-
-
-        @Override
-        public PvmActivity call() {
-
-            PvmActivity pvmActivity ;
-            try {
-                GatewaySticker.create();
-
-                //忽略了子线程的返回值
-                this.pvmActivity.enter(context);
-
-                pvmActivity = GatewaySticker.currentSession().getPvmActivity();
-
-            }finally {
-
-                GatewaySticker.destroySession();
-            }
-
-            return pvmActivity;
-
-
-        }
-    }
 
 
 

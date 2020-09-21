@@ -82,6 +82,15 @@ public interface ProcessEngineConfiguration {
 
     ExceptionProcessor getExceptionProcessor();
 
+
+    /**
+     * 一般不需要扩展。
+     * 但当你需要针对Delegation执行时抛出的异常，超时等做出精细化处理时，才需要扩展此类。
+     */
+    void setParallelServiceOrchestration(ParallelServiceOrchestration parallelServiceOrchestration);
+
+    ParallelServiceOrchestration getParallelServiceOrchestration();
+
     /**
      * 主要用于外部扩展。
      * 可选扩展。
