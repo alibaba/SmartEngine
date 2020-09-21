@@ -10,6 +10,7 @@ import javax.xml.stream.XMLStreamReader;
 import com.alibaba.smart.framework.engine.bpmn.assembly.process.ProcessDefinitionImpl;
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -44,9 +45,19 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
 
         ProcessDefinition processDefinition = new ProcessDefinitionImpl();
         processDefinition.setId(XmlParseUtil.getString(reader, "id"));
-        processDefinition.setVersion(XmlParseUtil.getString(reader, "version"));
+
+        String version = XmlParseUtil.getString(reader, "version");
+
+        String versionTag = XmlParseUtil.getString(reader, "versionTag");
+
+        //优先使用versionTag；versionTag是 camunda等设计器的特性，此处是为了兼容。
+        if(StringUtil.isNotEmpty(versionTag)){
+            processDefinition.setVersion(versionTag);
+        }else {
+            processDefinition.setVersion(version);
+        }
+
         processDefinition.setName(XmlParseUtil.getString(reader, "name"));
-        //processDefinition.setIdAndVersion(IdAndVersionBuilder.buildProcessDefinitionKey(processDefinition.getId(),processDefinition.getVersion()));
 
 
         List<BaseElement> elements = CollectionUtil.newArrayList();
