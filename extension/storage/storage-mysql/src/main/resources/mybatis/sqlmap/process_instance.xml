@@ -76,6 +76,7 @@
             <if test="processDefinitionIdAndVersion != null">and process_definition_id_and_version = #{processDefinitionIdAndVersion}</if>
             <if test="status != null">and status = #{status}</if>
             <if test="startUserId != null"> and start_user_id = #{startUserId}</if>
+            <if test="parentInstanceId != null"> and parent_process_instance_id = #{parentInstanceId}</if>
             <if test="bizUniqueId != null"> and biz_unique_id = #{bizUniqueId}</if>
             <if test="processInstanceIdList != null">
                 and id in
