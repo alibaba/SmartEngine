@@ -15,6 +15,8 @@ public class ProcessInstanceEntity extends BaseProcessEntity {
 
     private Long parentProcessInstanceId;
 
+    private Long parentExecutionInstanceId;
+
     private String status;
 
     private String processDefinitionType;

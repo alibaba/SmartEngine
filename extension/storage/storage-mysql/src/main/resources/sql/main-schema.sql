@@ -24,6 +24,7 @@ CREATE TABLE `se_process_instance` (
   `process_definition_type` varchar(255) DEFAULT NULL COMMENT 'process definition type'  ,
   `status` varchar(64) NOT NULL COMMENT ' 1.running 2.completed 3.aborted',
   `parent_process_instance_id` bigint(20) unsigned DEFAULT NULL   COMMENT 'parent process instance id' ,
+  `parent_execution_instance_id` bigint(20) unsigned DEFAULT NULL   COMMENT 'parent execution instance id' ,
   `start_user_id` varchar(128) DEFAULT NULL  COMMENT 'start user id' ,
   `biz_unique_id` varchar(255) DEFAULT NULL  COMMENT 'biz unique id' ,
   `reason` varchar(255) DEFAULT NULL   COMMENT 'reason' ,

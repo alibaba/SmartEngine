@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:smart="http://smartengine.org/schema/process" id="parent-callactivity"
+             version="1.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             targetNamespace="Examples">
+
+    <process id="parent-callactivity-process" isExecutable="true">
+        <startEvent id="theStart"></startEvent>
+
+        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="exclusivegateway1"></sequenceFlow>
+
+        <exclusiveGateway id="exclusivegateway1" name="exclusivegateway1"></exclusiveGateway>
+
+        <sequenceFlow id="flow2" sourceRef="exclusivegateway1" targetRef="pre_order">
+            <conditionExpression type="custom"><![CDATA[smartEngineAction == "pre_order"]]></conditionExpression>
+        </sequenceFlow>
+
+        <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="formal_order">
+            <conditionExpression type="mvel"><![CDATA[smartEngineAction == "formal_order"]]></conditionExpression>
+        </sequenceFlow>
+
+        <receiveTask id="pre_order" name="pre_order"
+                     smart:class="com.alibaba.smart.framework.engine.test.process.delegation.DataBaseCreateOrderDelegation"></receiveTask>
+
+        <receiveTask id="formal_order" name="formal_order"
+                     smart:class="com.alibaba.smart.framework.engine.test.process.delegation.DataBaseCreateOrderDelegation"></receiveTask>
+
+
+        <sequenceFlow id="flow4" sourceRef="pre_order" targetRef="callActivity"></sequenceFlow>
+
+        <sequenceFlow id="flow5" sourceRef="formal_order" targetRef="callActivity"></sequenceFlow>
+
+
+        <callActivity id="callActivity" name="callActivity" calledElement="simpleCallActivity"
+                      calledElementVersion="2.0.0"/>
+
+
+        <sequenceFlow id="flow6" sourceRef="callActivity" targetRef="end_order"></sequenceFlow>
+
+
+        <receiveTask id="end_order" name="结束订单处理"
+                     smart:class="com.alibaba.smart.framework.engine.test.process.delegation.DataBaseCreateOrderDelegation"></receiveTask>
+
+        <sequenceFlow id="flow7" sourceRef="end_order" targetRef="endevent4"></sequenceFlow>
+
+
+        <endEvent id="endevent4" name="End"></endEvent>
+    </process>
+
+</definitions>

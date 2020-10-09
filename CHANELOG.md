@@ -5,3 +5,5 @@
 2. 增加ParallelServiceOrchestration默认实现，支持外部业务灵活扩展。
 3. 增加节点多条OutComingTransition来模拟简单的互斥网关，减少画图复杂度。。
 
+#2.2.3
+0. BUG修复：针对数据库模式，为se_process_instance 新增了parent_execution_instance_id 字段，用于解决子流程结束后，父流程不自动执行的问题。

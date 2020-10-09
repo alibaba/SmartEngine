@@ -72,7 +72,16 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
 
         childProcessInstance = CommonServiceHelper.insertAndPersist(childProcessInstance, request, processEngineConfiguration);
 
-        return InstanceStatus.completed != childProcessInstance.getStatus();
+        InstanceStatus childProcessInstanceStatus = childProcessInstance.getStatus();
+
+        //如果子流程完成，则需要返回到父流程继续执行；否则，则暂停
+        boolean childProcessInstanceCompleted = InstanceStatus.completed.equals(childProcessInstanceStatus);
+
+        if(childProcessInstanceCompleted){
+            return  false;
+        }else {
+            return true;
+        }
     }
 
     //@Override

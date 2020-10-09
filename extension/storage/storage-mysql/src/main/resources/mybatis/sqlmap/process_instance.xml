@@ -5,13 +5,13 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified, process_definition_id_and_version,process_definition_type,start_user_id,
-        status, parent_process_instance_id, reason, biz_unique_id, title,tag,comment
+        status, parent_process_instance_id,parent_execution_instance_id, reason, biz_unique_id, title,tag,comment
     </sql>
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity"   keyProperty="id">
         insert into se_process_instance (<include refid="baseColumn"/>)
         values (#{id}, now(), now(), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
-        #{status}, #{parentProcessInstanceId}, #{reason}, #{bizUniqueId}, #{title}, #{tag},#{comment})
+        #{status}, #{parentProcessInstanceId},#{parentExecutionInstanceId}, #{reason}, #{bizUniqueId}, #{title}, #{tag},#{comment})
     </insert>
 
 

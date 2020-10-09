@@ -26,7 +26,7 @@ import static org.junit.Assert.fail;
  * Created by 高海军 帝奇 74394 on 2017 May  16:31.
  *
  */
-public class CallActivityTest extends CustomBaseTestCase {
+public class CustomCallActivityTest extends CustomBaseTestCase {
 
     @Test
     public void testBasicCallActivityWhenChildProcessIsPaused()  {
