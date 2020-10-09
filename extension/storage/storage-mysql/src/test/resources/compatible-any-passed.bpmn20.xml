@@ -11,11 +11,9 @@
         </bpmn2:startEvent>
         <bpmn2:sequenceFlow id="SequenceFlow_003qn0i" sourceRef="StartEvent_0iws7oy" targetRef="userTask1"/>
 
-        <bpmn2:userTask activiti:assignee="${assignee}" id="userTask1" name="1个" handler=""
-                        alibaba:approvalUserDatas="{'accountId':3447310055,'userId':3447310055,'userName':'任芬','deptName':'我的团队','dutyName':'','roleName':''}"
-                        alibaba:approvalRole="USER" alibaba:approvalUser="3447310055">
-            <bpmn2:multiInstanceLoopCharacteristics activiti:collection="${assignmentService.findUsers(execution)}"
-                                                    activiti:elementVariable="assignee">
+        <bpmn2:userTask  id="userTask1" name="1个"
+                        >
+            <bpmn2:multiInstanceLoopCharacteristics>
                 <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression"><![CDATA[${nrOfCompletedInstances  >= 1]]></bpmn2:completionCondition>
             </bpmn2:multiInstanceLoopCharacteristics>
         </bpmn2:userTask>

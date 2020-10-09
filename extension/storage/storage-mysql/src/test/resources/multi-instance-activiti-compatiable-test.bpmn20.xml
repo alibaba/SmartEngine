@@ -18,16 +18,10 @@
             <bpmn2:outgoing>SequenceFlow_1txi5ha</bpmn2:outgoing>
             <bpmn2:outgoing>SequenceFlow_133v8vm</bpmn2:outgoing>
         </bpmn2:exclusiveGateway>
-        <bpmn2:userTask activiti:assignee="${assignee}" id="UserTask_19nz0zz"
-                        name="ssss"
-                        alibaba:approvalUserDatas="{'accountId':3400633088,'userId':3400633088,'userName':'dongyulong','deptName':'es_财务科','dutyName':'主管1235','roleName':'1688客服'}|{'accountId':3400620217,'userId':3400620217,'userName':'赋祎','deptName':'部门31','dutyName':'','roleName':''}"
-                        alibaba:approvalRole="USER" alibaba:approvalUser="3400633088,3400620217"
-                        alibaba:approvalType="anyone">
+        <bpmn2:userTask >
             <bpmn2:incoming>SequenceFlow_01cnb8t</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_0g0hl2f</bpmn2:outgoing>
-            <bpmn2:multiInstanceLoopCharacteristics
-                    activiti:collection="${assignmentService.findUsers(execution)}"
-                    activiti:elementVariable="assignee">
+            <bpmn2:multiInstanceLoopCharacteristics>
                 <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression">${nrOfCompletedInstances
 					>= 1}</bpmn2:completionCondition>
             </bpmn2:multiInstanceLoopCharacteristics>
@@ -36,26 +30,20 @@
                             sourceRef="StartEvent_0lw4uvt" targetRef="UserTask_19nz0zz" />
         <bpmn2:sequenceFlow id="SequenceFlow_0g0hl2f"
                             sourceRef="UserTask_19nz0zz" targetRef="ExclusiveGateway_04aw86h" />
-        <bpmn2:userTask activiti:assignee="${assignee}" id="UserTask_0jwhdhm"
-                        name="fff" alibaba:approvalUser="151866002,151926005"
-                        alibaba:approvalRole="POSITION"
-                        alibaba:approvalJobDatas="{'jobId':151866002,'jobName':'主管'}|{'jobId':151926005,'jobName':'主管1235'}"
-                        alibaba:departmentType="ownDepartment">
+        <bpmn2:userTask   id="UserTask_0jwhdhm"
+                        name="fff" >
             <bpmn2:incoming>SequenceFlow_1txi5ha</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_1hff5pg</bpmn2:outgoing>
             <bpmn2:multiInstanceLoopCharacteristics
-                    activiti:collection="${assignmentService.findUsers(execution)}"
-                    activiti:elementVariable="assignee"></bpmn2:multiInstanceLoopCharacteristics>
+                    ></bpmn2:multiInstanceLoopCharacteristics>
         </bpmn2:userTask>
         <bpmn2:sequenceFlow id="SequenceFlow_1txi5ha"
                             sourceRef="ExclusiveGateway_04aw86h" targetRef="UserTask_0jwhdhm" />
-        <bpmn2:userTask activiti:assignee="${assignee}" id="UserTask_0quhcno"
-                        name="diqi_test" alibaba:isOwnDepartment="true">
+        <bpmn2:userTask id="UserTask_0quhcno"
+                        name="diqi_test" >
             <bpmn2:incoming>SequenceFlow_133v8vm</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_00hvx4o</bpmn2:outgoing>
-            <bpmn2:multiInstanceLoopCharacteristics
-                    activiti:collection="${assignmentService.findUsers(execution)}"
-                    activiti:elementVariable="assignee"></bpmn2:multiInstanceLoopCharacteristics>
+            <bpmn2:multiInstanceLoopCharacteristics></bpmn2:multiInstanceLoopCharacteristics>
         </bpmn2:userTask>
         <bpmn2:sequenceFlow id="SequenceFlow_133v8vm"
                             sourceRef="ExclusiveGateway_04aw86h" targetRef="UserTask_0quhcno" />

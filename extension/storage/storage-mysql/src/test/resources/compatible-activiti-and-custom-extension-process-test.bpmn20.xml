@@ -11,23 +11,16 @@
 
         <bpmn2:sequenceFlow id="SequenceFlow_003qn0i" sourceRef="StartEvent_0iws7oy" targetRef="userTask1"/>
 
-        <bpmn2:userTask activiti:assignee="${assignee}" id="userTask1" name="1个"
-                        alibaba:approvalUserDatas="{'accountId':3447310055,'userId':3447310055,'userName':'任芬','deptName':'我的团队','dutyName':'','roleName':''}"
-                        alibaba:approvalRole="USER" alibaba:approvalUser="3447310055">
-            <bpmn2:multiInstanceLoopCharacteristics activiti:collection="${assignmentService.findUsers(execution)}"
-                                                    activiti:elementVariable="assignee"></bpmn2:multiInstanceLoopCharacteristics>
+        <bpmn2:userTask id="userTask1" name="1个">
+            <bpmn2:multiInstanceLoopCharacteristics ></bpmn2:multiInstanceLoopCharacteristics>
         </bpmn2:userTask>
 
         <bpmn2:sequenceFlow id="SequenceFlow_04o344j" sourceRef="userTask1" targetRef="userTask2"/>
 
-        <bpmn2:userTask activiti:assignee="${assignee}" id="userTask2" name="2个" alibaba:approvalType="anyone"
-                        alibaba:approvalUserDatas="{'accountId':3447310054,'userId':3447310054,'userName':'刘小云','deptName':'我的团队','dutyName':'','roleName':''}|{'accountId':3447130633,'userId':3447130633,'userName':'彭勇','deptName':'我的团队','dutyName':'','roleName':''}"
-                        alibaba:approvalRole="USER" alibaba:approvalUser="3447310054,3447130633"
-                        alibaba:isOwnDepartment="true">
+        <bpmn2:userTask  id="userTask2" name="2个">
             <bpmn2:incoming>SequenceFlow_04o344j</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_0vhfbz6</bpmn2:outgoing>
-            <bpmn2:multiInstanceLoopCharacteristics activiti:collection="${assignmentService.findUsers(execution)}"
-                                                    activiti:elementVariable="assignee">
+            <bpmn2:multiInstanceLoopCharacteristics >
                 <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression"><![CDATA[${nrOfCompletedInstances + 1 >= 2 }]]></bpmn2:completionCondition>
             </bpmn2:multiInstanceLoopCharacteristics>
         </bpmn2:userTask>
@@ -43,26 +36,20 @@
         </bpmn2:exclusiveGateway>
 
         <bpmn2:sequenceFlow id="SequenceFlow_1oi25aj" sourceRef="ExclusiveGateway_0pjsqqm" targetRef="userTask3"
-                            alibaba:conditiontype1="order.yzje" alibaba:computetype1="&#62;" alibaba:comparevalue1="100"
-                            alibaba:conditionFlagCollection="1">
+                            >
             <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">
                 <![CDATA[${order.yzje>100}]]></bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
         <bpmn2:sequenceFlow id="SequenceFlow_1pshchp" sourceRef="ExclusiveGateway_0pjsqqm" targetRef="UserTask_1y14uzz"
-                            alibaba:conditiontype1="order.yzje" alibaba:computetype1="&#60;" alibaba:comparevalue1="100"
-                            alibaba:conditionFlagCollection="1">
+                            >
             <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">
                 <![CDATA[${order.yzje<100}]]></bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
 
 
-        <bpmn2:userTask activiti:assignee="${assignee}" id="userTask3" name="职务1"
-                        alibaba:approvalUser="151926005" alibaba:approvalRole="POSITION"
-                        alibaba:approvalJobDatas="{'jobId':151926005,'jobName':'主管1235'}"
-                        alibaba:departmentType="ownDepartment">
+        <bpmn2:userTask id="userTask3" name="职务1">
             <bpmn2:documentation>ds</bpmn2:documentation>
-            <bpmn2:multiInstanceLoopCharacteristics activiti:collection="${assignmentService.findUsers(execution)}"
-                                                    activiti:elementVariable="assignee">
+            <bpmn2:multiInstanceLoopCharacteristics >
                 <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression">${nrOfCompletedInstances >= 1}
                 </bpmn2:completionCondition>
             </bpmn2:multiInstanceLoopCharacteristics>
@@ -70,15 +57,10 @@
 
         <bpmn2:sequenceFlow id="SequenceFlow_1wbvhjm" sourceRef="userTask3" targetRef="UserTask_0ixdrmt"/>
 
-        <bpmn2:userTask activiti:assignee="${assignee}" id="UserTask_0ixdrmt" name="职务3"
-                        alibaba:approvalUser="228890774:151866002" alibaba:approvalRole="POSITION"
-                        alibaba:approvalType="anyone"
-                        alibaba:approvalJobDatas="{'jobId':151866002,'jobName':'主管','deptName':'es_工会办'}"
-                        alibaba:departmentType="appointDepartment">
+        <bpmn2:userTask id="UserTask_0ixdrmt" name="职务3">
             <bpmn2:incoming>SequenceFlow_1wbvhjm</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_0ujt88d</bpmn2:outgoing>
-            <bpmn2:multiInstanceLoopCharacteristics activiti:collection="${assignmentService.findUsers(execution)}"
-                                                    activiti:elementVariable="assignee">
+            <bpmn2:multiInstanceLoopCharacteristics >
                 <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression">${nrOfCompletedInstances >= 1}
                 </bpmn2:completionCondition>
             </bpmn2:multiInstanceLoopCharacteristics>
@@ -88,14 +70,10 @@
 
 
 
-        <bpmn2:userTask activiti:assignee="${assignee}" id="UserTask_1y14uzz" name="职务2"
-                        alibaba:approvalUser="152582448" alibaba:approvalRole="POSITION" alibaba:approvalType="anyone"
-                        alibaba:approvalJobDatas="{'jobId':152582448,'jobName':'部门经理'}"
-                        alibaba:departmentType="superDepartment">
+        <bpmn2:userTask id="UserTask_1y14uzz" name="职务2">
             <bpmn2:incoming>SequenceFlow_1pshchp</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_0yqwm48</bpmn2:outgoing>
-            <bpmn2:multiInstanceLoopCharacteristics activiti:collection="${assignmentService.findUsers(execution)}"
-                                                    activiti:elementVariable="assignee">
+            <bpmn2:multiInstanceLoopCharacteristics >
                 <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression">${nrOfCompletedInstances >= 1}
                 </bpmn2:completionCondition>
             </bpmn2:multiInstanceLoopCharacteristics>
@@ -103,14 +81,10 @@
 
 
 
-        <bpmn2:userTask activiti:assignee="${assignee}" id="UserTask_1uhyq9y" name="职务4"
-                        alibaba:approvalUser="151926005,184316528,151866004" alibaba:approvalRole="POSITION"
-                        alibaba:approvalJobDatas="{'jobId':151926005,'jobName':'主管1235'}|{'jobId':184316528,'jobName':'aaa'}|{'jobId':151866004,'jobName':'总监'}"
-                        alibaba:departmentType="superDepartment" alibaba:approvalType="anyone">
+        <bpmn2:userTask id="UserTask_1uhyq9y" name="职务4">
             <bpmn2:incoming>SequenceFlow_0yqwm48</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_0rvinyg</bpmn2:outgoing>
-            <bpmn2:multiInstanceLoopCharacteristics activiti:collection="${assignmentService.findUsers(execution)}"
-                                                    activiti:elementVariable="assignee">
+            <bpmn2:multiInstanceLoopCharacteristics >
                 <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression">${nrOfCompletedInstances >= 1}
                 </bpmn2:completionCondition>
             </bpmn2:multiInstanceLoopCharacteristics>
