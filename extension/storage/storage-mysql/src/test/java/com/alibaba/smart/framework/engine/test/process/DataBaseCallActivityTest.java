@@ -43,7 +43,7 @@ public class DataBaseCallActivityTest extends DatabaseBaseTestCase {
         String childProcessInstanceId = produceProcessInstanceIds.getChildProcessInstanceId();
 
 
-        ExecutionInstance ChildDebitExecutionInstance = assertAndGetExecutionInstance(parentProcessInstanceId,
+        ExecutionInstance childDebitExecutionInstance = assertAndGetExecutionInstance(parentProcessInstanceId,
             childProcessInstanceId);
 
         //=======1.0 END =========
@@ -51,7 +51,7 @@ public class DataBaseCallActivityTest extends DatabaseBaseTestCase {
         //=======2.0 START ========= 这里需要驱动子流程运作。
 
         //完成下单确认,将流程驱动到等待资金到账环节。
-        executionCommandService.signal(ChildDebitExecutionInstance.getInstanceId());
+        executionCommandService.signal(childDebitExecutionInstance.getInstanceId());
 
         // 父流程还是在callActivity节点（其实没啥必要再断言了）
         List<ExecutionInstance> parentCallActivityExecutionInstanceList = executionQueryService.findActiveExecutionList(parentProcessInstanceId);
@@ -142,8 +142,8 @@ public class DataBaseCallActivityTest extends DatabaseBaseTestCase {
         ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
         processInstanceQueryParam.setStatus(InstanceStatus.running.name());
 
-        List<ProcessInstance> processInstanceIds = processQueryService.findList(processInstanceQueryParam);
-        Assert.assertEquals(1, processInstanceIds.size());
+        List<ProcessInstance> processInstanceList = processQueryService.findList(processInstanceQueryParam);
+        Assert.assertEquals(1, processInstanceList.size());
 
         List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(
             oldProcessInstance.getInstanceId());
@@ -197,17 +197,33 @@ public class DataBaseCallActivityTest extends DatabaseBaseTestCase {
             ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
             processInstanceQueryParam.setStatus(InstanceStatus.running.name());
 
-            List<ProcessInstance> processInstanceIds = processQueryService.findList(processInstanceQueryParam);
-            Assert.assertEquals(2, processInstanceIds.size());
+            List<ProcessInstance> processInstanceList = processQueryService.findList(processInstanceQueryParam);
+            Assert.assertEquals(2, processInstanceList.size());
+
+
+
+
 
             parentProcessInstanceId = processInstance.getInstanceId();
             childProcessInstanceId = null;
 
-            for (ProcessInstance instanceId : processInstanceIds) {
+            for (ProcessInstance instanceId : processInstanceList) {
                 if (!parentProcessInstanceId.equals(instanceId)) {
                     childProcessInstanceId = instanceId.getInstanceId();
                 }
             }
+
+
+            //ADD ASSERT
+            ProcessInstanceQueryParam parentProcessInstanceQueryParam = new ProcessInstanceQueryParam();
+            parentProcessInstanceQueryParam.setParentInstanceId(processInstance.getInstanceId());
+            List<ProcessInstance> result = processQueryService.findList(parentProcessInstanceQueryParam);
+            Assert.assertEquals(1, result.size());
+            ProcessInstance childProcessInstance = result.get(0);
+
+            Assert.assertEquals(childProcessInstanceId,childProcessInstance.getInstanceId());
+            Assert.assertNotNull(childProcessInstance.getParentExecutionInstanceId());
+
             return this;
         }
     }
