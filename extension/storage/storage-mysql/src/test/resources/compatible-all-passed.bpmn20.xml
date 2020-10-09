@@ -12,7 +12,7 @@
         <bpmn2:sequenceFlow id="SequenceFlow_003qn0i" sourceRef="StartEvent_0iws7oy" targetRef="userTask1"/>
 
         <bpmn2:userTask  id="userTask1" name="1个">
-            <bpmn2:multiInstanceLoopCharacteristics ></bpmn2:multiInstanceLoopCharacteristics>
+            <bpmn2:multiInstanceLoopCharacteristics></bpmn2:multiInstanceLoopCharacteristics>
         </bpmn2:userTask>
 
         <bpmn2:sequenceFlow id="SequenceFlow_0ujt88d" sourceRef="userTask1" targetRef="EndEvent_0obkkv6"/>
