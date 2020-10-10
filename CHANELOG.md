@@ -7,3 +7,6 @@
 
 #2.2.3
 0. BUG修复：针对数据库模式，为se_process_instance 新增了parent_execution_instance_id 字段，用于解决子流程结束后，父流程不自动执行的问题。
+
+#2.2.3.1
+0. 修复transfer 无法正常工作，添加了test作为保障 （果然是不加test，就可能要踩坑啊）
