@@ -23,7 +23,7 @@
         <set>
             gmt_modified=now()
             <if test="assigneeId != null">,assignee_id = #{assigneeId}</if>
-            <if test="assigneeType != null">,assignee_type = #{assigneeType}</if>
+            <!--<if test="assigneeType != null">,assignee_type = #{assigneeType}</if>-->
         </set>
         where id=#{id}
     </update>

@@ -1,13 +1,16 @@
 package com.alibaba.smart.framework.engine.test.process;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
@@ -30,6 +33,7 @@ public class DataBaseAuditProcessExample extends DatabaseBaseTestCase {
     protected void initProcessConfiguration() {
         super.initProcessConfiguration();
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        processEngineConfiguration.getOptionContainer().put(ConfigurationOption.TRANSFER_ENABLED_OPTION);
     }
 
     @Test
@@ -73,6 +77,10 @@ public class DataBaseAuditProcessExample extends DatabaseBaseTestCase {
 
         //9.审批通过,驱动流程节点到自动执行任务环节
 
+
+        //9.5 test transfer api,just ignore
+        assertTransferAPI(auditTaskInstance);
+
         taskCommandService.complete(auditTaskInstance.getInstanceId(),approveFormRequest);
 
         //10.由于流程测试已经关闭,需要断言没有需要处理的人,状态关闭.
@@ -89,6 +97,21 @@ public class DataBaseAuditProcessExample extends DatabaseBaseTestCase {
 
     }
 
+    private void assertTransferAPI(TaskInstance auditTaskInstance) {
+        taskCommandService.transfer(auditTaskInstance.getInstanceId(),"3","4");
+        List<TaskAssigneeInstance> list = taskAssigneeQueryService.findList(auditTaskInstance.getInstanceId());
+        Assert.assertEquals(3,list.size());
+
+        List<String > arrayList = new ArrayList<String>();
+
+        for (TaskAssigneeInstance taskAssigneeInstance : list) {
+            arrayList.add(taskAssigneeInstance.getAssigneeId());
+        }
+
+        Assert.assertTrue(arrayList.contains("1"));
+        Assert.assertTrue(arrayList.contains("4"));
+        Assert.assertTrue(arrayList.contains("5"));
+    }
 
     @Test
     public void testFailedServiceTaskAuditProcess() throws Exception {

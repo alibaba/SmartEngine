@@ -67,6 +67,7 @@ public class CustomCallActivityTest extends CustomBaseTestCase {
         //=======3.0 START ========= 完成驱动子流程，此时流程需要回到父流程。
 
         //完成资金到账,将流程驱动到资金交割处理环节。
+
         executionCommandService.signal(debitChildExecutionInstance3.getInstanceId());
 
         //当子流程结束后，父主流程将从callActivity回到下一个节点。在本例中，callActivity的下一个节点是在end_order节点
