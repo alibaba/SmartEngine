@@ -12,10 +12,12 @@ import java.util.concurrent.TimeUnit;
 import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.GatewaySticker;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.ParallelServiceOrchestration;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
+import com.alibaba.smart.framework.engine.constant.ParallelGatewayConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.ContextFactory;
@@ -23,10 +25,13 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.NumberUtils;
 
 /**
  * Created by 高海军 帝奇 74394 on  2020-09-21 17:59.
  */
+@Slf4j
 public class DefaultParallelServiceOrchestration implements ParallelServiceOrchestration {
     @Override
     public void orchestrateService(ExecutionContext context, PvmActivity pvmActivity) {{
@@ -64,13 +69,30 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
 
             try {
 
-                Long latchWaitTime = (Long)MapUtil.safeGet(context.getRequest(),
-                    RequestMapSpecialKeyConstant.LATCH_WAIT_TIME_IN_MILLISECOND);
+                Long latchWaitTime = null;
+
+                // 优先从并行网关属性上获取等待超时时间
+                String waitTimeout = (String) MapUtil.safeGet(pvmActivity.getModel().getProperties(),
+                        ParallelGatewayConstant.WAIT_TIME_OUT);
+                if (StringUtil.isNotEmpty(waitTimeout)) {
+                    try {
+                        latchWaitTime = NumberUtils.parseNumber(waitTimeout, Long.class);
+                    } catch (NumberFormatException e) {
+                        log.error("[smart-engine] property of timeout in parallel gateway format error!", e);
+                    }
+                }
+
+                // 如果网关属性上未配置超时时间，或格式非法。兜底从request上下文中获取配置
+                if (null == latchWaitTime || latchWaitTime <= 0) {
+                    latchWaitTime = (Long) MapUtil.safeGet(context.getRequest(),
+                            RequestMapSpecialKeyConstant.LATCH_WAIT_TIME_IN_MILLISECOND);
+                }
 
                 List<Future<PvmActivity>> futureExecutionResultList ;
-                if(null != latchWaitTime){
+                if(null != latchWaitTime && latchWaitTime > 0L){
                     futureExecutionResultList = executorService.invokeAll(tasks,latchWaitTime, TimeUnit.MILLISECONDS);
                 }else {
+                    // 超时等待时间为空或不大于0，无需wait
                     futureExecutionResultList = executorService.invokeAll(tasks);
                 }
 
