@@ -20,7 +20,7 @@ public interface TaskAssigneeDAO  {
 
     void insert(  TaskAssigneeEntity taskAssigneeEntity );
 
-    int update(@Param("id") Long id,@Param("assigneeId")Long assigneeId);
+    int update(@Param("id") Long id,@Param("assigneeId")String assigneeId);
 
     void delete(@Param("id") Long id);
 }
