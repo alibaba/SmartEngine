@@ -89,7 +89,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         try {
             //!!! 重要
-            tryInsertProcessInstanceIfNeedLock(processEngineConfiguration, processInstance);
+            CommonServiceHelper.tryInsertProcessInstanceIfNeedLock(processEngineConfiguration, processInstance);
 
             processInstance = pvmProcessInstance.start(executionContext);
 
@@ -101,18 +101,6 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
             if (null != lockStrategy) {
                 lockStrategy.unLock(processInstance.getInstanceId());
             }
-        }
-    }
-
-    private void tryInsertProcessInstanceIfNeedLock(ProcessEngineConfiguration processEngineConfiguration,
-                                                    ProcessInstance processInstance) {
-        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
-        if(null != lockStrategy){
-
-
-            ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance, processEngineConfiguration);
-
-            lockStrategy.tryLock(newProcessInstance.getInstanceId());
         }
     }
 
