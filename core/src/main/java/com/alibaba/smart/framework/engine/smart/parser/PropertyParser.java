@@ -10,6 +10,8 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
+import java.util.List;
+
 @ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = Property.class)
 public class PropertyParser extends AbstractElementParser<Property> {
 
@@ -29,7 +31,12 @@ public class PropertyParser extends AbstractElementParser<Property> {
 
     @Override
     public QName getQname() {
-        return Property.qtype;
+        return null;
+    }
+
+    @Override
+    public List<QName> getQnames() {
+        return Property.qtypes;
     }
 
     @Override

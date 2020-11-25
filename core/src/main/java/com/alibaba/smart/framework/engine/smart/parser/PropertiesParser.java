@@ -7,12 +7,12 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.ExtensionDecorator;
 import com.alibaba.smart.framework.engine.smart.Properties;
 import com.alibaba.smart.framework.engine.smart.PropertiesElementMarker;
-import com.alibaba.smart.framework.engine.smart.Value;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+
+import java.util.List;
 
 /**
  * Extension Elements Parser Created by ettear on 16-4-14.
@@ -40,7 +40,12 @@ public class PropertiesParser extends AbstractElementParser<Properties> {
 
     @Override
     public QName getQname() {
-        return Properties.qtype;
+        return null;
+    }
+
+    @Override
+    public List<QName> getQnames() {
+        return Properties.qtypes;
     }
 
     @Override
