@@ -122,7 +122,7 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
     public TaskAssigneeInstance update(String taskAssigneeInstanceId, String assigneeId,
                                        ProcessEngineConfiguration processEngineConfiguration) {
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) SpringContextUtil.getBean("taskAssigneeDAO");
-        taskAssigneeDAO.update(  Long.valueOf(taskAssigneeInstanceId), Long.valueOf( assigneeId));
+        taskAssigneeDAO.update(Long.valueOf(taskAssigneeInstanceId), assigneeId);
         TaskAssigneeInstance resultTaskAssigneeInstance =    this.findOne(taskAssigneeInstanceId, processEngineConfiguration);
         return resultTaskAssigneeInstance;
     }

@@ -15,6 +15,7 @@ import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.util.ObjUtil;
 
 /**
  * 默认流程实例工厂实现 Created by ettear on 16-4-20.
@@ -37,19 +38,19 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
         defaultProcessInstance.setProcessDefinitionVersion(processDefinitionVersion);
 
         if (null != request) {
-            String startUserId = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID);
+            String startUserId = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID));
             defaultProcessInstance.setStartUserId(startUserId);
 
-            String processDefinitionType = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE);
+            String processDefinitionType = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE));
             defaultProcessInstance.setProcessDefinitionType(processDefinitionType);
 
-            String bizUniqueId = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_BIZ_UNIQUE_ID);
+            String bizUniqueId = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_BIZ_UNIQUE_ID));
             defaultProcessInstance.setBizUniqueId(bizUniqueId);
 
-            String title = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_TITLE);
+            String title = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_TITLE));
             defaultProcessInstance.setTitle(title);
 
-            String comment = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_COMMENT);
+            String comment = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_COMMENT));
             defaultProcessInstance.setComment(comment);
         }
 

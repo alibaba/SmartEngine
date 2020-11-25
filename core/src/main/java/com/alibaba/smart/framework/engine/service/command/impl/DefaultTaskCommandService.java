@@ -33,6 +33,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.util.ObjUtil;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -156,34 +157,34 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
         if(null != request){
 
-            String processDefinitionType = (String)request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE);
+            String processDefinitionType = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE));
             taskInstance.setProcessDefinitionType(processDefinitionType);
 
-            Date startTime = (Date)request.get(RequestMapSpecialKeyConstant.TASK_START_TIME);
+            Date startTime = ObjUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.TASK_START_TIME));
             taskInstance.setStartTime(startTime);
 
-            Date completeTime = (Date)request.get(RequestMapSpecialKeyConstant.TASK_COMPLETE_TIME);
+            Date completeTime = ObjUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.TASK_COMPLETE_TIME));
             taskInstance.setCompleteTime(completeTime);
 
-            String comment = (String)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT);
+            String comment = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT));
             taskInstance.setComment(comment);
 
-            String extension = (String)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_EXTENSION);
+            String extension = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_EXTENSION));
             taskInstance.setExtension(extension);
 
-            Integer priority = (Integer)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_PRIORITY);
+            Integer priority = ObjUtil.obj2Integer(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_PRIORITY));
             taskInstance.setPriority(priority);
 
-            String tag = (String)request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG);
+            String tag = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG));
             taskInstance.setTag(tag);
 
-            String title = (String)request.get(RequestMapSpecialKeyConstant.TASK_TITLE);
+            String title = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_TITLE));
             taskInstance.setTitle(title);
 
-            String claimUserId = (String)request.get(RequestMapSpecialKeyConstant.CLAIM_USER_ID);
+            String claimUserId = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.CLAIM_USER_ID));
             taskInstance.setClaimUserId(claimUserId);
 
-            Date claimTime = (Date)request.get(RequestMapSpecialKeyConstant.CLAIM_USER_TIME);
+            Date claimTime = ObjUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.CLAIM_USER_TIME));
             taskInstance.setClaimTime(claimTime);
         }
 

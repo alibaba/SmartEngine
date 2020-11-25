@@ -15,6 +15,7 @@ import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.util.ObjUtil;
 
 /**
  * 默认任务实例工厂实现 Created by ettear on 16-4-20.
@@ -39,7 +40,7 @@ public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
         taskInstance.setStatus(TaskInstanceConstant.PENDING);
         Map<String, Object> request = context.getRequest();
         if (null != request) {
-            String title = (String)request.get(RequestMapSpecialKeyConstant.TASK_TITLE);
+            String title = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_TITLE));
             taskInstance.setTitle(title);
         }
         ProcessInstance processInstance = context.getProcessInstance();

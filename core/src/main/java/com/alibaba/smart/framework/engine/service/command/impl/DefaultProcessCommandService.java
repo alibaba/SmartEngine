@@ -32,6 +32,7 @@ import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
+import com.alibaba.smart.framework.engine.util.ObjUtil;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -176,7 +177,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         processInstance.setStatus(InstanceStatus.aborted);
         String  reason = null;
         if (null != request){
-            reason =   String.valueOf(request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_ABORT_REASON)) ;
+            reason =   ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_ABORT_REASON)) ;
         }
 
         processInstance.setReason(reason);
