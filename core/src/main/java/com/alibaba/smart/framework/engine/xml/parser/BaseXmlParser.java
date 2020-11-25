@@ -4,6 +4,8 @@ import javax.xml.namespace.QName;
 
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 
+import java.util.List;
+
 /**
  * Base interface for artifact parsers. Created by ettear on 16-4-12.
  */
@@ -12,6 +14,8 @@ public interface BaseXmlParser<M> extends LifeCycleHook {
 
     // check 是否需要
     QName getQname();
+
+    List<QName> getQnames();
 
     Class<M> getModelType();
     

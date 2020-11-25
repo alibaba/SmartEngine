@@ -10,6 +10,8 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
+import java.util.List;
+
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
@@ -30,7 +32,12 @@ public class ValueParser extends AbstractElementParser<Value> {
 
     @Override
     public QName getQname() {
-        return Value.qtype;
+        return null;
+    }
+
+    @Override
+    public List<QName> getQnames() {
+        return Value.qtypes;
     }
 
     @Override
