@@ -63,7 +63,7 @@ public class DefaultRetryService implements RetryService, LifeCycleHook , Proces
     @Override
     public boolean save(RetryRecord retryRecord) {
         start();
-        return retryRecordStorage.insert(retryRecord, retryPersistence);
+        return retryRecordStorage.insert(retryRecord, retryPersistence,processEngineConfiguration);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class DefaultRetryService implements RetryService, LifeCycleHook , Proces
             retryRecord.setRetrySuccess(false);
         } finally {
             retryRecord.setRetryTimes(retryRecord.getRetryTimes() + 1);
-            retryRecordStorage.update(retryRecord, retryPersistence);
+            retryRecordStorage.update(retryRecord, retryPersistence,processEngineConfiguration);
         }
         return processInstance;
     }

@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
+
 import com.alibaba.smart.framework.engine.persister.mongo.entity.TaskAssigneeEntity;
 import com.alibaba.smart.framework.engine.persister.mongo.entity.TaskInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
@@ -62,7 +62,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
                                            ProcessEngineConfiguration processEngineConfiguration) {
 
 
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -159,7 +159,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
     public Long count(TaskInstanceQueryParam taskInstanceQueryParam,
                       ProcessEngineConfiguration processEngineConfiguration) {
 
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -218,7 +218,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
 
     @Override
     public void remove(String taskInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -235,7 +235,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
 
     @Override
     public TaskInstance insert(TaskInstance instance, ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -308,7 +308,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
 
     @Override
     public TaskInstance find(String instanceId, ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -321,7 +321,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
     }
 
     public List<TaskInstance> findList(List<String> taskInstanceIdList, ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -379,7 +379,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
     }
 
     private void save(TaskInstance taskInstance, ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate = SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate = (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 

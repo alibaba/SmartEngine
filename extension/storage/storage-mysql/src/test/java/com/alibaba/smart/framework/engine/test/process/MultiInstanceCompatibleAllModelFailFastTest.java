@@ -18,14 +18,20 @@ import com.alibaba.smart.framework.engine.service.command.RepositoryCommandServi
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
+import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
+import com.alibaba.smart.framework.engine.test.process.helper.CustomVariablePersister;
 import com.alibaba.smart.framework.engine.test.process.helper.DefaultMultiInstanceCounter;
+import com.alibaba.smart.framework.engine.test.process.helper.DoNothingLockStrategy;
 import com.alibaba.smart.framework.engine.test.process.helper.sequece.RandomIdGenerator;
 import com.alibaba.smart.framework.engine.test.process.helper.dispatcher.DefaultTaskAssigneeDispatcher;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,33 +39,27 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class MultiInstanceCompatibleAllModelFailFastTest {
+public class MultiInstanceCompatibleAllModelFailFastTest extends DatabaseBaseTestCase {
+
+    @Override
+    protected void initProcessConfiguration() {
+        super.initProcessConfiguration();
+        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
+        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
+        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
+        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
+        processEngineConfiguration.setLockStrategy(new DoNothingLockStrategy());
+
+        processEngineConfiguration.setIdGenerator(new RandomIdGenerator());
+
+    }
 
 
     @Test
     public void passed() throws Exception {
 
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
-        processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
-        processEngineConfiguration.setIdGenerator(new RandomIdGenerator());
-        processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
-
-        SmartEngine smartEngine = new DefaultSmartEngine();
-        smartEngine.init(processEngineConfiguration);
 
 
-        //2.获得常用服务
-        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
-        TaskCommandService taskCommandService = smartEngine.getTaskCommandService();
-        ProcessQueryService processQueryService = smartEngine.getProcessQueryService();
-        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
-
-
-        //3. 部署流程定义
-        RepositoryCommandService repositoryCommandService = smartEngine
-                .getRepositoryCommandService();
         ProcessDefinition processDefinition = repositoryCommandService
                 .deploy("compatible-all-passed.bpmn20.xml").getFirstProcessDefinition();
 
@@ -94,6 +94,5 @@ public class MultiInstanceCompatibleAllModelFailFastTest {
 
 
     }
-
 
 }

@@ -50,18 +50,18 @@ public class CustomRetryRecordStorage implements RetryRecordStorage {
     }
 
     @Override
-    public RetryRecord find(String instanceId, RetryPersistence retryPersistence) {
+    public RetryRecord find(String instanceId, RetryPersistence retryPersistence, ProcessEngineConfiguration processEngineConfiguration) {
         return retryRecord;
     }
 
     @Override
-    public boolean insert(RetryRecord retryRecord, RetryPersistence retryPersistence) {
+    public boolean insert(RetryRecord retryRecord, RetryPersistence retryPersistence, ProcessEngineConfiguration processEngineConfiguration) {
         this.retryRecord = retryRecord;
         return true;
     }
 
     @Override
-    public boolean update(RetryRecord retryRecord, RetryPersistence retryPersistence) {
+    public boolean update(RetryRecord retryRecord, RetryPersistence retryPersistence, ProcessEngineConfiguration processEngineConfiguration) {
         this.retryRecord = retryRecord;
         return true;
     }

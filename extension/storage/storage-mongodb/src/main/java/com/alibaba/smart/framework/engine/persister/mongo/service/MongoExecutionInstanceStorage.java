@@ -13,7 +13,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
+
 import com.alibaba.smart.framework.engine.persister.mongo.entity.ExecutionInstanceEntity;
 
 import org.springframework.data.domain.Sort;
@@ -40,7 +40,7 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
                        ProcessEngineConfiguration processEngineConfiguration) {
 
 
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -72,7 +72,7 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
     public void update(ExecutionInstance executionInstance,
                        ProcessEngineConfiguration processEngineConfiguration) {
 
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -84,7 +84,7 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
 
     @Override
     public ExecutionInstance find(String executionInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -108,7 +108,7 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
 
     @Override
     public void remove(String executionInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -129,7 +129,7 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
     @Override
     public List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId,
                                                             ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 

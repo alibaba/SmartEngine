@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
+
 import com.alibaba.smart.framework.engine.persister.database.dao.ActivityInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity;
 
@@ -27,7 +27,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
     @Override
     public void insert(ActivityInstance activityInstance,
                        ProcessEngineConfiguration processEngineConfiguration) {
-        ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
+        ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("activityInstanceDAO");
 
 
         ActivityInstanceEntity activityInstanceEntityToBePersisted = buildActivityInstanceEntity(activityInstance);
@@ -70,7 +70,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
     @Override
     public ActivityInstance find(String instanceId,
                                  ProcessEngineConfiguration processEngineConfiguration) {
-        ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
+        ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("activityInstanceDAO");
         ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(Long.valueOf(instanceId));
 
         ActivityInstance activityInstance = buildActivityInstanceFromEntity(activityInstanceEntity);
@@ -95,7 +95,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
     public void remove(String instanceId,
                        ProcessEngineConfiguration processEngineConfiguration) {
 
-        ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
+        ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("activityInstanceDAO");
         activityInstanceDAO.delete(Long.valueOf(instanceId));
 
     }
@@ -103,7 +103,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
     @Override
     public List<ActivityInstance> findAll(String processInstanceId,
                                           ProcessEngineConfiguration processEngineConfiguration) {
-        ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)SpringContextUtil.getBean("activityInstanceDAO");
+        ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("activityInstanceDAO");
 
 
         List<ActivityInstanceEntity> activityInstanceEntities  = activityInstanceDAO.findAllActivity(Long.valueOf(processInstanceId));

@@ -1,8 +1,9 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
+
 import com.alibaba.smart.framework.engine.persister.database.dao.RetryRecordDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.RetryRecordEntity;
 import com.alibaba.smart.framework.engine.retry.instance.storage.RetryRecordStorage;
@@ -18,8 +19,8 @@ import com.alibaba.smart.framework.engine.retry.service.command.RetryPersistence
 public class RelationshipDatabaseRetryRecordStorage implements RetryRecordStorage {
 
     @Override
-    public RetryRecord find(String instanceId, RetryPersistence retryPersistence) {
-        RetryRecordDAO retryRecordDAO = (RetryRecordDAO)SpringContextUtil.getBean("retryRecordDAO");
+    public RetryRecord find(String instanceId, RetryPersistence retryPersistence, ProcessEngineConfiguration processEngineConfiguration) {
+        RetryRecordDAO retryRecordDAO = (RetryRecordDAO)processEngineConfiguration.getInstanceAccessor().access("retryRecordDAO");
         RetryRecordEntity retryRecordEntity = retryRecordDAO.queryByInstanceId(instanceId);
         if (retryRecordEntity == null) {
             return null;
@@ -33,8 +34,8 @@ public class RelationshipDatabaseRetryRecordStorage implements RetryRecordStorag
     }
 
     @Override
-    public boolean insert(RetryRecord retryRecord, RetryPersistence retryPersistence) {
-        RetryRecordDAO retryRecordDAO = (RetryRecordDAO)SpringContextUtil.getBean("retryRecordDAO");
+    public boolean insert(RetryRecord retryRecord, RetryPersistence retryPersistence, ProcessEngineConfiguration processEngineConfiguration) {
+        RetryRecordDAO retryRecordDAO = (RetryRecordDAO)processEngineConfiguration.getInstanceAccessor().access("retryRecordDAO");
 
         RetryRecordEntity retryRecordEntity = getRetryRecordEntity(retryRecord, retryPersistence);
         long count = retryRecordDAO.insert(retryRecordEntity);
@@ -42,8 +43,8 @@ public class RelationshipDatabaseRetryRecordStorage implements RetryRecordStorag
     }
 
     @Override
-    public boolean update(RetryRecord retryRecord, RetryPersistence retryPersistence) {
-        RetryRecordDAO retryRecordDAO = (RetryRecordDAO)SpringContextUtil.getBean("retryRecordDAO");
+    public boolean update(RetryRecord retryRecord, RetryPersistence retryPersistence, ProcessEngineConfiguration processEngineConfiguration) {
+        RetryRecordDAO retryRecordDAO = (RetryRecordDAO)processEngineConfiguration.getInstanceAccessor().access("retryRecordDAO");
 
         RetryRecordEntity retryRecordEntity = getRetryRecordEntity(retryRecord, retryPersistence);
         long count = retryRecordDAO.update(retryRecordEntity);

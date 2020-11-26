@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
+
 import com.alibaba.smart.framework.engine.persister.mongo.entity.ProcessInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 
@@ -46,7 +46,7 @@ public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
                                   ProcessEngineConfiguration processEngineConfiguration) {
 
 
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -83,7 +83,7 @@ public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
     public ProcessInstance update(ProcessInstance instance,
                                   ProcessEngineConfiguration processEngineConfiguration) {
 
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -97,7 +97,7 @@ public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
 
     @Override
     public ProcessInstance findOne(String instanceId, ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -145,7 +145,7 @@ public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
     @Override
     public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam,
                                                           ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -208,7 +208,7 @@ public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
     @Override
     public Long count(ProcessInstanceQueryParam processInstanceQueryParam,
                       ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -219,7 +219,7 @@ public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
 
     @Override
     public void remove(String processInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 

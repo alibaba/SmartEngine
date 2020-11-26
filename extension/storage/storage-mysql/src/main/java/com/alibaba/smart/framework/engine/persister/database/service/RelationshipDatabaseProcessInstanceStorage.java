@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
+
 import com.alibaba.smart.framework.engine.persister.database.dao.ProcessInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
@@ -25,7 +25,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     public ProcessInstance insert(ProcessInstance processInstance,
                                   ProcessEngineConfiguration processEngineConfiguration) {
 
-        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("processInstanceDAO");
 
         ProcessInstanceEntity processInstanceEntityToBePersisted = buildEntityFromInstance(processInstance);
 
@@ -52,7 +52,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     @Override
     public ProcessInstance update(ProcessInstance processInstance,
                                   ProcessEngineConfiguration processEngineConfiguration) {
-        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("processInstanceDAO");
         ProcessInstanceEntity processInstanceEntity = buildEntityFromInstance(processInstance);
         processInstanceDAO.update(processInstanceEntity);
         return processInstance;
@@ -150,7 +150,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     public ProcessInstance findOne(String instanceId,
                                    ProcessEngineConfiguration processEngineConfiguration) {
         //TUNE :解决系统服务初始化依赖问题,避免每次获取该dao
-        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("processInstanceDAO");
 
         ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOne(Long.valueOf(instanceId));
 
@@ -165,7 +165,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     public ProcessInstance findOneForUpdate(String instanceId,
                                             ProcessEngineConfiguration processEngineConfiguration) {
         //TUNE :解决系统服务初始化依赖问题,避免每次获取该dao
-        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("processInstanceDAO");
 
         ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOneForUpdate(Long.valueOf(instanceId));
 
@@ -178,7 +178,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     public List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam,
                                                           ProcessEngineConfiguration processEngineConfiguration) {
 
-        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("processInstanceDAO");
 
         List<ProcessInstanceEntity> processInstanceEntities = processInstanceDAO.find(processInstanceQueryParam);
 
@@ -197,7 +197,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     @Override
     public Long count(ProcessInstanceQueryParam processInstanceQueryParam,
                       ProcessEngineConfiguration processEngineConfiguration) {
-        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("processInstanceDAO");
         Long processCount = processInstanceDAO.count(processInstanceQueryParam);
         return processCount;
     }
@@ -206,7 +206,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     @Override
     public void remove(String instanceId,
                        ProcessEngineConfiguration processEngineConfiguration) {
-        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
+        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("processInstanceDAO");
         processInstanceDAO.delete(Long.valueOf(instanceId));
     }
 }

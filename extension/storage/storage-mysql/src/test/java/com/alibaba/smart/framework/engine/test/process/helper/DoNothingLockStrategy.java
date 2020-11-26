@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.test.process.helper;
 
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.exception.LockException;
-import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
+
 import com.alibaba.smart.framework.engine.persister.database.dao.ProcessInstanceDAO;
 
 import org.springframework.stereotype.Service;
@@ -24,9 +24,9 @@ public class DoNothingLockStrategy implements LockStrategy {
         //
         //processInstanceStorage.update()
 
-        ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)SpringContextUtil.getBean("processInstanceDAO");
-
-        processInstanceDAO.tryLock(Long.valueOf(processInstanceId));
+        //ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("processInstanceDAO");
+        //
+        //processInstanceDAO.tryLock(Long.valueOf(processInstanceId));
 
         //可以是设置 db uniqueKey 唯一索引； 或者在插入后直接再锁上； 或者使用其他中间件。
     }

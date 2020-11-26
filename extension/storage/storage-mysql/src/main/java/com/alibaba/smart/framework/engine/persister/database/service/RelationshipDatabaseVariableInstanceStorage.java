@@ -11,7 +11,6 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
 import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
-import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
 import com.alibaba.smart.framework.engine.persister.database.dao.VariableInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity;
 
@@ -31,7 +30,7 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
             return;
         }
 
-        VariableInstanceDAO variableInstanceDAO = (VariableInstanceDAO)SpringContextUtil.getBean("variableInstanceDAO");
+        VariableInstanceDAO variableInstanceDAO = (VariableInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("variableInstanceDAO");
 
         VariableInstanceEntity variableInstanceEntity = new VariableInstanceEntity();
         String variableInstanceInstanceId = variableInstance.getInstanceId();
@@ -76,7 +75,7 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
     public List<VariableInstance> findList(String processInstanceId, String executionInstanceId,
                                            VariablePersister variablePersister,
                                            ProcessEngineConfiguration processEngineConfiguration) {
-        VariableInstanceDAO variableInstanceDAO = (VariableInstanceDAO)SpringContextUtil.getBean("variableInstanceDAO");
+        VariableInstanceDAO variableInstanceDAO = (VariableInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("variableInstanceDAO");
         List<VariableInstance> variableInstanceList = null;
         List<VariableInstanceEntity> list = variableInstanceDAO.findList(Long.valueOf(processInstanceId), Long.valueOf(executionInstanceId));
         if (null != list) {

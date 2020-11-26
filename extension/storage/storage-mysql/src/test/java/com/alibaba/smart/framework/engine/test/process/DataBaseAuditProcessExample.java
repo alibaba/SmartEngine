@@ -29,6 +29,9 @@ import static org.junit.Assert.assertEquals;
 @Transactional
 public class DataBaseAuditProcessExample extends DatabaseBaseTestCase {
 
+
+
+
     @Override
     protected void initProcessConfiguration() {
         super.initProcessConfiguration();
