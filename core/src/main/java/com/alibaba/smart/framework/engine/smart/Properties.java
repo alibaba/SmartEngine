@@ -1,11 +1,13 @@
 package com.alibaba.smart.framework.engine.smart;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import com.alibaba.smart.framework.engine.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
 import com.alibaba.smart.framework.engine.constant.SmartBase;
@@ -20,7 +22,12 @@ import lombok.Data;
  */
 @Data
 public class Properties implements ExtensionDecorator {
-    public final static QName qtype = new QName(SmartBase.SMART_NS, "properties");
+    public final static List<QName> qtypes = Arrays.asList(
+            new QName(SmartBase.SMART_NS, "properties"),
+            new QName(BpmnNameSpaceConstant.CAMUNDA_NAME_SPACE, "properties", "camunda"),
+            new QName(BpmnNameSpaceConstant.FLOWABLE_NAME_SPACE, "properties", "flowable"),
+            new QName(BpmnNameSpaceConstant.ACTIVITI_NAME_SPACE, "properties", "activiti")
+    );
 
     private List<PropertiesElementMarker> extensionList  = new ArrayList();
 

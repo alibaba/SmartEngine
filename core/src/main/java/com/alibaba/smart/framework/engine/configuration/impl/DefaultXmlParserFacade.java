@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -47,9 +48,35 @@ public class DefaultXmlParserFacade implements
             try {
                 Class aClass = entry.getKey();
                 Object o = aClass.newInstance();
-                Field field = aClass.getField("qtype");
-                QName qName=   (QName)field.get(o);
-                bindingsWithQName.put(qName, entry.getValue());
+
+                Field field = null;
+                QName qName = null;
+                try {
+                    field = aClass.getField("qtype");
+                    qName = (QName) field.get(o);
+                    bindingsWithQName.put(qName, entry.getValue());
+                } catch (Throwable e) {
+                    // ignore NoSuchFieldException
+                }
+
+                // for list
+                try {
+                    field = aClass.getField("qtypes");
+                    List<QName> qNames=  (List<QName>)field.get(o);
+                    if(qNames != null && qNames.size() > 0) {
+                        for(QName item : qNames) {
+                            // single already registered, skip
+                            if(item.equals(qName)) {
+                                continue;
+                            }
+                            bindingsWithQName.put(item, entry.getValue());
+                        }
+                    }
+                } catch (Throwable e) {
+                    // ignore NoSuchFieldException
+                }
+
+
             } catch (Exception e) {
                 //TUNE 堆栈有些乱
                 throw new RuntimeException(e);

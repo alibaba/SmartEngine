@@ -11,6 +11,8 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
+import java.util.List;
+
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
@@ -44,7 +46,7 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
 
     @Override
     public QName getQname() {
-        return ExecutionListener.qtype;
+        return null;
     }
 
     @Override
@@ -52,4 +54,9 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
         return ExecutionListener.class;
     }
 
+
+    @Override
+    public List<QName> getQnames() {
+       return ExecutionListener.qtypes;
+    }
 }
