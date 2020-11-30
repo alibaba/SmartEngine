@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -21,18 +19,13 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
-import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
 import com.alibaba.smart.framework.engine.test.DoNothingLockStrategy;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 
-import lombok.Getter;
 import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase {
 
@@ -41,6 +34,12 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
         LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
         processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
         processEngineConfiguration.setExecutorService(newFixedThreadPool(4));
+
+        // 增加自定义的线程池
+        Map<String, ExecutorService> poolMap = new HashMap<String, ExecutorService>();
+        poolMap.put("poolA", newFixedThreadPool(4));
+        processEngineConfiguration.setExecutorServiceMap(poolMap);
+
         processEngineConfiguration.getOptionContainer().put(ConfigurationOption.SERVICE_ORCHESTRATION_OPTION);
     }
 
@@ -191,6 +190,47 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
 
 
 
+    }
+
+    @Test
+    public void testTimeoutWithAttribute() {
+
+        // 网关设置超时200ms，task1->1000ms, task2->500ms
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("ServiceOrchestrationTimeoutParallelGatewayTest.xml").getFirstProcessDefinition();
+        assertEquals(12, processDefinition.getBaseElementList().size());
+
+        Map<String, Object> request = new HashMap<String, Object>();
+        Map<String, Object> response = new HashMap<String, Object>();
+
+        try{
+            ProcessInstance processInstance = processCommandService.start(processDefinition.getId(),
+                    processDefinition.getVersion(), request, response);
+        }catch (Exception e){
+            Assert.assertTrue(response.isEmpty());
+            Assert.assertTrue(e.getCause() instanceof CancellationException);
+        }
+    }
+
+    @Test
+    public void testSkipTimeoutWithAttribute() {
+
+        // 网关设置超时600ms，task1->1000ms, task2->500ms。预期不抛异常仅打印CancellationException的log，返回结果中有task2的处理结果
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("ServiceOrchestrationSkipTimeoutParallelGatewayTest.xml").getFirstProcessDefinition();
+        assertEquals(12, processDefinition.getBaseElementList().size());
+
+        Map<String, Object> request = new HashMap<String, Object>();
+        Map<String, Object> response = new HashMap<String, Object>();
+
+        try{
+            ProcessInstance processInstance = processCommandService.start(processDefinition.getId(),
+                    processDefinition.getVersion(), request, response);
+        }catch (Exception e){
+            Assert.assertTrue(e.getCause() instanceof CancellationException);
+        }
+        Assert.assertEquals(response.size(), 1);
+        Assert.assertTrue(response.containsKey("taskB"));
     }
 
 

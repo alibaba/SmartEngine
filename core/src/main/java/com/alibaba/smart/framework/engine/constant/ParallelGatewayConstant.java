@@ -18,4 +18,14 @@ public final class ParallelGatewayConstant {
     * 自定义属性名：等待超时时间，单位毫秒。
     */
    public static final String WAIT_TIME_OUT = "timeout";
+   /**
+    * 自定义线程池名称
+    */
+   public static final String POOL_NAME = "poolName";
+   /**
+    * 是否超时异常时跳过
+    */
+   public static final String SKIP_TIMEOUT_EXCEPTION = "skipTimeoutExp";
+
+
 }
