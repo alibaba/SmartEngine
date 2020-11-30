@@ -6,10 +6,10 @@
     <groupId>com.alibaba.smart.framework</groupId>
     <artifactId>smart-engine</artifactId>
     <!--  mvn versions:set -DnewVersion=2.0.8-SNAPSHOT -DgenerateBackupPoms=false  -->
-    <!--  mvn versions:set -DnewVersion=2.2.3.1 -DgenerateBackupPoms=false  -->
+    <!--  mvn versions:set -DnewVersion=2.2.3.2 -DgenerateBackupPoms=false  -->
     <!--  mvn versions:set -DnewVersion=2.2.0.alpha0 -DgenerateBackupPoms=false  -->
 
-    <version>2.2.3.1</version>
+    <version>2.2.3.2</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
@@ -93,10 +93,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -121,6 +118,42 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+
 
 
     </dependencies>
@@ -196,6 +229,9 @@
                 <scope>test</scope>
             </dependency>
 
+
+
+
             <!-- junit -->
             <dependency>
                 <groupId>junit</groupId>
@@ -234,6 +270,7 @@
                 <artifactId>mvel2</artifactId>
                 <version>2.4.4.Final</version>
             </dependency>
+
 
 
             <!-- spring AOP 包 -->

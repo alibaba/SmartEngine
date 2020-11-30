@@ -26,7 +26,6 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.NumberUtils;
 
 /**
  * Created by 高海军 帝奇 74394 on  2020-09-21 17:59.
@@ -76,9 +75,9 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
                         ParallelGatewayConstant.WAIT_TIME_OUT);
                 if (StringUtil.isNotEmpty(waitTimeout)) {
                     try {
-                        latchWaitTime = NumberUtils.parseNumber(waitTimeout, Long.class);
+                        latchWaitTime = Long.valueOf(waitTimeout);
                     } catch (NumberFormatException e) {
-                        log.error("[smart-engine] property of timeout in parallel gateway format error!", e);
+                        throw new EngineException("latchWaitTime type should be Long");
                     }
                 }
 

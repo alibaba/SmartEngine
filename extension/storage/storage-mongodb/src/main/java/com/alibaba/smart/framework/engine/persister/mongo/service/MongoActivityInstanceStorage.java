@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
-import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
+
 import com.alibaba.smart.framework.engine.persister.mongo.entity.ActivityInstanceEntity;
 
 import org.springframework.data.domain.Sort;
@@ -36,7 +36,7 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
     @Override
     public void insert(ActivityInstance activityInstance,
                        ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
 
         ActivityInstanceEntity activityInstanceEntity = buildEntity(activityInstance);
@@ -62,7 +62,7 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
     public ActivityInstance update(ActivityInstance activityInstance,
                                    ProcessEngineConfiguration processEngineConfiguration) {
 
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
 
         ActivityInstanceEntity activityInstanceEntity = buildEntity(activityInstance);
@@ -75,7 +75,7 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
     public ActivityInstance find(String activityInstanceId,
                                  ProcessEngineConfiguration processEngineConfiguration) {
 
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
 
         ActivityInstanceEntity entity =  mongoTemplate.findById(activityInstanceId,ActivityInstanceEntity.class,tableSchemaStrategy.getTableSchemaFormatter(
@@ -100,7 +100,7 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
     public void remove(String activityInstanceId,
                        ProcessEngineConfiguration processEngineConfiguration) {
 
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -114,7 +114,7 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
     public List<ActivityInstance> findAll(String processInstanceId,
                                           ProcessEngineConfiguration processEngineConfiguration) {
 
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 

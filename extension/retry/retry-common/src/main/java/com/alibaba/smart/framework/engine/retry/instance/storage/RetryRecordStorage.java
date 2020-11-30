@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.retry.instance.storage;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.retry.model.instance.RetryRecord;
 import com.alibaba.smart.framework.engine.retry.service.command.RetryPersistence;
 
@@ -16,7 +17,7 @@ public interface RetryRecordStorage {
      * @param retryPersistence 持久化处理
      * @return
      */
-    RetryRecord find(String instanceId, RetryPersistence retryPersistence);
+    RetryRecord find(String instanceId, RetryPersistence retryPersistence, ProcessEngineConfiguration processEngineConfiguration);
 
     /**
      * 新增重试对象记录
@@ -25,7 +26,7 @@ public interface RetryRecordStorage {
      * @param retryPersistence 持久化处理
      * @return
      */
-    boolean insert(RetryRecord retryRecord, RetryPersistence retryPersistence);
+    boolean insert(RetryRecord retryRecord, RetryPersistence retryPersistence, ProcessEngineConfiguration processEngineConfiguration);
 
     /**
      * 更新重试对象记录
@@ -34,6 +35,6 @@ public interface RetryRecordStorage {
      * @param retryPersistence 持久化处理
      * @return
      */
-    boolean update(RetryRecord retryRecord, RetryPersistence retryPersistence);
+    boolean update(RetryRecord retryRecord, RetryPersistence retryPersistence, ProcessEngineConfiguration processEngineConfiguration);
 
 }

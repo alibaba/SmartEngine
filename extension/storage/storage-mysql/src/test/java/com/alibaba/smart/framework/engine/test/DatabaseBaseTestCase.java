@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.test;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
@@ -21,11 +22,18 @@ import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
 import com.alibaba.smart.framework.engine.test.process.helper.sequece.RandomIdGenerator;
 import com.alibaba.smart.framework.engine.test.process.helper.dispatcher.DefaultTaskAssigneeDispatcher;
+import com.alibaba.smart.framework.engine.util.ClassUtil;
 
 import org.junit.After;
 import org.junit.Before;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-public class DatabaseBaseTestCase {
+public class DatabaseBaseTestCase implements ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
 
     protected ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
@@ -87,12 +95,35 @@ public class DatabaseBaseTestCase {
     protected void initProcessConfiguration() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new RandomIdGenerator());
+        processEngineConfiguration.setInstanceAccessor(new InnerInstanceAccessService());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
     }
 
     @After
     public void clear() {
         annotationScanner.clear();
+
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
+    private class InnerInstanceAccessService implements InstanceAccessor {
+        @Override
+        public Object access(String name) {
+
+            try {
+                Object bean = applicationContext.getBean(name);
+                return bean;
+
+            }catch (NoSuchBeanDefinitionException exception){
+                return ClassUtil.createOrGetInstance(name);
+
+            }
+
+        }
 
     }
 

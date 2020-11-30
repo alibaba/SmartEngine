@@ -15,7 +15,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
-import com.alibaba.smart.framework.engine.persister.common.util.SpringContextUtil;
+
 import com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant;
 import com.alibaba.smart.framework.engine.persister.mongo.entity.TaskAssigneeEntity;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
@@ -46,7 +46,7 @@ public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
     @Override
     public List<TaskAssigneeInstance> findPendingTaskAssigneeList(PendingTaskQueryParam pendingTaskQueryParam,
                                                                   ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -72,7 +72,7 @@ public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
     @Override
     public Long countPendingTaskAssigneeList(PendingTaskQueryParam pendingTaskQueryParam,
                                              ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
         Query query = buildCommonQuery(pendingTaskQueryParam);
@@ -148,7 +148,7 @@ public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
     public TaskAssigneeInstance insert(TaskAssigneeInstance instance,
                                        ProcessEngineConfiguration processEngineConfiguration) {
 
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -177,7 +177,7 @@ public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
     @Override
     public void remove(String taskAssigneeId, ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -190,7 +190,7 @@ public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
     @Override
     public void removeAll(String taskInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
@@ -202,7 +202,7 @@ public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
     @Override
     public List<TaskAssigneeInstance> findList(String taskInstanceId,
                                                ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  SpringContextUtil.getBean(MONGO_TEMPLATE, MongoTemplate.class);
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
 
