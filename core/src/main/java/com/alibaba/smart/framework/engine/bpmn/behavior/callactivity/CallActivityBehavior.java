@@ -68,6 +68,8 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
+        CommonServiceHelper.tryInsertProcessInstanceIfNeedLock(processEngineConfiguration, childProcessInstance);
+
         childProcessInstance = pvmProcessInstance.start(subContext);
 
         childProcessInstance = CommonServiceHelper.insertAndPersist(childProcessInstance, request, processEngineConfiguration);

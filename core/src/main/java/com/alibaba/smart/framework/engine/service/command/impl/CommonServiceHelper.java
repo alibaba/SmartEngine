@@ -31,6 +31,18 @@ import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
  */
 public abstract  class CommonServiceHelper {
 
+
+    public static void tryInsertProcessInstanceIfNeedLock(ProcessEngineConfiguration processEngineConfiguration,
+                                                    ProcessInstance processInstance) {
+        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
+        if(null != lockStrategy){
+            AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+            ProcessInstanceStorage processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
+            ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance, processEngineConfiguration);
+            lockStrategy.tryLock(newProcessInstance.getBizUniqueId());
+        }
+    }
+
     public static ProcessInstance insertAndPersist(ProcessInstance processInstance, Map<String, Object> request,
                                                    ProcessEngineConfiguration processEngineConfiguration) {
 
