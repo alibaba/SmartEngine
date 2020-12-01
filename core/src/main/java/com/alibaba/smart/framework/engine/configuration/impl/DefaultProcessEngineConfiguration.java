@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
@@ -65,6 +66,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
     private TableSchemaStrategy tableSchemaStrategy;
 
     private ExecutorService executorService;
+
+    private Map<String, ExecutorService> executorServiceMap;
 
     private boolean expressionCompileResultCached;
 

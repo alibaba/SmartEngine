@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.configuration;
 
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
@@ -139,6 +140,14 @@ public interface ProcessEngineConfiguration {
     void setExecutorService(ExecutorService executorService);
 
     ExecutorService getExecutorService();
+
+    /**
+     * 设置自定义的线程池map，支持并行网关的fork时，指定自定义的线程池
+     * @param poolsMap
+     */
+    void setExecutorServiceMap(Map<String, ExecutorService> poolsMap);
+
+    Map<String, ExecutorService> getExecutorServiceMap();
 
     void setOptionContainer(OptionContainer optionContainer);
 
