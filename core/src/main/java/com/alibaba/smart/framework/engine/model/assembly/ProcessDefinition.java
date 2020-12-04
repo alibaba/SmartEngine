@@ -29,5 +29,5 @@ public interface ProcessDefinition extends ExtensionElementContainer,IdBasedElem
 
     void setIdBasedElementMap( Map<String, IdBasedElement> idBasedElementMap);
 
-
+    void  setProperties(Map<String,String> properties);
 }

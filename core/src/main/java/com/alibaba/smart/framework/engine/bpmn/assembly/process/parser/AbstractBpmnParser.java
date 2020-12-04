@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ExtensionElementContain
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 /**
  * Created by ettear on 16-4-29.
@@ -44,28 +45,6 @@ public abstract class AbstractBpmnParser<M extends BaseElement> extends Abstract
     }
 
     protected Map<String, String> parseExtendedProperties(XMLStreamReader reader, ParseContext context) {
-
-        Map<String,String> properties = new HashMap();
-
-        int attributeCount=reader.getAttributeCount();
-        if(attributeCount>0){
-            for (int i = 0; i < attributeCount; i++) {
-                QName attributeName=reader.getAttributeName(i);
-
-                String localPart = attributeName.getLocalPart();
-
-                if("id".equals(localPart)||"name".equals(localPart)){
-                    continue;
-                }
-
-                Object value=reader.getAttributeValue(attributeName.getNamespaceURI(), localPart);
-                properties.put(localPart,(String)value);
-
-
-            }
-        }
-
-
-        return properties;
+        return XmlParseUtil.parseExtendedProperties(reader, context);
     }
 }

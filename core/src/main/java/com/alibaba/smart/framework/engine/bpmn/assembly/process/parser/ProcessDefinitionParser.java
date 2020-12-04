@@ -60,6 +60,10 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
         processDefinition.setName(XmlParseUtil.getString(reader, "name"));
 
 
+        Map<String, String> properties = XmlParseUtil.parseExtendedProperties(reader, context);
+        processDefinition.setProperties(properties);
+
+
         List<BaseElement> elements = CollectionUtil.newArrayList();
 
         Map<String, IdBasedElement> idBasedElementMap = MapUtil.newLinkedHashMap();
