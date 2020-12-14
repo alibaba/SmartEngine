@@ -1,6 +1,6 @@
-package com.alibaba.smart.framework.engine.bpmn.assembly.comments.parser;
+package com.alibaba.smart.framework.engine.bpmn.assembly.artifacts.parser;
 
-import com.alibaba.smart.framework.engine.bpmn.assembly.comments.Association;
+import com.alibaba.smart.framework.engine.bpmn.assembly.artifacts.Group;
 import com.alibaba.smart.framework.engine.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -14,29 +14,29 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.Serializable;
 
 /**
- * documents comment association for element
+ * logic group category for elements
  * @author guoxing
- * @date 2020年11月24日14:34:08
+ * @date 2020/12/14 13:49:36
  */
-@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = Association.class)
-public class AssociationParser extends AbstractElementParser<Association> implements Serializable {
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = Group.class)
+public class GroupParser extends AbstractElementParser<Group> implements Serializable {
 
-    public final static QName qtype = new QName(BpmnNameSpaceConstant.BPMNDI_NAME_SPACE, "association");
+    public final static QName qtype = new QName(BpmnNameSpaceConstant.BPMNDI_NAME_SPACE, "group");
 
     private static final long serialVersionUID = 5244437456902744239L;
 
     @Override
     public QName getQname() {
-        return Association.qtype;
+        return Group.qtype;
     }
 
     @Override
-    public Class<Association> getModelType() {
-        return Association.class;
+    public Class<Group> getModelType() {
+        return Group.class;
     }
 
     @Override
-    public Association parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
+    public Group parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
         // JUST SKIP
         XmlParseUtil.skipToEndElement(reader);
 
