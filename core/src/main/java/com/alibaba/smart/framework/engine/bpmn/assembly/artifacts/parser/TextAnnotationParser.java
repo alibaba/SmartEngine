@@ -1,6 +1,6 @@
-package com.alibaba.smart.framework.engine.bpmn.assembly.comments.parser;
+package com.alibaba.smart.framework.engine.bpmn.assembly.artifacts.parser;
 
-import com.alibaba.smart.framework.engine.bpmn.assembly.comments.TextAnnotation;
+import com.alibaba.smart.framework.engine.bpmn.assembly.artifacts.TextAnnotation;
 import com.alibaba.smart.framework.engine.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
