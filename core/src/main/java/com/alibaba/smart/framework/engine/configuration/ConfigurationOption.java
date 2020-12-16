@@ -12,6 +12,7 @@ public interface ConfigurationOption {
 
     ConfigurationOption DISABLED_OPTION = new DisabledOption();
 
+
     ConfigurationOption TRANSFER_ENABLED_OPTION = new TransferEnabledOption();
 
     ConfigurationOption EXPRESSION_COMPILE_RESULT_CACHED_OPTION = new ExpressionCompileResultCachedOption();
@@ -21,5 +22,7 @@ public interface ConfigurationOption {
     boolean isEnabled();
 
     String getId();
+
+    Object getData();
 
 }

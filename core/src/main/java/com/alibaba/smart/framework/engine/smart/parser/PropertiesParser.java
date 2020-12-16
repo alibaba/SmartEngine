@@ -39,16 +39,6 @@ public class PropertiesParser extends AbstractElementParser<Properties> {
     }
 
     @Override
-    public QName getQname() {
-        return null;
-    }
-
-    @Override
-    public List<QName> getQnames() {
-        return Properties.qtypes;
-    }
-
-    @Override
     public Class<Properties> getModelType() {
         return Properties.class;
     }

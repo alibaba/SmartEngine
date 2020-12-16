@@ -22,11 +22,6 @@ public class CompletionConditionParser extends AbstractElementParser<CompletionC
 
 
     @Override
-    public QName getQname() {
-        return CompletionCondition.qtype;
-    }
-
-    @Override
     public Class<CompletionCondition> getModelType() {
         return CompletionCondition.class;
     }

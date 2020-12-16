@@ -14,13 +14,9 @@ import lombok.Data;
 
 
 @Data
-public class Property implements PropertiesElementMarker, NoneIdBasedElement {
-    public final static List<QName> qtypes = Arrays.asList(
-            new QName(SmartBase.SMART_NS, "property"),
-            new QName(BpmnNameSpaceConstant.CAMUNDA_NAME_SPACE, "property", "camunda"),
-            new QName(BpmnNameSpaceConstant.FLOWABLE_NAME_SPACE, "property", "flowable"),
-            new QName(BpmnNameSpaceConstant.ACTIVITI_NAME_SPACE, "property", "activiti")
-    );
+public class Property implements PropertiesElementMarker, NoneIdBasedElement,CustomExtensionElement {
+
+    public final static String xmlLocalPart = "property";
 
     private String name;
     private String value;

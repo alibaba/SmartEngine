@@ -16,13 +16,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class ConditionExpressionParser extends AbstractElementParser<ConditionExpressionImpl>
       {
 
-
-
-    @Override
-    public QName getQname() {
-        return ConditionExpressionImpl.qtype;
-    }
-
     @Override
     public Class<ConditionExpressionImpl> getModelType() {
         return ConditionExpressionImpl.class;

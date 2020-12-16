@@ -21,13 +21,8 @@ import lombok.Data;
  * Created by ettear on 06/08/2017.
  */
 @Data
-public class Properties implements ExtensionDecorator {
-    public final static List<QName> qtypes = Arrays.asList(
-            new QName(SmartBase.SMART_NS, "properties"),
-            new QName(BpmnNameSpaceConstant.CAMUNDA_NAME_SPACE, "properties", "camunda"),
-            new QName(BpmnNameSpaceConstant.FLOWABLE_NAME_SPACE, "properties", "flowable"),
-            new QName(BpmnNameSpaceConstant.ACTIVITI_NAME_SPACE, "properties", "activiti")
-    );
+public class Properties implements ExtensionDecorator,CustomExtensionElement {
+    public final static String xmlLocalPart = "properties";
 
     private List<PropertiesElementMarker> extensionList  = new ArrayList();
 

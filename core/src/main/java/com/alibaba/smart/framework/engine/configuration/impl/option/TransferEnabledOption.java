@@ -18,4 +18,9 @@ public class TransferEnabledOption implements ConfigurationOption {
     public String getId() {
         return "transferEnabled";
     }
+
+    @Override
+    public Object getData() {
+        return null;
+    }
 }

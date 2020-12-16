@@ -26,11 +26,6 @@ public class GroupParser extends AbstractElementParser<Group> implements Seriali
     private static final long serialVersionUID = 5244437456902744239L;
 
     @Override
-    public QName getQname() {
-        return Group.qtype;
-    }
-
-    @Override
     public Class<Group> getModelType() {
         return Group.class;
     }

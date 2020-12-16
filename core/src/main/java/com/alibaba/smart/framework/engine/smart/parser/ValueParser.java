@@ -18,7 +18,6 @@ import java.util.List;
  */
 
 @ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = Value.class)
-
 public class ValueParser extends AbstractElementParser<Value> {
 
     @Override
@@ -27,17 +26,6 @@ public class ValueParser extends AbstractElementParser<Value> {
         value.setName(XmlParseUtil.getString(reader, "name"));
         value.setValue(XmlParseUtil.getString(reader, "value"));
         return value;
-    }
-
-
-    @Override
-    public QName getQname() {
-        return null;
-    }
-
-    @Override
-    public List<QName> getQnames() {
-        return Value.qtypes;
     }
 
     @Override

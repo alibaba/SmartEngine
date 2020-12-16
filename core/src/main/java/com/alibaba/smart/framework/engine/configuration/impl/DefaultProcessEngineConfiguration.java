@@ -1,11 +1,14 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.MvelExpressionEvaluator;
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.DelegationExecutor;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
@@ -22,6 +25,7 @@ import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.configuration.impl.option.DefaultOptionContainer;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
+import com.alibaba.smart.framework.engine.constant.SmartBase;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 
 import lombok.Data;
@@ -73,6 +77,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private OptionContainer optionContainer ;
 
+    private Map<String,Object> magicExtension;
+
     public DefaultProcessEngineConfiguration() {
         //说明:先默认设置一个id生成器,业务使用方可以根据自己的需要再覆盖掉这个值。
         this.idGenerator = new DefaultIdGenerator();
@@ -87,9 +93,22 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         this.tableSchemaStrategy = new DefaultTableSchemaStrategy();
         this.optionContainer = new DefaultOptionContainer();
         optionContainer.put(ConfigurationOption.EXPRESSION_COMPILE_RESULT_CACHED_OPTION);
+
+        buildDefaultNameSpace();
     }
 
+    private void buildDefaultNameSpace() {
+        Map<String,Object> magicExtension = MapUtil.newHashMap();
 
+        Map<String,String> tuples = new HashMap<String, String>();
+        tuples.put(SmartBase.SMART_NS,"");
+        tuples.put(BpmnNameSpaceConstant.CAMUNDA_NAME_SPACE,"smart");
+        tuples.put(BpmnNameSpaceConstant.FLOWABLE_NAME_SPACE,"flowable");
+        tuples.put(BpmnNameSpaceConstant.ACTIVITI_NAME_SPACE,"activiti");
 
+        magicExtension.put("fallBack",tuples);
+
+        this.setMagicExtension(magicExtension);
+    }
 
 }

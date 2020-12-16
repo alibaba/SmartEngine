@@ -153,6 +153,15 @@ public interface ProcessEngineConfiguration {
 
     OptionContainer getOptionContainer();
 
+    /**
+     * 目前使用场景较少，主要用于兼容老版本的xml namespace 场景。
+     * 一般使用场景下，直接忽略该配置即可
+     * @param extension
+     */
+    void setMagicExtension(Map<String,Object> extension);
+
+    Map<String,Object> getMagicExtension();
+
     // 是否要干掉 用于配置扩展,默认可以为空。设计目的是根据自己的业务需求,来自定义存储(该机制会绕过引擎自带的各种Storage机制,powerful and a little UnSafe)。。
     //void setPersisterStrategy(PersisterStrategy persisterStrategy);
     //

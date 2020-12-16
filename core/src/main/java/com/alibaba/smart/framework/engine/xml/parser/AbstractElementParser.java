@@ -114,8 +114,4 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
 
     }
 
-    @Override
-    public List<QName> getQnames() {
-        return new ArrayList<QName>();
-    }
 }

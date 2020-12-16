@@ -18,18 +18,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class CallActivityParser  extends AbstractBpmnParser<CallActivity> {
 
-
-
-    //@Override
-    //public void resolve(CallActivity model, ParseContext context) throws ResolveException {
-    //    model.setUnresolved(false);
-    //}
-
-    @Override
-    public QName getQname() {
-        return CallActivity.qtype;
-    }
-
     @Override
     public Class<CallActivity> getModelType() {
         return CallActivity.class;

@@ -16,13 +16,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class ParallelGatewayParser extends AbstractBpmnParser<ParallelGateway> {
 
-
-
-    @Override
-    public QName getQname() {
-        return ParallelGateway.qtype;
-    }
-
     @Override
     public Class<ParallelGateway> getModelType() {
         return ParallelGateway.class;

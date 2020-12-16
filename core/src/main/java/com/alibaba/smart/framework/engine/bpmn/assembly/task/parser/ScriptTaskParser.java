@@ -19,12 +19,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
  */
 public class ScriptTaskParser extends AbstractBpmnParser<ScriptTask> {
 
-
-    @Override
-    public QName getQname() {
-        return ScriptTask.qtype;
-    }
-
     @Override
     public Class<ScriptTask> getModelType() {
         return ScriptTask.class;

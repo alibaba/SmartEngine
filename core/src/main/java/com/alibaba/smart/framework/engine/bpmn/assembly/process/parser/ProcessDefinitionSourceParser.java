@@ -23,11 +23,6 @@ public class ProcessDefinitionSourceParser extends AbstractElementParser<Process
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDefinitionSourceParser.class);
 
     @Override
-    public QName getQname() {
-        return ProcessDefinitionSourceImpl.qtype;
-    }
-
-    @Override
     public Class<ProcessDefinitionSourceImpl> getModelType() {
         return ProcessDefinitionSourceImpl.class;
     }

@@ -21,11 +21,6 @@ public class BusinessRuleTaskParser extends AbstractBpmnParser<BusinessRuleTask>
 
 
     @Override
-    public QName getQname() {
-        return BusinessRuleTask.qtype;
-    }
-
-    @Override
     public Class<BusinessRuleTask> getModelType() {
         return BusinessRuleTask.class;
     }

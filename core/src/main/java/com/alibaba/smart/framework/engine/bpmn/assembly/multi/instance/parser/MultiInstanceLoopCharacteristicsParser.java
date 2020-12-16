@@ -23,12 +23,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParser<MultiInstanceLoopCharacteristics>
 {
 
-
-    @Override
-    public QName getQname() {
-        return MultiInstanceLoopCharacteristics.qtype;
-    }
-
     @Override
     public Class<MultiInstanceLoopCharacteristics> getModelType() {
         return MultiInstanceLoopCharacteristics.class;

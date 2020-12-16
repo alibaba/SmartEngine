@@ -18,14 +18,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class IncomingParser extends AbstractElementParser<Incoming>   {
 
-
-
-
-    @Override
-    public QName getQname() {
-        return Incoming.qtype;
-    }
-
     @Override
     public Class<Incoming> getModelType() {
         return Incoming.class;

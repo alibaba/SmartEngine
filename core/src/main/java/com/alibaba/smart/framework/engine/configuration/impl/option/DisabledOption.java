@@ -16,4 +16,9 @@ public class DisabledOption implements ConfigurationOption {
     public String getId() {
         return "disabled";
     }
+
+    @Override
+    public Object getData() {
+        return null;
+    }
 }

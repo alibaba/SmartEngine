@@ -14,4 +14,9 @@ public class ServiceOrchestrationEnabledOption implements ConfigurationOption {
     public String getId() {
         return "serviceOrchestrationEnabled";
     }
+
+    @Override
+    public Object getData() {
+        return null;
+    }
 }

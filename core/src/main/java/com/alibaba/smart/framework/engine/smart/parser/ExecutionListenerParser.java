@@ -20,9 +20,7 @@ import java.util.List;
 @ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = ExecutionListener.class)
 
 public class ExecutionListenerParser extends AbstractElementParser<ExecutionListener>
-       {
-
-
+{
 
     @Override
     protected ExecutionListener parseModel(XMLStreamReader reader, ParseContext context) {
@@ -42,21 +40,9 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
         }
     }
 
-   
-
-    @Override
-    public QName getQname() {
-        return null;
-    }
-
     @Override
     public Class<ExecutionListener> getModelType() {
         return ExecutionListener.class;
     }
 
-
-    @Override
-    public List<QName> getQnames() {
-       return ExecutionListener.qtypes;
-    }
 }

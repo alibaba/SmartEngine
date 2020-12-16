@@ -26,11 +26,6 @@ public class CategoryParser extends AbstractElementParser<Category> implements S
     private static final long serialVersionUID = 5244437456902744239L;
 
     @Override
-    public QName getQname() {
-        return Category.qtype;
-    }
-
-    @Override
     public Class<Category> getModelType() {
         return Category.class;
     }

@@ -20,12 +20,6 @@ public class LoopDataInputRefParser extends AbstractElementParser<LoopDataInputR
       {
 
 
-
-    @Override
-    public QName getQname() {
-        return LoopDataInputRef.qtype;
-    }
-
     @Override
     public Class<LoopDataInputRef> getModelType() {
         return LoopDataInputRef.class;

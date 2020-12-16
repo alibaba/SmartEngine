@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:smart="http://smart.alibaba-test.com/schema/process" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="a" targetNamespace="smart" version="1.2">
+    <process id="c" isExecutable="false">
+        <startEvent id="StartEvent_1" />
+        <serviceTask id="ServiceTask_1meueg2" smart:class="aa.cc" >
+            <extensionElements>
+                <smart:properties>
+                    <smart:property name="task1InParam1" value="process.inParam1" />
+                </smart:properties>
+            </extensionElements>
+        </serviceTask>>
+        <sequenceFlow id="SequenceFlow_1b18w2l" sourceRef="StartEvent_1" targetRef="ServiceTask_1meueg2" />
+        <endEvent id="EndEvent_072x4cq" />
+        <sequenceFlow id="SequenceFlow_17lvtuo" sourceRef="ServiceTask_1meueg2" targetRef="EndEvent_072x4cq" />
+    </process>
+</definitions>

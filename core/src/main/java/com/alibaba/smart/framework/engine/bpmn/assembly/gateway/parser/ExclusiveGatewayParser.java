@@ -17,11 +17,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class ExclusiveGatewayParser extends AbstractBpmnParser<ExclusiveGateway> {
 
     @Override
-    public QName getQname() {
-        return ExclusiveGateway.qtype;
-    }
-
-    @Override
     public Class<ExclusiveGateway> getModelType() {
         return ExclusiveGateway.class;
     }

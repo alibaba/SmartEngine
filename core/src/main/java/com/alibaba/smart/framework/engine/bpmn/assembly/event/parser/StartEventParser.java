@@ -16,13 +16,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class StartEventParser extends AbstractBpmnParser<StartEvent> {
 
-
-
-    @Override
-    public QName getQname() {
-        return StartEvent.qtype;
-    }
-
     @Override
     public Class<StartEvent> getModelType() {
         return StartEvent.class;

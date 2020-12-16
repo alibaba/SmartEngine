@@ -26,11 +26,6 @@ public class AssociationParser extends AbstractElementParser<Association> implem
     private static final long serialVersionUID = 5244437456902744239L;
 
     @Override
-    public QName getQname() {
-        return Association.qtype;
-    }
-
-    @Override
     public Class<Association> getModelType() {
         return Association.class;
     }

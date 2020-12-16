@@ -38,11 +38,6 @@ public class ExtensionElementsParser extends AbstractElementParser<ExtensionElem
     }
 
     @Override
-    public QName getQname() {
-        return ExtensionElementsImpl.qtype;
-    }
-
-    @Override
     public Class<ExtensionElementsImpl> getModelType() {
         return ExtensionElementsImpl.class;
     }

@@ -21,13 +21,9 @@ import lombok.Data;
  * Created by ettear on 06/08/2017.
  */
 @Data
-public class ExecutionListener  implements ExtensionDecorator {
-    public final static List<QName> qtypes = Arrays.asList(
-            new QName(SmartBase.SMART_NS, "executionListener"),
-            new QName(BpmnNameSpaceConstant.CAMUNDA_NAME_SPACE, "executionListener", "camunda"),
-            new QName(BpmnNameSpaceConstant.FLOWABLE_NAME_SPACE, "executionListener", "flowable"),
-            new QName(BpmnNameSpaceConstant.ACTIVITI_NAME_SPACE, "executionListener", "activiti")
-    );
+public class ExecutionListener  implements ExtensionDecorator,CustomExtensionElement {
+
+    public final static String xmlLocalPart = "executionListener";
 
     private String[] events;
     private String listenerClass;
@@ -49,8 +45,6 @@ public class ExecutionListener  implements ExtensionDecorator {
         }
 
         for (String event : events) {
-
-            //Listener listener = (Listener)ClassUtil.createOrGetInstance(this.listenerClass);
 
             Map<String, List<String>> eventListenerMap = eventListenerAggregation.getEventListenerMap();
 

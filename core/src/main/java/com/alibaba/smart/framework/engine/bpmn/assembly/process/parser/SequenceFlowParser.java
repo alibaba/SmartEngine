@@ -15,12 +15,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
 
-
-    @Override
-    public QName getQname() {
-        return SequenceFlow.qtype;
-    }
-
     @Override
     public Class<SequenceFlow> getModelType() {
         return SequenceFlow.class;

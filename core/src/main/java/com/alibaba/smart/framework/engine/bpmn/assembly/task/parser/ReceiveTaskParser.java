@@ -16,12 +16,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class ReceiveTaskParser extends AbstractBpmnParser<ReceiveTask> {
 
-
-    @Override
-    public QName getQname() {
-        return ReceiveTask.qtype;
-    }
-
     @Override
     public Class<ReceiveTask> getModelType() {
         return ReceiveTask.class;

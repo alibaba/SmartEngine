@@ -28,13 +28,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefinition> implements
     ProcessEngineConfigurationAware {
 
-
-
-    @Override
-    public QName getQname() {
-        return ProcessDefinitionImpl.qtype;
-    }
-
     @Override
     public Class<ProcessDefinition> getModelType() {
         return ProcessDefinition.class;

@@ -16,18 +16,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class EndEventParser extends AbstractBpmnParser<EndEvent> {
 
-
-
-    //@Override
-    //public void resolve(EndEvent model, ParseContext context) throws ResolveException {
-    //    model.setUnresolved(false);
-    //}
-
-    @Override
-    public QName getQname() {
-        return EndEvent.qtype;
-    }
-
     @Override
     public Class<EndEvent> getModelType() {
         return EndEvent.class;

@@ -20,11 +20,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 public class ManualTaskParser extends AbstractBpmnParser<ManualTask> {
 
     @Override
-    public QName getQname() {
-        return ManualTask.qtype;
-    }
-
-    @Override
     public Class<ManualTask> getModelType() {
         return ManualTask.class;
     }

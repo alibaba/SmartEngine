@@ -18,14 +18,6 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
 public class DocumentationParser extends AbstractElementParser<Documentation>   {
 
-
-
-
-    @Override
-    public QName getQname() {
-        return Documentation.qtype;
-    }
-
     @Override
     public Class<Documentation> getModelType() {
         return Documentation.class;

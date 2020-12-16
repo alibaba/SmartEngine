@@ -58,12 +58,6 @@ public class ProcessFieldParser extends AbstractBpmnParser<ProcessField> {
     }
 
 
-
-    @Override
-    public QName getQname() {
-        return ProcessField.qtype;
-    }
-
     @Override
     public Class<ProcessField> getModelType() {
         return ProcessField.class;

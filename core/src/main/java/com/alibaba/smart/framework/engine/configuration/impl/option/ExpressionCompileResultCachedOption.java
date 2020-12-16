@@ -18,4 +18,9 @@ public class ExpressionCompileResultCachedOption implements ConfigurationOption 
     public String getId() {
         return "expressionCompileResultCached";
     }
+
+    @Override
+    public Object getData() {
+        return null;
+    }
 }

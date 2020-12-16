@@ -26,11 +26,6 @@ public class TextAnnotationParser extends AbstractElementParser<TextAnnotation> 
     private static final long serialVersionUID = -8418211427014370265L;
 
     @Override
-    public QName getQname() {
-        return TextAnnotation.qtype;
-    }
-
-    @Override
     public Class<TextAnnotation> getModelType() {
         return TextAnnotation.class;
     }
