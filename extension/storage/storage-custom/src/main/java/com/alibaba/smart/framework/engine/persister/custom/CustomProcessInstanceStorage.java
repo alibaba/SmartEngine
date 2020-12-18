@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.persister.custom;
 
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -63,6 +64,10 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
     @Override
     public void remove(String instanceId,
                        ProcessEngineConfiguration processEngineConfiguration) {
-        PersisterSession.currentSession().getProcessInstances().remove(instanceId);
+        Map<String, ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances();
+
+        synchronized (processInstances){
+            processInstances.remove(instanceId);
+        }
     }
 }

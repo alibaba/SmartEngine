@@ -95,6 +95,8 @@ public class PersisterSession {
     }
 
     public ProcessInstance getProcessInstance(String instanceId) {
-        return this.processInstances.get(instanceId);
+        synchronized (processInstances){
+            return this.processInstances.get(instanceId);
+        }
     }
 }

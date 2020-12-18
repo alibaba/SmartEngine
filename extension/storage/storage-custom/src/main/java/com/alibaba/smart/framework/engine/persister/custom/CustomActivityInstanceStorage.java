@@ -37,26 +37,31 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
                                  ProcessEngineConfiguration processEngineConfiguration) {
         Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
 
-        boolean matched = false;
-        ActivityInstance matchedActivityInstance = null;
+        synchronized (processInstances){
 
-        for (ProcessInstance processInstance : processInstances) {
-            List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
+            boolean matched = false;
+            ActivityInstance matchedActivityInstance = null;
 
-            for (ActivityInstance activityInstance : activityInstances) {
-                if (activityInstance.getInstanceId().equals(activityInstanceId)) {
-                    matched= true;
-                    matchedActivityInstance = activityInstance;
+            for (ProcessInstance processInstance : processInstances) {
+                List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
+
+                for (ActivityInstance activityInstance : activityInstances) {
+                    if (activityInstance.getInstanceId().equals(activityInstanceId)) {
+                        matched= true;
+                        matchedActivityInstance = activityInstance;
+                        break;
+                    }
+                }
+                if(matched){
                     break;
                 }
             }
-            if(matched){
-                break;
-            }
+            return matchedActivityInstance;
+
         }
 
 
-        return matchedActivityInstance;
+
     }
 
 

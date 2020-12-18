@@ -40,45 +40,50 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
         Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
 
-        boolean matched = false;
+        synchronized (processInstances){
+            boolean matched = false;
 
-        ExecutionInstance executionInstance = null;
+            ExecutionInstance executionInstance = null;
 
-        for (ProcessInstance processInstance : processInstances) {
+            for (ProcessInstance processInstance : processInstances) {
 
-            List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
+                List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
 
-            if (null == activityInstances || activityInstances.isEmpty()) {
+                if (null == activityInstances || activityInstances.isEmpty()) {
 
-                // do nothing , cause exception.
-            } else {
-                int size = activityInstances.size();
-                for (int i = size - 1; i >= 0; i--) {
-                    ActivityInstance activityInstance = activityInstances.get(i);
+                    // do nothing , cause exception.
+                } else {
+                    int size = activityInstances.size();
+                    for (int i = size - 1; i >= 0; i--) {
+                        ActivityInstance activityInstance = activityInstances.get(i);
 
-                    List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
-                    for (ExecutionInstance tempExecutionInstance : executionInstances) {
-                        if (null != tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(instanceId)) {
-                            executionInstance = tempExecutionInstance;
-                            matched = true;
-                            break;
+                        List<ExecutionInstance> executionInstances =    activityInstance.getExecutionInstanceList();
+                        for (ExecutionInstance tempExecutionInstance : executionInstances) {
+                            if (null != tempExecutionInstance && tempExecutionInstance.getInstanceId().equals(instanceId)) {
+                                executionInstance = tempExecutionInstance;
+                                matched = true;
+                                break;
 
+                            }
                         }
+
                     }
 
                 }
+                if (matched) {
+                    break;
+                }
+            }
 
+            if(!matched){
+                throw new EngineException("No ExecutionInstance found for id : "+instanceId);
             }
-            if (matched) {
-                break;
-            }
+
+            return executionInstance;
         }
 
-        if(!matched){
-            throw new EngineException("No ExecutionInstance found for id : "+instanceId);
-        }
 
-        return executionInstance;
+
 
     }
 
