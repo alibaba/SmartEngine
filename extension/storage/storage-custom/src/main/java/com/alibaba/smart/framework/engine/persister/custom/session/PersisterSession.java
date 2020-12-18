@@ -78,7 +78,9 @@ public class PersisterSession {
     }
 
     public Map<String, ProcessInstance> getProcessInstances() {
-        return processInstances;
+        synchronized (processInstances){
+            return processInstances;
+        }
     }
 
 
@@ -87,7 +89,9 @@ public class PersisterSession {
     }
 
     public void putProcessInstance(ProcessInstance processInstance) {
-        this.processInstances.put(processInstance.getInstanceId(), processInstance);
+        synchronized (processInstances){
+            this.processInstances.put(processInstance.getInstanceId(), processInstance);
+        }
     }
 
     public ProcessInstance getProcessInstance(String instanceId) {
