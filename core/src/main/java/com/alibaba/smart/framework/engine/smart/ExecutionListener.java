@@ -46,6 +46,14 @@ public class ExecutionListener  implements ExtensionDecorator,CustomExtensionEle
 
         for (String event : events) {
 
+            // 兼容主流
+            if("start".equals(event)){
+                event = "ACTIVITY_START";
+            }else if ("end".equals(event)){
+                event = "ACTIVITY_END";
+            }
+
+
             Map<String, List<String>> eventListenerMap = eventListenerAggregation.getEventListenerMap();
 
             List<String> listenerList = eventListenerMap.get(event);

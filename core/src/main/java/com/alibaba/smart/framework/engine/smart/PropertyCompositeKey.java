@@ -24,4 +24,8 @@ public class PropertyCompositeKey {
         this.type = type;
         this.name = name;
     }
+
+    public PropertyCompositeKey( String name) {
+        this.name = name;
+    }
 }

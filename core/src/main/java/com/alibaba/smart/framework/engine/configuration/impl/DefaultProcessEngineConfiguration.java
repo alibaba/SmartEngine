@@ -102,6 +102,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
         Map<String,String> tuples = new HashMap<String, String>();
         tuples.put(SmartBase.SMART_NS,"");
+
+        //兼容主流开源的 namespace，便于兼容他们配套的前端设计器
         tuples.put(BpmnNameSpaceConstant.CAMUNDA_NAME_SPACE,"smart");
         tuples.put(BpmnNameSpaceConstant.FLOWABLE_NAME_SPACE,"flowable");
         tuples.put(BpmnNameSpaceConstant.ACTIVITI_NAME_SPACE,"activiti");

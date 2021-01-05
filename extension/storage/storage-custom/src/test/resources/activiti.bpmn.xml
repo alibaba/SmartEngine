@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1h42abr" targetNamespace="http://bpmn.io/schema/bpmn" exporter="activiti Modeler" exporterVersion="4.5.0-nightly.20210105">
+  <bpmn:process id="Process_0t8sti3" isExecutable="true">
+    <bpmn:startEvent id="start">
+      <bpmn:outgoing>Flow_104s8do</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="exclusive">
+      <bpmn:incoming>Flow_104s8do</bpmn:incoming>
+      <bpmn:outgoing>toLittle</bpmn:outgoing>
+      <bpmn:outgoing>toHigh</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_104s8do" sourceRef="start" targetRef="exclusive" />
+    <bpmn:sequenceFlow id="toLittle" sourceRef="exclusive" targetRef="littleTask">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">flag&lt;=1</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="toHigh" sourceRef="exclusive" targetRef="bigTask">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">flag&gt;1</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="end">
+      <bpmn:incoming>toEnd2</bpmn:incoming>
+      <bpmn:incoming>toEnd1</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="toEnd2" sourceRef="bigTask" targetRef="end" />
+    <bpmn:sequenceFlow id="toEnd1" sourceRef="littleTask" targetRef="end" />
+    <bpmn:serviceTask id="littleTask" activiti:class="com.alibaba.smart.framework.engine.test.delegation.Tracker">
+      <bpmn:extensionElements>
+        <activiti:executionListener class="com.alibaba.smart.framework.engine.test.StartListener" event="start" />
+        <activiti:properties>
+          <activiti:property name="from" value="koubei" />
+        </activiti:properties>
+        <activiti:executionListener class="com.alibaba.smart.framework.engine.test.EndListener" event="end" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>toLittle</bpmn:incoming>
+      <bpmn:outgoing>toEnd1</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="bigTask">
+      <bpmn:incoming>toHigh</bpmn:incoming>
+      <bpmn:outgoing>toEnd2</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0t8sti3">
+      <bpmndi:BPMNEdge id="Flow_104s8do_di" bpmnElement="Flow_104s8do">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="265" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11zapdy_di" bpmnElement="toLittle">
+        <di:waypoint x="315" y="117" />
+        <di:waypoint x="370" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v0gj4m_di" bpmnElement="toHigh">
+        <di:waypoint x="290" y="142" />
+        <di:waypoint x="290" y="230" />
+        <di:waypoint x="370" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1rzvmw9_di" bpmnElement="toEnd2">
+        <di:waypoint x="470" y="230" />
+        <di:waypoint x="541" y="230" />
+        <di:waypoint x="541" y="140" />
+        <di:waypoint x="612" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0f76doy_di" bpmnElement="toEnd1">
+        <di:waypoint x="470" y="117" />
+        <di:waypoint x="501" y="117" />
+        <di:waypoint x="501" y="140" />
+        <di:waypoint x="612" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0p5jcgr_di" bpmnElement="exclusive" isMarkerVisible="true">
+        <dc:Bounds x="265" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ja90j4_di" bpmnElement="end">
+        <dc:Bounds x="612" y="122" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1udosec_di" bpmnElement="littleTask">
+        <dc:Bounds x="370" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1vd2mq5_di" bpmnElement="bigTask">
+        <dc:Bounds x="370" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
