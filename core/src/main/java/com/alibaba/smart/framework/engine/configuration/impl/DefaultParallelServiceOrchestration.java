@@ -137,7 +137,7 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
                         // 忽略超时异常
                         if (isSkipTimeoutExp) {
                             // 跳过超时异常，只记录log
-                            log.error("parallel gateway occur timeout, skip exception!", e);
+                            log.warn("parallel gateway occur timeout, skip exception!", e);
                         } else {
                             throw e;
                         }
