@@ -1,0 +1,110 @@
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smartengine.org/schema/process" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="smart">
+    <process id="parallelTimeout" isExecutable="true">
+        <startEvent id="start" name="开始"/>
+        <parallelGateway id="fork" name="并行事件" timeout="800" strategy="any" poolName="poolA"/>
+        <parallelGateway id="join" name="并行事件"/>
+        <serviceTask id="service1" name="服务任务" smart:class =
+                "com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskTimeoutOrchestrationDelegationOne" />
+        <serviceTask id="service2" name="服务任务" smart:class =
+                "com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskTimeoutOrchestrationDelegationTwo" />
+        <endEvent id="end-event-1596988599526" name="结束"/>
+        <sequenceFlow id="seqflow-1596988553377" sourceRef="start" targetRef="fork"/>
+        <sequenceFlow id="seqflow-1596988556303" sourceRef="fork" targetRef="service1"/>
+        <sequenceFlow id="seqflow-1596988558583" sourceRef="fork" targetRef="service2"/>
+        <sequenceFlow id="seqflow-1596988595640" sourceRef="service1" targetRef="join"/>
+        <sequenceFlow id="seqflow-1596988597811" sourceRef="service2" targetRef="join"/>
+        <sequenceFlow id="seqflow-1596988599527" sourceRef="join" targetRef="end-event-1596988599526"/>
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+            <bpmndi:BPMNShape id="start_di" bpmnElement="start">
+                <dc:Bounds x="76" y="296" width="48" height="48"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="81" y="301" width="29" height="15"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="fork_di" bpmnElement="fork">
+                <dc:Bounds x="191" y="288" width="60" height="60"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="196" y="293" width="57" height="15"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="servcie1_di" bpmnElement="servcie1">
+                <dc:Bounds x="392" y="217" width="100" height="80"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="397" y="222" width="57" height="15"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="service2_di" bpmnElement="service2">
+                <dc:Bounds x="399" y="373" width="100" height="80"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="404" y="378" width="57" height="15"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="join_di" bpmnElement="join">
+                <dc:Bounds x="565" y="275" width="60" height="60"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="570" y="280" width="57" height="15"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="end-event-1596988599526_di" bpmnElement="end-event-1596988599526">
+                <dc:Bounds x="690" y="290" width="53" height="53"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="695" y="295" width="29" height="15"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="seqflow-1596988553377_di" bpmnElement="seqflow-1596988553377">
+                <di:waypoint type="dc:Point" x="103.5" y="284"/>
+                <di:waypoint type="dc:Point" x="103.5" y="288"/>
+                <di:waypoint type="dc:Point" x="145.5" y="288"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="93.5" y="289" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="seqflow-1596988556303_di" bpmnElement="seqflow-1596988556303">
+                <di:waypoint type="dc:Point" x="236.5" y="288"/>
+                <di:waypoint type="dc:Point" x="301.5" y="288"/>
+                <di:waypoint type="dc:Point" x="326.5" y="288"/>
+                <di:waypoint type="dc:Point" x="326.5" y="217"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="226.5" y="293" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="seqflow-1596988558583_di" bpmnElement="seqflow-1596988558583">
+                <di:waypoint type="dc:Point" x="236.5" y="288"/>
+                <di:waypoint type="dc:Point" x="305" y="288"/>
+                <di:waypoint type="dc:Point" x="333.5" y="288"/>
+                <di:waypoint type="dc:Point" x="333.5" y="373"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="226.5" y="293" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="seqflow-1596988595640_di" bpmnElement="seqflow-1596988595640">
+                <di:waypoint type="dc:Point" x="457.5" y="217"/>
+                <di:waypoint type="dc:Point" x="468.5" y="217"/>
+                <di:waypoint type="dc:Point" x="519.5" y="217"/>
+                <di:waypoint type="dc:Point" x="519.5" y="275"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="447.5" y="222" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="seqflow-1596988597811_di" bpmnElement="seqflow-1596988597811">
+                <di:waypoint type="dc:Point" x="464.5" y="373"/>
+                <di:waypoint type="dc:Point" x="472" y="373"/>
+                <di:waypoint type="dc:Point" x="519.5" y="373"/>
+                <di:waypoint type="dc:Point" x="519.5" y="275"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="454.5" y="378" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="seqflow-1596988599527_di" bpmnElement="seqflow-1596988599527">
+                <di:waypoint type="dc:Point" x="610.5" y="275"/>
+                <di:waypoint type="dc:Point" x="635.5" y="275"/>
+                <di:waypoint type="dc:Point" x="635.5" y="277.5"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="600.5" y="280" width="0" height="13"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

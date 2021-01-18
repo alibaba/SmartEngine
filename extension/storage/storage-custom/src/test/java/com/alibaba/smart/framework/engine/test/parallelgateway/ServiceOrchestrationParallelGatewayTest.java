@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
@@ -210,6 +211,77 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
             Assert.assertTrue(response.isEmpty());
             Assert.assertTrue(e.getCause() instanceof CancellationException);
         }
+    }
+
+    @Test
+    public void testRunAnyOf() {
+
+        // 网关不设置超时，task1->1000ms, task2->500ms。预期返回task1，response中size为1
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("ServiceOrchestrationParallelGatewayRunFirstTest.xml").getFirstProcessDefinition();
+        assertEquals(12, processDefinition.getBaseElementList().size());
+
+        Map<String, Object> request = new HashMap<String, Object>();
+        Map<String, Object> response = new HashMap<String, Object>();
+
+        try{
+            ProcessInstance processInstance = processCommandService.start(processDefinition.getId(),
+                    processDefinition.getVersion(), request, response);
+        }catch (Exception e){
+            Assert.assertTrue(response.isEmpty());
+            Assert.assertTrue(e.getCause() instanceof CancellationException);
+        }
+
+        // 耗时短的先返回，其他线程直接cancel
+        Assert.assertEquals(1, response.size());
+        ThreadExecutionResult result = response.values().toArray(new ThreadExecutionResult[0])[0];
+        // 500ms的先返回
+        Assert.assertEquals(500, result.getPayload());
+    }
+
+    @Test
+    public void testRunAnyOfWithTimeout() {
+
+        // 网关设置超时300ms，task1->1000ms, task2->500ms，超时抛异常。
+        // 预期response中为空，抛TimeoutException异常。
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("ServiceOrchestrationParallelGatewayRaceTimeout.xml").getFirstProcessDefinition();
+        assertEquals(12, processDefinition.getBaseElementList().size());
+
+        Map<String, Object> request = new HashMap<String, Object>();
+        Map<String, Object> response = new HashMap<String, Object>();
+
+        try{
+            ProcessInstance processInstance = processCommandService.start(processDefinition.getId(),
+                    processDefinition.getVersion(), request, response);
+        }catch (Exception e){
+            Assert.assertTrue(response.isEmpty());
+            Assert.assertTrue(e.getCause() instanceof TimeoutException);
+        }
+    }
+
+    @Test
+    public void testRunAnyOfWithIgnoreTimeout() {
+
+        // 网关设置超时300ms，task1->1000ms, task2->500ms，忽略超时异常。
+        // 预期response中为空，仅打印log，不抛异常。
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("ServiceOrchestrationParallelGatewayRaceTimeoutIgnore.xml").getFirstProcessDefinition();
+        assertEquals(12, processDefinition.getBaseElementList().size());
+
+        Map<String, Object> request = new HashMap<String, Object>();
+        Map<String, Object> response = new HashMap<String, Object>();
+
+        try{
+            ProcessInstance processInstance = processCommandService.start(processDefinition.getId(),
+                    processDefinition.getVersion(), request, response);
+        }catch (Exception e){
+            Assert.assertTrue(response.isEmpty());
+            Assert.assertTrue(e.getCause() instanceof CancellationException);
+        }
+
+        // 耗时短的先返回，其他线程直接cancel
+        Assert.assertEquals(0, response.size());
     }
 
     @Test

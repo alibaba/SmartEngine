@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.GatewaySticker;
@@ -27,6 +28,7 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.util.CompletedFuture;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -108,14 +110,26 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
                 // 是否跳过超时异常
                 boolean isSkipTimeoutExp = false;
                 String skipTimeoutProp = (String) MapUtil.safeGet(properties, ParallelGatewayConstant.SKIP_TIMEOUT_EXCEPTION);
+                ParallelGatewayConstant.ExecuteStrategy executeStrategy = getExecuteStrategy(properties);
 
-                List<Future<PvmActivity>> futureExecutionResultList ;
-                if(null != latchWaitTime && latchWaitTime > 0L){
+                List<Future<PvmActivity>> futureExecutionResultList = new ArrayList<Future<PvmActivity>>();
+
+                if (null != latchWaitTime && latchWaitTime > 0L) {
                     isSkipTimeoutExp = null != skipTimeoutProp && skipTimeoutProp.trim().equals(Boolean.TRUE.toString());
-                    futureExecutionResultList = executorService.invokeAll(tasks,latchWaitTime, TimeUnit.MILLISECONDS);
-                }else {
+                    if (executeStrategy.equals(ParallelGatewayConstant.ExecuteStrategy.INVOKE_ALL)) {
+                        futureExecutionResultList = executorService.invokeAll(tasks, latchWaitTime, TimeUnit.MILLISECONDS);
+                    } else {
+                        futureExecutionResultList.add(invokeAnyOf(executorService, tasks, latchWaitTime,
+                                isSkipTimeoutExp));
+                    }
+                } else {
                     // 超时等待时间为空或不大于0，无需wait
-                    futureExecutionResultList = executorService.invokeAll(tasks);
+                    if (executeStrategy.equals(ParallelGatewayConstant.ExecuteStrategy.INVOKE_ALL)) {
+                        futureExecutionResultList = executorService.invokeAll(tasks);
+                    } else {
+                        futureExecutionResultList.add(invokeAnyOf(executorService, tasks, 0,
+                                false));
+                    }
                 }
 
                 //注意这里的逻辑：这里假设是子线程在执行某个fork分支的逻辑后，然后会在join节点时返回。这个join节点就是 futureJoinParallelGateWay。
@@ -232,5 +246,62 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
         } while (joinPvmActivity != null && !(joinPvmActivity.getBehavior() instanceof ParallelGatewayBehavior));
 
         return joinPvmActivity;
+    }
+
+    /**
+     * 获取执行策略，默认用ALL兜底
+     *
+     * @param properties
+     * @return
+     */
+    private ParallelGatewayConstant.ExecuteStrategy getExecuteStrategy(Map<String, String> properties) {
+        if (null == properties || properties.isEmpty()) {
+            return ParallelGatewayConstant.ExecuteStrategy.INVOKE_ALL;
+        }
+        String strategyProp = (String) MapUtil.safeGet(properties, ParallelGatewayConstant.EXE_STRATEGY);
+        ParallelGatewayConstant.ExecuteStrategy executeStrategy = null;
+        if (StringUtil.isNotEmpty(strategyProp)) {
+            executeStrategy = ParallelGatewayConstant.ExecuteStrategy.build(strategyProp);
+        }
+        if (executeStrategy == null) {
+            executeStrategy = ParallelGatewayConstant.ExecuteStrategy.INVOKE_ALL;
+        }
+        return executeStrategy;
+    }
+
+    /**
+     * race模式执行，返回最快的一个
+     * @param pool 线程池
+     * @param tasks 任务集
+     * @param timeout 超时时间
+     * @param ignoreTimeout 是否忽略超时异常
+     * @return future对象
+     */
+    public Future<PvmActivity> invokeAnyOf(ExecutorService pool, List<PvmActivityTask> tasks, long timeout,
+                                           boolean ignoreTimeout) throws Exception {
+
+        PvmActivity pvmActivity = null;
+        Exception ex = null;
+
+        // 不处理超时的情况
+        if (timeout <= 0) {
+            pvmActivity = pool.invokeAny(tasks);
+        } else {
+            // 处理timeout的方式
+            try {
+                pvmActivity = pool.invokeAny(tasks, timeout, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                throw e;
+            } catch (ExecutionException e) {
+                throw e;
+            } catch (TimeoutException e) {
+                if (!ignoreTimeout) {
+                    throw e;
+                }
+                ex = e;
+            }
+        }
+
+        return new CompletedFuture<PvmActivity>(pvmActivity, ex);
     }
 }
