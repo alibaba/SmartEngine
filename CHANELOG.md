@@ -1,3 +1,9 @@
+#2.5.0
+1. 支持了并行网关的 anyof 模式，见`ServiceOrchestrationParallelGatewayTest`。
+
+#2.5.0
+1. 支持了Camunda Modeler（使用 https://github.com/camunda/camunda-modeler 4.0.0 这个tag 版本）。可以直接用Camunda Modeler 绘制，导出，然后在系统中无缝使用。   
+在这个版本发布中，我们兼容了  smart:class,smart:properties,smart:eventListener 这几个attributes。 
 
 #2.2.2
 0. 完善了父子流程，并行网关的并发服务编排逻辑。
