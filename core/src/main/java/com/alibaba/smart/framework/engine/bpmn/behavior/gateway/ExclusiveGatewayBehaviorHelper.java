@@ -29,6 +29,11 @@ public class ExclusiveGatewayBehaviorHelper {
 
         }
 
+        if(0 == matchedTransitions.size()){
+            throw new EngineException("No Transitions matched,please check input request and condition expression.");
+        }
+
+
         if(1 != matchedTransitions.size()){
             throw new EngineException("Multiple Transitions matched: "+ matchedTransitions);
         }
