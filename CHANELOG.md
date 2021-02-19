@@ -1,3 +1,7 @@
+#2.5.1
+1. LockStrategy 不兼容升级。 目前流程流转和并行网关join处理都复用了同一个LockStrategy。 这次变更，主要是加入了Context参数，运行外部场景根据context的环节id等值，做些细粒度的锁的策略控制。
+ 另外，还解决了LockStrategy的子流程和并行网关兼容性问题。
+
 #2.5.0
 1. 支持了并行网关的 anyof 模式，见`ServiceOrchestrationParallelGatewayTest`。
 

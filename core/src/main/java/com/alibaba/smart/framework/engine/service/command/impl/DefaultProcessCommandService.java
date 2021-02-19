@@ -89,19 +89,16 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
         try {
-            //!!! 重要
-            CommonServiceHelper.tryInsertProcessInstanceIfNeedLock(processEngineConfiguration, processInstance);
+            CommonServiceHelper.tryLock(processEngineConfiguration, processInstance);
 
             processInstance = pvmProcessInstance.start(executionContext);
 
             processInstance = CommonServiceHelper.insertAndPersist(processInstance, request, processEngineConfiguration);
 
             return processInstance;
+
         } finally {
-            LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
-            if (null != lockStrategy) {
-                lockStrategy.unLock(processInstance.getInstanceId());
-            }
+            CommonServiceHelper.tryUnlock(processEngineConfiguration, processInstance);
         }
     }
 

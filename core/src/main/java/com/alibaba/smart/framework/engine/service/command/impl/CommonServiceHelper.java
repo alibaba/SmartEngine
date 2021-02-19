@@ -32,14 +32,32 @@ import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 public abstract  class CommonServiceHelper {
 
 
-    public static void tryInsertProcessInstanceIfNeedLock(ProcessEngineConfiguration processEngineConfiguration,
-                                                    ProcessInstance processInstance) {
+    public static void tryLock(ProcessEngineConfiguration processEngineConfiguration,
+                               ProcessInstance processInstance) {
         LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
         if(null != lockStrategy){
-            AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
-            ProcessInstanceStorage processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
-            ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance, processEngineConfiguration);
-            lockStrategy.tryLock(newProcessInstance.getBizUniqueId());
+            String bizUniqueId = processInstance.getBizUniqueId();
+
+            if(null != bizUniqueId){
+                lockStrategy.tryLock(bizUniqueId,null);
+            }else {
+                lockStrategy.tryLock(processInstance.getInstanceId(),null);
+            }
+        }
+    }
+
+
+    public static void tryUnlock(ProcessEngineConfiguration processEngineConfiguration,
+                               ProcessInstance processInstance) {
+        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
+        if(null != lockStrategy){
+            String bizUniqueId = processInstance.getBizUniqueId();
+
+            if(null != bizUniqueId){
+                lockStrategy.unLock(bizUniqueId,null);
+            }else {
+                lockStrategy.unLock(processInstance.getInstanceId(),null);
+            }
         }
     }
 
@@ -54,14 +72,8 @@ public abstract  class CommonServiceHelper {
         ProcessInstanceStorage processInstanceStorage = annotationScanner.getExtensionPoint(
             ExtensionConstant.COMMON,ProcessInstanceStorage.class);
 
-        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
-        if(null != lockStrategy){
 
-            newProcessInstance =  processInstanceStorage.update(processInstance, processEngineConfiguration);
-
-        }else{
-             newProcessInstance =  processInstanceStorage.insert(processInstance, processEngineConfiguration);
-        }
+        newProcessInstance =  processInstanceStorage.insert(processInstance, processEngineConfiguration);
 
 
         persisteVariableInstanceIfPossible(request, processEngineConfiguration,

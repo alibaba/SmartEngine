@@ -91,9 +91,13 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         ExecutionInstance executionInstance = queryExecutionInstance(executionInstanceId);
 
+        ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId()
+            , processEngineConfiguration);
+
+
         try {
 
-            PreparePhase preparePhase = new PreparePhase(request, executionInstance,instanceContextFactory).invoke();
+            PreparePhase preparePhase = new PreparePhase(request, executionInstance,  processInstance,instanceContextFactory).init();
 
             PvmProcessDefinition pvmProcessDefinition = preparePhase.getPvmProcessDefinition();
             ExecutionContext executionContext = preparePhase.getExecutionContext();
@@ -111,7 +115,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             return newProcessInstance;
         } finally {
-            unLock(processEngineConfiguration, executionInstance.getProcessInstanceId());
+            CommonServiceHelper.tryUnlock(processEngineConfiguration, processInstance);
         }
     }
 
@@ -235,22 +239,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
 
 
-    private void tryLock(ProcessEngineConfiguration processEngineConfiguration,
-                         String processInstanceId) {
-        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
-        if (null != lockStrategy) {
-            lockStrategy.tryLock(processInstanceId);
-        }
-    }
-
-    private void unLock(ProcessEngineConfiguration processEngineConfiguration,
-                        String processInstanceId) {
-        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
-        if (null != lockStrategy) {
-            lockStrategy.unLock(processInstanceId);
-        }
-    }
-
     @Override
     public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
         this.processEngineConfiguration = processEngineConfiguration;
@@ -261,11 +249,13 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         private ExecutionInstance executionInstance;
         private PvmProcessDefinition pvmProcessDefinition;
         private ExecutionContext executionContext;
+        private ProcessInstance processInstance;
         private ContextFactory contextFactory;
 
-        public PreparePhase(Map<String, Object> request, ExecutionInstance executionInstance,ContextFactory instanceContextFactory) {
+        public PreparePhase(Map<String, Object> request, ExecutionInstance executionInstance,ProcessInstance processInstance,ContextFactory instanceContextFactory) {
             this.request = request;
             this.executionInstance = executionInstance;
+            this.processInstance = processInstance;
             this.contextFactory =instanceContextFactory;
         }
 
@@ -277,9 +267,10 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             return executionContext;
         }
 
-        public PreparePhase invoke() {
-            //!!! 重要
-            tryLock(processEngineConfiguration, executionInstance.getProcessInstanceId());
+        public PreparePhase init() {
+
+
+            CommonServiceHelper.tryLock(processEngineConfiguration, processInstance);
 
             //TUNE 校验是否有子流程的执行实例依赖这个父执行实例。
 
@@ -287,8 +278,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             ActivityInstance activityInstance = activityInstanceStorage.find(executionInstance.getActivityInstanceId(),
                 processEngineConfiguration);
 
-            ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId()
-                , processEngineConfiguration);
+
 
             pvmProcessDefinition = DefaultExecutionCommandService.this.processContainer.getPvmProcessDefinition(
                 processInstance.getProcessDefinitionIdAndVersion());

@@ -94,10 +94,10 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         this.optionContainer = new DefaultOptionContainer();
         optionContainer.put(ConfigurationOption.EXPRESSION_COMPILE_RESULT_CACHED_OPTION);
 
-        buildDefaultNameSpace();
+        buildDefaultSupportNameSpace();
     }
 
-    private void buildDefaultNameSpace() {
+    private void buildDefaultSupportNameSpace() {
         Map<String,Object> magicExtension = MapUtil.newHashMap();
 
         Map<String,String> tuples = new HashMap<String, String>();

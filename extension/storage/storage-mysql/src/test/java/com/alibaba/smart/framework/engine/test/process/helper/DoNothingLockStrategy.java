@@ -1,10 +1,12 @@
 package com.alibaba.smart.framework.engine.test.process.helper;
 
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.LockException;
 
 import com.alibaba.smart.framework.engine.persister.database.dao.ProcessInstanceDAO;
 
+import org.apache.commons.math3.exception.util.ExceptionContext;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,7 +17,7 @@ public class DoNothingLockStrategy implements LockStrategy {
 
 
     @Override
-    public void tryLock(String processInstanceId) throws LockException {
+    public void tryLock(String processInstanceId, ExecutionContext context) throws LockException {
         //ExtensionPointRegistry extensionPointRegistry = smartEngine.getProcessEngineConfiguration()
         //    .getExtensionPointRegistry();
         //PersisterFactoryExtensionPoint persisterFactoryExtensionPoint = extensionPointRegistry.getExtensionPoint(PersisterFactoryExtensionPoint.class);
@@ -32,7 +34,9 @@ public class DoNothingLockStrategy implements LockStrategy {
     }
 
     @Override
-    public void unLock(String processInstanceId) throws LockException {
+    public void unLock(String processInstanceId, ExecutionContext context) throws LockException {
         //do nothing
     }
+
+
 }

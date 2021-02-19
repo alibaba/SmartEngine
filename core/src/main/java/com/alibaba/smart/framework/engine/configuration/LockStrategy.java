@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.configuration;
 
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.LockException;
 
 /**
@@ -8,7 +9,7 @@ import com.alibaba.smart.framework.engine.exception.LockException;
 public interface LockStrategy {
 
 
-    void tryLock(String processInstanceId) throws LockException;
+    void tryLock(String processInstanceId, ExecutionContext context) throws LockException;
 
-    void unLock(String processInstanceId) throws LockException;
+    void unLock(String processInstanceId, ExecutionContext context) throws LockException;
 }
