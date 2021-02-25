@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
+import com.alibaba.smart.framework.engine.service.command.VariableCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
@@ -54,6 +55,8 @@ public class DatabaseBaseTestCase implements ApplicationContextAware {
 
     protected DeploymentCommandService deploymentCommandService;
     protected DeploymentQueryService deploymentQueryService;
+
+    protected VariableCommandService variableCommandService;
     protected VariableQueryService variableQueryService;
     protected TaskAssigneeQueryService taskAssigneeQueryService;
 
@@ -88,6 +91,8 @@ public class DatabaseBaseTestCase implements ApplicationContextAware {
 
         variableQueryService = smartEngine.getVariableQueryService();
         taskAssigneeQueryService = smartEngine.getTaskAssigneeQueryService();
+
+        variableCommandService  = smartEngine.getVariableCommandService();
 
 
     }

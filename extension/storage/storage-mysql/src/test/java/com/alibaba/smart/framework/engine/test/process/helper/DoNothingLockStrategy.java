@@ -1,9 +1,12 @@
 package com.alibaba.smart.framework.engine.test.process.helper;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.LockException;
 
+import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.persister.database.dao.ProcessInstanceDAO;
 
 import org.apache.commons.math3.exception.util.ExceptionContext;
@@ -31,6 +34,15 @@ public class DoNothingLockStrategy implements LockStrategy {
         //processInstanceDAO.tryLock(Long.valueOf(processInstanceId));
 
         //可以是设置 db uniqueKey 唯一索引； 或者在插入后直接再锁上； 或者使用其他中间件。
+
+        //String processDefinitionActivityId = context.getExecutionInstance().getProcessDefinitionActivityId();
+        //
+        //ProcessDefinition processDefinition = context.getProcessDefinition();
+        //
+        //IdBasedElement idBasedElement = processDefinition.getIdBasedElementMap().get(processDefinitionActivityId);
+
+
+
     }
 
     @Override
