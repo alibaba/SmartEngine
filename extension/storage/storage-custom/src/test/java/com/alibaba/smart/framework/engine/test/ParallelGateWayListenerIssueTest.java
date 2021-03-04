@@ -20,8 +20,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author chenhai
- * @date 2021/03/02
+  * @author chenhai
+  * @date 2021/03/02
  */
 public class ParallelGateWayListenerIssueTest extends ParallelGateWayListenerIssueConfiguration {
 

@@ -26,6 +26,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateIn
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +60,9 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             .getMultiInstanceLoopCharacteristics();
 
         if (null != multiInstanceLoopCharacteristics) {
+
+            fireEvent(context,pvmActivity, PvmEventConstant.ACTIVITY_START);
+
             ActivityInstance activityInstance  = super.createSingleActivityInstanceAndAttachToProcessInstance(context,userTask);
 
 
@@ -132,6 +136,9 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
     @Override
     public void execute(ExecutionContext context, PvmActivity pvmActivity) {
+
+        fireEvent(context,pvmActivity, PvmEventConstant.ACTIVITY_EXECUTE);
+
 
         //1. 完成当前ExecutionInstance的状态更新
         ExecutionInstance executionInstance = context.getExecutionInstance();

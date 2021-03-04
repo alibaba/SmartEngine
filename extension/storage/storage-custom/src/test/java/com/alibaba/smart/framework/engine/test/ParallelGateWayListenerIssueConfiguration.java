@@ -21,6 +21,9 @@ import com.alibaba.smart.framework.engine.listener.Listener;
 import com.alibaba.smart.framework.engine.listener.ListenerAggregation;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElementContainer;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
+import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
@@ -66,15 +69,15 @@ public class ParallelGateWayListenerIssueConfiguration {
     public ProcessEngineConfiguration initProcessEngineConfiguration() {
 
         ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setInstanceAccessor(new ChenhaiInstanceAccessService());
-        processEngineConfiguration.setLockStrategy(new ChenhaiLockStrategy());
-        processEngineConfiguration.setIdGenerator(new ChenhaiIdGenerator());
-        processEngineConfiguration.setListenerExecutor(new ChenhaiListenerExecutor());
+        processEngineConfiguration.setInstanceAccessor(new TestInstanceAccessService());
+        processEngineConfiguration.setLockStrategy(new TestLockStrategy());
+        processEngineConfiguration.setIdGenerator(new TestIdGenerator());
+        processEngineConfiguration.setListenerExecutor(new TestListenerExecutor());
 
         return processEngineConfiguration;
     }
 
-    public class ChenhaiInstanceAccessService implements InstanceAccessor {
+    public class TestInstanceAccessService implements InstanceAccessor {
 
         @Override
         public Object access(String s) {
@@ -92,7 +95,7 @@ public class ParallelGateWayListenerIssueConfiguration {
         }
     }
 
-    public class ChenhaiIdGenerator implements IdGenerator {
+    public class TestIdGenerator implements IdGenerator {
 
         @Override
         synchronized public String getId() {
@@ -105,23 +108,36 @@ public class ParallelGateWayListenerIssueConfiguration {
         }
     }
 
-    public class ChenhaiListenerExecutor implements ListenerExecutor {
+    public class TestListenerExecutor implements ListenerExecutor {
 
-        public void execute(PvmEventConstant event, ExtensionElementContainer extensionElementContaine,
+        public void execute(PvmEventConstant event, ExtensionElementContainer extensionElementContainer,
             ExecutionContext context) {
             String eventName = event.name();
 
-            String processDefinitionActivityId = context.getExecutionInstance().getProcessDefinitionActivityId();
+            ActivityInstance activityInstance = context.getActivityInstance();
+
+            if(extensionElementContainer instanceof IdBasedElement){
+                System.out.printf("[%s][%s][%s]\n",
+                    new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis()))
+                    ,((IdBasedElement) extensionElementContainer).getId(),
+                    eventName
+                );
+                //System.out.printf("%s\n\n", InstanceSerializerFacade.serialize(context.getProcessInstance()));
+            }else {
+                System.out.printf("[%s][%s][%s]\n",
+                    new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis()))
+                    , extensionElementContainer,
+                    eventName
+                );
+                System.out.printf("%s abc     \n\n", InstanceSerializerFacade.serialize(context.getProcessInstance()));
+            }
 
 
-            System.out.printf("[%s][%s][%s]\n",
-                new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis()))
-                , processDefinitionActivityId,
-                eventName
-            );
-            System.out.printf("%s\n\n", InstanceSerializerFacade.serialize(context.getProcessInstance()));
 
-            ExtensionElements extensionElements = extensionElementContaine.getExtensionElements();
+
+
+
+            ExtensionElements extensionElements = extensionElementContainer.getExtensionElements();
             if (null != extensionElements) {
 
                 ListenerAggregation extension = (ListenerAggregation)extensionElements.getDecorationMap().get(
@@ -145,7 +161,7 @@ public class ParallelGateWayListenerIssueConfiguration {
         }
     }
 
-    public class ChenhaiLockStrategy implements LockStrategy {
+    public class TestLockStrategy implements LockStrategy {
 
         private ConcurrentHashMap<String, Object> lock = new ConcurrentHashMap<String, Object>();
 
@@ -155,7 +171,7 @@ public class ParallelGateWayListenerIssueConfiguration {
                 return;
             }
             if (lock.contains(s)) {
-                throw new LockException("[chenhai lock] key already exists, " + s);
+                throw new LockException("[Test lock] key already exists, " + s);
             }
             lock.put(s, s);
         }
