@@ -9,17 +9,20 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
+import com.alibaba.smart.framework.engine.model.assembly.Transition;
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = TransitionBehavior.class)
 public class SequenceFlowBehavior extends AbstractTransitionBehavior<SequenceFlow> {
 
     @Override
-    public boolean match(ExecutionContext context, ConditionExpression conditionExpression) {
+    public boolean match(ExecutionContext context, Transition transition) {
+
+        ConditionExpression conditionExpression = transition.getConditionExpression();
 
         if (null != conditionExpression) {
             return ExpressionUtil.eval(context, conditionExpression);
         }else{
-            throw new EngineException("SHOULD NOT TOUCH THIS");
+            throw new EngineException("empty conditionExpression found for "+transition);
         }
     }
 }

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0ir8g3u" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+    <bpmn:process id="parent_process" isExecutable="true">
+        <bpmn:startEvent id="start">
+            <bpmn:outgoing>toFirstST</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="toFirstST" sourceRef="start" targetRef="parent_a_service_task" />
+        <bpmn:serviceTask id="parent_a_service_task">
+            <bpmn:incoming>toFirstST</bpmn:incoming>
+            <bpmn:outgoing>toFork</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="toFork" sourceRef="parent_a_service_task" targetRef="Gateway_0lhz4ry" />
+        <bpmn:parallelGateway id="Gateway_0lhz4ry">
+            <bpmn:incoming>toFork</bpmn:incoming>
+            <bpmn:outgoing>toServiceTaskCallActivity</bpmn:outgoing>
+            <bpmn:outgoing>toReceiveTaskCallActivity</bpmn:outgoing>
+        </bpmn:parallelGateway>
+        <bpmn:sequenceFlow id="toServiceTaskCallActivity" sourceRef="Gateway_0lhz4ry" targetRef="serviceTask_CallActivity" />
+        <bpmn:sequenceFlow id="toReceiveTaskCallActivity" sourceRef="Gateway_0lhz4ry" targetRef="receiveTaskCallActivity" />
+        <bpmn:callActivity id="receiveTaskCallActivity" name="abc" calledElement="receiveTaskCallActivity" camunda:calledElementBinding="versionTag" camunda:calledElementVersionTag="1.0.0">
+            <bpmn:incoming>toReceiveTaskCallActivity</bpmn:incoming>
+            <bpmn:outgoing>toJoin2</bpmn:outgoing>
+        </bpmn:callActivity>
+        <bpmn:callActivity id="serviceTask_CallActivity" calledElement="serviceTaskCallActivity" camunda:calledElementBinding="versionTag" camunda:calledElementVersionTag="1.0.0">
+            <bpmn:incoming>toServiceTaskCallActivity</bpmn:incoming>
+            <bpmn:outgoing>toJoin1</bpmn:outgoing>
+        </bpmn:callActivity>
+        <bpmn:sequenceFlow id="toJoin2" sourceRef="receiveTaskCallActivity" targetRef="join" />
+        <bpmn:parallelGateway id="join">
+            <bpmn:incoming>toJoin2</bpmn:incoming>
+            <bpmn:incoming>toJoin1</bpmn:incoming>
+            <bpmn:outgoing>toLastST</bpmn:outgoing>
+        </bpmn:parallelGateway>
+        <bpmn:sequenceFlow id="toJoin1" sourceRef="serviceTask_CallActivity" targetRef="join" />
+        <bpmn:sequenceFlow id="toLastST" sourceRef="join" targetRef="parent_b_service_task" />
+        <bpmn:serviceTask id="parent_b_service_task">
+            <bpmn:incoming>toLastST</bpmn:incoming>
+            <bpmn:outgoing>toEnd</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:endEvent id="end">
+            <bpmn:incoming>toEnd</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="toEnd" sourceRef="parent_b_service_task" targetRef="end" />
+    </bpmn:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="parent_process">
+            <bpmndi:BPMNEdge id="Flow_15jfvd2_di" bpmnElement="toFirstST">
+                <di:waypoint x="215" y="177" />
+                <di:waypoint x="270" y="177" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1808uzn_di" bpmnElement="toFork">
+                <di:waypoint x="370" y="177" />
+                <di:waypoint x="425" y="177" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_17u87xj_di" bpmnElement="toServiceTaskCallActivity">
+                <di:waypoint x="450" y="152" />
+                <di:waypoint x="450" y="120" />
+                <di:waypoint x="510" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1xspznp_di" bpmnElement="toReceiveTaskCallActivity">
+                <di:waypoint x="450" y="202" />
+                <di:waypoint x="450" y="290" />
+                <di:waypoint x="530" y="290" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_19bfb4w_di" bpmnElement="toJoin2">
+                <di:waypoint x="630" y="290" />
+                <di:waypoint x="710" y="290" />
+                <di:waypoint x="710" y="225" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_19u5yct_di" bpmnElement="toJoin1">
+                <di:waypoint x="610" y="120" />
+                <di:waypoint x="710" y="120" />
+                <di:waypoint x="710" y="175" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1x77uwx_di" bpmnElement="toLastST">
+                <di:waypoint x="735" y="200" />
+                <di:waypoint x="790" y="200" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0p7l361_di" bpmnElement="toEnd">
+                <di:waypoint x="890" y="200" />
+                <di:waypoint x="952" y="200" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
+                <dc:Bounds x="179" y="159" width="36" height="36" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0t8pocv_di" bpmnElement="parent_a_service_task">
+                <dc:Bounds x="270" y="137" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Gateway_19vdfjq_di" bpmnElement="Gateway_0lhz4ry">
+                <dc:Bounds x="425" y="152" width="50" height="50" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0uacqg6_di" bpmnElement="receiveTaskCallActivity">
+                <dc:Bounds x="530" y="250" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0hp3ckd_di" bpmnElement="serviceTask_CallActivity">
+                <dc:Bounds x="510" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Gateway_1bjpyez_di" bpmnElement="join">
+                <dc:Bounds x="685" y="175" width="50" height="50" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_1dmnd62_di" bpmnElement="parent_b_service_task">
+                <dc:Bounds x="790" y="160" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_0cr3hd0_di" bpmnElement="end">
+                <dc:Bounds x="952" y="182" width="36" height="36" />
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

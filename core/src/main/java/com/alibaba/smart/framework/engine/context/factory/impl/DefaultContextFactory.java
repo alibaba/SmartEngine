@@ -37,8 +37,16 @@ public class DefaultContextFactory implements ContextFactory {
         executionContext.setProcessDefinition(processDefinition);
         executionContext.setProcessInstance(processInstance);
         executionContext.setExecutionInstance(executionInstance);
-        IdBasedElement idBasedElement = processDefinition.getIdBasedElementMap().get(executionInstance.getProcessDefinitionActivityId());
-        executionContext.setBaseElement(idBasedElement);
+
+        if(null != executionInstance){
+
+            String processDefinitionActivityId = executionInstance.getProcessDefinitionActivityId();
+            Map<String, IdBasedElement> idBasedElementMap = processDefinition.getIdBasedElementMap();
+            IdBasedElement idBasedElement = idBasedElementMap.get(
+                processDefinitionActivityId);
+            executionContext.setBaseElement(idBasedElement);
+
+        }
 
         executionContext.setActivityInstance(activityInstance);
         executionContext.setRequest(request);

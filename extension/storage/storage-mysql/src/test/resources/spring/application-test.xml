@@ -21,13 +21,18 @@
         <property name="basePackage" value="com.alibaba.smart.framework.engine.persister.database" />
     </bean>
 
+    <!--START MYSQL DATASOURCE-->
+
     <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
-        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
-        <!--<property name="url" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8"/>-->
+        <!--<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>-->
+        <!--<property name="url" value="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;characterEncoding=UTF-8"/>-->
         <!--<property name="username" value="root"/>-->
         <!--<property name="password" value="ghj"/>-->
     <!--</bean>-->
 
+    <!--END MYSQL DATASOURCE-->
+
+    <!--START H2 DATASOURCE-->
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.h2.Driver"/>
@@ -38,6 +43,9 @@
     <jdbc:embedded-database id="dataSource" type="H2">
         <jdbc:script location="classpath:sql/main-schema.sql"  />
     </jdbc:embedded-database>
+
+    <!--END H2 DATASOURCE-->
+
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
           p:dataSource-ref="dataSource"
