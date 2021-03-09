@@ -7,9 +7,9 @@
     <artifactId>smart-engine</artifactId>
     <!--  mvn versions:set -DnewVersion=2.5.3-SNAPSHOT -DgenerateBackupPoms=false  -->
     <!--  mvn versions:set -DnewVersion=2.5.1 -DgenerateBackupPoms=false  -->
-    <!--  mvn versions:set -DnewVersion=2.5.2.alpha0 -DgenerateBackupPoms=false  -->
+    <!--  mvn versions:set -DnewVersion=2.5.3 -DgenerateBackupPoms=false  -->
 
-    <version>2.5.3-SNAPSHOT</version>
+    <version>2.5.3</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
