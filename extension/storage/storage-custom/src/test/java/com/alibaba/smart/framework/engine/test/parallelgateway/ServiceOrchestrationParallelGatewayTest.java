@@ -51,18 +51,22 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
 
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("ServiceOrchestrationParallelGatewayTest.xml").getFirstProcessDefinition();
-        assertEquals(12, processDefinition.getBaseElementList().size());
+        assertEquals(16, processDefinition.getBaseElementList().size());
 
         Map<String, Object> request = new HashMap<String, Object>();
 
-        long service1SleepTime = 400L;
+        long sleep1 = 400L;
+        long sleep2 = 500L;
+
         String service1ActivityId = "service1";
-
-        long service2SleepTime = 500L;
         String service2ActivityId = "service2";
+        String service3ActivityId = "service3";
+        String service4ActivityId = "service4";
 
-        request.put(service1ActivityId, service1SleepTime);
-        request.put(service2ActivityId, service2SleepTime);
+        request.put(service1ActivityId, sleep1);
+        request.put(service2ActivityId, sleep2);
+        request.put(service3ActivityId, sleep1);
+        request.put(service4ActivityId, sleep2);
 
         long start = System.currentTimeMillis();
 
@@ -79,22 +83,22 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
         Set<Entry<String, Object>> entries = request.entrySet();
-        Assert.assertEquals(2,entries.size());
+        Assert.assertEquals(4,entries.size());
 
         ThreadExecutionResult service1 = (ThreadExecutionResult)request.get(service1ActivityId);
-        ThreadExecutionResult service2 = (ThreadExecutionResult)request.get(service2ActivityId);
+        ThreadExecutionResult service4 = (ThreadExecutionResult)request.get(service4ActivityId);
 
-        Assert.assertEquals(service1SleepTime, service1.getPayload());
-        Assert.assertEquals(service2SleepTime, service2.getPayload());
+        Assert.assertEquals(sleep1, service1.getPayload());
+        Assert.assertEquals(sleep2, service4.getPayload());
 
-        Assert.assertNotEquals(service1.getThreadId(),service2.getThreadId());
+        Assert.assertNotEquals(service1.getThreadId(),service4.getThreadId());
 
         long end = System.currentTimeMillis();
 
         long duration = end-start;
 
         //简单拍个数据，用于表示该程序非串式执行的
-        long maxExecutionTime = service1SleepTime + service2SleepTime - 100L;
+        long maxExecutionTime = sleep1 + sleep2 + 200L;
 
         //System.out.println(duration);
 
@@ -107,7 +111,7 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
 
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("ServiceOrchestrationParallelGatewayTest.xml").getFirstProcessDefinition();
-        assertEquals(12, processDefinition.getBaseElementList().size());
+        assertEquals(16, processDefinition.getBaseElementList().size());
 
         Map<String, Object> request = new HashMap<String, Object>();
 

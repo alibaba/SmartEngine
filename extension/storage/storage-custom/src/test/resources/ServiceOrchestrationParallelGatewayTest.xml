@@ -4,13 +4,25 @@
         <parallelGateway id="fork" name="并行事件"/>
         <parallelGateway id="join" name="并行事件"/>
         <serviceTask id="service1" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.AServiceTaskOrchestrationDelegation" />
-        <serviceTask id="service2" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.BServiceTaskOrchestrationDelegation" />
+        <serviceTask id="service2" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.AServiceTaskOrchestrationDelegation" />
+        <serviceTask id="service3" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.BServiceTaskOrchestrationDelegation" />
+        <serviceTask id="service4" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.BServiceTaskOrchestrationDelegation" />
+
         <endEvent id="end-event-1596988599526" name="结束"/>
+
+
         <sequenceFlow id="seqflow-1596988553377" sourceRef="start" targetRef="fork"/>
+
         <sequenceFlow id="seqflow-1596988556303" sourceRef="fork" targetRef="service1"/>
-        <sequenceFlow id="seqflow-1596988558583" sourceRef="fork" targetRef="service2"/>
-        <sequenceFlow id="seqflow-1596988595640" sourceRef="service1" targetRef="join"/>
-        <sequenceFlow id="seqflow-1596988597811" sourceRef="service2" targetRef="join"/>
+        <sequenceFlow id="seqflow-159698855630acs" sourceRef="service1" targetRef="service2"/>
+        <sequenceFlow id="seqflow-1596988595640" sourceRef="service2" targetRef="join"/>
+
+
+        <sequenceFlow id="seqflow-1596988558583" sourceRef="fork" targetRef="service3"/>
+        <sequenceFlow id="seqflow-1596988558583abc" sourceRef="service3" targetRef="service4"/>
+        <sequenceFlow id="seqflow-1596988597811" sourceRef="service4" targetRef="join"/>
+
+
         <sequenceFlow id="seqflow-1596988599527" sourceRef="join" targetRef="end-event-1596988599526"/>
     </process>
     <bpmndi:BPMNDiagram id="BPMNDiagram_1">

@@ -71,12 +71,13 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
 
             PvmActivity finalJoinActivity = null;
             for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
+
+                //target 为fork 节点的后继节点，比如service1，service3
                 PvmActivity target = pvmTransitionEntry.getValue().getTarget();
 
                 // 先将子任务的下一个节点，即join
-                if (finalJoinActivity == null) {
-                    finalJoinActivity = getJoinPvmActivity(target);
-                }
+                finalJoinActivity = findOutTheJoinPvmActivity(target);
+
 
                 //从ParentContext 复制父Context到子线程内。这里得注意下线程安全。
                 ExecutionContext subThreadContext = contextFactory.createChildThreadContext(context);
@@ -239,13 +240,34 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
      * @param pvmActivity 当前节点
      * @return 并行网关的join节点
      */
-    private PvmActivity getJoinPvmActivity(PvmActivity pvmActivity) {
-        PvmActivity joinPvmActivity;
-        do {
-            joinPvmActivity = getFirstOutcomePvmActivity(pvmActivity);
-        } while (joinPvmActivity != null && !(joinPvmActivity.getBehavior() instanceof ParallelGatewayBehavior));
+    private PvmActivity findOutTheJoinPvmActivity(PvmActivity pvmActivity) {
 
-        return joinPvmActivity;
+
+        PvmActivity matchedTarget = null;
+
+        Map<String, PvmTransition> transitions = pvmActivity.getOutcomeTransitions();
+
+        for (Entry<String, PvmTransition> outcome : transitions.entrySet()) {
+            PvmActivity  successorTarget = outcome.getValue().getTarget();
+
+            ActivityBehavior behavior = successorTarget.getBehavior();
+            if(behavior instanceof ParallelGatewayBehavior){
+                matchedTarget = successorTarget;
+
+                if(matchedTarget != null){
+                    break;
+                }
+
+            }else{
+                findOutTheJoinPvmActivity(successorTarget);
+
+            }
+
+        }
+
+        return matchedTarget;
+
+
     }
 
     /**
