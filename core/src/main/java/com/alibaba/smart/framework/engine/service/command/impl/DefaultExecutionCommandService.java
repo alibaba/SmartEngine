@@ -152,12 +152,11 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     protected ExecutionInstance queryExecutionInstance(String processInstanceId, String executionInstanceId) {
-        List<ExecutionInstance> executionInstances = executionInstanceStorage
-                .findByActivityInstanceId(processInstanceId, executionInstanceId, processEngineConfiguration);
-        if(CollectionUtil.isEmpty(executionInstances)) {
+        ExecutionInstance executionInstance = executionInstanceStorage.find(processInstanceId,executionInstanceId,processEngineConfiguration);
+
+        if (null == executionInstance) {
             throw new EngineException("No executionInstance found for id " + executionInstanceId);
         }
-        ExecutionInstance executionInstance = executionInstances.get(0);
 
         if (!executionInstance.isActive()) {
             throw new ConcurrentException("The status of signaled executionInstance should be active");
@@ -176,7 +175,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         if (!executionInstance.isActive()) {
             throw new ConcurrentException("The status of signaled executionInstance should be active");
-
         }
         return executionInstance;
     }

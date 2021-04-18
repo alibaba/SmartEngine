@@ -17,6 +17,9 @@ public interface ExecutionInstanceStorage {
     ExecutionInstance find(String executionInstanceId,
                            ProcessEngineConfiguration processEngineConfiguration);
 
+    ExecutionInstance find(String processInstanceId, String executionInstanceId,
+            ProcessEngineConfiguration processEngineConfiguration);
+
     void remove(String executionInstanceId,
                 ProcessEngineConfiguration processEngineConfiguration);
 
