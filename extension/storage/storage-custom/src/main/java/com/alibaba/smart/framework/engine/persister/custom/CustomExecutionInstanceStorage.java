@@ -82,6 +82,12 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
 
     }
 
+    @Override
+    public ExecutionInstance findWithShading(String processInstanceId, String executionInstanceId,
+                                             ProcessEngineConfiguration processEngineConfiguration) {
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
+
+    }
 
     @Override
     public void remove(String instanceId,

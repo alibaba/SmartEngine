@@ -152,7 +152,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
     protected ExecutionInstance queryExecutionInstance(String processInstanceId, String executionInstanceId) {
-        ExecutionInstance executionInstance = executionInstanceStorage.find(processInstanceId,executionInstanceId,processEngineConfiguration);
+        ExecutionInstance executionInstance = executionInstanceStorage.findWithShading(processInstanceId,executionInstanceId,processEngineConfiguration);
 
         if (null == executionInstance) {
             throw new EngineException("No executionInstance found for id " + executionInstanceId);
