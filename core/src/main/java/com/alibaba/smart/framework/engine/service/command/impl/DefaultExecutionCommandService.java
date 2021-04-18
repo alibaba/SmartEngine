@@ -119,6 +119,53 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
     }
 
+    @Override
+    public ProcessInstance signal(String processInstanceId, String executionInstanceId, Map<String, Object> request,
+            Map<String, Object> response) {
+        ExecutionInstance executionInstance = queryExecutionInstance(processInstanceId,executionInstanceId);
+
+        ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId()
+                , processEngineConfiguration);
+
+        try {
+
+            PreparePhase preparePhase = new PreparePhase(request, executionInstance,  processInstance,instanceContextFactory).init();
+
+            PvmProcessDefinition pvmProcessDefinition = preparePhase.getPvmProcessDefinition();
+            ExecutionContext executionContext = preparePhase.getExecutionContext();
+
+            executionContext.setResponse(response);
+
+            String activityId = executionInstance.getProcessDefinitionActivityId();
+
+            PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
+
+            ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
+
+            CommonServiceHelper.createExecution(executionInstanceId, newProcessInstance, request,
+                    processEngineConfiguration);
+
+            return newProcessInstance;
+        } finally {
+            CommonServiceHelper.tryUnlock(processEngineConfiguration, processInstance);
+        }
+    }
+
+    protected ExecutionInstance queryExecutionInstance(String processInstanceId, String executionInstanceId) {
+        List<ExecutionInstance> executionInstances = executionInstanceStorage
+                .findByActivityInstanceId(processInstanceId, executionInstanceId, processEngineConfiguration);
+        if(CollectionUtil.isEmpty(executionInstances)) {
+            throw new EngineException("No executionInstance found for id " + executionInstanceId);
+        }
+        ExecutionInstance executionInstance = executionInstances.get(0);
+
+        if (!executionInstance.isActive()) {
+            throw new ConcurrentException("The status of signaled executionInstance should be active");
+
+        }
+        return executionInstance;
+    }
+
     protected ExecutionInstance queryExecutionInstance(String executionInstanceId) {
         ExecutionInstance executionInstance = executionInstanceStorage.find(executionInstanceId,
             processEngineConfiguration);

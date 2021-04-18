@@ -18,6 +18,7 @@ public interface ExecutionCommandService {
 
     ProcessInstance signal(String executionInstanceId, Map<String, Object> request, Map<String, Object> response);
 
+    ProcessInstance signal(String processInstanceId,String executionInstanceId, Map<String, Object> request, Map<String, Object> response);
 
     ProcessInstance signal(String executionInstanceId, Map<String, Object> request);
 
