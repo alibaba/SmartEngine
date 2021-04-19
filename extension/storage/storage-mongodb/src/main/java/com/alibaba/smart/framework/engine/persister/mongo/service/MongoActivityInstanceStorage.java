@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
@@ -19,6 +20,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import static com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant.NOT_IMPLEMENT_INTENTIONALLY;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.GMT_CREATE;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.MONGO_TEMPLATE;
 import static com.alibaba.smart.framework.engine.persister.mongo.constant.MongoConstant.PROCESS_INSTANCE_ID;
@@ -84,6 +86,12 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
         ActivityInstance activityInstance = buildInstance(entity);
 
         return activityInstance;
+    }
+
+    @Override
+    public ActivityInstance findWithShading(String processInstanceId, String activityInstanceId,
+            ProcessEngineConfiguration processEngineConfiguration) {
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 
     private ActivityInstance buildInstance(ActivityInstanceEntity entity) {

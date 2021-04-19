@@ -16,6 +16,9 @@ public interface ActivityInstanceStorage {
     ActivityInstance find(String activityInstanceId,
                           ProcessEngineConfiguration processEngineConfiguration);
 
+    ActivityInstance findWithShading(String processInstanceId, String activityInstanceId,
+            ProcessEngineConfiguration processEngineConfiguration);
+
     void remove(String activityInstanceId,
                 ProcessEngineConfiguration processEngineConfiguration);
 

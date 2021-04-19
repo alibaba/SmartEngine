@@ -78,6 +78,12 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         return activityInstance;
     }
 
+    @Override
+    public ActivityInstance findWithShading(String processInstanceId, String activityInstanceId,
+            ProcessEngineConfiguration processEngineConfiguration) {
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
+    }
+
     private ActivityInstance buildActivityInstanceFromEntity(ActivityInstanceEntity activityInstanceEntity) {
         ActivityInstance activityInstance  = new DefaultActivityInstance();
 

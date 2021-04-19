@@ -59,6 +59,12 @@ public class CustomActivityInstanceStorage implements ActivityInstanceStorage {
         return matchedActivityInstance;
     }
 
+    @Override
+    public ActivityInstance findWithShading(String processInstanceId, String activityInstanceId,
+            ProcessEngineConfiguration processEngineConfiguration) {
+        throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
+    }
+
 
     @Override
     public void remove(String instanceId,

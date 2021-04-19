@@ -129,7 +129,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         try {
 
-            PreparePhase preparePhase = new PreparePhase(request, executionInstance,  processInstance,instanceContextFactory).init();
+            PreparePhase preparePhase = new PreparePhase(request, executionInstance,  processInstance,instanceContextFactory).initWithShading();
 
             PvmProcessDefinition pvmProcessDefinition = preparePhase.getPvmProcessDefinition();
             ExecutionContext executionContext = preparePhase.getExecutionContext();
@@ -334,6 +334,25 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             executionContext = instanceContextFactory.createExecutionContext(request, processEngineConfiguration,
                 executionInstance, activityInstance, processInstance, processDefinition);
+            return this;
+        }
+
+        public PreparePhase initWithShading() {
+            CommonServiceHelper.tryLock(processEngineConfiguration, processInstance);
+
+            //TUNE 校验是否有子流程的执行实例依赖这个父执行实例。
+            //BE AWARE: 注意:针对 CUSTOM 场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
+            ActivityInstance activityInstance = activityInstanceStorage.findWithShading(processInstance.getInstanceId(), executionInstance.getActivityInstanceId(),
+                    processEngineConfiguration);
+            pvmProcessDefinition = DefaultExecutionCommandService.this.processContainer.getPvmProcessDefinition(
+                    processInstance.getProcessDefinitionIdAndVersion());
+
+            ProcessDefinition processDefinition =
+                    DefaultExecutionCommandService.this.processContainer.getProcessDefinition(
+                            processInstance.getProcessDefinitionIdAndVersion());
+
+            executionContext = instanceContextFactory.createExecutionContext(request, processEngineConfiguration,
+                    executionInstance, activityInstance, processInstance, processDefinition);
             return this;
         }
     }
