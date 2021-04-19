@@ -19,8 +19,10 @@ import lombok.Data;
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
+ * please use @com.alibaba.smart.framework.engine.smart.Property, Example: com.alibaba.smart.framework.engine.test.cases.extensions.CompositePropertyTest
  */
 @Data
+@Deprecated
 public class Value  implements PropertiesElementMarker, ExtensionDecorator,CustomExtensionElement {
 
     public final static String xmlLocalPart = "value";

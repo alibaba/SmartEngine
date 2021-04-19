@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.behavior;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
+import com.alibaba.smart.framework.engine.model.assembly.Transition;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -9,6 +9,6 @@ import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
  */
 public interface TransitionBehavior {
 
-    boolean match(ExecutionContext context, ConditionExpression conditionExpression);
+    boolean match(ExecutionContext context, Transition model);
 
 }

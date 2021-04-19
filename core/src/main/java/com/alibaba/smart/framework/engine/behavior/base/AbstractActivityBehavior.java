@@ -17,11 +17,13 @@ import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactor
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
+import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -50,10 +52,15 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractActivityBehavior.class);
 
+    protected void fireEvent(ExecutionContext context,PvmActivity pvmActivity, PvmEventConstant event) {
 
+        context.getProcessEngineConfiguration().getListenerExecutor().execute(event,pvmActivity.getModel(),context);
+
+    }
 
     @Override
     public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
+        fireEvent(context,pvmActivity,PvmEventConstant.ACTIVITY_START);
 
         ProcessInstance processInstance = context.getProcessInstance();
 
@@ -67,6 +74,9 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
             activityInstance.setExecutionInstanceList(executionInstanceList);
             context.setExecutionInstance(executionInstance);
+
+            IdBasedElement idBasedElement = context.getProcessDefinition().getIdBasedElementMap().get(executionInstance.getProcessDefinitionActivityId());
+            context.setBaseElement(idBasedElement);
 
             return false;
         }
@@ -86,6 +96,10 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     @Override
     public void execute(ExecutionContext context,PvmActivity pvmActivity) {
+
+        fireEvent(context,pvmActivity,PvmEventConstant.ACTIVITY_EXECUTE);
+
+
         executeDelegation(context,pvmActivity.getModel());
 
         commonUpdateExecutionInstance(context);
@@ -109,6 +123,9 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     @Override
     public void leave(ExecutionContext context, PvmActivity pvmActivity) {
+        fireEvent(context,pvmActivity,PvmEventConstant.ACTIVITY_END);
+
+
         //执行每个节点的hook方法
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
 

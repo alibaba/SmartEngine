@@ -19,6 +19,8 @@ public interface ExecutionInstanceDAO  {
 
     ExecutionInstanceEntity findOne(@Param("id") Long id);
 
+    ExecutionInstanceEntity findWithShading(@Param("id") Long id,@Param("processInstanceId") Long processInstanceId);
+
 
     void insert(  ExecutionInstanceEntity executionInstanceEntity );
 

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_16jzr1l" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+    <bpmn:process id="parent" isExecutable="true" version="1">
+        <bpmn:startEvent id="start">
+            <bpmn:outgoing>toTask1</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="toTask1" sourceRef="start" targetRef="task_1" />
+        <bpmn:receiveTask id="task_1" name="task_1">
+            <bpmn:incoming>toTask1</bpmn:incoming>
+            <bpmn:outgoing>toFork</bpmn:outgoing>
+        </bpmn:receiveTask>
+        <bpmn:sequenceFlow id="toFork" sourceRef="task_1" targetRef="Gateway_fork" />
+        <bpmn:sequenceFlow id="toTask2" sourceRef="Gateway_fork" targetRef="task_2" />
+        <bpmn:receiveTask id="task_2" name="task_2">
+            <bpmn:incoming>toTask2</bpmn:incoming>
+            <bpmn:outgoing>toJoin1</bpmn:outgoing>
+        </bpmn:receiveTask>
+        <bpmn:sequenceFlow id="toChild" sourceRef="Gateway_fork" targetRef="child_task" />
+        <bpmn:callActivity id="child_task" name="child_task" calledElement="child" camunda:calledElementVersion="1">
+            <bpmn:incoming>toChild</bpmn:incoming>
+            <bpmn:outgoing>toJoin2</bpmn:outgoing>
+        </bpmn:callActivity>
+        <bpmn:sequenceFlow id="toJoin1" sourceRef="task_2" targetRef="Gateway_join" />
+        <bpmn:sequenceFlow id="toJoin2" sourceRef="child_task" targetRef="Gateway_join" />
+        <bpmn:endEvent id="end">
+            <bpmn:incoming>toEnd</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="toEnd" sourceRef="Gateway_join" targetRef="end" />
+        <bpmn:parallelGateway id="Gateway_fork">
+            <bpmn:incoming>toFork</bpmn:incoming>
+            <bpmn:outgoing>toTask2</bpmn:outgoing>
+            <bpmn:outgoing>toChild</bpmn:outgoing>
+        </bpmn:parallelGateway>
+        <bpmn:parallelGateway id="Gateway_join">
+            <bpmn:incoming>toJoin1</bpmn:incoming>
+            <bpmn:incoming>toJoin2</bpmn:incoming>
+            <bpmn:outgoing>toEnd</bpmn:outgoing>
+        </bpmn:parallelGateway>
+    </bpmn:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="parent">
+            <bpmndi:BPMNEdge id="Flow_1kq6hf5_di" bpmnElement="toEnd">
+                <di:waypoint x="685" y="207" />
+                <di:waypoint x="722" y="207" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_10domyv_di" bpmnElement="toJoin2">
+                <di:waypoint x="600" y="320" />
+                <di:waypoint x="660" y="320" />
+                <di:waypoint x="660" y="232" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1bdyjgf_di" bpmnElement="toJoin1">
+                <di:waypoint x="600" y="120" />
+                <di:waypoint x="660" y="120" />
+                <di:waypoint x="660" y="182" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1mjj1tr_di" bpmnElement="toChild">
+                <di:waypoint x="430" y="232" />
+                <di:waypoint x="430" y="320" />
+                <di:waypoint x="500" y="320" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0caw0b6_di" bpmnElement="toTask2">
+                <di:waypoint x="430" y="182" />
+                <di:waypoint x="430" y="120" />
+                <di:waypoint x="500" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1ocoyz9_di" bpmnElement="toFork">
+                <di:waypoint x="360" y="207" />
+                <di:waypoint x="405" y="207" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1v38cb8_di" bpmnElement="toTask1">
+                <di:waypoint x="215" y="207" />
+                <di:waypoint x="260" y="207" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
+                <dc:Bounds x="179" y="189" width="36" height="36" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_1hky8sv_di" bpmnElement="task_1">
+                <dc:Bounds x="260" y="167" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_14uvgon_di" bpmnElement="task_2">
+                <dc:Bounds x="500" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_1w6iww8_di" bpmnElement="child_task">
+                <dc:Bounds x="500" y="280" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_0pu9bv9_di" bpmnElement="end">
+                <dc:Bounds x="722" y="189" width="36" height="36" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Gateway_0yeac1k_di" bpmnElement="Gateway_fork">
+                <dc:Bounds x="405" y="182" width="50" height="50" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Gateway_192tcty_di" bpmnElement="Gateway_join">
+                <dc:Bounds x="635" y="182" width="50" height="50" />
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = EndEvent.class)
@@ -23,6 +24,9 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
 
     @Override
     public void leave(ExecutionContext context, PvmActivity pvmActivity) {
+        fireEvent(context,pvmActivity, PvmEventConstant.ACTIVITY_END);
+
+
         ProcessInstance processInstance = context.getProcessInstance();
         processInstance.setStatus(InstanceStatus.completed);
         processInstance.setCompleteTime(DateUtil.getCurrentDate());

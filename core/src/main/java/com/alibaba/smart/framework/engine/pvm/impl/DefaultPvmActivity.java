@@ -31,7 +31,6 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         ActivityBehavior behavior = this.getBehavior();
         boolean needPause= behavior.enter(context, this);
 
-        fireEvent(context,PvmEventConstant.ACTIVITY_START);
 
 
         if (needPause) {
@@ -43,11 +42,11 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         this.execute(context);
     }
 
-    private void fireEvent(ExecutionContext context,PvmEventConstant event) {
-
-        context.getProcessEngineConfiguration().getListenerExecutor().execute(event,this.getModel(),context);
-
-    }
+    //protected void fireEvent(ExecutionContext context,PvmEventConstant event) {
+    //
+    //    context.getProcessEngineConfiguration().getListenerExecutor().execute(event,this.getModel(),context);
+    //
+    //}
 
     @Override
     public void execute(ExecutionContext context) {
@@ -55,15 +54,11 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
 
         this.getBehavior().execute(context,this);
 
-        fireEvent(context,PvmEventConstant.ACTIVITY_EXECUTE);
-
         if (context.isNeedPause()) {
 
             // break;
             return;
         }
-
-        fireEvent(context,PvmEventConstant.ACTIVITY_END);
 
         this.getBehavior().leave(context, this);
 

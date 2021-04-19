@@ -31,10 +31,10 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultListenerExecutor implements ListenerExecutor {
 
-    public void execute(PvmEventConstant event, ExtensionElementContainer extensionElementContaine,ExecutionContext context) {
+    public void execute(PvmEventConstant event, ExtensionElementContainer extensionElementContainer,ExecutionContext context) {
         String eventName = event.name();
 
-        ExtensionElements extensionElements = extensionElementContaine.getExtensionElements();
+        ExtensionElements extensionElements = extensionElementContainer.getExtensionElements();
         if(null != extensionElements){
 
             ListenerAggregation extension = (ListenerAggregation)extensionElements.getDecorationMap().get(

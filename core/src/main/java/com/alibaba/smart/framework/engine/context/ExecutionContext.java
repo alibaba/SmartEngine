@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.context;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -23,6 +24,10 @@ public interface ExecutionContext {
     ExecutionInstance getExecutionInstance();
 
     void setExecutionInstance(ExecutionInstance executionInstance);
+
+    BaseElement getBaseElement();
+
+    void setBaseElement(BaseElement baseElement);
 
     ActivityInstance getActivityInstance();
 

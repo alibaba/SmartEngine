@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -22,6 +23,8 @@ public class DefaultExecutionContext implements ExecutionContext {
     private ProcessInstance processInstance;
 
     private ExecutionInstance executionInstance;
+
+    private BaseElement baseElement;
 
     private ActivityInstance activityInstance;
 

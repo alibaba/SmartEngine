@@ -28,7 +28,16 @@ public class CallActivityParser  extends AbstractBpmnParser<CallActivity> {
         CallActivity callActivity = new CallActivity();
         callActivity.setId(XmlParseUtil.getString(reader, "id"));
         callActivity.setCalledElement(XmlParseUtil.getString(reader, "calledElement"));
-        callActivity.setCalledElementVersion(XmlParseUtil.getString(reader, "calledElementVersion"));
+        String calledElementVersion = XmlParseUtil.getString(reader, "calledElementVersion");
+
+        if(null == calledElementVersion){
+            calledElementVersion = XmlParseUtil.getString(reader, "calledElementVersionTag");
+        }
+
+        callActivity.setCalledElementVersion(calledElementVersion);
+
+
+
         return callActivity;
     }
 }

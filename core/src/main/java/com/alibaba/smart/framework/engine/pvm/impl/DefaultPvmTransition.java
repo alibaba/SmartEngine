@@ -26,7 +26,7 @@ public class DefaultPvmTransition extends AbstractPvmElement<Transition> impleme
     public boolean match(ExecutionContext context) {
         Transition model = this.getModel();
 
-        return this.behavior.match(context,model.getConditionExpression());
+        return this.behavior.match(context,model);
     }
 
     @Override

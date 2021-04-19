@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = ExclusiveGateway.class)
 public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<ExclusiveGateway> {
@@ -20,6 +21,9 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<Exclusive
 
     @Override
     public void leave(ExecutionContext context, PvmActivity pvmActivity) {
+
+        fireEvent(context,pvmActivity, PvmEventConstant.ACTIVITY_END);
+
 
         //执行每个节点的hook方法
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();

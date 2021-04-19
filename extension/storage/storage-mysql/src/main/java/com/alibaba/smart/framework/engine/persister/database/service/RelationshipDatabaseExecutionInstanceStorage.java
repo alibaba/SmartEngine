@@ -108,6 +108,15 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
 
     }
 
+    @Override
+    public ExecutionInstance findWithShading(String processInstanceId, String executionInstanceId,
+                                  ProcessEngineConfiguration processEngineConfiguration) {
+        ExecutionInstanceDAO executionInstanceDAO= (ExecutionInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("executionInstanceDAO");
+        ExecutionInstanceEntity executionInstanceEntity =    executionInstanceDAO.findWithShading(Long.valueOf(executionInstanceId),Long.valueOf(processInstanceId));
+        ExecutionInstance executionInstance = new DefaultExecutionInstance();
+        buildExecutionInstance(executionInstance, executionInstanceEntity);
+        return executionInstance;
+    }
 
     @Override
     public void remove(String instanceId,
