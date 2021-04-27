@@ -64,6 +64,7 @@
         <springframework.version>5.2.3.RELEASE</springframework.version>
         <slf4j.version>1.7.13</slf4j.version>
         <jmh.version>1.25.2</jmh.version>
+        <junit.jupiter.version>5.7.1</junit.jupiter.version>
         <gpg.skip>true</gpg.skip>
         <javadoc.opts>-Xdoclint:none</javadoc.opts>
         <maven.test.skip>true</maven.test.skip>
@@ -89,15 +90,16 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -239,6 +241,19 @@
                 <version>4.13.1</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+
 
             <!-- lombok -->
             <dependency>
@@ -327,18 +342,6 @@
                 <scope>test</scope>
             </dependency>
 
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>5.6.2</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>5.6.2</version>
-                <scope>test</scope>
-            </dependency>
 
             <dependency>
                 <groupId>org.openjdk.jmh</groupId>
