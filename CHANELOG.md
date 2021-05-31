@@ -1,3 +1,5 @@
+#2.5.7.0
+1. 仅针对Properties属性,增加PropertyCompositeValue. [非兼容升级]
 #2.5.6.x
 1. 为分库分表做准备，增加了signal 查询pid参数。
 
