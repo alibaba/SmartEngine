@@ -49,7 +49,11 @@ public class Properties implements ExtensionDecorator,CustomExtensionElement {
                 map.put(value.getName(),value.getValue());
             }else if (extensionDecorator instanceof  Property){
                 Property property = (Property)extensionDecorator;
-                map.put(new PropertyCompositeKey(property.getType(),property.getName()),property.getAttrs());
+
+                PropertyCompositeKey key = new PropertyCompositeKey(property.getType(), property.getName());
+                PropertyCompositeValue value = new PropertyCompositeValue(property.getValue(), property.getAttrs());
+
+                map.put(key, value);
             }
 
         }

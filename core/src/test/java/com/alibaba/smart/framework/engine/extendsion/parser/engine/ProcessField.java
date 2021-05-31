@@ -17,6 +17,7 @@ import lombok.Data;
  * please use @com.alibaba.smart.framework.engine.smart.Property, Example: com.alibaba.smart.framework.engine.test.cases.extensions.CompositePropertiesTest
  */
 @Data
+@Deprecated
 public class ProcessField implements ExtensionDecorator {
     static String PROCESS_NS ="http://test.com/process";
 

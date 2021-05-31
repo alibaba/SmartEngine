@@ -6,6 +6,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.smart.Properties;
 import com.alibaba.smart.framework.engine.smart.PropertyCompositeKey;
+import com.alibaba.smart.framework.engine.smart.PropertyCompositeValue;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class CompositePropertiesTest extends CustomBaseTestCase {
         ExtensionElements extensionElements = processDefinition.getExtensionElements();
         Map<String, Object> decorationMap = extensionElements.getDecorationMap();
 
-        Map<PropertyCompositeKey,Map> propertyCompositeKeyMap = (Map) decorationMap.get(ExtensionElementsConstant.PROPERTIES);
+        Map<PropertyCompositeKey,PropertyCompositeValue> propertyCompositeKeyMap = (Map<PropertyCompositeKey,PropertyCompositeValue>) decorationMap.get(ExtensionElementsConstant.PROPERTIES);
 
         List<ExtensionDecorator> extensionList = extensionElements.getExtensionList();
         Assert.assertEquals(1,extensionList.size());
@@ -43,13 +44,13 @@ public class CompositePropertiesTest extends CustomBaseTestCase {
         boolean flag = propertyCompositeKeyMap.containsKey(key);
         Assert.assertTrue(flag);
 
-        Map value = propertyCompositeKeyMap.get(key);
-        Assert.assertEquals("{}",value.get("value"));
+        PropertyCompositeValue value = propertyCompositeKeyMap.get(key);
+        Assert.assertEquals("{}",value.getAttrMap().get("value"));
 
         PropertyCompositeKey key2 = new PropertyCompositeKey("action", "key");
-        Map value2 = propertyCompositeKeyMap.get(key2);
-        Assert.assertEquals("blabla1",value2.get("attr1"));
-        Assert.assertEquals("blabla2",value2.get("attr2"));
+        PropertyCompositeValue value2 = propertyCompositeKeyMap.get(key2);
+        Assert.assertEquals("blabla1",value2.getAttrMap().get("attr1"));
+        Assert.assertEquals("blabla2",value2.getAttrMap().get("attr2"));
 
 
     }

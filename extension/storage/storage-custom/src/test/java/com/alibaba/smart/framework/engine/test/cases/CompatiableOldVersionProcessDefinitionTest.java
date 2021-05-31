@@ -19,6 +19,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.smart.PropertyCompositeKey;
+import com.alibaba.smart.framework.engine.smart.PropertyCompositeValue;
 import com.alibaba.smart.framework.engine.test.DoNothingLockStrategy;
 
 import org.junit.Assert;
@@ -74,8 +75,8 @@ public class CompatiableOldVersionProcessDefinitionTest extends CustomBaseTestCa
         Assert.assertTrue(flag);
 
 
-        Map actual = (Map) map.get(key);
-        Assert.assertEquals("process.inParam1", actual.get("value"));
+        PropertyCompositeValue actual = (PropertyCompositeValue) map.get(key);
+        Assert.assertEquals("process.inParam1", actual.getAttrMap().get("value"));
 
     }
 

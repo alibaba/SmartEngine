@@ -16,6 +16,7 @@ import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.smart.PropertyCompositeKey;
+import com.alibaba.smart.framework.engine.smart.PropertyCompositeValue;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -88,8 +89,8 @@ public class ExtensionNameSpaceParseTest {
                 for(Map.Entry<PropertyCompositeKey, String> e :  extensionMap.entrySet()) {
                     properties.put(e.getKey().getName(), e.getValue());
                 }
-                Map taskOption = (Map)properties.get("taskOption");
-                Assert.assertEquals(taskOption.get("value"), "100");
+                PropertyCompositeValue taskOption = (PropertyCompositeValue)properties.get("taskOption");
+                Assert.assertEquals(taskOption.getAttrMap().get("value"), "100");
             }
         }
     }
