@@ -74,7 +74,8 @@ public class CompatiableOldVersionProcessDefinitionTest extends CustomBaseTestCa
         Assert.assertTrue(flag);
 
 
-        Assert.assertEquals("process.inParam1", map.get(key));
+        Map actual = (Map) map.get(key);
+        Assert.assertEquals("process.inParam1", actual.get("value"));
 
     }
 

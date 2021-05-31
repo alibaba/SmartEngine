@@ -84,12 +84,12 @@ public class ExtensionNameSpaceParseTest {
                 Map<PropertyCompositeKey, String> extensionMap =
                         (Map<PropertyCompositeKey, String>)serviceTask.getExtensionElements().getDecorationMap().get(ExtensionElementsConstant.PROPERTIES);
                 Assert.assertTrue(extensionMap.size() == 1);
-                final Map<String, String> properties = new HashMap<String, String>();
+                final Map<String, Object> properties = new HashMap<String, Object>();
                 for(Map.Entry<PropertyCompositeKey, String> e :  extensionMap.entrySet()) {
                     properties.put(e.getKey().getName(), e.getValue());
                 }
-                String taskOption = properties.get("taskOption");
-                Assert.assertEquals(taskOption, "100");
+                Map taskOption = (Map)properties.get("taskOption");
+                Assert.assertEquals(taskOption.get("value"), "100");
             }
         }
     }

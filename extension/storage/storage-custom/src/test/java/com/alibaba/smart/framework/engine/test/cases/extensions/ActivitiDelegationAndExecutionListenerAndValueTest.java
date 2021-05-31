@@ -52,7 +52,8 @@ public class ActivitiDelegationAndExecutionListenerAndValueTest extends CustomBa
 
         PropertyCompositeKey from = new PropertyCompositeKey("from");
 
-        Assert.assertEquals("koubei",response.get(from));
+        Map actual = (Map)response.get(from);
+        Assert.assertEquals("koubei", actual.get("value"));
 
     }
 

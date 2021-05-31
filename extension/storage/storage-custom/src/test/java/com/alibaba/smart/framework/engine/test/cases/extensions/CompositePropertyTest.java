@@ -35,9 +35,8 @@ public class CompositePropertyTest extends CustomBaseTestCase {
         boolean flag = map.containsKey(key);
         Assert.assertTrue(flag);
 
-        Object value = map.get(key);
-        Assert.assertEquals("{}",value);
-
+        Map value = (Map) map.get(key);
+        Assert.assertEquals("{}",value.get("value"));
     }
 
 }

@@ -5,6 +5,7 @@
     <bpmn:extensionElements>
       <smart:properties>
         <smart:property type="json" name="key" value="{}"/>
+        <smart:property type="action" name="key" value="value" attr1="blabla1" attr2="blabla2"/>
         <smart:property name="inParam2" />
         <smart:property name="outParam1" />
         <smart:property name="outParam2" />

@@ -19,7 +19,7 @@ import lombok.Data;
 /**
  * @author ettear
  * Created by ettear on 06/08/2017.
- * please use @com.alibaba.smart.framework.engine.smart.Property, Example: com.alibaba.smart.framework.engine.test.cases.extensions.CompositePropertyTest
+ * please use @com.alibaba.smart.framework.engine.smart.Property, Example: com.alibaba.smart.framework.engine.test.cases.extensions.CompositePropertiesTest
  */
 @Data
 @Deprecated

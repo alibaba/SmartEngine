@@ -14,6 +14,7 @@ import lombok.Data;
 /**
  * @author zilong.jiangzl
  * @create 2020-07-16 9:42 下午
+ * please use @com.alibaba.smart.framework.engine.smart.Property, Example: com.alibaba.smart.framework.engine.test.cases.extensions.CompositePropertiesTest
  */
 @Data
 public class ProcessField implements ExtensionDecorator {

@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.smart;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
@@ -22,6 +23,7 @@ public class Property implements PropertiesElementMarker, NoneIdBasedElement,Cus
     private String value;
     private String type;
 
+    private Map<String,String> attrs;
 
     @Override
     public String getDecoratorType() {

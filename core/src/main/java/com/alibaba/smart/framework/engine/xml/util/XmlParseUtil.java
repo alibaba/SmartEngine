@@ -81,10 +81,6 @@ public class XmlParseUtil {
 
                 String localPart = attributeName.getLocalPart();
 
-                if("id".equals(localPart)||"name".equals(localPart)){
-                    continue;
-                }
-
                 Object value=reader.getAttributeValue(attributeName.getNamespaceURI(), localPart);
                 properties.put(localPart,(String)value);
 

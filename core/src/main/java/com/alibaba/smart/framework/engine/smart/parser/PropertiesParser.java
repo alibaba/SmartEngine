@@ -19,7 +19,6 @@ import java.util.List;
  */
 
 @ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = Properties.class)
-
 public class PropertiesParser extends AbstractElementParser<Properties> {
 
 
