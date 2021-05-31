@@ -6,6 +6,8 @@
         <groupId>com.alibaba.smart.framework</groupId>
         <artifactId>smart-engine</artifactId>
         <version>2.5.7.0</version>
+        <relativePath>../../../pom.xml</relativePath>
+
     </parent>
 
     <artifactId>smart-engine-extension-storage-custom</artifactId>
