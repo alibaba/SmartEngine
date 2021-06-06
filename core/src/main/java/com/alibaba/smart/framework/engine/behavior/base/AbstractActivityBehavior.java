@@ -60,7 +60,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     @Override
     public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
-        fireEvent(context,pvmActivity,PvmEventConstant.ACTIVITY_START);
 
         ProcessInstance processInstance = context.getProcessInstance();
 
@@ -77,6 +76,9 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
             IdBasedElement idBasedElement = context.getProcessDefinition().getIdBasedElementMap().get(executionInstance.getProcessDefinitionActivityId());
             context.setBaseElement(idBasedElement);
+
+            fireEvent(context,pvmActivity,PvmEventConstant.ACTIVITY_START);
+
 
             return false;
         }

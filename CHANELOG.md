@@ -1,3 +1,5 @@
+#2.5.7.1
+1. 微改进,优化了ACTIVITY_START的触发时机,在节点创建后,再触发该事件.
 #2.5.7.0
 1. 仅针对Properties属性,增加PropertyCompositeValue. [非兼容升级]
 #2.5.6.x
