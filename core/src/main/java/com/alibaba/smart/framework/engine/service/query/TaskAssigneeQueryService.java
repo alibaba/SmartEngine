@@ -5,6 +5,9 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 
+/**
+ * <p>任务委托信息</p>
+ */
 public interface TaskAssigneeQueryService {
 
     List<TaskAssigneeInstance> findList(String taskInstanceId);
