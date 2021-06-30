@@ -78,6 +78,8 @@
             <if test="startUserId != null"> and start_user_id = #{startUserId}</if>
             <if test="parentInstanceId != null"> and parent_process_instance_id = #{parentInstanceId}</if>
             <if test="bizUniqueId != null"> and biz_unique_id = #{bizUniqueId}</if>
+            <if test="processStartTime != null">and gmt_create <![CDATA[>=]]> #{processStartTime}</if>
+            <if test="processEndTime != null">and gmt_create <![CDATA[<]]> #{processEndTime}</if>
             <if test="processInstanceIdList != null">
                 and id in
                 <foreach item="item" index="index" separator="," open="(" close=")"  collection="processInstanceIdList">

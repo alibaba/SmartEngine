@@ -1,9 +1,6 @@
 package com.alibaba.smart.framework.engine.test.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
@@ -283,6 +280,89 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
         processInstanceQueryParam.setPageSize(10);
         processInstanceList = processQueryService.findList(processInstanceQueryParam);
         Assert.assertEquals(0,processInstanceList.size());
+
+    }
+
+    @Test
+    public void testQueryWithTime() throws Exception {
+        //3. 部署流程定义
+        CreateDeploymentCommand createDeploymentCommand = new CreateDeploymentCommand();
+        String content = IOUtil.readResourceFileAsUTF8String("compatible-any-passed.bpmn20.xml");
+        createDeploymentCommand.setProcessDefinitionContent(content);
+        createDeploymentCommand.setDeploymentUserId("123");
+        createDeploymentCommand.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
+        createDeploymentCommand.setProcessDefinitionDesc("desc");
+        createDeploymentCommand.setProcessDefinitionName("name");
+        createDeploymentCommand.setProcessDefinitionType("group");
+        createDeploymentCommand.setProcessDefinitionCode("code");
+
+        DeploymentInstance deploymentInstance =  deploymentCommandService.createDeployment(createDeploymentCommand);
+
+        Assert.assertEquals("code",deploymentInstance.getProcessDefinitionCode());
+
+        //4.启动流程实例
+
+        Map<String, Object> request = new HashMap();
+        request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID,"123");
+
+        long queryStartTime = System.currentTimeMillis();
+        processCommandService.startWith(deploymentInstance.getInstanceId(),request  );
+
+
+        processCommandService.startWith(deploymentInstance.getInstanceId(),request  );
+        processCommandService.startWith(deploymentInstance.getInstanceId(),request  );
+        processCommandService.startWith(deploymentInstance.getInstanceId(),request  );
+
+
+        request.put(RequestMapSpecialKeyConstant.PROCESS_BIZ_UNIQUE_ID,"uniqueId");
+        request.put(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE,"group");
+
+        processCommandService.start(
+                deploymentInstance.getProcessDefinitionId(), deploymentInstance.getProcessDefinitionVersion()
+                ,request  );
+
+        Thread.sleep(3000);
+        long queryEndTime = System.currentTimeMillis();
+
+        ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam ();
+        processInstanceQueryParam.setProcessDefinitionType("group");
+        processInstanceQueryParam.setStatus(InstanceStatus.running.name());
+        processInstanceQueryParam.setStartUserId("123");
+        processInstanceQueryParam.setProcessDefinitionIdAndVersion("Process_1:1.0.0");
+
+
+        processInstanceQueryParam.setPageOffset(0);
+        processInstanceQueryParam.setPageSize(10);
+
+        List<ProcessInstance> processInstanceList = processQueryService.findList(processInstanceQueryParam);
+        Assert.assertEquals(5, processInstanceList.size());
+
+        // 启动另一批流程
+        processCommandService.startWith(deploymentInstance.getInstanceId(),request  );
+        processCommandService.startWith(deploymentInstance.getInstanceId(),request  );
+        processCommandService.startWith(deploymentInstance.getInstanceId(),request  );
+        processCommandService.startWith(deploymentInstance.getInstanceId(),request  );
+
+
+        ProcessInstanceQueryParam processInstanceQueryParam2 = new ProcessInstanceQueryParam ();
+        processInstanceQueryParam2.setProcessDefinitionType("group");
+        processInstanceQueryParam2.setStatus(InstanceStatus.running.name());
+        processInstanceQueryParam2.setStartUserId("123");
+        processInstanceQueryParam2.setProcessDefinitionIdAndVersion("Process_1:1.0.0");
+        processInstanceQueryParam2.setProcessStartTime(new Date(queryStartTime  - (1000L)));
+        processInstanceQueryParam2.setProcessEndTime(new Date(queryEndTime));
+        processInstanceQueryParam2.setPageOffset(0);
+        processInstanceQueryParam2.setPageSize(10);
+
+        List<ProcessInstance> processInstances2 = processQueryService.findList(processInstanceQueryParam2);
+        Assert.assertEquals(5, processInstances2.size());
+
+        // 使用不带时间条件再次查询
+
+        List<ProcessInstance> processInstances3 = processQueryService.findList(processInstanceQueryParam);
+        Assert.assertEquals(9, processInstances3.size());
+
+
 
     }
 
