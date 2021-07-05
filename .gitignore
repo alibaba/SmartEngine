@@ -17,3 +17,5 @@ pom.xml.versionsBackup
 release.properties
 **.xml.releaseBackup
 
+# VS Code
+.vscode/
