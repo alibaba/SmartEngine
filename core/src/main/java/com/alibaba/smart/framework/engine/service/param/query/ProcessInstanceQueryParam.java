@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.service.param.query;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -25,4 +26,14 @@ public class ProcessInstanceQueryParam extends PaginateQueryParam {
      * 流程引擎实例id列表
      */
     private List<String> processInstanceIdList;
+
+    /**
+     * 查询启动时间在processStartTime之后的流程实例
+     */
+    private Date processStartTime;
+
+    /**
+     * 查询启动时间在processEndTime之前的流程实例
+     */
+    private Date processEndTime;
 }

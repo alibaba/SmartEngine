@@ -26,7 +26,6 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
     public void leave(ExecutionContext context, PvmActivity pvmActivity) {
         fireEvent(context,pvmActivity, PvmEventConstant.ACTIVITY_END);
 
-
         ProcessInstance processInstance = context.getProcessInstance();
         processInstance.setStatus(InstanceStatus.completed);
         processInstance.setCompleteTime(DateUtil.getCurrentDate());
@@ -40,8 +39,6 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
             }
         }
 
-
-
         //==== 子流程结束，执行父流程 ====
         //子流程结束时,才会进入到该环节里面来。需要找出父流程的执行实例id,然后继续执行父流程的后续节点。
         String parentExecutionInstanceId = processInstance.getParentExecutionInstanceId();
@@ -52,5 +49,7 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
                 executionCommandService.signal(parentExecutionInstanceId,context.getRequest());
             }
         }
+
+        fireEvent(context, pvmActivity, PvmEventConstant.PROCESS_END);
     }
 }
