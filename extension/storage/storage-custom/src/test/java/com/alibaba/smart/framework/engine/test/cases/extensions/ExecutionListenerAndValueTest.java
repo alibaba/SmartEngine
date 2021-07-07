@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -51,6 +52,25 @@ public class ExecutionListenerAndValueTest extends CustomBaseTestCase {
         Assert.assertEquals("koubei",response.get("from"));
         Assert.assertEquals("Create task",response.get("task1"));
         Assert.assertEquals("Pay task",response.get("task2"));
+
+        //验证几个事件的的执行顺序
+        Long processStartTime = (Long)response.get("processStartTime");
+        Long startTime = (Long)response.get("startTime");
+        Long endTime = (Long)response.get("endTime");
+        Long processEndTime = (Long)response.get("processEndTime");
+        Assert.assertTrue((processStartTime - startTime) < 0);
+        Assert.assertTrue((startTime - endTime) < 0);
+        Assert.assertTrue((endTime - processEndTime) < 0);
+
+        //验证 process_start 和 process_end 仅在 startEvent 和 endEvent中有效
+        AtomicInteger processStartCount = (AtomicInteger)response.get("processStartCount");
+        AtomicInteger processEndCount = (AtomicInteger)response.get("processEndCount");
+
+        Assert.assertTrue(processStartCount.get() == 1);
+        Assert.assertTrue(processEndCount.get() == 1);
+
+
+
 
 
     }
