@@ -20,10 +20,8 @@ public class StartEventBehavior extends AbstractActivityBehavior<StartEvent> {
     @Override
     public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
 
-        boolean enter = super.enter(context, pvmActivity);
+        fireEvent(context, pvmActivity, PvmEventConstant.PROCESS_START);
 
-        fireEvent(context,pvmActivity, PvmEventConstant.PROCESS_START);
-
-        return enter;
+        return super.enter(context, pvmActivity);
     }
 }
