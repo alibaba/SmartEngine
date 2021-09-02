@@ -2,19 +2,19 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
 import com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
 
+import lombok.Setter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class DeploymentInstanceDAOTest extends BaseElementTest {
 
-    @Resource
+    @Setter(onMethod=@__({@Autowired}))
     DeploymentInstanceDAO dao;
 
     DeploymentInstanceEntity entity = null;

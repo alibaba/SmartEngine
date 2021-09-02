@@ -3,20 +3,20 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity;
 
+import lombok.Setter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TaskAssigneeInstanceDAOTest extends BaseElementTest {
 
-    @Resource
+    @Setter(onMethod=@__({@Autowired}))
     TaskInstanceDAO taskInstanceDAO;
 
-    @Resource
+    @Setter(onMethod=@__({@Autowired}))
     TaskAssigneeDAO taskAssigneeDAO;
 
     TaskAssigneeEntity entityOne = null;
