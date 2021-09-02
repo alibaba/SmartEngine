@@ -16,6 +16,8 @@
             <if test="processDefinitionType != null">and process_definition_type = #{processDefinitionType}</if>
             <if test="processDefinitionCode != null">and process_definition_code = #{processDefinitionCode}</if>
             <if test="processDefinitionName != null">and process_definition_name = #{processDefinitionName}</if>
+            <if test="processDefinitionNameLike != null">and process_definition_name like CONCAT('%', #{processDefinitionNameLike},'%')</if>
+            <if test="processDefinitionDescLike != null">and process_definition_desc like CONCAT('%', #{processDefinitionDescLike},'%')</if>
             <if test="deploymentUserId != null">and deployment_user_id = #{deploymentUserId}</if>
             <if test="deploymentStatus != null">and deployment_status = #{deploymentStatus}</if>
             <if test="logicStatus != null">and logic_status = #{logicStatus}</if>

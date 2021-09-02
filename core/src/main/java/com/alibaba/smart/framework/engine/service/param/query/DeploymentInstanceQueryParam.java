@@ -23,6 +23,16 @@ public class DeploymentInstanceQueryParam extends PaginateQueryParam {
 
     private String processDefinitionName;
 
+    /**
+     * processDefinitionName like "%${processDefinitionNameLike}%"
+     */
+    private String processDefinitionNameLike;
+
+    /**
+     * processDefinitionDesc like "%${processDefinitionDescLike}%"
+     */
+    private String processDefinitionDescLike;
+
     private String deploymentUserId;
 
     /**

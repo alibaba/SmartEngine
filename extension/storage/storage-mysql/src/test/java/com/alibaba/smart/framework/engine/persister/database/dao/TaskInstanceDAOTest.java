@@ -2,18 +2,18 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 
 import java.util.Date;
 
-import javax.annotation.Resource;
-
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
 
+import lombok.Setter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TaskInstanceDAOTest extends BaseElementTest {
 
-    @Resource
+    @Setter(onMethod=@__({@Autowired}))
     TaskInstanceDAO dao;
 
     TaskInstanceEntity entity = null;

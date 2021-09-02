@@ -2,19 +2,19 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
 import com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
 
+import lombok.Setter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class DeploymentInstanceDAOTest extends BaseElementTest {
 
-    @Resource
+    @Setter(onMethod=@__({@Autowired}))
     DeploymentInstanceDAO dao;
 
     DeploymentInstanceEntity entity = null;
@@ -30,6 +30,8 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
         entity.setProcessDefinitionContent(PROCESS_DEFINITION_CONTENT);
         entity.setDeploymentUserId("userId");
         entity.setDeploymentStatus("deploymentStatus");
+        entity.setProcessDefinitionName("TestName");
+        entity.setProcessDefinitionDesc("Hello world");
         entity.setLogicStatus("logicStatus");
     }
 
@@ -80,26 +82,34 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
     @Test
     public void testFindMany() {
         dao.insert(entity);
+        DeploymentInstanceQueryParam deploymentInstanceQueryParam = new DeploymentInstanceQueryParam();
+        deploymentInstanceQueryParam.setProcessDefinitionDescLike("world");
+        List<DeploymentInstanceEntity> result = dao.findByPage(deploymentInstanceQueryParam);
+        Assert.assertEquals(1, result.size());
 
         entity = new DeploymentInstanceEntity();
         long id = System.currentTimeMillis();
         entity.setId(id);
         entity.setProcessDefinitionId("processDefinitionId1");
         entity.setProcessDefinitionVersion("processDefinitionVersion1");
+        entity.setProcessDefinitionName("TestName");
         entity.setProcessDefinitionContent(PROCESS_DEFINITION_CONTENT);
         entity.setDeploymentUserId("userId");
         entity.setDeploymentStatus("deploymentStatus");
         entity.setLogicStatus(LogicStatusConstant.VALID);
-        DeploymentInstanceQueryParam deploymentInstanceQueryParam = new DeploymentInstanceQueryParam();
+        deploymentInstanceQueryParam = new DeploymentInstanceQueryParam();
         deploymentInstanceQueryParam.setDeploymentUserId("userId");
 
         dao.insert(entity);
 
-        List<DeploymentInstanceEntity> result = dao.findByPage(deploymentInstanceQueryParam);
+        result = dao.findByPage(deploymentInstanceQueryParam);
         Assert.assertNotNull(result);
-
-
         Assert.assertEquals(2, result.size() );
+
+        deploymentInstanceQueryParam = new DeploymentInstanceQueryParam();
+        deploymentInstanceQueryParam.setProcessDefinitionNameLike("Test");
+        result = dao.findByPage(deploymentInstanceQueryParam);
+        Assert.assertEquals(2, result.size());
     }
 
 

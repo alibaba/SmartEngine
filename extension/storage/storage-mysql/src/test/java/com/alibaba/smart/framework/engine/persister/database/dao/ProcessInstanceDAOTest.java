@@ -1,19 +1,22 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 
-import java.util.*;
-
-import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 
+import lombok.Setter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ProcessInstanceDAOTest extends BaseElementTest {
 
-    @Resource
+    @Setter(onMethod=@__({@Autowired}))
     ProcessInstanceDAO dao;
 
     ProcessInstanceEntity entity = null;
