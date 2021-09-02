@@ -30,6 +30,8 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
         entity.setProcessDefinitionContent(PROCESS_DEFINITION_CONTENT);
         entity.setDeploymentUserId("userId");
         entity.setDeploymentStatus("deploymentStatus");
+        entity.setProcessDefinitionName("TestName");
+        entity.setProcessDefinitionDesc("Hello world");
         entity.setLogicStatus("logicStatus");
     }
 
@@ -80,26 +82,34 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
     @Test
     public void testFindMany() {
         dao.insert(entity);
+        DeploymentInstanceQueryParam deploymentInstanceQueryParam = new DeploymentInstanceQueryParam();
+        deploymentInstanceQueryParam.setProcessDefinitionDescLike("world");
+        List<DeploymentInstanceEntity> result = dao.findByPage(deploymentInstanceQueryParam);
+        Assert.assertEquals(1, result.size());
 
         entity = new DeploymentInstanceEntity();
         long id = System.currentTimeMillis();
         entity.setId(id);
         entity.setProcessDefinitionId("processDefinitionId1");
         entity.setProcessDefinitionVersion("processDefinitionVersion1");
+        entity.setProcessDefinitionName("TestName");
         entity.setProcessDefinitionContent(PROCESS_DEFINITION_CONTENT);
         entity.setDeploymentUserId("userId");
         entity.setDeploymentStatus("deploymentStatus");
         entity.setLogicStatus(LogicStatusConstant.VALID);
-        DeploymentInstanceQueryParam deploymentInstanceQueryParam = new DeploymentInstanceQueryParam();
+        deploymentInstanceQueryParam = new DeploymentInstanceQueryParam();
         deploymentInstanceQueryParam.setDeploymentUserId("userId");
 
         dao.insert(entity);
 
-        List<DeploymentInstanceEntity> result = dao.findByPage(deploymentInstanceQueryParam);
+        result = dao.findByPage(deploymentInstanceQueryParam);
         Assert.assertNotNull(result);
-
-
         Assert.assertEquals(2, result.size() );
+
+        deploymentInstanceQueryParam = new DeploymentInstanceQueryParam();
+        deploymentInstanceQueryParam.setProcessDefinitionNameLike("Test");
+        result = dao.findByPage(deploymentInstanceQueryParam);
+        Assert.assertEquals(2, result.size());
     }
 
 
