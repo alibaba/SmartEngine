@@ -251,7 +251,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                         }
                     }
 
-                }else if(completedTaskInstanceCount == totalInstanceCount){
+                }else if(completedTaskInstanceCount.equals(totalInstanceCount)){
 
                     if(passedMatched){
                         context.setNeedPause(false);
