@@ -1,10 +1,5 @@
 package com.alibaba.smart.framework.engine.service.command;
 
-import java.util.Map;
-
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 
 /**

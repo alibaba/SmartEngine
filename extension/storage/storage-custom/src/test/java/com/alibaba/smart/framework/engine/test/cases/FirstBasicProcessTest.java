@@ -10,7 +10,6 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 import com.alibaba.smart.framework.engine.test.delegation.BasicServiceTaskDelegation;
-import com.alibaba.smart.framework.engine.test.delegation.ExclusiveTaskDelegation;
 
 import org.junit.Assert;
 import org.junit.Test;

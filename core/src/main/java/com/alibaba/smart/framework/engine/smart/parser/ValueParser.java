@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.smart.parser;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -9,8 +8,6 @@ import com.alibaba.smart.framework.engine.smart.Value;
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
-
-import java.util.List;
 
 /**
  * @author ettear

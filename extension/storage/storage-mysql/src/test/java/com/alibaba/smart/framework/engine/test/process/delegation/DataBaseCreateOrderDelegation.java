@@ -5,8 +5,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
-import com.alibaba.smart.framework.engine.delegation.TccDelegation;
-import com.alibaba.smart.framework.engine.delegation.TccResult;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 
 import org.slf4j.Logger;

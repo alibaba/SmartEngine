@@ -6,8 +6,6 @@ import com.alibaba.smart.framework.engine.test.delegation.ExclusiveTaskDelegatio
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 public class AdvancedExclusvieGatewayProcessTest extends CommonTestCode {
 
     @Override

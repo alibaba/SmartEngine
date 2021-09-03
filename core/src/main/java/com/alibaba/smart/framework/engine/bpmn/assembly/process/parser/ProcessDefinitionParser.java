@@ -3,7 +3,6 @@ package com.alibaba.smart.framework.engine.bpmn.assembly.process.parser;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 

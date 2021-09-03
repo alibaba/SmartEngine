@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.bpmn.assembly.task.parser;
 
 import java.util.Map;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;

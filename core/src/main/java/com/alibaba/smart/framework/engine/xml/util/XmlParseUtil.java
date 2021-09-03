@@ -1,18 +1,18 @@
 package com.alibaba.smart.framework.engine.xml.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
-
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class XmlParseUtil {
 

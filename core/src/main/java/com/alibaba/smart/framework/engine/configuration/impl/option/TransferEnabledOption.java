@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.configuration.impl.option;
 
-import java.util.HashSet;
-
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 
 /**
