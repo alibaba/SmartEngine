@@ -1,5 +1,8 @@
 package com.alibaba.smart.framework.engine.test.cases.extensions;
 
+import java.util.List;
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionDecorator;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
@@ -8,11 +11,9 @@ import com.alibaba.smart.framework.engine.smart.Properties;
 import com.alibaba.smart.framework.engine.smart.PropertyCompositeKey;
 import com.alibaba.smart.framework.engine.smart.PropertyCompositeValue;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
+
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,8 +1,6 @@
 package com.alibaba.smart.framework.engine.test.parallelgateway;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
@@ -18,7 +16,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class EmbeddedParallelGatewayTest extends CustomBaseTestCase {
 

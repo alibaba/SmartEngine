@@ -621,7 +621,8 @@ public class ObjectMap<K, V> {
 		return (h ^ h >>> hashShift) & mask;
 	}
 
-	public String toString () {
+	@Override
+    public String toString () {
 		if (size == 0) return "{}";
 		StringBuilder buffer = new StringBuilder(32);
 		buffer.append('{');
@@ -667,7 +668,8 @@ public class ObjectMap<K, V> {
 		public K key;
 		public V value;
 
-		public String toString () {
+		@Override
+        public String toString () {
 			return key + "=" + value;
 		}
 	}
@@ -723,7 +725,8 @@ public class ObjectMap<K, V> {
 		}
 
 		/** Note the same entry instance is returned each time this method is called. */
-		public Entry<K, V> next () {
+		@Override
+        public Entry<K, V> next () {
 			if (!hasNext) throw new NoSuchElementException();
 			K[] keyTable = map.keyTable;
 			entry.key = keyTable[nextIndex];
@@ -733,11 +736,13 @@ public class ObjectMap<K, V> {
 			return entry;
 		}
 
-		public boolean hasNext () {
+		@Override
+        public boolean hasNext () {
 			return hasNext;
 		}
 
-		public Iterator<Entry<K, V>> iterator () {
+		@Override
+        public Iterator<Entry<K, V>> iterator () {
 			return this;
 		}
 	}
@@ -747,11 +752,13 @@ public class ObjectMap<K, V> {
 			super((ObjectMap<Object, V>)map);
 		}
 
-		public boolean hasNext () {
+		@Override
+        public boolean hasNext () {
 			return hasNext;
 		}
 
-		public V next () {
+		@Override
+        public V next () {
 			if (!hasNext) throw new NoSuchElementException();
 			V value = map.valueTable[nextIndex];
 			currentIndex = nextIndex;
@@ -759,7 +766,8 @@ public class ObjectMap<K, V> {
 			return value;
 		}
 
-		public Iterator<V> iterator () {
+		@Override
+        public Iterator<V> iterator () {
 			return this;
 		}
 
@@ -783,11 +791,13 @@ public class ObjectMap<K, V> {
 			super((ObjectMap<K, Object>)map);
 		}
 
-		public boolean hasNext () {
+		@Override
+        public boolean hasNext () {
 			return hasNext;
 		}
 
-		public K next () {
+		@Override
+        public K next () {
 			if (!hasNext) throw new NoSuchElementException();
 			K key = map.keyTable[nextIndex];
 			currentIndex = nextIndex;
@@ -795,7 +805,8 @@ public class ObjectMap<K, V> {
 			return key;
 		}
 
-		public Iterator<K> iterator () {
+		@Override
+        public Iterator<K> iterator () {
 			return this;
 		}
 

@@ -1,19 +1,14 @@
 package com.alibaba.smart.framework.engine.test.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
-import com.alibaba.smart.framework.engine.service.command.VariableCommandService;
-import com.alibaba.smart.framework.engine.service.param.query.PaginateQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
-import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomVariablePersister;

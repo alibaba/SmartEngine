@@ -5,6 +5,7 @@
 package com.alibaba.smart.framework.engine.bpmn.behavior.gateway;
 
 import java.util.Stack;
+
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 import lombok.Getter;

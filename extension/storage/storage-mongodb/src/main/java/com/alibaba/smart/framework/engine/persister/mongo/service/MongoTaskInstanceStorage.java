@@ -16,7 +16,6 @@ import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-
 import com.alibaba.smart.framework.engine.persister.mongo.entity.TaskAssigneeEntity;
 import com.alibaba.smart.framework.engine.persister.mongo.entity.TaskInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;

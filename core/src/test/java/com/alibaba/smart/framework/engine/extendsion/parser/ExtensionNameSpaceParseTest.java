@@ -1,5 +1,8 @@
 package com.alibaba.smart.framework.engine.extendsion.parser;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.bpmn.assembly.task.ServiceTask;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -17,12 +20,10 @@ import com.alibaba.smart.framework.engine.service.command.RepositoryCommandServi
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.smart.PropertyCompositeKey;
 import com.alibaba.smart.framework.engine.smart.PropertyCompositeValue;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author zilong.jiangzl

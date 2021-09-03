@@ -1,18 +1,11 @@
 package com.alibaba.smart.framework.engine.test.parallelgateway;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
-import com.alibaba.smart.framework.engine.delegation.TccDelegation;
-import com.alibaba.smart.framework.engine.delegation.TccResult;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 
-import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

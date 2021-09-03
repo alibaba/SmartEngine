@@ -13,7 +13,6 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
 import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
-import com.alibaba.smart.framework.engine.test.ParallelGateWayListenerIssueConfiguration;
 
 import org.junit.Assert;
 import org.junit.Before;

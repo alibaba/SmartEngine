@@ -7,7 +7,6 @@ import java.util.Map;
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
-import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
@@ -275,6 +274,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
     }
 
+    @Override
     public void markDone(String executionInstanceId) {
         ExecutionInstance executionInstance = queryExecutionInstance(executionInstanceId);
         MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage,
@@ -357,7 +357,8 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
     }
 
-	public ExecutionInstance createExecution(ActivityInstance activityInstance) {
+	@Override
+    public ExecutionInstance createExecution(ActivityInstance activityInstance) {
 		IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
         executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());

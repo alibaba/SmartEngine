@@ -8,8 +8,6 @@ import com.alibaba.smart.framework.engine.test.delegation.BasicServiceTaskDelega
 import com.alibaba.smart.framework.engine.test.delegation.ExclusiveTaskDelegation;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 public class BasicProcessTest extends CommonTestCode {
 
     @Override
