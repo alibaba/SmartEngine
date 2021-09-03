@@ -136,10 +136,12 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
         }
     }
 
+    @Override
     public void clear() {
         scanResult.clear();
     }
 
+    @Override
     public void scan(
         ProcessEngineConfiguration processEngineConfiguration, Class<? extends Annotation> targetAnnotationType) {
 
@@ -245,12 +247,14 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
     }
 
+    @Override
     public <T> T getExtensionPoint(String group, Class<T> clazz) {
         ExtensionBindingResult extensionBindingResult = this.scanResult.get(group);
         Map<Class, Object> bindingMap = extensionBindingResult.getBindingMap();
         return (T)bindingMap.get(clazz);
     }
 
+    @Override
     public Object getObject(String group, Class clazz) {
         return this.scanResult.get(group).getBindingMap().get(clazz);
 

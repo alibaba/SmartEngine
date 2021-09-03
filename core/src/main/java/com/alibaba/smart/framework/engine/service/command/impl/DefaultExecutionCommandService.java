@@ -274,6 +274,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
     }
 
+    @Override
     public void markDone(String executionInstanceId) {
         ExecutionInstance executionInstance = queryExecutionInstance(executionInstanceId);
         MarkDoneUtil.markDoneExecutionInstance(executionInstance, executionInstanceStorage,
@@ -356,7 +357,8 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
     }
 
-	public ExecutionInstance createExecution(ActivityInstance activityInstance) {
+	@Override
+    public ExecutionInstance createExecution(ActivityInstance activityInstance) {
 		IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
         executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
