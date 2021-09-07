@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.bpmn.assembly.gateway.parser;
 
 import java.util.Map;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ExclusiveGateway;

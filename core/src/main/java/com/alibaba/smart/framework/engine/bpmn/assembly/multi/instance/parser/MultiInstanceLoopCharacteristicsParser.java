@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.bpmn.assembly.multi.instance.parser;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.bpmn.assembly.multi.instance.CompletionCondition;

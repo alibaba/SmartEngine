@@ -1,8 +1,6 @@
 package com.alibaba.smart.framework.engine.configuration;
 
-
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElementContainer;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 

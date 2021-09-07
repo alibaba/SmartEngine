@@ -12,7 +12,6 @@ import com.alibaba.smart.framework.engine.instance.impl.DefaultTransitionInstanc
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
-
 import com.alibaba.smart.framework.engine.persister.database.dao.ExecutionInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity;
 

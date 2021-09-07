@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.bpmn.assembly.process.parser;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow;
