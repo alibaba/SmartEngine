@@ -193,7 +193,7 @@ public class LogEnhancedParallelServiceOrchestration implements ParallelServiceO
         } else if (outComeTransitionSize == 1 && inComeTransitionSize >= 2) {
 
             //在服务编排场景，仅是子线程在执行到最后一个节点后，会进入到并行网关的join节点。CallerThread 不会执行到这里的逻辑。
-            GatewaySticker.create().setPvmActivity(pvmActivity);
+            GatewaySticker.currentSession().setPvmActivity(pvmActivity);
 
         }else{
             throw new EngineException("Should not touch here:"+pvmActivity);
