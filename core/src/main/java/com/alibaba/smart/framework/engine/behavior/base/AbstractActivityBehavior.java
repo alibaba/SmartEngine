@@ -99,14 +99,24 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     @Override
     public void execute(ExecutionContext context,PvmActivity pvmActivity) {
 
-        fireEvent(context,pvmActivity,PvmEventConstant.ACTIVITY_EXECUTE);
+        hookExecution(context, pvmActivity);
 
+        fireEvent(context,pvmActivity,PvmEventConstant.ACTIVITY_EXECUTE);
 
         executeDelegation(context,pvmActivity.getModel());
 
         commonUpdateExecutionInstance(context);
 
     }
+
+    protected void hookExecution(ExecutionContext context,PvmActivity pvmActivity) {
+        // default: do nothing
+
+        // 意图: 用于解决页面上多个按钮,当用户点击了这个按钮,却不触发业务流程的状态的变化,仅仅是改变业务领域对象.
+        // 所以,这里提供了一个扩展机制,允许ClientProgrammer 在仍然使用signal 方法的时候,但是不驱动流程变化. 一般业务忽略此方法即可.
+        // 一般示例: 传入 开启选项参数 和 按钮名称, 然后反射调用对应的类执行业务逻辑
+    }
+
 
     protected void commonUpdateExecutionInstance(ExecutionContext context) {
         if (!context.isNeedPause()) {

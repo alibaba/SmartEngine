@@ -244,6 +244,13 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
                 DefaultPvmActivity sourcePvmActivity = (DefaultPvmActivity) pvmActivityMap.get(sourceRef);
                 DefaultPvmActivity targetPvmActivity = (DefaultPvmActivity) pvmActivityMap.get(targetRef);
 
+                if(null == sourcePvmActivity){
+                    throw new EngineException("No source activity found for id "+sourceRef );
+                }
+                if(null == targetPvmActivity){
+                    throw new EngineException("No target activity found for id "+targetRef );
+                }
+
                 pvmTransition.setSource(sourcePvmActivity);
                 pvmTransition.setTarget(targetPvmActivity);
 
