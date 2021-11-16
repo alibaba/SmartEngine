@@ -100,6 +100,10 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     public void execute(ExecutionContext context,PvmActivity pvmActivity) {
 
         hookExecution(context, pvmActivity);
+        if (context.isNeedPause()) {
+            // break;
+            return;
+        }
 
         fireEvent(context,pvmActivity,PvmEventConstant.ACTIVITY_EXECUTE);
 
