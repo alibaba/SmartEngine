@@ -32,16 +32,17 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
 
     protected void initProcessConfiguation() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
-        processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
-        processEngineConfiguration.setExecutorService(newFixedThreadPool(4));
 
-        // 增加自定义的线程池
+        //指定线程池,多线程fork
+        processEngineConfiguration.setExecutorService(newFixedThreadPool(4));
+        // 服务编排场景,必须要手动开启这个开关
+        processEngineConfiguration.getOptionContainer().put(ConfigurationOption.SERVICE_ORCHESTRATION_OPTION);
+
+        // 增加自定义的线程池,如果没必要,也可以不用设置.
         Map<String, ExecutorService> poolMap = new HashMap<String, ExecutorService>();
         poolMap.put("poolA", newFixedThreadPool(4));
         processEngineConfiguration.setExecutorServiceMap(poolMap);
 
-        processEngineConfiguration.getOptionContainer().put(ConfigurationOption.SERVICE_ORCHESTRATION_OPTION);
     }
 
     @Test
