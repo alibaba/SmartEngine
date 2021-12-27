@@ -1,5 +1,5 @@
 # 2.6.1
-1. 微改进,允许在执行exucute方法时,调用hook逻辑,在特定业务场景下,取消流程环节的推进.
+1. 微改进,允许在执行execute方法时,调用hook逻辑,在特定业务场景下,取消流程环节的推进.
 
 # 2.6.0
 1. BUG修复:针对多线程情况下,使用并行网关进行服务编排导致内存泄露的bug. 强烈建议使用该场景的用户进行升级.
@@ -11,13 +11,13 @@
 1. 微改进,优化了ACTIVITY_START的触发时机,在节点创建后,再触发该事件.
 
 # 2.5.7.0
-1. 仅针对Properties属性,增加PropertyCompositeValue. [非兼容升级]
+1. [非兼容升级]仅针对Properties属性,增加PropertyCompositeValue. 
 
 # 2.5.6.x
 1. 为分库分表做准备，增加了signal 查询pid参数。
 
 # 2.5.1
-1. LockStrategy 不兼容升级。 目前流程流转和并行网关join处理都复用了同一个LockStrategy。 这次变更，主要是加入了Context参数，运行外部场景根据context的环节id等值，做些细粒度的锁的策略控制。
+1.  [非兼容升级] LockStrategy: 目前流程流转和并行网关join处理都复用了同一个LockStrategy。 这次变更，主要是加入了Context参数，运行外部场景根据context的环节id等值，做些细粒度的锁的策略控制。
  另外，还解决了LockStrategy的子流程和并行网关兼容性问题。
 
 # 2.5.0
@@ -29,9 +29,9 @@
 
 # 2.2.2
 0. 完善了父子流程，并行网关的并发服务编排逻辑。
-1. 去掉Mvel表达式引擎的COC约定，改为通过init 传入。两个好处：提升性能，减少多ClassLoader带来的问题 --不兼容老特性。
+1. [非兼容升级]去掉Mvel表达式引擎的COC约定，改为通过init 传入。两个好处：提升性能，减少多ClassLoader带来的问题。
 2. 增加ParallelServiceOrchestration默认实现，支持外部业务灵活扩展。
-3. 增加节点多条OutComingTransition来模拟简单的互斥网关，减少画图复杂度。。
+3. 增加节点多条OutComingTransition来模拟简单的互斥网关，减少画图复杂度。
 
 # 2.2.3
 0. BUG修复：针对数据库模式，为se_process_instance 新增了parent_execution_instance_id 字段，用于解决子流程结束后，父流程不自动执行的问题。
