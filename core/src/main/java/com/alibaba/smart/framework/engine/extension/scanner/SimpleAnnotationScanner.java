@@ -45,23 +45,23 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
     protected static Set<Class<?>> scan(String... packageNames) throws IOException {
 
-        Set<Class<?>> classes = new LinkedHashSet();
+        Set<Class<?>> clazzSet = new LinkedHashSet();
 
         for (String packageName : packageNames) {
 
             String formattedPackageDirName = packageName.replace('.', '/');
 
-            Enumeration<URL> dirs = ClassUtil.getContextClassLoader().getResources(formattedPackageDirName);
+            Enumeration<URL> allMatchedURLs = ClassUtil.getContextClassLoader().getResources(formattedPackageDirName);
 
-            while (dirs.hasMoreElements()) {
+            while (allMatchedURLs.hasMoreElements()) {
 
-                URL url = dirs.nextElement();
+                URL url = allMatchedURLs.nextElement();
                 String protocol = url.getProtocol();
 
                 if (FILE.equals(protocol)) {
                     String filePath = URLDecoder.decode(url.getFile(), UTF_8);
 
-                    scanFiles(packageName, filePath, true, classes);
+                    scanFiles(packageName, filePath, true, clazzSet);
 
                 } else if (JAR.equals(protocol)) {
 
@@ -79,14 +79,14 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
                             if (idx != -1) {
 
-                                packageName = entryName.substring(0, idx).replace('/', '.');
+                                String    finalPackageName = entryName.substring(0, idx).replace('/', '.');
 
                                 if (entryName.endsWith(".class") && !entry.isDirectory()) {
 
-                                    String className = entryName.substring(packageName.length() + 1,
+                                    String className = entryName.substring(finalPackageName.length() + 1,
                                         entryName.length() - 6);
 
-                                    classes.add(ClassUtil.loadClass(packageName + '.' + className));
+                                    clazzSet.add(ClassUtil.loadClass(finalPackageName + '.' + className));
 
                                 }
                             }
@@ -102,7 +102,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
 
 
-        return classes;
+        return clazzSet;
     }
 
     private static void scanFiles(String packageName, String packagePath,
