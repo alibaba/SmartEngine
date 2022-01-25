@@ -180,7 +180,7 @@ public class UserTaskBehaviorHelper {
 
                 TaskInstance taskInstance = taskInstanceFactory.create(userTask, newExecutionInstance, context);
                 taskInstance.setPriority(taskAssigneeCandidateInstance.getPriority());
-                taskInstanceStorage.insert(taskInstance, processEngineConfiguration);
+                taskInstance = taskInstanceStorage.insert(taskInstance, processEngineConfiguration);
 
                 List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
                 IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
