@@ -1,14 +1,18 @@
 package com.alibaba.smart.framework.engine.test.process;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
+import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomVariablePersister;
@@ -76,6 +80,25 @@ public class MultiInstanceCompatibleAnyModelPassedTest extends DatabaseBaseTestC
         Assert.assertEquals(InstanceStatus.completed,finalProcessInstance.getStatus());
 
 
+    }
+
+    @Test
+    public void any(){
+        ProcessDefinitionSource deploy = repositoryCommandService
+                .deploy("huiqian.xml");
+        ProcessCommandService processCommandService = smartEngine.getProcessCommandService();
+        Map<String, Object> initRequest = new HashMap<String, Object>();
+        initRequest.put("userIds", Arrays.asList(1195351L, 1L));
+        ProcessInstance processInstance= processCommandService.start("huiqian_1","1.0.0", initRequest);
+        TaskQueryService taskQueryService = smartEngine.getTaskQueryService();
+        List<TaskInstance> taskList = taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
+        Map<String, Object> submitRequest = new HashMap<String, Object>();
+        submitRequest.put("title", "111");
+        submitRequest.put("desc", "ok");
+        submitRequest.put("completeCond", 2);
+        smartEngine.getTaskCommandService().complete(taskList.get(0).getInstanceId(), submitRequest);
+        taskList = taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
+        System.out.println(taskList.size());
     }
 
 

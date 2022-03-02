@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bpmn.io/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.1">
+    <process id="huiqian_1" isExecutable="false" camunda:versionTag="1.0.0">
+        <startEvent id="StartEvent_1y45yut" name="开始">
+            <outgoing>SequenceFlow_0h21x7r</outgoing>
+        </startEvent>
+        <userTask id="submitTask" name="门店">
+            <multiInstanceLoopCharacteristics>
+                <completionCondition xsi:type="tFormalExpression"><![CDATA[${nrOfCompletedInstances  >= 1]]></completionCondition>
+            </multiInstanceLoopCharacteristics>
+        </userTask>
+        <sequenceFlow id="SequenceFlow_User1" sourceRef="StartEvent_1y45yut" targetRef="submitTask" />
+        <userTask id="Approve_Task" name="督导">
+            <extensionElements>
+                <camunda:properties>
+                    <camunda:property name="role" value="supervisor"/>
+                    <camunda:property name="formId" value="28" />
+                    <camunda:property name="formVersion" value="2" />
+                </camunda:properties>
+            </extensionElements>
+            <incoming>SequenceFlow_0h21x7r</incoming>
+            <outgoing>Flow_0x7w24e</outgoing>
+        </userTask>
+        <sequenceFlow id="SequenceFlow_0h21x7r" sourceRef="submitTask" targetRef="Approve_Task" />
+        <endEvent id="Event_0tsuc1k">
+            <incoming>Flow_0x7w24e</incoming>
+        </endEvent>
+        <sequenceFlow id="Flow_0x7w24e" name="审批通过" sourceRef="Approve_Task" targetRef="Event_0tsuc1k" />
+    </process>
+    <bpmndi:BPMNDiagram id="BpmnDiagram_1">
+        <bpmndi:BPMNPlane id="BpmnPlane_1" bpmnElement="huiqian_1">
+            <bpmndi:BPMNEdge id="Flow_0x7w24e_di" bpmnElement="Flow_0x7w24e">
+                <omgdi:waypoint x="460" y="120" />
+                <omgdi:waypoint x="522" y="120" />
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds x="469" y="102" width="44" height="14" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="SequenceFlow_0h21x7r_di" bpmnElement="SequenceFlow_0h21x7r">
+                <omgdi:waypoint x="320" y="120" />
+                <omgdi:waypoint x="360" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="SequenceFlow_User1_id" bpmnElement="SequenceFlow_User1">
+                <omgdi:waypoint x="188" y="120" />
+                <omgdi:waypoint x="220" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="StartEvent_1y45yut_di" bpmnElement="StartEvent_1y45yut">
+                <omgdc:Bounds x="152" y="102" width="36" height="36" />
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds x="160" y="145" width="22" height="14" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="submitTask_di" bpmnElement="submitTask">
+                <omgdc:Bounds x="220" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Approve_Task_di" bpmnElement="Approve_Task">
+                <omgdc:Bounds x="360" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_0tsuc1k_di" bpmnElement="Event_0tsuc1k">
+                <omgdc:Bounds x="522" y="102" width="36" height="36" />
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>
