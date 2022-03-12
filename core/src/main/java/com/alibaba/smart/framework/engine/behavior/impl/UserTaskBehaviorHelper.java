@@ -108,16 +108,10 @@ public class UserTaskBehaviorHelper {
         }
 
         // Find all task
-        TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        List<String> processInstanceIdList = new ArrayList<String>(2);
-        processInstanceIdList.add(executionInstance.getProcessInstanceId());
-        taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
-        taskInstanceQueryParam.setActivityInstanceId(executionInstance.getActivityInstanceId());
-
         TaskInstanceStorage taskInstanceStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(
-            ExtensionConstant.COMMON,TaskInstanceStorage.class);
-        List<TaskInstance> allTaskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam,
-            processEngineConfiguration);
+                ExtensionConstant.COMMON,TaskInstanceStorage.class);
+
+        List<TaskInstance> allTaskInstanceList = queryAllTaskInstanceList(executionInstance, processEngineConfiguration, taskInstanceStorage);
 
         // Cancel uncompleted task
         for (TaskInstance taskInstance : allTaskInstanceList) {
@@ -143,15 +137,12 @@ public class UserTaskBehaviorHelper {
                                            Map<String, TaskAssigneeCandidateInstance> taskAssigneeMap, ExecutionInstanceStorage executionInstanceStorage,
                                            ExecutionInstanceFactory executionInstanceFactory,
                                            TaskInstanceFactory taskInstanceFactory, ProcessEngineConfiguration processEngineConfiguration) {
-        TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
-        List<String> processInstanceIdList = new ArrayList<String>(2);
-        processInstanceIdList.add(executionInstance.getProcessInstanceId());
-        taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
-        taskInstanceQueryParam.setActivityInstanceId(executionInstance.getActivityInstanceId());
+
         TaskInstanceStorage taskInstanceStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(
-            ExtensionConstant.COMMON,TaskInstanceStorage.class);
-        List<TaskInstance> allTaskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam,
-            processEngineConfiguration);
+                ExtensionConstant.COMMON,TaskInstanceStorage.class);
+
+        List<TaskInstance> allTaskInstanceList = queryAllTaskInstanceList(executionInstance, processEngineConfiguration, taskInstanceStorage);
+
         List<String> taskInstanceIdList = new ArrayList<String>();
         if(CollectionUtil.isNotEmpty(allTaskInstanceList)) {
             for(TaskInstance taskInstance : allTaskInstanceList) {
@@ -192,6 +183,17 @@ public class UserTaskBehaviorHelper {
                 }
             }
         }
+    }
+
+     static List<TaskInstance> queryAllTaskInstanceList(ExecutionInstance executionInstance, ProcessEngineConfiguration processEngineConfiguration, TaskInstanceStorage taskInstanceStorage) {
+        TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
+        List<String> processInstanceIdList = new ArrayList<String>(2);
+        processInstanceIdList.add(executionInstance.getProcessInstanceId());
+        taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
+        taskInstanceQueryParam.setActivityInstanceId(executionInstance.getActivityInstanceId());
+        List<TaskInstance> allTaskInstanceList = taskInstanceStorage.findTaskList(taskInstanceQueryParam,
+                processEngineConfiguration);
+        return allTaskInstanceList;
     }
 
     public static void abortAndSetNeedPause(ExecutionContext context, ExecutionInstance executionInstance, SmartEngine smartEngine) {

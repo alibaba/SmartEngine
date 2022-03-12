@@ -18,6 +18,7 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ValidationException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
+import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -172,22 +173,25 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
         SmartEngine smartEngine = processEngineConfiguration.getSmartEngine();
 
+        //重要前提: 在会签场景中,ei:ti:tai= 1:1:1 ,并且会签场景中, assigneeType 应该只能为 user.
         //1. 当前的数据库中所有的 totalExecutionInstanceList，包含所有状态的。 但是此时，由于顺序会签的问题，totalExecutionInstanceList 不再是所有的ExecutionList了。
         List<ExecutionInstance> totalExecutionInstanceList = executionInstanceStorage.findByActivityInstanceId(
             activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
             this.processEngineConfiguration);
 
-        //取所有审批人
-        List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = UserTaskBehaviorHelper
-            .getTaskAssigneeCandidateInstances( context,userTask);
+//        TaskInstanceStorage taskInstanceStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(
+//                ExtensionConstant.COMMON,TaskInstanceStorage.class);
+//        List<TaskInstance> allTaskInstanceList = UserTaskBehaviorHelper.queryAllTaskInstanceList(executionInstance, processEngineConfiguration, taskInstanceStorage);
 
-        Integer totalInstanceCount ;
 
-        if(multiInstanceLoopCharacteristics.isSequential()){
-            totalInstanceCount = taskAssigneeCandidateInstanceList.size();
-        }else {
-            totalInstanceCount = totalExecutionInstanceList.size();
-        }
+        // 针对顺序会签,这里totalInstanceCount 为目前已经创建出来的count,未来还会补偿新增; 但是针对非顺序会签,则是最终的全量,不会再变.
+        Integer totalInstanceCount  = totalExecutionInstanceList.size();
+
+
+//        if(multiInstanceLoopCharacteristics.isSequential()){
+//            totalInstanceCount = allTaskInstanceList.size();
+//        }else {
+//        }
 
         Integer passedTaskInstanceCount = 0;
         Integer rejectedTaskInstanceCount = 0;
@@ -203,16 +207,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             throw new ValidationException("MultiInstanceCounter can NOT be null for multiInstanceLoopCharacteristics");
         }
 
-        Map<String, TaskAssigneeCandidateInstance> taskAssigneeMap = new HashMap<String, TaskAssigneeCandidateInstance>();
-
-        if(taskAssigneeCandidateInstanceList != null) {
-            for(TaskAssigneeCandidateInstance item : taskAssigneeCandidateInstanceList) {
-                taskAssigneeMap.put(item.getAssigneeId(), item);
-            }
-        }
-
-        // 不变式  nrOfCompletedInstances+ nrOfRejectedInstance <= nrOfInstances
-        Map<String,Object> requestContext =  new HashMap<String, Object>();
+        // 不变式  nrOfCompletedInstances + nrOfRejectedInstance <= nrOfInstances
+        Map<String,Object> requestContext =  new HashMap<String, Object>(4);
         requestContext.put("nrOfCompletedInstances", passedTaskInstanceCount);
         requestContext.put("nrOfRejectedInstance", rejectedTaskInstanceCount);
         requestContext.put("nrOfInstances", totalInstanceCount);
@@ -245,6 +241,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                         context.setNeedPause(true);
                         //生成顺序型会签，需要补偿创建任务。
                         if(multiInstanceLoopCharacteristics.isSequential()){
+                            Map<String, TaskAssigneeCandidateInstance> taskAssigneeMap = queryTaskAssigneeCandidateInstance(context, userTask);
+
                             UserTaskBehaviorHelper.compensateExecutionAndTask(context, userTask, activityInstance, executionInstance, taskAssigneeMap,executionInstanceStorage,executionInstanceFactory,taskInstanceFactory,processEngineConfiguration);
                         }else{
                             // do nothing
@@ -268,7 +266,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 //completionCondition 为空时，则表示是all模式 （兼容历史逻辑）， 则需要所有任务都完成后，才做判断。
 
                 if(rejectedTaskInstanceCount >= 1){
-
+                    //fail fast ,abort
                     UserTaskBehaviorHelper.abortAndSetNeedPause(context, executionInstance, smartEngine);
                     UserTaskBehaviorHelper.markDoneEIAndCancelTI(context, executionInstance, totalExecutionInstanceList,executionInstanceStorage,processEngineConfiguration);
 
@@ -276,6 +274,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                     context.setNeedPause(true);
 
                     if(multiInstanceLoopCharacteristics.isSequential()){
+                        Map<String, TaskAssigneeCandidateInstance> taskAssigneeMap = queryTaskAssigneeCandidateInstance(context, userTask);
+
                         UserTaskBehaviorHelper.compensateExecutionAndTask(context, userTask, activityInstance, executionInstance, taskAssigneeMap,executionInstanceStorage,executionInstanceFactory,taskInstanceFactory,processEngineConfiguration);
                     } else {
                         //do nothing
@@ -296,6 +296,21 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             UserTaskBehaviorHelper.markDoneEIAndCancelTI(context, executionInstance, totalExecutionInstanceList,executionInstanceStorage,processEngineConfiguration);
 
         }
+    }
+
+    private Map<String, TaskAssigneeCandidateInstance> queryTaskAssigneeCandidateInstance(ExecutionContext context, UserTask userTask) {
+        //针对 顺序会签,需要业务传入所需要的任务处理者,以便未来补偿创建.
+        Map<String, TaskAssigneeCandidateInstance> taskAssigneeMap = new HashMap<String, TaskAssigneeCandidateInstance>();
+
+        List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList = UserTaskBehaviorHelper
+         .getTaskAssigneeCandidateInstances(context, userTask);
+
+        if(taskAssigneeCandidateInstanceList != null) {
+            for(TaskAssigneeCandidateInstance assigneeCandidateInstance : taskAssigneeCandidateInstanceList) {
+                taskAssigneeMap.put(assigneeCandidateInstance.getAssigneeId(), assigneeCandidateInstance);
+            }
+        }
+        return taskAssigneeMap;
     }
 
     protected void handleSingleInstance(ExecutionContext context) {
