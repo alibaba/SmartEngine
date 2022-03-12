@@ -41,7 +41,7 @@
     </bean>
 
     <jdbc:embedded-database id="dataSource" type="H2">
-        <jdbc:script location="classpath:sql/main-schema.sql"  />
+        <jdbc:script location="classpath:sql/schema.sql"  />
     </jdbc:embedded-database>
 
     <!--END H2 DATASOURCE-->

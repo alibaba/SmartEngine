@@ -1,3 +1,7 @@
+# 2.6.2
+1. [微型非兼容升级]修改TaskAssigneeDispatcher#getTaskAssigneeCandidateInstance 第二个参数,将Map类型修改为Context,便于获得流程定义参数.
+2. 
+
 # 2.6.1
 1. 微改进,允许在执行execute方法时,调用hook逻辑,在特定业务场景下,取消流程环节的推进.
 

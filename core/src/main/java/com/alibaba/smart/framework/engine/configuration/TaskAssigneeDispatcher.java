@@ -1,8 +1,8 @@
 package com.alibaba.smart.framework.engine.configuration;
 
 import java.util.List;
-import java.util.Map;
 
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 
@@ -11,7 +11,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateIn
  */
 public interface TaskAssigneeDispatcher {
 
-    List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity,Map<String,Object> request);
+    List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity, ExecutionContext context);
 
 
 }

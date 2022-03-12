@@ -45,7 +45,7 @@ public class UserTaskBehaviorHelper {
             throw new EngineException("The taskAssigneeService can't be null for UserTask feature");
         }
 
-        return taskAssigneeDispatcher.getTaskAssigneeCandidateInstance(userTask, context.getRequest());
+        return taskAssigneeDispatcher.getTaskAssigneeCandidateInstance(userTask, context);
     }
 
 

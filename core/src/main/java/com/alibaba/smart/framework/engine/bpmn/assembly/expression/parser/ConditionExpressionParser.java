@@ -49,14 +49,9 @@ public class ConditionExpressionParser extends AbstractElementParser<ConditionEx
 
         String finalExpressionType = conditionExpression.getExpressionType();
         if(null == finalExpressionType){
-            throw new EngineException("group should not be empty for expression content:"+ finalExpressionType);
+            throw new EngineException("expression type should not be empty for expression content:"+ content);
         }
 
-//        Script script = new Script();
-//        script.setType(group);
-//        script.setContent(content);
-//        conditionExpression.setHandler(script);
-        // this.skipToEndElement(reader);
         return conditionExpression;
 
     }

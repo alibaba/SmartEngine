@@ -2,10 +2,10 @@ package com.alibaba.smart.framework.engine.persister.mongo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.constant.AssigneeTypeConstant;
+import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 
@@ -15,7 +15,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateIn
 public class DefaultTaskAssigneeDispatcher implements TaskAssigneeDispatcher {
 
     @Override
-    public List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity,Map<String,Object> request) {
+    public List<TaskAssigneeCandidateInstance> getTaskAssigneeCandidateInstance(Activity activity, ExecutionContext context) {
         List<TaskAssigneeCandidateInstance> taskAssigneeCandidateInstanceList= new ArrayList<TaskAssigneeCandidateInstance>();
 
         TaskAssigneeCandidateInstance taskAssigneeCandidateInstance = new TaskAssigneeCandidateInstance();
