@@ -60,7 +60,7 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
 
             for (TaskAssigneeEntity entity: taskAssigneeEntityList) {
                 TaskAssigneeInstance taskAssigneeInstance = buildTaskAssigneeInstance(entity);
-                List<TaskAssigneeInstance> assigneeListForTaskInstance = assigneeMap.get(entity.getTaskInstanceId());
+                List<TaskAssigneeInstance> assigneeListForTaskInstance = assigneeMap.get(entity.getTaskInstanceId().toString());
                 if (assigneeListForTaskInstance == null) {
                     assigneeListForTaskInstance = new ArrayList<TaskAssigneeInstance>();
                     assigneeMap.put(entity.getTaskInstanceId().toString(), assigneeListForTaskInstance);
