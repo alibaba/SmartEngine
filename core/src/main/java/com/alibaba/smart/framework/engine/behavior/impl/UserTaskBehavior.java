@@ -179,20 +179,8 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
             this.processEngineConfiguration);
 
-//        TaskInstanceStorage taskInstanceStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(
-//                ExtensionConstant.COMMON,TaskInstanceStorage.class);
-//        List<TaskInstance> allTaskInstanceList = UserTaskBehaviorHelper.queryAllTaskInstanceList(executionInstance, processEngineConfiguration, taskInstanceStorage);
-
-
         // 针对顺序会签,这里totalInstanceCount 为目前已经创建出来的count,未来还会补偿新增; 但是针对非顺序会签,则是最终的全量,不会再变.
         Integer totalInstanceCount  = totalExecutionInstanceList.size();
-
-
-//        if(multiInstanceLoopCharacteristics.isSequential()){
-//            totalInstanceCount = allTaskInstanceList.size();
-//        }else {
-//        }
-
         Integer passedTaskInstanceCount = 0;
         Integer rejectedTaskInstanceCount = 0;
 
