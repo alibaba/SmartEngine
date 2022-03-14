@@ -64,16 +64,12 @@ public abstract  class CommonServiceHelper {
                                                    ProcessEngineConfiguration processEngineConfiguration) {
 
 
-        ProcessInstance newProcessInstance ;
-
         //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
         ProcessInstanceStorage processInstanceStorage = annotationScanner.getExtensionPoint(
             ExtensionConstant.COMMON,ProcessInstanceStorage.class);
 
-
-        newProcessInstance =  processInstanceStorage.insert(processInstance, processEngineConfiguration);
-
+        ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance, processEngineConfiguration);
 
         persisteVariableInstanceIfPossible(request, processEngineConfiguration,
             newProcessInstance, AdHocConstant.DEFAULT_ZERO_VALUE);

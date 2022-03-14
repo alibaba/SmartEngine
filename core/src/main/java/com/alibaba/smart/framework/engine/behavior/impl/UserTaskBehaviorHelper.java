@@ -171,6 +171,8 @@ public class UserTaskBehaviorHelper {
 
                 TaskInstance taskInstance = taskInstanceFactory.create(userTask, newExecutionInstance, context);
                 taskInstance.setPriority(taskAssigneeCandidateInstance.getPriority());
+
+                //reAssign
                 taskInstance = taskInstanceStorage.insert(taskInstance, processEngineConfiguration);
 
                 List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);

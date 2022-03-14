@@ -188,8 +188,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
             taskInstance.setClaimTime(claimTime);
         }
 
+        //reAssign
+        taskInstance = taskInstanceStorage.insert(taskInstance,processEngineConfiguration);
 
-        taskInstanceStorage.insert(taskInstance,processEngineConfiguration);
         return taskInstance;
     }
 
