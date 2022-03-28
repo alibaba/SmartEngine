@@ -32,9 +32,9 @@ SmartEngine is released under the Apache 2.0 license.
 ## Contact
 
 
-| DingDing Group                 | GitHub issues | WeChat Id  |
+| DingTalk Group Id                | GitHub issues | WeChat Id  |
 | ------------------------------ | ------------- | ---------- |
-| SmartEngineOpenSourceCommunity | [Issues]      | geecoodeer |
+| 31953929 | [Issues]      | geecoodeer |
 
 [issues]: https://github.com/alibaba/SmartEngine/issues
 
