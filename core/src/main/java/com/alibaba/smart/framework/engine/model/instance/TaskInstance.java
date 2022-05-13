@@ -39,6 +39,11 @@ public interface TaskInstance extends LifeCycleInstance {
 
     String getStatus();
 
+
+    /**
+     * @see com.alibaba.smart.framework.engine.constant.TaskInstanceConstant
+     * @param status
+     */
     void setStatus(String status);
 
     String getTag();

@@ -40,6 +40,6 @@ public class ThreadPoolUtil {
     public static ExecutorService createNewDefaultThreadPool(String poolName) {
         return new ThreadPoolExecutor(CORE_THREAD_SIZE, MAXIMUM_POOL_SIZE,
             KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(BUFFER_SIZE),
-            new DefaultThreadFactory(poolName), new ThreadPoolExecutor.CallerRunsPolicy());
+            new DefaultThreadFactory(poolName), new ThreadPoolExecutor.AbortPolicy());
     }
 }
