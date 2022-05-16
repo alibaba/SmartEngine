@@ -14,10 +14,6 @@ import org.slf4j.LoggerFactory;
 public abstract class ExpressionUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpressionUtil.class);
 
-
-    private static final String PACKAGE_NAME = "com.alibaba.smart.framework.engine.common.expression.evaluator.";
-    private static final String EXPRESSION_EVALUATOR = "ExpressionEvaluator";
-
     public static Boolean eval(ExecutionContext context, ConditionExpression conditionExpression) {
         String type = conditionExpression.getExpressionType();
 
@@ -47,7 +43,7 @@ public abstract class ExpressionUtil {
         ExpressionEvaluator expressionEvaluator = processEngineConfiguration.getExpressionEvaluator();
         Object result = expressionEvaluator.eval(expression, requestContext, configurationOption.isEnabled());
 
-        LOGGER.info("expressionEvaluator.result result is {}, each param is {} {} ",result,expression,requestContext);
+        LOGGER.debug("expressionEvaluator.result result is {}, each param is {} {} ",result,expression,requestContext);
 
         return result;
 
