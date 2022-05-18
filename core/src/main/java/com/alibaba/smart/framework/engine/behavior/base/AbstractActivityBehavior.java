@@ -158,7 +158,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
                 }
             }else {
 
-                 ExclusiveGatewayBehaviorHelper.chooseOnlyOne(context, outcomeTransitions);
+                 ExclusiveGatewayBehaviorHelper.chooseOnlyOne(pvmActivity,context, outcomeTransitions);
 
             }
         }

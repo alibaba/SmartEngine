@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smartengine.org/schema/process"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" targetNamespace="smart">
+    <process id="DefaultSequenceFlow" isExecutable="false">
+        <startEvent id="startEvent"/>
+
+        <sequenceFlow id="seq0" sourceRef="startEvent" targetRef="exclusiveGateway"/>
+
+        <exclusiveGateway id="exclusiveGateway" default="toServiceTask1"/>
+
+        <sequenceFlow id="toServiceTask0" sourceRef="exclusiveGateway" targetRef="serviceTask0">
+            <conditionExpression type="mvel"><![CDATA[route.equals("toServiceTask0")]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="toServiceTask1" sourceRef="exclusiveGateway" targetRef="serviceTask1">
+            <conditionExpression type="mvel"><![CDATA[route.equals("toServiceTask1")]]></conditionExpression>
+        </sequenceFlow>
+
+        <serviceTask id="serviceTask0" />
+
+        <serviceTask id="serviceTask1"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.SimpleServiceTaskDelegation"/>
+
+        <sequenceFlow id="toEndEvent0" sourceRef="serviceTask0" targetRef="endEvent"/>
+        <sequenceFlow id="toEndEvent1" sourceRef="serviceTask1" targetRef="endEvent"/>
+
+        <endEvent id="endEvent"/>
+
+    </process>
+</definitions>

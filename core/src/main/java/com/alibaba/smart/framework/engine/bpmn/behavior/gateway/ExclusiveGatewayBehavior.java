@@ -31,7 +31,7 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<Exclusive
 
             if( outcomeTransitions.size() >=2){
 
-                ExclusiveGatewayBehaviorHelper.chooseOnlyOne(context, outcomeTransitions);
+                ExclusiveGatewayBehaviorHelper.chooseOnlyOne(  pvmActivity ,context, outcomeTransitions);
 
             }else {
                 throw new EngineException("the outcomeTransitions.size() should >= 2");

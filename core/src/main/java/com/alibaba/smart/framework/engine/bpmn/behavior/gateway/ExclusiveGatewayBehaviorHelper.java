@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -14,7 +16,11 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
  */
 public class ExclusiveGatewayBehaviorHelper {
 
-    public static void chooseOnlyOne(ExecutionContext context, Map<String, PvmTransition> outcomeTransitions) {
+    private static final String DEFAULT = "default";
+
+    public static void chooseOnlyOne(PvmActivity pvmActivity , ExecutionContext context, Map<String, PvmTransition> outcomeTransitions) {
+
+        String processDefinitionActivityId = pvmActivity.getModel().getId();
 
         List<PvmTransition> matchedTransitions = new ArrayList<PvmTransition>(outcomeTransitions.size());
 
@@ -26,6 +32,31 @@ public class ExclusiveGatewayBehaviorHelper {
             if (matched) {
                 matchedTransitions.add(pendingTransition);
             }
+
+        }
+
+        //如果都没匹配到,就使用DefaultSequenceFlow
+        if(0 == matchedTransitions.size()){
+
+            Map<String, String> properties = pvmActivity.getModel().getProperties();
+            if(MapUtil.isNotEmpty(properties)){
+                String defaultSeqFLowId = properties.get(DEFAULT);
+                if(StringUtil.isNotEmpty(defaultSeqFLowId)){
+                    PvmTransition pvmTransition = outcomeTransitions.get(defaultSeqFLowId);
+                    if (null != pvmTransition){
+                        matchedTransitions.add(pvmTransition);
+                    }else {
+                        throw new EngineException("No default sequence flow found,check activity id :"+processDefinitionActivityId);
+                    }
+                }else{
+                    // do nothing
+                }
+
+            }else{
+                throw new EngineException("properties can not be empty,  check activity id :"+processDefinitionActivityId);
+
+            }
+
 
         }
 
