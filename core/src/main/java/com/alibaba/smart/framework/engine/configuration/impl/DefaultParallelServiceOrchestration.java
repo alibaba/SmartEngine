@@ -108,7 +108,10 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
 
     }
 
-    private PvmActivity initMultiTaskRequestAndFindOutJoinActivity(ExecutionContext context, ContextFactory contextFactory, List<PvmActivityTask> pvmActivityTaskList, Set<Entry<String, PvmTransition>> entries) {
+    /**
+     *  这个为protected ,意图是: 有些分布式场景,需要全链路打印日志,这里建议有这方面需求的自定义实现 PvmActivityTask ,传入相关的Context 进来即可.
+     */
+    protected PvmActivity initMultiTaskRequestAndFindOutJoinActivity(ExecutionContext context, ContextFactory contextFactory, List<PvmActivityTask> pvmActivityTaskList, Set<Entry<String, PvmTransition>> entries) {
 
         PvmActivity finalJoinParallelGateWayPvmActivity = null;
         for (Entry<String, PvmTransition> pvmTransitionEntry : entries) {
