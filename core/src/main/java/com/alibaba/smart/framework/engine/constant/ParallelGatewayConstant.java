@@ -25,7 +25,7 @@ public final class ParallelGatewayConstant {
     */
    public static final String POOL_NAME = "poolName";
    /**
-    * 是否超时异常时跳过
+    * 当超时异常时,是否跳过
     */
    public static final String SKIP_TIMEOUT_EXCEPTION = "skipTimeoutExp";
 

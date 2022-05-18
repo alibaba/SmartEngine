@@ -1,8 +1,8 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smartengine.org/schema/process" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="smart">
     <process id="parallel" isExecutable="true">
         <startEvent id="start" name="开始"/>
-        <parallelGateway id="fork" name="并行事件"/>
-        <parallelGateway id="join" name="并行事件"/>
+        <parallelGateway id="fork" name="Fork事件"/>
+        <parallelGateway id="join" name="Join事件"/>
         <serviceTask id="service1" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.AServiceTaskOrchestrationDelegation" />
         <serviceTask id="service2" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.AServiceTaskOrchestrationDelegation" />
         <serviceTask id="service3" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.BServiceTaskOrchestrationDelegation" />

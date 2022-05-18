@@ -134,7 +134,7 @@ public interface ProcessEngineConfiguration {
     TableSchemaStrategy getTableSchemaStrategy();
 
     /**
-     * 目前仅用于并发执行并行网关的fork行为。
+     * 仅用于并行网关的并发fork行为。
      * @param executorService
      */
     void setExecutorService(ExecutorService executorService);
