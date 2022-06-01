@@ -165,4 +165,31 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
 
         return Collections.emptyList();
     }
+
+    @Override
+    public List<ExecutionInstance> findAll(String processInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
+        TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
+        String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where(PROCESS_INSTANCE_ID).is(processInstanceId));
+
+        query.with( new Sort(Sort.Direction.ASC, GMT_CREATE));
+
+        List<ExecutionInstanceEntity> entityList = mongoTemplate.find(query,ExecutionInstanceEntity.class,collectionName);
+
+        if(null != entityList){
+            List<ExecutionInstance> instanceList = new ArrayList<ExecutionInstance>(entityList.size());
+
+            for (ExecutionInstanceEntity entity : entityList) {
+                ExecutionInstance instance = buildInstance(entity);
+                instanceList.add(instance);
+            }
+
+            return instanceList;
+        }
+
+        return Collections.emptyList();
+    }
 }

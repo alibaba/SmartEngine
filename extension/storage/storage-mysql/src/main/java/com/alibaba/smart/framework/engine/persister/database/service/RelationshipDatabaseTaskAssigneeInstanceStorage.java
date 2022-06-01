@@ -41,6 +41,23 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
     }
 
     @Override
+    public List<TaskAssigneeInstance> findAll(String processInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+        TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) processEngineConfiguration.getInstanceAccessor().access("taskAssigneeDAO");
+        List<TaskAssigneeEntity> taskAssigneeEntityList =  taskAssigneeDAO.findAllTaskAssignee(Long.valueOf(processInstanceId));
+
+        List<TaskAssigneeInstance> taskAssigneeInstanceList= null;
+        if(null != taskAssigneeEntityList){
+            taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(taskAssigneeEntityList.size());
+            for (TaskAssigneeEntity taskAssigneeEntity : taskAssigneeEntityList) {
+                TaskAssigneeInstance taskAssigneeInstance = buildTaskAssigneeInstance(taskAssigneeEntity);
+                taskAssigneeInstanceList.add(taskAssigneeInstance);
+            }
+        }
+
+        return taskAssigneeInstanceList;
+    }
+
+    @Override
     public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,
                                                                               ProcessEngineConfiguration processEngineConfiguration) {
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) processEngineConfiguration.getInstanceAccessor().access("taskAssigneeDAO");
@@ -133,9 +150,7 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) processEngineConfiguration.getInstanceAccessor().access("taskAssigneeDAO");
         TaskAssigneeEntity taskAssigneeEntity =  taskAssigneeDAO.findOne(Long.valueOf(taskAssigneeInstanceId));
 
-        TaskAssigneeInstance taskAssigneeInstance = buildTaskAssigneeInstance(taskAssigneeEntity);
-
-        return taskAssigneeInstance;
+        return buildTaskAssigneeInstance(taskAssigneeEntity);
     }
 
     private TaskAssigneeInstance buildTaskAssigneeInstance(TaskAssigneeEntity taskAssigneeEntity) {

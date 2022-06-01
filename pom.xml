@@ -72,12 +72,10 @@
 
     <modules>
         <module>core</module>
-
         <module>extension/storage/storage-common</module>
         <module>extension/storage/storage-custom</module>
         <module>extension/storage/storage-mysql</module>
         <module>extension/storage/storage-mongodb</module>
-
         <module>extension/retry/retry-common</module>
         <module>extension/retry/retry-custom</module>
         <module>extension/retry/retry-mysql</module>

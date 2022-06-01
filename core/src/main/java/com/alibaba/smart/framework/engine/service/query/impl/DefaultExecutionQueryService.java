@@ -42,6 +42,11 @@ public class DefaultExecutionQueryService implements ExecutionQueryService, Life
         return executionInstanceStorage.findActiveExecution(processInstanceId, processEngineConfiguration);
     }
 
+    @Override
+    public List<ExecutionInstance> findAll(String processInstanceId) {
+        return executionInstanceStorage.findAll(processInstanceId, processEngineConfiguration);
+    }
+
     private ProcessEngineConfiguration processEngineConfiguration;
 
     @Override

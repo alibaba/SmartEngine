@@ -14,4 +14,6 @@ public interface TaskAssigneeQueryService {
 
     Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList);
 
+    List<TaskAssigneeInstance> findAll(String processInstanceId);
+
 }

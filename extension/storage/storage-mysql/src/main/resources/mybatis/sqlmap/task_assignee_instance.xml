@@ -40,6 +40,12 @@
         from se_task_assignee_instance where task_instance_id=#{taskInstanceId}
     </select>
 
+    <select id="findAllTaskAssignee" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity">
+        select
+        <include refid="baseColumn"/>
+        from se_task_assignee_instance where process_instance_id=#{processInstanceId}
+    </select>
+
     <select id="findListForInstanceList" parameterType="java.util.List" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity">
         select
         <include refid="baseColumn"/>

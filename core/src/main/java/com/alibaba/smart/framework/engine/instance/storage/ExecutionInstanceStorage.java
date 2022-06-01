@@ -29,4 +29,6 @@ public interface ExecutionInstanceStorage {
     List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId,
                                                      ProcessEngineConfiguration processEngineConfiguration);
 
+    List<ExecutionInstance> findAll(String processInstanceId,
+                                   ProcessEngineConfiguration processEngineConfiguration);
 }
