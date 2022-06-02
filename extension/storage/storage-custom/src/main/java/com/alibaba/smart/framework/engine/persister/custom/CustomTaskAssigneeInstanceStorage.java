@@ -25,11 +25,6 @@ public class CustomTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
     }
 
     @Override
-    public List<TaskAssigneeInstance> findAll(String processInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
-        return null;
-    }
-
-    @Override
     public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,
                                                                               ProcessEngineConfiguration processEngineConfiguration) {
         return null;

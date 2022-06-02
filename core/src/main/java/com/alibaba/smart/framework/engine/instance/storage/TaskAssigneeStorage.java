@@ -13,9 +13,6 @@ public interface TaskAssigneeStorage {
     List<TaskAssigneeInstance> findList(String taskInstanceId,
                                         ProcessEngineConfiguration processEngineConfiguration);
 
-    List<TaskAssigneeInstance> findAll(String processInstanceId,
-                                    ProcessEngineConfiguration processEngineConfiguration);
-
     Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,
                                                                        ProcessEngineConfiguration processEngineConfiguration) ;
 

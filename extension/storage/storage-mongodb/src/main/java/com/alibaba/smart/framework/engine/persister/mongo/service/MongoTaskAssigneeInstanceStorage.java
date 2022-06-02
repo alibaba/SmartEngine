@@ -225,33 +225,6 @@ public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
     }
 
-    @Override
-    public List<TaskAssigneeInstance> findAll(String processInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
-        MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
-        TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
-        String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
-
-        Query query = new Query();
-
-        query.addCriteria(Criteria.where("processInstanceId").is(processInstanceId));
-
-        List<TaskAssigneeEntity> entityList = mongoTemplate.find(query,TaskAssigneeEntity.class,collectionName);
-
-
-        if(null != entityList){
-            List<TaskAssigneeInstance> instanceList = new ArrayList<TaskAssigneeInstance>(entityList.size());
-
-            for (TaskAssigneeEntity entity : entityList) {
-                TaskAssigneeInstance instance = buildInstance(entity);
-                instanceList.add(instance);
-            }
-
-            return instanceList;
-        }
-
-        return Collections.emptyList();
-    }
-
     private Query buildQuery(String taskInstanceId) {
         Query query = new Query();
 
