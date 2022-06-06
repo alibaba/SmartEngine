@@ -51,6 +51,7 @@ public class DefaultTaskAssigneeQueryService implements TaskAssigneeQueryService
         return taskAssigneeStorage.findAssigneeOfInstanceList(taskInstanceIdList,processEngineConfiguration );
     }
 
+
     @Override
     public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
         this.processEngineConfiguration = processEngineConfiguration;
