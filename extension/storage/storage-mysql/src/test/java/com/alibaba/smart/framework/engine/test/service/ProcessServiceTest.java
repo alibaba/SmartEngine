@@ -218,8 +218,6 @@ public class ProcessServiceTest extends DatabaseBaseTestCase {
         Assert.assertEquals(InstanceStatus.aborted.name(), taskInstance.getStatus());
         Assert.assertEquals("abort_tag", taskInstance.getTag());
 
-        List<TaskAssigneeInstance> taskAssigneeInstances = taskAssigneeQueryService.findAll(processInstance.getInstanceId());
-        Assert.assertEquals(3,taskAssigneeInstances.size());
     }
 
     @Test
