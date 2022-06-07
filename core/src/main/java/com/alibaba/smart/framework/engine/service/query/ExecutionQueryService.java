@@ -13,4 +13,11 @@ public interface ExecutionQueryService {
 
     List<ExecutionInstance> findActiveExecutionList(String processInstanceId);
 
+    /**
+     * 默认按照时间降序
+     * @param processInstanceId
+     * @return
+     */
+    List<ExecutionInstance> findAll(String processInstanceId);
+
 }

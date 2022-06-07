@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TaskAssigneeDAO  {
 
-
     List<TaskAssigneeEntity> findList(Long  taskInstanceId);
 
     List<TaskAssigneeEntity> findListForInstanceList(List<Long> taskInstanceIdList);

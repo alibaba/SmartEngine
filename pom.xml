@@ -8,7 +8,7 @@
     <!--  mvn versions:set -DnewVersion=2.5.4-SNAPSHOT -DgenerateBackupPoms=false  -->
     <!--  mvn versions:set -DnewVersion=2.6.3 -DgenerateBackupPoms=false  -->
 
-    <version>2.6.3</version>
+    <version>2.6.4-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
@@ -77,7 +77,7 @@
         <module>extension/storage/storage-custom</module>
         <module>extension/storage/storage-mysql</module>
         <module>extension/storage/storage-mongodb</module>
-
+        
         <module>extension/retry/retry-common</module>
         <module>extension/retry/retry-custom</module>
         <module>extension/retry/retry-mysql</module>
