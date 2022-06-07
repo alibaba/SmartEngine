@@ -27,10 +27,7 @@ import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStor
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
-import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
-import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.model.instance.*;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.util.ObjUtil;
@@ -71,24 +68,24 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
 
     @Override
-    public void complete(String taskId, Map<String, Object> request, Map<String, Object> response) {
+    public ProcessInstance complete(String taskId, Map<String, Object> request, Map<String, Object> response) {
 
 
         TaskInstance taskInstance = taskInstanceStorage.find(taskId,processEngineConfiguration );
         MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
             request, taskInstanceStorage, processEngineConfiguration);
 
-        executionCommandService.signal(taskInstance.getExecutionInstanceId(), request,response);
+       return  executionCommandService.signal(taskInstance.getExecutionInstanceId(), request,response);
 
     }
 
     @Override
-    public void complete(String taskId, Map<String, Object> request) {
-        this.complete(taskId,request,null);
+    public ProcessInstance complete(String taskId, Map<String, Object> request) {
+      return   this.complete(taskId,request,null);
     }
 
     @Override
-    public void complete(String taskId, String userId, Map<String, Object> request) {
+    public ProcessInstance complete(String taskId, String userId, Map<String, Object> request) {
         if(null == request){
             request = new HashMap<String, Object>();
         }
@@ -96,7 +93,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
         //TUNE check privilege
 
-        complete(  taskId, request);
+      return   complete(  taskId, request);
     }
 
     @Override
@@ -151,9 +148,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
 
         taskInstance.setStatus(taskInstanceStatus);
-        String id = idGenerator.getId();
-        taskInstance.setInstanceId(id);
-
+        idGenerator.generate(taskInstance);
 
         if(null != request){
 
@@ -207,7 +202,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         taskAssigneeInstance.setAssigneeId(taskAssigneeCandidateInstance.getAssigneeId());
         taskAssigneeInstance.setAssigneeType(taskAssigneeCandidateInstance.getAssigneeType());
 
-        taskAssigneeInstance.setInstanceId(processEngineConfiguration.getIdGenerator().getId());
+        processEngineConfiguration.getIdGenerator().generate(taskAssigneeInstance);
 
         Date currentDate = DateUtil.getCurrentDate();
         taskAssigneeInstance.setStartTime(currentDate);

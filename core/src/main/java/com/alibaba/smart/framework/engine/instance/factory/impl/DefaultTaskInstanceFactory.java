@@ -30,7 +30,7 @@ public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
 
         IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
 
-        taskInstance.setInstanceId(idGenerator.getId());
+        idGenerator.generate(taskInstance);
         taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
         taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
         taskInstance.setProcessDefinitionActivityId(activity.getId());

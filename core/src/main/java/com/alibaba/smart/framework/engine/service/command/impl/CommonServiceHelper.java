@@ -99,7 +99,7 @@ public abstract  class CommonServiceHelper {
                 Class type = value.getClass();
 
                 VariableInstance variableInstance = new DefaultVariableInstance();
-                variableInstance.setInstanceId(processEngineConfiguration.getIdGenerator().getId());
+                processEngineConfiguration.getIdGenerator().generate(variableInstance);
                 variableInstance.setProcessInstanceId(newProcessInstance.getInstanceId());
                 variableInstance.setExecutionInstanceId(executionInstanceId);
                 variableInstance.setFieldKey(key);

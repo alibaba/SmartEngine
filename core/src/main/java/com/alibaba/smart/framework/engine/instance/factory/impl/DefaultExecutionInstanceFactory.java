@@ -22,7 +22,7 @@ public class DefaultExecutionInstanceFactory implements ExecutionInstanceFactory
     public ExecutionInstance create(ActivityInstance activityInstance,ExecutionContext executionContext) {
         DefaultExecutionInstance defaultExecutionInstance = new DefaultExecutionInstance();
         IdGenerator idGenerator = executionContext.getProcessEngineConfiguration().getIdGenerator();
-        defaultExecutionInstance.setInstanceId(idGenerator.getId());
+        idGenerator.generate(defaultExecutionInstance);
         defaultExecutionInstance.setProcessDefinitionActivityId(activityInstance.getProcessDefinitionActivityId());
         defaultExecutionInstance.setActivityInstanceId(activityInstance.getInstanceId());
         defaultExecutionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());

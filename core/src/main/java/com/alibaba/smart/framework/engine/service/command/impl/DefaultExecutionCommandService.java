@@ -239,14 +239,15 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         activityInstance.setProcessDefinitionActivityId(processDefinitionActivityId);
         activityInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
-        activityInstance.setInstanceId(idGenerator.getId());
+        idGenerator.generate(activityInstance);
+
 
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
         executionInstance.setProcessInstanceId(processInstance.getInstanceId());
         executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
         executionInstance.setProcessDefinitionActivityId(processDefinitionActivityId);
         executionInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
-        executionInstance.setInstanceId(idGenerator.getId());
+        idGenerator.generate(executionInstance);
         executionInstance.setActive(true);
 
         List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>();
@@ -365,7 +366,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
         executionInstance.setProcessDefinitionActivityId(activityInstance.getProcessDefinitionActivityId());
         executionInstance.setProcessDefinitionIdAndVersion(activityInstance.getProcessDefinitionIdAndVersion());
-        executionInstance.setInstanceId(idGenerator.getId());
+        idGenerator.generate(executionInstance);
         executionInstance.setActive(true);
         
         if(CollectionUtil.isNotEmpty(activityInstance.getExecutionInstanceList())) {

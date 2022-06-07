@@ -1,5 +1,9 @@
+# 2.6.4
+1. [微型非兼容升级] 修改IdGenerator 的实现策略,允许使用类似mysql的自增主键. 未来实现接口时,根据业务需要,决定是否设置InstanceId的值. 一般使用分布式id生成策略时,则需要手动给instance赋值;使用表自增主键时,则不需要赋值. 
+2. [微型非兼容升级] 修改TaskCommandService#complete的返回值,从void类型改为ProcessInstance
+
 # 2.6.3
-1. 微改进,支持了DefaultSequenceFlow 特性;重构了并行网关下的并发服务编排的逻辑,对可读性做了重点优化.
+1. 微改进,支持了互斥网关的 DefaultSequenceFlow 特性;重构了并行网关下的并发服务编排的逻辑,对可读性做了重点优化.
 
 # 2.6.2
 1. [微型非兼容升级]修改TaskAssigneeDispatcher#getTaskAssigneeCandidateInstance 第二个参数,将Map类型修改为Context,便于获得流程定义参数.

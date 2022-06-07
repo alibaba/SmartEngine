@@ -23,6 +23,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ExtensionElementContain
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.Instance;
 import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
 import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
@@ -97,13 +98,15 @@ public class ParallelGateWayListenerIssueConfiguration {
     public class TestIdGenerator implements IdGenerator {
 
         @Override
-        synchronized public String getId() {
+        synchronized public void generate(Instance instance) {
             try {
                 Thread.sleep(1L);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return String.valueOf(System.currentTimeMillis());
+            String s = String.valueOf(System.currentTimeMillis());
+            instance.setInstanceId(s);
+//            return s;
         }
     }
 

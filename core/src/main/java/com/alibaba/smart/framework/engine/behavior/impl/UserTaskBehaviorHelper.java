@@ -93,7 +93,7 @@ public class UserTaskBehaviorHelper {
         TaskAssigneeInstance taskAssigneeInstance = new DefaultTaskAssigneeInstance();
         taskAssigneeInstance.setAssigneeId(taskAssigneeCandidateInstance.getAssigneeId());
         taskAssigneeInstance.setAssigneeType(taskAssigneeCandidateInstance.getAssigneeType());
-        taskAssigneeInstance.setInstanceId(idGenerator.getId());
+        idGenerator.generate(taskAssigneeInstance);
         taskAssigneeInstanceList.add(taskAssigneeInstance);
     }
 

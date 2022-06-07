@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.service.command;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
+import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 
@@ -14,11 +15,11 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
  */
 public interface TaskCommandService {
 
-    void complete(String taskId, Map<String, Object> request);
+    ProcessInstance complete(String taskId, Map<String, Object> request);
 
-    void complete(String taskId, String userId, Map<String, Object> request);
+    ProcessInstance complete(String taskId, String userId, Map<String, Object> request);
 
-    void complete(String taskId,  Map<String, Object> request, Map<String, Object> response);
+    ProcessInstance complete(String taskId, Map<String, Object> request, Map<String, Object> response);
 
     void transfer(String taskId, String fromUserId, String toUserId);
 

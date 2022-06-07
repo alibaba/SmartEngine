@@ -23,7 +23,7 @@ public class DefaultActivityInstanceFactory implements ActivityInstanceFactory {
         DefaultActivityInstance activityInstance = new DefaultActivityInstance();
 
         IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
-        activityInstance.setInstanceId(idGenerator.getId());
+        idGenerator.generate(activityInstance);
         activityInstance.setStartTime(DateUtil.getCurrentDate());
         activityInstance.setProcessInstanceId(context.getProcessInstance().getInstanceId());
         activityInstance.setProcessDefinitionIdAndVersion(context.getProcessInstance().getProcessDefinitionIdAndVersion());

@@ -41,8 +41,8 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         DeploymentInstance deploymentInstance  = new DefaultDeploymentInstance();
 
-        String id = processEngineConfiguration.getIdGenerator().getId();
-        deploymentInstance.setInstanceId(id);
+        processEngineConfiguration.getIdGenerator().generate(deploymentInstance);
+
         deploymentInstance.setProcessDefinitionContent(processDefinitionContent);
         deploymentInstance.setProcessDefinitionId(processDefinition.getId());
         deploymentInstance.setProcessDefinitionVersion(processDefinition.getVersion());
