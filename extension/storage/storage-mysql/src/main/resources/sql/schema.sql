@@ -1,7 +1,7 @@
 CREATE TABLE `se_deployment_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK'  ,
-  `gmt_create` datetime NOT NULL   COMMENT 'create time' ,
-  `gmt_modified` datetime NOT NULL  COMMENT 'modification time'  ,
+  `gmt_create` datetime(6) NOT NULL   COMMENT 'create time' ,
+  `gmt_modified` datetime(6) NOT NULL  COMMENT 'modification time'  ,
   `process_definition_id` varchar(255) NOT NULL  COMMENT 'process definition id'  ,
   `process_definition_version` varchar(255) DEFAULT NULL  COMMENT 'process definition version'  ,
   `process_definition_type` varchar(255) DEFAULT NULL  COMMENT 'process definition type'  ,
@@ -18,8 +18,8 @@ CREATE TABLE `se_deployment_instance` (
 
 CREATE TABLE `se_process_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT  COMMENT 'PK'  ,
-  `gmt_create` datetime NOT NULL  COMMENT 'create time' ,
-  `gmt_modified` datetime NOT NULL  COMMENT 'modification time' ,
+  `gmt_create` datetime(6) NOT NULL  COMMENT 'create time' ,
+  `gmt_modified` datetime(6) NOT NULL  COMMENT 'modification time' ,
   `process_definition_id_and_version` varchar(128) NOT NULL  COMMENT 'process definition id and version'  ,
   `process_definition_type` varchar(255) DEFAULT NULL COMMENT 'process definition type'  ,
   `status` varchar(64) NOT NULL COMMENT ' 1.running 2.completed 3.aborted',
@@ -37,8 +37,8 @@ CREATE TABLE `se_process_instance` (
 
 CREATE TABLE `se_activity_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT  COMMENT 'PK'  ,
-  `gmt_create` datetime NOT NULL   COMMENT 'create time' ,
-  `gmt_modified` datetime NOT NULL  COMMENT 'modification time'  ,
+  `gmt_create` datetime(6) NOT NULL   COMMENT 'create time' ,
+  `gmt_modified` datetime(6) NOT NULL  COMMENT 'modification time'  ,
   `process_instance_id` bigint(20) unsigned DEFAULT NULL  COMMENT 'process instance id'  ,
   `process_definition_id_and_version` varchar(255) NOT NULL  COMMENT 'process definition id and version'  ,
   `process_definition_activity_id` varchar(64) NOT NULL COMMENT 'process definition activity id'   ,
@@ -47,8 +47,8 @@ CREATE TABLE `se_activity_instance` (
 
 CREATE TABLE `se_task_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT  COMMENT 'PK'  ,
-  `gmt_create` datetime NOT NULL   COMMENT 'create time' ,
-  `gmt_modified` datetime NOT NULL  COMMENT 'modification time'  ,
+  `gmt_create` datetime(6) NOT NULL   COMMENT 'create time' ,
+  `gmt_modified` datetime(6) NOT NULL  COMMENT 'modification time'  ,
   `process_instance_id` bigint(20) unsigned NOT NULL  COMMENT 'process instance id'  ,
   `process_definition_id_and_version` varchar(128) DEFAULT NULL  COMMENT 'process definition id and version'  ,
   `process_definition_type` varchar(255) DEFAULT NULL  COMMENT 'process definition type'  ,
@@ -59,8 +59,8 @@ CREATE TABLE `se_task_instance` (
   `title` varchar(255) DEFAULT NULL COMMENT 'title'   ,
   `priority` int(11) DEFAULT 500 COMMENT 'priority' ,
   `tag` varchar(255) DEFAULT NULL  COMMENT 'tag'  ,
-  `claim_time` datetime DEFAULT NULL COMMENT 'claim time'   ,
-  `complete_time` datetime DEFAULT NULL COMMENT 'complete time'   ,
+  `claim_time` datetime(6) DEFAULT NULL COMMENT 'claim time'   ,
+  `complete_time` datetime(6) DEFAULT NULL COMMENT 'complete time'   ,
   `status` varchar(255) NOT NULL COMMENT 'status'     ,
   `comment` varchar(255) DEFAULT NULL  COMMENT 'comment'  ,
   `extension` varchar(255) DEFAULT NULL COMMENT 'extension'  ,
@@ -70,8 +70,8 @@ CREATE TABLE `se_task_instance` (
 
 CREATE TABLE `se_execution_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK'   ,
-  `gmt_create` datetime NOT NULL   COMMENT 'create time' ,
-  `gmt_modified` datetime NOT NULL  COMMENT 'modification time'  ,
+  `gmt_create` datetime(6) NOT NULL   COMMENT 'create time' ,
+  `gmt_modified` datetime(6) NOT NULL  COMMENT 'modification time'  ,
   `process_instance_id` bigint(20) unsigned NOT NULL  COMMENT 'process instance id'  ,
   `process_definition_id_and_version` varchar(255) NOT NULL  COMMENT 'process definition id and version'  ,
   `process_definition_activity_id` varchar(255) NOT NULL COMMENT 'process definition activity id'   ,
@@ -83,8 +83,8 @@ CREATE TABLE `se_execution_instance` (
 
 CREATE TABLE `se_task_assignee_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT  COMMENT 'PK'  ,
-  `gmt_create` datetime NOT NULL  COMMENT 'create time'  ,
-  `gmt_modified` datetime NOT NULL   COMMENT 'modification time' ,
+  `gmt_create` datetime(6) NOT NULL  COMMENT 'create time'  ,
+  `gmt_modified` datetime(6) NOT NULL   COMMENT 'modification time' ,
   `process_instance_id` bigint(20) unsigned NOT NULL  COMMENT 'process instance id'  ,
   `task_instance_id` bigint(20) unsigned NOT NULL  COMMENT 'task instance id'  ,
   `assignee_id` varchar(255) NOT NULL  COMMENT 'assignee id'  ,
@@ -95,8 +95,8 @@ CREATE TABLE `se_task_assignee_instance` (
 
 CREATE TABLE `se_variable_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT  COMMENT 'PK'  ,
-  `gmt_create` datetime NOT NULL  COMMENT 'create time'  ,
-  `gmt_modified` datetime NOT NULL  COMMENT 'modification time'  ,
+  `gmt_create` datetime(6) NOT NULL  COMMENT 'create time'  ,
+  `gmt_modified` datetime(6) NOT NULL  COMMENT 'modification time'  ,
   `process_instance_id` bigint(20) unsigned NOT NULL   COMMENT 'process instance id' ,
   `execution_instance_id` bigint(20) unsigned DEFAULT NULL   COMMENT 'execution instance id' ,
   `field_key` varchar(128) NOT NULL   COMMENT 'field key' ,
