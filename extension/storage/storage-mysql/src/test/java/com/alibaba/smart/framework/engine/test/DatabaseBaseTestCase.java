@@ -31,7 +31,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DatabaseBaseTestCase implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
@@ -119,14 +121,8 @@ public class DatabaseBaseTestCase implements ApplicationContextAware {
         @Override
         public Object access(String name) {
 
-            try {
                 Object bean = applicationContext.getBean(name);
                 return bean;
-
-            }catch (NoSuchBeanDefinitionException exception){
-                return ClassUtil.createOrGetInstance(name);
-
-            }
 
         }
 

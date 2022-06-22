@@ -11,12 +11,12 @@
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="debit"></sequenceFlow>
 
         <serviceTask id="debit" name="扣款"
-                     smart:class="com.alibaba.smart.framework.engine.test.process.delegation.DataBaseCreateOrderDelegation"></serviceTask>
+                     smart:class="dataBaseCreateOrderDelegation"></serviceTask>
 
         <sequenceFlow id="flow28" sourceRef="debit" targetRef="checkDebitResult"></sequenceFlow>
 
         <serviceTask id="checkDebitResult" name="查看扣款结果"
-                     smart:class="com.alibaba.smart.framework.engine.test.process.delegation.DataBaseCreateOrderDelegation"></serviceTask>
+                     smart:class="dataBaseCreateOrderDelegation"></serviceTask>
 
         <sequenceFlow id="flow29" sourceRef="checkDebitResult" targetRef="endevent3"></sequenceFlow>
 

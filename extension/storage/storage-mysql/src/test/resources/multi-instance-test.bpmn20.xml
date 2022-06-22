@@ -9,7 +9,7 @@
         <startEvent id="theStart"/>
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="multiUserTask"/>
 
-        <userTask id="multiUserTask" name="My User Task"  smart:class="com.alibaba.smart.framework.engine.test.process.delegation.UserTaskTestDelegation">
+        <userTask id="multiUserTask" name="My User Task"  smart:class="userTaskTestDelegation">
 
             <multiInstanceLoopCharacteristics  isSequential="false">
                 <completionCondition><![CDATA[nrOfCompletedInstances >=1]]></completionCondition>
@@ -23,7 +23,7 @@
         <sequenceFlow id="flow3" sourceRef="normalReceiverTask" targetRef="normalUserTask"/>
 
         <userTask id="normalUserTask" name="Normal User Task"
-                  smart:class="com.alibaba.smart.framework.engine.test.process.delegation.UserTaskTestDelegation">
+                  smart:class="userTaskTestDelegation">
 
         </userTask>
 

@@ -37,7 +37,7 @@
         </sequenceFlow>
 
 
-        <serviceTask id="executeTask" name="ExecuteTask" smart:class="com.alibaba.smart.framework.engine.test.process.delegation.AuditProcessServiceTaskDelegation">
+        <serviceTask id="executeTask" name="ExecuteTask" smart:class="auditProcessServiceTaskDelegation">
         </serviceTask>
 
 
