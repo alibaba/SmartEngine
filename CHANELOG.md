@@ -1,5 +1,5 @@
 # 2.6.4
-1. [微型非兼容升级] 修改IdGenerator 的实现策略,允许使用类似mysql的自增主键. 未来实现接口时,根据业务需要,决定是否设置InstanceId的值. 一般使用分布式id生成策略时,则需要手动给instance赋值;使用表自增主键时,则不需要赋值. 
+1. [微型非兼容升级] 修改IdGenerator 的实现策略, 现在除了实现id策略后,还需要手动给instance 赋值才生效 (使用上有部分退化,为了后续使用表自增主键做准备,以及支持细粒度的id生成策略). 
 2. [微型非兼容升级] 修改TaskCommandService#complete的返回值,从void类型改为ProcessInstance
 
 # 2.6.3

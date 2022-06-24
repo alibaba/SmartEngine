@@ -11,7 +11,7 @@
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="debit"></sequenceFlow>
 
         <receiveTask id="debit" name="扣款"
-                     smart:class="com.alibaba.smart.framework.engine.test.process.delegation.DataBaseCreateOrderDelegation"></receiveTask>
+                     smart:class="dataBaseCreateOrderDelegation"></receiveTask>
 
         <sequenceFlow id="flow29" sourceRef="debit" targetRef="endevent3"></sequenceFlow>
 

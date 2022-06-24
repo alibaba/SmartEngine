@@ -20,10 +20,10 @@
         </sequenceFlow>
 
         <receiveTask id="pre_order" name="pre_order"
-                     smart:class="com.alibaba.smart.framework.engine.test.process.delegation.DataBaseCreateOrderDelegation"></receiveTask>
+                     smart:class="dataBaseCreateOrderDelegation"></receiveTask>
 
         <receiveTask id="formal_order" name="formal_order"
-                     smart:class="com.alibaba.smart.framework.engine.test.process.delegation.DataBaseCreateOrderDelegation"></receiveTask>
+                     smart:class="dataBaseCreateOrderDelegation"></receiveTask>
 
 
         <sequenceFlow id="flow4" sourceRef="pre_order" targetRef="callActivity"></sequenceFlow>
@@ -39,7 +39,7 @@
 
 
         <receiveTask id="end_order" name="结束订单处理"
-                     smart:class="com.alibaba.smart.framework.engine.test.process.delegation.DataBaseCreateOrderDelegation"></receiveTask>
+                     smart:class="dataBaseCreateOrderDelegation"></receiveTask>
 
         <sequenceFlow id="flow7" sourceRef="end_order" targetRef="endevent4"></sequenceFlow>
 

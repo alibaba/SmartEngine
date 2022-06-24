@@ -16,7 +16,7 @@
         <bpmn2:sequenceFlow id="userTaskToServiceTask" sourceRef="userTask1" targetRef="serviceTask"/>
 
 
-        <bpmn2:serviceTask id="serviceTask" name="serviceTask" smart:class="com.alibaba.smart.framework.engine.test.process.delegation.MyExceptionOrderDelegation" />
+        <bpmn2:serviceTask id="serviceTask" name="serviceTask" smart:class="myExceptionOrderDelegation" />
 
         <bpmn2:sequenceFlow id="SequenceFlow_0ujt88d"  sourceRef="serviceTask" targetRef="EndEvent_0obkkv6"/>
 
