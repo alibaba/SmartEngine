@@ -12,7 +12,7 @@
     <!-- #{incomeTransitionId},#{incomeActivityInstanceId}, -->
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity"   keyProperty="id">
         insert into  se_execution_instance(<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},
+        values (#{id}, now(6), now(6), #{processInstanceId}, #{processDefinitionIdAndVersion},
         #{processDefinitionActivityId}, #{activityInstanceId},#{active})
     </insert>
 
@@ -23,7 +23,7 @@
     <update id="update" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
         update  se_execution_instance
         <set>
-            gmt_modified=now()
+            gmt_modified=now(6)
             <if test="active != null">,active = #{active}</if>
         </set>
         where id=#{id}

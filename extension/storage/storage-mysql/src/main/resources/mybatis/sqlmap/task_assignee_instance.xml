@@ -10,7 +10,7 @@
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity"   keyProperty="id">
         insert into se_task_assignee_instance(<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{processInstanceId},
+        values (#{id}, now(6), now(6), #{processInstanceId},
         #{taskInstanceId},#{assigneeId},#{assigneeType})
     </insert>
 
@@ -21,7 +21,7 @@
     <update id="update" >
         update se_task_assignee_instance
         <set>
-            gmt_modified=now()
+            gmt_modified=now(6)
             <if test="assigneeId != null">,assignee_id = #{assigneeId}</if>
             <!--<if test="assigneeType != null">,assignee_type = #{assigneeType}</if>-->
         </set>

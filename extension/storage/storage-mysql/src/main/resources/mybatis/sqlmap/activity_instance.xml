@@ -10,7 +10,7 @@
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity"  keyProperty="id">
         insert into  se_activity_instance(<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{processInstanceId}, #{processDefinitionIdAndVersion},
+        values (#{id}, now(6), now(6), #{processInstanceId}, #{processDefinitionIdAndVersion},
         #{processDefinitionActivityId})
     </insert>
 
@@ -21,7 +21,7 @@
     <!--     <update id="update" parameterType="ActivityInstanceEntity">
             update  se_activity_instance
             <set>
-                gmt_modified=now()
+                gmt_modified=now(6)
                 <if test="status != null"> ,status = #{status}</if>
                 <if test="parentProcessInstanceId != null"> ,parent_process_instance_id = #{parentProcessInstanceId}</if>
             </set>

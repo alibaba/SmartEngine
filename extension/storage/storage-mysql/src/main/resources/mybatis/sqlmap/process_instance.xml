@@ -10,7 +10,7 @@
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity"   keyProperty="id">
         insert into se_process_instance (<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
+        values (#{id}, now(6), now(6), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
         #{status}, #{parentProcessInstanceId},#{parentExecutionInstanceId}, #{reason}, #{bizUniqueId}, #{title}, #{tag},#{comment})
     </insert>
 
@@ -23,7 +23,7 @@
     <update id="update" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity">
         update se_process_instance
         <set>
-            gmt_modified=now()
+            gmt_modified=now(6)
             <if test="status != null">,status = #{status}</if>
             <if test="parentProcessInstanceId != null">,parent_process_instance_id = #{parentProcessInstanceId}</if>
             <if test="reason != null">,reason = #{reason}</if>
