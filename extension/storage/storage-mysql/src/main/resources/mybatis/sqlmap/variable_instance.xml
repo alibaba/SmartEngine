@@ -10,7 +10,7 @@
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity"   keyProperty="id">
         insert into se_variable_instance (<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{processInstanceId}, #{executionInstanceId},
+        values (#{id}, now(6), now(6), #{processInstanceId}, #{executionInstanceId},
         #{fieldKey},#{fieldType},#{fieldLongValue},#{fieldDoubleValue},#{fieldStringValue} )
     </insert>
 
@@ -21,7 +21,7 @@
     <update id="update" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity">
         update se_variable_instance
         <set>
-            gmt_modified=now()
+            gmt_modified=now(6)
             <if test="fieldLongValue != null">,field_long_value = #{fieldLongValue}</if>
             <if test="fieldDoubleValue != null">,field_double_value = #{fieldDoubleValue}</if>
             <if test="fieldStringValue != null">,field_string_value = #{fieldStringValue}</if>

@@ -27,7 +27,7 @@
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity"  keyProperty="id">
         insert into  se_deployment_instance(<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{processDefinitionId}, #{processDefinitionVersion},#{processDefinitionType},#{processDefinitionCode},
+        values (#{id}, now(6), now(6), #{processDefinitionId}, #{processDefinitionVersion},#{processDefinitionType},#{processDefinitionCode},
         #{processDefinitionName},#{processDefinitionDesc},#{processDefinitionContent},
         #{deploymentUserId},#{deploymentStatus} , #{logicStatus})
     </insert>
@@ -38,7 +38,7 @@
 
     <update id="update"  parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity">
         update se_deployment_instance set
-        gmt_modified = now()
+        gmt_modified = now(6)
         <if test="processDefinitionId != null"> ,process_definition_id = #{processDefinitionId}</if>
         <if test="processDefinitionVersion != null"> ,process_definition_version = #{processDefinitionVersion}</if>
         <if test="processDefinitionType != null"> ,process_definition_type = #{processDefinitionType}</if>
