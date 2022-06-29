@@ -61,12 +61,12 @@ public class ExclusiveGatewayBehaviorHelper {
         }
 
         if(0 == matchedTransitions.size()){
-            throw new EngineException("No Transitions matched,please check input request and condition expression.");
+            throw new EngineException("No Transitions matched,please check input request and condition expression,activity id :"+processDefinitionActivityId);
         }
 
 
         if(1 != matchedTransitions.size()){
-            throw new EngineException("Multiple Transitions matched: "+ matchedTransitions);
+            throw new EngineException("Multiple Transitions matched: "+ matchedTransitions+" ,check activity id :"+processDefinitionActivityId);
         }
 
         for (PvmTransition matchedPvmTransition : matchedTransitions) {
