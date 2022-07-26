@@ -47,6 +47,10 @@ public class MarkDoneUtil {
             taskInstance.setTag(tag);
 
             String claimUserId = ObjUtil.obj2Str(variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID));
+            Date completeTime = ObjUtil.obj2Date(variables.get(RequestMapSpecialKeyConstant.TASK_COMPLETE_TIME));
+            if (completeTime != null ){
+                taskInstance.setCompleteTime(completeTime);
+            }
             taskInstance.setClaimUserId(claimUserId);
             Object o = variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT);
             String comment =  o == null?null:String.valueOf(
