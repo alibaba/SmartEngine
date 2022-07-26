@@ -8,7 +8,7 @@
     <!--  mvn versions:set -DnewVersion=2.5.4-SNAPSHOT -DgenerateBackupPoms=false  -->
     <!--  mvn versions:set -DnewVersion=2.6.4 -DgenerateBackupPoms=false  -->
 
-    <version>2.6.6-SNAPSHOT</version>
+    <version>2.6.5-qianyi</version>
 
     <packaging>pom</packaging>
     <name>Smart Engine</name>
@@ -41,16 +41,16 @@
     </licenses>
 
     <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <name>OSS Snapshots Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <name>OSS Staging Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>nexus-releases</id>
+            <name>corp nexus-releases</name>
+            <url>${repository.release.url}</url>
         </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>corp nexus-snapshot</name>
+            <url>${repository.snapshot.url}</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <properties>
@@ -67,6 +67,8 @@
         <gpg.skip>true</gpg.skip>
         <javadoc.opts>-Xdoclint:none</javadoc.opts>
         <maven.test.skip>true</maven.test.skip>
+        <repository.release.url>http://nexus.iguming.net:50002/repository/maven-releases/</repository.release.url>
+        <repository.snapshot.url>http://nexus.iguming.net:50002/repository/maven-snapshots/</repository.snapshot.url>
 
     </properties>
 
