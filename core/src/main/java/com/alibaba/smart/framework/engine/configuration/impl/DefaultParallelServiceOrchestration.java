@@ -99,7 +99,7 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
                 //join
                 // 在服务编排场景，仅是子线程在执行到最后一个节点后，会进入到并行网关的join节点。CallerThread 不会执行到这里的逻辑。
                 // TUNE 目前重构下来,感觉session 里去setPvmActivity,没啥意义了. 直接根据流程定义中,计算出join节点即可.
-                GatewaySticker.currentSession().setPvmActivity(pvmActivity);
+//                GatewaySticker.currentSession().setPvmActivity(pvmActivity);
 
             } else {
                 throw new EngineException("Should not touch here:" + pvmActivity);

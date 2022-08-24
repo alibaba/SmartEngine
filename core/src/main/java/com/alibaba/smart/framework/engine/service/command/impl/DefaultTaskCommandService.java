@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
@@ -161,33 +162,25 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
             Date completeTime = ObjUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.TASK_COMPLETE_TIME));
             taskInstance.setCompleteTime(completeTime);
 
-            String comment = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT));
-            taskInstance.setComment(comment);
-
-            String extension = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_EXTENSION));
-            taskInstance.setExtension(extension);
-
-            Integer priority = ObjUtil.obj2Integer(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_PRIORITY));
-            taskInstance.setPriority(priority);
-
-            String tag = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG));
-            taskInstance.setTag(tag);
-
-            String title = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_TITLE));
-            taskInstance.setTitle(title);
-
             String claimUserId = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.CLAIM_USER_ID));
             taskInstance.setClaimUserId(claimUserId);
 
             Date claimTime = ObjUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.CLAIM_USER_TIME));
             taskInstance.setClaimTime(claimTime);
+
+            String tag = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG));
+            taskInstance.setTag(tag);
+
         }
+
+        InstanceUtil.enrich(request, taskInstance);
 
         //reAssign
         taskInstance = taskInstanceStorage.insert(taskInstance,processEngineConfiguration);
 
         return taskInstance;
     }
+
 
     @Override
     public void addTaskAssigneeCandidate(String taskId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {

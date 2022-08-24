@@ -2,10 +2,14 @@ package com.alibaba.smart.framework.engine.common.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.util.ObjUtil;
 
 /**
  * Created by 高海军 帝奇 74394 on 2018 August  16:46.
@@ -31,5 +35,25 @@ public abstract class InstanceUtil {
         }
 
         return matchedExecutionInstanceList;
+    }
+
+
+    public  static void enrich(Map<String, Object> request, TaskInstance taskInstance) {
+
+        if(null!= request){
+            String comment = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT));
+            taskInstance.setComment(comment);
+
+            String extension = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_EXTENSION));
+            taskInstance.setExtension(extension);
+
+            Integer priority = ObjUtil.obj2Integer(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_PRIORITY));
+            taskInstance.setPriority(priority);
+
+
+            String title = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_TITLE));
+            taskInstance.setTitle(title);
+        }
+
     }
 }

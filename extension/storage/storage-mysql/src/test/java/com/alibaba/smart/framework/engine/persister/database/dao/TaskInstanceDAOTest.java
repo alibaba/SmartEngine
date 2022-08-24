@@ -1,10 +1,12 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
 
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import lombok.Setter;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,6 +39,7 @@ public class TaskInstanceDAOTest extends BaseElementTest {
         entity.setComment("comment");
         entity.setExtension("extension");
         entity.setTitle("title");
+        entity.setTag("tag");
     }
 
     @Test
@@ -101,5 +104,30 @@ public class TaskInstanceDAOTest extends BaseElementTest {
         Assert.assertEquals("new_extension", result.getExtension());
         Assert.assertEquals("new_title", result.getTitle());
 
+    }
+
+    @Test
+    public void testQuery() {
+        dao.insert(entity);
+        TaskInstanceQueryParam param = new TaskInstanceQueryParam();
+        param.setExtension("extension1");
+        List<TaskInstanceEntity> result = dao.findTaskList(param);
+
+        Assert.assertNotNull(result);
+        Assert.assertTrue(result.size() == 0);
+
+        param = new TaskInstanceQueryParam();
+        param.setExtension("extension");
+        param.setTitle("title");
+        param.setTag("tag");
+        param.setComment("comment");
+        param.setPriority(333);
+        param.setClaimUserId("assign_id");
+
+        result = dao.findTaskList(param);
+
+        Assert.assertNotNull(result);
+        Assert.assertTrue(result.size() == 1);
+        Assert.assertTrue(  result.get(0).getExtension().equals("extension"));
     }
 }

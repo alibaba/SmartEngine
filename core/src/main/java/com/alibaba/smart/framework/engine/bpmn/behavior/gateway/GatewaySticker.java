@@ -16,9 +16,9 @@ public class GatewaySticker {
 
     private static InheritableThreadLocal<Stack<GatewaySticker>> sessionThreadLocal = new InheritableThreadLocal<Stack<GatewaySticker>>();
 
-    @Getter
-    @Setter
-    private  volatile PvmActivity pvmActivity;
+//    @Getter
+//    @Setter
+//    private  volatile PvmActivity pvmActivity;
 
 
     public static GatewaySticker create() {
