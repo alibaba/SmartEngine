@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 
 /**
  * Created by 高海军 帝奇 74394 on  2020-09-21 18:12.
@@ -69,8 +70,13 @@ public class ExclusiveGatewayBehaviorHelper {
             throw new EngineException("Multiple Transitions matched: "+ matchedTransitions+" ,check activity id :"+processDefinitionActivityId);
         }
 
+        //此时,只可能命中唯一的一条路径,进入对应逻辑
         for (PvmTransition matchedPvmTransition : matchedTransitions) {
             PvmActivity target = matchedPvmTransition.getTarget();
+
+            //触发take事件
+            context.getProcessEngineConfiguration().getListenerExecutor().execute(EventConstant.take,pvmActivity.getModel(),context);
+
             target.enter(context);
         }
     }

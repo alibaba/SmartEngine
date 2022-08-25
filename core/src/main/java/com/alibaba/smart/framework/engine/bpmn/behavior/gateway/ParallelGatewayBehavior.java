@@ -23,7 +23,7 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +58,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         //此处，针对基于并行网关的服务编排做了特殊优化处理。
         if(serviceOrchestrationOption.isEnabled()){
 
-            fireEvent(context,pvmActivity, PvmEventConstant.ACTIVITY_START);
+            fireEvent(context,pvmActivity, EventConstant.ACTIVITY_START);
 
             ParallelServiceOrchestration parallelServiceOrchestration = context.getProcessEngineConfiguration()
                 .getParallelServiceOrchestration();
@@ -92,7 +92,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         if (outComeTransitionSize >= 2 && inComeTransitionSize == 1) {
             //fork
 
-            fireEvent(context,pvmActivity, PvmEventConstant.ACTIVITY_START);
+            fireEvent(context,pvmActivity, EventConstant.ACTIVITY_START);
 
 
             ExecutorService executorService = context.getProcessEngineConfiguration().getExecutorService();

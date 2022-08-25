@@ -17,7 +17,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 import com.alibaba.smart.framework.engine.test.delegation.OrchestrationAdapter;
 import com.alibaba.smart.framework.engine.test.delegation.OrchestrationAdapterImplement;
 import com.alibaba.smart.framework.engine.util.ClassUtil;
@@ -59,7 +59,7 @@ public class DelegationAndListenerExecutorExtensionTest extends CommonTestCode {
 
         super.processEngineConfiguration.setListenerExecutor(new ListenerExecutor() {
           @Override
-          public void execute(PvmEventConstant event, ExtensionElementContainer extensionElementContaine,
+          public void execute(EventConstant event, ExtensionElementContainer extensionElementContaine,
                               ExecutionContext context) {
 
 

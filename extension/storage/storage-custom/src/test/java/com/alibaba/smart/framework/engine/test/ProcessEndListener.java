@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.listener.Listener;
-import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 
 /**
  * @author ettear
@@ -15,7 +15,7 @@ public class ProcessEndListener implements Listener {
     private static AtomicInteger count = new AtomicInteger(0);
 
     @Override
-    public void execute(PvmEventConstant event,
+    public void execute(EventConstant event,
                         ExecutionContext executionContext) {
 
         count.incrementAndGet();

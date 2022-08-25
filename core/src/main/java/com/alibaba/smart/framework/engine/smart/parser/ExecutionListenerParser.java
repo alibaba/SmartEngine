@@ -15,9 +15,7 @@ import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
  * Created by ettear on 06/08/2017.
  */
 @ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = ExecutionListener.class)
-
-public class ExecutionListenerParser extends AbstractElementParser<ExecutionListener>
-{
+public class ExecutionListenerParser extends AbstractElementParser<ExecutionListener> {
 
     @Override
     protected ExecutionListener parseModel(XMLStreamReader reader, ParseContext context) {

@@ -18,7 +18,6 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.exception.ValidationException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -27,7 +26,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateIn
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +61,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
         if (null != multiInstanceLoopCharacteristics) {
 
-            fireEvent(context,pvmActivity, PvmEventConstant.ACTIVITY_START);
+            fireEvent(context,pvmActivity, EventConstant.ACTIVITY_START);
 
             ActivityInstance activityInstance  = super.createSingleActivityInstanceAndAttachToProcessInstance(context,userTask);
 
@@ -138,7 +137,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
     @Override
     public void execute(ExecutionContext context, PvmActivity pvmActivity) {
 
-        fireEvent(context,pvmActivity, PvmEventConstant.ACTIVITY_EXECUTE);
+        fireEvent(context,pvmActivity, EventConstant.ACTIVITY_EXECUTE);
 
 
         //1. 完成当前ExecutionInstance的状态更新

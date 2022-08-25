@@ -53,7 +53,7 @@ public class ExecutionListenerAndValueTest extends CustomBaseTestCase {
         Assert.assertEquals("Create task",response.get("task1"));
         Assert.assertEquals("Pay task",response.get("task2"));
 
-        //ÑéÖ¤¼¸¸öÊÂ¼şµÄµÄÖ´ĞĞË³Ğò
+        //éªŒè¯å‡ ä¸ªäº‹ä»¶çš„çš„æ‰§è¡Œé¡ºåº
         Long processStartTime = (Long)response.get("processStartTime");
         Long startTime = (Long)response.get("startTime");
         Long endTime = (Long)response.get("endTime");
@@ -62,7 +62,7 @@ public class ExecutionListenerAndValueTest extends CustomBaseTestCase {
         Assert.assertTrue((startTime - endTime) < 0);
         Assert.assertTrue((endTime - processEndTime) < 0);
 
-        //ÑéÖ¤ process_start ºÍ process_end ½öÔÚ startEvent ºÍ endEventÖĞÓĞĞ§
+        //éªŒè¯ process_start å’Œ process_end ä»…åœ¨ startEvent å’Œ endEventä¸­æœ‰æ•ˆ
         AtomicInteger processStartCount = (AtomicInteger)response.get("processStartCount");
         AtomicInteger processEndCount = (AtomicInteger)response.get("processEndCount");
 

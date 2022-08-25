@@ -23,7 +23,7 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
-import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -52,7 +52,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractActivityBehavior.class);
 
-    protected void fireEvent(ExecutionContext context,PvmActivity pvmActivity, PvmEventConstant event) {
+    protected void fireEvent(ExecutionContext context,PvmActivity pvmActivity, EventConstant event) {
 
         context.getProcessEngineConfiguration().getListenerExecutor().execute(event,pvmActivity.getModel(),context);
 
@@ -77,7 +77,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             IdBasedElement idBasedElement = context.getProcessDefinition().getIdBasedElementMap().get(executionInstance.getProcessDefinitionActivityId());
             context.setBaseElement(idBasedElement);
 
-            fireEvent(context,pvmActivity,PvmEventConstant.ACTIVITY_START);
+            fireEvent(context,pvmActivity, EventConstant.ACTIVITY_START);
 
 
             return false;
@@ -105,7 +105,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             return;
         }
 
-        fireEvent(context,pvmActivity,PvmEventConstant.ACTIVITY_EXECUTE);
+        fireEvent(context,pvmActivity, EventConstant.ACTIVITY_EXECUTE);
 
         executeDelegation(context,pvmActivity.getModel());
 
@@ -139,7 +139,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     @Override
     public void leave(ExecutionContext context, PvmActivity pvmActivity) {
-        fireEvent(context,pvmActivity,PvmEventConstant.ACTIVITY_END);
+        fireEvent(context,pvmActivity, EventConstant.ACTIVITY_END);
 
 
         //执行每个节点的hook方法

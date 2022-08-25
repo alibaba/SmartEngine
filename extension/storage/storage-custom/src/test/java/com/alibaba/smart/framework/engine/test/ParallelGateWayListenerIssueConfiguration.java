@@ -25,7 +25,7 @@ import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.Instance;
 import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
-import com.alibaba.smart.framework.engine.pvm.event.PvmEventConstant;
+import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
@@ -112,8 +112,8 @@ public class ParallelGateWayListenerIssueConfiguration {
 
     public class TestListenerExecutor implements ListenerExecutor {
 
-        public void execute(PvmEventConstant event, ExtensionElementContainer extensionElementContainer,
-            ExecutionContext context) {
+        public void execute(EventConstant event, ExtensionElementContainer extensionElementContainer,
+                            ExecutionContext context) {
             String eventName = event.name();
 
             ActivityInstance activityInstance = context.getActivityInstance();

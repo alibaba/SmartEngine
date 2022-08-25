@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0s2yozm" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.7.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.14.0">
+  <bpmn:process id="test" isExecutable="true" camunda:versionTag="1.0">
+    <bpmn:extensionElements>
+      <camunda:executionListener class="com.alibaba.smart.framework.engine.test.delegation.event.ProcessStartListener" event="start" />
+      <camunda:executionListener class="com.alibaba.smart.framework.engine.test.delegation.event.ProcessEndListener" event="end" />
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="start">
+      <bpmn:outgoing>start-gateway</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="gateway">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="abc" value="def" />
+        </camunda:properties>
+        <camunda:executionListener class="com.alibaba.smart.framework.engine.test.delegation.event.ActivityStartListener" event="start" />
+        <camunda:executionListener class="com.alibaba.smart.framework.engine.test.delegation.event.ActivityEndListener" event="end" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>start-gateway</bpmn:incoming>
+      <bpmn:outgoing>gateway-end</bpmn:outgoing>
+      <bpmn:outgoing>gateway_to_end2</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="start-gateway" sourceRef="start" targetRef="gateway" />
+    <bpmn:endEvent id="end">
+      <bpmn:incoming>gateway-end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="gateway-end" sourceRef="gateway" targetRef="end">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="com.alibaba.smart.framework.engine.test.delegation.event.TakeEventListener" event="take" />
+      </bpmn:extensionElements>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">a &gt;=1</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="end2">
+      <bpmn:incoming>gateway_to_end2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="gateway_to_end2" sourceRef="gateway" targetRef="end2">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">a &lt; 1</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="test">
+      <bpmndi:BPMNEdge id="Flow_0usrayh_di" bpmnElement="gateway-end">
+        <di:waypoint x="315" y="107" />
+        <di:waypoint x="372" y="107" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18mjcsn_di" bpmnElement="start-gateway">
+        <di:waypoint x="215" y="107" />
+        <di:waypoint x="265" y="107" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0m4qoah_di" bpmnElement="gateway_to_end2">
+        <di:waypoint x="290" y="132" />
+        <di:waypoint x="290" y="220" />
+        <di:waypoint x="372" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
+        <dc:Bounds x="179" y="89" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_15pcnay_di" bpmnElement="gateway" isMarkerVisible="true">
+        <dc:Bounds x="265" y="82" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0fghg3u_di" bpmnElement="end">
+        <dc:Bounds x="372" y="89" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0til36p_di" bpmnElement="end2">
+        <dc:Bounds x="372" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
