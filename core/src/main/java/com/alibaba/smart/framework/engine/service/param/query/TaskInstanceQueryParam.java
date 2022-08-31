@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.service.param.query;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -25,5 +26,13 @@ public class TaskInstanceQueryParam extends PaginateQueryParam {
    private String claimUserId;
 
    private String tag;
+
+   private String extension;
+
+   private Integer priority;
+
+   private String comment;
+
+   private String title;
 
 }

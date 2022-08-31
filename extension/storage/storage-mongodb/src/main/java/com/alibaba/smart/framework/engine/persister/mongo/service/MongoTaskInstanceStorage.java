@@ -139,11 +139,11 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
 
 
         if(null != taskInstanceQueryParam.getPageOffset()){
-            Pageable pageableRequest = new PageRequest(taskInstanceQueryParam.getPageOffset(),taskInstanceQueryParam.getPageSize());
+            Pageable pageableRequest =   PageRequest.of(taskInstanceQueryParam.getPageOffset(),taskInstanceQueryParam.getPageSize());
             query.with(pageableRequest);
         }
 
-        query.with( new Sort(Sort.Direction.ASC, GMT_CREATE));
+        query.with(   Sort.by(Sort.Direction.ASC, GMT_CREATE));
         return query;
     }
 

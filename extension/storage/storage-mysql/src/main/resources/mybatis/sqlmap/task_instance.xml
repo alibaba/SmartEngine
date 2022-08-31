@@ -161,6 +161,12 @@
         <if test="processDefinitionType != null">  and  task.process_definition_type = #{processDefinitionType} </if>
         <if test="claimUserId != null">  and  task.claim_user_id = #{claimUserId} </if>
         <if test="tag != null">  and  task.tag = #{tag} </if>
+        <if test="extension != null">  and  task.extension = #{extension} </if>
+
+        <if test="title != null">  and  task.title = #{title} </if>
+        <if test="priority != null">  and  task.priority = #{priority} </if>
+        <if test="comment != null">  and  task.comment = #{comment} </if>
+
         <if test="activityInstanceId != null">  and  task.activity_instance_id = #{activityInstanceId} </if>
         <if test="processDefinitionActivityId != null">  and  task.process_definition_activity_id = #{processDefinitionActivityId} </if>
         <if test="processInstanceIdList != null">

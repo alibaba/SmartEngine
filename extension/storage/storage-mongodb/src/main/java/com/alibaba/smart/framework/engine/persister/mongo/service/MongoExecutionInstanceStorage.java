@@ -148,7 +148,7 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
             query.addCriteria(Criteria.where(ACTIVITY_INSTANCE_ID).is(activityInstanceId));
         }
 
-        query.with( new Sort(Sort.Direction.ASC, GMT_CREATE));
+        query.with( Sort.by(Sort.Direction.ASC, GMT_CREATE));
 
         List<ExecutionInstanceEntity> entityList = mongoTemplate.find(query,ExecutionInstanceEntity.class,collectionName);
 
@@ -175,7 +175,7 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
         Query query = new Query();
         query.addCriteria(Criteria.where(PROCESS_INSTANCE_ID).is(processInstanceId));
 
-        query.with( new Sort(Sort.Direction.ASC, GMT_CREATE));
+        query.with( Sort.by(Sort.Direction.ASC, GMT_CREATE));
 
         List<ExecutionInstanceEntity> entityList = mongoTemplate.find(query,ExecutionInstanceEntity.class,collectionName);
 

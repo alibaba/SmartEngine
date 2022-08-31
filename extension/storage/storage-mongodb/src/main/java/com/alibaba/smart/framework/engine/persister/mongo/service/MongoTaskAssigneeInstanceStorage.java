@@ -95,11 +95,11 @@ public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
         Query query = buildCommonQuery(pendingTaskQueryParam);
 
         if(null != pendingTaskQueryParam.getPageOffset()){
-            Pageable pageableRequest = new PageRequest(pendingTaskQueryParam.getPageOffset(),pendingTaskQueryParam.getPageSize());
+            Pageable pageableRequest =   PageRequest.of(pendingTaskQueryParam.getPageOffset(),pendingTaskQueryParam.getPageSize());
             query.with(pageableRequest);
         }
 
-        query.with( new Sort(Sort.Direction.ASC, GMT_CREATE));
+        query.with(   Sort.by(Sort.Direction.ASC, GMT_CREATE));
         return query;
     }
 

@@ -163,7 +163,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
                 mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
 
-
                 int reachedJoinCounter = 0;
                 List<ExecutionInstance> chosenExecutionInstances = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
 
@@ -202,7 +201,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             }
 
         }else{
-            throw new EngineException("should touch here:"+pvmActivity);
+            throw new EngineException("should not touch here:"+pvmActivity);
         }
 
         return true;

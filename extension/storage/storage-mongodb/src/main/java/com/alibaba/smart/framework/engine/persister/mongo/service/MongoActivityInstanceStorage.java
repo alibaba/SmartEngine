@@ -128,7 +128,7 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
         Query query = new Query();
         query.addCriteria(Criteria.where(PROCESS_INSTANCE_ID).is(processInstanceId));
         //这个地方存在逻辑不一致性, MySQL采用了按创建日期倒序，MongDB采用了按创建日期正序
-        query.with( new Sort(Sort.Direction.ASC, GMT_CREATE));
+        query.with( Sort.by(Sort.Direction.ASC, GMT_CREATE));
 
         List<ActivityInstanceEntity> activityInstanceEntityList = mongoTemplate.find(query,ActivityInstanceEntity.class,collectionName);
 
