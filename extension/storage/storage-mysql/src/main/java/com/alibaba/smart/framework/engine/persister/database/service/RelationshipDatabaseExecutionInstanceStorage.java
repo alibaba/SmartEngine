@@ -101,6 +101,9 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
 
         ExecutionInstanceDAO executionInstanceDAO = (ExecutionInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("executionInstanceDAO");
         ExecutionInstanceEntity executionInstanceEntity = executionInstanceDAO.findOne(Long.valueOf(instanceId));
+        if (executionInstanceEntity == null) {
+            return null;
+        }
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
         buildExecutionInstance(executionInstance, executionInstanceEntity);
         return executionInstance;

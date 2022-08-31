@@ -132,7 +132,9 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
 
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) processEngineConfiguration.getInstanceAccessor().access("taskAssigneeDAO");
         TaskAssigneeEntity taskAssigneeEntity =  taskAssigneeDAO.findOne(Long.valueOf(taskAssigneeInstanceId));
-
+        if (taskAssigneeEntity == null){
+            return null;
+        }
         return buildTaskAssigneeInstance(taskAssigneeEntity);
     }
 

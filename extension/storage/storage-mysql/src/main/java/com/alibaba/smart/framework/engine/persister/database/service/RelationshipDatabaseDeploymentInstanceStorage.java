@@ -66,9 +66,10 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("deploymentInstanceDAO");
 
         DeploymentInstanceEntity entity = deploymentnstanceDAO.findOne(Long.valueOf(id));
-        DeploymentInstance deploymentInstance = convertByEntity(entity);
-
-        return deploymentInstance;
+        if (entity == null) {
+            return null;
+        }
+        return convertByEntity(entity);
     }
 
     @Override

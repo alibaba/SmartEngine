@@ -152,10 +152,10 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         ProcessInstanceDAO processInstanceDAO= (ProcessInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("processInstanceDAO");
 
         ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOne(Long.valueOf(instanceId));
-
-        ProcessInstance processInstance = buildProcessInstanceFromEntity(processInstanceEntity);
-
-        return processInstance;
+        if (processInstanceEntity == null) {
+            return null;
+        }
+        return buildProcessInstanceFromEntity(processInstanceEntity);
     }
 
 
