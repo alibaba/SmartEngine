@@ -83,7 +83,7 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
                 QName attributeQName=reader.getAttributeName(i);
                 Object value=this.parseSingleAttribute(attributeQName,reader, context);
                 if(null!=value && value instanceof BaseElement){
-                    this.decorateChild(model, (BaseElement) value);
+                    this.decorateChild(model, (BaseElement) value, context);
                 }else{
                     LOGGER.debug(attributeQName +" is ignored when parsing attribute from "+ model);
                 }
@@ -102,12 +102,12 @@ public abstract class AbstractElementParser<M extends BaseElement> implements El
         while (XmlParseUtil.nextChildElement(reader)) {
             Object element = this.readElement(reader, context);
             if (element instanceof BaseElement) {
-                this.decorateChild(model, (BaseElement) element);
+                this.decorateChild(model, (BaseElement) element,context );
             }
         }
     }
 
-    protected void decorateChild(M model, BaseElement child) {
+    protected void decorateChild(M model, BaseElement child, ParseContext context) {
 
     }
 

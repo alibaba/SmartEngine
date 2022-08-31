@@ -39,7 +39,7 @@ public class ProcessFieldParser extends AbstractBpmnParser<ProcessField> {
     }
 
     @Override
-    protected void decorateChild(ProcessField model, BaseElement child) {
+    protected void decorateChild(ProcessField model, BaseElement child, ParseContext context) {
             if (child instanceof StringField) {
                 model.setValue(((StringField)child).getValue());
                 model.setValueType("string");

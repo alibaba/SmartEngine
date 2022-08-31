@@ -7,6 +7,7 @@ import com.alibaba.smart.framework.engine.constant.ExtensionElementsConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionDecorator;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 
+import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import lombok.Data;
 
 /**
@@ -29,7 +30,7 @@ public class Value  implements PropertiesElementMarker, ExtensionDecorator,Custo
     }
 
     @Override
-    public void decorate(ExtensionElements extensionElements) {
+    public void decorate(ExtensionElements extensionElements, ParseContext context) {
 
         Map map =  (Map)extensionElements.getDecorationMap().get(getDecoratorType());
 

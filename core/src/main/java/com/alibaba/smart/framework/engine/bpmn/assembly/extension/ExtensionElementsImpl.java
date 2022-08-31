@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionDecorator;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 
+import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import lombok.Data;
 
 /**
@@ -27,11 +28,11 @@ public class ExtensionElementsImpl implements ExtensionElements {
     private Map<String,Object> decorationMap = new HashMap<String, Object>();
 
     @Override
-    public void decorate(ExtensionDecorator extension) {
+    public void decorate(ExtensionDecorator extension, ParseContext context) {
 
         this.extensionList.add(extension);
 
-        extension.decorate(this);
+        extension.decorate(this, context);
 
     }
 

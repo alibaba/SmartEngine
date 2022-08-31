@@ -34,7 +34,7 @@ public class ProcessDefinitionSourceParser extends AbstractElementParser<Process
     }
 
     @Override
-    protected void decorateChild(ProcessDefinitionSourceImpl processDefinitionSource, BaseElement child) {
+    protected void decorateChild(ProcessDefinitionSourceImpl processDefinitionSource, BaseElement child, ParseContext context) {
         if (child instanceof ProcessDefinition) {
             processDefinitionSource.getProcessDefinitionList().add((ProcessDefinition) child);
         }else{

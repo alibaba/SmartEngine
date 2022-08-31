@@ -20,7 +20,7 @@ public abstract class AbstractBpmnParser<M extends BaseElement> extends Abstract
 
 
     @Override
-    protected void decorateChild(M model, BaseElement child) {
+    protected void decorateChild(M model, BaseElement child, ParseContext context) {
         if(!this.parseModelChild(model, child)) {
             if ( (model instanceof ExtensionElementContainer) && (child instanceof ExtensionElements) ) {
                 ((ExtensionElementContainer) model).setExtensionElements((ExtensionElements)child);

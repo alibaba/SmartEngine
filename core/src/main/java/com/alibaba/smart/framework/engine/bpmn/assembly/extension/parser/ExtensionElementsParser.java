@@ -28,9 +28,9 @@ public class ExtensionElementsParser extends AbstractElementParser<ExtensionElem
     }
 
     @Override
-    protected void decorateChild(ExtensionElementsImpl extensionElements, BaseElement child) {
+    protected void decorateChild(ExtensionElementsImpl extensionElements, BaseElement child, ParseContext context) {
         if (child instanceof ExtensionDecorator) {
-            extensionElements.decorate((ExtensionDecorator) child);
+            extensionElements.decorate((ExtensionDecorator) child, context);
         } else {
             throw  new EngineException("Should be a instance of ExtensionDecorator :"+child.getClass());
         }

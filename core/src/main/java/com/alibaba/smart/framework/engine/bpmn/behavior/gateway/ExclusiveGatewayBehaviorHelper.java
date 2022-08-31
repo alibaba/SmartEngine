@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.StringUtil;
+import com.alibaba.smart.framework.engine.configuration.ListenerExecutor;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
@@ -74,8 +75,10 @@ public class ExclusiveGatewayBehaviorHelper {
         for (PvmTransition matchedPvmTransition : matchedTransitions) {
             PvmActivity target = matchedPvmTransition.getTarget();
 
+
             //触发take事件
-            context.getProcessEngineConfiguration().getListenerExecutor().execute(EventConstant.take,pvmActivity.getModel(),context);
+            ListenerExecutor listenerExecutor = context.getProcessEngineConfiguration().getListenerExecutor();
+            listenerExecutor.execute(EventConstant.take,matchedPvmTransition.getModel(),context);
 
             target.enter(context);
         }

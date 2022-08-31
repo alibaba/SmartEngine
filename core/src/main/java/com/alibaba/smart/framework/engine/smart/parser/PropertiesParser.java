@@ -26,7 +26,7 @@ public class PropertiesParser extends AbstractElementParser<Properties> {
     }
 
     @Override
-    protected void decorateChild(Properties properties, BaseElement child) {
+    protected void decorateChild(Properties properties, BaseElement child, ParseContext context) {
         if (child instanceof PropertiesElementMarker) {
             properties.getExtensionList().add((PropertiesElementMarker)child);
         }else{

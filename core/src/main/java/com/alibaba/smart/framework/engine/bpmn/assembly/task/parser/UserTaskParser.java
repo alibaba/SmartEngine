@@ -37,11 +37,11 @@ public class UserTaskParser extends AbstractBpmnParser<UserTask> {
     }
 
     @Override
-    protected void decorateChild(UserTask userTask, BaseElement child) {
+    protected void decorateChild(UserTask userTask, BaseElement child, ParseContext context) {
         if (child instanceof MultiInstanceLoopCharacteristics) {
             userTask.setMultiInstanceLoopCharacteristics((MultiInstanceLoopCharacteristics) child);
         }else{
-            super.decorateChild(userTask,child);
+            super.decorateChild(userTask,child, context);
         }
     }
 
