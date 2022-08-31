@@ -190,9 +190,10 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
                              ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("taskInstanceDAO");
         TaskInstanceEntity taskInstanceEntity =  taskInstanceDAO.findOne(Long.valueOf(instanceId));
-
-        TaskInstance taskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
-        return  taskInstance;
+        if (taskInstanceEntity == null){
+            return null;
+        }
+        return buildTaskInstanceFromEntity(taskInstanceEntity);
     }
 
     private TaskInstance buildTaskInstanceFromEntity(TaskInstanceEntity taskInstanceEntity) {
