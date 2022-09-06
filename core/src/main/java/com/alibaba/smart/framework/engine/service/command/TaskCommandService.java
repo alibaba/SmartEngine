@@ -46,5 +46,4 @@ public interface TaskCommandService {
      */
     void addTaskAssigneeCandidate(String taskId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance);
 
-
 }

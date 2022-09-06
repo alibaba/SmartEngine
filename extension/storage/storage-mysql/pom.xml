@@ -7,7 +7,6 @@
         <artifactId>smart-engine</artifactId>
         <version>2.6.5-SNAPSHOT</version>
         <relativePath>../../../pom.xml</relativePath>
-
     </parent>
 
     <artifactId>smart-engine-extension-storage-mysql</artifactId>

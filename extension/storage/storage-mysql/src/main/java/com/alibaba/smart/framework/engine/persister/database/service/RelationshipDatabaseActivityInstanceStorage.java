@@ -71,10 +71,10 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
                                  ProcessEngineConfiguration processEngineConfiguration) {
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("activityInstanceDAO");
         ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(Long.valueOf(instanceId));
-
-        ActivityInstance activityInstance = buildActivityInstanceFromEntity(activityInstanceEntity);
-
-        return activityInstance;
+        if (activityInstanceEntity == null){
+            return null;
+        }
+        return buildActivityInstanceFromEntity(activityInstanceEntity);
     }
 
     @Override

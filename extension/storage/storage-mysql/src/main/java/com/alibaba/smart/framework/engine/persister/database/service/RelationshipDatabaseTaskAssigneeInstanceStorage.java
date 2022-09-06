@@ -46,7 +46,7 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) processEngineConfiguration.getInstanceAccessor().access("taskAssigneeDAO");
 
         Map<String, List<TaskAssigneeInstance>> assigneeMap = null;
-        if (taskInstanceIdList != null) {
+        if (taskInstanceIdList != null && taskInstanceIdList.size() > 0) {
 
             assigneeMap = new HashMap<String, List<TaskAssigneeInstance>>();
 
@@ -132,7 +132,9 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
 
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) processEngineConfiguration.getInstanceAccessor().access("taskAssigneeDAO");
         TaskAssigneeEntity taskAssigneeEntity =  taskAssigneeDAO.findOne(Long.valueOf(taskAssigneeInstanceId));
-
+        if (taskAssigneeEntity == null){
+            return null;
+        }
         return buildTaskAssigneeInstance(taskAssigneeEntity);
     }
 
