@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class CompatiableOldVersionProcessDefinitionTest extends CustomBaseTestCase {
 
-    protected void initProcessConfiguation() {
+    protected void initProcessConfiguration() {
         Map<String,Object> magicExtension = new HashMap();
 
         Map<String,String> tuples = new HashMap<String, String>();

@@ -30,7 +30,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase {
 
-    protected void initProcessConfiguation() {
+    protected void initProcessConfiguration() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
         //指定线程池,多线程fork
@@ -188,8 +188,10 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
                 processDefinition.getId(), processDefinition.getVersion(),
                 request);
         }catch (Exception e){
-            Throwable cause = e.getCause().getCause().getCause().getCause();
-            Assert.assertTrue(cause instanceof  IllegalArgumentException);
+            Throwable cause1 = e.getCause();
+            Throwable cause2 = cause1.getCause();
+            Throwable cause3 = cause2.getCause();
+            Assert.assertTrue(cause3 instanceof  IllegalArgumentException);
         }
 
 

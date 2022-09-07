@@ -25,7 +25,7 @@ public class BasicParallelGatewayTest extends CustomBaseTestCase {
     private long orderId = 123456L;
 
 
-    protected void initProcessConfiguation() {
+    protected void initProcessConfiguration() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
         LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
         processEngineConfiguration.setLockStrategy(doNothingLockStrategy);

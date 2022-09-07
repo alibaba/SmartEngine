@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smartengine.org/schema/process"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="processSimulation"
+             version="1.0.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" targetNamespace="smart">
+    <process id="Process_1" isExecutable="false">
+
+        <startEvent id="startEvent"/>
+
+        <sequenceFlow id="seq0" sourceRef="startEvent" targetRef="serviceTask0"/>
+
+        <serviceTask id="serviceTask0"
+                     smart:class="com.alibaba.smart.framework.engine.test.delegation.RetryServiceTaskDelegation"/>
+
+        <sequenceFlow id="seq1" sourceRef="serviceTask0" targetRef="endEvent"/>
+
+        <endEvent id="endEvent"/>
+
+    </process>
+
+</definitions>

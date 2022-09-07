@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class EmbeddedParallelGatewayTest extends CustomBaseTestCase {
 
 
-    protected void initProcessConfiguation() {
+    protected void initProcessConfiguration() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
         LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
         processEngineConfiguration.setLockStrategy(doNothingLockStrategy);

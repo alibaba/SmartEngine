@@ -39,7 +39,7 @@ public class MysqlTransactionTest extends DatabaseBaseTestCase {
     @Autowired
     private TransactionHelper transactionHelper;
 
-    @Test(expected = EngineException.class)
+    @Test(expected = IllegalArgumentException.class)
    //@Test
     public void exception() throws Exception {
 

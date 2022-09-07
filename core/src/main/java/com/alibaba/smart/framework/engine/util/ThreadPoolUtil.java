@@ -42,4 +42,13 @@ public class ThreadPoolUtil {
             KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(BUFFER_SIZE),
             new DefaultThreadFactory(poolName), new ThreadPoolExecutor.AbortPolicy());
     }
+
+
+    public static  void sleepSilently(long delay) {
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException ex) {
+            //ignored
+        }
+    }
 }

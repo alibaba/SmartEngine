@@ -42,7 +42,7 @@ public class CustomBaseTestCase {
         PersisterSession.create();
 
 
-        initProcessConfiguation();
+        initProcessConfiguration();
 
         smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
@@ -61,7 +61,7 @@ public class CustomBaseTestCase {
 
     }
 
-    protected void initProcessConfiguation() {
+    protected void initProcessConfiguration() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
     }
 

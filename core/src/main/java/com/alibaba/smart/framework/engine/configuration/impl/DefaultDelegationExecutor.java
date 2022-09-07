@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.configuration.impl;
 
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.annoation.Retryable;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.configuration.DelegationExecutor;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
@@ -14,6 +15,7 @@ import com.alibaba.smart.framework.engine.delegation.TccDelegation;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 
+import com.alibaba.smart.framework.engine.util.ThreadPoolUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,12 +35,12 @@ public class DefaultDelegationExecutor implements DelegationExecutor {
             if(null != className){
                 execute(context, className,activity);
             }else {
-                LOGGER.info("No behavior found:"+activity.getId());
+                LOGGER.debug("No behavior found:"+activity.getId());
             }
         }
     }
 
-    private  void execute(ExecutionContext context, String className, Activity activity) {
+    protected   void execute(ExecutionContext context, String className, Activity activity) {
         ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
         ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();
 
@@ -46,17 +48,19 @@ public class DefaultDelegationExecutor implements DelegationExecutor {
             .getInstanceAccessor();
         Object delegation = instanceAccessor.access(className);
 
-        try{
+        boolean present =  delegation.getClass().isAnnotationPresent(Retryable.class);
+
+
             if (delegation instanceof ContextBoundedJavaDelegation) {
                 ContextBoundedJavaDelegation contextBoundedJavaDelegation = (ContextBoundedJavaDelegation)delegation;
                 contextBoundedJavaDelegation.setClassName(className);
                 contextBoundedJavaDelegation.setActivity(activity);
 
-                contextBoundedJavaDelegation.execute(context);
+                execute(context, contextBoundedJavaDelegation,  exceptionProcessor , present);
 
             } else if (delegation instanceof JavaDelegation) {
                 JavaDelegation javaDelegation = (JavaDelegation)delegation;
-                javaDelegation.execute(context);
+                execute(context, javaDelegation,  exceptionProcessor ,present);
 
             } else if (delegation instanceof TccDelegation) {
 
@@ -68,13 +72,48 @@ public class DefaultDelegationExecutor implements DelegationExecutor {
                 throw new EngineException("The delegation is not support : " + delegation.getClass());
             }
 
-        }catch (Exception e){
-            dealException(exceptionProcessor, e,context);
-        }
+
 
     }
 
-    private  void dealException(ExceptionProcessor exceptionProcessor, Exception exception,ExecutionContext context) {
+    protected void execute(ExecutionContext context, JavaDelegation delegation,ExceptionProcessor exceptionProcessor ,boolean present) {
+
+
+        if(!present){
+            delegation.execute(context);
+        }else {
+            Retryable annotation = delegation.getClass().getAnnotation(Retryable.class);
+            long delay = annotation.delay();
+            int maxAttempts = annotation.maxAttempts();
+
+            int attemptCount = 0;
+            for (;  attemptCount < maxAttempts; attemptCount++) {
+
+                boolean success = false;
+                try {
+                    delegation.execute(context);
+                    success = true;
+                }catch (Exception e){
+                    dealException(exceptionProcessor, e,context);
+                    ThreadPoolUtil.sleepSilently(delay);
+                }
+
+                if(success){
+                    break;
+                }
+
+
+            }
+
+            if(attemptCount == maxAttempts -1){
+                // means all retry failed
+                // record log ,trigger alert, persist params if needed
+            }
+        }
+    }
+
+
+    protected   void dealException(ExceptionProcessor exceptionProcessor, Exception exception,ExecutionContext context) {
 
         if (null != exceptionProcessor) {
             exceptionProcessor.process(exception,context);
