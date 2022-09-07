@@ -31,7 +31,7 @@ import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.*;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
-import com.alibaba.smart.framework.engine.util.ObjUtil;
+import com.alibaba.smart.framework.engine.util.ObjectUtil;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -153,22 +153,22 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
         if(null != request){
 
-            String processDefinitionType = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE));
+            String processDefinitionType = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE));
             taskInstance.setProcessDefinitionType(processDefinitionType);
 
-            Date startTime = ObjUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.TASK_START_TIME));
+            Date startTime = ObjectUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.TASK_START_TIME));
             taskInstance.setStartTime(startTime);
 
-            Date completeTime = ObjUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.TASK_COMPLETE_TIME));
+            Date completeTime = ObjectUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.TASK_COMPLETE_TIME));
             taskInstance.setCompleteTime(completeTime);
 
-            String claimUserId = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.CLAIM_USER_ID));
+            String claimUserId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.CLAIM_USER_ID));
             taskInstance.setClaimUserId(claimUserId);
 
-            Date claimTime = ObjUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.CLAIM_USER_TIME));
+            Date claimTime = ObjectUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.CLAIM_USER_TIME));
             taskInstance.setClaimTime(claimTime);
 
-            String tag = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG));
+            String tag = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG));
             taskInstance.setTag(tag);
 
         }

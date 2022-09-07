@@ -10,7 +10,7 @@ import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStor
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.util.ObjUtil;
+import com.alibaba.smart.framework.engine.util.ObjectUtil;
 
 /**
  * Created by 高海军 帝奇 74394 on 2017 June  10:35.
@@ -43,10 +43,10 @@ public class MarkDoneUtil {
         taskInstance.setStatus(targetStatus);
 
         if (null != variables) {
-            String tag = ObjUtil.obj2Str(variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG));
+            String tag = ObjectUtil.obj2Str(variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG));
             taskInstance.setTag(tag);
 
-            String claimUserId = ObjUtil.obj2Str(variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID));
+            String claimUserId = ObjectUtil.obj2Str(variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID));
             taskInstance.setClaimUserId(claimUserId);
             Object o = variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT);
             String comment =  o == null?null:String.valueOf(

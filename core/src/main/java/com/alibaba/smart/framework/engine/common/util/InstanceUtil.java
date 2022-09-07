@@ -9,7 +9,7 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.util.ObjUtil;
+import com.alibaba.smart.framework.engine.util.ObjectUtil;
 
 /**
  * Created by 高海军 帝奇 74394 on 2018 August  16:46.
@@ -41,17 +41,17 @@ public abstract class InstanceUtil {
     public  static void enrich(Map<String, Object> request, TaskInstance taskInstance) {
 
         if(null!= request){
-            String comment = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT));
+            String comment = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT));
             taskInstance.setComment(comment);
 
-            String extension = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_EXTENSION));
+            String extension = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_EXTENSION));
             taskInstance.setExtension(extension);
 
-            Integer priority = ObjUtil.obj2Integer(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_PRIORITY));
+            Integer priority = ObjectUtil.obj2Integer(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_PRIORITY));
             taskInstance.setPriority(priority);
 
 
-            String title = ObjUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_TITLE));
+            String title = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_TITLE));
             taskInstance.setTitle(title);
         }
 

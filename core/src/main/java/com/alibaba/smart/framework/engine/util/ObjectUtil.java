@@ -6,7 +6,7 @@ import java.util.Date;
  * @author JannLim
  * @time 2020/11/17 14:21
  */
-public class ObjUtil {
+public class ObjectUtil {
 
     public static String obj2Str(Object obj) {
         return obj == null ? null : obj.toString();

@@ -38,7 +38,7 @@ public class DefaultDelegationExecutor implements DelegationExecutor {
         }
     }
 
-    private static void execute(ExecutionContext context, String className, Activity activity) {
+    private  void execute(ExecutionContext context, String className, Activity activity) {
         ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
         ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();
 
@@ -74,7 +74,7 @@ public class DefaultDelegationExecutor implements DelegationExecutor {
 
     }
 
-    private static void dealException(ExceptionProcessor exceptionProcessor, Exception exception,ExecutionContext context) {
+    private  void dealException(ExceptionProcessor exceptionProcessor, Exception exception,ExecutionContext context) {
 
         if (null != exceptionProcessor) {
             exceptionProcessor.process(exception,context);
