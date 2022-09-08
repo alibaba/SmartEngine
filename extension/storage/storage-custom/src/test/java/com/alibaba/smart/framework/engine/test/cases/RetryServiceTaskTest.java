@@ -15,6 +15,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+
 import static org.junit.Assert.assertEquals;
 
 public class RetryServiceTaskTest extends CustomBaseTestCase {
@@ -41,11 +43,13 @@ public class RetryServiceTaskTest extends CustomBaseTestCase {
                 long delay = annotation.delay();
                 int maxAttempts = annotation.maxAttempts();
 
-                int attemptCount = 0;
-                for (;  attemptCount < maxAttempts; attemptCount++) {
+                int attemptCount = 1;
+                for (;  attemptCount <= maxAttempts; attemptCount++) {
 
                     boolean success = false;
                     try {
+                        context.getResponse().put("count",attemptCount);
+
                         delegation.execute(context);
                         success = true;
                     }catch (Exception e){
@@ -77,13 +81,54 @@ public class RetryServiceTaskTest extends CustomBaseTestCase {
     }
 
     @Test
-    public void test() throws Exception {
+    public void testAllFailed() throws Exception {
 
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("all-retry-servicetask.bpmn.xml").getFirstProcessDefinition();
         assertEquals(5, processDefinition.getBaseElementList().size());
 
-        ProcessInstance processInstance =  processCommandService.start(processDefinition.getId(),processDefinition.getVersion());
+        HashMap<String, Object> request = new HashMap<String, Object>();
+        request.put("action","retry_all_failed");
+        HashMap<String, Object> response = new HashMap<String, Object>();
+
+        long start = System.currentTimeMillis();
+        ProcessInstance processInstance =  processCommandService.start(processDefinition.getId(),processDefinition.getVersion(),request,
+                response);
+        long end = System.currentTimeMillis();
+
+        long claps = end-start;
+
+        Assert.assertTrue( claps >3000);
+        Assert.assertTrue( claps <3300);
+
+        Assert.assertEquals(response.get("count"),3);
+
+        Assert.assertEquals(InstanceStatus.completed,processInstance.getStatus());
+    }
+
+
+    @Test
+    public void retryTwice() throws Exception {
+
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("all-retry-servicetask.bpmn.xml").getFirstProcessDefinition();
+        assertEquals(5, processDefinition.getBaseElementList().size());
+
+        HashMap<String, Object> request = new HashMap<String, Object>();
+        request.put("action","retry_twice");
+        HashMap<String, Object> response = new HashMap<String, Object>();
+
+        long start = System.currentTimeMillis();
+        ProcessInstance processInstance =  processCommandService.start(processDefinition.getId(),processDefinition.getVersion(),request,
+                response);
+        long end = System.currentTimeMillis();
+
+        long claps = end-start;
+
+        Assert.assertTrue( claps >1020);
+        Assert.assertTrue( claps <1200);
+
+        Assert.assertEquals(response.get("count"),2);
 
         Assert.assertEquals(InstanceStatus.completed,processInstance.getStatus());
     }

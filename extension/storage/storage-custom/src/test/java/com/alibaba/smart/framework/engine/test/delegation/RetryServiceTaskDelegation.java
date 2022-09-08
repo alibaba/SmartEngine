@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.test.delegation;
 import com.alibaba.smart.framework.engine.annoation.Retryable;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
+import com.alibaba.smart.framework.engine.util.ThreadPoolUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,19 @@ public class RetryServiceTaskDelegation implements JavaDelegation {
     public void execute(ExecutionContext executionContext) {
         LOGGER.info("TCC executing: invoke some hsf code stuff" + executionContext.getRequest());
         counter.addAndGet(1);
-        throw new RuntimeException("retry failed");
+        Object action = executionContext.getRequest().get("action");
+
+        if("retry_all_failed".equals(action)){
+            throw new RuntimeException("retry_all_failed");
+        }else if ("retry_twice".equals(action)){
+            if(executionContext.getResponse().get("count").equals(2)){
+                // business logic
+                ThreadPoolUtil.sleepSilently(20);
+            }else {
+                throw new RuntimeException("retry_twice");
+            }
+        }
+
     }
 
 
