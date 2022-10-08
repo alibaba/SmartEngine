@@ -3,8 +3,8 @@
         <startEvent id="start" name="开始"/>
         <parallelGateway id="fork" name="并行事件"/>
         <parallelGateway id="join" name="并行事件"/>
-        <serviceTask id="service1" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.AServiceTaskOrchestrationDelegation" />
-        <serviceTask id="service2" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.ExceptionOrchestrationDelegation" />
+        <serviceTask id="service1" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.orchestration.delegation.AServiceTaskOrchestrationDelegation" />
+        <serviceTask id="service2" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.orchestration.ExceptionOrchestrationDelegation" />
         <endEvent id="end-event-1596988599526" name="结束"/>
         <sequenceFlow id="seqflow-1596988553377" sourceRef="start" targetRef="fork"/>
         <sequenceFlow id="seqflow-1596988556303" sourceRef="fork" targetRef="service1"/>

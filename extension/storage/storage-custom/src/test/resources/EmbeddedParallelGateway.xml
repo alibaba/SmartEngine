@@ -1,197 +1,183 @@
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smartengine.org/schema/process" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="smart">
-    <process id="EmbeddedParallelGateWay" isExecutable="true" version="1.0.2">
-        <startEvent id="startEvent" name="开始"/>
-        <parallelGateway id="parentFork" name="parentFork"/>
-        <parallelGateway id="childFork" name="childFork"/>
-        <parallelGateway id="childJoin" name="childJoin"/>
-        <parallelGateway id="parentJoin" name="parentJoin"/>
-        <serviceTask id="parentForkServiceTask" name="parentForkServiceTask"/>
-        <serviceTask id="childForkServiceTask" name="childForkServiceTask"/>
-        <receiveTask id="childForkReceiveTask" name="childForkReceiveTask"/>
-        <receiveTask id="parentReceiveTask" name="parentReceiveTask"/>
-        <endEvent id="endEvent" name="结束"/>
-        <sequenceFlow id="seqflow-1599622918826" sourceRef="startEvent" targetRef="parentFork"/>
-        <sequenceFlow id="seqflow-1599622942116" sourceRef="parentFork" targetRef="parentForkServiceTask"/>
-        <sequenceFlow id="seqflow-1599622958211" sourceRef="parentFork" targetRef="childFork"/>
-        <sequenceFlow id="seqflow-1599622975021" sourceRef="childFork" targetRef="childForkReceiveTask"/>
-        <sequenceFlow id="seqflow-1599622978163" sourceRef="childFork" targetRef="childForkServiceTask"/>
-        <sequenceFlow id="seqflow-1599622982922" sourceRef="parentFork" targetRef="parentReceiveTask"/>
-        <sequenceFlow id="seqflow-1599622999051" sourceRef="childForkReceiveTask" targetRef="childJoin"/>
-        <sequenceFlow id="seqflow-1599623019286" sourceRef="childForkServiceTask" targetRef="childJoin"/>
-        <sequenceFlow id="seqflow-1599623088120" sourceRef="parentReceiveTask" targetRef="parentJoin"/>
-        <sequenceFlow id="seqflow-1599623100527" sourceRef="parentForkServiceTask" targetRef="parentJoin"/>
-        <sequenceFlow id="seqflow-1599623102643" sourceRef="parentJoin" targetRef="endEvent"/>
-        <sequenceFlow id="seqflow-1599623448132" sourceRef="childJoin" targetRef="parentJoin"/>
-    </process>
-    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
-            <bpmndi:BPMNShape id="startEvent_di" bpmnElement="startEvent">
-                <dc:Bounds x="61" y="286" width="48" height="48"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="66" y="291" width="29" height="15"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="parentFork_di" bpmnElement="parentFork">
-                <dc:Bounds x="200" y="275" width="60" height="60"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="205" y="280" width="68.6962890625" height="15"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="parentForkServiceTask_di" bpmnElement="parentForkServiceTask">
-                <dc:Bounds x="420" y="150" width="100" height="80"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="425" y="155" width="144.1650390625" height="15"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="childFork_di" bpmnElement="childFork">
-                <dc:Bounds x="403" y="322" width="60" height="60"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="408" y="327" width="57.79296875" height="15"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="childForkReceiveTask_di" bpmnElement="childForkReceiveTask">
-                <dc:Bounds x="604" y="249" width="100" height="80"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="609" y="254" width="137.158203125" height="15"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="childForkServiceTask_di" bpmnElement="childForkServiceTask">
-                <dc:Bounds x="601" y="445" width="100" height="80"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="606" y="450" width="133.26171875" height="15"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="parentReceiveTask_di" bpmnElement="parentReceiveTask">
-                <dc:Bounds x="295" y="542" width="100" height="80"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="300" y="547" width="120.0615234375" height="15"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="childJoin_di" bpmnElement="childJoin">
-                <dc:Bounds x="779" y="354" width="60" height="60"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="784" y="359" width="55.4755859375" height="15"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="parentJoin_di" bpmnElement="parentJoin">
-                <dc:Bounds x="1081" y="321" width="60" height="60"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="1086" y="326" width="66.37890625" height="15"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="endEvent_di" bpmnElement="endEvent">
-                <dc:Bounds x="1225" y="336" width="53" height="53"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="1230" y="341" width="29" height="15"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNEdge id="seqflow-1599622918826_di" bpmnElement="seqflow-1599622918826">
-                <di:waypoint type="dc:Point" x="88.5" y="274"/>
-                <di:waypoint type="dc:Point" x="88.5" y="275"/>
-                <di:waypoint type="dc:Point" x="154.5" y="275"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="78.5" y="279" width="0" height="13"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="seqflow-1599622942116_di" bpmnElement="seqflow-1599622942116">
-                <di:waypoint type="dc:Point" x="245.5" y="275"/>
-                <di:waypoint type="dc:Point" x="320" y="275"/>
-                <di:waypoint type="dc:Point" x="354.5" y="275"/>
-                <di:waypoint type="dc:Point" x="354.5" y="150"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="235.5" y="280" width="0" height="13"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="seqflow-1599622958211_di" bpmnElement="seqflow-1599622958211">
-                <di:waypoint type="dc:Point" x="245.5" y="275"/>
-                <di:waypoint type="dc:Point" x="301.5" y="275"/>
-                <di:waypoint type="dc:Point" x="357.5" y="275"/>
-                <di:waypoint type="dc:Point" x="357.5" y="322"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="235.5" y="280" width="0" height="13"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="seqflow-1599622975021_di" bpmnElement="seqflow-1599622975021">
-                <di:waypoint type="dc:Point" x="448.5" y="322"/>
-                <di:waypoint type="dc:Point" x="513.5" y="322"/>
-                <di:waypoint type="dc:Point" x="538.5" y="322"/>
-                <di:waypoint type="dc:Point" x="538.5" y="249"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="438.5" y="327" width="0" height="13"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="seqflow-1599622978163_di" bpmnElement="seqflow-1599622978163">
-                <di:waypoint type="dc:Point" x="448.5" y="322"/>
-                <di:waypoint type="dc:Point" x="512" y="322"/>
-                <di:waypoint type="dc:Point" x="535.5" y="322"/>
-                <di:waypoint type="dc:Point" x="535.5" y="445"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="438.5" y="327" width="0" height="13"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="seqflow-1599622982922_di" bpmnElement="seqflow-1599622982922">
-                <di:waypoint type="dc:Point" x="200" y="320.5"/>
-                <di:waypoint type="dc:Point" x="257.5" y="320.5"/>
-                <di:waypoint type="dc:Point" x="295" y="320.5"/>
-                <di:waypoint type="dc:Point" x="295" y="486.5"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="205" y="310.5" width="0" height="13"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="seqflow-1599622999051_di" bpmnElement="seqflow-1599622999051">
-                <di:waypoint type="dc:Point" x="669.5" y="249"/>
-                <di:waypoint type="dc:Point" x="681.5" y="249"/>
-                <di:waypoint type="dc:Point" x="733.5" y="249"/>
-                <di:waypoint type="dc:Point" x="733.5" y="354"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="659.5" y="254" width="0" height="13"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="seqflow-1599623019286_di" bpmnElement="seqflow-1599623019286">
-                <di:waypoint type="dc:Point" x="666.5" y="445"/>
-                <di:waypoint type="dc:Point" x="680" y="445"/>
-                <di:waypoint type="dc:Point" x="733.5" y="445"/>
-                <di:waypoint type="dc:Point" x="733.5" y="354"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="656.5" y="450" width="0" height="13"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="seqflow-1599623088120_di" bpmnElement="seqflow-1599623088120">
-                <di:waypoint type="dc:Point" x="360.5" y="542"/>
-                <di:waypoint type="dc:Point" x="678" y="542"/>
-                <di:waypoint type="dc:Point" x="1035.5" y="542"/>
-                <di:waypoint type="dc:Point" x="1035.5" y="321"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="350.5" y="547" width="0" height="13"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="seqflow-1599623100527_di" bpmnElement="seqflow-1599623100527">
-                <di:waypoint type="dc:Point" x="485.5" y="150"/>
-                <di:waypoint type="dc:Point" x="740.5" y="150"/>
-                <di:waypoint type="dc:Point" x="1035.5" y="150"/>
-                <di:waypoint type="dc:Point" x="1035.5" y="321"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="475.5" y="155" width="0" height="13"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="seqflow-1599623102643_di" bpmnElement="seqflow-1599623102643">
-                <di:waypoint type="dc:Point" x="1126.5" y="321"/>
-                <di:waypoint type="dc:Point" x="1170.5" y="321"/>
-                <di:waypoint type="dc:Point" x="1170.5" y="323.5"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="1116.5" y="326" width="0" height="13"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="seqflow-1599623448132_di" bpmnElement="seqflow-1599623448132">
-                <di:waypoint type="dc:Point" x="824.5" y="354"/>
-                <di:waypoint type="dc:Point" x="824.5" y="337.5"/>
-                <di:waypoint type="dc:Point" x="824.5" y="321"/>
-                <di:waypoint type="dc:Point" x="930" y="321"/>
-                <di:waypoint type="dc:Point" x="1035.5" y="321"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="814.5" y="359" width="0" height="13"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-        </bpmndi:BPMNPlane>
-    </bpmndi:BPMNDiagram>
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:smart="http://smartengine.org/schema/process" targetNamespace="smart" exporter="Camunda Modeler" exporterVersion="4.7.0">
+  <process id="EmbeddedParallelGateWay" isExecutable="true" version="1.0.2">
+    <startEvent id="startEvent" name="Start" />
+    <parallelGateway id="parentFork" name="parentFork" />
+    <parallelGateway id="childFork" name="childFork" />
+    <parallelGateway id="childJoin" name="childJoin" />
+    <parallelGateway id="parentJoin" name="parentJoin" />
+    <serviceTask id="parentForkServiceTask" name="parentForkServiceTask" />
+    <serviceTask id="childForkServiceTask" name="childForkServiceTask" />
+    <receiveTask id="childForkReceiveTask" name="childForkReceiveTask" />
+    <receiveTask id="parentReceiveTask" name="parentReceiveTask" />
+    <endEvent id="endEvent" name="End" />
+    <sequenceFlow id="seqflow-1599622918826" sourceRef="startEvent" targetRef="parentFork" />
+    <sequenceFlow id="seqflow-1599622942116" sourceRef="parentFork" targetRef="parentForkServiceTask" />
+    <sequenceFlow id="seqflow-1599622958211" sourceRef="parentFork" targetRef="childFork" />
+    <sequenceFlow id="seqflow-1599622975021" sourceRef="childFork" targetRef="childForkReceiveTask" />
+    <sequenceFlow id="seqflow-1599622978163" sourceRef="childFork" targetRef="childForkServiceTask" />
+    <sequenceFlow id="seqflow-1599622982922" sourceRef="parentFork" targetRef="parentReceiveTask" />
+    <sequenceFlow id="seqflow-1599622999051" sourceRef="childForkReceiveTask" targetRef="childJoin" />
+    <sequenceFlow id="seqflow-1599623019286" sourceRef="childForkServiceTask" targetRef="childJoin" />
+    <sequenceFlow id="seqflow-1599623088120" sourceRef="parentReceiveTask" targetRef="parentJoin" />
+    <sequenceFlow id="seqflow-1599623100527" sourceRef="parentForkServiceTask" targetRef="parentJoin" />
+    <sequenceFlow id="seqflow-1599623102643" sourceRef="parentJoin" targetRef="endEvent" />
+    <sequenceFlow id="seqflow-1599623448132" sourceRef="childJoin" targetRef="parentJoin" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="EmbeddedParallelGateWay">
+      <bpmndi:BPMNEdge id="seqflow-1599623448132_di" bpmnElement="seqflow-1599623448132">
+        <di:waypoint x="1040" y="320" />
+        <di:waypoint x="1150" y="320" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="814.5" y="359" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="seqflow-1599623102643_di" bpmnElement="seqflow-1599623102643">
+        <di:waypoint x="1210" y="320" />
+        <di:waypoint x="1303" y="320" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1116.5" y="326" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="seqflow-1599623100527_di" bpmnElement="seqflow-1599623100527">
+        <di:waypoint x="800" y="80" />
+        <di:waypoint x="1180" y="80" />
+        <di:waypoint x="1180" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="475.5" y="155" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="seqflow-1599623088120_di" bpmnElement="seqflow-1599623088120">
+        <di:waypoint x="800" y="570" />
+        <di:waypoint x="1180" y="570" />
+        <di:waypoint x="1180" y="350" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="350.5" y="547" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="seqflow-1599623019286_di" bpmnElement="seqflow-1599623019286">
+        <di:waypoint x="800" y="460" />
+        <di:waypoint x="1010" y="460" />
+        <di:waypoint x="1010" y="350" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="656.5" y="450" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="seqflow-1599622999051_di" bpmnElement="seqflow-1599622999051">
+        <di:waypoint x="800" y="211" />
+        <di:waypoint x="1010" y="211" />
+        <di:waypoint x="1010" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="659.5" y="254" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="seqflow-1599622982922_di" bpmnElement="seqflow-1599622982922">
+        <di:waypoint x="310" y="370" />
+        <di:waypoint x="310" y="570" />
+        <di:waypoint x="700" y="570" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="205" y="310.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="seqflow-1599622978163_di" bpmnElement="seqflow-1599622978163">
+        <di:waypoint x="470" y="340" />
+        <di:waypoint x="470" y="460" />
+        <di:waypoint x="700" y="460" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="438.5" y="327" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="seqflow-1599622975021_di" bpmnElement="seqflow-1599622975021">
+        <di:waypoint x="470" y="340" />
+        <di:waypoint x="470" y="211" />
+        <di:waypoint x="700" y="211" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="438.5" y="327" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="seqflow-1599622958211_di" bpmnElement="seqflow-1599622958211">
+        <di:waypoint x="340" y="340" />
+        <di:waypoint x="410" y="340" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="235.5" y="280" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="seqflow-1599622942116_di" bpmnElement="seqflow-1599622942116">
+        <di:waypoint x="310" y="310" />
+        <di:waypoint x="310" y="80" />
+        <di:waypoint x="700" y="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="235.5" y="280" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="seqflow-1599622918826_di" bpmnElement="seqflow-1599622918826">
+        <di:waypoint x="214" y="340" />
+        <di:waypoint x="280" y="340" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="78.5" y="279" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="childJoin_di" bpmnElement="childJoin">
+        <dc:Bounds x="980" y="290" width="60" height="60" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="926.5" y="313" width="43" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="childFork_di" bpmnElement="childFork">
+        <dc:Bounds x="410" y="310" width="60" height="60" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="407" y="283" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="childForkReceiveTask_di" bpmnElement="childForkReceiveTask">
+        <dc:Bounds x="700" y="171" width="100" height="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="609" y="254" width="137.158203125" height="15" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="childForkServiceTask_di" bpmnElement="childForkServiceTask">
+        <dc:Bounds x="700" y="420" width="100" height="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="606" y="450" width="133.26171875" height="15" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="parentFork_di" bpmnElement="parentFork">
+        <dc:Bounds x="280" y="310" width="60" height="60" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="233" y="313" width="54" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="startEvent_di" bpmnElement="startEvent">
+        <dc:Bounds x="166" y="316" width="48" height="48" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="178" y="303" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="parentForkServiceTask_di" bpmnElement="parentForkServiceTask">
+        <dc:Bounds x="700" y="40" width="100" height="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="425" y="155" width="144.1650390625" height="15" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="parentReceiveTask_di" bpmnElement="parentReceiveTask">
+        <dc:Bounds x="700" y="530" width="100" height="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="300" y="547" width="120.0615234375" height="15" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="parentJoin_di" bpmnElement="parentJoin">
+        <dc:Bounds x="1150" y="290" width="60" height="60" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1154" y="262" width="52" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="endEvent_di" bpmnElement="endEvent">
+        <dc:Bounds x="1303" y="293" width="53" height="53" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1320" y="253" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </definitions>

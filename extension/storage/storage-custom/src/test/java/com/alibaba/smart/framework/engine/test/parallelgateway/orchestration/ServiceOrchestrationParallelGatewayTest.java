@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test.parallelgateway;
+package com.alibaba.smart.framework.engine.test.parallelgateway.orchestration;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,14 +13,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
-import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.test.DoNothingLockStrategy;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 
 import org.junit.Assert;
@@ -315,7 +313,7 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
 
 
 
-    //dont use in production code
+    //do NOT use in production code
     private static ExecutorService newFixedThreadPool(int nThreads) {
         return new ThreadPoolExecutor(nThreads, nThreads,
             0, TimeUnit.MILLISECONDS,

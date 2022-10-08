@@ -22,11 +22,11 @@
         </sequenceFlow>
 
         <receiveTask id="theTask1" name="Task1"
-                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation">
         </receiveTask>
 
         <receiveTask id="theTask2" name="Task2"
-                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation">
         </receiveTask>
 
         <sequenceFlow id="flow5" sourceRef="theTask1" targetRef="join"/>
@@ -43,7 +43,7 @@
         </sequenceFlow>
 
         <receiveTask id="theTask3" name="Task3"
-                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation">
         </receiveTask>
 
         <sequenceFlow id="flow4" sourceRef="theTask3" targetRef="theEnd"/>

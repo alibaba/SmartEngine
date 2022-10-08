@@ -12,7 +12,7 @@
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="theTask0"/>
 
         <serviceTask id="theTask0" name="theTask0"
-                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation">
         </serviceTask>
 
         <sequenceFlow id="flowTask0" sourceRef="theTask0" targetRef="fork"/>
@@ -28,11 +28,11 @@
         </sequenceFlow>
 
         <serviceTask id="theTask1" name="Task1"
-                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation">
         </serviceTask>
 
         <serviceTask id="theTask2" name="Task2"
-                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation">
         </serviceTask>
 
         <sequenceFlow id="flow5" sourceRef="theTask1" targetRef="join"/>
@@ -49,7 +49,7 @@
         </sequenceFlow>
 
         <receiveTask id="theTask3" name="Task3"
-                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation">
         </receiveTask>
 
         <sequenceFlow id="flow4" sourceRef="theTask3" targetRef="theEnd"/>

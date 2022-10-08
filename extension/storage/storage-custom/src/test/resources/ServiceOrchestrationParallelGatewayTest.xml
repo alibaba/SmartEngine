@@ -3,10 +3,10 @@
         <startEvent id="start" name="开始"/>
         <parallelGateway id="fork" name="Fork事件"/>
         <parallelGateway id="join" name="Join事件"/>
-        <serviceTask id="service1" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.AServiceTaskOrchestrationDelegation" />
-        <serviceTask id="service2" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.AServiceTaskOrchestrationDelegation" />
-        <serviceTask id="service3" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.BServiceTaskOrchestrationDelegation" />
-        <serviceTask id="service4" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.BServiceTaskOrchestrationDelegation" />
+        <serviceTask id="service1" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.orchestration.delegation.AServiceTaskOrchestrationDelegation" />
+        <serviceTask id="service2" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.orchestration.delegation.AServiceTaskOrchestrationDelegation" />
+        <serviceTask id="service3" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.orchestration.delegation.BServiceTaskOrchestrationDelegation" />
+        <serviceTask id="service4" name="服务任务" smart:class = "com.alibaba.smart.framework.engine.test.parallelgateway.orchestration.delegation.BServiceTaskOrchestrationDelegation" />
 
         <endEvent id="end-event-1596988599526" name="结束"/>
 

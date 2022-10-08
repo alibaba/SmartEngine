@@ -4,9 +4,9 @@
         <parallelGateway id="fork" name="并行事件" timeout="600" poolName="poolA" skipTimeoutExp="true"/>
         <parallelGateway id="join" name="并行事件"/>
         <serviceTask id="service1" name="服务任务" smart:class =
-                "com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskTimeoutOrchestrationDelegationOne" />
+                "com.alibaba.smart.framework.engine.test.parallelgateway.orchestration.delegation.ServiceTaskTimeoutOrchestrationDelegationOne" />
         <serviceTask id="service2" name="服务任务" smart:class =
-                "com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskTimeoutOrchestrationDelegationTwo" />
+                "com.alibaba.smart.framework.engine.test.parallelgateway.orchestration.delegation.ServiceTaskTimeoutOrchestrationDelegationTwo" />
         <endEvent id="end-event-1596988599526" name="结束"/>
         <sequenceFlow id="seqflow-1596988553377" sourceRef="start" targetRef="fork"/>
         <sequenceFlow id="seqflow-1596988556303" sourceRef="fork" targetRef="service1"/>

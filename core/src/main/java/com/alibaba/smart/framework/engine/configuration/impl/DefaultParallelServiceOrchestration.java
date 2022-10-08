@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
 import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
-import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.GatewaySticker;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
 import com.alibaba.smart.framework.engine.configuration.ParallelServiceOrchestration;
@@ -69,7 +68,7 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
 
                     List<Future<PvmActivity>> futureExecutionResultList = invoke(latchWaitTime, isSkipTimeout, executeStrategy, executorService, pvmActivityTaskList);
 
-                    accquireFutureResult(context, processEngineConfiguration, latchWaitTime, isSkipTimeout, futureExecutionResultList);
+                    acquireFutureResult(context, processEngineConfiguration, latchWaitTime, isSkipTimeout, futureExecutionResultList);
 
 //                // 获取第一个成功执行的future
 //                Future<PvmActivity> pvmActivityFuture = getSuccessFuture(futureExecutionResultList, isSkipTimeoutExp);
@@ -145,7 +144,7 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
         return finalJoinParallelGateWayPvmActivity;
     }
 
-    private void accquireFutureResult(ExecutionContext context, ProcessEngineConfiguration processEngineConfiguration, Long latchWaitTime, boolean isSkipTimeoutExp, List<Future<PvmActivity>> futureExecutionResultList) throws TimeoutException {
+    private void acquireFutureResult(ExecutionContext context, ProcessEngineConfiguration processEngineConfiguration, Long latchWaitTime, boolean isSkipTimeoutExp, List<Future<PvmActivity>> futureExecutionResultList) throws TimeoutException {
         //注意这里的逻辑：这里假设是子线程在执行某个fork分支的逻辑后，然后会在join节点时返回。这个join节点就是 futureJoinParallelGateWay。
         // 当await 执行结束后，这里的假设不变式：所有子线程都已经到达了join节点。
         ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();

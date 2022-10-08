@@ -13,7 +13,7 @@
         </startEvent>
         <sequenceFlow id="flow1" sourceRef="theStart" targetRef="theTask0"/>
         <serviceTask id="theTask0" name="theTask0"
-                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation">
             <extensionElements>
                 <smart:properties>
                     <smart:value name="scen" value="cdp"/>
@@ -26,7 +26,7 @@
         <sequenceFlow id="flow2" sourceRef="fork" targetRef="theTask1"/>
         <sequenceFlow id="flow3" sourceRef="fork" targetRef="theTask2"/>
         <serviceTask id="theTask1" name="Task1"
-                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation">
             <extensionElements>
                 <smart:properties>
                     <smart:value name="scen" value="taopiaopiao"/>
@@ -35,7 +35,7 @@
             </extensionElements>
         </serviceTask>
         <serviceTask id="theTask2" name="Task2"
-                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation">
             <extensionElements>
                 <smart:properties>
                     <smart:value name="scen" value="search"/>
@@ -48,7 +48,7 @@
         <parallelGateway id="join" name="JoinGateWay"/>
         <sequenceFlow id="flow7" sourceRef="join" targetRef="theTask3"/>
         <serviceTask id="theTask3" name="Task3"
-                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.ServiceTaskDelegation">
+                     smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation">
             <extensionElements>
                 <smart:properties>
                     <smart:value name="ddd" value="dd"/>

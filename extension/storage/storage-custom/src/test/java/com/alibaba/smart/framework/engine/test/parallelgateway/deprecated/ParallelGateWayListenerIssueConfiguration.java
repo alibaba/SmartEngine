@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test;
+package com.alibaba.smart.framework.engine.test.parallelgateway.deprecated;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

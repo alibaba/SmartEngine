@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test.parallelgateway;
+package com.alibaba.smart.framework.engine.test.parallelgateway.single.thread;
 
 import java.util.HashMap;
 import java.util.List;

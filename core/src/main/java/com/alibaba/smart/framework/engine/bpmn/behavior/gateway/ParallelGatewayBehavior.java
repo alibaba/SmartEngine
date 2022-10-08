@@ -68,10 +68,10 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
              //由于这里仅是服务编排，所以这里直接返回`暂停`信号。
             return true;
 
-        }else {
+        } else {
 
+            return processDefaultLogic(context, pvmActivity, parallelGateway);
 
-            return defaultLogic(context, pvmActivity, parallelGateway);
         }
 
 
@@ -80,7 +80,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
 
 
-    private boolean defaultLogic(ExecutionContext context, PvmActivity pvmActivity, ParallelGateway parallelGateway) {
+    private boolean processDefaultLogic(ExecutionContext context, PvmActivity pvmActivity, ParallelGateway parallelGateway) {
 
 
         Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();

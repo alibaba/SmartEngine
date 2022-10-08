@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.test.parallelgateway;
+package com.alibaba.smart.framework.engine.test.parallelgateway.orchestration;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
