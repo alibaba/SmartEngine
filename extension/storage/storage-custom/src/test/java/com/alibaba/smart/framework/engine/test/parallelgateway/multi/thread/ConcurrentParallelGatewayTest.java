@@ -1,8 +1,4 @@
-package com.alibaba.smart.framework.engine.test.parallelgateway.single.thread;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+package com.alibaba.smart.framework.engine.test.parallelgateway.multi.thread;
 
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
@@ -14,15 +10,19 @@ import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSess
 import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
 import com.alibaba.smart.framework.engine.test.DoNothingLockStrategy;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
-
+import com.alibaba.smart.framework.engine.util.ThreadPoolUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.RepeatedTest;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class BasicParallelGatewayTest extends CustomBaseTestCase {
+public class ConcurrentParallelGatewayTest extends CustomBaseTestCase {
     private long orderId = 123456L;
 
 
@@ -30,43 +30,11 @@ public class BasicParallelGatewayTest extends CustomBaseTestCase {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
         LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
         processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
+        //指定线程池,多线程fork
+        processEngineConfiguration.setExecutorService(ThreadPoolUtil.createNewDefaultThreadPool("ServiceOrchestrationParallelGatewayTest"));
     }
 
-    @Test
-    public void testServiceTaskParallelGateway() throws Exception {
-        super.setUp();
 
-        ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("test-servicetask-parallel-gateway.bpmn20.xml").getFirstProcessDefinition();
-        assertEquals(16, processDefinition.getBaseElementList().size());
-
-        Map<String, Object> request = new HashMap<String, Object>();
-        request.put("input", 7);
-        ProcessInstance processInstance = processCommandService.start(
-            processDefinition.getId(), processDefinition.getVersion(),
-            request);
-
-        persisteAndUpdateThreadLocal(orderId, processInstance);
-
-        // 流程启动后,正确状态断言
-        Assert.assertNotNull(processInstance);
-
-        List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(
-            processInstance.getInstanceId());
-        assertEquals(1, executionInstanceList.size());
-
-        ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
-
-        assertTrue(("theTask3".equals(firstExecutionInstance.getProcessDefinitionActivityId())));
-
-        persisteAndUpdateThreadLocal(orderId, processInstance);
-
-        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
-
-        Assert.assertNotNull(processInstance.getCompleteTime());
-        assertEquals(InstanceStatus.completed, processInstance.getStatus());
-
-    }
 
     @Test
     public void testReceiveTaskParallelGateway() throws Exception {

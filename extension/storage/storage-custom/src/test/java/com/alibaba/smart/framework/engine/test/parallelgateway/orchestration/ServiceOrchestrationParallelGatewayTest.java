@@ -21,6 +21,7 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 
+import com.alibaba.smart.framework.engine.util.ThreadPoolUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
         //指定线程池,多线程fork
-        processEngineConfiguration.setExecutorService(newFixedThreadPool(4));
+        processEngineConfiguration.setExecutorService(ThreadPoolUtil.createNewDefaultThreadPool("ServiceOrchestrationParallelGatewayTest"));
         // 服务编排场景,必须要手动开启这个开关
         processEngineConfiguration.getOptionContainer().put(ConfigurationOption.SERVICE_ORCHESTRATION_OPTION);
 

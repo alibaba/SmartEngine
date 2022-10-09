@@ -1,8 +1,4 @@
-package com.alibaba.smart.framework.engine.test.parallelgateway.single.thread;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+package com.alibaba.smart.framework.engine.test.process;
 
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
@@ -10,63 +6,40 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.persister.custom.session.PersisterSession;
-import com.alibaba.smart.framework.engine.persister.util.InstanceSerializerFacade;
-import com.alibaba.smart.framework.engine.test.DoNothingLockStrategy;
-import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
-
+import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
+import com.alibaba.smart.framework.engine.test.process.helper.DoNothingLockStrategy;
+import com.alibaba.smart.framework.engine.util.ThreadPoolUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class BasicParallelGatewayTest extends CustomBaseTestCase {
+@ContextConfiguration("/spring/application-test.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
+@Transactional
+public class ConcurrentParallelGatewayDBTest extends DatabaseBaseTestCase {
     private long orderId = 123456L;
 
 
     protected void initProcessConfiguration() {
-        processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        super.initProcessConfiguration();
+
         LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
         processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
+        //指定线程池,多线程fork
+        processEngineConfiguration.setExecutorService(ThreadPoolUtil.createNewDefaultThreadPool("ConcurrentParallelGatewayTest"));
     }
 
-    @Test
-    public void testServiceTaskParallelGateway() throws Exception {
-        super.setUp();
 
-        ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("test-servicetask-parallel-gateway.bpmn20.xml").getFirstProcessDefinition();
-        assertEquals(16, processDefinition.getBaseElementList().size());
-
-        Map<String, Object> request = new HashMap<String, Object>();
-        request.put("input", 7);
-        ProcessInstance processInstance = processCommandService.start(
-            processDefinition.getId(), processDefinition.getVersion(),
-            request);
-
-        persisteAndUpdateThreadLocal(orderId, processInstance);
-
-        // 流程启动后,正确状态断言
-        Assert.assertNotNull(processInstance);
-
-        List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(
-            processInstance.getInstanceId());
-        assertEquals(1, executionInstanceList.size());
-
-        ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
-
-        assertTrue(("theTask3".equals(firstExecutionInstance.getProcessDefinitionActivityId())));
-
-        persisteAndUpdateThreadLocal(orderId, processInstance);
-
-        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
-
-        Assert.assertNotNull(processInstance.getCompleteTime());
-        assertEquals(InstanceStatus.completed, processInstance.getStatus());
-
-    }
 
     @Test
     public void testReceiveTaskParallelGateway() throws Exception {
@@ -81,7 +54,7 @@ public class BasicParallelGatewayTest extends CustomBaseTestCase {
             processDefinition.getId(), processDefinition.getVersion(),
             request);
 
-        persisteAndUpdateThreadLocal(orderId, processInstance);
+        processInstance = processQueryService.findById(processInstance.getInstanceId());
 
         // 流程启动后,正确状态断言
         Assert.assertNotNull(processInstance);
@@ -103,7 +76,6 @@ public class BasicParallelGatewayTest extends CustomBaseTestCase {
         //完成其中一个节点的驱动。
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), null);
 
-        processInstance = persisteAndUpdateThreadLocal(orderId, processInstance);
 
         String runningActivityId = secondActivityId;
 
@@ -128,32 +100,24 @@ public class BasicParallelGatewayTest extends CustomBaseTestCase {
         //完成后面一个节点的驱动。
         request.put("input", 11);
 
-        processInstance = persisteAndUpdateThreadLocal(orderId, processInstance);
 
         //完成两个任务节点，完成并行网关的计算。
         processInstance = executionCommandService.signal(runningExecutionInstance.getInstanceId(), request);
 
-        processInstance = persisteAndUpdateThreadLocal(orderId, processInstance);
 
         executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         firstExecutionInstance = executionInstanceList.get(0);
         assertEquals(1, executionInstanceList.size());
         assertTrue("theTask3".equals(firstExecutionInstance.getProcessDefinitionActivityId()));
 
-        processInstance = persisteAndUpdateThreadLocal(orderId, processInstance);
 
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
+
         Assert.assertNotNull(processInstance.getCompleteTime());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
 
     }
 
-    private ProcessInstance persisteAndUpdateThreadLocal(long orderId, ProcessInstance processInstance) {
-        String serializedProcessInstance = InstanceSerializerFacade.serialize(processInstance);
-        processInstance = InstanceSerializerFacade.deserializeAll(serializedProcessInstance);
 
-        PersisterSession.currentSession().putProcessInstance(processInstance);
-        return processInstance;
-    }
 
 }

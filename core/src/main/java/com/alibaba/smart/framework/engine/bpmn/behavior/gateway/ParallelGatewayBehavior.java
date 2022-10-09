@@ -137,14 +137,11 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             LockStrategy lockStrategy = context.getProcessEngineConfiguration().getLockStrategy();
             String processInstanceId = context.getProcessInstance().getInstanceId();
             try{
+                lockStrategy.tryLock(processInstanceId,context);
 
                 super.enter(context, pvmActivity);
 
-                lockStrategy.tryLock(processInstanceId,context);
-
-
                 Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
-
 
                 ProcessInstance processInstance = context.getProcessInstance();
 

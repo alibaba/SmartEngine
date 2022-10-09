@@ -6,13 +6,13 @@
     <parallelGateway id="fork" name="ForkGateway" />
     <sequenceFlow id="flow2" sourceRef="fork" targetRef="theTask1" />
     <sequenceFlow id="flow3" sourceRef="fork" targetRef="theTask2" />
-    <receiveTask id="theTask1" name="Task1" smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation" />
-    <receiveTask id="theTask2" name="Task2" smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation" />
+    <receiveTask id="theTask1" name="Task1" smart:class="receiverTaskDelegation" />
+    <receiveTask id="theTask2" name="Task2" smart:class="receiverTaskDelegation" />
     <sequenceFlow id="flow5" sourceRef="theTask1" targetRef="join" />
     <sequenceFlow id="flow6" sourceRef="theTask2" targetRef="join" />
     <parallelGateway id="join" name="JoinGateWay" />
     <sequenceFlow id="flow7" sourceRef="join" targetRef="theTask3" />
-    <receiveTask id="theTask3" name="Task3" smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation" />
+    <receiveTask id="theTask3" name="Task3" smart:class="receiverTaskDelegation" />
     <sequenceFlow id="flow4" sourceRef="theTask3" targetRef="theEnd" />
     <endEvent id="theEnd" />
   </process>
