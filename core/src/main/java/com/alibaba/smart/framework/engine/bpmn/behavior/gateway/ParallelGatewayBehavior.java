@@ -31,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = ParallelGateway.class)
-
 public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ParallelGatewayBehavior.class);
@@ -152,6 +151,10 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 //当前持久化介质中中，已产生的 active ExecutionInstance。
                 List<ExecutionInstance> executionInstanceListFromDB =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(), super.processEngineConfiguration);
 
+                LOGGER.debug("ParallelGatewayBehavior Joined, the  value of  executionInstanceListFromMemory, executionInstanceListFromDB   is {} , {} ",executionInstanceListFromMemory,executionInstanceListFromDB);
+
+
+
                 //Merge 数据库中和内存中的EI。如果是 custom模式，则可能会存在重复记录，所以这里需要去重。 如果是 DataBase 模式，则不会有重复的EI.
 
                 List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
@@ -169,7 +172,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
 
                 int reachedJoinCounter = 0;
-                List<ExecutionInstance> chosenExecutionInstances = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
+                List<ExecutionInstance> chosenExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
 
                 if(null != mergedExecutionInstanceList){
 
@@ -177,17 +180,21 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
                         if (executionInstance.getProcessDefinitionActivityId().equals(parallelGateway.getId())) {
                             reachedJoinCounter++;
-                            chosenExecutionInstances.add(executionInstance);
+                            chosenExecutionInstanceList.add(executionInstance);
                         }
                     }
                 }
 
 
-                if(reachedJoinCounter == inComingPvmTransitions.size() ){
+                int countOfTheJoinLatch = inComingPvmTransitions.size();
+
+                LOGGER.debug("chosenExecutionInstanceList , reachedJoinCounter,countOfTheJoinLatch  is {} , {} , {} ",chosenExecutionInstanceList,reachedJoinCounter,countOfTheJoinLatch);
+
+                if(reachedJoinCounter == countOfTheJoinLatch){
                     //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
 
-                    if(null != chosenExecutionInstances){
-                        for (ExecutionInstance executionInstance : chosenExecutionInstances) {
+                    if(null != chosenExecutionInstanceList){
+                        for (ExecutionInstance executionInstance : chosenExecutionInstanceList) {
                             MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
                                 processEngineConfiguration);
                         }
