@@ -79,7 +79,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
             fireEvent(context,pvmActivity, EventConstant.ACTIVITY_START);
 
-
             return false;
         }
 

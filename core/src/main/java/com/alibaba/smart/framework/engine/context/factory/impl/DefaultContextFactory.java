@@ -90,15 +90,18 @@ public class DefaultContextFactory implements ContextFactory {
 
 
         subContext.setProcessDefinition(processDefinition);
-
         subContext.setProcessEngineConfiguration(processEngineConfiguration);
-
         subContext.setRequest(request);
         subContext.setResponse(response);
-
         subContext.setProcessInstance(processInstance);
-
         subContext.setParent(mayBeNullParentContext);
+
+        if(null !=  mayBeNullParentContext){
+            subContext.setExecutionInstance(mayBeNullParentContext.getExecutionInstance());
+            subContext.setBaseElement(mayBeNullParentContext.getBaseElement());
+            subContext.setActivityInstance(mayBeNullParentContext.getActivityInstance());
+        }
+
 
         return subContext;
     }

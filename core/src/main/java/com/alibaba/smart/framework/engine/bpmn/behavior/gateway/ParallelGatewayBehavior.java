@@ -15,7 +15,9 @@ import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ParallelServiceOrchestration;
 import com.alibaba.smart.framework.engine.configuration.impl.PvmActivityTask;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.context.factory.ContextFactory;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -100,17 +102,23 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 //顺序执行fork
                 for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
                     PvmActivity target = pvmTransitionEntry.getValue().getTarget();
+
                     target.enter(context);
                 }
             }else{
                 //并发执行fork
+                AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+                ContextFactory contextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, ContextFactory.class);
+
 
                 List<PvmActivityTask> tasks = new ArrayList<PvmActivityTask>(outcomeTransitions.size());
 
                 for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
                     PvmActivity target = pvmTransitionEntry.getValue().getTarget();
 
-                    PvmActivityTask task = new PvmActivityTask(target,context);
+                    ExecutionContext subThreadContext = contextFactory.createChildThreadContext(context);
+                    PvmActivityTask task = new PvmActivityTask(target,subThreadContext);
+
                     tasks.add(task);
                 }
 

@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.test.parallelgateway.single.thread;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
@@ -17,7 +18,7 @@ public class ServiceTaskDelegation implements JavaDelegation {
 
 
     @Getter
-    private static List<String> arrayList = new ArrayList<String>();
+    private static CopyOnWriteArrayList<String> arrayList = new CopyOnWriteArrayList<String>();
 
     @Override
     public void execute(ExecutionContext executionContext) {
