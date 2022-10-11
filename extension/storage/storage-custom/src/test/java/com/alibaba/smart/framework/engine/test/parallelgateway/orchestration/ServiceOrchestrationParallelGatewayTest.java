@@ -5,12 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
@@ -33,7 +28,7 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
 
         //指定线程池,多线程fork
-        processEngineConfiguration.setExecutorService(ThreadPoolUtil.createNewDefaultThreadPool("ServiceOrchestrationParallelGatewayTest"));
+        processEngineConfiguration.setExecutorService( Executors.newFixedThreadPool(10));
         // 服务编排场景,必须要手动开启这个开关
         processEngineConfiguration.getOptionContainer().put(ConfigurationOption.SERVICE_ORCHESTRATION_OPTION);
 
@@ -86,9 +81,15 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
         Assert.assertEquals(4,entries.size());
 
         ThreadExecutionResult service1 = (ThreadExecutionResult)request.get(service1ActivityId);
+        ThreadExecutionResult service2 = (ThreadExecutionResult)request.get(service2ActivityId);
+
+        ThreadExecutionResult service3 = (ThreadExecutionResult)request.get(service3ActivityId);
         ThreadExecutionResult service4 = (ThreadExecutionResult)request.get(service4ActivityId);
 
         Assert.assertEquals(sleep1, service1.getPayload());
+        Assert.assertEquals(sleep2, service2.getPayload());
+        Assert.assertEquals(sleep1, service3.getPayload());
+
         Assert.assertEquals(sleep2, service4.getPayload());
 
         Assert.assertNotEquals(service1.getThreadId(),service4.getThreadId());
@@ -97,10 +98,10 @@ public class ServiceOrchestrationParallelGatewayTest extends CustomBaseTestCase 
 
         long duration = end-start;
 
-        //简单拍个数据，用于表示该程序非串式执行的
+        //简单拍个数据，用于表示该程序非串式执行的  . service1,2 串行, 3,4 串行; 12和34 并发.
         long maxExecutionTime = sleep1 + sleep2 + 200L;
 
-        //System.out.println(duration);
+//        System.out.println(duration);
 
         Assert.assertTrue(duration< maxExecutionTime);
     }

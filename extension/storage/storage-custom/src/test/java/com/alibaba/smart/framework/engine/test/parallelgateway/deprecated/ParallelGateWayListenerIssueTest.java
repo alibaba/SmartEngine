@@ -24,6 +24,7 @@ import org.junit.Test;
  */
 public class ParallelGateWayListenerIssueTest extends ParallelGateWayListenerIssueConfiguration {
 
+
     @Before
     public void deploy() {
         repositoryCommandService.deploy("subprocess/parent.xml");

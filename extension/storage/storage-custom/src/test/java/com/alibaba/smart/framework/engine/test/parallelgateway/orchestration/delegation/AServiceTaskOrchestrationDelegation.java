@@ -16,7 +16,6 @@ public class AServiceTaskOrchestrationDelegation implements JavaDelegation {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceTaskDelegation.class);
 
 
-
     @Override
     public void execute(ExecutionContext executionContext) {
 

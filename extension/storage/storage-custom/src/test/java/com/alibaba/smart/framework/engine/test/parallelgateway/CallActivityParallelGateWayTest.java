@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.test.parallelgateway;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
@@ -16,6 +17,7 @@ import com.alibaba.smart.framework.engine.service.command.RepositoryCommandServi
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
 import com.alibaba.smart.framework.engine.test.DoNothingLockStrategy;
 
+import com.alibaba.smart.framework.engine.util.ThreadPoolUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,10 +30,13 @@ public class CallActivityParallelGateWayTest {
 
     @Before
     public void before() {
+
         this.smartEngine = new DefaultSmartEngine();
         DefaultProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
         LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
         processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
+        processEngineConfiguration.setExecutorService(Executors.newFixedThreadPool(10));
+
         this.smartEngine.init(processEngineConfiguration);
         this.executionQueryService = this.smartEngine.getExecutionQueryService();
         this.executionCommandService = this.smartEngine.getExecutionCommandService();

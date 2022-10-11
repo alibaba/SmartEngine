@@ -1,61 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions id="parent-process" version="1.0.0"
-             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-             targetNamespace="Examples">
-
-    <process id="parent-process" isExecutable="true">
-        <startEvent id="start"/>
-
-        <sequenceFlow id="flow_1" sourceRef="start" targetRef="task_1"/>
-
-        <receiveTask id="task_1" name="Task 1" />
-
-        <sequenceFlow id="to_fork_1" sourceRef="task_1" targetRef="fork_1"/>
-
-        <!-- ======== Parallel 1 ======== -->
-        <parallelGateway id="fork_1" />
-        <receiveTask id="parallel_1_task" name="Parallel Task 1" />
-        <callActivity id="parallel_1_subprocess" name="Parallel Sub-Process 1" calledElement="sub-process" calledElementVersion="1.0.0" />
-
-
-        <sequenceFlow id="flow_fork_1_task" sourceRef="fork_1" targetRef="parallel_1_task"/>
-        <sequenceFlow id="flow_join_1_task" sourceRef="parallel_1_task" targetRef="join_1"/>
-
-        <sequenceFlow id="flow_fork_1_subprocess" sourceRef="fork_1" targetRef="parallel_1_subprocess"/>
-        <sequenceFlow id="flow_join_1_subprocess" sourceRef="parallel_1_subprocess" targetRef="join_1"/>
-
-        <parallelGateway id="join_1" />
-        <!-- ======== Parallel 1 end ======== -->
-
-
-        <sequenceFlow id="flow_2" sourceRef="join_1" targetRef="task_2"/>
-
-        <receiveTask id="task_2" name="Task 2" />
-
-        <sequenceFlow id="to_fork_2" sourceRef="task_2" targetRef="fork_2"/>
-
-        <!-- ======== Parallel 2 (suspend) ======== -->
-        <parallelGateway id="fork_2" />
-
-        <sequenceFlow id="flow_fork_2_task" sourceRef="fork_2" targetRef="parallel_2_task"/>
-        <receiveTask id="parallel_2_task" name="Parallel Task 2" />
-        <sequenceFlow id="flow_join_2_task" sourceRef="parallel_2_task" targetRef="join_2"/>
-
-        <sequenceFlow id="flow_fork_2_subprocess" sourceRef="fork_2" targetRef="parallel_2_subprocess"/>
-        <callActivity id="parallel_2_subprocess" name="Parallel Sub-Process 2" calledElement="sub-process-suspend" calledElementVersion="1.0.0" />
-        <sequenceFlow id="flow_join_2_subprocess" sourceRef="parallel_2_subprocess" targetRef="join_2"/>
-
-        <parallelGateway id="join_2" />
-        <!-- ======== Parallel 2 end ======== -->
-
-        <sequenceFlow id="flow_3" sourceRef="join_2" targetRef="task_3"/>
-
-        <receiveTask id="task_3" name="Task 3" />
-
-        <sequenceFlow id="to_end" sourceRef="task_3" targetRef="end"/>
-
-        <endEvent id="end" name="End"/>
-
-    </process>
-
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:smart="http://smartengine.org/schema/process" targetNamespace="smart" exporter="Camunda Modeler" exporterVersion="4.7.0">
+  <process id="parent-process" isExecutable="true">
+    <startEvent id="start" />
+    <sequenceFlow id="flow_1" sourceRef="start" targetRef="task_1" />
+    <receiveTask id="task_1" name="Task 1" />
+    <sequenceFlow id="to_fork_1" sourceRef="task_1" targetRef="fork_1" />
+    <parallelGateway id="fork_1" />
+    <receiveTask id="parallel_1_task" name="Parallel Task 1" />
+    <callActivity id="parallel_1_subprocess" name="Parallel Sub-Process 1" calledElement="sub-process" camunda:calledElementVersion="1.0.0" />
+    <sequenceFlow id="flow_fork_1_task" sourceRef="fork_1" targetRef="parallel_1_task" />
+    <sequenceFlow id="flow_join_1_task" sourceRef="parallel_1_task" targetRef="join_1" />
+    <sequenceFlow id="flow_fork_1_subprocess" sourceRef="fork_1" targetRef="parallel_1_subprocess" />
+    <sequenceFlow id="flow_join_1_subprocess" sourceRef="parallel_1_subprocess" targetRef="join_1" />
+    <parallelGateway id="join_1" />
+    <sequenceFlow id="flow_2" sourceRef="join_1" targetRef="task_2" />
+    <receiveTask id="task_2" name="Task 2" />
+    <sequenceFlow id="to_fork_2" sourceRef="task_2" targetRef="fork_2" />
+    <parallelGateway id="fork_2" />
+    <sequenceFlow id="flow_fork_2_task" sourceRef="fork_2" targetRef="parallel_2_task" />
+    <receiveTask id="parallel_2_task" name="Parallel Task 2" />
+    <sequenceFlow id="flow_join_2_task" sourceRef="parallel_2_task" targetRef="join_2" />
+    <sequenceFlow id="flow_fork_2_subprocess" sourceRef="fork_2" targetRef="parallel_2_subprocess" />
+    <callActivity id="parallel_2_subprocess" name="Parallel Sub-Process 2" calledElement="sub-process-suspend" camunda:calledElementVersion="1.0.0" />
+    <sequenceFlow id="flow_join_2_subprocess" sourceRef="parallel_2_subprocess" targetRef="join_2" />
+    <parallelGateway id="join_2" />
+    <sequenceFlow id="flow_3" sourceRef="join_2" targetRef="task_3" />
+    <receiveTask id="task_3" name="Task 3" />
+    <sequenceFlow id="to_end" sourceRef="task_3" targetRef="end" />
+    <endEvent id="end" name="End" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="parent-process">
+      <bpmndi:BPMNEdge id="ccflow41" bpmnElement="to_end">
+        <di:waypoint x="1364" y="240" />
+        <di:waypoint x="1416" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="ddflow41" bpmnElement="flow_3">
+        <di:waypoint x="1214" y="240" />
+        <di:waypoint x="1316" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="ffflow41" bpmnElement="flow_join_2_subprocess">
+        <di:waypoint x="1084" y="350" />
+        <di:waypoint x="1190" y="350" />
+        <di:waypoint x="1190" y="264" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="eeflow41" bpmnElement="flow_fork_2_subprocess">
+        <di:waypoint x="900" y="284" />
+        <di:waypoint x="900" y="350" />
+        <di:waypoint x="1036" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="bbflow41" bpmnElement="flow_join_2_task">
+        <di:waypoint x="1074" y="150" />
+        <di:waypoint x="1190" y="150" />
+        <di:waypoint x="1190" y="216" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="iiflow41" bpmnElement="flow_fork_2_task">
+        <di:waypoint x="900" y="236" />
+        <di:waypoint x="900" y="150" />
+        <di:waypoint x="1026" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="gflow41" bpmnElement="to_fork_2">
+        <di:waypoint x="824" y="260" />
+        <di:waypoint x="876" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="eflow41" bpmnElement="flow_2">
+        <di:waypoint x="704" y="260" />
+        <di:waypoint x="776" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="bflow41" bpmnElement="flow_join_1_subprocess">
+        <di:waypoint x="604" y="350" />
+        <di:waypoint x="680" y="350" />
+        <di:waypoint x="680" y="284" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="aaflow41" bpmnElement="flow_fork_1_subprocess">
+        <di:waypoint x="480" y="284" />
+        <di:waypoint x="480" y="350" />
+        <di:waypoint x="556" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="a9flow41" bpmnElement="flow_join_1_task">
+        <di:waypoint x="604" y="150" />
+        <di:waypoint x="680" y="150" />
+        <di:waypoint x="680" y="236" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="a8flow41" bpmnElement="flow_fork_1_task">
+        <di:waypoint x="480" y="236" />
+        <di:waypoint x="480" y="150" />
+        <di:waypoint x="556" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="a2flow41a" bpmnElement="to_fork_1">
+        <di:waypoint x="334" y="260" />
+        <di:waypoint x="456" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="a2flow41" bpmnElement="flow_1">
+        <di:waypoint x="207" y="250" />
+        <di:waypoint x="286" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="a5theStart1" bpmnElement="fork_1">
+        <dc:Bounds x="456" y="236" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="a3theStart1" bpmnElement="task_1">
+        <dc:Bounds x="286" y="236" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="a1theStart1" bpmnElement="start">
+        <dc:Bounds x="161" y="236" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ctheStart1" bpmnElement="join_1">
+        <dc:Bounds x="656" y="236" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="dtheStart1" bpmnElement="fork_2">
+        <dc:Bounds x="876" y="236" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="htheStart1" bpmnElement="parallel_2_task">
+        <dc:Bounds x="1026" y="126" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ggtheStart1" bpmnElement="join_2">
+        <dc:Bounds x="1166" y="216" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="hhtheStart1" bpmnElement="task_3">
+        <dc:Bounds x="1316" y="216" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="a7theStart1" bpmnElement="parallel_1_subprocess">
+        <dc:Bounds x="556" y="326" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="a6theStart1" bpmnElement="parallel_1_task">
+        <dc:Bounds x="556" y="126" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ftheStart1" bpmnElement="task_2">
+        <dc:Bounds x="776" y="236" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="aatheStart1" bpmnElement="parallel_2_subprocess">
+        <dc:Bounds x="1036" y="326" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="iitheStart1" bpmnElement="end">
+        <dc:Bounds x="1416" y="216" width="48" height="48" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1430" y="192" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </definitions>

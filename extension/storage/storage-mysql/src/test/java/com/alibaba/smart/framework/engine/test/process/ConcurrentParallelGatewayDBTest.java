@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -36,7 +37,7 @@ public class ConcurrentParallelGatewayDBTest extends DatabaseBaseTestCase {
         LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
         processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
         //指定线程池,多线程fork
-        processEngineConfiguration.setExecutorService(ThreadPoolUtil.createNewDefaultThreadPool("ConcurrentParallelGatewayTest"));
+        processEngineConfiguration.setExecutorService(Executors.newFixedThreadPool(10));
     }
 
 

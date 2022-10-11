@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.test.parallelgateway;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
@@ -12,6 +13,7 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.test.DoNothingLockStrategy;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 
+import com.alibaba.smart.framework.engine.util.ThreadPoolUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,6 +26,43 @@ public class EmbeddedParallelGatewayTest extends CustomBaseTestCase {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
         LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
         processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
+        processEngineConfiguration.setExecutorService(Executors.newFixedThreadPool(10));
+    }
+
+
+    private List<ExecutionInstance> produceExecutionInstances() {
+        //流程图已备份
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("EmbeddedParallelGateway.xml").getFirstProcessDefinition();
+        assertEquals(22, processDefinition.getBaseElementList().size());
+
+        //=======1ST=========
+
+        ProcessInstance processInstance = processCommandService.start(
+                processDefinition.getId(), processDefinition.getVersion()
+        );
+
+        // 流程启动后,正确状态断言
+        Assert.assertNotNull(processInstance);
+
+        List<ExecutionInstance> firstStepExecutionInstanceList = executionQueryService.findActiveExecutionList(
+                processInstance.getInstanceId());
+        assertEquals(4, firstStepExecutionInstanceList.size());
+
+        ExecutionInstance childForkReceiveTask = ExecutionInstanceHelper.findMatched(firstStepExecutionInstanceList,
+                "childForkReceiveTask");
+
+        ExecutionInstance parentReceiveTask = ExecutionInstanceHelper.findMatched(firstStepExecutionInstanceList, "parentReceiveTask");
+
+        ExecutionInstance childJoin = ExecutionInstanceHelper.findMatched(firstStepExecutionInstanceList, "childJoin");
+
+        ExecutionInstance parentJoin = ExecutionInstanceHelper.findMatched(firstStepExecutionInstanceList, "parentJoin");
+
+        Assert.assertNotNull(childForkReceiveTask);
+        Assert.assertNotNull(parentReceiveTask);
+        Assert.assertNotNull(childJoin);
+        Assert.assertNotNull(parentJoin);
+        return firstStepExecutionInstanceList;
     }
 
     @Test
@@ -57,40 +96,6 @@ public class EmbeddedParallelGatewayTest extends CustomBaseTestCase {
 
     }
 
-    private List<ExecutionInstance> produceExecutionInstances() {
-        //流程图已备份
-        ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("EmbeddedParallelGateway.xml").getFirstProcessDefinition();
-        assertEquals(22, processDefinition.getBaseElementList().size());
-
-        //=======1ST=========
-
-        ProcessInstance processInstance = processCommandService.start(
-            processDefinition.getId(), processDefinition.getVersion()
-        );
-
-        // 流程启动后,正确状态断言
-        Assert.assertNotNull(processInstance);
-
-        List<ExecutionInstance> firstStepExecutionInstanceList = executionQueryService.findActiveExecutionList(
-            processInstance.getInstanceId());
-        assertEquals(4, firstStepExecutionInstanceList.size());
-
-        ExecutionInstance childForkReceiveTask = ExecutionInstanceHelper.findMatched(firstStepExecutionInstanceList,
-            "childForkReceiveTask");
-
-        ExecutionInstance parentReceiveTask = ExecutionInstanceHelper.findMatched(firstStepExecutionInstanceList, "parentReceiveTask");
-
-        ExecutionInstance childJoin = ExecutionInstanceHelper.findMatched(firstStepExecutionInstanceList, "childJoin");
-
-        ExecutionInstance parentJoin = ExecutionInstanceHelper.findMatched(firstStepExecutionInstanceList, "parentJoin");
-
-        Assert.assertNotNull(childForkReceiveTask);
-        Assert.assertNotNull(parentReceiveTask);
-        Assert.assertNotNull(childJoin);
-        Assert.assertNotNull(parentJoin);
-        return firstStepExecutionInstanceList;
-    }
 
     @Test
     public void testEmbedded2() throws Exception {

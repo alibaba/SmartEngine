@@ -18,6 +18,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -31,7 +32,7 @@ public class ConcurrentParallelGatewayTest extends CustomBaseTestCase {
         LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
         processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
         //指定线程池,多线程fork
-        processEngineConfiguration.setExecutorService(ThreadPoolUtil.createNewDefaultThreadPool("ServiceOrchestrationParallelGatewayTest"));
+        processEngineConfiguration.setExecutorService(Executors.newFixedThreadPool(10));
     }
 
 
