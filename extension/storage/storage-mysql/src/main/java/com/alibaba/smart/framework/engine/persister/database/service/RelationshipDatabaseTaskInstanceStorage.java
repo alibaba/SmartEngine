@@ -1,8 +1,10 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -241,6 +243,11 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         taskInstanceEntity.setTitle(taskInstance.getTitle());
         taskInstanceEntity.setExtension(taskInstance.getExtension());
         //taskInstanceEntity.setGmtModified(taskInstance.getCompleteTime());
+
+        Date currentDate = DateUtil.getCurrentDate();
+        taskInstanceEntity.setGmtCreate(currentDate);
+        taskInstanceEntity.setGmtModified(currentDate);
+
         return taskInstanceEntity;
     }
 

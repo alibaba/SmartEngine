@@ -1,8 +1,10 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -30,9 +32,9 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     public DeploymentInstance insert(DeploymentInstance deploymentInstance,
                                      ProcessEngineConfiguration processEngineConfiguration) {
         DeploymentInstanceEntity entity = convertByInstance(deploymentInstance);
-        DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("deploymentInstanceDAO");
+        DeploymentInstanceDAO deploymentInstanceDAO = (DeploymentInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("deploymentInstanceDAO");
 
-        deploymentnstanceDAO.insert(entity);
+        deploymentInstanceDAO.insert(entity);
 
         Long entityId = entity.getId();
 
@@ -159,6 +161,10 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         if(null != deploymentInstanceInstanceId){
             deploymentInstanceEntity.setId(Long.valueOf(deploymentInstanceInstanceId));
         }
+
+        Date currentDate = DateUtil.getCurrentDate();
+        deploymentInstanceEntity.setGmtCreate(currentDate);
+        deploymentInstanceEntity.setGmtModified(currentDate);
 
         return deploymentInstanceEntity;
     }

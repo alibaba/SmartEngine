@@ -1,8 +1,10 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -66,6 +68,10 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
             String serializedValue = variablePersister.serialize(value);
             variableInstanceEntity.setFieldStringValue(serializedValue);
         }
+
+        Date currentDate = DateUtil.getCurrentDate();
+        variableInstanceEntity.setGmtCreate(currentDate);
+        variableInstanceEntity.setGmtModified(currentDate);
 
         variableInstanceDAO.insert(variableInstanceEntity);
 

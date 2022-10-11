@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.persister.database.dao;
 
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity;
 
 import lombok.Setter;
@@ -19,6 +20,10 @@ public class ActivityInstanceDAOTest extends BaseElementTest {
     public void before() {
         entity = new ActivityInstanceEntity();
         entity.setId(1L);
+
+        entity.setGmtCreate(DateUtil.getCurrentDate());
+        entity.setGmtModified(DateUtil.getCurrentDate());
+
         entity.setProcessDefinitionIdAndVersion("processDefinitionId");
 //        entity.setExecutionInstanceId(11L);
         entity.setProcessDefinitionActivityId("ProcessDefinitionActivityId");

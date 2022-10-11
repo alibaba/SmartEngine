@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
 
@@ -24,6 +25,9 @@ public class TaskInstanceDAOTest extends BaseElementTest {
     public void before() {
         entity = new TaskInstanceEntity();
         entity.setId(1L);
+
+        entity.setGmtCreate(DateUtil.getCurrentDate());
+        entity.setGmtModified(DateUtil.getCurrentDate());
 
         entity.setProcessDefinitionIdAndVersion("processDefinitionId");
         entity.setActivityInstanceId(11L);

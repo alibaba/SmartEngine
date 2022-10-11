@@ -61,8 +61,14 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
     private ProcessInstanceEntity buildEntityFromInstance(ProcessInstance processInstance) {
         ProcessInstanceEntity processInstanceEntityToBePersisted = new ProcessInstanceEntity();
         processInstanceEntityToBePersisted.setId(Long.valueOf(processInstance.getInstanceId()));
+
         processInstanceEntityToBePersisted.setGmtCreate(processInstance.getStartTime());
-        processInstanceEntityToBePersisted.setGmtModified(processInstance.getCompleteTime());
+
+        if( null != processInstance.getCompleteTime()){
+            processInstanceEntityToBePersisted.setGmtModified(processInstance.getCompleteTime());
+        }else {
+            processInstanceEntityToBePersisted.setGmtModified(processInstance.getStartTime());
+        }
 
         String parentInstanceId = processInstance.getParentInstanceId();
         if(null != parentInstanceId){

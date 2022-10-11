@@ -10,9 +10,10 @@
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity"   keyProperty="id">
         insert into se_process_instance (<include refid="baseColumn"/>)
-        values (#{id}, now(6), now(6), #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
+        values (#{id}, #{gmtCreate}, #{gmtModified}, #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
         #{status}, #{parentProcessInstanceId},#{parentExecutionInstanceId}, #{reason}, #{bizUniqueId}, #{title}, #{tag},#{comment})
     </insert>
+
 
 
 

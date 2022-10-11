@@ -2,9 +2,11 @@ package com.alibaba.smart.framework.engine.persister.database.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -56,6 +58,11 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         activityInstanceEntityToBePersisted.setProcessDefinitionActivityId(activityInstance.getProcessDefinitionActivityId());
         activityInstanceEntityToBePersisted.setProcessInstanceId(Long.valueOf(activityInstance.getProcessInstanceId()));
         activityInstanceEntityToBePersisted.setId(Long.valueOf(activityInstance.getInstanceId()));
+
+        Date currentDate = DateUtil.getCurrentDate();
+        activityInstanceEntityToBePersisted.setGmtCreate(currentDate);
+        activityInstanceEntityToBePersisted.setGmtModified(currentDate);
+
         return activityInstanceEntityToBePersisted;
     }
 

@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
 import com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
@@ -25,6 +26,8 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
     public void before() {
         entity = new DeploymentInstanceEntity();
         entity.setId(1L);
+        entity.setGmtCreate(DateUtil.getCurrentDate());
+        entity.setGmtModified(DateUtil.getCurrentDate());
         entity.setProcessDefinitionId("processDefinitionId");
         entity.setProcessDefinitionVersion("processDefinitionVersion");
         entity.setProcessDefinitionContent(PROCESS_DEFINITION_CONTENT);
@@ -90,6 +93,8 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
         entity = new DeploymentInstanceEntity();
         long id = System.currentTimeMillis();
         entity.setId(id);
+        entity.setGmtCreate(DateUtil.getCurrentDate());
+        entity.setGmtModified(DateUtil.getCurrentDate());
         entity.setProcessDefinitionId("processDefinitionId1");
         entity.setProcessDefinitionVersion("processDefinitionVersion1");
         entity.setProcessDefinitionName("TestName");

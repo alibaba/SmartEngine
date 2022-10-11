@@ -2,8 +2,10 @@ package com.alibaba.smart.framework.engine.persister.database.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -50,6 +52,12 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
         executionInstanceEntity.setProcessInstanceId(Long.valueOf(executionInstance.getProcessInstanceId()));
         executionInstanceEntity.setActivityInstanceId(Long.valueOf(executionInstance.getActivityInstanceId()));
         executionInstanceEntity.setProcessDefinitionActivityId(executionInstance.getProcessDefinitionActivityId());
+
+        Date currentDate = DateUtil.getCurrentDate();
+        executionInstanceEntity.setGmtCreate(currentDate);
+        executionInstanceEntity.setGmtModified(currentDate);
+
+
 
         //TransitionInstance incomeTransition=executionInstance.getIncomeTransition();
         //if(null!=incomeTransition){

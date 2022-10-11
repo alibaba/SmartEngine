@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 import java.util.Arrays;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity;
 
 import lombok.Setter;
@@ -26,6 +27,10 @@ public class TaskAssigneeInstanceDAOTest extends BaseElementTest {
     @Before
     public void before() {
         entityOne = new TaskAssigneeEntity();
+
+        entityOne.setGmtCreate(DateUtil.getCurrentDate());
+        entityOne.setGmtModified(DateUtil.getCurrentDate());
+
         entityOne.setAssigneeId("123");
         entityOne.setAssigneeType("user");
         entityOne.setId(1001L);
@@ -33,6 +38,9 @@ public class TaskAssigneeInstanceDAOTest extends BaseElementTest {
         entityOne.setTaskInstanceId(2000001L);
 
         entityTwo = new TaskAssigneeEntity();
+
+        entityTwo.setGmtCreate(DateUtil.getCurrentDate());
+        entityTwo.setGmtModified(DateUtil.getCurrentDate());
         entityTwo.setAssigneeId("abc");
         entityTwo.setAssigneeType("group");
         entityTwo.setId(1002L);
@@ -40,6 +48,8 @@ public class TaskAssigneeInstanceDAOTest extends BaseElementTest {
         entityTwo.setTaskInstanceId(2000001L);
 
         entityThree = new TaskAssigneeEntity();
+        entityThree.setGmtCreate(DateUtil.getCurrentDate());
+        entityThree.setGmtModified(DateUtil.getCurrentDate());
         entityThree.setAssigneeId("abc");
         entityThree.setAssigneeType("group");
         entityThree.setId(1003L);

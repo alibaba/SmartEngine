@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 
@@ -28,6 +29,9 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
         entity.setStatus("running");
         Long id = System.currentTimeMillis();
         entity.setId(1L);
+        entity.setGmtCreate(DateUtil.getCurrentDate());
+        entity.setGmtModified(DateUtil.getCurrentDate());
+
         entity.setBizUniqueId(String.valueOf(id * 1000 + new Random().nextInt(1000)) );
         entity.setTitle("title");
         entity.setStartUserId("234");

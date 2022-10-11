@@ -12,7 +12,7 @@
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity"   keyProperty="id">
         insert into se_task_instance(<include refid="baseColumn"/>)
-        values (#{id}, now(6), now(6), #{processInstanceId}, #{processDefinitionIdAndVersion},#{processDefinitionType},
+        values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId}, #{processDefinitionIdAndVersion},#{processDefinitionType},
         #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status},#{comment},#{extension},#{title})
     </insert>
 

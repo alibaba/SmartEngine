@@ -1,10 +1,8 @@
 package com.alibaba.smart.framework.engine.persister.database.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -113,6 +111,12 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
         if(null != taskAssigneeInstanceId){
             taskAssigneeEntity.setId(Long.valueOf(taskAssigneeInstanceId));
         }
+
+        Date currentDate = DateUtil.getCurrentDate();
+        taskAssigneeEntity.setGmtCreate(currentDate);
+        taskAssigneeEntity.setGmtModified(currentDate);
+
+
         return taskAssigneeEntity;
     }
 

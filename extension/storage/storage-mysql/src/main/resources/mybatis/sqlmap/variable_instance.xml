@@ -10,7 +10,7 @@
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity"   keyProperty="id">
         insert into se_variable_instance (<include refid="baseColumn"/>)
-        values (#{id}, now(6), now(6), #{processInstanceId}, #{executionInstanceId},
+        values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId}, #{executionInstanceId},
         #{fieldKey},#{fieldType},#{fieldLongValue},#{fieldDoubleValue},#{fieldStringValue} )
     </insert>
 
