@@ -50,19 +50,15 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
         String processDefinitionVersion = callActivity.getCalledElementVersion();
 
 
-        Map<String, Object> request = parentContext.getRequest();
-        Map<String, Object> response = parentContext.getResponse();
-
-
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
 
+        //隔离父子流程的request和response,业务上如果有需要共享的,可以在第一个context里面手动从parentContext获取.
         ProcessInstance childProcessInstance = processInstanceFactory.createChild(processEngineConfiguration,   processDefinitionId,processDefinitionVersion,
-            request,  parentInstanceId,   parentExecutionInstanceId);
-
+            null,  parentInstanceId,   parentExecutionInstanceId);
 
         ExecutionContext subContext = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, ContextFactory.class)
             .create( processEngineConfiguration , childProcessInstance,
-                  request,   response,parentContext);
+                  null,   null,parentContext);
 
 
         // TUNE 减少不必要的对象创建
@@ -70,7 +66,7 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
 
         childProcessInstance = pvmProcessInstance.start(subContext);
 
-        childProcessInstance = CommonServiceHelper.insertAndPersist(childProcessInstance, request, processEngineConfiguration);
+        childProcessInstance = CommonServiceHelper.insertAndPersist(childProcessInstance, null, processEngineConfiguration);
 
         InstanceStatus childProcessInstanceStatus = childProcessInstance.getStatus();
 
