@@ -10,11 +10,13 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Default Process Instance Created by ettear on 16-4-12.
  */
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @Data
 public class DefaultProcessInstance extends AbstractLifeCycleInstance implements ProcessInstance{
 

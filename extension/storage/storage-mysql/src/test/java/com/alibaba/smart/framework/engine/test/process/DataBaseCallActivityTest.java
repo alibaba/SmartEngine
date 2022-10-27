@@ -132,9 +132,9 @@ public class DataBaseCallActivityTest extends DatabaseBaseTestCase {
 
     private ExecutionInstance findAndAssertAtPreOrderPhase(ProcessInstance oldProcessInstance) {
 
-        ProcessInstance latestProcessInstance = processQueryService.findById(oldProcessInstance.getInstanceId());
+        ProcessInstance parentProcessInstance = processQueryService.findById(oldProcessInstance.getInstanceId());
 
-        Assert.assertNotNull(InstanceStatus.running.equals(latestProcessInstance.getStatus()));
+        Assert.assertNotNull(InstanceStatus.running.equals(parentProcessInstance.getStatus()));
 
         //只有主流程一个实例
         ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
@@ -180,11 +180,11 @@ public class DataBaseCallActivityTest extends DatabaseBaseTestCase {
                 .deploy("child-callactivity-process.bpmn20.xml").getFirstProcessDefinition();
             assertEquals(7, childProcessDefinition.getBaseElementList().size());
 
-            ProcessInstance processInstance = startParentProcess(  parentProcessDefinition);
+            ProcessInstance parentProcessInstance = startParentProcess(  parentProcessDefinition);
 
             //=======1 =========
 
-            ExecutionInstance firstExecutionInstance = findAndAssertAtPreOrderPhase(processInstance);
+            ExecutionInstance firstExecutionInstance = findAndAssertAtPreOrderPhase(parentProcessInstance);
 
 
             //=======1.1 ========= 触发主流程执行进入到子流程里面
@@ -199,22 +199,19 @@ public class DataBaseCallActivityTest extends DatabaseBaseTestCase {
             Assert.assertEquals(2, processInstanceList.size());
 
 
-
-
-
-            parentProcessInstanceId = processInstance.getInstanceId();
+            parentProcessInstanceId = parentProcessInstance.getInstanceId();
             childProcessInstanceId = null;
 
-            for (ProcessInstance instanceId : processInstanceList) {
-                if (!parentProcessInstanceId.equals(instanceId)) {
-                    childProcessInstanceId = instanceId.getInstanceId();
+            for (ProcessInstance instance : processInstanceList) {
+                if (!parentProcessInstanceId.equals(instance.getInstanceId())) {
+                    childProcessInstanceId = instance.getInstanceId();
                 }
             }
 
 
             //ADD ASSERT
             ProcessInstanceQueryParam parentProcessInstanceQueryParam = new ProcessInstanceQueryParam();
-            parentProcessInstanceQueryParam.setParentInstanceId(processInstance.getInstanceId());
+            parentProcessInstanceQueryParam.setParentInstanceId(parentProcessInstance.getInstanceId());
             List<ProcessInstance> result = processQueryService.findList(parentProcessInstanceQueryParam);
             Assert.assertEquals(1, result.size());
             ProcessInstance childProcessInstance = result.get(0);
