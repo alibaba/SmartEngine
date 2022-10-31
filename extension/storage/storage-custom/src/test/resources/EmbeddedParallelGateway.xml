@@ -6,10 +6,10 @@
     <parallelGateway id="childFork" name="childFork" />
     <parallelGateway id="childJoin" name="childJoin" />
     <parallelGateway id="parentJoin" name="parentJoin" />
-    <serviceTask id="parentForkServiceTask" name="parentForkServiceTask" />
-    <serviceTask id="childForkServiceTask" name="childForkServiceTask" />
-    <receiveTask id="childForkReceiveTask" name="childForkReceiveTask" />
-    <receiveTask id="parentReceiveTask" name="parentReceiveTask" />
+    <serviceTask id="parentForkServiceTask" name="parentForkServiceTask" smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.delegation.ParentServiceTaskDelegation"  />
+    <serviceTask id="childForkServiceTask" name="childForkServiceTask" smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.delegation.ChildServiceTaskDelegation"  />
+    <receiveTask id="childForkReceiveTask" name="childForkReceiveTask" smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.delegation.ChildReceiveTaskDelegation" />
+    <receiveTask id="parentReceiveTask" name="parentReceiveTask" smart:class="com.alibaba.smart.framework.engine.test.parallelgateway.delegation.ParentReceiveTaskDelegation" />
     <endEvent id="endEvent" name="End" />
     <sequenceFlow id="seqflow-1599622918826" sourceRef="startEvent" targetRef="parentFork" />
     <sequenceFlow id="seqflow-1599622942116" sourceRef="parentFork" targetRef="parentForkServiceTask" />

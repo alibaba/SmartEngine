@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.test.DoNothingLockStrategy;
+import com.alibaba.smart.framework.engine.test.FileLockStrategy;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 
 import com.alibaba.smart.framework.engine.util.ThreadPoolUtil;
@@ -24,14 +25,15 @@ public class EmbeddedParallelGatewayTest extends CustomBaseTestCase {
 
     protected void initProcessConfiguration() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
-        processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
+
+        LockStrategy fileLockStrategy = new FileLockStrategy();
+        processEngineConfiguration.setLockStrategy(fileLockStrategy);
+
         processEngineConfiguration.setExecutorService(Executors.newFixedThreadPool(10));
     }
 
 
     private List<ExecutionInstance> produceExecutionInstances() {
-        //流程图已备份
         ProcessDefinition processDefinition = repositoryCommandService
                 .deploy("EmbeddedParallelGateway.xml").getFirstProcessDefinition();
         assertEquals(22, processDefinition.getBaseElementList().size());

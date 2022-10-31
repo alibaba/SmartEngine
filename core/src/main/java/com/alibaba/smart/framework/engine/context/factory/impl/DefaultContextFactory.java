@@ -23,8 +23,6 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 @ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = ContextFactory.class)
 public class DefaultContextFactory implements ContextFactory {
 
-
-
     @Override
     public ExecutionContext createExecutionContext(Map<String, Object> request,
                                                     ProcessEngineConfiguration processEngineConfiguration,
@@ -106,33 +104,5 @@ public class DefaultContextFactory implements ContextFactory {
         return subContext;
     }
 
-    //private ExecutionContext buildExecutionContext(ProcessInstance processInstance,
-    //                                               ProcessEngineConfiguration processEngineConfiguration,
-    //                                               Map<String, Object> request, Map<String, Object> response,
-    //                                               ProcessDefinitionContainer processDefinitionContainer) {
-    //    ExecutionContext subContext = this.create();
-    //
-    //    String processDefinitionId = processInstance.getProcessDefinitionId();
-    //    String processDefinitionVersion = processInstance.getProcessDefinitionVersion();
-    //
-    //    ProcessDefinition processDefinition = processDefinitionContainer.getProcessDefinition(processDefinitionId,
-    //        processDefinitionVersion);
-    //
-    //    if(null == processDefinition){
-    //        throw new EngineException("No ProcessDefinition found for processDefinitionId : "+processDefinitionId+",processDefinitionVersion : " +processDefinitionVersion);
-    //    }
-    //
-    //
-    //    subContext.setProcessDefinition(processDefinition);
-    //
-    //    subContext.setProcessEngineConfiguration(processEngineConfiguration);
-    //
-    //    subContext.setRequest(request);
-    //    subContext.setResponse(response);
-    //
-    //    subContext.setProcessInstance(processInstance);
-    //
-    //
-    //    return subContext;
-    //}
+
 }

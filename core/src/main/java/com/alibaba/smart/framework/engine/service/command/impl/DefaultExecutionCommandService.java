@@ -114,7 +114,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             return newProcessInstance;
         } finally {
-            CommonServiceHelper.tryUnlock(processEngineConfiguration, processInstance);
+//            CommonServiceHelper.tryUnlock(processEngineConfiguration, processInstance);
         }
     }
 
@@ -146,7 +146,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             return newProcessInstance;
         } finally {
-            CommonServiceHelper.tryUnlock(processEngineConfiguration, processInstance);
+//            CommonServiceHelper.tryUnlock(processEngineConfiguration, processInstance);
         }
     }
 
@@ -296,13 +296,11 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         private PvmProcessDefinition pvmProcessDefinition;
         private ExecutionContext executionContext;
         private ProcessInstance processInstance;
-        private ContextFactory contextFactory;
 
         public PreparePhase(Map<String, Object> request, ExecutionInstance executionInstance,ProcessInstance processInstance,ContextFactory instanceContextFactory) {
             this.request = request;
             this.executionInstance = executionInstance;
             this.processInstance = processInstance;
-            this.contextFactory =instanceContextFactory;
         }
 
         public PvmProcessDefinition getPvmProcessDefinition() {
@@ -316,7 +314,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         public PreparePhase init() {
 
 
-            CommonServiceHelper.tryLock(processEngineConfiguration, processInstance);
+//            CommonServiceHelper.tryLock(processEngineConfiguration, processInstance);
 
             //TUNE 校验是否有子流程的执行实例依赖这个父执行实例。
 
@@ -339,7 +337,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
 
         public PreparePhase initWithShading() {
-            CommonServiceHelper.tryLock(processEngineConfiguration, processInstance);
+//            CommonServiceHelper.tryLock(processEngineConfiguration, processInstance);
 
             //TUNE 校验是否有子流程的执行实例依赖这个父执行实例。
             //BE AWARE: 注意:针对 CUSTOM 场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。

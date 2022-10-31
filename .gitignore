@@ -19,3 +19,7 @@ release.properties
 
 # VS Code
 .vscode/
+
+
+#lock file using for test
+smart-engine.lock
