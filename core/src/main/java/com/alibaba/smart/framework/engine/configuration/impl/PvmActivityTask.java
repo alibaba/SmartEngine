@@ -20,18 +20,18 @@ public  class PvmActivityTask implements Callable<PvmActivity> {
         public PvmActivity call() {
 
             PvmActivity pvmActivity ;
-            try {
-                GatewaySticker.create();
+//            try {
+//                GatewaySticker.create();
 
                 //忽略了子线程的返回值
                 this.pvmActivity.enter(context);
 
 //                pvmActivity = GatewaySticker.currentSession().getPvmActivity();
 
-            }finally {
-
-                GatewaySticker.destroySession();
-            }
+//            }finally {
+//
+//                GatewaySticker.destroySession();
+//            }
 
             return null;
 //            return pvmActivity;

@@ -115,6 +115,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
                     PvmActivity target = pvmTransitionEntry.getValue().getTarget();
 
+                    //注意,ExecutionContext 在多线程情况下,必须要新建对象,防止一些变量被并发修改.
                     ExecutionContext subThreadContext = contextFactory.createChildThreadContext(context);
                     PvmActivityTask task = new PvmActivityTask(target,subThreadContext);
 
@@ -132,11 +133,18 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         } else if (outComeTransitionSize == 1 && inComeTransitionSize >= 2) {
             //join 时必须使用分布式锁。
+            // update at 2022.10.31 这里的缩粒度不够大,在极端环境下,还是存在数据可见性的问题.
+            // 比如说,当这个锁结束后, 外面还需要进行持久化数据. 理论上,另外一个线程进来执行时,可能这个持久化数据还未完成.
+            // 所以这里取消掉锁,改为外部锁
 
             LockStrategy lockStrategy = context.getProcessEngineConfiguration().getLockStrategy();
-            String processInstanceId = context.getProcessInstance().getInstanceId();
-            try{
-                lockStrategy.tryLock(processInstanceId,context);
+            if(null == lockStrategy){
+                throw new EngineException("LockStrategy must be implemented for ParallelGateway");
+            }
+
+//            String processInstanceId = context.getProcessInstance().getInstanceId();
+//            try{
+//                lockStrategy.tryLock(processInstanceId,context);
 
                 super.enter(context, pvmActivity);
 
@@ -207,10 +215,10 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                     return true;
                 }
 
-            }finally {
-
-                lockStrategy.unLock(processInstanceId,context);
-            }
+//            }finally {
+//
+//                lockStrategy.unLock(processInstanceId,context);
+//            }
 
         }else{
             throw new EngineException("should not touch here:"+pvmActivity);

@@ -88,7 +88,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
         try {
-//            CommonServiceHelper.tryLock(processEngineConfiguration, processInstance);
+            CommonServiceHelper.tryLock(processEngineConfiguration, processInstance);
 
             processInstance = pvmProcessInstance.start(executionContext);
 
@@ -97,7 +97,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
             return processInstance;
 
         } finally {
-//            CommonServiceHelper.tryUnlock(processEngineConfiguration, processInstance);
+            CommonServiceHelper.tryUnlock(processEngineConfiguration, processInstance);
         }
     }
 

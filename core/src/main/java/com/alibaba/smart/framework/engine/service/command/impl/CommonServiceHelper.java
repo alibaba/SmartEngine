@@ -31,34 +31,34 @@ import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 public abstract  class CommonServiceHelper {
 
 
-//    public static void tryLock(ProcessEngineConfiguration processEngineConfiguration,
-//                               ProcessInstance processInstance) {
-//        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
-//        if(null != lockStrategy){
-//            String bizUniqueId = processInstance.getBizUniqueId();
-//
-//            if(null != bizUniqueId){
-//                lockStrategy.tryLock(bizUniqueId,null);
-//            }else {
-//                lockStrategy.tryLock(processInstance.getInstanceId(),null);
-//            }
-//        }
-//    }
-//
-//
-//    public static void tryUnlock(ProcessEngineConfiguration processEngineConfiguration,
-//                               ProcessInstance processInstance) {
-//        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
-//        if(null != lockStrategy){
-//            String bizUniqueId = processInstance.getBizUniqueId();
-//
-//            if(null != bizUniqueId){
-//                lockStrategy.unLock(bizUniqueId,null);
-//            }else {
-//                lockStrategy.unLock(processInstance.getInstanceId(),null);
-//            }
-//        }
-//    }
+    public static void tryLock(ProcessEngineConfiguration processEngineConfiguration,
+                               ProcessInstance processInstance) {
+        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
+        if(null != lockStrategy){
+            String bizUniqueId = processInstance.getBizUniqueId();
+
+            if(null != bizUniqueId){
+                lockStrategy.tryLock(bizUniqueId,null);
+            }else {
+                lockStrategy.tryLock(processInstance.getInstanceId(),null);
+            }
+        }
+    }
+
+
+    public static void tryUnlock(ProcessEngineConfiguration processEngineConfiguration,
+                               ProcessInstance processInstance) {
+        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
+        if(null != lockStrategy){
+            String bizUniqueId = processInstance.getBizUniqueId();
+
+            if(null != bizUniqueId){
+                lockStrategy.unLock(bizUniqueId,null);
+            }else {
+                lockStrategy.unLock(processInstance.getInstanceId(),null);
+            }
+        }
+    }
 
     public static ProcessInstance insertAndPersist(ProcessInstance processInstance, Map<String, Object> request,
                                                    ProcessEngineConfiguration processEngineConfiguration) {
@@ -71,7 +71,7 @@ public abstract  class CommonServiceHelper {
 
         ProcessInstance newProcessInstance =  processInstanceStorage.insert(processInstance, processEngineConfiguration);
 
-        persisteVariableInstanceIfPossible(request, processEngineConfiguration,
+        persistVariableInstanceIfPossible(request, processEngineConfiguration,
             newProcessInstance, AdHocConstant.DEFAULT_ZERO_VALUE);
 
         persist(newProcessInstance,processEngineConfiguration);
@@ -79,9 +79,9 @@ public abstract  class CommonServiceHelper {
         return newProcessInstance;
     }
 
-    private static void persisteVariableInstanceIfPossible(Map<String, Object> request,
-                                                           ProcessEngineConfiguration processEngineConfiguration,
-                                                           ProcessInstance newProcessInstance,String executionInstanceId) {
+    private static void persistVariableInstanceIfPossible(Map<String, Object> request,
+                                                          ProcessEngineConfiguration processEngineConfiguration,
+                                                          ProcessInstance newProcessInstance, String executionInstanceId) {
         VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
         if( variablePersister.isPersisteVariableInstanceEnabled() && null!= request ){
             AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
@@ -121,7 +121,7 @@ public abstract  class CommonServiceHelper {
 
         ProcessInstance newProcessInstance = processInstanceStorage.update(processInstance,processEngineConfiguration );
 
-        persisteVariableInstanceIfPossible(request, processEngineConfiguration,
+        persistVariableInstanceIfPossible(request, processEngineConfiguration,
             newProcessInstance,executionInstanceId);
 
         persist(processInstance   ,  processEngineConfiguration );
