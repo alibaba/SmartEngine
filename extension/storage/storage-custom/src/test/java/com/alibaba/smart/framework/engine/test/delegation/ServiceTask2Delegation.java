@@ -24,7 +24,7 @@ public class ServiceTask2Delegation implements TccDelegation {
     @Override
     public TccResult tryExecute(ExecutionContext executionContext) {
         List<ActivityInstance> activityInstances = executionContext.getProcessInstance().getActivityInstances();
-        LOGGER.info("TCC executing: invoke some hsf code stuff" + executionContext.getRequest());
+        LOGGER.info("executing  RPC service " + executionContext.getRequest());
         counter.addAndGet(3);
         return TccResult.buildSucessfulResult(null);
     }

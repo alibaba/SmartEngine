@@ -64,7 +64,7 @@ public class RetryServiceTaskTest extends CustomBaseTestCase {
 
                 }
 
-                if(attemptCount == maxAttempts ){
+                if(attemptCount > maxAttempts ){
                     // means all retry failed
                     // record log ,trigger alert, persist params if needed
 

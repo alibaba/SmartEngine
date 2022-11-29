@@ -22,7 +22,7 @@ public class SequenceFlowBehavior extends AbstractTransitionBehavior<SequenceFlo
         if (null != conditionExpression) {
             return ExpressionUtil.eval(context, conditionExpression);
         }else{
-            throw new EngineException("empty conditionExpression found for "+transition);
+            throw new EngineException("Should config condition expression for ExclusiveGateway,the sequenceFlow is "+transition);
         }
     }
 }

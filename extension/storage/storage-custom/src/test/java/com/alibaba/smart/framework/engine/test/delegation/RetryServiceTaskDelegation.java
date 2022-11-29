@@ -21,7 +21,7 @@ public class RetryServiceTaskDelegation implements JavaDelegation {
     }
 
     public void execute(ExecutionContext executionContext) {
-        LOGGER.info("TCC executing: invoke some hsf code stuff" + executionContext.getRequest());
+        LOGGER.info("executing  RPC service " + executionContext.getRequest());
         counter.addAndGet(1);
         Object action = executionContext.getRequest().get("action");
 
