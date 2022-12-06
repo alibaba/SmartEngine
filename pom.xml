@@ -282,7 +282,8 @@
             <dependency>
                 <groupId>org.mvel</groupId>
                 <artifactId>mvel2</artifactId>
-                <version>2.4.4.Final</version>
+                <version>2.4.14.Final</version>
+                <scope>provided</scope>
             </dependency>
 
 
@@ -392,7 +393,6 @@
                         <includes>
                             <!-- 重要:!!!! 千万记得这个 artifact 的scope 不要设置为provided了,已经浪费至少2个小时了!!!!!-->
                             <include>com.esotericsoftware:reflectasm:shaded</include>
-                            <include>org.mvel:mvel2</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -400,10 +400,6 @@
                             <pattern>com.esotericsoftware.reflectasm</pattern>
                             <shadedPattern>com.alibaba.smart.framework.engine.shaded.com.esotericsoftware.reflectasm
                             </shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.mvel2</pattern>
-                            <shadedPattern>com.alibaba.smart.framework.engine.org.mvel2</shadedPattern>
                         </relocation>
                     </relocations>
 
