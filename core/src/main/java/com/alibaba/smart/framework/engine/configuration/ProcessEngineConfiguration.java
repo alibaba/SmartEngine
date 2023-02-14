@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
-import com.alibaba.smart.framework.engine.annoation.Experiment;
+import com.alibaba.smart.framework.engine.annotation.Experiment;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 

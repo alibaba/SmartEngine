@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.test.delegation;
 
-import com.alibaba.smart.framework.engine.annoation.Retryable;
+import com.alibaba.smart.framework.engine.annotation.Retryable;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import com.alibaba.smart.framework.engine.util.ThreadPoolUtil;

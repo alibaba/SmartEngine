@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.configuration.impl;
 
 import java.util.Map;
 
-import com.alibaba.smart.framework.engine.annoation.Retryable;
+import com.alibaba.smart.framework.engine.annotation.Retryable;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.configuration.DelegationExecutor;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
