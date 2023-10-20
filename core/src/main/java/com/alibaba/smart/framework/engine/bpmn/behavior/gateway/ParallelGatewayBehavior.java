@@ -135,12 +135,13 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             //join 时必须使用分布式锁。
             // update at 2022.10.31 这里的缩粒度不够大,在极端环境下,还是存在数据可见性的问题.
             // 比如说,当这个锁结束后, 外面还需要进行持久化数据. 理论上,另外一个线程进来执行时,可能这个持久化数据还未完成.
-            // 所以这里取消掉锁,改为外部锁
+            // 所以这里取消掉默认锁,改为建议在生产环境使用使用分布式锁.
+            // 需要在Join时实现这个对应的并发控制策略
 
-            LockStrategy lockStrategy = context.getProcessEngineConfiguration().getLockStrategy();
-            if(null == lockStrategy){
-                throw new EngineException("LockStrategy must be implemented for ParallelGateway");
-            }
+//            LockStrategy lockStrategy = context.getProcessEngineConfiguration().getLockStrategy();
+//            if(null == lockStrategy){
+//                throw new EngineException("LockStrategy must be implemented for ParallelGateway");
+//            }
 
 //            String processInstanceId = context.getProcessInstance().getInstanceId();
 //            try{
