@@ -6,7 +6,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 
 
 
-public  class DefaultPvmActivityTask implements PvmActivityTask<PvmActivity> {
+public  class DefaultPvmActivityTask implements PvmActivityTask {
 
         private PvmActivity pvmActivity;
         private ExecutionContext context;

@@ -6,7 +6,6 @@ import java.util.concurrent.ExecutorService;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.annotation.Experiment;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
-import com.alibaba.smart.framework.engine.configuration.impl.DefaultPvmActivityTaskFactory;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 
 /**

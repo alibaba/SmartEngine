@@ -6,7 +6,7 @@ import com.alibaba.smart.framework.engine.configuration.PvmActivityTaskFactory;
 
 public  class DefaultPvmActivityTaskFactory implements PvmActivityTaskFactory {
 
-    public DefaultPvmActivityTask create(Object... args){
+    public PvmActivityTask create(Object... args){
         return new DefaultPvmActivityTask(args);
     }
 
