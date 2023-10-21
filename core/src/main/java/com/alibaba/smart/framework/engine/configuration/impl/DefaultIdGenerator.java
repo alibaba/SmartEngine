@@ -17,7 +17,6 @@ public class DefaultIdGenerator implements IdGenerator{
         String  randomUUID =  UUID.randomUUID().toString();
 
         instance.setInstanceId(randomUUID);
-//        return  randomUUID;
 
     }
 }

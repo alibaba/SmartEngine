@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutorService;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.annotation.Experiment;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
+import com.alibaba.smart.framework.engine.configuration.impl.DefaultPvmActivityTaskFactory;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 
 /**
@@ -161,6 +162,10 @@ public interface ProcessEngineConfiguration {
     void setMagicExtension(Map<String,Object> extension);
 
     Map<String,Object> getMagicExtension();
+
+
+    void setPvmActivityTaskFactory(PvmActivityTaskFactory pvmActivityTaskFactory);
+    PvmActivityTaskFactory getPvmActivityTaskFactory();
 
     // 是否要干掉 用于配置扩展,默认可以为空。设计目的是根据自己的业务需求,来自定义存储(该机制会绕过引擎自带的各种Storage机制,powerful and a little UnSafe)。。
     //void setPersisterStrategy(PersisterStrategy persisterStrategy);

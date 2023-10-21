@@ -60,7 +60,7 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
                 // 注意: 重新赋值 如果能匹配到自定义的线程池，直接使用。 允许扩展并行网关的3种属性: timeout="300" strategy="any" poolName="poolA" skipTimeoutExp="true"  使用方法详见  ServiceOrchestrationParallelGatewayTest
                 executorService = useSpecifiedExecutorServiceIfNeeded(properties, processEngineConfiguration, executorService);
 
-                List<PvmActivityTask> pvmActivityTaskList = new ArrayList<PvmActivityTask>(outComeTransitionSize);
+                List<DefaultPvmActivityTask> pvmActivityTaskList = new ArrayList<DefaultPvmActivityTask>(outComeTransitionSize);
 
                 try {
 
@@ -110,7 +110,7 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
     /**
      *  这个为protected ,意图是: 有些分布式场景,需要全链路打印日志,这里建议有这方面需求的自定义实现 PvmActivityTask ,传入相关的Context 进来即可.
      */
-    protected PvmActivity initMultiTaskRequestAndFindOutJoinActivity(ExecutionContext context, ContextFactory contextFactory, List<PvmActivityTask> pvmActivityTaskList, Set<Entry<String, PvmTransition>> entries) {
+    protected PvmActivity initMultiTaskRequestAndFindOutJoinActivity(ExecutionContext context, ContextFactory contextFactory, List<DefaultPvmActivityTask> pvmActivityTaskList, Set<Entry<String, PvmTransition>> entries) {
 
         PvmActivity finalJoinParallelGateWayPvmActivity = null;
         for (Entry<String, PvmTransition> pvmTransitionEntry : entries) {
@@ -130,11 +130,11 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
             //将ParentContext 复制到 子线程内
             ExecutionContext subThreadContext = contextFactory.createChildThreadContext(context);
 
-            PvmActivityTask pvmActivityTask = new PvmActivityTask(target, subThreadContext);
+            DefaultPvmActivityTask defaultPvmActivityTask = new DefaultPvmActivityTask(target, subThreadContext);
 
             LOGGER.debug("PvmActivityTask thread id  is {}, subThreadContext is {} {} ", Thread.currentThread().getId(), subThreadContext);
 
-            pvmActivityTaskList.add(pvmActivityTask);
+            pvmActivityTaskList.add(defaultPvmActivityTask);
         }
 
         if (null == finalJoinParallelGateWayPvmActivity) {

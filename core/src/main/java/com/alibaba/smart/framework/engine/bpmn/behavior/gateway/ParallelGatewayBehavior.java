@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
@@ -12,9 +13,9 @@ import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
-import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ParallelServiceOrchestration;
-import com.alibaba.smart.framework.engine.configuration.impl.PvmActivityTask;
+//import com.alibaba.smart.framework.engine.configuration.PvmActivityTask;
+import com.alibaba.smart.framework.engine.configuration.impl.DefaultPvmActivityTask;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.ContextFactory;
@@ -110,14 +111,14 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 ContextFactory contextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, ContextFactory.class);
 
 
-                List<PvmActivityTask> tasks = new ArrayList<PvmActivityTask>(outcomeTransitions.size());
+                Collection<DefaultPvmActivityTask> tasks = new ArrayList<DefaultPvmActivityTask>(outcomeTransitions.size());
 
                 for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
                     PvmActivity target = pvmTransitionEntry.getValue().getTarget();
 
                     //注意,ExecutionContext 在多线程情况下,必须要新建对象,防止一些变量被并发修改.
                     ExecutionContext subThreadContext = contextFactory.createChildThreadContext(context);
-                    PvmActivityTask task = new PvmActivityTask(target,subThreadContext);
+                    DefaultPvmActivityTask task = (DefaultPvmActivityTask)context.getProcessEngineConfiguration().getPvmActivityTaskFactory().create(target,subThreadContext);
 
                     tasks.add(task);
                 }
