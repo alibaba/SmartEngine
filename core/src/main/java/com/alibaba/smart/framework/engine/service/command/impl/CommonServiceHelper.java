@@ -30,35 +30,35 @@ import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
  */
 public abstract  class CommonServiceHelper {
 
-
-    public static void tryLock(ProcessEngineConfiguration processEngineConfiguration,
-                               ProcessInstance processInstance) {
-        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
-        if(null != lockStrategy){
-            String bizUniqueId = processInstance.getBizUniqueId();
-
-            if(null != bizUniqueId){
-                lockStrategy.tryLock(bizUniqueId,null);
-            }else {
-                lockStrategy.tryLock(processInstance.getInstanceId(),null);
-            }
-        }
-    }
-
-
-    public static void tryUnlock(ProcessEngineConfiguration processEngineConfiguration,
-                               ProcessInstance processInstance) {
-        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
-        if(null != lockStrategy){
-            String bizUniqueId = processInstance.getBizUniqueId();
-
-            if(null != bizUniqueId){
-                lockStrategy.unLock(bizUniqueId,null);
-            }else {
-                lockStrategy.unLock(processInstance.getInstanceId(),null);
-            }
-        }
-    }
+//    @Deprecated
+//    public static void tryLock(ProcessEngineConfiguration processEngineConfiguration,
+//                               ProcessInstance processInstance) {
+//        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
+//        if(null != lockStrategy){
+//            String bizUniqueId = processInstance.getBizUniqueId();
+//
+//            if(null != bizUniqueId){
+//                lockStrategy.tryLock(bizUniqueId,null);
+//            }else {
+//                lockStrategy.tryLock(processInstance.getInstanceId(),null);
+//            }
+//        }
+//    }
+//
+//    @Deprecated
+//    public static void tryUnlock(ProcessEngineConfiguration processEngineConfiguration,
+//                               ProcessInstance processInstance) {
+//        LockStrategy lockStrategy = processEngineConfiguration.getLockStrategy();
+//        if(null != lockStrategy){
+//            String bizUniqueId = processInstance.getBizUniqueId();
+//
+//            if(null != bizUniqueId){
+//                lockStrategy.unLock(bizUniqueId,null);
+//            }else {
+//                lockStrategy.unLock(processInstance.getInstanceId(),null);
+//            }
+//        }
+//    }
 
     public static ProcessInstance insertAndPersist(ProcessInstance processInstance, Map<String, Object> request,
                                                    ProcessEngineConfiguration processEngineConfiguration) {

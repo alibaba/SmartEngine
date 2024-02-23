@@ -93,7 +93,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId()
                 , processEngineConfiguration);
-        try {
 
             PreparePhase preparePhase = new PreparePhase(request, executionInstance,  processInstance,instanceContextFactory).init();
 
@@ -112,10 +111,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
                 processEngineConfiguration);
 
             return newProcessInstance;
-        } finally {
 
-            CommonServiceHelper.tryUnlock(processEngineConfiguration, processInstance);
-        }
     }
 
     @Override
@@ -126,7 +122,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         ProcessInstance processInstance = processInstanceStorage.findOne(executionInstance.getProcessInstanceId()
                 , processEngineConfiguration);
 
-        try {
+
 
             PreparePhase preparePhase = new PreparePhase(request, executionInstance,  processInstance,instanceContextFactory).initWithShading();
 
@@ -145,9 +141,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
                     processEngineConfiguration);
 
             return newProcessInstance;
-        } finally {
-            CommonServiceHelper.tryUnlock(processEngineConfiguration, processInstance);
-        }
+
     }
 
     protected ExecutionInstance queryExecutionInstance(String processInstanceId, String executionInstanceId) {
@@ -313,9 +307,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         public PreparePhase init() {
 
-
-            CommonServiceHelper.tryLock(processEngineConfiguration, processInstance);
-
             //TUNE 校验是否有子流程的执行实例依赖这个父执行实例。
 
             //BE AWARE: 注意:针对 CUSTOM 场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。
@@ -337,7 +328,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         }
 
         public PreparePhase initWithShading() {
-            CommonServiceHelper.tryLock(processEngineConfiguration, processInstance);
 
             //TUNE 校验是否有子流程的执行实例依赖这个父执行实例。
             //BE AWARE: 注意:针对 CUSTOM 场景,由于性能考虑,这里的activityInstance可能为空。调用的地方需要判空。

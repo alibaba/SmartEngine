@@ -87,18 +87,14 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
 
-        try {
-            CommonServiceHelper.tryLock(processEngineConfiguration, processInstance);
 
-            processInstance = pvmProcessInstance.start(executionContext);
+        processInstance = pvmProcessInstance.start(executionContext);
 
-            processInstance = CommonServiceHelper.insertAndPersist(processInstance, request, processEngineConfiguration);
+        processInstance = CommonServiceHelper.insertAndPersist(processInstance, request, processEngineConfiguration);
 
-            return processInstance;
+        return processInstance;
 
-        } finally {
-            CommonServiceHelper.tryUnlock(processEngineConfiguration, processInstance);
-        }
+
     }
 
     @Override

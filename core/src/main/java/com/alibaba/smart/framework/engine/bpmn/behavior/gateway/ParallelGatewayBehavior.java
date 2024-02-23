@@ -45,7 +45,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
     public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
 
         //算法说明:ParallelGatewayBehavior 同时承担 fork 和 join 职责。所以说,如何判断是 fork 还是 join ?
-        // 目前主要原则就看pvmActivity节点的 incomeTransition 和 outcomeTransition 的比较。
+        // 目前主要就看pvmActivity节点的 incomeTransition 和 outcomeTransition 数量差异。
         // 如果 income 为1,则为 join 节点。
         // 如果 outcome 为 1 ,则为 fork 节点。
         // 重要:在流程定义解析时,需要判断如果是 fork,则 outcome >=2, income=1; 类似的,如果是 join,则 outcome = 1,income>=2
@@ -137,7 +137,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             // update at 2022.10.31 这里的缩粒度不够大,在极端环境下,还是存在数据可见性的问题.
             // 比如说,当这个锁结束后, 外面还需要进行持久化数据. 理论上,另外一个线程进来执行时,可能这个持久化数据还未完成.
             // 所以这里取消掉默认锁,改为建议在生产环境使用使用分布式锁.
-            // 需要在Join时实现这个对应的并发控制策略
 
 //            LockStrategy lockStrategy = context.getProcessEngineConfiguration().getLockStrategy();
 //            if(null == lockStrategy){
