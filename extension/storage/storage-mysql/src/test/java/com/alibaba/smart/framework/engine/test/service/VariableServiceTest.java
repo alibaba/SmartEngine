@@ -65,6 +65,7 @@ public class VariableServiceTest extends DatabaseBaseTestCase {
 
 
         VariableInstance x = new DefaultVariableInstance();
+        x.setInstanceId("1");
         x.setFieldKey("key");
         x.setFieldType(String.class);
         x.setFieldValue("value");

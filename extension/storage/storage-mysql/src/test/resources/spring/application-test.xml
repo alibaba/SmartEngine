@@ -35,14 +35,15 @@
     <!--START H2 DATASOURCE-->
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.h2.Driver"/>
-        <property name="url" value="jdbc:h2:mem:public;MODE=MYSQL;DATABASE_TO_UPPER=false;INIT=CREATE SCHEMA IF NOT EXISTS public"/>
-        <property name="username" value="sa"/>
+<!--        <property name="driverClassName" value="org.h2.Driver"/>-->
+        <property name="url" value="jdbc:h2:mem:public;INIT=create schema if not exists public\;runscript from 'src/main/resources/sql/schema-h2-only-for-test.sql'"/>
+<!--        <property name="username" value="sa"/>-->
+
     </bean>
 
-    <jdbc:embedded-database id="dataSource" type="H2">
-        <jdbc:script location="classpath:sql/schema.sql"  />
-    </jdbc:embedded-database>
+<!--    <jdbc:embedded-database id="dataSource" type="H2">-->
+<!--        <jdbc:script location="classpath:sql/schema.sql"  />-->
+<!--    </jdbc:embedded-database>-->
 
     <!--END H2 DATASOURCE-->
 
