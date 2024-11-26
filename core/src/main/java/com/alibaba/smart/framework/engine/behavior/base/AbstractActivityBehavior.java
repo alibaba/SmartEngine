@@ -138,31 +138,33 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     @Override
     public void leave(ExecutionContext context, PvmActivity pvmActivity) {
-        fireEvent(context,pvmActivity, EventConstant.ACTIVITY_END);
+        fireEvent(context, pvmActivity, EventConstant.ACTIVITY_END);
 
-
-        //执行每个节点的hook方法
+        // Execute each node's hook method
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
 
-        if(MapUtil.isEmpty(outcomeTransitions)){
-            LOGGER.info("No outcomeTransitions found for activity id: "+pvmActivity.getModel().getId()+", it's just fine, it should be the last activity of the process");
-
-            return;
-        }else{
-
-            if( outcomeTransitions.size() ==1){
-                for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
-                    PvmActivity target = pvmTransitionEntry.getValue().getTarget();
-                    target.enter(context);
-                }
-            }else {
-
-                 ExclusiveGatewayBehaviorHelper.chooseOnlyOne(pvmActivity,context, outcomeTransitions);
-
-            }
+        if (MapUtil.isEmpty(outcomeTransitions)) {
+            handleNoOutcomeTransitions(pvmActivity);  // Extracted method
+        } else {
+            handleOutcomeTransitions(outcomeTransitions, context, pvmActivity); // Extracted method
         }
-
     }
+
+    private void handleNoOutcomeTransitions(PvmActivity pvmActivity) {
+        LOGGER.info("No outcomeTransitions found for activity id: " + pvmActivity.getModel().getId() + ", it's just fine, it should be the last activity of the process");
+    }
+
+    private void handleOutcomeTransitions(Map<String, PvmTransition> outcomeTransitions, ExecutionContext context, PvmActivity pvmActivity) {
+        if (outcomeTransitions.size() == 1) {
+            for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
+                PvmActivity target = pvmTransitionEntry.getValue().getTarget();
+                target.enter(context);
+            }
+        } else {
+            ExclusiveGatewayBehaviorHelper.chooseOnlyOne(pvmActivity, context, outcomeTransitions);
+        }
+    }
+
 
 
 
