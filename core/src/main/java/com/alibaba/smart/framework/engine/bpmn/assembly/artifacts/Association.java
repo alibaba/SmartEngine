@@ -1,20 +1,16 @@
 package com.alibaba.smart.framework.engine.bpmn.assembly.artifacts;
 
-import javax.xml.namespace.QName;
-
-import com.alibaba.smart.framework.engine.bpmn.constant.BpmnNameSpaceConstant;
+import com.alibaba.smart.framework.engine.bpmn.constant.BpmnConstants;  // Import the new constants class
 import com.alibaba.smart.framework.engine.model.assembly.NoneIdBasedElement;
-
 import lombok.Data;
 
-/**
- * @author guoxing 2020年11月24日14:07:14
- */
+import javax.xml.namespace.QName;
+
 @Data
 public class Association implements NoneIdBasedElement {
 
-    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE,
-            "association");
     private static final long serialVersionUID = 6357539757300185621L;
 
+    // Use the constant from BpmnConstants class
+    public final static QName qtype = BpmnConstants.ASSOCIATION_QTYPE;
 }
