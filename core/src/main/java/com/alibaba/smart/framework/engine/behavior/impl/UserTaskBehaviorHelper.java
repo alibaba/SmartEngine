@@ -203,6 +203,7 @@ public class UserTaskBehaviorHelper {
         smartEngine.getProcessCommandService().abort(executionInstance.getProcessInstanceId(),
             InstanceStatus.aborted.name());
         context.setNeedPause(true);
+
     }
 
 }

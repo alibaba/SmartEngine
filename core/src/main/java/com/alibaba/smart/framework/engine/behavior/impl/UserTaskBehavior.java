@@ -44,91 +44,97 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
     @Override
     public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
-        UserTask userTask = (UserTask)pvmActivity.getModel();
+        UserTask userTask = (UserTask) pvmActivity.getModel();
 
-        List<TaskAssigneeCandidateInstance> allTaskAssigneeCandidateInstanceList = UserTaskBehaviorHelper.getTaskAssigneeCandidateInstances(
-            context, userTask);
+        // Introduce explaining variable
+        List<TaskAssigneeCandidateInstance> candidateInstances = UserTaskBehaviorHelper.getTaskAssigneeCandidateInstances(context, userTask);
 
         ProcessInstance processInstance = context.getProcessInstance();
 
-        LOGGER.info("The taskAssigneeCandidateInstance are "+allTaskAssigneeCandidateInstanceList +" for PI:"+ processInstance
-            .getInstanceId() +" and AI id: "+pvmActivity.getModel().getId() );
+        LOGGER.info("Task Assignee Candidates: " + candidateInstances +
+                " for Process Instance: " + processInstance.getInstanceId() +
+                " and Activity ID: " + pvmActivity.getModel().getId());
 
-        
-        //1. 开启了会签特性
-        MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = userTask
-            .getMultiInstanceLoopCharacteristics();
+        // Check if multi-instance characteristics are present
+        MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = userTask.getMultiInstanceLoopCharacteristics();
 
-        if (null != multiInstanceLoopCharacteristics) {
-
-            fireEvent(context,pvmActivity, EventConstant.ACTIVITY_START);
-
-            ActivityInstance activityInstance  = super.createSingleActivityInstanceAndAttachToProcessInstance(context,userTask);
-
-
-            List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(allTaskAssigneeCandidateInstanceList.size());
-            activityInstance.setExecutionInstanceList(executionInstanceList);
-
-            //1.1 会签节点有两种业务类型，分别是 顺序会签 和 并发会签。 前者需要按照特定顺序的节点来审批，后者则需要是并发会签。
-            // 针对顺序会签，则需要指定顺序，并且需要在 UserTask 节点完成的时候，去补充创建下一批任务。
-            // 针对并发会签，则会批量创建出所有的会签任务。
-
-            List<TaskAssigneeCandidateInstance> newTaskAssigneeCandidateInstanceList = null;
-
-            if(multiInstanceLoopCharacteristics.isSequential()){
-                 newTaskAssigneeCandidateInstanceList = UserTaskBehaviorHelper.findBatchOfHighestPriorityTaskAssigneeList(allTaskAssigneeCandidateInstanceList);
-            }else{
-                newTaskAssigneeCandidateInstanceList = allTaskAssigneeCandidateInstanceList;
-            }
-
-            for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : newTaskAssigneeCandidateInstanceList) {
-
-                ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
-                executionInstanceList.add(executionInstance);
-
-
-                TaskInstance taskInstance = super.taskInstanceFactory.create(userTask, executionInstance, context);
-                taskInstance.setPriority(taskAssigneeCandidateInstance.getPriority());
-
-                List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
-
-                IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
-
-                UserTaskBehaviorHelper.buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
-
-                taskInstance.setTaskAssigneeInstanceList(taskAssigneeInstanceList);
-
-                executionInstance.setTaskInstance(taskInstance);
-
-            }
-
+        if (multiInstanceLoopCharacteristics != null) {
+            handleMultiInstanceTask(context, pvmActivity, userTask, candidateInstances, multiInstanceLoopCharacteristics);
         } else {
-
-            //2.  普通任务节点
-            super.enter(context, pvmActivity);
-
-            if (null != allTaskAssigneeCandidateInstanceList) {
-                ExecutionInstance executionInstance = context.getExecutionInstance();
-
-                TaskInstance taskInstance = super.taskInstanceFactory.create(userTask, executionInstance,
-                    context);
-
-                List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
-
-                IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
-
-                for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : allTaskAssigneeCandidateInstanceList) {
-                    UserTaskBehaviorHelper.buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
-                }
-
-                //2.1 普通UserTask，只会创建出一个TI和可能多个TACI(TaskAssigneeCandidateInstance)
-                taskInstance.setTaskAssigneeInstanceList(taskAssigneeInstanceList);
-                executionInstance.setTaskInstance(taskInstance);
-            }
+            handleStandardTask(context, pvmActivity, userTask, candidateInstances);
         }
 
         return true;
     }
+
+    // Extracted method for handling multi-instance tasks
+    private void handleMultiInstanceTask(ExecutionContext context, PvmActivity pvmActivity,
+                                         UserTask userTask,
+                                         List<TaskAssigneeCandidateInstance> candidateInstances,
+                                         MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics) {
+        fireEvent(context, pvmActivity, EventConstant.ACTIVITY_START);
+
+        ActivityInstance activityInstance = super.createSingleActivityInstanceAndAttachToProcessInstance(context, userTask);
+        List<ExecutionInstance> executionInstanceList = new ArrayList<>(candidateInstances.size());
+        activityInstance.setExecutionInstanceList(executionInstanceList);
+
+        List<TaskAssigneeCandidateInstance> prioritizedInstances = multiInstanceLoopCharacteristics.isSequential()
+                ? UserTaskBehaviorHelper.findBatchOfHighestPriorityTaskAssigneeList(candidateInstances)
+                : candidateInstances;
+
+        for (TaskAssigneeCandidateInstance candidateInstance : prioritizedInstances) {
+            createExecutionAndTaskInstances(context, activityInstance, userTask, candidateInstance, executionInstanceList);
+        }
+    }
+
+    // Extracted method for handling standard tasks
+    private void handleStandardTask(ExecutionContext context, PvmActivity pvmActivity,
+                                    UserTask userTask,
+                                    List<TaskAssigneeCandidateInstance> candidateInstances) {
+        super.enter(context, pvmActivity);
+
+        if (candidateInstances != null) {
+            ExecutionInstance executionInstance = context.getExecutionInstance();
+
+            TaskInstance taskInstance = super.taskInstanceFactory.create(userTask, executionInstance, context);
+
+            List<TaskAssigneeInstance> assigneeInstances = createTaskAssigneeInstances(context, candidateInstances);
+
+            taskInstance.setTaskAssigneeInstanceList(assigneeInstances);
+            executionInstance.setTaskInstance(taskInstance);
+        }
+    }
+
+    // Extracted method to create Execution and Task Instances
+    private void createExecutionAndTaskInstances(ExecutionContext context, ActivityInstance activityInstance,
+                                                 UserTask userTask,
+                                                 TaskAssigneeCandidateInstance candidateInstance,
+                                                 List<ExecutionInstance> executionInstanceList) {
+        ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
+        executionInstanceList.add(executionInstance);
+
+        TaskInstance taskInstance = super.taskInstanceFactory.create(userTask, executionInstance, context);
+        taskInstance.setPriority(candidateInstance.getPriority());
+
+        List<TaskAssigneeInstance> assigneeInstances = createTaskAssigneeInstances(context, List.of(candidateInstance));
+        taskInstance.setTaskAssigneeInstanceList(assigneeInstances);
+
+        executionInstance.setTaskInstance(taskInstance);
+    }
+
+    // Extracted method to create Task Assignee Instances
+    private List<TaskAssigneeInstance> createTaskAssigneeInstances(ExecutionContext context,
+                                                                   List<TaskAssigneeCandidateInstance> candidateInstances) {
+        List<TaskAssigneeInstance> assigneeInstances = new ArrayList<>();
+        IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
+
+        for (TaskAssigneeCandidateInstance candidateInstance : candidateInstances) {
+            UserTaskBehaviorHelper.buildTaskAssigneeInstance(candidateInstance, assigneeInstances, idGenerator);
+        }
+
+        return assigneeInstances;
+    }
+
 
 
 
