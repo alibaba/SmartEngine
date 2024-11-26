@@ -57,6 +57,9 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         context.getProcessEngineConfiguration().getListenerExecutor().execute(event,pvmActivity.getModel(),context);
 
     }
+    protected void logActivityStart(String activityId) {
+        LOGGER.info("Starting activity: " + activityId);
+    }
 
     @Override
     public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
