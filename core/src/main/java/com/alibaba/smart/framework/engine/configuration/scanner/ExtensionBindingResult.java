@@ -1,16 +1,38 @@
 package com.alibaba.smart.framework.engine.configuration.scanner;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import lombok.Data;
-
 /**
- * Created by 高海军 帝奇 74394 on  2019-08-27 14:32.
+ * Refactored version of ExtensionBindingResult to encapsulate binding map operations.
  */
-
-@Data
 public class ExtensionBindingResult {
 
-    private Map<Class,Object> bindingMap;
+    private final Map<Class<?>, Object> bindingMap = new HashMap<>();
 
+    // Adds a new binding
+    public void addBinding(Class<?> key, Object value) {
+        bindingMap.put(key, value);
+    }
+
+    // Retrieves a binding
+    public Object getBinding(Class<?> key) {
+        return bindingMap.get(key);
+    }
+
+    // Checks if a binding exists
+    public boolean hasBinding(Class<?> key) {
+        return bindingMap.containsKey(key);
+    }
+
+    // Exposes the map if absolutely necessary
+    public Map<Class<?>, Object> getBindingMap() {
+        return bindingMap;
+    }
+
+    public void setBindingMap(Object value) {
+        Class<?> key = null;
+        bindingMap.put(key, value);
+
+    }
 }

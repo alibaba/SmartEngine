@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
+import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingManager;
 import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -55,9 +56,9 @@ public class DefaultSmartEngine implements SmartEngine {
 
     protected void lifeCycleStarted(Map<String, ExtensionBindingResult> scanResult) {
         for (Entry<String, ExtensionBindingResult> stringExtensionBindingResultEntry : scanResult.entrySet()) {
-            ExtensionBindingResult bindingResult = stringExtensionBindingResultEntry.getValue();
-            Map<Class, Object> bindingMap = bindingResult.getBindingMap();
-            for (Entry<Class, Object> classObjectEntry : bindingMap.entrySet()) {
+            ExtensionBindingManager bindingManager = new ExtensionBindingManager();// obtain this instance appropriately
+            Map<Class<?>, Object> bindingMap = bindingManager.resolveBindingMap();
+            for (Entry<Class<?>, Object> classObjectEntry : bindingMap.entrySet()) {
                 Object value = classObjectEntry.getValue();
                 if( value instanceof LifeCycleHook){
                     ((LifeCycleHook)value).start();

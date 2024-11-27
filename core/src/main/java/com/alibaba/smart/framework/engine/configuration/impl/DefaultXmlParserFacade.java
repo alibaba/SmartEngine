@@ -35,7 +35,7 @@ public class DefaultXmlParserFacade implements
 
     private ProcessEngineConfiguration processEngineConfiguration;
 
-    private Map<Class,Object> bindings;
+    private Map<Class<?>, Object> bindings;
 
     private Map<QName, Object> bindingsWithQName = MapUtil.newHashMap();
 
@@ -43,8 +43,8 @@ public class DefaultXmlParserFacade implements
     public void start() {
         this.bindings = processEngineConfiguration.getAnnotationScanner().getScanResult().get(
             ExtensionConstant.ELEMENT_PARSER).getBindingMap();
-        Set<Entry<Class, Object>> entries = bindings.entrySet();
-        for (Entry<Class, Object> entry : entries) {
+        Set<Entry<Class<?>, Object>> entries = bindings.entrySet();
+        for (Entry<Class<?>, Object> entry : entries) {
             try {
                 Class aClass = entry.getKey();
                 Object newInstance = aClass.newInstance();

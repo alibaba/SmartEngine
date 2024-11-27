@@ -172,7 +172,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
                     scanResult.put(group, extensionBindingResult);
                 }
 
-                Map<Class, Object> bindingMap = extensionBindingResult.getBindingMap();
+                Map<Class<?>, Object> bindingMap = extensionBindingResult.getBindingMap();
 
                 Class bindKeyClass = currentBindingAnnotation.bindKey();
 
@@ -192,7 +192,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
     }
 
     private void put(ProcessEngineConfiguration processEngineConfiguration, Class<?> currentClazz,
-                     Map<Class, Object> bindingMap, Class bindKeyClass) {
+                     Map<Class<?>, Object> bindingMap, Class bindKeyClass) {
         boolean pecFound = false;
 
         Class tempClazz = currentClazz;
@@ -218,7 +218,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
         bindingMap.put(bindKeyClass, newInstance);
     }
 
-    protected void handleDuplicatedKey(ProcessEngineConfiguration processEngineConfiguration,Map<Class, Object> bindingMap, ExtensionBinding currentBindingAnnotation, Class targetClass,Object objectInBindingMap,Class<? extends Annotation> targetAnnotationType) {
+    protected void handleDuplicatedKey(ProcessEngineConfiguration processEngineConfiguration, Map<Class<?>, Object> bindingMap, ExtensionBinding currentBindingAnnotation, Class targetClass, Object objectInBindingMap, Class<? extends Annotation> targetAnnotationType) {
 
         String group = currentBindingAnnotation.group();
         Class bindKeyClass = currentBindingAnnotation.bindKey();
@@ -250,7 +250,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
     @Override
     public <T> T getExtensionPoint(String group, Class<T> clazz) {
         ExtensionBindingResult extensionBindingResult = this.scanResult.get(group);
-        Map<Class, Object> bindingMap = extensionBindingResult.getBindingMap();
+        Map<Class<?>, Object> bindingMap = extensionBindingResult.getBindingMap();
         return (T)bindingMap.get(clazz);
     }
 
