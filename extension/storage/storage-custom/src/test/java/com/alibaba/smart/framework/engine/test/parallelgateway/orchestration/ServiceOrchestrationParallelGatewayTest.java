@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.persister.common.assistant.pojo.ThreadExecutionResult;
 import com.alibaba.smart.framework.engine.test.cases.CustomBaseTestCase;
 
 import com.alibaba.smart.framework.engine.util.ThreadPoolUtil;

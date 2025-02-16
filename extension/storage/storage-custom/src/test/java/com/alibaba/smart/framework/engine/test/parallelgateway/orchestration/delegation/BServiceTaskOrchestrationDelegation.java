@@ -6,7 +6,7 @@ import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.delegation.JavaDelegation;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 
-import com.alibaba.smart.framework.engine.test.parallelgateway.orchestration.ThreadExecutionResult;
+import com.alibaba.smart.framework.engine.persister.common.assistant.pojo.ThreadExecutionResult;
 import com.alibaba.smart.framework.engine.test.parallelgateway.single.thread.ServiceTaskDelegation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
