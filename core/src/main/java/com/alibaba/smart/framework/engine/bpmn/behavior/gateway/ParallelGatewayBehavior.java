@@ -1,22 +1,23 @@
 package com.alibaba.smart.framework.engine.bpmn.behavior.gateway;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.ParallelServiceOrchestration;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.PvmActivityTask;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
+import com.alibaba.smart.framework.engine.constant.ParallelGatewayConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.ContextFactory;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -30,6 +31,8 @@ import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.alibaba.smart.framework.engine.util.ParallelServiceOrchestrationUtil.*;
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = ParallelGateway.class)
 public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> {
@@ -106,29 +109,59 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                     target.enter(context);
                 }
             }else{
-                //并发执行fork
+                //并发执行fork  算法说明
+                // 前置: 在流程定义解析阶段需要知道,所有网关是否配对,并且在解析期间进行校验
+                // 当子线程执行结束时,看下该分支是否到达了fork对应的join(考虑到嵌套), 如果所有分支都已经完成(注意事项:检查到达该fork对应的join节点,需要注意嵌套,父join找父fork,子join找子join),
+                // 如果在fork主线程中发现都已经完毕(每个子线程当前的最后一个节点是否为对应的join),则调用join节点的enter ; 否则调用返回,等待下一次外部的signal
+
+                ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
                 AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
                 ContextFactory contextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, ContextFactory.class);
+                Map<String, String> properties = pvmActivity.getModel().getProperties();
+                Set<Entry<String, PvmTransition>> entries = outcomeTransitions.entrySet();
+
+                Long latchWaitTime = acquireLatchWaitTime(context, properties);
+                ParallelGatewayConstant.ExecuteStrategy executeStrategy = getExecuteStrategy(properties);
+                boolean isSkipTimeout = isSkipTimeout((String) MapUtil.safeGet(properties, ParallelGatewayConstant.SKIP_TIMEOUT_EXCEPTION));
 
 
-                Collection<PvmActivityTask> tasks = new ArrayList<PvmActivityTask>(outcomeTransitions.size());
+                // 注意: 重新赋值 如果能匹配到自定义的线程池，直接使用。 允许扩展并行网关的3种属性: timeout="300" strategy="any" poolName="poolA" skipTimeoutExp="true"  使用方法详见  ServiceOrchestrationParallelGatewayTest
+                executorService = useSpecifiedExecutorServiceIfNeeded(properties, processEngineConfiguration);
 
-                for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
-                    PvmActivity target = pvmTransitionEntry.getValue().getTarget();
-
-                    //注意,ExecutionContext 在多线程情况下,必须要新建对象,防止一些变量被并发修改.
-                    ExecutionContext subThreadContext = contextFactory.createChildThreadContext(context);
-                    PvmActivityTask task = context.getProcessEngineConfiguration().getPvmActivityTaskFactory().create(target,subThreadContext);
-
-                    tasks.add(task);
-                }
-
+                List<PvmActivityTask> pvmActivityTaskList = new ArrayList<PvmActivityTask>(outComeTransitionSize);
 
                 try {
-                  executorService.invokeAll(tasks);
-                } catch (InterruptedException e) {
-                    throw new EngineException(e.getMessage(), e);
+                    //
+//                    PvmActivity finalJoinPvmActivity = initMultiTaskRequestAndFindOutJoinActivity(context, contextFactory, pvmActivityTaskList, entries);
+//
+//                    List<Future<PvmActivity>> futureExecutionResultList = invoke(latchWaitTime, isSkipTimeout, executeStrategy, executorService, pvmActivityTaskList);
+//
+//                    acquireFutureResult(context, processEngineConfiguration, latchWaitTime, isSkipTimeout, futureExecutionResultList);
+
+//                // 获取第一个成功执行的future
+//                Future<PvmActivity> pvmActivityFuture = getSuccessFuture(futureExecutionResultList, isSkipTimeoutExp);
+//
+//                PvmActivity futureJoinParallelGateWayPvmActivity = null;
+//                if(null == pvmActivityFuture) {
+//                    // 如果没有找到，只有一种可能就是子任务全超时被cancel了。直接使用finalJoinActivity
+//                    futureJoinParallelGateWayPvmActivity = firstJoinParallelGateWayPvmActivity;
+//                } else {
+//                    // 直接从future中获取join事件节点
+//                    futureJoinParallelGateWayPvmActivity = pvmActivityFuture.get();
+//                }
+
+//                PvmActivity futureJoinParallelGateWayPvmActivity = finalJoinParallelGateWayPvmActivity;
+
+//                    ActivityBehavior behavior = finalJoinPvmActivity.getBehavior();
+//
+//                    //模拟正常流程的继续驱动，将继续推进caller thread 执行后续节点。
+//                    behavior.leave(context, finalJoinPvmActivity);
+
+                } catch (Exception e) {
+                    throw new EngineException(e);
                 }
+
+
 
             }
 

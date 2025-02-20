@@ -275,6 +275,10 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
                 AbstractActivityBehavior activityBehavior = (AbstractActivityBehavior) annotationScanner.getObject(ExtensionConstant.ACTIVITY_BEHAVIOR,activity.getClass());
 
+                if(null == activityBehavior){
+                    throw new EngineException("ActivityBehavior should be coded for activity:"+activity.getClass());
+                }
+
                 pvmActivity.setBehavior(activityBehavior);
 
 

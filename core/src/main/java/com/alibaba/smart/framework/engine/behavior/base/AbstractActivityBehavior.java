@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
-import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.ExclusiveGatewayBehaviorHelper;
+import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.ExclusiveGatewayBehaviorHelper;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -145,7 +145,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
 
         if(MapUtil.isEmpty(outcomeTransitions)){
-            LOGGER.info("No outcomeTransitions found for activity id: "+pvmActivity.getModel().getId()+", it's just fine, it should be the last activity of the process");
+            LOGGER.debug("No outcomeTransitions found for activity id: "+pvmActivity.getModel().getId()+", it's just fine, it should be the last activity of the process");
 
             return;
         }else{

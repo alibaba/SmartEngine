@@ -46,6 +46,7 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
 
             //fork
             if (outComeTransitionSize >= 2 && inComeTransitionSize == 1) {
+
                 ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
                 AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
                 ContextFactory contextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, ContextFactory.class);
@@ -56,10 +57,8 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
                 ParallelGatewayConstant.ExecuteStrategy executeStrategy = getExecuteStrategy(properties);
                 boolean isSkipTimeout = isSkipTimeout((String) MapUtil.safeGet(properties, ParallelGatewayConstant.SKIP_TIMEOUT_EXCEPTION));
 
-                // 默认线程池
-                ExecutorService executorService = processEngineConfiguration.getExecutorService();
                 // 注意: 重新赋值 如果能匹配到自定义的线程池，直接使用。 允许扩展并行网关的3种属性: timeout="300" strategy="any" poolName="poolA" skipTimeoutExp="true"  使用方法详见  ServiceOrchestrationParallelGatewayTest
-                executorService = useSpecifiedExecutorServiceIfNeeded(properties, processEngineConfiguration, executorService);
+                ExecutorService executorService = useSpecifiedExecutorServiceIfNeeded(properties, processEngineConfiguration);
 
                 List<PvmActivityTask> pvmActivityTaskList = new ArrayList<PvmActivityTask>(outComeTransitionSize);
 

@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.bpmn.behavior.gateway;
+package com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 /**
  * Created by 高海军 帝奇 74394 on  2020-09-21 18:12.
  */
-public class ExclusiveGatewayBehaviorHelper {
+public abstract class ExclusiveGatewayBehaviorHelper {
 
     private static final String DEFAULT = "default";
 

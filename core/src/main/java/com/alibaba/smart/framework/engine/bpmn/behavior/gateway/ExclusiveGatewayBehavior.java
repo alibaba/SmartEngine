@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ExclusiveGateway;
+import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.ExclusiveGatewayBehaviorHelper;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;

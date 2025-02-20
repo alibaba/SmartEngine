@@ -47,7 +47,8 @@ public abstract  class ParallelServiceOrchestrationUtil {
         return null != latchWaitTime && latchWaitTime > 0L;
     }
 
-    public static ExecutorService useSpecifiedExecutorServiceIfNeeded(Map<String, String> properties, ProcessEngineConfiguration processEngineConfiguration, ExecutorService executorService) {
+    public static ExecutorService useSpecifiedExecutorServiceIfNeeded(Map<String, String> properties, ProcessEngineConfiguration processEngineConfiguration) {
+        ExecutorService executorService = processEngineConfiguration.getExecutorService();
         Map<String, ExecutorService> poolsMap = processEngineConfiguration.getExecutorServiceMap();
         String poolName;
         if (poolsMap != null && properties != null && (poolName =
