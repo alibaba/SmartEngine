@@ -23,12 +23,10 @@ import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
 import com.alibaba.smart.framework.engine.test.process.helper.dispatcher.DefaultTaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.test.process.helper.sequece.RandomIdGenerator;
-import com.alibaba.smart.framework.engine.util.ClassUtil;
 
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
@@ -102,7 +100,7 @@ public class DatabaseBaseTestCase implements ApplicationContextAware {
     protected void initProcessConfiguration() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new RandomIdGenerator());
-        processEngineConfiguration.setInstanceAccessor(new InnerInstanceAccessService());
+        processEngineConfiguration.setInstanceAccessor(new DataBaseAccessService());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
     }
 
@@ -117,7 +115,7 @@ public class DatabaseBaseTestCase implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    private class InnerInstanceAccessService implements InstanceAccessor {
+    private class DataBaseAccessService implements InstanceAccessor {
         @Override
         public Object access(String name) {
 

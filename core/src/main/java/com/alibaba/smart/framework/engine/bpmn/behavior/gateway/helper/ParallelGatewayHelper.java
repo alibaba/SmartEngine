@@ -1,12 +1,8 @@
 package com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper;
 
-import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ParallelGateway;
-import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.ParallelGatewayBehavior;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
-import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
@@ -16,53 +12,47 @@ import java.util.*;
 
 public abstract class ParallelGatewayHelper {
 
-    private static final String DEFAULT = "default";
-
-    // 判断是否为网关
-    public static boolean isParallelGateway(ActivityBehavior activityBehavior) {
-       boolean pg =  activityBehavior instanceof ParallelGatewayBehavior;
-       return  pg;
-    }
 
 
 
-    // 验证网关
-    public static void validateGateways(ProcessDefinition processDefinition,PvmProcessDefinition pvmProcessDefinition) {
-        List<BaseElement> elements = processDefinition.getBaseElementList();
+//
+//    // 验证网关
+//    public static void validateGateways(ProcessDefinition processDefinition,PvmProcessDefinition pvmProcessDefinition) {
+//        List<BaseElement> elements = processDefinition.getBaseElementList();
+//
+//        if (null != elements && !elements.isEmpty()) {
+//        Stack<ParallelGateway> gatewayStack = new Stack<>();
+//
+//        for (BaseElement flowNode : elements) {
+//            if (flowNode instanceof ParallelGateway) {
+//                ParallelGateway gateway = (ParallelGateway) flowNode;
+//                PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(gateway.getId());
+//
+//                // 如果是 Split 网关，压栈
+//                if (isForkGateway(pvmActivity,pvmProcessDefinition)) {
+//                    gatewayStack.push(gateway);
+//                }
+//                // 如果是 Join 网关，检查栈顶是否匹配
+//                else if (isJoinGateway(pvmActivity,pvmProcessDefinition)) {
+//                    if (gatewayStack.isEmpty()) {
+//                        throw new EngineException("Unpaired Join Gateway: " + gateway.getId());
+//                    }
+//                    ParallelGateway lastSplit = gatewayStack.pop();
+//                    if (!isMatchingGateway(lastSplit, gateway)) {
+//                        throw new EngineException("Mismatched Gateways: " + lastSplit.getId() + " and " + gateway.getId());
+//                    }
+//                }
+//            }
+//        }
+//
+//        // 检查是否有未闭合的 Split 网关
+//        if (!gatewayStack.isEmpty()) {
+//            throw new EngineException("Unclosed fork Gateway: " + gatewayStack.peek());
+//        }
+//        }
+//    }
 
-        if (null != elements && !elements.isEmpty()) {
-        Stack<ParallelGateway> gatewayStack = new Stack<>();
-
-        for (BaseElement flowNode : elements) {
-            if (flowNode instanceof ParallelGateway) {
-                ParallelGateway gateway = (ParallelGateway) flowNode;
-                PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(gateway.getId());
-
-                // 如果是 Split 网关，压栈
-                if (isForkGateway(pvmActivity,pvmProcessDefinition)) {
-                    gatewayStack.push(gateway);
-                }
-                // 如果是 Join 网关，检查栈顶是否匹配
-                else if (isJoinGateway(pvmActivity,pvmProcessDefinition)) {
-                    if (gatewayStack.isEmpty()) {
-                        throw new EngineException("Unpaired Join Gateway: " + gateway.getId());
-                    }
-                    ParallelGateway lastSplit = gatewayStack.pop();
-                    if (!isMatchingGateway(lastSplit, gateway)) {
-                        throw new EngineException("Mismatched Gateways: " + lastSplit.getId() + " and " + gateway.getId());
-                    }
-                }
-            }
-        }
-
-        // 检查是否有未闭合的 Split 网关
-        if (!gatewayStack.isEmpty()) {
-            throw new EngineException("Unclosed fork Gateway: " + gatewayStack.peek());
-        }
-        }
-    }
-
-    // 判断是否为 Split 网关
+    // 判断是否为 Fork 网关
     public static boolean isForkGateway(PvmActivity pvmActivity, PvmProcessDefinition pvmProcessDefinition) {
 
         int inComeTransitionSize = pvmActivity.getIncomeTransitions().size();
@@ -79,13 +69,9 @@ public abstract class ParallelGatewayHelper {
         return inComeTransitionSize > 1 &&  outComeTransitionSize == 1;
     }
 
-    // 判断网关是否匹配
-    public static boolean isMatchingGateway(ParallelGateway split, ParallelGateway join) {
-        throw new EngineException("bug");
-    }
 
     public static Map<String,String> findMatchedJoinGateway(PvmProcessDefinition pvmProcessDefinition) {
-        Map<String,String> resultMap = new HashMap<String,String>();
+        Map<String,String> resultMap = new HashMap();
 
 
         Map<String, PvmActivity> pvmActivityMap = pvmProcessDefinition.getActivities();
@@ -102,13 +88,11 @@ public abstract class ParallelGatewayHelper {
 
                 //如果是子fork节点,那么该节点应该在递归中处理完毕. 这里不用重复处理
                 if(null == resultMap.get(pvmActivity.getModel().getId())){
-
                     findOutAllForkJoinPairs( pvmActivity,pvmProcessDefinition,resultMap);
                 }
 
             }
         }
-
 
 
         return  resultMap;

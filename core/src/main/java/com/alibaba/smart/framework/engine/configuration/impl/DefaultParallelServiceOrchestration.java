@@ -25,7 +25,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.*;
 
-import static com.alibaba.smart.framework.engine.util.ParallelServiceOrchestrationUtil.*;
+import static com.alibaba.smart.framework.engine.util.ParallelGatewayUtil.*;
 
 /**
  * Created by 高海军 帝奇 74394 on  2020-09-21 17:59.
@@ -66,23 +66,9 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
 
                     PvmActivity finalJoinPvmActivity = initMultiTaskRequestAndFindOutJoinActivity(context, contextFactory, pvmActivityTaskList, entries);
 
-                    List<Future<PvmActivity>> futureExecutionResultList = invoke(latchWaitTime, isSkipTimeout, executeStrategy, executorService, pvmActivityTaskList);
+                    List<Future<ExecutionContext>> futureExecutionResultList = invoke(latchWaitTime, isSkipTimeout, executeStrategy, executorService, pvmActivityTaskList);
 
                     acquireFutureResult(context, processEngineConfiguration, latchWaitTime, isSkipTimeout, futureExecutionResultList);
-
-//                // 获取第一个成功执行的future
-//                Future<PvmActivity> pvmActivityFuture = getSuccessFuture(futureExecutionResultList, isSkipTimeoutExp);
-//
-//                PvmActivity futureJoinParallelGateWayPvmActivity = null;
-//                if(null == pvmActivityFuture) {
-//                    // 如果没有找到，只有一种可能就是子任务全超时被cancel了。直接使用finalJoinActivity
-//                    futureJoinParallelGateWayPvmActivity = firstJoinParallelGateWayPvmActivity;
-//                } else {
-//                    // 直接从future中获取join事件节点
-//                    futureJoinParallelGateWayPvmActivity = pvmActivityFuture.get();
-//                }
-
-//                PvmActivity futureJoinParallelGateWayPvmActivity = finalJoinParallelGateWayPvmActivity;
 
                     ActivityBehavior behavior = finalJoinPvmActivity.getBehavior();
 
@@ -145,12 +131,12 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
         return finalJoinParallelGateWayPvmActivity;
     }
 
-    private void acquireFutureResult(ExecutionContext context, ProcessEngineConfiguration processEngineConfiguration, Long latchWaitTime, boolean isSkipTimeoutExp, List<Future<PvmActivity>> futureExecutionResultList) throws TimeoutException {
+    private void acquireFutureResult(ExecutionContext context, ProcessEngineConfiguration processEngineConfiguration, Long latchWaitTime, boolean isSkipTimeoutExp, List<Future<ExecutionContext>> futureExecutionResultList) throws TimeoutException {
         //注意这里的逻辑：这里假设是子线程在执行某个fork分支的逻辑后，然后会在join节点时返回。这个join节点就是 futureJoinParallelGateWay。
         // 当await 执行结束后，这里的假设不变式：所有子线程都已经到达了join节点。
         ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();
 
-        for (Future<PvmActivity> pvmActivityFuture : futureExecutionResultList) {
+        for (Future<ExecutionContext> pvmActivityFuture : futureExecutionResultList) {
             try {
                 if (hasValidLatchWaitTime(latchWaitTime)) {
                     pvmActivityFuture.get(latchWaitTime, TimeUnit.MILLISECONDS);

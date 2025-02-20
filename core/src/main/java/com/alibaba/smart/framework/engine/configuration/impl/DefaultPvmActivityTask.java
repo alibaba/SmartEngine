@@ -18,12 +18,12 @@ public  class DefaultPvmActivityTask implements PvmActivityTask {
 
 
         @Override
-        public PvmActivity call() {
+        public ExecutionContext call() {
 
             //忽略了子线程的返回值
             this.pvmActivity.enter(context);
 
-            return null;
+            return context;
 
         }
     }

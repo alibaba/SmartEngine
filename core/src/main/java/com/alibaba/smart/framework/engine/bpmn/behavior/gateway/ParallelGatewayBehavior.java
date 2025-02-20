@@ -2,20 +2,14 @@ package com.alibaba.smart.framework.engine.bpmn.behavior.gateway;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
-import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
-import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
-import com.alibaba.smart.framework.engine.configuration.ParallelServiceOrchestration;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.PvmActivityTask;
+import com.alibaba.smart.framework.engine.configuration.*;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.constant.ParallelGatewayConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
@@ -32,7 +26,7 @@ import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.alibaba.smart.framework.engine.util.ParallelServiceOrchestrationUtil.*;
+import static com.alibaba.smart.framework.engine.util.ParallelGatewayUtil.*;
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = ParallelGateway.class)
 public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> {
@@ -117,6 +111,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
                 AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
                 ContextFactory contextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, ContextFactory.class);
+
                 Map<String, String> properties = pvmActivity.getModel().getProperties();
                 Set<Entry<String, PvmTransition>> entries = outcomeTransitions.entrySet();
 
@@ -131,31 +126,18 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 List<PvmActivityTask> pvmActivityTaskList = new ArrayList<PvmActivityTask>(outComeTransitionSize);
 
                 try {
-                    //
-//                    PvmActivity finalJoinPvmActivity = initMultiTaskRequestAndFindOutJoinActivity(context, contextFactory, pvmActivityTaskList, entries);
-//
-//                    List<Future<PvmActivity>> futureExecutionResultList = invoke(latchWaitTime, isSkipTimeout, executeStrategy, executorService, pvmActivityTaskList);
-//
-//                    acquireFutureResult(context, processEngineConfiguration, latchWaitTime, isSkipTimeout, futureExecutionResultList);
 
-//                // 获取第一个成功执行的future
-//                Future<PvmActivity> pvmActivityFuture = getSuccessFuture(futureExecutionResultList, isSkipTimeoutExp);
-//
-//                PvmActivity futureJoinParallelGateWayPvmActivity = null;
-//                if(null == pvmActivityFuture) {
-//                    // 如果没有找到，只有一种可能就是子任务全超时被cancel了。直接使用finalJoinActivity
-//                    futureJoinParallelGateWayPvmActivity = firstJoinParallelGateWayPvmActivity;
-//                } else {
-//                    // 直接从future中获取join事件节点
-//                    futureJoinParallelGateWayPvmActivity = pvmActivityFuture.get();
-//                }
+                    initTaskList(context, contextFactory, entries, pvmActivityTaskList);
 
-//                PvmActivity futureJoinParallelGateWayPvmActivity = finalJoinParallelGateWayPvmActivity;
 
-//                    ActivityBehavior behavior = finalJoinPvmActivity.getBehavior();
-//
-//                    //模拟正常流程的继续驱动，将继续推进caller thread 执行后续节点。
-//                    behavior.leave(context, finalJoinPvmActivity);
+                    List<Future<ExecutionContext>> futureExecutionResultList = invoke(latchWaitTime, isSkipTimeout, executeStrategy, executorService, pvmActivityTaskList);
+
+                    List<ExecutionContext> subThreadContextList =  acquireResults(context, processEngineConfiguration, latchWaitTime, futureExecutionResultList);
+
+                    for (ExecutionContext executionContext : subThreadContextList) {
+                        executionContext.getExecutionInstance().getProcessDefinitionActivityId();
+                    }
+
 
                 } catch (Exception e) {
                     throw new EngineException(e);
@@ -166,19 +148,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             }
 
         } else if (outComeTransitionSize == 1 && inComeTransitionSize >= 2) {
-            //join 时必须使用分布式锁。
-            // update at 2022.10.31 这里的缩粒度不够大,在极端环境下,还是存在数据可见性的问题.
-            // 比如说,当这个锁结束后, 外面还需要进行持久化数据. 理论上,另外一个线程进来执行时,可能这个持久化数据还未完成.
-            // 所以这里取消掉默认锁,改为建议在生产环境使用使用分布式锁.
-
-//            LockStrategy lockStrategy = context.getProcessEngineConfiguration().getLockStrategy();
-//            if(null == lockStrategy){
-//                throw new EngineException("LockStrategy must be implemented for ParallelGateway");
-//            }
-
-//            String processInstanceId = context.getProcessInstance().getInstanceId();
-//            try{
-//                lockStrategy.tryLock(processInstanceId,context);
 
                 super.enter(context, pvmActivity);
 
@@ -188,7 +157,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
                 //当前内存中的，新产生的 active ExecutionInstance
                 List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
-
 
                 //当前持久化介质中中，已产生的 active ExecutionInstance。
                 List<ExecutionInstance> executionInstanceListFromDB =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(), super.processEngineConfiguration);
@@ -249,10 +217,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                     return true;
                 }
 
-//            }finally {
-//
-//                lockStrategy.unLock(processInstanceId,context);
-//            }
+
 
         }else{
             throw new EngineException("should not touch here:"+pvmActivity);
@@ -261,7 +226,48 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         return true;
     }
 
+    private void initTaskList(ExecutionContext context, ContextFactory contextFactory, Set<Entry<String, PvmTransition>> entries, List<PvmActivityTask> taskList) {
+        for (Entry<String, PvmTransition> pvmTransitionEntry : entries) {
 
+            //target 为fork 节点的后继节点，比如service1，service3
+            PvmActivity target = pvmTransitionEntry.getValue().getTarget();
+
+            //将ParentContext 复制到 子线程内
+            ExecutionContext subThreadContext = contextFactory.createChildThreadContext(context);
+
+            PvmActivityTask pvmActivityTask = context.getProcessEngineConfiguration().getPvmActivityTaskFactory().create(target,subThreadContext);
+
+            LOGGER.debug("PvmActivityTask thread id  is {}, subThreadContext is {} {} ", Thread.currentThread().getId(), subThreadContext);
+
+            taskList.add(pvmActivityTask);
+        }
+    }
+
+    private List<ExecutionContext> acquireResults(ExecutionContext context, ProcessEngineConfiguration processEngineConfiguration, Long latchWaitTime, List<Future<ExecutionContext>> futureExecutionResultList) throws TimeoutException {
+        ExceptionProcessor exceptionProcessor = processEngineConfiguration.getExceptionProcessor();
+        List<ExecutionContext> subThreadExecutionContextList = new ArrayList<>(futureExecutionResultList.size());
+        for (Future<ExecutionContext> future : futureExecutionResultList) {
+            try {
+
+                if (hasValidLatchWaitTime(latchWaitTime)) {
+                    ExecutionContext subThreadExecutionContext = future.get(latchWaitTime, TimeUnit.MILLISECONDS);
+                    subThreadExecutionContextList.add(subThreadExecutionContext);
+                } else {
+                    ExecutionContext subThreadExecutionContext = future.get();
+                    subThreadExecutionContextList.add(subThreadExecutionContext);
+
+                }
+            } catch (InterruptedException e) {
+                exceptionProcessor.process(e, context);
+            } catch (ExecutionException e) {
+                exceptionProcessor.process(e, context);
+            } catch (CancellationException e) {
+                    throw e;
+            }
+        }
+
+        return  subThreadExecutionContextList;
+    }
 
 
 }

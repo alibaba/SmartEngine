@@ -1,4 +1,4 @@
-CREATE TABLE `se_deployment_instance` (
+CREATE TABLE IF NOT EXISTS `se_deployment_instance` (
   `id` bigint  NOT NULL AUTO_INCREMENT COMMENT 'PK'  ,
   `gmt_create` datetime(6) NOT NULL   COMMENT 'create time' ,
   `gmt_modified` datetime(6) NOT NULL  COMMENT 'modification time'  ,
@@ -16,7 +16,7 @@ CREATE TABLE `se_deployment_instance` (
   PRIMARY KEY (`id`)
 )  ;
 
-CREATE TABLE `se_process_instance` (
+CREATE TABLE IF NOT EXISTS `se_process_instance` (
   `id` bigint  NOT NULL AUTO_INCREMENT  COMMENT 'PK'  ,
   `gmt_create` datetime(6) NOT NULL  COMMENT 'create time' ,
   `gmt_modified` datetime(6) NOT NULL  COMMENT 'modification time' ,
@@ -35,7 +35,7 @@ CREATE TABLE `se_process_instance` (
   PRIMARY KEY (`id`)
 )   ;
 
-CREATE TABLE `se_activity_instance` (
+CREATE TABLE IF NOT EXISTS `se_activity_instance` (
   `id` bigint  NOT NULL AUTO_INCREMENT  COMMENT 'PK'  ,
   `gmt_create` datetime(6) NOT NULL   COMMENT 'create time' ,
   `gmt_modified` datetime(6) NOT NULL  COMMENT 'modification time'  ,
@@ -45,7 +45,7 @@ CREATE TABLE `se_activity_instance` (
   PRIMARY KEY (`id`)
 )  ;
 
-CREATE TABLE `se_task_instance` (
+CREATE TABLE IF NOT EXISTS `se_task_instance` (
   `id` bigint  NOT NULL AUTO_INCREMENT  COMMENT 'PK'  ,
   `gmt_create` datetime(6) NOT NULL   COMMENT 'create time' ,
   `gmt_modified` datetime(6) NOT NULL  COMMENT 'modification time'  ,
@@ -68,7 +68,7 @@ CREATE TABLE `se_task_instance` (
   PRIMARY KEY (`id`)
 )   ;
 
-CREATE TABLE `se_execution_instance` (
+CREATE TABLE IF NOT EXISTS `se_execution_instance` (
   `id` bigint  NOT NULL AUTO_INCREMENT COMMENT 'PK'   ,
   `gmt_create` datetime(6) NOT NULL   COMMENT 'create time' ,
   `gmt_modified` datetime(6) NOT NULL  COMMENT 'modification time'  ,
@@ -81,7 +81,7 @@ CREATE TABLE `se_execution_instance` (
 )   ;
 
 
-CREATE TABLE `se_task_assignee_instance` (
+CREATE TABLE IF NOT EXISTS `se_task_assignee_instance` (
   `id` bigint  NOT NULL AUTO_INCREMENT  COMMENT 'PK'  ,
   `gmt_create` datetime(6) NOT NULL  COMMENT 'create time'  ,
   `gmt_modified` datetime(6) NOT NULL   COMMENT 'modification time' ,
@@ -93,7 +93,7 @@ CREATE TABLE `se_task_assignee_instance` (
 )  ;
 
 
-CREATE TABLE `se_variable_instance` (
+CREATE TABLE IF NOT EXISTS `se_variable_instance` (
   `id` bigint  NOT NULL AUTO_INCREMENT  COMMENT 'PK'  ,
   `gmt_create` datetime(6) NOT NULL  COMMENT 'create time'  ,
   `gmt_modified` datetime(6) NOT NULL  COMMENT 'modification time'  ,

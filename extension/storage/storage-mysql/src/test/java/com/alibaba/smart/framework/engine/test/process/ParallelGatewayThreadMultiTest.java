@@ -32,7 +32,7 @@ import static org.junit.Assert.assertEquals;
  *  场景4:嵌套, 主fork下3个子fork,这3个子fork分别模拟上面的场景1,2,3
  *  场景5:嵌套, 主fork下3个子fork,2个子fork先join后,然后再和最后一个子fork join. 
  */
-public class ParallelGatewayThreadMulitiTest extends DatabaseBaseTestCase {
+public class ParallelGatewayThreadMultiTest extends DatabaseBaseTestCase {
 
     protected void initProcessConfiguration() {
 
