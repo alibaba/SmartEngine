@@ -13,11 +13,11 @@
         
         <!-- 分支1 -->
         <receiveTask id="receiveTask1" name="接收任务1"/>
-        <serviceTask id="service1" name="服务任务1" smart:class="serviceTaskDelegation"/>
+        <serviceTask id="service1" name="服务任务1" />
         
         <!-- 分支2 -->
         <receiveTask id="receiveTask2" name="接收任务2"/>
-        <serviceTask id="service2" name="服务任务2" smart:class="serviceTaskDelegation"/>
+        <serviceTask id="service2" name="服务任务2" />
         
         <endEvent id="end" name="结束"/>
 

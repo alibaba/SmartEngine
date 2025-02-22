@@ -25,6 +25,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -38,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *  场景2:不嵌套, 从fork开始,分支1进入join节点,分支2进入receiveTask, 验证流程实例状态,流转轨迹状态,中间的bean执行逻辑,join逻辑生效(都到齐了再触发,并且后续节点只会被执行一次)
  *  场景3:不嵌套, 从fork开始,分支1,分支2进入receiveTask,然后先后驱动流程到结束. 验证流程实例状态,流转轨迹状态,中间的bean执行逻辑,join逻辑生效(都到齐了再触发,并且后续节点只会被执行一次)
  *  场景4:嵌套, 主fork下3个子fork,这3个子fork分别模拟上面的场景1,2,3
- *  场景5:嵌套, 主fork下3个子fork,2个子fork先join后,然后再和最后一个子fork join. 
+ *  场景5:嵌套, 主fork下3个子fork,2个子fork先join后,然后再和最后一个子fork join. //TODO
  */
 public class ParallelGatewayThreadMultiTest extends DatabaseBaseTestCase {
 
@@ -51,7 +52,7 @@ public class ParallelGatewayThreadMultiTest extends DatabaseBaseTestCase {
 
         //指定线程池,多线程fork
         CustomThreadFactory threadFactory = new CustomThreadFactory("smart-engine");
-        processEngineConfiguration.setExecutorService( Executors.newFixedThreadPool(10, threadFactory));
+        processEngineConfiguration.setExecutorService( Executors.newFixedThreadPool(30, threadFactory));
 
     }
 
@@ -73,7 +74,7 @@ public class ParallelGatewayThreadMultiTest extends DatabaseBaseTestCase {
     }
 
     @Test
-    public void testAllServiceTask()  {
+    public void testScenario1()  {
 
         //本case验证场景1
 
@@ -195,6 +196,164 @@ public class ParallelGatewayThreadMultiTest extends DatabaseBaseTestCase {
 
         executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         assertEquals(0, executionInstanceList.size());
+    }
+
+    @Test
+    public void testScenario3() {
+        // 本case验证场景3
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("database/ParallelGatewayScenario3Test.xml").getFirstProcessDefinition();
+        List<BaseElement> baseElementList = processDefinition.getBaseElementList();
+        assertEquals(16, baseElementList.size());
+
+
+
+
+        ProcessInstance processInstance = processCommandService.start(
+                processDefinition.getId(), processDefinition.getVersion()
+        );
+
+        // 验证初始执行轨迹
+        List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(2, executionInstanceList.size());
+        Set<String> actualActivityIds = executionInstanceList.stream()
+                .map(ExecutionInstance::getProcessDefinitionActivityId)
+                .collect(Collectors.toSet());
+        Assert.assertTrue(actualActivityIds.contains("receiveTask2"));
+        Assert.assertTrue(actualActivityIds.contains("receiveTask1"));
+
+        // 驱动第一个receiveTask
+        Optional<ExecutionInstance> receiveTask1 = executionInstanceList.stream()
+                .filter(a -> a.getProcessDefinitionActivityId().equals("receiveTask1"))
+                .findFirst();
+        processInstance = executionCommandService.signal(receiveTask1.get().getInstanceId());
+
+
+        // 验证中间状态
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(2, executionInstanceList.size());
+        actualActivityIds = executionInstanceList.stream()
+                .map(ExecutionInstance::getProcessDefinitionActivityId)
+                .collect(Collectors.toSet());
+        Assert.assertTrue(actualActivityIds.contains("join"));
+        Assert.assertTrue(actualActivityIds.contains("receiveTask2"));
+
+
+        // 驱动第二个receiveTask
+        Optional<ExecutionInstance> receiveTask2 = executionInstanceList.stream()
+                .filter(a -> a.getProcessDefinitionActivityId().equals("receiveTask2"))
+                .findFirst();
+        processInstance = executionCommandService.signal(receiveTask2.get().getInstanceId());
+
+        // 验证最终状态
+        Assert.assertNotNull(processInstance.getCompleteTime());
+        assertEquals(InstanceStatus.completed, processInstance.getStatus());
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(0, executionInstanceList.size());
+
+    }
+
+    @Test
+    public void testScenario4() {
+        // 本case验证场景4
+        ProcessDefinition processDefinition = repositoryCommandService
+            .deploy("database/ParallelGatewayScenario4Test.xml").getFirstProcessDefinition();
+        List<BaseElement> baseElementList = processDefinition.getBaseElementList();
+        assertEquals(36, baseElementList.size());
+
+        Map<String, Object> request = new HashMap<String, Object>();
+
+        // 启动流程
+        ProcessInstance processInstance = processCommandService.start(
+            processDefinition.getId(), processDefinition.getVersion(), request);
+
+        // 验证初始执行轨迹
+        List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(5, executionInstanceList.size());
+        Set<String> actualActivityIds = executionInstanceList.stream()
+                .map(ExecutionInstance::getProcessDefinitionActivityId)
+                .collect(Collectors.toSet());
+
+        // fork1已经到达 mainJoin
+        //分支1 已经完成
+        Assert.assertTrue(actualActivityIds.contains("mainJoin"));
+
+        //分支2
+        Assert.assertTrue(actualActivityIds.contains("receiveTask1"));
+        Assert.assertTrue(actualActivityIds.contains("subJoin2"));
+
+        //分支3
+        Assert.assertTrue(actualActivityIds.contains("receiveTask2"));
+        Assert.assertTrue(actualActivityIds.contains("receiveTask3"));
+
+
+        Optional<ExecutionInstance> receiveTask1 = executionInstanceList.stream()
+            .filter(a -> a.getProcessDefinitionActivityId().equals("receiveTask1"))
+            .findFirst();
+        assertTrue(receiveTask1.isPresent());
+
+
+
+        // 驱动子fork2的receiveTask1
+        processInstance = executionCommandService.signal(receiveTask1.get().getInstanceId(), request);
+
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(4, executionInstanceList.size());
+
+        Optional<ExecutionInstance> receiveTask2 = executionInstanceList.stream()
+                .filter(a -> a.getProcessDefinitionActivityId().equals("receiveTask2"))
+                .findFirst();
+
+        assertTrue(receiveTask2.isPresent());
+
+        Optional<ExecutionInstance> receiveTask3 = executionInstanceList.stream()
+                .filter(a -> a.getProcessDefinitionActivityId().equals("receiveTask3"))
+                .findFirst();
+        assertTrue(receiveTask3.isPresent());
+
+        List<ExecutionInstance> mainJoin = executionInstanceList.stream()
+                .filter(a -> a.getProcessDefinitionActivityId().equals("mainJoin"))
+                .collect(Collectors.toList());
+
+        assertTrue(mainJoin.size() == 2);
+
+
+        // fork1,fork2 都已经到达 mainJoin
+        processInstance = executionCommandService.signal(receiveTask2.get().getInstanceId(), request);
+
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(4, executionInstanceList.size());
+
+
+
+        receiveTask3 = executionInstanceList.stream()
+                .filter(a -> a.getProcessDefinitionActivityId().equals("receiveTask3"))
+                .findFirst();
+
+        assertTrue(receiveTask3.isPresent());
+
+        Optional<ExecutionInstance>  subJoin3 = executionInstanceList.stream()
+                .filter(a -> a.getProcessDefinitionActivityId().equals("subJoin3"))
+                .findFirst();
+
+        assertTrue(subJoin3.isPresent());
+
+        mainJoin = executionInstanceList.stream()
+                .filter(a -> a.getProcessDefinitionActivityId().equals("mainJoin"))
+                .collect(Collectors.toList());
+
+        assertTrue(mainJoin.size() == 2);
+
+        processInstance = executionCommandService.signal(receiveTask3.get().getInstanceId(), request);
+
+        // 验证最终状态
+        Assert.assertNotNull(processInstance.getCompleteTime());
+        assertEquals(InstanceStatus.completed, processInstance.getStatus());
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(0, executionInstanceList.size());
+
+
+
     }
 
 

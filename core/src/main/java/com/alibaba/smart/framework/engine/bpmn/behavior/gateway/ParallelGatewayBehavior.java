@@ -140,9 +140,9 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
 
                     //这里目前看起来没啥必要了
-//                    for (ExecutionContext executionContext : subThreadContextList) {
-//                        executionContext.getExecutionInstance().getProcessDefinitionActivityId();
-//                    }
+                    for (ExecutionContext executionContext : subThreadContextList) {
+                        executionContext.getExecutionInstance().getProcessDefinitionActivityId();
+                    }
 
 
                 } catch (Exception e) {
@@ -244,8 +244,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             ExecutionContext subThreadContext = contextFactory.createChildThreadContext(context);
 
             PvmActivityTask pvmActivityTask = context.getProcessEngineConfiguration().getPvmActivityTaskFactory().create(target,subThreadContext);
-
-            LOGGER.debug("PvmActivityTask thread id  is {}, subThreadContext is {} {} ", Thread.currentThread().getId(), subThreadContext);
 
             taskList.add(pvmActivityTask);
         }

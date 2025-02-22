@@ -15,13 +15,13 @@
         <!-- 子fork1：模拟场景1 -->
         <parallelGateway id="subFork1" name="子Fork1"/>
         <parallelGateway id="subJoin1" name="子Join1"/>
-        <serviceTask id="service1" name="服务任务1" smart:class="serviceTaskDelegation"/>
-        <serviceTask id="service2" name="服务任务2" smart:class="serviceTaskDelegation"/>
+        <serviceTask id="service1" name="服务任务1" />
+        <serviceTask id="service2" name="服务任务2" />
         
         <!-- 子fork2：模拟场景2 -->
         <parallelGateway id="subFork2" name="子Fork2"/>
         <parallelGateway id="subJoin2" name="子Join2"/>
-        <serviceTask id="service3" name="服务任务3" smart:class="serviceTaskDelegation"/>
+        <serviceTask id="service3" name="服务任务3" />
         <receiveTask id="receiveTask1" name="接收任务1"/>
         
         <!-- 子fork3：模拟场景3 -->
@@ -46,7 +46,8 @@
         
         <!-- 子fork1流程 -->
         <sequenceFlow id="flow9" sourceRef="subFork1" targetRef="service1"/>
-        <sequenceFlow id="flow10" sourceRef="service1" targetRef="service2"/>
+        <sequenceFlow id="flow99" sourceRef="subFork1" targetRef="service2"/>
+        <sequenceFlow id="flow10" sourceRef="service1" targetRef="subJoin1"/>
         <sequenceFlow id="flow11" sourceRef="service2" targetRef="subJoin1"/>
         
         <!-- 子fork2流程 -->
