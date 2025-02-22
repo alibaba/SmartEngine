@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
 
@@ -42,8 +44,26 @@ public class ParallelGatewayThreadMultiTest extends DatabaseBaseTestCase {
         processEngineConfiguration.setLockStrategy(new DoNothingLockStrategy());
 
         //指定线程池,多线程fork
-        processEngineConfiguration.setExecutorService( Executors.newFixedThreadPool(10));
+        CustomThreadFactory threadFactory = new CustomThreadFactory("smart-engine");
+        processEngineConfiguration.setExecutorService( Executors.newFixedThreadPool(10, threadFactory));
 
+    }
+
+    // 自定义线程工厂
+    static class CustomThreadFactory implements ThreadFactory {
+        private final AtomicInteger threadNumber = new AtomicInteger(1);
+        private final String namePrefix;
+
+        CustomThreadFactory(String poolName) {
+            namePrefix = poolName + "-thread-";
+        }
+
+        @Override
+        public Thread newThread(Runnable r) {
+            Thread thread = new Thread(r, namePrefix + threadNumber.getAndIncrement());
+            thread.setDaemon(false); // 设置为非守护线程
+            return thread;
+        }
     }
 
     @Test
@@ -108,7 +128,6 @@ public class ParallelGatewayThreadMultiTest extends DatabaseBaseTestCase {
         //简单拍个数据，用于表示该程序非串式执行的  . service1,2 串行, 3,4 串行; 12和34 并发.
         long maxExecutionTime = sleep1 + sleep2 + 200L;
 
-//        System.out.println(duration);
 
         Assert.assertTrue(duration< maxExecutionTime);
     }

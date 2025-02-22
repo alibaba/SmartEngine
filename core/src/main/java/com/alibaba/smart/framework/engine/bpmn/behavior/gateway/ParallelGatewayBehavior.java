@@ -149,11 +149,14 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         } else if (outComeTransitionSize == 1 && inComeTransitionSize >= 2) {
 
+            ProcessInstance processInstance = context.getProcessInstance();
+
+            //这个同步很关键,避免多线程同时进入临界区,然后在下面的逻辑里去创建新的 join ei,然后和countOfTheJoinLatch 进行比较
+            synchronized (processInstance){
+
                 super.enter(context, pvmActivity);
 
                 Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
-
-                ProcessInstance processInstance = context.getProcessInstance();
 
                 //当前内存中的，新产生的 active ExecutionInstance
                 List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
@@ -165,7 +168,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
 
 
-                //Merge 数据库中和内存中的EI。如果是 custom模式，则可能会存在重复记录，所以这里需要去重。 如果是 DataBase 模式，则不会有重复的EI.
+                //Merge 数据库中和内存中的EI。如果是 custom模式，则可能会存在重复记录(因为custom也是从内存中查询)，所以这里需要去重。 如果是 DataBase 模式，则不会有重复的EI.
 
                 List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
 
@@ -206,7 +209,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                     if(null != chosenExecutionInstanceList){
                         for (ExecutionInstance executionInstance : chosenExecutionInstanceList) {
                             MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
-                                processEngineConfiguration);
+                                    processEngineConfiguration);
                         }
                     }
 
@@ -216,8 +219,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                     //未完成的话,流程继续暂停
                     return true;
                 }
-
-
+            }
 
         }else{
             throw new EngineException("should not touch here:"+pvmActivity);
