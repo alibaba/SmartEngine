@@ -138,9 +138,11 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
                     List<ExecutionContext> subThreadContextList =  acquireResults(context, processEngineConfiguration, latchWaitTime, futureExecutionResultList);
 
-                    for (ExecutionContext executionContext : subThreadContextList) {
-                        executionContext.getExecutionInstance().getProcessDefinitionActivityId();
-                    }
+
+                    //这里目前看起来没啥必要了
+//                    for (ExecutionContext executionContext : subThreadContextList) {
+//                        executionContext.getExecutionInstance().getProcessDefinitionActivityId();
+//                    }
 
 
                 } catch (Exception e) {

@@ -1,0 +1,42 @@
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+    xmlns:smart="http://smartengine.org/schema/process" 
+    xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    targetNamespace="smart">
+    
+    <process id="parallel-scenario3" isExecutable="true">
+        <startEvent id="start" name="开始"/>
+        <parallelGateway id="fork" name="Fork事件"/>
+        <parallelGateway id="join" name="Join事件"/>
+        
+        <!-- 分支1 -->
+        <receiveTask id="receiveTask1" name="接收任务1"/>
+        <serviceTask id="service1" name="服务任务1" smart:class="serviceTaskDelegation"/>
+        
+        <!-- 分支2 -->
+        <receiveTask id="receiveTask2" name="接收任务2"/>
+        <serviceTask id="service2" name="服务任务2" smart:class="serviceTaskDelegation"/>
+        
+        <endEvent id="end" name="结束"/>
+
+        <!-- 流程连接 -->
+        <sequenceFlow id="flow1" sourceRef="start" targetRef="fork"/>
+        
+        <!-- 分支1 -->
+        <sequenceFlow id="flow2" sourceRef="fork" targetRef="receiveTask1"/>
+        <sequenceFlow id="flow3" sourceRef="receiveTask1" targetRef="service1"/>
+        <sequenceFlow id="flow4" sourceRef="service1" targetRef="join"/>
+        
+        <!-- 分支2 -->
+        <sequenceFlow id="flow5" sourceRef="fork" targetRef="receiveTask2"/>
+        <sequenceFlow id="flow6" sourceRef="receiveTask2" targetRef="service2"/>
+        <sequenceFlow id="flow7" sourceRef="service2" targetRef="join"/>
+        
+        <!-- 结束 -->
+        <sequenceFlow id="flow8" sourceRef="join" targetRef="end"/>
+    </process>
+    
+    <!-- 省略BPMNDiagram部分，可参考现有文件格式 -->
+</definitions>

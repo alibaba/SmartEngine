@@ -1,0 +1,68 @@
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+    xmlns:smart="http://smartengine.org/schema/process" 
+    xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    targetNamespace="smart">
+    
+    <process id="parallel-scenario5" isExecutable="true">
+        <startEvent id="start" name="开始"/>
+        
+        <!-- 主fork -->
+        <parallelGateway id="mainFork" name="主Fork"/>
+        
+        <!-- 子fork1 -->
+        <parallelGateway id="subFork1" name="子Fork1"/>
+        <parallelGateway id="subJoin1" name="子Join1"/>
+        <serviceTask id="service1" name="服务任务1" smart:class="serviceTaskDelegation"/>
+        <serviceTask id="service2" name="服务任务2" smart:class="serviceTaskDelegation"/>
+        
+        <!-- 子fork2 -->
+        <parallelGateway id="subFork2" name="子Fork2"/>
+        <parallelGateway id="subJoin2" name="子Join2"/>
+        <serviceTask id="service3" name="服务任务3" smart:class="serviceTaskDelegation"/>
+        <serviceTask id="service4" name="服务任务4" smart:class="serviceTaskDelegation"/>
+        
+        <!-- 子fork3 -->
+        <parallelGateway id="subFork3" name="子Fork3"/>
+        <parallelGateway id="subJoin3" name="子Join3"/>
+        <serviceTask id="service5" name="服务任务5" smart:class="serviceTaskDelegation"/>
+        <serviceTask id="service6" name="服务任务6" smart:class="serviceTaskDelegation"/>
+        
+        <!-- 中间join -->
+        <parallelGateway id="intermediateJoin" name="中间Join"/>
+        
+        <!-- 主join -->
+        <parallelGateway id="mainJoin" name="主Join"/>
+        <endEvent id="end" name="结束"/>
+
+        <!-- 主流程连接 -->
+        <sequenceFlow id="flow1" sourceRef="start" targetRef="mainFork"/>
+        <sequenceFlow id="flow2" sourceRef="mainFork" targetRef="subFork1"/>
+        <sequenceFlow id="flow3" sourceRef="mainFork" targetRef="subFork2"/>
+        <sequenceFlow id="flow4" sourceRef="mainFork" targetRef="subFork3"/>
+        <sequenceFlow id="flow5" sourceRef="subJoin1" targetRef="intermediateJoin"/>
+        <sequenceFlow id="flow6" sourceRef="subJoin2" targetRef="intermediateJoin"/>
+        <sequenceFlow id="flow7" sourceRef="intermediateJoin" targetRef="mainJoin"/>
+        <sequenceFlow id="flow8" sourceRef="subJoin3" targetRef="mainJoin"/>
+        <sequenceFlow id="flow9" sourceRef="mainJoin" targetRef="end"/>
+        
+        <!-- 子fork1流程 -->
+        <sequenceFlow id="flow10" sourceRef="subFork1" targetRef="service1"/>
+        <sequenceFlow id="flow11" sourceRef="service1" targetRef="service2"/>
+        <sequenceFlow id="flow12" sourceRef="service2" targetRef="subJoin1"/>
+        
+        <!-- 子fork2流程 -->
+        <sequenceFlow id="flow13" sourceRef="subFork2" targetRef="service3"/>
+        <sequenceFlow id="flow14" sourceRef="service3" targetRef="service4"/>
+        <sequenceFlow id="flow15" sourceRef="service4" targetRef="subJoin2"/>
+        
+        <!-- 子fork3流程 -->
+        <sequenceFlow id="flow16" sourceRef="subFork3" targetRef="service5"/>
+        <sequenceFlow id="flow17" sourceRef="service5" targetRef="service6"/>
+        <sequenceFlow id="flow18" sourceRef="service6" targetRef="subJoin3"/>
+    </process>
+    
+    <!-- 省略BPMNDiagram部分，可参考现有文件格式 -->
+</definitions>
