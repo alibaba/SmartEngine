@@ -1,6 +1,11 @@
 package com.alibaba.smart.framework.engine.test.process;
 
+import com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow;
+import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
+import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.common.assistant.pojo.ThreadExecutionResult;
@@ -15,14 +20,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -73,7 +82,8 @@ public class ParallelGatewayThreadMultiTest extends DatabaseBaseTestCase {
 
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("database/ParallelGatewayAllServiceTaskTest.xml").getFirstProcessDefinition();
-        assertEquals(16, processDefinition.getBaseElementList().size());
+        List<BaseElement> baseElementList = processDefinition.getBaseElementList();
+        assertEquals(16, baseElementList.size());
 
         Map<String, Object> request = new HashMap<String, Object>();
 
@@ -100,9 +110,39 @@ public class ParallelGatewayThreadMultiTest extends DatabaseBaseTestCase {
 
         // 流程启动后,正确状态断言
         Assert.assertNotNull(processInstance);
-
         Assert.assertNotNull(processInstance.getCompleteTime());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
+
+        List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
+        Assert.assertEquals(9,activityInstances.size());
+        List<ExecutionInstance> executionInstanceList = executionQueryService.findAll(processInstance.getInstanceId());
+        assertEquals(9, executionInstanceList.size());
+
+        List<IdBasedElement> idBasedElements = baseElementList.stream()
+                .map(a -> (IdBasedElement) a) // 强制类型转换
+                .filter(a -> !(a instanceof SequenceFlow)) //移除SequenceFlow
+                .collect(Collectors.toList());
+
+        Set<String> processDefinitionActivityIds = idBasedElements.stream()
+                .map(IdBasedElement::getId)// 过滤掉 IdBasedElement 类型
+                .collect(Collectors.toSet()); // 转换为 Set
+
+        // 获取 executionInstanceList 中所有 activityId 的集合
+        Set<String> actualActivityIds = executionInstanceList.stream()
+                .map(ExecutionInstance::getProcessDefinitionActivityId)
+                .collect(Collectors.toSet());
+        assertEquals(8, actualActivityIds.size());  //有两个join,被移除了
+
+
+        // 断言 actualActivityIds 包含 expectedActivityIds 中的所有值
+        assertTrue(actualActivityIds.containsAll(processDefinitionActivityIds), "executionInstanceList 应该包含所有预期的 activityId");
+
+        // 断言每个元素的 isActive() 返回 false
+        for (ExecutionInstance instance : executionInstanceList) {
+            assertFalse(instance.isActive(), "所有元素的 isActive() 应该返回 false");
+        }
+
+
 
         Set<Entry<String, Object>> entries = request.entrySet();
         Assert.assertEquals(4,entries.size());

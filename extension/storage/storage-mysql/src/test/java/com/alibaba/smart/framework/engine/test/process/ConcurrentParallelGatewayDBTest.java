@@ -34,8 +34,7 @@ public class ConcurrentParallelGatewayDBTest extends DatabaseBaseTestCase {
     protected void initProcessConfiguration() {
         super.initProcessConfiguration();
 
-        LockStrategy doNothingLockStrategy = new DoNothingLockStrategy();
-        processEngineConfiguration.setLockStrategy(doNothingLockStrategy);
+
         //指定线程池,多线程fork
         processEngineConfiguration.setExecutorService(Executors.newFixedThreadPool(10));
     }

@@ -13,45 +13,6 @@ import java.util.*;
 public abstract class ParallelGatewayHelper {
 
 
-
-
-//
-//    // 验证网关
-//    public static void validateGateways(ProcessDefinition processDefinition,PvmProcessDefinition pvmProcessDefinition) {
-//        List<BaseElement> elements = processDefinition.getBaseElementList();
-//
-//        if (null != elements && !elements.isEmpty()) {
-//        Stack<ParallelGateway> gatewayStack = new Stack<>();
-//
-//        for (BaseElement flowNode : elements) {
-//            if (flowNode instanceof ParallelGateway) {
-//                ParallelGateway gateway = (ParallelGateway) flowNode;
-//                PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(gateway.getId());
-//
-//                // 如果是 Split 网关，压栈
-//                if (isForkGateway(pvmActivity,pvmProcessDefinition)) {
-//                    gatewayStack.push(gateway);
-//                }
-//                // 如果是 Join 网关，检查栈顶是否匹配
-//                else if (isJoinGateway(pvmActivity,pvmProcessDefinition)) {
-//                    if (gatewayStack.isEmpty()) {
-//                        throw new EngineException("Unpaired Join Gateway: " + gateway.getId());
-//                    }
-//                    ParallelGateway lastSplit = gatewayStack.pop();
-//                    if (!isMatchingGateway(lastSplit, gateway)) {
-//                        throw new EngineException("Mismatched Gateways: " + lastSplit.getId() + " and " + gateway.getId());
-//                    }
-//                }
-//            }
-//        }
-//
-//        // 检查是否有未闭合的 Split 网关
-//        if (!gatewayStack.isEmpty()) {
-//            throw new EngineException("Unclosed fork Gateway: " + gatewayStack.peek());
-//        }
-//        }
-//    }
-
     // 判断是否为 Fork 网关
     public static boolean isForkGateway(PvmActivity pvmActivity, PvmProcessDefinition pvmProcessDefinition) {
 
@@ -181,70 +142,5 @@ public abstract class ParallelGatewayHelper {
     }
 
 
-//    @Override
-//    public void execute(ActivityExecution execution) {
-//        // 获取当前网关
-//        ParallelGateway gateway = (ParallelGateway) execution.getActivity();
-//
-//        // 如果是 Join 网关
-//        if (isJoinGateway(gateway)) {
-//            // 找到对应的 Split 网关
-//            ParallelGateway splitGateway = findMatchingSplitGateway(gateway, execution);
-//
-//            // 等待所有分支到达
-//            if (allBranchesCompleted(splitGateway, execution)) {
-//                leave(execution); // 继续执行后续流程
-//            }
-//        }
-//    }
-
-
-//    // 找到对应的 Split 网关
-//    private ParallelGateway findMatchingSplitGateway(ParallelGateway joinGateway, ActivityExecution execution) {
-//        // 获取流程定义模型
-//        BpmnModelInstance modelInstance = execution.getProcessDefinition().getBpmnModelInstance();
-//
-//        // 遍历流程定义，找到与 Join 网关匹配的 Split 网关
-//        for (FlowNode flowNode : modelInstance.getModelElementsByType(FlowNode.class)) {
-//            if (flowNode instanceof ParallelGateway && isMatchingSplit(flowNode, joinGateway)) {
-//                return (ParallelGateway) flowNode;
-//            }
-//        }
-//        throw new ProcessEngineException("No matching Split Gateway found for Join Gateway: " + joinGateway.getId());
-//    }
-
-//    // 判断是否为匹配的 Split 网关
-//    private boolean isMatchingSplit(BaseElement flowNode, ParallelGateway joinGateway) {
-//        if (flowNode instanceof ParallelGateway) {
-//            ParallelGateway splitGateway = (ParallelGateway) flowNode;
-//            // 检查 Split 网关的输出流是否包含 Join 网关的输入流
-//            for (SequenceFlow outgoingFlow : splitGateway.getOutgoingFlows()) {
-//                if (outgoingFlow.getTarget().equals(joinGateway)) {
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
-//
-//    // 检查所有分支是否完成
-//    private boolean allBranchesCompleted(ParallelGateway splitGateway, ActivityExecution execution) {
-//        // 获取 Split 网关的所有输出流
-//        List<SequenceFlow> outgoingFlows = splitGateway.getOutgoingFlows();
-//
-//        // 检查每条分支是否已完成
-//        for (SequenceFlow flow : outgoingFlows) {
-//            if (!isFlowCompleted(flow, execution)) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-//
-//    // 检查某条分支是否已完成
-//    private boolean isFlowCompleted(SequenceFlow flow, ActivityExecution execution) {
-//        // 通过执行实例的上下文检查分支状态
-//        return execution.findExecutions(flow.getTarget().getId()).isEmpty();
-//    }
 
 }

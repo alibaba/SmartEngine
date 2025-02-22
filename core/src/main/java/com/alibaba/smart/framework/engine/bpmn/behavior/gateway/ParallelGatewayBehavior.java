@@ -90,7 +90,11 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         if (outComeTransitionSize >= 2 && inComeTransitionSize == 1) {
             //fork
+            super.enter(context, pvmActivity);
 
+            // TUNE 这里不太优雅,本来应该在execute方法中返回false的,但是execute的返回值是void,大意了. 暂时先不改了,否则很可能影响现有的用户
+            // 此外,目前这个类绕过了execute和leave的执行,后面有机会在优化 (并行网关这个类很特殊,既承担了fork又承担了join职责)
+            context.getExecutionInstance().setActive(false);
             fireEvent(context,pvmActivity, EventConstant.ACTIVITY_START);
 
 
