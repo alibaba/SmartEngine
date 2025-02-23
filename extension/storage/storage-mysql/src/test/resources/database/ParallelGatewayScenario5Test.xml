@@ -15,20 +15,20 @@
         <!-- 子fork1 -->
         <parallelGateway id="subFork1" name="子Fork1"/>
         <parallelGateway id="subJoin1" name="子Join1"/>
-        <serviceTask id="service1" name="服务任务1" smart:class="serviceTaskDelegation"/>
-        <serviceTask id="service2" name="服务任务2" smart:class="serviceTaskDelegation"/>
+        <receiveTask id="service1" name="服务任务1" />
+        <serviceTask id="service2" name="服务任务2" />
         
         <!-- 子fork2 -->
         <parallelGateway id="subFork2" name="子Fork2"/>
         <parallelGateway id="subJoin2" name="子Join2"/>
-        <serviceTask id="service3" name="服务任务3" smart:class="serviceTaskDelegation"/>
-        <serviceTask id="service4" name="服务任务4" smart:class="serviceTaskDelegation"/>
+        <receiveTask id="service3" name="服务任务3" />
+        <serviceTask id="service4" name="服务任务4" />
         
         <!-- 子fork3 -->
         <parallelGateway id="subFork3" name="子Fork3"/>
         <parallelGateway id="subJoin3" name="子Join3"/>
-        <serviceTask id="service5" name="服务任务5" smart:class="serviceTaskDelegation"/>
-        <serviceTask id="service6" name="服务任务6" smart:class="serviceTaskDelegation"/>
+        <receiveTask id="service5" name="服务任务5" />
+        <serviceTask id="service6" name="服务任务6" />
         
         <!-- 中间join -->
         <parallelGateway id="intermediateJoin" name="中间Join"/>

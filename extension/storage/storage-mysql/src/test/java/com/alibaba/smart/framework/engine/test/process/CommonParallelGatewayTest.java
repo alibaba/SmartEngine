@@ -23,13 +23,6 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-/**
- *  场景1:不嵌套, 从fork开始,直接都进入join节点(中间节点不暂停,都是serviceTask), 验证流程实例状态,流转轨迹状态,中间的bean执行逻辑,join逻辑生效(都在此等待,并且后续节点只会被执行一次)
- *  场景2:不嵌套, 从fork开始,分支1进入join节点,分支2进入receiveTask, 验证流程实例状态,流转轨迹状态,中间的bean执行逻辑,join逻辑生效(都到齐了再触发,并且后续节点只会被执行一次)
- *  场景3:不嵌套, 从fork开始,分支1,分支2进入receiveTask,然后先后驱动流程到结束. 验证流程实例状态,流转轨迹状态,中间的bean执行逻辑,join逻辑生效(都到齐了再触发,并且后续节点只会被执行一次)
- *  场景4:嵌套, 主fork下3个子fork,这3个子fork分别模拟上面的场景1,2,3
- *  场景5:嵌套, 主fork下3个子fork,2个子fork先join后,然后再和最后一个子fork相join.
- */
 public class CommonParallelGatewayTest extends DatabaseBaseTestCase {
 
     protected void initProcessConfiguration() {
