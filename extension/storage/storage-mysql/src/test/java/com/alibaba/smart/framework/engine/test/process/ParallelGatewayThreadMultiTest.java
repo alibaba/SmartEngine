@@ -358,6 +358,109 @@ public class ParallelGatewayThreadMultiTest extends DatabaseBaseTestCase {
 
 
 
+    @Test
+    public void testScenario5() {
+        // 本case验证场景5
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("database/ParallelGatewayScenario5Test.xml").getFirstProcessDefinition();
+        List<BaseElement> baseElementList = processDefinition.getBaseElementList();
+        assertEquals(38, baseElementList.size());
+
+        Map<String, Object> request = new HashMap<String, Object>();
+
+        // 启动流程
+        ProcessInstance processInstance = processCommandService.start(
+                processDefinition.getId(), processDefinition.getVersion(), request);
+
+        // 验证初始执行轨迹
+        List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(6, executionInstanceList.size());
+        Set<String> actualActivityIds = executionInstanceList.stream()
+                .map(ExecutionInstance::getProcessDefinitionActivityId)
+                .collect(Collectors.toSet());
+
+
+        //分支1
+        Assert.assertTrue(actualActivityIds.contains("subJoin1"));
+        Assert.assertTrue(actualActivityIds.contains("service1"));
+
+        //分支2
+        Assert.assertTrue(actualActivityIds.contains("service3"));
+        Assert.assertTrue(actualActivityIds.contains("subJoin2"));
+
+        //分支3
+        Assert.assertTrue(actualActivityIds.contains("service5"));
+        Assert.assertTrue(actualActivityIds.contains("subJoin3"));
+
+
+        Optional<ExecutionInstance> task1 = executionInstanceList.stream()
+                .filter(a -> a.getProcessDefinitionActivityId().equals("service1"))
+                .findFirst();
+        assertTrue(task1.isPresent());
+
+        //驱动分支1
+        processInstance = executionCommandService.signal(task1.get().getInstanceId(), request);
+
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(5, executionInstanceList.size());
+
+        actualActivityIds = executionInstanceList.stream()
+                .map(ExecutionInstance::getProcessDefinitionActivityId)
+                .collect(Collectors.toSet());
+
+
+        //分支1
+        Assert.assertTrue(actualActivityIds.contains("intermediateJoin"));
+
+        //分支2
+        Assert.assertTrue(actualActivityIds.contains("service3"));
+        Assert.assertTrue(actualActivityIds.contains("subJoin2"));
+
+        //分支3
+        Assert.assertTrue(actualActivityIds.contains("service5"));
+        Assert.assertTrue(actualActivityIds.contains("subJoin3"));
+
+        Optional<ExecutionInstance> task3 = executionInstanceList.stream()
+                .filter(a -> a.getProcessDefinitionActivityId().equals("service3"))
+                .findFirst();
+
+        assertTrue(task3.isPresent());
+
+        //驱动分支2
+        processInstance = executionCommandService.signal(task3.get().getInstanceId(), request);
+
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(3, executionInstanceList.size());
+
+        actualActivityIds = executionInstanceList.stream()
+                .map(ExecutionInstance::getProcessDefinitionActivityId)
+                .collect(Collectors.toSet());
+
+        //分支1,2 抵达 mainJoin
+        Assert.assertTrue(actualActivityIds.contains("mainJoin"));
+
+        //分支3
+        Assert.assertTrue(actualActivityIds.contains("service5"));
+        Assert.assertTrue(actualActivityIds.contains("subJoin3"));
+
+
+        Optional<ExecutionInstance> task5 = executionInstanceList.stream()
+                .filter(a -> a.getProcessDefinitionActivityId().equals("service5"))
+                .findFirst();
+
+        assertTrue(task5.isPresent());
+
+
+        processInstance = executionCommandService.signal(task5.get().getInstanceId(), request);
+
+        // 验证最终状态
+        Assert.assertNotNull(processInstance.getCompleteTime());
+        assertEquals(InstanceStatus.completed, processInstance.getStatus());
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(0, executionInstanceList.size());
+
+
+    }
 
 
 

@@ -50,17 +50,20 @@
         
         <!-- 子fork1流程 -->
         <sequenceFlow id="flow10" sourceRef="subFork1" targetRef="service1"/>
-        <sequenceFlow id="flow11" sourceRef="service1" targetRef="service2"/>
-        <sequenceFlow id="flow12" sourceRef="service2" targetRef="subJoin1"/>
-        
+        <sequenceFlow id="flow11" sourceRef="service1" targetRef="subJoin1"/>
+        <sequenceFlow id="flow12" sourceRef="subFork1" targetRef="service2"/>
+        <sequenceFlow id="flow122" sourceRef="service2" targetRef="subJoin1"/>
+
         <!-- 子fork2流程 -->
         <sequenceFlow id="flow13" sourceRef="subFork2" targetRef="service3"/>
-        <sequenceFlow id="flow14" sourceRef="service3" targetRef="service4"/>
-        <sequenceFlow id="flow15" sourceRef="service4" targetRef="subJoin2"/>
-        
+        <sequenceFlow id="flow14" sourceRef="service3" targetRef="subJoin2"/>
+        <sequenceFlow id="flow15" sourceRef="subFork2" targetRef="service4"/>
+        <sequenceFlow id="flow155" sourceRef="service4" targetRef="subJoin2"/>
+
         <!-- 子fork3流程 -->
         <sequenceFlow id="flow16" sourceRef="subFork3" targetRef="service5"/>
-        <sequenceFlow id="flow17" sourceRef="service5" targetRef="service6"/>
+        <sequenceFlow id="flow17" sourceRef="service5" targetRef="subJoin3"/>
+        <sequenceFlow id="flow177" sourceRef="subFork3" targetRef="service6"/>
         <sequenceFlow id="flow18" sourceRef="service6" targetRef="subJoin3"/>
     </process>
     
