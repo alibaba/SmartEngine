@@ -63,6 +63,7 @@
         <springframework.version>5.3.27</springframework.version>
         <slf4j.version>1.7.13</slf4j.version>
         <jmh.version>1.25.2</jmh.version>
+        <lombok.version>1.18.38</lombok.version>
         <junit.jupiter.version>5.9.1</junit.jupiter.version>
         <gpg.skip>true</gpg.skip>
         <javadoc.opts>-Xdoclint:none</javadoc.opts>
@@ -260,7 +261,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.34</version>
+                <version>${lombok.version}</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -377,6 +378,13 @@
                     <source>${java.source.version}</source>
                     <target>${java.target.version}</target>
                     <encoding>${java.file.encoding}</encoding>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
 
