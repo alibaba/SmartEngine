@@ -87,7 +87,7 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
 //                GatewaySticker.currentSession().setPvmActivity(pvmActivity);
 
             } else {
-                throw new EngineException("Should not touch here:" + pvmActivity);
+                throw new EngineException("Unexpected behavior: " + pvmActivity);
             }
         }
 

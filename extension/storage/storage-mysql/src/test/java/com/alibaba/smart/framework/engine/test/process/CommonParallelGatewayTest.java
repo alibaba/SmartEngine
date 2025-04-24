@@ -1,6 +1,6 @@
 package com.alibaba.smart.framework.engine.test.process;
 
-import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.ParallelGatewayHelper;
+import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.CommonGatewayHelper;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
@@ -51,7 +51,7 @@ public class CommonParallelGatewayTest extends DatabaseBaseTestCase {
                         ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinition.getId(),
                         processDefinition.getVersion());
 
-        Map<String, String> matchedJoinGateway = ParallelGatewayHelper.findMatchedJoinGateway(pvmProcessDefinition);
+        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinGateway(pvmProcessDefinition);
 
         String join = matchedJoinGateway.get("fork");
         Assert.assertEquals("join",join);
@@ -72,7 +72,7 @@ public class CommonParallelGatewayTest extends DatabaseBaseTestCase {
                         ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinition.getId(),
                         processDefinition.getVersion());
 
-        Map<String, String> matchedJoinGateway = ParallelGatewayHelper.findMatchedJoinGateway(pvmProcessDefinition);
+        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinGateway(pvmProcessDefinition);
 
         String join = matchedJoinGateway.get("parentFork");
         Assert.assertEquals("parentJoin",join);
@@ -97,7 +97,7 @@ public class CommonParallelGatewayTest extends DatabaseBaseTestCase {
                         ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinition.getId(),
                         processDefinition.getVersion());
 
-        Map<String, String> matchedJoinGateway = ParallelGatewayHelper.findMatchedJoinGateway(pvmProcessDefinition);
+        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinGateway(pvmProcessDefinition);
 
         String join = matchedJoinGateway.get("parentFork");
         Assert.assertEquals("parentJoin",join);

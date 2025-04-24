@@ -20,9 +20,33 @@ public abstract class ExclusiveGatewayBehaviorHelper {
 
     private static final String DEFAULT = "default";
 
-    public static void chooseOnlyOne(PvmActivity pvmActivity , ExecutionContext context, Map<String, PvmTransition> outcomeTransitions) {
+    public static void chooseOnlyOne(PvmActivity pvmActivity , ExecutionContext context) {
 
+
+        List<PvmTransition> matchedTransitions = getMatchedTransitions(pvmActivity, context);
+
+
+        if(1 != matchedTransitions.size()){
+            throw new EngineException("Multiple Transitions matched: "+ matchedTransitions+" ,check activity id :"+pvmActivity.getModel().getId());
+        }
+
+        //此时,只可能命中唯一的一条路径,进入对应逻辑
+        for (PvmTransition matchedPvmTransition : matchedTransitions) {
+            PvmActivity target = matchedPvmTransition.getTarget();
+
+
+            //触发take事件
+            ListenerExecutor listenerExecutor = context.getProcessEngineConfiguration().getListenerExecutor();
+            listenerExecutor.execute(EventConstant.take,matchedPvmTransition.getModel(),context);
+
+            target.enter(context);
+        }
+    }
+
+    public static List<PvmTransition> getMatchedTransitions(PvmActivity pvmActivity, ExecutionContext context) {
         String processDefinitionActivityId = pvmActivity.getModel().getId();
+        Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
+
 
         List<PvmTransition> matchedTransitions = new ArrayList<PvmTransition>(outcomeTransitions.size());
 
@@ -48,14 +72,14 @@ public abstract class ExclusiveGatewayBehaviorHelper {
                     if (null != pvmTransition){
                         matchedTransitions.add(pvmTransition);
                     }else {
-                        throw new EngineException("No default sequence flow found,check activity id :"+processDefinitionActivityId);
+                        throw new EngineException("No default sequence flow found,check activity id :"+ processDefinitionActivityId);
                     }
                 }else{
                     // do nothing
                 }
 
             }else{
-                throw new EngineException("properties can not be empty,  check activity id :"+processDefinitionActivityId);
+                throw new EngineException("properties can not be empty,  check activity id :"+ processDefinitionActivityId);
 
             }
 
@@ -63,24 +87,8 @@ public abstract class ExclusiveGatewayBehaviorHelper {
         }
 
         if(0 == matchedTransitions.size()){
-            throw new EngineException("No Transitions matched,please check input request and condition expression,activity id :"+processDefinitionActivityId);
+            throw new EngineException("No Transitions matched,please check input request and condition expression,activity id :"+ processDefinitionActivityId);
         }
-
-
-        if(1 != matchedTransitions.size()){
-            throw new EngineException("Multiple Transitions matched: "+ matchedTransitions+" ,check activity id :"+processDefinitionActivityId);
-        }
-
-        //此时,只可能命中唯一的一条路径,进入对应逻辑
-        for (PvmTransition matchedPvmTransition : matchedTransitions) {
-            PvmActivity target = matchedPvmTransition.getTarget();
-
-
-            //触发take事件
-            ListenerExecutor listenerExecutor = context.getProcessEngineConfiguration().getListenerExecutor();
-            listenerExecutor.execute(EventConstant.take,matchedPvmTransition.getModel(),context);
-
-            target.enter(context);
-        }
+        return matchedTransitions;
     }
 }

@@ -1,14 +1,16 @@
 package com.alibaba.smart.framework.engine.bpmn.behavior.gateway;
 
-import java.util.*;
-
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
-import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ParallelGateway;
+import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.InclusiveGateway;
+import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.ExclusiveGatewayBehaviorHelper;
 import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.CommonGatewayHelper;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.*;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.context.factory.ContextFactory;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -17,80 +19,45 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = ParallelGateway.class)
-public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGateway> {
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.*;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ParallelGatewayBehavior.class);
+
+@ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = InclusiveGateway.class)
+public class InclusiveGatewayBehavior extends AbstractActivityBehavior<InclusiveGateway> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(InclusiveGatewayBehavior.class);
 
 
-    public ParallelGatewayBehavior() {
+    public InclusiveGatewayBehavior() {
         super();
     }
 
     @Override
     public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
 
-        //算法说明:ParallelGatewayBehavior 同时承担 fork 和 join 职责。所以说,如何判断是 fork 还是 join ?
+        //算法说明:InclusiveGatewayBehavior 同时承担 fork 和 join 职责。所以说,如何判断是 fork 还是 join ?
         // 目前主要就看pvmActivity节点的 incomeTransition 和 outcomeTransition 数量差异。
         // 如果 income 为1,则为 join 节点。
         // 如果 outcome 为 1 ,则为 fork 节点。
         // 重要:在流程定义解析时,需要判断如果是 fork,则 outcome >=2, income=1; 类似的,如果是 join,则 outcome = 1,income>=2
 
-        ParallelGateway parallelGateway = (ParallelGateway)pvmActivity.getModel();
+        InclusiveGateway inclusiveGateway = (InclusiveGateway)pvmActivity.getModel();
 
-
-
-        ConfigurationOption serviceOrchestrationOption = processEngineConfiguration
-            .getOptionContainer().get(ConfigurationOption.SERVICE_ORCHESTRATION_OPTION.getId());
-
-        //此处，针对基于并行网关的服务编排做了特殊优化处理。
-        if(serviceOrchestrationOption.isEnabled()){
-
-            fireEvent(context,pvmActivity, EventConstant.ACTIVITY_START);
-
-            ParallelServiceOrchestration parallelServiceOrchestration = context.getProcessEngineConfiguration()
-                .getParallelServiceOrchestration();
-
-            parallelServiceOrchestration.orchestrateService(context, pvmActivity);
-
-             //由于这里仅是服务编排，所以这里直接返回`暂停`信号。
-            return true;
-
-        } else {
-
-            return processDefaultLogic(context, pvmActivity, parallelGateway);
-
-        }
-
-
+        return innerEnter(context, pvmActivity, inclusiveGateway);
 
     }
 
-
-
-    private boolean processDefaultLogic(ExecutionContext context, PvmActivity pvmActivity, ParallelGateway parallelGateway) {
-
-
-        Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();
-
-        int inComeTransitionSize = incomeTransitions.size();
+    private boolean innerEnter(ExecutionContext context, PvmActivity pvmActivity, InclusiveGateway InclusiveGateway) {
 
         if (CommonGatewayHelper.isForkGateway(pvmActivity)) {
             //fork
             super.enter(context, pvmActivity);
 
-            // TUNE 这里不太优雅,本来应该在execute方法中返回false的,但是execute的返回值是void,大意了. 暂时先不改了,否则很可能影响现有的用户
-            // 此外,目前这个类绕过了execute和leave的执行,后面有机会在优化 (并行网关这个类很特殊,既承担了fork又承担了join职责)
-            context.getExecutionInstance().setActive(false);
-            fireEvent(context,pvmActivity, EventConstant.ACTIVITY_START);
-
-            Collection<PvmTransition> values = pvmActivity.getOutcomeTransitions().values();
-
-            CommonGatewayHelper.enterConcurrently(context, pvmActivity,values);
 
         } else if (CommonGatewayHelper.isJoinGateway(pvmActivity)) {
 
@@ -100,6 +67,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
             synchronized (processInstance){
 
                 super.enter(context, pvmActivity);
+                Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();
 
                 Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
 
@@ -109,9 +77,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 //当前持久化介质中中，已产生的 active ExecutionInstance。
                 List<ExecutionInstance> executionInstanceListFromDB =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(), super.processEngineConfiguration);
 
-                LOGGER.debug("ParallelGatewayBehavior Joined, the  value of  executionInstanceListFromMemory, executionInstanceListFromDB   is {} , {} ",executionInstanceListFromMemory,executionInstanceListFromDB);
-
-
+                LOGGER.debug("InclusiveGatewayBehavior Joined, the  value of  executionInstanceListFromMemory, executionInstanceListFromDB   is {} , {} ",executionInstanceListFromMemory,executionInstanceListFromDB);
 
                 //Merge 数据库中和内存中的EI。如果是 custom模式，则可能会存在重复记录(因为custom也是从内存中查询)，所以这里需要去重。 如果是 DataBase 模式，则不会有重复的EI.
 
@@ -136,7 +102,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
                     for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
 
-                        if (executionInstance.getProcessDefinitionActivityId().equals(parallelGateway.getId())) {
+                        if (executionInstance.getProcessDefinitionActivityId().equals(InclusiveGateway.getId())) {
                             reachedJoinCounter++;
                             chosenExecutionInstanceList.add(executionInstance);
                         }
@@ -173,6 +139,26 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         return true;
     }
 
+
+    @Override
+    public void leave(ExecutionContext context, PvmActivity pvmActivity) {
+
+        if (CommonGatewayHelper.isForkGateway(pvmActivity)) {
+            fireEvent(context,pvmActivity, EventConstant.ACTIVITY_END);
+
+            //fork
+            List<PvmTransition> matchedTransitions = ExclusiveGatewayBehaviorHelper.getMatchedTransitions(pvmActivity, context);
+
+            CommonGatewayHelper.enterConcurrently(context, pvmActivity,matchedTransitions);
+
+        } else if (CommonGatewayHelper.isJoinGateway(pvmActivity)) {
+
+            super.leave(context,pvmActivity);
+
+        }
+
+
+    }
 
 
 }

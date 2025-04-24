@@ -141,13 +141,11 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         fireEvent(context,pvmActivity, EventConstant.ACTIVITY_END);
 
 
-        //执行每个节点的hook方法
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
 
         if(MapUtil.isEmpty(outcomeTransitions)){
             LOGGER.debug("No outcomeTransitions found for activity id: "+pvmActivity.getModel().getId()+", it's just fine, it should be the last activity of the process");
 
-            return;
         }else{
 
             if( outcomeTransitions.size() ==1){
@@ -157,7 +155,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
                 }
             }else {
 
-                 ExclusiveGatewayBehaviorHelper.chooseOnlyOne(pvmActivity,context, outcomeTransitions);
+                 ExclusiveGatewayBehaviorHelper.chooseOnlyOne(pvmActivity,context);
 
             }
         }
