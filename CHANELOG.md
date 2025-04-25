@@ -1,3 +1,8 @@
+# 4.0.0 
+1.  [非兼容升级] 为了支持包容网关，在`se_execution_instance`表增加了 `parent_execution_instance_id`字段 
+2.  [BUG 修复] 修复嵌套并行网关功能在某些场景下的异常问题
+
+
 # 3.0.0
 1. 重点完善对嵌套并行网关,并行网关嵌套子流程在多线程情况下的测试.
 2. CallActivity:隔离父子流程的request和response,业务上如果有需要共享的,可以在第一个context里面手动从parentContext获取.

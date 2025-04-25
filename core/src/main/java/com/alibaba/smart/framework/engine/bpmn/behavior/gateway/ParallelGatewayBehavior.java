@@ -90,7 +90,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
             Collection<PvmTransition> values = pvmActivity.getOutcomeTransitions().values();
 
-            CommonGatewayHelper.enterConcurrently(context, pvmActivity,values);
+            CommonGatewayHelper.leave(context, pvmActivity,values);
 
         } else if (CommonGatewayHelper.isJoinGateway(pvmActivity)) {
 

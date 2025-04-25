@@ -28,6 +28,10 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     void setActivityInstanceId(String activityInstanceId);
 
+    String getParentExecutionInstanceId();
+
+    void setParentExecutionInstanceId(String parentExecutionInstanceId);
+
 
     void setTaskInstance(TaskInstance taskInstance);
 

@@ -51,7 +51,7 @@ public class CommonParallelGatewayTest extends DatabaseBaseTestCase {
                         ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinition.getId(),
                         processDefinition.getVersion());
 
-        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinGateway(pvmProcessDefinition);
+        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinParallelGateway(pvmProcessDefinition);
 
         String join = matchedJoinGateway.get("fork");
         Assert.assertEquals("join",join);
@@ -72,7 +72,7 @@ public class CommonParallelGatewayTest extends DatabaseBaseTestCase {
                         ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinition.getId(),
                         processDefinition.getVersion());
 
-        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinGateway(pvmProcessDefinition);
+        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinParallelGateway(pvmProcessDefinition);
 
         String join = matchedJoinGateway.get("parentFork");
         Assert.assertEquals("parentJoin",join);
@@ -97,7 +97,7 @@ public class CommonParallelGatewayTest extends DatabaseBaseTestCase {
                         ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinition.getId(),
                         processDefinition.getVersion());
 
-        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinGateway(pvmProcessDefinition);
+        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinParallelGateway(pvmProcessDefinition);
 
         String join = matchedJoinGateway.get("parentFork");
         Assert.assertEquals("parentJoin",join);

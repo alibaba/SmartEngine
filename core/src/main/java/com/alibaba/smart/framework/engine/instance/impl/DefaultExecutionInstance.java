@@ -19,6 +19,8 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
     private String processDefinitionActivityId;
     private boolean active;
 
+    private String parentExecutionInstanceId;
+
     private TaskInstance taskInstance;
 
     @Override

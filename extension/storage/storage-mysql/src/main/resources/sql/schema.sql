@@ -76,6 +76,7 @@ CREATE TABLE `se_execution_instance` (
   `process_definition_id_and_version` varchar(255) NOT NULL  COMMENT 'process definition id and version'  ,
   `process_definition_activity_id` varchar(255) NOT NULL COMMENT 'process definition activity id'   ,
   `activity_instance_id` bigint(20) unsigned NOT NULL COMMENT 'activity instance id'   ,
+  `parent_execution_instance_id` bigint(20) unsigned DEFAULT NULL   COMMENT 'parent execution instance id' ,
   `active` tinyint(4) NOT NULL COMMENT '1:active 0:inactive',
   PRIMARY KEY (`id`)
 )   ;

@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.factory.ActivityInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
@@ -68,6 +69,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             ActivityInstance activityInstance = createSingleActivityInstanceAndAttachToProcessInstance(context, pvmActivity.getModel());
 
             ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
+            assignParentExecutionIdIfNeeded(context, executionInstance);
+
             List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(1);
             executionInstanceList.add(executionInstance);
 
@@ -82,6 +85,18 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             return false;
         }
 
+    }
+
+    protected   void assignParentExecutionIdIfNeeded(ExecutionContext context, ExecutionInstance executionInstance) {
+        if(null != context.getParent()){
+            ExecutionInstance parentExecutionInstance = context.getParent().getExecutionInstance();
+
+            if(null != parentExecutionInstance){
+                executionInstance.setParentExecutionInstanceId(parentExecutionInstance.getInstanceId());
+            }else {
+                throw new EngineException("null parentExecutionInstance found: "+ executionInstance);
+            }
+        }
     }
 
     protected ActivityInstance createSingleActivityInstanceAndAttachToProcessInstance(ExecutionContext context, Activity activity) {

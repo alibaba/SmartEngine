@@ -33,11 +33,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         this.execute(context);
     }
 
-    //protected void fireEvent(ExecutionContext context,PvmEventConstant event) {
-    //
-    //    context.getProcessEngineConfiguration().getListenerExecutor().execute(event,this.getModel(),context);
-    //
-    //}
+
 
     @Override
     public void execute(ExecutionContext context) {

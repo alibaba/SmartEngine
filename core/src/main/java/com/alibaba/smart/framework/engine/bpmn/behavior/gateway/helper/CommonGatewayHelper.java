@@ -29,6 +29,7 @@ public abstract class CommonGatewayHelper {
 
 
     // 判断是否为 Fork 网关
+    // 如果是 fork,则 outcome >=2, income=1; 类似的,如果是 join,则 outcome = 1,income>=2
     public static boolean isForkGateway(PvmActivity pvmActivity) {
 
         int inComeTransitionSize = pvmActivity.getIncomeTransitions().size();
@@ -50,7 +51,7 @@ public abstract class CommonGatewayHelper {
      * @param pvmProcessDefinition
      * @return
      */
-    public static Map<String,String> findMatchedJoinGateway(PvmProcessDefinition pvmProcessDefinition) {
+    public static Map<String,String> findMatchedJoinParallelGateway(PvmProcessDefinition pvmProcessDefinition) {
         Map<String,String> resultMap = new HashMap();
 
 
@@ -161,19 +162,24 @@ public abstract class CommonGatewayHelper {
     }
 
 
-    public static void enterConcurrently(ExecutionContext context, PvmActivity pvmActivity, Collection<PvmTransition> values ) {
+    public static void leave(ExecutionContext context, PvmActivity pvmActivity, Collection<PvmTransition> values ) {
 
 
         int outComeTransitionSize = values.size();
 
         ExecutorService executorService = context.getProcessEngineConfiguration().getExecutorService();
+        ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+        ContextFactory contextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, ContextFactory.class);
+
         if(null == executorService){
             //顺序执行fork
 
             for (PvmTransition value : values) {
                 PvmActivity target = value.getTarget();
+                ExecutionContext childThreadContext = contextFactory.createChildThreadContext(context);
 
-                target.enter(context);
+                target.enter(childThreadContext);
             }
 
 
@@ -183,9 +189,7 @@ public abstract class CommonGatewayHelper {
             // 当子线程执行结束时,看下该分支是否到达了fork对应的join(考虑到嵌套), 如果所有分支都已经完成(注意事项:检查到达该fork对应的join节点,需要注意嵌套,父join找父fork,子join找子join),
             // 如果在fork主线程中发现都已经完毕(每个子线程当前的最后一个节点是否为对应的join),则调用join节点的enter ; 否则调用返回,等待下一次外部的signal
 
-            ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
-            AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
-            ContextFactory contextFactory = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, ContextFactory.class);
+
 
             Map<String, String> properties = pvmActivity.getModel().getProperties();
 

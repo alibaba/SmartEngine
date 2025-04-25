@@ -84,6 +84,10 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : newTaskAssigneeCandidateInstanceList) {
 
                 ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
+
+                assignParentExecutionIdIfNeeded(context, executionInstance);
+
+
                 executionInstanceList.add(executionInstance);
 
 
