@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = InclusiveGateway.class)
@@ -42,7 +43,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
     }
 
-    private boolean innerEnter(ExecutionContext context, PvmActivity pvmActivity, InclusiveGateway InclusiveGateway) {
+    private boolean innerEnter(ExecutionContext context, PvmActivity pvmActivity, InclusiveGateway inclusiveGateway) {
 
         if (CommonGatewayHelper.isForkGateway(pvmActivity)) {
             //fork ,在 leave 阶段，再根据配置决定是否并发创建 pvmActivity
@@ -63,7 +64,9 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
 
 
-                // 算法说明：
+                // 算法说明： 增加 blockId 字段，在 fork 环节时设置好；然后为本 fork 网关后续的每个 ei 设置 blockId （相同的blockId 标识他们在一个 fork-join 内 ，但是 unbalanced 除外 ），
+                // 这里的 blockId 为 fork gateway 的 instanceId ；
+                // 然后根据 blockId, 依次计算 fork gateway 的直接 outcoming transitions (需要从 join 环节反推，因为存在 unbalanced gateway) ,然后再减去未被激活的 transitions ，也就是 missed transitions
 
                 // 不变式：countOfTheJoinLatch =  inComingPvmTransitions.size() -  missedPvmTransitions (因未满足条件进而未被触发的分支)
                 // missedPvmTransitions = 根据 parentExecutionInstanceId (需要在 fork 时，将parentExecutionInstanceId 正确赋值) 查询到包容网关的outgoingTransitions 的直接环节 id，然后判断历史 executionId 是否包含。 如果不包含，则missedPvmTransitions 递增 1
@@ -119,6 +122,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
                 //此时maximumLatchInTheory 是本 fork 网关 对应的直接 outcoming 环节 id list ，还需要除掉为未触发的分支，也就是 missed transition
 
+
                 for (ExecutionInstance executionInstance : allExecutionInstanceList) {
                     for (String s : maximumLatchInTheory) {
                         if(s.equals(executionInstance.getProcessDefinitionActivityId())){
@@ -137,7 +141,8 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 //当前内存中的，新产生的 active ExecutionInstance
                 List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
 
-
+                List<ExecutionInstance> activeExecutionListFromDB =   allExecutionInstanceList.stream()
+                        .filter(ExecutionInstance::isActive).collect(Collectors.toList());
 
 
                 //测试场景： 1 . 不嵌套（都触发 ，都不触发， 触发 1,2,3 ，all service; service+receiver, service+userTask ）  2. 不嵌套，但是unbalanced  3. 嵌套， 1大2小
@@ -147,9 +152,9 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
 
 
-                for (ExecutionInstance instance : allExecutionInstanceList) {
+                for (ExecutionInstance instance : activeExecutionListFromDB) {
                     if (executionInstanceListFromMemory.contains(instance)){
-                        //ignore
+                        //todo logger error
                     }else {
                         mergedExecutionInstanceList.add(instance);
                     }
@@ -165,7 +170,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
                     for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
 
-                        if (executionInstance.getProcessDefinitionActivityId().equals(InclusiveGateway.getId())) {
+                        if (executionInstance.getProcessDefinitionActivityId().equals(inclusiveGateway.getId())) {
                             reachedJoinCounter++;
                             chosenExecutionInstanceList.add(executionInstance);
                         }
