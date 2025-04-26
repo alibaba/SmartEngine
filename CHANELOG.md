@@ -1,5 +1,5 @@
 # 4.0.0 
-1.  [非兼容升级] 为了支持包容网关，在`se_execution_instance`表增加了 `parent_execution_instance_id`字段 
+1.  [非兼容升级] 为了支持包容网关，在`se_execution_instance`表增加了 `block_id`字段 
 2.  [BUG 修复] 修复嵌套并行网关功能在某些场景下的异常问题
 
 

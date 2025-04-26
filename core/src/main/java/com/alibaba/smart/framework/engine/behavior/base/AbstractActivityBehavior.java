@@ -92,7 +92,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             ExecutionInstance parentExecutionInstance = context.getParent().getExecutionInstance();
 
             if(null != parentExecutionInstance){
-                executionInstance.setParentExecutionInstanceId(parentExecutionInstance.getInstanceId());
+                executionInstance.setBlockId(parentExecutionInstance.getInstanceId());
             }else {
                 throw new EngineException("null parentExecutionInstance found: "+ executionInstance);
             }

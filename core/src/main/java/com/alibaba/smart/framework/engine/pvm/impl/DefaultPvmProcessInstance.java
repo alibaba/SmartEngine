@@ -37,7 +37,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
     @Override
     public ProcessInstance signal(PvmActivity pvmActivity, ExecutionContext executionContext) {
 
-        //NOTATION: execute EXECUTE method
+        //execute
         pvmActivity.execute( executionContext);
 
         return executionContext.getProcessInstance();
@@ -47,7 +47,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
     @Override
     public ProcessInstance jump(PvmActivity pvmActivity, ExecutionContext executionContext) {
 
-        //NOTATION: execute ENTER method
+        //enter
         pvmActivity.enter(executionContext);
 
         return executionContext.getProcessInstance();

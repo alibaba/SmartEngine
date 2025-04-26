@@ -38,9 +38,10 @@ public class DefaultExecutionContext implements ExecutionContext {
 
     private boolean needPause;
 
+    @Deprecated
     private boolean nested;
 
-    private Long blockId;
+    private String blockId; //目前仅用于包容网关 @2024.04.25
 
 
 }

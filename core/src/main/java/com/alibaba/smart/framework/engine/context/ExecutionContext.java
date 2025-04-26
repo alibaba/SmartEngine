@@ -85,11 +85,9 @@ public interface ExecutionContext {
     boolean isNeedPause();
 
 
-    @Deprecated
-    Long getBlockId();
+    String getBlockId();
 
-    @Deprecated
-    void setBlockId(Long blockId);
+    void setBlockId(String blockId);
 
 
 

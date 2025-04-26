@@ -7,12 +7,14 @@ import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.CommonGat
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
+import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 import org.slf4j.Logger;
@@ -54,9 +56,14 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
             synchronized (processInstance){
 
                 super.enter(context, pvmActivity);
+
                 Map<String, PvmTransition> incomeTransitions = pvmActivity.getIncomeTransitions();
 
-                Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
+
+
+
+
+                // 算法说明：
 
                 // 不变式：countOfTheJoinLatch =  inComingPvmTransitions.size() -  missedPvmTransitions (因未满足条件进而未被触发的分支)
                 // missedPvmTransitions = 根据 parentExecutionInstanceId (需要在 fork 时，将parentExecutionInstanceId 正确赋值) 查询到包容网关的outgoingTransitions 的直接环节 id，然后判断历史 executionId 是否包含。 如果不包含，则missedPvmTransitions 递增 1
@@ -66,16 +73,74 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 // 如果reachedJoinCounter == countOfTheJoinLatch ，则触发 join 动作完成，驱动流程继续流转；
                 // 如果reachedJoinCounter > countOfTheJoinLatch， 则报错
 
-                //当前内存中的，新产生的 active ExecutionInstance
-                List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
 
+
+                ExecutionInstance joinedExecutionInstanceOfInclusiveGateway = context.getExecutionInstance();
+                ExecutionInstance forkedExecutionInstanceOfInclusiveGateway = executionInstanceStorage.find(joinedExecutionInstanceOfInclusiveGateway.getBlockId(), processEngineConfiguration);
+                // from db
                 List<ExecutionInstance> allExecutionInstanceList =  executionInstanceStorage.findAll(processInstance.getInstanceId(), super.processEngineConfiguration);
 
 
+                PvmProcessDefinition pvmProcessDefinition = processEngineConfiguration
+                        .getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE,
+                                ProcessDefinitionContainer.class).getPvmProcessDefinition(processInstance.getProcessDefinitionId(),
+                                processInstance.getProcessDefinitionVersion());
+
+                PvmActivity forkPvmActivity = pvmProcessDefinition.getActivities().get(forkedExecutionInstanceOfInclusiveGateway.getProcessDefinitionActivityId());
 
 
 
-                LOGGER.debug("InclusiveGatewayBehavior Joined, the  value of  executionInstanceListFromMemory, executionInstanceListFromDB   is {} , {} ",executionInstanceListFromMemory,allExecutionInstanceList);
+                int countOfTheJoinLatch = 0; //fixme
+
+
+                //收集 从 join 到 fork 所有的 activityIdList ，
+                List<String> activityIdList = new ArrayList<>();
+                String forkInclusiveGateWayActivityId = forkPvmActivity.getModel().getId();
+
+                collectActivityIdBetweenForkJoinInclusiveGatewayRecursively(incomeTransitions, forkInclusiveGateWayActivityId, activityIdList);
+
+                //activityIdList 是理论上join配对的fork轨迹内部的所有的 activityId （由于存在 unbalanced gateway，会有 1个 fork，2个 join 这种情况  ）
+
+
+                List<String> maximumLatchInTheory = new ArrayList<>();
+
+                Map<String, PvmTransition> outcomeTransitions = forkPvmActivity.getOutcomeTransitions();
+
+                for (String processDefinitionActivityId : activityIdList) {
+
+                    for (Map.Entry<String, PvmTransition> entry : outcomeTransitions.entrySet()) {
+
+                        if(processDefinitionActivityId.equals(entry.getKey())){
+                            maximumLatchInTheory.add(processDefinitionActivityId);
+                            break;
+                        }
+                    }
+                }
+
+                //此时maximumLatchInTheory 是本 fork 网关 对应的直接 outcoming 环节 id list ，还需要除掉为未触发的分支，也就是 missed transition
+
+                for (ExecutionInstance executionInstance : allExecutionInstanceList) {
+                    for (String s : maximumLatchInTheory) {
+                        if(s.equals(executionInstance.getProcessDefinitionActivityId())){
+                            // 完成整个循环后，countOfTheJoinLatch 就初始化完毕了
+                            countOfTheJoinLatch++;
+                            break;
+                        }
+                    }
+
+                }
+
+
+                // 后续就是计算 reachedJoinCounter 与 countOfTheJoinLatch 之间的简单比较了
+
+
+                //当前内存中的，新产生的 active ExecutionInstance
+                List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
+
+
+
+
+                //测试场景： 1 . 不嵌套（都触发 ，都不触发， 触发 1,2,3 ，all service; service+receiver, service+userTask ）  2. 不嵌套，但是unbalanced  3. 嵌套， 1大2小
 
                 // InclusiveGateway only works in DataBase model
 
@@ -108,7 +173,6 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 }
 
 
-                int countOfTheJoinLatch = inComingPvmTransitions.size();
 
                 LOGGER.debug("chosenExecutionInstanceList , reachedJoinCounter,countOfTheJoinLatch  is {} , {} , {} ",chosenExecutionInstanceList,reachedJoinCounter,countOfTheJoinLatch);
 
@@ -135,6 +199,20 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
         }
 
         return true;
+    }
+
+    private static void collectActivityIdBetweenForkJoinInclusiveGatewayRecursively(Map<String, PvmTransition> incomeTransitions, String id, List<String> activityIdList) {
+        for (Map.Entry<String, PvmTransition> entry : incomeTransitions.entrySet()) {
+            PvmTransition value = entry.getValue();
+
+            if(!entry.getKey().equals(id)){
+                activityIdList.add(entry.getKey());
+                collectActivityIdBetweenForkJoinInclusiveGatewayRecursively(value.getSource().getIncomeTransitions(), id,activityIdList);
+            }else {
+                break;
+            }
+
+        }
     }
 
 

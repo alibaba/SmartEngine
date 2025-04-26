@@ -28,9 +28,9 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     void setActivityInstanceId(String activityInstanceId);
 
-    String getParentExecutionInstanceId();
+    String getBlockId();
 
-    void setParentExecutionInstanceId(String parentExecutionInstanceId);
+    void setBlockId(String blockId);
 
 
     void setTaskInstance(TaskInstance taskInstance);

@@ -36,7 +36,11 @@ public class DefaultContextFactory implements ContextFactory {
         executionContext.setProcessInstance(processInstance);
         executionContext.setExecutionInstance(executionInstance);
 
+
         if(null != executionInstance){
+
+            executionContext.setBlockId(executionInstance.getBlockId());
+
 
             String processDefinitionActivityId = executionInstance.getProcessDefinitionActivityId();
             Map<String, IdBasedElement> idBasedElementMap = processDefinition.getIdBasedElementMap();
@@ -96,6 +100,11 @@ public class DefaultContextFactory implements ContextFactory {
 
         if(null !=  mayBeNullParentContext){
             subContext.setExecutionInstance(mayBeNullParentContext.getExecutionInstance());
+
+            if(null != mayBeNullParentContext.getExecutionInstance()){
+                subContext.setBlockId(mayBeNullParentContext.getExecutionInstance().getBlockId());
+            }
+
             subContext.setBaseElement(mayBeNullParentContext.getBaseElement());
             subContext.setActivityInstance(mayBeNullParentContext.getActivityInstance());
         }
