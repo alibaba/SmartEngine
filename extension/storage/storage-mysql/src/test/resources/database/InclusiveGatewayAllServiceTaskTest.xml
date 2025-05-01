@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:smart="http://smart-framework/schema"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             targetNamespace="http://smart-framework/schema">
+
+    <process id="inclusiveGatewayAllServiceTaskTest" name="包容网关测试-全服务任务" isExecutable="true">
+        <startEvent id="start"/>
+        <sequenceFlow id="flow1" sourceRef="start" targetRef="inclusiveFork"/>
+
+        <inclusiveGateway id="inclusiveFork" name="包容网关分叉"/>
+        
+        <sequenceFlow id="flow2" sourceRef="inclusiveFork" targetRef="service1">
+            <conditionExpression xsi:type="tFormalExpression">${condition1 == true}</conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow3" sourceRef="inclusiveFork" targetRef="service2">
+            <conditionExpression xsi:type="tFormalExpression">${condition2 == true}</conditionExpression>
+        </sequenceFlow>
+
+        <serviceTask id="service1" name="服务任务1" smart:class="serviceTaskDelegation"/>
+        <serviceTask id="service2" name="服务任务2" smart:class="serviceTaskDelegation"/>
+
+        <sequenceFlow id="flow4" sourceRef="service1" targetRef="inclusiveJoin"/>
+        <sequenceFlow id="flow5" sourceRef="service2" targetRef="inclusiveJoin"/>
+
+        <inclusiveGateway id="inclusiveJoin" name="包容网关合并"/>
+        <sequenceFlow id="flow6" sourceRef="inclusiveJoin" targetRef="endService"/>
+        
+        <serviceTask id="endService" name="结束服务任务" smart:class="serviceTaskDelegation"/>
+        <sequenceFlow id="flow7" sourceRef="endService" targetRef="end"/>
+
+        <endEvent id="end"/>
+    </process>
+</definitions>

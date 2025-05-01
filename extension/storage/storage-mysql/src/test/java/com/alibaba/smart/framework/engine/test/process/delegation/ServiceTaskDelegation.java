@@ -6,11 +6,13 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.persister.common.assistant.pojo.ThreadExecutionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
+@Qualifier("com.alibaba.smart.framework.engine.test.process.delegation.ServiceTaskDelegation")
 public class ServiceTaskDelegation implements JavaDelegation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceTaskDelegation.class);
@@ -21,17 +23,22 @@ public class ServiceTaskDelegation implements JavaDelegation {
 
         Map<String, Object> request = executionContext.getRequest();
         String processDefinitionActivityId = executionContext.getExecutionInstance().getProcessDefinitionActivityId();
-        Long sleepTime = (Long)request.get( processDefinitionActivityId);
+        Object sleepTimeObject = request.get(processDefinitionActivityId);
 
-        long id = Thread.currentThread().getId();
+        if(null != sleepTimeObject){
+            Long sleepTime = (Long) sleepTimeObject;
 
-        request.put(processDefinitionActivityId,new ThreadExecutionResult(id,sleepTime));
+            long id = Thread.currentThread().getId();
 
-        try {
-            Thread.sleep(sleepTime);
-        } catch (InterruptedException e) {
-            throw new EngineException(e);
+            request.put(processDefinitionActivityId,new ThreadExecutionResult(id,sleepTime));
+
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                throw new EngineException(e);
+            }
         }
+
 
     }
 }
