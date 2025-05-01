@@ -345,11 +345,11 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
         request.put("condition1", true);
         request.put("condition2", true);
         request.put("condition3", true);
-
+    
         ProcessInstance processInstance = processCommandService.start(
             processDefinition.getId(), processDefinition.getVersion(),
             request);
-
+    
         // 验证执行轨迹
         List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         
@@ -360,7 +360,16 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
                 
         assertTrue(actualActivityIds.contains("firstJoin"));
         assertTrue(actualActivityIds.contains("service3"));
-
+        
+        // 新增：验证service1和service2已经执行完成
+        List<ExecutionInstance> allExecutionInstances = executionQueryService.findAll(processInstance.getInstanceId());
+        Set<String> allActivityIds = allExecutionInstances.stream()
+                .map(ExecutionInstance::getProcessDefinitionActivityId)
+                .collect(Collectors.toSet());
+        
+        assertTrue(allActivityIds.contains("service1"));
+        assertTrue(allActivityIds.contains("service2"));
+    
         // 等待分支3执行完成
         Optional<ExecutionInstance> service3 = executionInstanceList.stream()
                 .filter(e -> e.getProcessDefinitionActivityId().equals("service3"))
@@ -368,7 +377,16 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
         assertTrue(service3.isPresent());
         
         processInstance = executionCommandService.signal(service3.get().getInstanceId(), request);
-
+        
+        // 新增：验证中间服务任务已执行
+        allExecutionInstances = executionQueryService.findAll(processInstance.getInstanceId());
+        allActivityIds = allExecutionInstances.stream()
+                .map(ExecutionInstance::getProcessDefinitionActivityId)
+                .collect(Collectors.toSet());
+        
+        assertTrue(allActivityIds.contains("middleService"));
+        assertTrue(allActivityIds.contains("secondJoin"));
+    
         // 验证流程完成
         Assert.assertNotNull(processInstance.getCompleteTime());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());

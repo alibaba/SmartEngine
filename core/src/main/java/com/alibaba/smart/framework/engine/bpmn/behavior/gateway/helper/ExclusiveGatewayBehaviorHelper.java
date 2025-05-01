@@ -23,7 +23,7 @@ public abstract class ExclusiveGatewayBehaviorHelper {
     public static void chooseOnlyOne(PvmActivity pvmActivity , ExecutionContext context) {
 
 
-        List<PvmTransition> matchedTransitions = getMatchedTransitions(pvmActivity, context);
+        List<PvmTransition> matchedTransitions = calcMatchedTransitions(pvmActivity, context);
 
 
         if(1 != matchedTransitions.size()){
@@ -43,7 +43,7 @@ public abstract class ExclusiveGatewayBehaviorHelper {
         }
     }
 
-    public static List<PvmTransition> getMatchedTransitions(PvmActivity pvmActivity, ExecutionContext context) {
+    public static List<PvmTransition> calcMatchedTransitions(PvmActivity pvmActivity, ExecutionContext context) {
         String processDefinitionActivityId = pvmActivity.getModel().getId();
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
 

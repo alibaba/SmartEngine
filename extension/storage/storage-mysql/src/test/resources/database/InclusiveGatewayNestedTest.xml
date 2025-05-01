@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:smart="http://smart-framework/schema"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             targetNamespace="http://smart-framework/schema">
+    <process id="inclusiveGatewayNestedTest">
+        <startEvent id="start" />
+        <inclusiveGateway id="mainFork" />
+        <sequenceFlow sourceRef="start" targetRef="mainFork" />
+
+        <!-- 主分支1 -->
+        <sequenceFlow sourceRef="mainFork" targetRef="subFork1">
+            <conditionExpression xsi:type="tFormalExpression">${mainCondition1 == true}</conditionExpression>
+        </sequenceFlow>
+        <inclusiveGateway id="subFork1" />
+
+        <!-- 子分支1-1 -->
+        <sequenceFlow sourceRef="subFork1" targetRef="subService1_1">
+            <conditionExpression xsi:type="tFormalExpression">${subCondition1_1 == true}</conditionExpression>
+        </sequenceFlow>
+        <serviceTask id="subService1_1" />
+        <sequenceFlow sourceRef="subService1_1" targetRef="subJoin1" />
+
+        <!-- 子分支1-2 -->
+        <sequenceFlow sourceRef="subFork1" targetRef="subService1_2">
+            <conditionExpression xsi:type="tFormalExpression">${subCondition1_2 == true}</conditionExpression>
+        </sequenceFlow>
+        <serviceTask id="subService1_2" />
+        <sequenceFlow sourceRef="subService1_2" targetRef="subJoin1" />
+
+        <inclusiveGateway id="subJoin1" />
+        <sequenceFlow sourceRef="subJoin1" targetRef="mainJoin" />
+
+        <!-- 主分支2 -->
+        <sequenceFlow sourceRef="mainFork" targetRef="subFork2">
+            <conditionExpression xsi:type="tFormalExpression">${mainCondition2 == true}</conditionExpression>
+        </sequenceFlow>
+        <inclusiveGateway id="subFork2" />
+
+        <!-- 子分支2-1 -->
+        <sequenceFlow sourceRef="subFork2" targetRef="subService2_1">
+            <conditionExpression xsi:type="tFormalExpression">${subCondition2_1 == true}</conditionExpression>
+        </sequenceFlow>
+        <serviceTask id="subService2_1" />
+        <sequenceFlow sourceRef="subService2_1" targetRef="subJoin2" />
+
+        <!-- 子分支2-2 -->
+        <sequenceFlow sourceRef="subFork2" targetRef="subService2_2">
+            <conditionExpression xsi:type="tFormalExpression">${subCondition2_2 == true}</conditionExpression>
+        </sequenceFlow>
+        <serviceTask id="subService2_2" />
+        <sequenceFlow sourceRef="subService2_2" targetRef="subJoin2" />
+
+        <inclusiveGateway id="subJoin2" />
+        <sequenceFlow sourceRef="subJoin2" targetRef="mainJoin" />
+
+        <!-- 主join -->
+        <inclusiveGateway id="mainJoin" />
+        <sequenceFlow sourceRef="mainJoin" targetRef="end" />
+
+        <endEvent id="end" />
+    </process>
+</definitions>

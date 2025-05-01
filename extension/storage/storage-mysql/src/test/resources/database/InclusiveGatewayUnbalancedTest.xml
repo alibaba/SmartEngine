@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             targetNamespace="http://smart-engine/test">
+
+    <process id="inclusiveGatewayUnbalancedTest" name="包容网关不平衡测试流程" isExecutable="true">
+        <startEvent id="start" name="开始"/>
+
+        <!-- 包容网关分叉 -->
+        <inclusiveGateway id="inclusiveFork" name="包容网关分叉"/>
+
+        <!-- 分支1 -->
+        <sequenceFlow id="flow1" sourceRef="start" targetRef="inclusiveFork"/>
+        <sequenceFlow id="flow2" sourceRef="inclusiveFork" targetRef="service1">
+            <conditionExpression xsi:type="tFormalExpression">${condition1 == true}</conditionExpression>
+        </sequenceFlow>
+        <serviceTask id="service1" name="服务任务1"/>
+
+        <!-- 分支2 -->
+        <sequenceFlow id="flow4" sourceRef="inclusiveFork" targetRef="service2">
+            <conditionExpression xsi:type="tFormalExpression">${condition2 == true}</conditionExpression>
+        </sequenceFlow>
+        <serviceTask id="service2" name="服务任务2"/>
+
+        <sequenceFlow id="flow3" sourceRef="service1" targetRef="firstJoin"/>
+        <sequenceFlow id="flow5" sourceRef="service2" targetRef="firstJoin"/>
+
+        <!-- 分支3 -->
+        <sequenceFlow id="flow6" sourceRef="inclusiveFork" targetRef="service3">
+            <conditionExpression xsi:type="tFormalExpression">${condition3 == true}</conditionExpression>
+        </sequenceFlow>
+        <serviceTask id="service3" name="服务任务3"/>
+        <sequenceFlow id="flow7" sourceRef="service3" targetRef="secondJoin"/>
+
+        <!-- 第一个合并点 -->
+        <inclusiveGateway id="firstJoin" name="第一个包容网关合并"/>
+        <sequenceFlow id="flow8" sourceRef="firstJoin" targetRef="middleService"/>
+        <serviceTask id="middleService" name="中间服务任务"/>
+        <sequenceFlow id="flow9" sourceRef="middleService" targetRef="secondJoin"/>
+
+        <!-- 第二个合并点 -->
+        <inclusiveGateway id="secondJoin" name="第二个包容网关合并"/>
+        <sequenceFlow id="flow10" sourceRef="secondJoin" targetRef="end"/>
+
+        <endEvent id="end" name="结束"/>
+    </process>
+</definitions>
