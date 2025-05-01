@@ -22,5 +22,7 @@ public class ExecutionInstanceEntity extends BaseProcessEntity {
 
     private Long incomeActivityInstanceId;
 
+    private Long blockId;
+
     private boolean active;
 }

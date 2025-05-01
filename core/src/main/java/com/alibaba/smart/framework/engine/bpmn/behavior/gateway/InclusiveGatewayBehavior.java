@@ -44,6 +44,18 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
     }
 
+    protected void hookEnter(ExecutionContext context, PvmActivity pvmActivity) {
+
+        if(CommonGatewayHelper.isJoinGateway(pvmActivity)){
+            return;
+        }
+
+        String instanceId = context.getExecutionInstance().getInstanceId();
+        context.setBlockId(instanceId);
+
+    }
+
+
     private boolean innerEnter(ExecutionContext context, PvmActivity pvmActivity, InclusiveGateway inclusiveGateway) {
 
         if (CommonGatewayHelper.isForkGateway(pvmActivity)) {

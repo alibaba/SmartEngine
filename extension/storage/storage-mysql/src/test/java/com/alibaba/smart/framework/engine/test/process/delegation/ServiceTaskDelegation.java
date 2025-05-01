@@ -6,13 +6,11 @@ import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.persister.common.assistant.pojo.ThreadExecutionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
-@Qualifier("com.alibaba.smart.framework.engine.test.process.delegation.ServiceTaskDelegation")
 public class ServiceTaskDelegation implements JavaDelegation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceTaskDelegation.class);

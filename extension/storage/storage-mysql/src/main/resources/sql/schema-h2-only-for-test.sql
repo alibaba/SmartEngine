@@ -77,6 +77,8 @@ CREATE TABLE IF NOT EXISTS `se_execution_instance` (
   `process_definition_activity_id` varchar(255) NOT NULL COMMENT 'process definition activity id'   ,
   `activity_instance_id` bigint NOT NULL COMMENT 'activity instance id'   ,
   `active` bigint NOT NULL COMMENT '1:active 0:inactive',
+  `block_id` bigint COMMENT '1:active 0:inactive',
+
   PRIMARY KEY (`id`)
 )   ;
 

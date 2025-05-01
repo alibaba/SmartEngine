@@ -6,14 +6,14 @@
     <!-- income_transition_id,income_activity_instance_id, -->
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,
-        process_instance_id,process_definition_id_and_version,process_definition_activity_id,activity_instance_id,active
+        process_instance_id,process_definition_id_and_version,process_definition_activity_id,activity_instance_id,active,block_id
     </sql>
 
     <!-- #{incomeTransitionId},#{incomeActivityInstanceId}, -->
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity"   keyProperty="id">
         insert into  se_execution_instance(<include refid="baseColumn"/>)
         values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId}, #{processDefinitionIdAndVersion},
-        #{processDefinitionActivityId}, #{activityInstanceId},#{active})
+        #{processDefinitionActivityId}, #{activityInstanceId},#{active},#{blockId})
     </insert>
 
     <delete id="delete" parameterType="long">

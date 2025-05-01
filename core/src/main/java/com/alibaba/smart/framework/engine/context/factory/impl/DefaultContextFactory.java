@@ -24,12 +24,12 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 public class DefaultContextFactory implements ContextFactory {
 
     @Override
-    public ExecutionContext createExecutionContext(Map<String, Object> request,
-                                                    ProcessEngineConfiguration processEngineConfiguration,
-                                                    ExecutionInstance executionInstance,
-                                                    ActivityInstance activityInstance,
-                                                    ProcessInstance processInstance,
-                                                    ProcessDefinition processDefinition) {
+    public ExecutionContext createSignalContext(Map<String, Object> request,
+                                                ProcessEngineConfiguration processEngineConfiguration,
+                                                ExecutionInstance executionInstance,
+                                                ActivityInstance activityInstance,
+                                                ProcessInstance processInstance,
+                                                ProcessDefinition processDefinition) {
         ExecutionContext executionContext = new DefaultExecutionContext();
         executionContext.setProcessEngineConfiguration(processEngineConfiguration);
         executionContext.setProcessDefinition(processDefinition);
@@ -56,22 +56,32 @@ public class DefaultContextFactory implements ContextFactory {
     }
 
     @Override
-    public ExecutionContext createChildThreadContext(ExecutionContext parentContext) {
+    public ExecutionContext createGatewayContext(ExecutionContext parentContext) {
 
         ProcessInstance processInstance = parentContext.getProcessInstance();
 
         Map<String, Object> request = parentContext.getRequest();
         Map<String, Object> response = parentContext.getResponse();
 
-        ExecutionContext subContext = create(parentContext.getProcessEngineConfiguration(), processInstance, request, response,parentContext);
+        ExecutionContext subContext = createProcessContext(parentContext.getProcessEngineConfiguration(), processInstance, request, response,parentContext);
+
+        subContext.setExecutionInstance(subContext.getExecutionInstance());
+
+        if(null != parentContext.getExecutionInstance()){
+            subContext.setBlockId(parentContext.getExecutionInstance().getInstanceId());
+        }
+
+        subContext.setBaseElement(parentContext.getBaseElement());
+        subContext.setActivityInstance(parentContext.getActivityInstance());
+
 
         return subContext;
     }
 
     @Override
-    public ExecutionContext create(ProcessEngineConfiguration processEngineConfiguration,
-                                   ProcessInstance processInstance, Map<String, Object> request,
-                                   Map<String, Object> response, ExecutionContext mayBeNullParentContext) {
+    public ExecutionContext createProcessContext(ProcessEngineConfiguration processEngineConfiguration,
+                                                 ProcessInstance processInstance, Map<String, Object> request,
+                                                 Map<String, Object> response, ExecutionContext mayBeNullParentContext) {
 
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
 
@@ -98,16 +108,6 @@ public class DefaultContextFactory implements ContextFactory {
         subContext.setProcessInstance(processInstance);
         subContext.setParent(mayBeNullParentContext);
 
-        if(null !=  mayBeNullParentContext){
-            subContext.setExecutionInstance(mayBeNullParentContext.getExecutionInstance());
-
-            if(null != mayBeNullParentContext.getExecutionInstance()){
-                subContext.setBlockId(mayBeNullParentContext.getExecutionInstance().getBlockId());
-            }
-
-            subContext.setBaseElement(mayBeNullParentContext.getBaseElement());
-            subContext.setActivityInstance(mayBeNullParentContext.getActivityInstance());
-        }
 
 
         return subContext;

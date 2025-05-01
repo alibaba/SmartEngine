@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.bpmn.behavior.callactivity;
 
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.callactivity.CallActivity;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
@@ -57,7 +55,7 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
             null,  parentInstanceId,   parentExecutionInstanceId);
 
         ExecutionContext subContext = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, ContextFactory.class)
-            .create( processEngineConfiguration , childProcessInstance,
+            .createProcessContext( processEngineConfiguration , childProcessInstance,
                   null,   null,parentContext);
 
 

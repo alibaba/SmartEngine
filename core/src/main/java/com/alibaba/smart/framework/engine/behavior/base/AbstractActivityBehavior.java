@@ -69,7 +69,6 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             ActivityInstance activityInstance = createSingleActivityInstanceAndAttachToProcessInstance(context, pvmActivity.getModel());
 
             ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
-            assignParentExecutionIdIfNeeded(context, executionInstance);
 
             List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(1);
             executionInstanceList.add(executionInstance);
@@ -82,21 +81,18 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
             fireEvent(context,pvmActivity, EventConstant.ACTIVITY_START);
 
+            hookEnter(context,pvmActivity);
+
             return false;
         }
 
     }
 
-    protected   void assignParentExecutionIdIfNeeded(ExecutionContext context, ExecutionInstance executionInstance) {
-        if(null != context.getParent()){
-            ExecutionInstance parentExecutionInstance = context.getParent().getExecutionInstance();
+    protected void hookEnter(ExecutionContext context, PvmActivity pvmActivity) {
+        // default: do nothing
 
-            if(null != parentExecutionInstance){
-                executionInstance.setBlockId(parentExecutionInstance.getInstanceId());
-            }else {
-                throw new EngineException("null parentExecutionInstance found: "+ executionInstance);
-            }
-        }
+        // 意图: 目前仅包容网关需要，在首次生成包容网关 fork EI 的时候，需要将instanceId 赋值到 context 里面去
+
     }
 
     protected ActivityInstance createSingleActivityInstanceAndAttachToProcessInstance(ExecutionContext context, Activity activity) {
@@ -113,7 +109,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     @Override
     public void execute(ExecutionContext context,PvmActivity pvmActivity) {
 
-        hookExecution(context, pvmActivity);
+        hookExecute(context, pvmActivity);
         if (context.isNeedPause()) {
             // break;
             return;
@@ -127,7 +123,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     }
 
-    protected void hookExecution(ExecutionContext context,PvmActivity pvmActivity) {
+    protected void hookExecute(ExecutionContext context, PvmActivity pvmActivity) {
         // default: do nothing
 
         // 意图: 用于解决页面上多个按钮,当用户点击了这个按钮,却不触发业务流程的状态的变化,仅仅是改变业务领域对象.

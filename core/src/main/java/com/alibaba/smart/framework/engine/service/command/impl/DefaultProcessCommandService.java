@@ -81,7 +81,7 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
         ProcessInstance processInstance = processInstanceFactory.create(  processEngineConfiguration,    processDefinitionId,processDefinitionVersion,   request);
 
-        ExecutionContext executionContext = this.instanceContextFactory.create(processEngineConfiguration, processInstance,
+        ExecutionContext executionContext = this.instanceContextFactory.createProcessContext(processEngineConfiguration, processInstance,
             request, response, null);
 
         // TUNE 减少不必要的对象创建

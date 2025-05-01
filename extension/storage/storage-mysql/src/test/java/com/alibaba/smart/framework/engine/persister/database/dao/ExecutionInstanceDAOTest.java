@@ -31,6 +31,8 @@ public class ExecutionInstanceDAOTest extends BaseElementTest {
         entity.setActive(false);
         entity.setProcessDefinitionActivityId("processDefinitionActivityId");
         entity.setProcessInstanceId(222L);
+
+        entity.setBlockId(666L);
     }
 
     @Test
@@ -46,6 +48,7 @@ public class ExecutionInstanceDAOTest extends BaseElementTest {
 
         ExecutionInstanceEntity result = dao.findOne(entity.getId());
         Assert.assertNotNull(result);
+        Assert.assertEquals(666L,result.getBlockId().longValue());
     }
 
     @Test

@@ -14,18 +14,18 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
  */
 public interface ContextFactory {
 
-    ExecutionContext createExecutionContext(Map<String, Object> request,
-                                            ProcessEngineConfiguration processEngineConfiguration,
-                                            ExecutionInstance executionInstance,
-                                            ActivityInstance activityInstance,
-                                            ProcessInstance processInstance,
-                                            ProcessDefinition processDefinition);
+    ExecutionContext createSignalContext(Map<String, Object> request,
+                                         ProcessEngineConfiguration processEngineConfiguration,
+                                         ExecutionInstance executionInstance,
+                                         ActivityInstance activityInstance,
+                                         ProcessInstance processInstance,
+                                         ProcessDefinition processDefinition);
 
 
-    ExecutionContext createChildThreadContext(ExecutionContext parentContext);
+    ExecutionContext createGatewayContext(ExecutionContext parentContext);
 
 
-    ExecutionContext create(ProcessEngineConfiguration processEngineConfiguration,
-                            ProcessInstance processInstance, Map<String, Object> request,
-                            Map<String, Object> response, ExecutionContext mayBeNullParentContext);
+    ExecutionContext createProcessContext(ProcessEngineConfiguration processEngineConfiguration,
+                                          ProcessInstance processInstance, Map<String, Object> request,
+                                          Map<String, Object> response, ExecutionContext mayBeNullParentContext);
 }

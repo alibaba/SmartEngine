@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -44,31 +45,6 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
 
     }
 
-    private ExecutionInstanceEntity buildExecutionInstanceEntity(ExecutionInstance executionInstance) {
-        ExecutionInstanceEntity executionInstanceEntity = new ExecutionInstanceEntity();
-        executionInstanceEntity.setId(Long.valueOf(executionInstance.getInstanceId()));
-        executionInstanceEntity.setActive(executionInstance.isActive());
-        executionInstanceEntity.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
-        executionInstanceEntity.setProcessInstanceId(Long.valueOf(executionInstance.getProcessInstanceId()));
-        executionInstanceEntity.setActivityInstanceId(Long.valueOf(executionInstance.getActivityInstanceId()));
-        executionInstanceEntity.setProcessDefinitionActivityId(executionInstance.getProcessDefinitionActivityId());
-
-        Date currentDate = DateUtil.getCurrentDate();
-        executionInstanceEntity.setGmtCreate(currentDate);
-        executionInstanceEntity.setGmtModified(currentDate);
-
-
-
-        //TransitionInstance incomeTransition=executionInstance.getIncomeTransition();
-        //if(null!=incomeTransition){
-        //    executionInstanceEntity.setIncomeTransitionId(incomeTransition.getTransitionId());
-        //    executionInstanceEntity.setIncomeActivityInstanceId(Long.valueOf(incomeTransition.getSourceActivityInstanceId()));
-        //
-        //
-        //}
-        return executionInstanceEntity;
-    }
-
     @Override
     public void update(ExecutionInstance executionInstance,
                        ProcessEngineConfiguration processEngineConfiguration) {
@@ -82,26 +58,6 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
         executionInstanceDAO.update(executionInstanceEntity);
     }
 
-    private ExecutionInstance buildExecutionInstance(ExecutionInstance executionInstance, ExecutionInstanceEntity executionInstanceEntity) {
-        executionInstance.setInstanceId(executionInstanceEntity.getId().toString());
-        executionInstance.setProcessDefinitionIdAndVersion(executionInstanceEntity.getProcessDefinitionIdAndVersion());
-        executionInstance.setProcessInstanceId(executionInstanceEntity.getProcessInstanceId().toString());
-        executionInstance.setActivityInstanceId(executionInstanceEntity.getActivityInstanceId().toString());
-        executionInstance.setProcessDefinitionActivityId(executionInstanceEntity.getProcessDefinitionActivityId());
-        executionInstance.setActive(executionInstanceEntity.isActive());
-        executionInstance.setStartTime(executionInstanceEntity.getGmtCreate());
-        executionInstance.setCompleteTime(executionInstanceEntity.getGmtModified());
-
-        String incomeTransitionId = executionInstanceEntity.getIncomeTransitionId();
-        Long incomeActivityInstanceId = executionInstanceEntity.getIncomeActivityInstanceId();
-        if (null != incomeTransitionId || null != incomeActivityInstanceId) {
-            TransitionInstance incomeTransition = new DefaultTransitionInstance();
-            incomeTransition.setTransitionId(incomeTransitionId);
-            incomeTransition.setSourceActivityInstanceId(incomeActivityInstanceId.toString());
-            //executionInstance.setIncomeTransition(incomeTransition);
-        }
-        return executionInstance;
-    }
 
     @Override
     public ExecutionInstance find(String instanceId,
@@ -181,5 +137,65 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
         }
         return new ArrayList<ExecutionInstance>();
     }
+
+
+
+    private ExecutionInstanceEntity buildExecutionInstanceEntity(ExecutionInstance executionInstance) {
+        ExecutionInstanceEntity executionInstanceEntity = new ExecutionInstanceEntity();
+        executionInstanceEntity.setId(Long.valueOf(executionInstance.getInstanceId()));
+        executionInstanceEntity.setActive(executionInstance.isActive());
+        executionInstanceEntity.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
+        executionInstanceEntity.setProcessInstanceId(Long.valueOf(executionInstance.getProcessInstanceId()));
+        executionInstanceEntity.setActivityInstanceId(Long.valueOf(executionInstance.getActivityInstanceId()));
+        executionInstanceEntity.setProcessDefinitionActivityId(executionInstance.getProcessDefinitionActivityId());
+
+        String blockId = executionInstance.getBlockId();
+        if(StringUtil.isNotEmpty(blockId) ){
+            executionInstanceEntity.setBlockId(Long.valueOf(blockId));
+        }
+
+        Date currentDate = DateUtil.getCurrentDate();
+        executionInstanceEntity.setGmtCreate(currentDate);
+        executionInstanceEntity.setGmtModified(currentDate);
+
+
+
+        //TransitionInstance incomeTransition=executionInstance.getIncomeTransition();
+        //if(null!=incomeTransition){
+        //    executionInstanceEntity.setIncomeTransitionId(incomeTransition.getTransitionId());
+        //    executionInstanceEntity.setIncomeActivityInstanceId(Long.valueOf(incomeTransition.getSourceActivityInstanceId()));
+        //
+        //
+        //}
+        return executionInstanceEntity;
+    }
+
+    private ExecutionInstance buildExecutionInstance(ExecutionInstance executionInstance, ExecutionInstanceEntity executionInstanceEntity) {
+        executionInstance.setInstanceId(executionInstanceEntity.getId().toString());
+        executionInstance.setProcessDefinitionIdAndVersion(executionInstanceEntity.getProcessDefinitionIdAndVersion());
+        executionInstance.setProcessInstanceId(executionInstanceEntity.getProcessInstanceId().toString());
+        executionInstance.setActivityInstanceId(executionInstanceEntity.getActivityInstanceId().toString());
+        executionInstance.setProcessDefinitionActivityId(executionInstanceEntity.getProcessDefinitionActivityId());
+        executionInstance.setActive(executionInstanceEntity.isActive());
+        executionInstance.setStartTime(executionInstanceEntity.getGmtCreate());
+        executionInstance.setCompleteTime(executionInstanceEntity.getGmtModified());
+
+        Long blockId = executionInstanceEntity.getBlockId();
+        if(null != blockId){
+            executionInstance.setBlockId(blockId +"");
+        }
+
+        String incomeTransitionId = executionInstanceEntity.getIncomeTransitionId();
+        Long incomeActivityInstanceId = executionInstanceEntity.getIncomeActivityInstanceId();
+        if (null != incomeTransitionId || null != incomeActivityInstanceId) {
+            TransitionInstance incomeTransition = new DefaultTransitionInstance();
+            incomeTransition.setTransitionId(incomeTransitionId);
+            incomeTransition.setSourceActivityInstanceId(incomeActivityInstanceId.toString());
+            //executionInstance.setIncomeTransition(incomeTransition);
+        }
+        return executionInstance;
+    }
+
+
 
 }

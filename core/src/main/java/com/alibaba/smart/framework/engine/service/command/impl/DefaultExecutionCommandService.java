@@ -200,7 +200,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
                 processEngineConfiguration);
         }
 
-        ExecutionContext executionContext = this.instanceContextFactory.createExecutionContext(request, processEngineConfiguration,
+        ExecutionContext executionContext = this.instanceContextFactory.createSignalContext(request, processEngineConfiguration,
             executionInstance, activityInstance, processInstance, processDefinition);
 
         PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(activityId);
@@ -322,7 +322,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
                 DefaultExecutionCommandService.this.processContainer.getProcessDefinition(
                     processInstance.getProcessDefinitionIdAndVersion());
 
-            executionContext = instanceContextFactory.createExecutionContext(request, processEngineConfiguration,
+            executionContext = instanceContextFactory.createSignalContext(request, processEngineConfiguration,
                 executionInstance, activityInstance, processInstance, processDefinition);
             return this;
         }
@@ -340,7 +340,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
                     DefaultExecutionCommandService.this.processContainer.getProcessDefinition(
                             processInstance.getProcessDefinitionIdAndVersion());
 
-            executionContext = instanceContextFactory.createExecutionContext(request, processEngineConfiguration,
+            executionContext = instanceContextFactory.createSignalContext(request, processEngineConfiguration,
                     executionInstance, activityInstance, processInstance, processDefinition);
             return this;
         }

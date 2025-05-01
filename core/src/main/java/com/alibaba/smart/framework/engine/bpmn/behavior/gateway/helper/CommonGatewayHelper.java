@@ -177,7 +177,8 @@ public abstract class CommonGatewayHelper {
 
             for (PvmTransition value : values) {
                 PvmActivity target = value.getTarget();
-                ExecutionContext childThreadContext = contextFactory.createChildThreadContext(context);
+
+                ExecutionContext childThreadContext = contextFactory.createGatewayContext(context);
 
                 target.enter(childThreadContext);
             }
@@ -236,7 +237,7 @@ public abstract class CommonGatewayHelper {
             PvmActivity target = value.getTarget();
 
             //将ParentContext 复制到 子线程内
-            ExecutionContext subThreadContext = contextFactory.createChildThreadContext(context);
+            ExecutionContext subThreadContext = contextFactory.createGatewayContext(context);
 
             PvmActivityTask pvmActivityTask = context.getProcessEngineConfiguration().getPvmActivityTaskFactory().create(target,subThreadContext);
 

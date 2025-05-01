@@ -30,5 +30,9 @@ public class DefaultActivityInstance extends AbstractLifeCycleInstance implement
 //        this.incomeTransitions.add(transitionInstance);
 //    }
 
+    @Override
+    public String toString() {
+        return this.getInstanceId()+":"+this.getProcessDefinitionActivityId();
+    }
 
 }

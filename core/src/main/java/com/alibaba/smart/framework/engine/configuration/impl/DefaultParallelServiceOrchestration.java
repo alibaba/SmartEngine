@@ -114,7 +114,7 @@ public class DefaultParallelServiceOrchestration implements ParallelServiceOrche
             finalJoinParallelGateWayPvmActivity = current;
 
             //将ParentContext 复制到 子线程内
-            ExecutionContext subThreadContext = contextFactory.createChildThreadContext(context);
+            ExecutionContext subThreadContext = contextFactory.createGatewayContext(context);
 
             PvmActivityTask pvmActivityTask = context.getProcessEngineConfiguration().getPvmActivityTaskFactory().create(target,subThreadContext);
 
