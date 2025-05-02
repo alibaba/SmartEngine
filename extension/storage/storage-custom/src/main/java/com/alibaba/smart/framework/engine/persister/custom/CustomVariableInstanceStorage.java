@@ -28,4 +28,9 @@ public class CustomVariableInstanceStorage implements VariableInstanceStorage {
                                            ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
+
+//    @Override
+//    public List<VariableInstance> findAll(String processInstanceId,VariablePersister variablePersister, ProcessEngineConfiguration processEngineConfiguration) {
+//        return null;
+//    }
 }

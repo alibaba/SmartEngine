@@ -15,6 +15,7 @@ public interface VariableInstanceDAO  {
 
      List<VariableInstanceEntity> findList(@Param("processInstanceId") Long processInstanceId,@Param("executionInstanceId") Long executionInstanceId);
 
+     List<VariableInstanceEntity>  findAll(@Param("processInstanceId") Long processInstanceId);
 
      void insert(  VariableInstanceEntity variableInstanceEntity );
 

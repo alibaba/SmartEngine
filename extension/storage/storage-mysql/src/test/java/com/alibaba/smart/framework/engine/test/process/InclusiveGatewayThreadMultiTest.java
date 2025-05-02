@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.*;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
+import com.alibaba.smart.framework.engine.test.process.helper.CustomVariablePersister;
 import com.alibaba.smart.framework.engine.test.process.helper.DoNothingLockStrategy;
 import org.h2.engine.Engine;
 import org.junit.Assert;
@@ -15,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -28,8 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ContextConfiguration("/spring/application-test.xml")
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+//@Transactional
+@RunWith(SpringRunner.class)
 /**
  *  场景1: 不嵌套（3个分支，都触发）- 验证当所有条件都满足时，所有分支都会被执行
  *  场景2: 不嵌套（3个分支，都不触发）- 验证当所有条件都不满足时，默认分支会被执行
@@ -48,6 +50,7 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
 
         processEngineConfiguration.setExceptionProcessor(new CustomExceptioinProcessor());
         processEngineConfiguration.setLockStrategy(new DoNothingLockStrategy());
+        processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
 
         // 指定线程池，多线程fork
         CustomThreadFactory threadFactory = new CustomThreadFactory("smart-engine");

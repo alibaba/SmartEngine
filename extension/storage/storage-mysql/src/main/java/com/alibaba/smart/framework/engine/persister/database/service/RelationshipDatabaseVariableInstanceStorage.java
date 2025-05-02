@@ -29,7 +29,7 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
                        ProcessEngineConfiguration processEngineConfiguration) {
         Object value = variableInstance.getFieldValue();
         if (null == value) {
-            return;
+           throw new EngineException("value can not be null: "+ variableInstance);
         }
 
         VariableInstanceDAO variableInstanceDAO = (VariableInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("variableInstanceDAO");
@@ -43,30 +43,33 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
         variableInstanceEntity.setFieldKey(variableInstance.getFieldKey());
         variableInstanceEntity.setProcessInstanceId((Long.valueOf(variableInstance.getProcessInstanceId())));
         Class fieldType = variableInstance.getFieldType();
-        variableInstanceEntity.setFieldType(fieldType.getName());
 
-        if (isAssignableFromString(fieldType)) {
-            variableInstanceEntity.setFieldStringValue((String)value);
-        } else if (isAssignableFromBoolean(fieldType)) {
-            variableInstanceEntity.setFieldStringValue(String.valueOf(value));
-        } else if (isAssignableFromInteger(fieldType)) {
-            variableInstanceEntity.setFieldLongValue(Long.valueOf((Integer)value));
-        } else if (isAssignableFromShort(fieldType)) {
-            variableInstanceEntity.setFieldLongValue(Long.valueOf((Short)value));
-        } else if (isAssignableFromLong(fieldType)) {
-            variableInstanceEntity.setFieldLongValue((Long)value);
-        } else if (isAssignableFromFloat(fieldType)) {
-            variableInstanceEntity.setFieldDoubleValue(Double.valueOf((Float)value));
-        } else if (isAssignableFromDouble(fieldType)) {
-            variableInstanceEntity.setFieldDoubleValue((Double)value);
-        } else if (byte.class.isAssignableFrom(fieldType) || byte[].class.isAssignableFrom(fieldType)) {
-            throw new EngineException("NOT support byte group so far");
-        } else if (char.class.isAssignableFrom(fieldType) || char[].class.isAssignableFrom(fieldType)) {
-            throw new EngineException("NOT support char group so far");
+        if(null != fieldType){
+            variableInstanceEntity.setFieldType(fieldType.getName());
+
+            if (isAssignableFromString(fieldType)) {
+                variableInstanceEntity.setFieldStringValue((String)value);
+            } else if (isAssignableFromBoolean(fieldType)) {
+                variableInstanceEntity.setFieldStringValue(String.valueOf(value));
+            } else if (isAssignableFromInteger(fieldType)) {
+                variableInstanceEntity.setFieldLongValue(Long.valueOf((Integer)value));
+            } else if (isAssignableFromShort(fieldType)) {
+                variableInstanceEntity.setFieldLongValue(Long.valueOf((Short)value));
+            } else if (isAssignableFromLong(fieldType)) {
+                variableInstanceEntity.setFieldLongValue((Long)value);
+            } else if (isAssignableFromFloat(fieldType)) {
+                variableInstanceEntity.setFieldDoubleValue(Double.valueOf((Float)value));
+            } else if (isAssignableFromDouble(fieldType)) {
+                variableInstanceEntity.setFieldDoubleValue((Double)value);
+            } else if (byte.class.isAssignableFrom(fieldType) || byte[].class.isAssignableFrom(fieldType)) {
+                throw new EngineException("NOT support byte group so far");
+            } else if (char.class.isAssignableFrom(fieldType) || char[].class.isAssignableFrom(fieldType)) {
+                throw new EngineException("NOT support char group so far");
+            }else {
+                serialize(variablePersister, value, variableInstanceEntity);
+            }
         } else {
-            //ASSUME the others are all pojos.
-            String serializedValue = variablePersister.serialize(value);
-            variableInstanceEntity.setFieldStringValue(serializedValue);
+            serialize(variablePersister, value, variableInstanceEntity);
         }
 
         Date currentDate = DateUtil.getCurrentDate();
@@ -77,60 +80,96 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
 
     }
 
+    private static void serialize(VariablePersister variablePersister, Object value, VariableInstanceEntity variableInstanceEntity) {
+        //ASSUME the others are all pojos.
+        String serializedValue = variablePersister.serialize(value);
+        variableInstanceEntity.setFieldStringValue(serializedValue);
+    }
+
     @Override
     public List<VariableInstance> findList(String processInstanceId, String executionInstanceId,
                                            VariablePersister variablePersister,
                                            ProcessEngineConfiguration processEngineConfiguration) {
         VariableInstanceDAO variableInstanceDAO = (VariableInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("variableInstanceDAO");
         List<VariableInstance> variableInstanceList = null;
-        List<VariableInstanceEntity> list = variableInstanceDAO.findList(Long.valueOf(processInstanceId), Long.valueOf(executionInstanceId));
+        Long executionInstanceId1;
+        if(executionInstanceId == null){
+             executionInstanceId1 = null;
+
+        }else {
+             executionInstanceId1 = Long.valueOf(executionInstanceId);
+
+        }
+        List<VariableInstanceEntity> list = variableInstanceDAO.findList(Long.valueOf(processInstanceId), executionInstanceId1);
         if (null != list) {
-            variableInstanceList = new ArrayList<VariableInstance>(list.size());
-            for (VariableInstanceEntity variableInstanceEntity : list) {
-                VariableInstance variableInstance = new DefaultVariableInstance();
-                variableInstance.setInstanceId(variableInstanceEntity.getId().toString());
-                variableInstance.setStartTime(variableInstanceEntity.getGmtCreate());
-                variableInstance.setCompleteTime(variableInstanceEntity.getGmtModified());
-                variableInstance.setProcessInstanceId(variableInstanceEntity.getProcessInstanceId().toString());
-                variableInstance.setExecutionInstanceId(variableInstanceEntity.getExecutionInstanceId().toString());
-
-                variableInstance.setFieldKey(variableInstanceEntity.getFieldKey());
-                String fieldType1 = variableInstanceEntity.getFieldType();
-
-                //TUNE CACHE
-                try {
-                    Class<?> fieldType = Class.forName(fieldType1);
-                    variableInstance.setFieldType(fieldType);
-
-                    if (isAssignableFromString(fieldType)) {
-                        variableInstance.setFieldValue(variableInstanceEntity.getFieldStringValue());
-                    } else if (isAssignableFromBoolean(fieldType)) {
-                        variableInstance.setFieldValue(Boolean.valueOf(variableInstanceEntity.getFieldStringValue()));
-                    } else if (isAssignableFromInteger(fieldType)) {
-                        variableInstance.setFieldValue(variableInstanceEntity.getFieldLongValue().intValue());
-                    } else if (isAssignableFromShort(fieldType)) {
-                        variableInstance.setFieldValue(variableInstanceEntity.getFieldLongValue().shortValue());
-                    } else if (isAssignableFromLong(fieldType)) {
-                        variableInstance.setFieldValue(variableInstanceEntity.getFieldLongValue());
-                    } else if (isAssignableFromFloat(fieldType)) {
-                        variableInstance.setFieldValue(variableInstanceEntity.getFieldDoubleValue().floatValue());
-                    } else if (isAssignableFromDouble(fieldType)) {
-                        variableInstance.setFieldValue(variableInstanceEntity.getFieldDoubleValue());
-                    } else {
-                        //ASSUME the others are all pojos.
-                        Object serializedValue =  variablePersister.deserialize(variableInstanceEntity.getFieldStringValue(),fieldType);
-                        variableInstance.setFieldValue(serializedValue);
-                    }
-
-                } catch (ClassNotFoundException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
-                variableInstanceList.add(variableInstance);
-            }
+            variableInstanceList = build(variablePersister, list);
         }
 
         return variableInstanceList;
     }
+
+    private List<VariableInstance> build(VariablePersister variablePersister, List<VariableInstanceEntity> list) {
+        List<VariableInstance> variableInstanceList;
+        variableInstanceList = new ArrayList<VariableInstance>(list.size());
+        for (VariableInstanceEntity variableInstanceEntity : list) {
+            VariableInstance variableInstance = new DefaultVariableInstance();
+            variableInstance.setInstanceId(variableInstanceEntity.getId().toString());
+            variableInstance.setStartTime(variableInstanceEntity.getGmtCreate());
+            variableInstance.setCompleteTime(variableInstanceEntity.getGmtModified());
+            variableInstance.setProcessInstanceId(variableInstanceEntity.getProcessInstanceId().toString());
+            variableInstance.setExecutionInstanceId(variableInstanceEntity.getExecutionInstanceId().toString());
+
+            variableInstance.setFieldKey(variableInstanceEntity.getFieldKey());
+            String fieldType1 = variableInstanceEntity.getFieldType();
+
+            //TUNE CACHE
+            try {
+                Class<?> fieldType = Class.forName(fieldType1);
+                variableInstance.setFieldType(fieldType);
+
+                if (isAssignableFromString(fieldType)) {
+                    variableInstance.setFieldValue(variableInstanceEntity.getFieldStringValue());
+                } else if (isAssignableFromBoolean(fieldType)) {
+                    variableInstance.setFieldValue(Boolean.valueOf(variableInstanceEntity.getFieldStringValue()));
+                } else if (isAssignableFromInteger(fieldType)) {
+                    variableInstance.setFieldValue(variableInstanceEntity.getFieldLongValue().intValue());
+                } else if (isAssignableFromShort(fieldType)) {
+                    variableInstance.setFieldValue(variableInstanceEntity.getFieldLongValue().shortValue());
+                } else if (isAssignableFromLong(fieldType)) {
+                    variableInstance.setFieldValue(variableInstanceEntity.getFieldLongValue());
+                } else if (isAssignableFromFloat(fieldType)) {
+                    variableInstance.setFieldValue(variableInstanceEntity.getFieldDoubleValue().floatValue());
+                } else if (isAssignableFromDouble(fieldType)) {
+                    variableInstance.setFieldValue(variableInstanceEntity.getFieldDoubleValue());
+                } else {
+                    //ASSUME the others are all pojos.
+                    Object serializedValue =  variablePersister.deserialize(variableInstanceEntity.getFieldKey(),variableInstanceEntity
+                            .getFieldType(),variableInstanceEntity.getFieldStringValue());
+                    variableInstance.setFieldValue(serializedValue);
+                }
+
+            } catch (ClassNotFoundException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
+            variableInstanceList.add(variableInstance);
+        }
+        return variableInstanceList;
+    }
+
+
+//    @Override
+//    public List<VariableInstance> findAll(String processInstanceId,VariablePersister variablePersister, ProcessEngineConfiguration processEngineConfiguration) {
+//        VariableInstanceDAO variableInstanceDAO = (VariableInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("variableInstanceDAO");
+//        List<VariableInstance> variableInstanceList = null;
+//        List<VariableInstanceEntity> list = variableInstanceDAO.findAll(  Long.valueOf(processInstanceId));
+//        if (null != list) {
+//            variableInstanceList = build(variablePersister, list);
+//        }
+//
+//        return variableInstanceList;
+//    }
+
+
 
     private boolean isAssignableFromDouble(Class<?> fieldType) {
         return double.class.isAssignableFrom(fieldType) || Double.class.isAssignableFrom(fieldType);

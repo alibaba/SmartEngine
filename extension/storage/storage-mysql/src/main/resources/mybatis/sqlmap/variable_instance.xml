@@ -42,6 +42,13 @@
         <include refid="condition"/>
     </select>
 
+    <select id="findAll" resultType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from  se_variable_instance
+        <include refid="condition"/>
+    </select>
+
     <sql id="condition">
         <where>
             <if test="processInstanceId != null">and process_instance_id = #{processInstanceId}</if>

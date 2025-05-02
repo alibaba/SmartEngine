@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.InclusiveGatewayBehavior;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 
@@ -57,7 +58,11 @@ public class CustomVariablePersister implements VariablePersister {
     }
 
     @Override
-    public <T> T deserialize(String text, Class<T> clazz) {
-        return  JSON.parseObject(text,clazz);
+    public Object deserialize(String key, String type, String value) {
+        if(InclusiveGatewayBehavior.INCLUSIVE_GATE_WAY.equals(key)){
+            return  JSON.parseArray(value,String.class);
+        }
+        return  JSON.parseObject(value);
+
     }
 }

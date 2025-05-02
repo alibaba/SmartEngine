@@ -7,13 +7,18 @@ import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.CommonGat
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.configuration.VariablePersister;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
+import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
@@ -29,6 +34,7 @@ import java.util.stream.Collectors;
 public class InclusiveGatewayBehavior extends AbstractActivityBehavior<InclusiveGateway> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InclusiveGatewayBehavior.class);
+    public static final String INCLUSIVE_GATE_WAY = "inclusiveGateWay";
 
 
     public InclusiveGatewayBehavior() {
@@ -37,6 +43,8 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
     @Override
     public boolean enter(ExecutionContext context, PvmActivity pvmActivity) {
+
+        // InclusiveGateway only works in DataBase model
 
         InclusiveGateway inclusiveGateway = (InclusiveGateway)pvmActivity.getModel();
 
@@ -57,6 +65,10 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
 
     private boolean innerEnter(ExecutionContext context, PvmActivity pvmActivity, InclusiveGateway inclusiveGateway) {
+
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+        VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
+        VariableInstanceStorage variableInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,VariableInstanceStorage.class);
 
         if (CommonGatewayHelper.isForkGateway(pvmActivity)) {
             //fork ,在 leave 阶段，再根据配置决定是否并发创建 pvmActivity
@@ -97,33 +109,50 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 ExecutionInstance joinedExecutionInstanceOfInclusiveGateway = context.getExecutionInstance();
                 ExecutionInstance forkedExecutionInstanceOfInclusiveGateway = findForkedExecutionInstance(context, joinedExecutionInstanceOfInclusiveGateway);
 
-
-                // from db
-                List<ExecutionInstance> allExecutionInstanceList = findAllExecutionInstances(context, processInstance);
-
+                List<ExecutionInstance> allExecutionInstanceList = calcAllExecutionInstances(context, processInstance);
 
                 PvmActivity forkedPvmActivity = getForkPvmActivity(processInstance, forkedExecutionInstanceOfInclusiveGateway);
 
-
                 int countOfTheJoinLatch = 0; //fixme
-
 
                 // activityIdList 是流程定义中，join配对的fork轨迹内部的所有的 activityId （由于存在 unbalanced gateway，会有 1个 fork，2个 join 这种情况  ）（与具体的流程实例无关）
                 List<String> activityIdList = calcActivityIdBetweenForkJoinFromProcessDefinition(forkedPvmActivity, incomeTransitionsFromJoinGateway);
 
-                List<String> maximumLatchInTheory = calcLatch(forkedPvmActivity, activityIdList);
+                List<VariableInstance> list = variableInstanceStorage.findList(forkedExecutionInstanceOfInclusiveGateway.getProcessInstanceId(), forkedExecutionInstanceOfInclusiveGateway.getInstanceId(), variablePersister, processEngineConfiguration);
+                Optional<VariableInstance> first = list.stream().filter(variableInstance -> INCLUSIVE_GATE_WAY.equals(variableInstance.getFieldKey())).findFirst();
 
-                //allExecutionInstanceList 由于延迟落库,然后如果是单线程的情况下,这里allExecutionInstanceList 并不包含等待触发的网关. 所有这么写是有问题的.
-                for (ExecutionInstance executionInstance : allExecutionInstanceList) {
-                    for (String activityId : maximumLatchInTheory) {
-                        if(activityId.equals(executionInstance.getProcessDefinitionActivityId())){
+                VariableInstance variableInstance = first.get();
+                String fieldValue = (String) variableInstance.getFieldValue();
+
+                //本流程实例的实际触发的 ActivityIds
+                List<String> triggerActivityIds =( List<String>) variablePersister.deserialize(variableInstance.getFieldKey(),variableInstance.getFieldType().getName(),fieldValue);
+
+                // 还需要和 join 对应的 fork 网关 做下 与运算 (因为存在 unbalanced gateway )
+                for (String triggerActivityId : triggerActivityIds) {
+                    for (String activityId : activityIdList) {
+                        if(activityId.equals(triggerActivityId)){
                             // 完成整个循环后，countOfTheJoinLatch 就初始化完毕了,根据此时的流程实例所有流转轨迹,就能算出countOfTheJoinLatch
                             countOfTheJoinLatch++;
                             break;
                         }
                     }
-
                 }
+
+
+
+//                List<String> maximumLatchInTheory = calcLatch(forkedPvmActivity, activityIdList);
+
+                //allExecutionInstanceList 因为延迟落库,然后如果是单线程的情况下,这里allExecutionInstanceList 并不包含等待触发的分支. 所有这么写是有问题的.
+//                for (ExecutionInstance executionInstance : allExecutionInstanceList) {
+//                    for (String activityId : maximumLatchInTheory) {
+//                        if(activityId.equals(executionInstance.getProcessDefinitionActivityId())){
+//                            // 完成整个循环后，countOfTheJoinLatch 就初始化完毕了,根据此时的流程实例所有流转轨迹,就能算出countOfTheJoinLatch
+//                            countOfTheJoinLatch++;
+//                            break;
+//                        }
+//                    }
+//
+//                }
 
 
                 // 后续就是计算 reachedJoinCounter 与 countOfTheJoinLatch 之间的简单比较了
@@ -132,27 +161,21 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 //当前内存中的，新产生的 active ExecutionInstance
                 List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
 
-                List<ExecutionInstance> activeExecutionListFromDB =   allExecutionInstanceList.stream()
+                List<ExecutionInstance> activeExecutionList =   allExecutionInstanceList.stream()
                         .filter(ExecutionInstance::isActive).collect(Collectors.toList());
 
 
-                //测试场景： 1 . 不嵌套（都触发 ，都不触发， 触发 1,2,3 ，all service; service+receiver, service+userTask ）  2. 不嵌套，但是unbalanced  3. 嵌套， 1大2小
-                // 都不满足后的 default 生效 ； 是否并发或者非并发
-                // InclusiveGateway only works in DataBase model
-
-                List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
-
-
-                for (ExecutionInstance instance : activeExecutionListFromDB) {
-                    if (executionInstanceListFromMemory.contains(instance)){
-                        //todo logger error
-                    }else {
-                        mergedExecutionInstanceList.add(instance);
-                    }
-                }
-
+                List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>();
 
                 mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
+
+                for (ExecutionInstance executionInstance : activeExecutionList) {
+                    if(mergedExecutionInstanceList.contains(executionInstance)){
+                        //do nothing
+                    }else {
+                        mergedExecutionInstanceList.add(executionInstance);
+                    }
+                }
 
                 int reachedJoinCounter = 0;
                 List<ExecutionInstance> chosenExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
@@ -214,7 +237,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
         return forkPvmActivity;
     }
 
-    private List<ExecutionInstance> findAllExecutionInstances(ExecutionContext context, ProcessInstance processInstance) {
+    private List<ExecutionInstance> calcAllExecutionInstances(ExecutionContext context, ProcessInstance processInstance) {
         List<ExecutionInstance> allExecutionInstanceList =  executionInstanceStorage.findAll(processInstance.getInstanceId(), super.processEngineConfiguration);
         if(CollectionUtil.isEmpty(allExecutionInstanceList)){
             // 说明此时还没落库（SE 目前的设计是一次调用链结束后，才会在最后时刻落库。 这个时候需要从内存中查询）
@@ -324,7 +347,12 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
             //fork
             List<PvmTransition> matchedTransitions = ExclusiveGatewayBehaviorHelper.calcMatchedTransitions(pvmActivity, context);
 
+            persistMatchedTransitionsEagerly(context, matchedTransitions);
+
             CommonGatewayHelper.leave(context, pvmActivity,matchedTransitions);
+
+
+
 
         } else if (CommonGatewayHelper.isJoinGateway(pvmActivity)) {
 
@@ -332,6 +360,29 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
         }
 
+
+    }
+
+    private void persistMatchedTransitionsEagerly(ExecutionContext context, List<PvmTransition> matchedTransitions) {
+        List<String> collect = matchedTransitions.stream().map(pvmTransition -> pvmTransition.getTarget()).map(activity -> activity.getModel().getId()).collect(Collectors.toList());
+
+        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
+        VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
+
+        VariableInstanceStorage variableInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,VariableInstanceStorage.class);
+
+        VariableInstance variableInstance = new DefaultVariableInstance();
+        processEngineConfiguration.getIdGenerator().generate(variableInstance);
+        ProcessInstance processInstance = context.getProcessInstance();
+        variableInstance.setProcessInstanceId(processInstance.getInstanceId());
+        ExecutionInstance executionInstance = context.getExecutionInstance();
+        variableInstance.setExecutionInstanceId(executionInstance.getInstanceId());
+
+        variableInstance.setFieldKey(INCLUSIVE_GATE_WAY);
+        variableInstance.setFieldType(String.class);
+        variableInstance.setFieldValue(variablePersister.serialize(collect));
+
+        variableInstanceStorage.insert(variablePersister,variableInstance, processEngineConfiguration);
 
     }
 

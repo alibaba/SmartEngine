@@ -1,3 +1,5 @@
+
+
 CREATE TABLE `se_deployment_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK'  ,
   `gmt_create` datetime(6) NOT NULL   COMMENT 'create time' ,

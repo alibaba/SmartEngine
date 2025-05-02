@@ -25,7 +25,7 @@ public class DefaultVariablePersister implements VariablePersister {
     }
 
     @Override
-    public <T> T deserialize(String text, Class<T> clazz) {
+    public Object deserialize(String key, String type, String value) {
         return null;
     }
 }

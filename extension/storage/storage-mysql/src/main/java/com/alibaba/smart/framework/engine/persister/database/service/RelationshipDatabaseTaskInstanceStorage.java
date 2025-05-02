@@ -36,11 +36,11 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
 
         List<String> processInstanceIdList = pendingTaskQueryParam.getProcessInstanceIdList();
         if(null != processInstanceIdList){
-            List<Long> processInstanceIdList1  = new ArrayList<Long>(processInstanceIdList.size());
+            List<Long> idArrayList  = new ArrayList<Long>(processInstanceIdList.size());
             for (String s : processInstanceIdList) {
-                processInstanceIdList1.add(Long.valueOf(s));
+                idArrayList.add(Long.valueOf(s));
             }
-            taskInstanceQueryByAssigneeParam.setProcessInstanceIdList(processInstanceIdList1);
+            taskInstanceQueryByAssigneeParam.setProcessInstanceIdList(idArrayList);
         }
 
         taskInstanceQueryByAssigneeParam.setPageOffset(pendingTaskQueryParam.getPageOffset());

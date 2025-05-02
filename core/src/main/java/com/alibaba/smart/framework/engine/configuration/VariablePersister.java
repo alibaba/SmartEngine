@@ -33,5 +33,5 @@ public interface VariablePersister {
      * 其他同  {@code serialize}
      *
      */
-    <T> T deserialize(String text, Class<T> clazz);
+    Object deserialize(String key, String type, String value);
 }

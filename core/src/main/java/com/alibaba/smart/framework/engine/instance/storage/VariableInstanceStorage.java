@@ -15,4 +15,8 @@ public interface VariableInstanceStorage {
                                     VariablePersister variablePersister,
                                     ProcessEngineConfiguration processEngineConfiguration);
 
+//    List<VariableInstance> findAll(String processInstanceId,VariablePersister variablePersister,
+//                                    ProcessEngineConfiguration processEngineConfiguration);
+
+
 }
