@@ -14,7 +14,7 @@ import com.alibaba.smart.framework.engine.model.instance.Instance;
 public class RandomIdGenerator implements IdGenerator{
 
 
-    private static AtomicLong executionId = new AtomicLong(Math.abs(new Random().nextLong()));
+    private static AtomicLong executionId = new AtomicLong(System.currentTimeMillis());
 
     @Override
     public void generate(Instance instance) {

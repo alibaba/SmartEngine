@@ -116,7 +116,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 int countOfTheJoinLatch = 0; //fixme
 
                 // activityIdList 是流程定义中，join配对的fork轨迹内部的所有的 activityId （由于存在 unbalanced gateway，会有 1个 fork，2个 join 这种情况  ）（与具体的流程实例无关）
-                List<String> activityIdList = calcActivityIdBetweenForkJoinFromProcessDefinition(forkedPvmActivity, incomeTransitionsFromJoinGateway);
+                ActivityTreeNode activityTreeNode = calcActivityIdBetweenForkJoinFromProcessDefinition(forkedPvmActivity,    pvmActivity);
 
                 List<VariableInstance> list = variableInstanceStorage.findList(forkedExecutionInstanceOfInclusiveGateway.getProcessInstanceId(), forkedExecutionInstanceOfInclusiveGateway.getInstanceId(), variablePersister, processEngineConfiguration);
                 Optional<VariableInstance> first = list.stream().filter(variableInstance -> INCLUSIVE_GATE_WAY.equals(variableInstance.getFieldKey())).findFirst();
@@ -128,15 +128,17 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 List<String> triggerActivityIds =( List<String>) variablePersister.deserialize(variableInstance.getFieldKey(),variableInstance.getFieldType().getName(),fieldValue);
 
                 // 还需要和 join 对应的 fork 网关 做下 与运算 (因为存在 unbalanced gateway )
-                for (String triggerActivityId : triggerActivityIds) {
-                    for (String activityId : activityIdList) {
-                        if(activityId.equals(triggerActivityId)){
-                            // 完成整个循环后，countOfTheJoinLatch 就初始化完毕了,根据此时的流程实例所有流转轨迹,就能算出countOfTheJoinLatch
-                            countOfTheJoinLatch++;
-                            break;
-                        }
-                    }
-                }
+//                for (String triggerActivityId : triggerActivityIds) {
+//                    for (String activityId : activityIdList) {
+//                        if(activityId.equals(triggerActivityId)){
+//                            // 完成整个循环后，countOfTheJoinLatch 就初始化完毕了,根据此时的流程实例所有流转轨迹,就能算出countOfTheJoinLatch
+//                            countOfTheJoinLatch++;
+//                            break;
+//                        }
+//                    }
+//                }
+
+                countOfTheJoinLatch = calcCountOfTheJoinLatch(activityTreeNode, triggerActivityIds);
 
 
 
@@ -219,12 +221,30 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
     }
 
-    private static List<String> calcActivityIdBetweenForkJoinFromProcessDefinition(PvmActivity forkedPvmActivity, Map<String, PvmTransition> incomeTransitionsFromJoinGateway) {
-        List<String> activityIdList = new ArrayList<>();
-        String forkInclusiveGateWayActivityId = forkedPvmActivity.getModel().getId();
-        //tune maybe cache
-        collectActivityIdBetweenForkJoinInclusiveGatewayRecursively(incomeTransitionsFromJoinGateway, forkInclusiveGateWayActivityId, activityIdList);
-        return activityIdList;
+    private static ActivityTreeNode calcActivityIdBetweenForkJoinFromProcessDefinition(PvmActivity forkedPvmActivity, PvmActivity joinedPvmActivity) {
+        String joinGatewayActivityId = joinedPvmActivity.getModel().getId();
+        ActivityTreeNode root = new ActivityTreeNode(joinGatewayActivityId);
+        String forkGatewayActivityId = forkedPvmActivity.getModel().getId();
+        buildActivityTree(joinedPvmActivity.getIncomeTransitions(), forkGatewayActivityId, root);
+        return root;
+    }
+
+    private static void buildActivityTree(Map<String, PvmTransition> transitions, String targetId, ActivityTreeNode parent) {
+        for (Map.Entry<String, PvmTransition> entry : transitions.entrySet()) {
+            PvmTransition transition = entry.getValue();
+            PvmActivity source = transition.getSource();
+            String activityId = source.getModel().getId();
+            
+            if (activityId.equals(targetId)) {
+                // 找到fork节点,停止遍历
+                return;
+            }
+            
+            ActivityTreeNode node = new ActivityTreeNode(activityId);
+            parent.addChild(node);
+            // 继续向上遍历source节点的income transitions
+            buildActivityTree(source.getIncomeTransitions(), targetId, node);
+        }
     }
 
     private PvmActivity getForkPvmActivity(ProcessInstance processInstance, ExecutionInstance forkedExecutionInstanceOfInclusiveGateway) {
@@ -336,6 +356,45 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 //
 //        }
 //    }
+
+    private static int calcCountOfTheJoinLatch(ActivityTreeNode node, List<String> triggerActivityIds) {
+        return calcCountOfTheJoinLatch(node, triggerActivityIds, new HashSet<>());
+    }
+    
+    private static int calcCountOfTheJoinLatch(ActivityTreeNode node, List<String> triggerActivityIds, Set<String> ancestorTriggeredIds) {
+        int count = 0;
+        
+        // 检查当前节点是否在触发列表中
+        boolean isCurrentNodeTriggered = triggerActivityIds.contains(node.getActivityId());
+        
+        // 如果当前节点被触发，将其添加到祖先触发集合中
+        if (isCurrentNodeTriggered) {
+            ancestorTriggeredIds.add(node.getActivityId());
+        }
+        
+        // 如果是叶子节点且在triggerActivityIds中，并且其祖先节点不在triggerActivityIds中，计数加1
+        if (node.getChildren().isEmpty() && isCurrentNodeTriggered && 
+            !hasTriggeredAncestor(ancestorTriggeredIds, node.getActivityId())) {
+            return 1;
+        }
+        
+        // 为每个子节点创建一个新的祖先集合副本，以避免跨分支的干扰
+        for (ActivityTreeNode child : node.getChildren()) {
+            // 创建一个新的集合，包含当前的祖先触发ID
+            Set<String> childAncestorTriggeredIds = new HashSet<>(ancestorTriggeredIds);
+            count += calcCountOfTheJoinLatch(child, triggerActivityIds, childAncestorTriggeredIds);
+        }
+        
+        return count;
+    }
+    
+    // 检查除了当前节点外，是否有触发的祖先节点
+    private static boolean hasTriggeredAncestor(Set<String> ancestorTriggeredIds, String currentNodeId) {
+        // 如果集合中只有当前节点，则返回false
+        // 如果集合中除了当前节点外还有其他节点，则返回true
+        return ancestorTriggeredIds.size() > 1 || 
+              (ancestorTriggeredIds.size() == 1 && !ancestorTriggeredIds.contains(currentNodeId));
+    }
 
 
     @Override
