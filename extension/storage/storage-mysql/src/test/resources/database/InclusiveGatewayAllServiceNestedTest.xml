@@ -21,7 +21,7 @@
         <sequenceFlow id="flow_subFork1_to_subService1_1" sourceRef="subFork1" targetRef="subService1_1">
             <conditionExpression xsi:type="tFormalExpression">${subCondition1_1 == true}</conditionExpression>
         </sequenceFlow>
-        <receiveTask id="subService1_1" />
+        <serviceTask id="subService1_1" />
         <sequenceFlow id="flow_subService1_1_to_subJoin1" sourceRef="subService1_1" targetRef="subJoin1" />
 
         <!-- 子分支1-2 -->
@@ -51,7 +51,7 @@
         <sequenceFlow id="flow_subFork2_to_subService2_2" sourceRef="subFork2" targetRef="subService2_2">
             <conditionExpression xsi:type="tFormalExpression">${subCondition2_2 == true}</conditionExpression>
         </sequenceFlow>
-        <receiveTask id="subService2_2" />
+        <serviceTask id="subService2_2" />
         <sequenceFlow id="flow_subService2_2_to_subJoin2" sourceRef="subService2_2" targetRef="subJoin2" />
 
         <inclusiveGateway id="subJoin2" />

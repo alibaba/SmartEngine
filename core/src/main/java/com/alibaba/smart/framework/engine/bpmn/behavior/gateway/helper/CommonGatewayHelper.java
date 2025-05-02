@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper;
 
+import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.AbstractGateway;
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
@@ -51,24 +52,24 @@ public abstract class CommonGatewayHelper {
      * @param pvmProcessDefinition
      * @return
      */
-    public static Map<String,String> findMatchedJoinParallelGateway(PvmProcessDefinition pvmProcessDefinition) {
+    public static <T extends AbstractGateway> Map<String,String> findMatchedJoinParallelGateway(PvmProcessDefinition pvmProcessDefinition, Class<T> clazz) {
         Map<String,String> resultMap = new HashMap();
 
 
         Map<String, PvmActivity> pvmActivityMap = pvmProcessDefinition.getActivities();
 
-        //获得所有的ParallelGateway
-        List<ParallelGateway> elementListByType = getElementListByType(pvmActivityMap, ParallelGateway.class);
+        List<T> elementListByType = getElementListByType(pvmActivityMap, clazz);
 
 
-        for (ParallelGateway parallelGateway : elementListByType) {
+        for (T parallelGateway : elementListByType) {
             PvmActivity pvmActivity = pvmProcessDefinition.getActivities().get(parallelGateway.getId());
 
             //仅针对fork网关进行处理
             if( isForkGateway(pvmActivity)){
 
                 //如果是子fork节点,那么该节点应该在递归中处理完毕. 这里不用重复处理
-                if(null == resultMap.get(pvmActivity.getModel().getId())){
+                String id = pvmActivity.getModel().getId();
+                if(null == resultMap.get(id)){
                     findOutAllForkJoinPairs( pvmActivity,pvmProcessDefinition,resultMap);
                 }
 

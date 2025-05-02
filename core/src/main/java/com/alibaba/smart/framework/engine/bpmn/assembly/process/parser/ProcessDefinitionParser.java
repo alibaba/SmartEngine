@@ -73,7 +73,13 @@ public class ProcessDefinitionParser extends AbstractElementParser<ProcessDefini
                 if(element instanceof IdBasedElement){
                     IdBasedElement idBasedElement = (IdBasedElement)element;
 
-                    if(null != idBasedElementMap.get(idBasedElement.getId())){
+                    String id = idBasedElement.getId();
+
+                    if(StringUtil.isEmpty(id)){
+                        throw new EngineException(" id cant be null :"+idBasedElement);
+                    }
+
+                    if(null != idBasedElementMap.get(id)){
                         throw new EngineException("duplicated id found:"+idBasedElement.getId());
                     }else{
                         idBasedElementMap.put(idBasedElement.getId(), idBasedElement);

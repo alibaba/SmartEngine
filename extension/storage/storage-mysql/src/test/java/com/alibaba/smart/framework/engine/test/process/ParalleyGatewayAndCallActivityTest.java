@@ -203,6 +203,7 @@ public class ParalleyGatewayAndCallActivityTest extends DatabaseBaseTestCase {
             // 由于serviceTask会自动结束，所以只会2个流程实例处于活跃状态：主流程和receiveTask子流程两个实例.
 
             ProcessInstanceQueryParam processInstanceQueryParam = new ProcessInstanceQueryParam();
+
             //processInstanceQueryParam.setStatus(InstanceStatus.running.name());
 
             List<ProcessInstance> processInstanceList = processQueryService.findList(processInstanceQueryParam);

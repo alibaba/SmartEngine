@@ -55,6 +55,9 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
     protected void hookEnter(ExecutionContext context, PvmActivity pvmActivity) {
 
         if(CommonGatewayHelper.isJoinGateway(pvmActivity)){
+
+//            ExecutionInstance joinedExecutionInstanceOfInclusiveGateway = context.getExecutionInstance();
+//            ExecutionInstance forkedExecutionInstanceOfInclusiveGateway = findForkedExecutionInstance(context, joinedExecutionInstanceOfInclusiveGateway);
             return;
         }
 
@@ -71,7 +74,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
         VariableInstanceStorage variableInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,VariableInstanceStorage.class);
 
         if (CommonGatewayHelper.isForkGateway(pvmActivity)) {
-            //fork ,在 leave 阶段，再根据配置决定是否并发创建 pvmActivity
+            //先 fork ,在 leave 阶段，再根据配置决定是否并发创建 pvmActivity
             super.enter(context, pvmActivity);
 
             return false;
@@ -96,18 +99,24 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 // 然后根据 blockId, 依次计算 fork gateway 的直接 outcoming transitions (需要从 join 环节反推，因为存在 unbalanced gateway) ,然后再减去未被激活的 transitions ，也就是 missed transitions
 
                 // 不变式：countOfTheJoinLatch =  inComingPvmTransitions.size() -  missedPvmTransitions (因未满足条件进而未被触发的分支)
-                // missedPvmTransitions = 根据 parentExecutionInstanceId (需要在 fork 时，将parentExecutionInstanceId 正确赋值) 查询到包容网关的outgoingTransitions 的直接环节 id，然后判断历史 executionId 是否包含。 如果不包含，则missedPvmTransitions 递增 1
-                // reachedJoinCounter 为 进入到本包容网关的内存对象和 db 对象；
 
                 // 如果reachedJoinCounter < countOfTheJoinLatch ，则继续等待
                 // 如果reachedJoinCounter == countOfTheJoinLatch ，则触发 join 动作完成，驱动流程继续流转；
                 // 如果reachedJoinCounter > countOfTheJoinLatch， 则报错
 
 
-                Map<String, PvmTransition> incomeTransitionsFromJoinGateway = pvmActivity.getIncomeTransitions();
-
                 ExecutionInstance joinedExecutionInstanceOfInclusiveGateway = context.getExecutionInstance();
                 ExecutionInstance forkedExecutionInstanceOfInclusiveGateway = findForkedExecutionInstance(context, joinedExecutionInstanceOfInclusiveGateway);
+
+//                if(null != forkedExecutionInstanceOfInclusiveGateway.getBlockId()){
+//                    // 说明 forkedExecutionInstanceOfInclusiveGateway 是个嵌套网关,需要手动更新 joinEI 的 blockId,然后方便后续join 网关识别出 mainFork
+//                    // 虽然没找到更优雅的方式,但是应该解决了问题.
+//                    joinedExecutionInstanceOfInclusiveGateway.setBlockId(forkedExecutionInstanceOfInclusiveGateway.getBlockId());
+//                    executionInstanceStorage.update(joinedExecutionInstanceOfInclusiveGateway,processEngineConfiguration);
+//
+//                    // 再次查找 forkedExecutionInstanceOfInclusiveGateway
+//                    forkedExecutionInstanceOfInclusiveGateway = findForkedExecutionInstance(context, joinedExecutionInstanceOfInclusiveGateway);
+//                }
 
                 List<ExecutionInstance> allExecutionInstanceList = calcAllExecutionInstances(context, processInstance);
 
@@ -189,6 +198,9 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                                     processEngineConfiguration);
                         }
                     }
+
+                    //clear blockId ,因为这个块的 fork-join 已经结束 todo
+//                    context.setBlockId(null);
 
                     return false;
 

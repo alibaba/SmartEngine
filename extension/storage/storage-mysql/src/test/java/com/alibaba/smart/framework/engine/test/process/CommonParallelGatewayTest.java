@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.test.process;
 
+import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.InclusiveGateway;
+import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.CommonGatewayHelper;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -51,7 +53,7 @@ public class CommonParallelGatewayTest extends DatabaseBaseTestCase {
                         ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinition.getId(),
                         processDefinition.getVersion());
 
-        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinParallelGateway(pvmProcessDefinition);
+        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinParallelGateway(pvmProcessDefinition, ParallelGateway.class);
 
         String join = matchedJoinGateway.get("fork");
         Assert.assertEquals("join",join);
@@ -72,7 +74,7 @@ public class CommonParallelGatewayTest extends DatabaseBaseTestCase {
                         ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinition.getId(),
                         processDefinition.getVersion());
 
-        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinParallelGateway(pvmProcessDefinition);
+        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinParallelGateway(pvmProcessDefinition, ParallelGateway.class);
 
         String join = matchedJoinGateway.get("parentFork");
         Assert.assertEquals("parentJoin",join);
@@ -97,7 +99,7 @@ public class CommonParallelGatewayTest extends DatabaseBaseTestCase {
                         ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinition.getId(),
                         processDefinition.getVersion());
 
-        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinParallelGateway(pvmProcessDefinition);
+        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinParallelGateway(pvmProcessDefinition, ParallelGateway.class);
 
         String join = matchedJoinGateway.get("parentFork");
         Assert.assertEquals("parentJoin",join);
@@ -106,6 +108,33 @@ public class CommonParallelGatewayTest extends DatabaseBaseTestCase {
         Assert.assertEquals("subJoin",join);
 
     }
+
+    @Test
+    public void testComplexEmbedded1()  {
+
+        //验证场景1 ,没有嵌套
+
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("database/InclusiveGatewayNestedTest.xml").getFirstProcessDefinition();
+
+        PvmProcessDefinition pvmProcessDefinition = smartEngine.getProcessEngineConfiguration()
+                .getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE,
+                        ProcessDefinitionContainer.class).getPvmProcessDefinition(processDefinition.getId(),
+                        processDefinition.getVersion());
+
+        Map<String, String> matchedJoinGateway = CommonGatewayHelper.findMatchedJoinParallelGateway(pvmProcessDefinition, InclusiveGateway.class);
+
+        String join = matchedJoinGateway.get("mainFork");
+        Assert.assertEquals("mainJoin",join);
+
+        join = matchedJoinGateway.get("subFork1");
+        Assert.assertEquals("subJoin1",join);
+
+        join = matchedJoinGateway.get("subFork2");
+        Assert.assertEquals("subJoin2",join);
+
+    }
+
 
 
 

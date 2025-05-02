@@ -21,6 +21,7 @@ import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
+import com.alibaba.smart.framework.engine.test.process.helper.TimeBasedIdGenerator;
 import com.alibaba.smart.framework.engine.test.process.helper.dispatcher.DefaultTaskAssigneeDispatcher;
 import com.alibaba.smart.framework.engine.test.process.helper.sequece.RandomIdGenerator;
 
@@ -99,7 +100,7 @@ public class DatabaseBaseTestCase implements ApplicationContextAware {
 
     protected void initProcessConfiguration() {
         processEngineConfiguration = new DefaultProcessEngineConfiguration();
-        processEngineConfiguration.setIdGenerator(new RandomIdGenerator());
+        processEngineConfiguration.setIdGenerator(new TimeBasedIdGenerator());
         processEngineConfiguration.setInstanceAccessor(new DataBaseAccessService());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
     }

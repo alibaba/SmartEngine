@@ -1,21 +1,17 @@
 package com.alibaba.smart.framework.engine.test.process;
 
-import com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
-import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.*;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomVariablePersister;
 import com.alibaba.smart.framework.engine.test.process.helper.DoNothingLockStrategy;
-import org.h2.engine.Engine;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -402,7 +398,7 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
     public void testScenario9_NestedGateways() {
         // 本case验证场景9：嵌套的包容网关
         ProcessDefinition processDefinition = repositoryCommandService
-            .deploy("database/InclusiveGatewayNestedTest.xml").getFirstProcessDefinition();
+            .deploy("database/InclusiveGatewayAllServiceNestedTest.xml").getFirstProcessDefinition();
         
         Map<String, Object> request = new HashMap<>();
         // 设置条件变量，触发主包容网关的所有分支
@@ -426,24 +422,102 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
         Set<String> actualActivityIds = executionInstanceList.stream()
                 .map(ExecutionInstance::getProcessDefinitionActivityId)
                 .collect(Collectors.toSet());
-                
-        assertTrue(actualActivityIds.contains("subService1_1"));
-        assertFalse(actualActivityIds.contains("subService1_2"));
-        assertFalse(actualActivityIds.contains("subService2_1"));
-        assertTrue(actualActivityIds.contains("subService2_2"));
-
-        // 完成所有活动的执行实例
-        for (ExecutionInstance executionInstance : executionInstanceList) {
-            if (executionInstance.isActive()) {
-                processInstance = executionCommandService.signal(executionInstance.getInstanceId(), request);
-            }
-        }
 
         // 验证流程完成
         processInstance = processQueryService.findById(processInstance.getInstanceId());
         Assert.assertNotNull(processInstance.getCompleteTime());
         assertEquals(InstanceStatus.completed, processInstance.getStatus());
         
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        assertEquals(0, executionInstanceList.size());
+    }
+
+
+    @Test
+    public void testScenario10_NestedGateways() {
+        // 本case验证场景9：嵌套的包容网关
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("database/InclusiveGatewayNestedTest.xml").getFirstProcessDefinition();
+
+        Map<String, Object> request = new HashMap<>();
+        // 设置条件变量，触发主包容网关的所有分支
+        request.put("mainCondition1", true);
+        request.put("mainCondition2", true);
+        // 设置条件变量，触发子包容网关1的部分分支
+        request.put("subCondition1_1", true);
+        request.put("subCondition1_2", false);
+        // 设置条件变量，触发子包容网关2的部分分支
+        request.put("subCondition2_1", false);
+        request.put("subCondition2_2", true);
+
+        ProcessInstance processInstance = processCommandService.start(
+                processDefinition.getId(), processDefinition.getVersion(),
+                request);
+
+        // 验证执行轨迹
+        List<ExecutionInstance> executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+
+        // 验证子包容网关的分支执行情况
+        Set<String> actualActivityIds = executionInstanceList.stream()
+                .map(ExecutionInstance::getProcessDefinitionActivityId)
+                .collect(Collectors.toSet());
+
+        // 验证只有满足条件的分支被执行
+        assertTrue(actualActivityIds.contains("subService1_1"));
+        assertFalse(actualActivityIds.contains("subService1_2"));
+        assertFalse(actualActivityIds.contains("subService2_1"));
+        assertTrue(actualActivityIds.contains("subService2_2"));
+        
+        // 验证流程实例状态为运行中（因为有receiveTask暂停）
+        processInstance = processQueryService.findById(processInstance.getInstanceId());
+        assertEquals(InstanceStatus.running, processInstance.getStatus());
+        
+        // 找到所有活动的执行实例
+        Map<String, ExecutionInstance> activeExecutionMap = new HashMap<>();
+        for (ExecutionInstance executionInstance : executionInstanceList) {
+            if (executionInstance.isActive()) {
+                activeExecutionMap.put(executionInstance.getProcessDefinitionActivityId(), executionInstance);
+            }
+        }
+
+        // 验证receiveTask确实暂停了流程
+        assertTrue(activeExecutionMap.containsKey("subService1_1"));
+        assertTrue(activeExecutionMap.containsKey("subService2_2"));
+        
+        // 完成第一个receiveTask (subService1_1)
+        ExecutionInstance subService1_1Instance = activeExecutionMap.get("subService1_1");
+        processInstance = executionCommandService.signal(subService1_1Instance.getInstanceId(), request);
+        
+        // 验证第一个子网关分支已完成，但第二个子网关分支仍在等待
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        actualActivityIds = executionInstanceList.stream()
+                .map(ExecutionInstance::getProcessDefinitionActivityId)
+                .collect(Collectors.toSet());
+                
+        // 第一个子网关分支已完成，应该到达subJoin1
+        assertTrue(actualActivityIds.contains("subJoin1") || actualActivityIds.contains("mainJoin"));
+        // 第二个子网关分支仍在等待
+        assertTrue(actualActivityIds.contains("subService2_2"));
+        
+        // 完成第二个receiveTask (subService2_2)
+        activeExecutionMap.clear();
+        for (ExecutionInstance executionInstance : executionInstanceList) {
+            if (executionInstance.isActive()) {
+                activeExecutionMap.put(executionInstance.getProcessDefinitionActivityId(), executionInstance);
+            }
+        }
+        
+        ExecutionInstance subService2_2Instance = activeExecutionMap.get("subService2_2");
+        processInstance = executionCommandService.signal(subService2_2Instance.getInstanceId(), request);
+        
+        // 验证所有子网关分支已完成，流程应该到达主join或结束
+        executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
+        
+        // 验证流程完成
+        processInstance = processQueryService.findById(processInstance.getInstanceId());
+        Assert.assertNotNull(processInstance.getCompleteTime());
+        assertEquals(InstanceStatus.completed, processInstance.getStatus());
+
         executionInstanceList = executionQueryService.findActiveExecutionList(processInstance.getInstanceId());
         assertEquals(0, executionInstanceList.size());
     }
