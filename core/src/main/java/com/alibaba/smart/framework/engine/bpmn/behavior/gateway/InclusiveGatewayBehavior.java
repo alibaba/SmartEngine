@@ -116,7 +116,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 int countOfTheJoinLatch = 0; //fixme
 
                 // activityIdList 是流程定义中，join配对的fork轨迹内部的所有的 activityId （由于存在 unbalanced gateway，会有 1个 fork，2个 join 这种情况  ）（与具体的流程实例无关）
-                ActivityTreeNode activityTreeNode = calcActivityIdBetweenForkJoinFromProcessDefinition(forkedPvmActivity,    pvmActivity);
+                ActivityTreeNode activityTreeNode = buildActivityTreeFromJoinToFork(forkedPvmActivity,    pvmActivity);
 
                 List<VariableInstance> list = variableInstanceStorage.findList(forkedExecutionInstanceOfInclusiveGateway.getProcessInstanceId(), forkedExecutionInstanceOfInclusiveGateway.getInstanceId(), variablePersister, processEngineConfiguration);
                 Optional<VariableInstance> first = list.stream().filter(variableInstance -> INCLUSIVE_GATE_WAY.equals(variableInstance.getFieldKey())).findFirst();
@@ -141,24 +141,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 countOfTheJoinLatch = calcCountOfTheJoinLatch(activityTreeNode, triggerActivityIds);
 
 
-
-//                List<String> maximumLatchInTheory = calcLatch(forkedPvmActivity, activityIdList);
-
-                //allExecutionInstanceList 因为延迟落库,然后如果是单线程的情况下,这里allExecutionInstanceList 并不包含等待触发的分支. 所有这么写是有问题的.
-//                for (ExecutionInstance executionInstance : allExecutionInstanceList) {
-//                    for (String activityId : maximumLatchInTheory) {
-//                        if(activityId.equals(executionInstance.getProcessDefinitionActivityId())){
-//                            // 完成整个循环后，countOfTheJoinLatch 就初始化完毕了,根据此时的流程实例所有流转轨迹,就能算出countOfTheJoinLatch
-//                            countOfTheJoinLatch++;
-//                            break;
-//                        }
-//                    }
-//
-//                }
-
-
                 // 后续就是计算 reachedJoinCounter 与 countOfTheJoinLatch 之间的简单比较了
-
 
                 //当前内存中的，新产生的 active ExecutionInstance
                 List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
@@ -221,7 +204,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
     }
 
-    private static ActivityTreeNode calcActivityIdBetweenForkJoinFromProcessDefinition(PvmActivity forkedPvmActivity, PvmActivity joinedPvmActivity) {
+    private static ActivityTreeNode buildActivityTreeFromJoinToFork(PvmActivity forkedPvmActivity, PvmActivity joinedPvmActivity) {
         String joinGatewayActivityId = joinedPvmActivity.getModel().getId();
         ActivityTreeNode root = new ActivityTreeNode(joinGatewayActivityId);
         String forkGatewayActivityId = forkedPvmActivity.getModel().getId();
@@ -282,119 +265,126 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
         return forkedExecutionInstanceOfInclusiveGateway;
     }
 
-    private static List<String> calcLatch(PvmActivity forkPvmActivity, List<String> activityIdList) {
-        //此时maximumLatchInTheory 是本 fork 网关 对应的直接 outcoming 环节 id list
-        //maximumLatchInTheory 返回了 join 对应的 fork 所有激活的 activityId
-
-        List<String> maximumLatchInTheory = new ArrayList<>();
-
-        Map<String, PvmTransition> outcomeTransitions = forkPvmActivity.getOutcomeTransitions();
-
-        for (String processDefinitionActivityId : activityIdList) {
-
-            for (Map.Entry<String, PvmTransition> entry : outcomeTransitions.entrySet()) {
-
-                if(processDefinitionActivityId.equals(entry.getKey())){
-                    maximumLatchInTheory.add(processDefinitionActivityId);
-                    break;
-                }
-            }
-        }
-        return maximumLatchInTheory;
-    }
-
-
-
-    private static List<String> calcLatch1(PvmActivity joinActivity, List<String> activityIdList) {
-        //此时maximumLatchInTheory 是本 fork 网关 对应的直接 outcoming 环节 id list ，还需要去除掉为未触发的分支，也就是 missed transition
-
-        List<String> maximumLatchInTheory = new ArrayList<>();
-
-        Map<String, PvmTransition> outcomeTransitions = joinActivity.getIncomeTransitions();
-
-        for (String processDefinitionActivityId : activityIdList) {
-
-            for (Map.Entry<String, PvmTransition> entry : outcomeTransitions.entrySet()) {
-
-                if(processDefinitionActivityId.equals(entry.getKey())){
-                    maximumLatchInTheory.add(processDefinitionActivityId);
-                    break;
-                }
-            }
-        }
-        return maximumLatchInTheory;
-    }
-
-    private static void collectActivityIdBetweenForkJoinInclusiveGatewayRecursively(Map<String, PvmTransition> incomeTransitionsFromJoinGateway, String id, List<String> activityIdList) {
-        for (Map.Entry<String, PvmTransition> entry : incomeTransitionsFromJoinGateway.entrySet()) {
-            PvmTransition value = entry.getValue();
-            PvmActivity source = value.getSource();
-
-            String activityId = source.getModel().getId();
-            if(!activityId.equals(id)){
-                activityIdList.add(activityId);
-                collectActivityIdBetweenForkJoinInclusiveGatewayRecursively(source.getIncomeTransitions(), id,activityIdList);
-            }else {
-                break;
-            }
-
-        }
-    }
-
-//    private static void calcLachedActivityIds(Map<String, PvmTransition> incomeTransitionsFromJoinGateway) {
-//
-//        Set<Map.Entry<String, PvmTransition>> entries = incomeTransitionsFromJoinGateway.entrySet();
-//
-//        List<String> activityIdList = new ArrayList<>(entries.size());
-//
-//        for (Map.Entry<String, PvmTransition> entry : entries) {
-//            PvmTransition value = entry.getValue();
-//            PvmActivity source = value.getSource();
-//
-//            String activityId = source.getModel().getId();
-//            activityIdList.add(activityId);
-//
-//        }
-//    }
 
     private static int calcCountOfTheJoinLatch(ActivityTreeNode node, List<String> triggerActivityIds) {
-        return calcCountOfTheJoinLatch(node, triggerActivityIds, new HashSet<>());
-    }
-    
-    private static int calcCountOfTheJoinLatch(ActivityTreeNode node, List<String> triggerActivityIds, Set<String> ancestorTriggeredIds) {
+        // 获取所有触发的叶子节点
+        List<ActivityTreeNode> triggeredLeafNodes = getTriggeredLeafNodes(node, triggerActivityIds);
+
+        if (triggeredLeafNodes.isEmpty()) {
+            return 0;
+        }
+        
         int count = 0;
+        // 用于记录已经计数过的祖先节点ID
+        Set<String> allCountedAncestorIds = new HashSet<>();
         
-        // 检查当前节点是否在触发列表中
-        boolean isCurrentNodeTriggered = triggerActivityIds.contains(node.getActivityId());
-        
-        // 如果当前节点被触发，将其添加到祖先触发集合中
-        if (isCurrentNodeTriggered) {
-            ancestorTriggeredIds.add(node.getActivityId());
-        }
-        
-        // 如果是叶子节点且在triggerActivityIds中，并且其祖先节点不在triggerActivityIds中，计数加1
-        if (node.getChildren().isEmpty() && isCurrentNodeTriggered && 
-            !hasTriggeredAncestor(ancestorTriggeredIds, node.getActivityId())) {
-            return 1;
-        }
-        
-        // 为每个子节点创建一个新的祖先集合副本，以避免跨分支的干扰
-        for (ActivityTreeNode child : node.getChildren()) {
-            // 创建一个新的集合，包含当前的祖先触发ID
-            Set<String> childAncestorTriggeredIds = new HashSet<>(ancestorTriggeredIds);
-            count += calcCountOfTheJoinLatch(child, triggerActivityIds, childAncestorTriggeredIds);
+        // 遍历所有触发的叶子节点
+        for (ActivityTreeNode leaf : triggeredLeafNodes) {
+            // 获取该叶子节点的所有祖先节点ID（包括自身）
+            Set<String> ancestorIdSet = new HashSet<>();
+            String leafId = leaf.getActivityId();
+
+            onlyCollectAncestors(   leafId,leaf, ancestorIdSet);
+            
+            // 检查是否与已计数的祖先节点有重叠
+            boolean hasOverlap = false;
+
+            if(CollectionUtil.isNotEmpty(ancestorIdSet)){
+                for (String ancestorId : ancestorIdSet) {
+                    if (allCountedAncestorIds.contains(ancestorId)) {
+                        hasOverlap = true;
+                        break;
+                    }
+                }
+
+                // 如果没有重叠，则计数+1，并将当前叶子节点的祖先节点ID添加到已计数集合中
+                if (!hasOverlap) {
+                    count++;
+                    allCountedAncestorIds.addAll(ancestorIdSet);
+                }
+            }else {
+                // 去除子节点和 root 节点, ancestorIdSet 为空,那么这种情况下是简单场景
+                count++;
+
+            }
+
         }
         
         return count;
     }
     
-    // 检查除了当前节点外，是否有触发的祖先节点
-    private static boolean hasTriggeredAncestor(Set<String> ancestorTriggeredIds, String currentNodeId) {
-        // 如果集合中只有当前节点，则返回false
-        // 如果集合中除了当前节点外还有其他节点，则返回true
-        return ancestorTriggeredIds.size() > 1 || 
-              (ancestorTriggeredIds.size() == 1 && !ancestorTriggeredIds.contains(currentNodeId));
+    private static void onlyCollectAncestors(String leafId, ActivityTreeNode node, Set<String> ancestorIds) {
+
+        if(node.getActivityId().equals(leafId)){
+            //do nothing
+        }else{
+            if(node.getParent() == null){
+                // 是 root 节点,那么则不放进去. 防止简单场景下 两个分支的父亲节点都是 root 节点
+            }else {
+                ancestorIds.add(node.getActivityId());
+            }
+        }
+
+        // 递归添加父节点ID
+        ActivityTreeNode parent = node.getParent();
+        if (parent != null) {
+            onlyCollectAncestors(leafId,parent, ancestorIds);
+        }
     }
+
+    private static List<ActivityTreeNode> getTriggeredLeafNodes(ActivityTreeNode node, List<String> triggerActivityIds) {
+        // 获取所有叶子节点
+        List<ActivityTreeNode> allLeafNodes = new ArrayList<>();
+
+        collectLeafNodes(node, allLeafNodes);
+
+        // 过滤出触发的叶子节点
+        List<ActivityTreeNode> triggeredLeafNodes = allLeafNodes.stream()
+            .filter(leaf -> triggerActivityIds.contains(leaf.getActivityId()))
+            .collect(Collectors.toList());
+        return triggeredLeafNodes;
+    }
+
+    // 收集所有叶子节点
+    private static void collectLeafNodes(ActivityTreeNode node, List<ActivityTreeNode> leafNodes) {
+        if (node.getChildren().isEmpty()) {
+            leafNodes.add(node);
+            return;
+        }
+        
+        for (ActivityTreeNode child : node.getChildren()) {
+            collectLeafNodes(child, leafNodes);
+        }
+    }
+//
+//    // 收集从根节点到指定节点路径上的所有节点ID
+//    private static boolean collectAncestorIds(ActivityTreeNode current, String targetId,
+//                                           Set<String> ancestorIds, Set<String> visited) {
+//        // 防止循环
+//        if (visited.contains(current.getActivityId())) {
+//            return false;
+//        }
+//
+//        visited.add(current.getActivityId());
+//
+//        // 如果找到目标节点
+//        if (current.getActivityId().equals(targetId)) {
+//            ancestorIds.add(current.getActivityId());
+//            return true;
+//        }
+//
+//        // 递归查找子节点
+//        for (ActivityTreeNode child : current.getChildren()) {
+//            if (collectAncestorIds(child, targetId, ancestorIds, visited)) {
+//                // 如果在子树中找到目标节点，则当前节点也是祖先
+//                ancestorIds.add(current.getActivityId());
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
+//
 
 
     @Override
@@ -444,6 +434,133 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
         variableInstanceStorage.insert(variablePersister,variableInstance, processEngineConfiguration);
 
     }
+
+
+
+//    private static List<String> calcLatch(PvmActivity forkPvmActivity, List<String> activityIdList) {
+//        //此时maximumLatchInTheory 是本 fork 网关 对应的直接 outcoming 环节 id list
+//        //maximumLatchInTheory 返回了 join 对应的 fork 所有激活的 activityId
+//
+//        List<String> maximumLatchInTheory = new ArrayList<>();
+//
+//        Map<String, PvmTransition> outcomeTransitions = forkPvmActivity.getOutcomeTransitions();
+//
+//        for (String processDefinitionActivityId : activityIdList) {
+//
+//            for (Map.Entry<String, PvmTransition> entry : outcomeTransitions.entrySet()) {
+//
+//                if(processDefinitionActivityId.equals(entry.getKey())){
+//                    maximumLatchInTheory.add(processDefinitionActivityId);
+//                    break;
+//                }
+//            }
+//        }
+//        return maximumLatchInTheory;
+//    }
+//
+
+//
+//    private static List<String> calcLatch1(PvmActivity joinActivity, List<String> activityIdList) {
+//        //此时maximumLatchInTheory 是本 fork 网关 对应的直接 outcoming 环节 id list ，还需要去除掉为未触发的分支，也就是 missed transition
+//
+//        List<String> maximumLatchInTheory = new ArrayList<>();
+//
+//        Map<String, PvmTransition> outcomeTransitions = joinActivity.getIncomeTransitions();
+//
+//        for (String processDefinitionActivityId : activityIdList) {
+//
+//            for (Map.Entry<String, PvmTransition> entry : outcomeTransitions.entrySet()) {
+//
+//                if(processDefinitionActivityId.equals(entry.getKey())){
+//                    maximumLatchInTheory.add(processDefinitionActivityId);
+//                    break;
+//                }
+//            }
+//        }
+//        return maximumLatchInTheory;
+//    }
+//    private static List<String> calcLatch1(PvmActivity joinActivity, List<String> activityIdList) {
+//        //此时maximumLatchInTheory 是本 fork 网关 对应的直接 outcoming 环节 id list ，还需要去除掉为未触发的分支，也就是 missed transition
+//
+//        List<String> maximumLatchInTheory = new ArrayList<>();
+//
+//        Map<String, PvmTransition> outcomeTransitions = joinActivity.getIncomeTransitions();
+//
+//        for (String processDefinitionActivityId : activityIdList) {
+//
+//            for (Map.Entry<String, PvmTransition> entry : outcomeTransitions.entrySet()) {
+//
+//                if(processDefinitionActivityId.equals(entry.getKey())){
+//                    maximumLatchInTheory.add(processDefinitionActivityId);
+//                    break;
+//                }
+//            }
+//        }
+//        return maximumLatchInTheory;
+//    }
+
+//    private static void collectActivityIdBetweenForkJoinInclusiveGatewayRecursively(Map<String, PvmTransition> incomeTransitionsFromJoinGateway, String id, List<String> activityIdList) {
+//        for (Map.Entry<String, PvmTransition> entry : incomeTransitionsFromJoinGateway.entrySet()) {
+//            PvmTransition value = entry.getValue();
+//            PvmActivity source = value.getSource();
+//
+//            String activityId = source.getModel().getId();
+//            if(!activityId.equals(id)){
+//                activityIdList.add(activityId);
+//                collectActivityIdBetweenForkJoinInclusiveGatewayRecursively(source.getIncomeTransitions(), id,activityIdList);
+//            }else {
+//                break;
+//            }
+//
+//        }
+//    } private static void collectActivityIdBetweenForkJoinInclusiveGatewayRecursively(Map<String, PvmTransition> incomeTransitionsFromJoinGateway, String id, List<String> activityIdList) {
+//        for (Map.Entry<String, PvmTransition> entry : incomeTransitionsFromJoinGateway.entrySet()) {
+//            PvmTransition value = entry.getValue();
+//            PvmActivity source = value.getSource();
+//
+//            String activityId = source.getModel().getId();
+//            if(!activityId.equals(id)){
+//                activityIdList.add(activityId);
+//                collectActivityIdBetweenForkJoinInclusiveGatewayRecursively(source.getIncomeTransitions(), id,activityIdList);
+//            }else {
+//                break;
+//            }
+//
+//        }
+//    }
+
+//    private static void calcLachedActivityIds(Map<String, PvmTransition> incomeTransitionsFromJoinGateway) {
+//
+//        Set<Map.Entry<String, PvmTransition>> entries = incomeTransitionsFromJoinGateway.entrySet();
+//
+//        List<String> activityIdList = new ArrayList<>(entries.size());
+//
+//        for (Map.Entry<String, PvmTransition> entry : entries) {
+//            PvmTransition value = entry.getValue();
+//            PvmActivity source = value.getSource();
+//
+//            String activityId = source.getModel().getId();
+//            activityIdList.add(activityId);
+//
+//        }
+//    }
+
+
+
+//                List<String> maximumLatchInTheory = calcLatch(forkedPvmActivity, activityIdList);
+
+    //allExecutionInstanceList 因为延迟落库,然后如果是单线程的情况下,这里allExecutionInstanceList 并不包含等待触发的分支. 所有这么写是有问题的.
+//                for (ExecutionInstance executionInstance : allExecutionInstanceList) {
+//                    for (String activityId : maximumLatchInTheory) {
+//                        if(activityId.equals(executionInstance.getProcessDefinitionActivityId())){
+//                            // 完成整个循环后，countOfTheJoinLatch 就初始化完毕了,根据此时的流程实例所有流转轨迹,就能算出countOfTheJoinLatch
+//                            countOfTheJoinLatch++;
+//                            break;
+//                        }
+//                    }
+//
+//                }
+
 
 
 }
