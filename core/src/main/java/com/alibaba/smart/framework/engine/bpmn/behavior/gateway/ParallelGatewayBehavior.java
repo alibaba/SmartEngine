@@ -104,66 +104,16 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 Collection<PvmTransition> inComingPvmTransitions = incomeTransitions.values();
 
                 //当前内存中的，新产生的 active ExecutionInstance
-                List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
 
                 //当前持久化介质中中，已产生的 active ExecutionInstance。
-                List<ExecutionInstance> executionInstanceListFromDB =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(), super.processEngineConfiguration);
-
-                LOGGER.debug("ParallelGatewayBehavior Joined, the  value of  executionInstanceListFromMemory, executionInstanceListFromDB   is {} , {} ",executionInstanceListFromMemory,executionInstanceListFromDB);
-
-
-
-                //Merge 数据库中和内存中的EI。如果是 custom模式，则可能会存在重复记录(因为custom也是从内存中查询)，所以这里需要去重。 如果是 DataBase 模式，则不会有重复的EI.
-
-                List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
-
-
-                for (ExecutionInstance instance : executionInstanceListFromDB) {
-                    if (executionInstanceListFromMemory.contains(instance)){
-                        //ignore
-                    }else {
-                        mergedExecutionInstanceList.add(instance);
-                    }
-                }
-
-
-                mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
-
-                int reachedJoinCounter = 0;
-                List<ExecutionInstance> chosenExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
-
-                if(null != mergedExecutionInstanceList){
-
-                    for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
-
-                        if (executionInstance.getProcessDefinitionActivityId().equals(parallelGateway.getId())) {
-                            reachedJoinCounter++;
-                            chosenExecutionInstanceList.add(executionInstance);
-                        }
-                    }
-                }
+                List<ExecutionInstance> activeExecutionList =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(), super.processEngineConfiguration);
 
 
                 int countOfTheJoinLatch = inComingPvmTransitions.size();
 
-                LOGGER.debug("chosenExecutionInstanceList , reachedJoinCounter,countOfTheJoinLatch  is {} , {} , {} ",chosenExecutionInstanceList,reachedJoinCounter,countOfTheJoinLatch);
 
-                if(reachedJoinCounter == countOfTheJoinLatch){
-                    //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
-
-                    if(null != chosenExecutionInstanceList){
-                        for (ExecutionInstance executionInstance : chosenExecutionInstanceList) {
-                            MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
-                                    processEngineConfiguration);
-                        }
-                    }
-
-                    return false;
-
-                }else{
-                    //未完成的话,流程继续暂停
-                    return true;
-                }
+                //Merge 数据库中和内存中的EI。如果是 custom模式，则可能会存在重复记录(因为custom也是从内存中查询)，所以这里需要去重。 如果是 DataBase 模式，则不会有重复的EI.
+                return super.doa(context, parallelGateway, processInstance, activeExecutionList, countOfTheJoinLatch, null);
             }
 
         }else{
@@ -173,6 +123,58 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         return true;
     }
 
+    private boolean common(ParallelGateway parallelGateway, ProcessInstance processInstance, List<ExecutionInstance> executionInstanceListFromDB, int countOfTheJoinLatch) {
+        List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
+
+        List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
+
+        LOGGER.debug("ParallelGatewayBehavior Joined, the  value of  executionInstanceListFromMemory, executionInstanceListFromDB   is {} , {} ",executionInstanceListFromMemory,executionInstanceListFromDB);
+
+        for (ExecutionInstance instance : executionInstanceListFromDB) {
+            if (executionInstanceListFromMemory.contains(instance)){
+                //ignore
+            }else {
+                mergedExecutionInstanceList.add(instance);
+            }
+        }
+
+
+        mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
+
+        int reachedJoinCounter = 0;
+        List<ExecutionInstance> chosenExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
+
+        if(null != mergedExecutionInstanceList){
+
+            for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
+
+                if (executionInstance.getProcessDefinitionActivityId().equals(parallelGateway.getId())) {
+                    reachedJoinCounter++;
+                    chosenExecutionInstanceList.add(executionInstance);
+                }
+            }
+        }
+
+
+        LOGGER.debug("chosenExecutionInstanceList , reachedJoinCounter,countOfTheJoinLatch  is {} , {} , {} ",chosenExecutionInstanceList,reachedJoinCounter, countOfTheJoinLatch);
+
+        if(reachedJoinCounter == countOfTheJoinLatch){
+            //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
+
+            if(null != chosenExecutionInstanceList){
+                for (ExecutionInstance executionInstance : chosenExecutionInstanceList) {
+                    MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
+                            processEngineConfiguration);
+                }
+            }
+
+            return false;
+
+        }else{
+            //未完成的话,流程继续暂停
+            return true;
+        }
+    }
 
 
 }

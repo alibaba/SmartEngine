@@ -4,12 +4,10 @@ import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.InclusiveGateway;
 import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.ExclusiveGatewayBehaviorHelper;
 import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.CommonGatewayHelper;
+import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.tree.ActivityTreeNode;
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
-import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
-import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
-import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
@@ -127,70 +125,11 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 // 后续就是计算 reachedJoinCounter 与 countOfTheJoinLatch 之间的简单比较了
 
                 //当前内存中的，新产生的 active ExecutionInstance
-                List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
 
                 List<ExecutionInstance> activeExecutionList =   allExecutionInstanceList.stream()
                         .filter(ExecutionInstance::isActive).collect(Collectors.toList());
 
-
-                List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>();
-
-                mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
-
-                for (ExecutionInstance executionInstance : activeExecutionList) {
-                    if(mergedExecutionInstanceList.contains(executionInstance)){
-                        //do nothing
-                    }else {
-                        mergedExecutionInstanceList.add(executionInstance);
-                    }
-                }
-
-                int reachedJoinCounter = 0;
-                List<ExecutionInstance> chosenExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
-
-                if(null != mergedExecutionInstanceList){
-
-                    for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
-
-                        if (executionInstance.getProcessDefinitionActivityId().equals(inclusiveGateway.getId())) {
-                            reachedJoinCounter++;
-                            chosenExecutionInstanceList.add(executionInstance);
-                        }
-                    }
-                }
-
-
-
-                LOGGER.debug("chosenExecutionInstanceList , reachedJoinCounter,countOfTheJoinLatch  is {} , {} , {} ",chosenExecutionInstanceList,reachedJoinCounter,countOfTheJoinLatch);
-                if(reachedJoinCounter > countOfTheJoinLatch){
-                    throw new EngineException("Unexpected behavior,reachedJoinCounter: " + reachedJoinCounter +",countOfTheJoinLatch: "+countOfTheJoinLatch);
-                }
-                else if(reachedJoinCounter == countOfTheJoinLatch){
-                    //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
-
-                    if(null != chosenExecutionInstanceList){
-                        for (ExecutionInstance executionInstance : chosenExecutionInstanceList) {
-                            MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
-                                    processEngineConfiguration);
-                        }
-                    }
-
-                    // 虽然 fork-join 对已经结束,但是 unbalanced 这种场景还需要 blockId 去计算
-                    // context.setBlockId(null);
-
-                    if(null != forkedExecutionInstanceOfInclusiveGateway.getBlockId()){
-                    // 说明 forkedExecutionInstanceOfInclusiveGateway 是个嵌套网关,需要手动更新 context 的 blockId,然后方便后续join 网关识别出对应的 fork
-                     context.setBlockId(forkedExecutionInstanceOfInclusiveGateway.getBlockId());
-
-
-                }
-
-                    return false;
-
-                }else{
-                    //未完成的话,流程继续暂停
-                    return true;
-                }
+                return super.doa(context, inclusiveGateway, processInstance, activeExecutionList, countOfTheJoinLatch, forkedExecutionInstanceOfInclusiveGateway);
             }
 
         }else{
@@ -198,6 +137,15 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
         }
 
     }
+
+    protected    void hookCleanUp(ExecutionContext context, ExecutionInstance forkedExecutionInstanceOfInclusiveGateway) {
+        if(null != forkedExecutionInstanceOfInclusiveGateway.getBlockId()){
+            // 说明 forkedExecutionInstanceOfInclusiveGateway 是个嵌套网关,需要手动更新 context 的 blockId,然后方便后续join 网关识别出对应的 fork
+            context.setBlockId(forkedExecutionInstanceOfInclusiveGateway.getBlockId());
+
+        }
+    }
+
 
     private List<String> calcTriggerActivityIds(ExecutionContext context,VariableInstanceStorage variableInstanceStorage, ExecutionInstance forkedExecutionInstanceOfInclusiveGateway, VariablePersister variablePersister) {
         // 需要解释下,在通常情况下, Java 子线程是无法直接获得主线程的未提交的数据.

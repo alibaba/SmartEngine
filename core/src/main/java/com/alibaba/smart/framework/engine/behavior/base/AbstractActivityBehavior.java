@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
+import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.AbstractGateway;
 import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.ExclusiveGatewayBehaviorHelper;
+import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -150,6 +152,78 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     }
 
 
+    /**
+     * dead or alive ,maybe change later...
+     * @param context
+     * @param gateway
+     * @param processInstance
+     * @param activeExecutionList
+     * @param countOfTheJoinLatch
+     * @param forkedExecutionInstanceOfInclusiveGateway
+     * @return
+     */
+    protected boolean doa(ExecutionContext context, AbstractGateway gateway, ProcessInstance processInstance, List<ExecutionInstance> activeExecutionList, int countOfTheJoinLatch, ExecutionInstance forkedExecutionInstanceOfInclusiveGateway) {
+        List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
+
+        List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>();
+
+        mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
+
+        for (ExecutionInstance executionInstance : activeExecutionList) {
+            if(mergedExecutionInstanceList.contains(executionInstance)){
+                //do nothing
+            }else {
+                mergedExecutionInstanceList.add(executionInstance);
+            }
+        }
+
+        int reachedJoinCounter = 0;
+        List<ExecutionInstance> chosenExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
+
+        if(null != mergedExecutionInstanceList){
+
+            for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
+
+                if (executionInstance.getProcessDefinitionActivityId().equals(gateway.getId())) {
+                    reachedJoinCounter++;
+                    chosenExecutionInstanceList.add(executionInstance);
+                }
+            }
+        }
+
+
+        LOGGER.debug("chosenExecutionInstanceList , reachedJoinCounter,countOfTheJoinLatch  is {} , {} , {} ",chosenExecutionInstanceList,reachedJoinCounter, countOfTheJoinLatch);
+        if(reachedJoinCounter > countOfTheJoinLatch){
+            throw new EngineException("Unexpected behavior,reachedJoinCounter: " + reachedJoinCounter +",countOfTheJoinLatch: "+ countOfTheJoinLatch);
+        }
+        else if(reachedJoinCounter == countOfTheJoinLatch){
+            //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
+
+            if(null != chosenExecutionInstanceList){
+                for (ExecutionInstance executionInstance : chosenExecutionInstanceList) {
+                    MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
+                            processEngineConfiguration);
+                }
+            }
+
+            // 虽然 fork-join 对已经结束,但是 unbalanced 这种场景还需要 blockId 去计算
+            // context.setBlockId(null);
+
+            hookCleanUp(context, forkedExecutionInstanceOfInclusiveGateway);
+
+            return false;
+
+        }else{
+            //未完成的话,流程继续暂停
+            return true;
+        }
+    }
+
+    protected    void hookCleanUp(ExecutionContext context, ExecutionInstance forkedExecutionInstanceOfInclusiveGateway) {
+
+    }
+
+
 
     @Override
     public void leave(ExecutionContext context, PvmActivity pvmActivity) {
@@ -176,6 +250,9 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         }
 
     }
+
+
+
 
 
 
