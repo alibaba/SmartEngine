@@ -108,15 +108,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
                 ExecutionInstance joinedExecutionInstanceOfInclusiveGateway = context.getExecutionInstance();
                 ExecutionInstance forkedExecutionInstanceOfInclusiveGateway = findForkedExecutionInstance(context, joinedExecutionInstanceOfInclusiveGateway);
 
-//                if(null != forkedExecutionInstanceOfInclusiveGateway.getBlockId()){
-//                    // 说明 forkedExecutionInstanceOfInclusiveGateway 是个嵌套网关,需要手动更新 joinEI 的 blockId,然后方便后续join 网关识别出 mainFork
-//                    // 虽然没找到更优雅的方式,但是应该解决了问题.
-//                    joinedExecutionInstanceOfInclusiveGateway.setBlockId(forkedExecutionInstanceOfInclusiveGateway.getBlockId());
-//                    executionInstanceStorage.update(joinedExecutionInstanceOfInclusiveGateway,processEngineConfiguration);
-//
-//                    // 再次查找 forkedExecutionInstanceOfInclusiveGateway
-//                    forkedExecutionInstanceOfInclusiveGateway = findForkedExecutionInstance(context, joinedExecutionInstanceOfInclusiveGateway);
-//                }
+
 
                 List<ExecutionInstance> allExecutionInstanceList = calcAllExecutionInstances(context, processInstance);
 
@@ -201,6 +193,17 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
                     //clear blockId ,因为这个块的 fork-join 已经结束 todo
 //                    context.setBlockId(null);
+
+                    if(null != forkedExecutionInstanceOfInclusiveGateway.getBlockId()){
+                    // 说明 forkedExecutionInstanceOfInclusiveGateway 是个嵌套网关,需要手动更新 context 的 blockId,然后方便后续join 网关识别出 mainFork
+                     context.setBlockId(forkedExecutionInstanceOfInclusiveGateway.getBlockId());
+
+//                    joinedExecutionInstanceOfInclusiveGateway.setBlockId(forkedExecutionInstanceOfInclusiveGateway.getBlockId());
+//                    executionInstanceStorage.update(joinedExecutionInstanceOfInclusiveGateway,processEngineConfiguration);
+//
+//                    // 再次查找 forkedExecutionInstanceOfInclusiveGateway
+//                    forkedExecutionInstanceOfInclusiveGateway = findForkedExecutionInstance(context, joinedExecutionInstanceOfInclusiveGateway);
+                }
 
                     return false;
 
