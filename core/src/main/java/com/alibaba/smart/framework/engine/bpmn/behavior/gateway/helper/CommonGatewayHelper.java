@@ -1,9 +1,10 @@
 package com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper;
 
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.AbstractGateway;
-import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ParallelGateway;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
+import com.alibaba.smart.framework.engine.configuration.ListenerExecutor;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.PvmActivityTask;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
@@ -16,6 +17,7 @@ import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
+import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -28,6 +30,7 @@ import static com.alibaba.smart.framework.engine.util.ParallelGatewayUtil.useSpe
 
 public abstract class CommonGatewayHelper {
 
+    private static final String DEFAULT = "default";
 
     // 判断是否为 Fork 网关
     // 如果是 fork,则 outcome >=2, income=1; 类似的,如果是 join,则 outcome = 1,income>=2
@@ -163,7 +166,7 @@ public abstract class CommonGatewayHelper {
     }
 
 
-    public static void leave(ExecutionContext context, PvmActivity pvmActivity, Collection<PvmTransition> values ) {
+    public static void leaveAndConcurrentlyForkIfNeeded(ExecutionContext context, PvmActivity pvmActivity, Collection<PvmTransition> values ) {
 
 
         int outComeTransitionSize = values.size();
@@ -272,5 +275,77 @@ public abstract class CommonGatewayHelper {
         return  subThreadExecutionContextList;
     }
 
+
+    public static void chooseOnlyOne(PvmActivity pvmActivity , ExecutionContext context) {
+
+
+        List<PvmTransition> matchedTransitions = calcMatchedTransitions(pvmActivity, context);
+
+
+        if(1 != matchedTransitions.size()){
+            throw new EngineException("Multiple Transitions matched: "+ matchedTransitions+" ,check activity id :"+pvmActivity.getModel().getId());
+        }
+
+        //此时,只可能命中唯一的一条路径,进入对应逻辑
+        for (PvmTransition matchedPvmTransition : matchedTransitions) {
+            PvmActivity target = matchedPvmTransition.getTarget();
+
+
+            //触发take事件
+            ListenerExecutor listenerExecutor = context.getProcessEngineConfiguration().getListenerExecutor();
+            listenerExecutor.execute(EventConstant.take,matchedPvmTransition.getModel(),context);
+
+            target.enter(context);
+        }
+    }
+
+    public static List<PvmTransition> calcMatchedTransitions(PvmActivity pvmActivity, ExecutionContext context) {
+        String processDefinitionActivityId = pvmActivity.getModel().getId();
+        Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
+
+
+        List<PvmTransition> matchedTransitions = new ArrayList<PvmTransition>(outcomeTransitions.size());
+
+        for (Map.Entry<String, PvmTransition> transitionEntry : outcomeTransitions.entrySet()) {
+
+            PvmTransition pendingTransition = transitionEntry.getValue();
+            boolean matched = pendingTransition.match(context);
+
+            if (matched) {
+                matchedTransitions.add(pendingTransition);
+            }
+
+        }
+
+        //如果都没匹配到,就使用DefaultSequenceFlow
+        if(0 == matchedTransitions.size()){
+
+            Map<String, String> properties = pvmActivity.getModel().getProperties();
+            if(MapUtil.isNotEmpty(properties)){
+                String defaultSeqFLowId = properties.get(DEFAULT);
+                if(StringUtil.isNotEmpty(defaultSeqFLowId)){
+                    PvmTransition pvmTransition = outcomeTransitions.get(defaultSeqFLowId);
+                    if (null != pvmTransition){
+                        matchedTransitions.add(pvmTransition);
+                    }else {
+                        throw new EngineException("default sequence flow is assigned, but not found the pvmTransition ,check sequenceFlow id: "+ defaultSeqFLowId);
+                    }
+                }else{
+                    // do nothing
+                }
+
+            }else{
+                throw new EngineException("properties can not be empty,  check activity id :"+ processDefinitionActivityId);
+
+            }
+
+
+        }
+
+        if(0 == matchedTransitions.size()){
+            throw new EngineException("No Transitions matched,please check input request and condition expression,activity id :"+ processDefinitionActivityId);
+        }
+        return matchedTransitions;
+    }
 
 }

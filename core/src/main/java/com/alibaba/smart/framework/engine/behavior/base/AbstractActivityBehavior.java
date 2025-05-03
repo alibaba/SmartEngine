@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.AbstractGateway;
-import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.ExclusiveGatewayBehaviorHelper;
+import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.CommonGatewayHelper;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
@@ -244,7 +244,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
                 }
             }else {
 
-                 ExclusiveGatewayBehaviorHelper.chooseOnlyOne(pvmActivity,context);
+                 CommonGatewayHelper.chooseOnlyOne(pvmActivity,context);
 
             }
         }

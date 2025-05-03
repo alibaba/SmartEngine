@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.ExclusiveGateway;
-import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.ExclusiveGatewayBehaviorHelper;
+import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.CommonGatewayHelper;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -32,7 +32,7 @@ public class ExclusiveGatewayBehavior extends AbstractActivityBehavior<Exclusive
 
             if( outcomeTransitions.size() >=2){
 
-                ExclusiveGatewayBehaviorHelper.chooseOnlyOne(  pvmActivity ,context);
+                CommonGatewayHelper.chooseOnlyOne(  pvmActivity ,context);
 
             }else {
                 throw new EngineException("the outcomeTransitions.size() should >= 2");

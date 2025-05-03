@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.bpmn.behavior.gateway;
 
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.InclusiveGateway;
-import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.ExclusiveGatewayBehaviorHelper;
 import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.CommonGatewayHelper;
 import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.tree.ActivityTreeNode;
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
@@ -88,54 +87,53 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
         } else if (CommonGatewayHelper.isJoinGateway(pvmActivity)) {
 
-            ProcessInstance processInstance = context.getProcessInstance();
-
-            //这个同步很关键,避免多线程同时进入临界区
-            synchronized (processInstance){
-
-                super.enter(context, pvmActivity);
-
-                // 然后根据 blockId, 依次计算 fork gateway 的直接 outcoming transitions (需要从 join 环节反推，因为存在 unbalanced gateway) ,然后再减去未被激活的 transitions ，也就是 missed transitions
-
-                // 不变式：countOfTheJoinLatch =  inComingPvmTransitions.size() -  missedPvmTransitions (因未满足条件进而未被触发的分支)
-
-                // 如果reachedJoinCounter < countOfTheJoinLatch ，则继续等待
-                // 如果reachedJoinCounter == countOfTheJoinLatch ，则触发 join 动作完成，驱动流程继续流转；
-                // 如果reachedJoinCounter > countOfTheJoinLatch， 则报错
-
-
-                ExecutionInstance joinedExecutionInstanceOfInclusiveGateway = context.getExecutionInstance();
-
-                // 算法说明： 增加 blockId 字段，在 fork 环节完成设置；然后为本 fork 网关后续的每个 ei 设置 blockId （相同的blockId 标识他们在一个 fork-join 内 ） .这里的 blockId 为 fork gateway 的 instanceId ；
-                ExecutionInstance forkedExecutionInstanceOfInclusiveGateway = findForkedExecutionInstance(context, joinedExecutionInstanceOfInclusiveGateway);
-                PvmActivity forkedPvmActivity = getForkPvmActivity(processInstance, forkedExecutionInstanceOfInclusiveGateway);
-
-                List<ExecutionInstance> allExecutionInstanceList = calcAllExecutionInstances(context, processInstance);
-
-
-                // activityIdList 是流程定义中，join配对的fork轨迹内部的所有的 activityId （由于存在 unbalanced gateway，会有 1个 fork，2个 join 这种情况  ）（与具体的流程实例无关）
-                ActivityTreeNode activityTreeNode = buildActivityTreeFromJoinToFork(forkedPvmActivity,    pvmActivity);
-
-                List<String> triggerActivityIds = calcTriggerActivityIds(  context,variableInstanceStorage, forkedExecutionInstanceOfInclusiveGateway, variablePersister);
-
-
-                int     countOfTheJoinLatch = calcCountOfTheJoinLatch(activityTreeNode, triggerActivityIds);
-
-
-                // 后续就是计算 reachedJoinCounter 与 countOfTheJoinLatch 之间的简单比较了
-
-                //当前内存中的，新产生的 active ExecutionInstance
-
-                List<ExecutionInstance> activeExecutionList =   allExecutionInstanceList.stream()
-                        .filter(ExecutionInstance::isActive).collect(Collectors.toList());
-
-                return super.doa(context, inclusiveGateway, processInstance, activeExecutionList, countOfTheJoinLatch, forkedExecutionInstanceOfInclusiveGateway);
-            }
+            return handleJoinGatewayEnter(context, pvmActivity, inclusiveGateway, variablePersister);
 
         }else{
             throw new EngineException("Unexpected behavior: "+pvmActivity);
         }
 
+    }
+
+    private boolean handleJoinGatewayEnter(ExecutionContext context, PvmActivity joinedPvmActivity, InclusiveGateway inclusiveGateway, VariablePersister variablePersister) {
+        ProcessInstance processInstance = context.getProcessInstance();
+
+        //这个同步很关键,避免多线程同时进入临界区
+        synchronized (processInstance){
+
+            super.enter(context, joinedPvmActivity);
+
+            // 然后根据 blockId, 依次计算 fork gateway 的直接 outcoming transitions (需要从 join 环节反推，因为存在 unbalanced gateway) ,然后再减去未被激活的 transitions ，也就是 missed transitions
+
+            // 不变式：countOfTheJoinLatch =  inComingPvmTransitions.size() -  missedPvmTransitions (因未满足条件进而未被触发的分支)
+
+            // 如果reachedJoinCounter < countOfTheJoinLatch ，则继续等待
+            // 如果reachedJoinCounter == countOfTheJoinLatch ，则触发 join 动作完成，驱动流程继续流转；
+            // 如果reachedJoinCounter > countOfTheJoinLatch， 则报错
+
+
+            ExecutionInstance joinedExecutionInstanceOfInclusiveGateway = context.getExecutionInstance();
+
+            // 算法说明： 增加 blockId 字段，在 fork 环节完成设置；然后为本 fork 网关后续的每个 ei 设置 blockId （相同的blockId 标识他们在一个 fork-join 内 ） .这里的 blockId 为 fork gateway 的 instanceId ；
+            ExecutionInstance forkedExecutionInstanceOfInclusiveGateway = findForkedExecutionInstance(context, joinedExecutionInstanceOfInclusiveGateway);
+            PvmActivity forkedPvmActivity = getForkPvmActivity(processInstance, forkedExecutionInstanceOfInclusiveGateway);
+
+            List<ExecutionInstance> allExecutionInstanceList = calcAllExecutionInstances(context, processInstance);
+
+            // activityIdList 是流程定义中，join配对的fork轨迹内部的所有的 activityId （由于存在 unbalanced gateway，会有 1个 fork，2个 join 这种情况  ）（与具体的流程实例无关）
+            ActivityTreeNode activityTreeNode = buildActivityTreeFromJoinToFork(forkedPvmActivity, joinedPvmActivity);
+
+            List<String> triggerActivityIds = calcTriggerActivityIds(context,variableInstanceStorage, forkedExecutionInstanceOfInclusiveGateway, variablePersister);
+
+
+            int     countOfTheJoinLatch = calcCountOfTheJoinLatch(activityTreeNode, triggerActivityIds);
+
+            //当前内存中的，新产生的 active ExecutionInstance
+            List<ExecutionInstance> activeExecutionList =   allExecutionInstanceList.stream()
+                    .filter(ExecutionInstance::isActive).collect(Collectors.toList());
+
+            return super.doa(context, inclusiveGateway, processInstance, activeExecutionList, countOfTheJoinLatch, forkedExecutionInstanceOfInclusiveGateway);
+        }
     }
 
     protected    void hookCleanUp(ExecutionContext context, ExecutionInstance forkedExecutionInstanceOfInclusiveGateway) {
@@ -150,12 +148,12 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
     private List<String> calcTriggerActivityIds(ExecutionContext context,VariableInstanceStorage variableInstanceStorage, ExecutionInstance forkedExecutionInstanceOfInclusiveGateway, VariablePersister variablePersister) {
         // 需要解释下,在通常情况下, Java 子线程是无法直接获得主线程的未提交的数据.
         // 所以,在某些情况下,variableInstance 这个数据是拿不到的(因为某些流程实例中间流程是不暂停的,主线程的数据没有及时落库)
-        // 基于上述分析,可以优先从 context 里面去获取. 如果是不暂停流程; 否则此时主线程的数据应该已经落库.
+        // 基于上述分析,假设是不暂停流程,则可以从 context 里面去获取 ;如果为空,则说明是暂停型流程,并且此时主线程的数据应该已经落库. (如果有其他情况再说)
 
         String processDefinitionActivityId = forkedExecutionInstanceOfInclusiveGateway.getProcessDefinitionActivityId();
 
         Map<String, Object> innerExtra = context.getInnerExtra();
-        String key = getKey(processDefinitionActivityId);
+        String key = buildTriggeredActivityIdKey(processDefinitionActivityId);
 
         if(MapUtil.isNotEmpty(innerExtra)){
                 List<String> triggerActivityIds = (List<String>)innerExtra.get(key);
@@ -165,6 +163,10 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
         }
 
+        return findTriggerActivityIdsFromDB(variableInstanceStorage, forkedExecutionInstanceOfInclusiveGateway, variablePersister, key);
+    }
+
+    private List<String> findTriggerActivityIdsFromDB(VariableInstanceStorage variableInstanceStorage, ExecutionInstance forkedExecutionInstanceOfInclusiveGateway, VariablePersister variablePersister, String key) {
         List<VariableInstance> list = variableInstanceStorage.findList(forkedExecutionInstanceOfInclusiveGateway.getProcessInstanceId(), forkedExecutionInstanceOfInclusiveGateway.getInstanceId(), variablePersister, processEngineConfiguration);
         Optional<VariableInstance> first = list.stream().filter(variableInstance -> key.equals(variableInstance.getFieldKey())).findFirst();
 
@@ -176,7 +178,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
         return triggerActivityIds;
     }
 
-    private static String getKey(String processDefinitionActivityId) {
+    private static String buildTriggeredActivityIdKey(String processDefinitionActivityId) {
         return processDefinitionActivityId + ":" + TRIGGER_ACTIVITY_IDS;
     }
 
@@ -340,16 +342,16 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
             fireEvent(context,pvmActivity, EventConstant.ACTIVITY_END);
 
             //fork
-            List<PvmTransition> matchedTransitions = ExclusiveGatewayBehaviorHelper.calcMatchedTransitions(pvmActivity, context);
+            List<PvmTransition> matchedTransitions = CommonGatewayHelper.calcMatchedTransitions(pvmActivity, context);
 
             putTriggerActivityIdsAndKeepForkContext(  pvmActivity,context, matchedTransitions);
 
-            List<String> triggerActivityIds = (List<String>)context.getInnerExtra().get(getKey(pvmActivity.getModel().getId()));
+            List<String> triggerActivityIds = (List<String>)context.getInnerExtra().get(buildTriggeredActivityIdKey(pvmActivity.getModel().getId()));
 
             // 暂停型流程实例,会丢失掉内存中的 context 数据,所以这里仍然需要持久化.
             persistMatchedTransitionsEagerly(  pvmActivity,context,  triggerActivityIds);
 
-            CommonGatewayHelper.leave(context, pvmActivity,matchedTransitions);
+            CommonGatewayHelper.leaveAndConcurrentlyForkIfNeeded(context, pvmActivity,matchedTransitions);
 
         } else if (CommonGatewayHelper.isJoinGateway(pvmActivity)) {
 
@@ -369,10 +371,9 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
         String id = pvmActivity.getModel().getId();
 
-        String key = getKey(id);
+        String key = buildTriggeredActivityIdKey(id);
 
         context.getInnerExtra().put(key,triggerActivityIds);
-
 
     }
 
@@ -387,7 +388,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
         ExecutionInstance executionInstance = context.getExecutionInstance();
         variableInstance.setExecutionInstanceId(executionInstance.getInstanceId());
 
-        variableInstance.setFieldKey(getKey(pvmActivity.getModel().getId()));
+        variableInstance.setFieldKey(buildTriggeredActivityIdKey(pvmActivity.getModel().getId()));
         variableInstance.setFieldType(String.class);
         variableInstance.setFieldValue(variablePersister.serialize(triggerTransitions));
 
