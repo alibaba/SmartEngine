@@ -12,6 +12,8 @@ import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.InclusiveGatewayHelper.TRIGGER_ACTIVITY_IDS;
+
 /**
  * Created by 高海军 帝奇 74394 on 2017 October  07:00.
  */
@@ -59,7 +61,7 @@ public class CustomVariablePersister implements VariablePersister {
 
     @Override
     public Object deserialize(String key, String type, String value) {
-        if(key.contains(InclusiveGatewayBehavior.TRIGGER_ACTIVITY_IDS)){
+        if(key.contains(TRIGGER_ACTIVITY_IDS)){
             return  JSON.parseArray(value,String.class);
         }
         return  JSON.parseObject(value);
