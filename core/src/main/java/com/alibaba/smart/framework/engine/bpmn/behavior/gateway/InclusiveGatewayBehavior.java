@@ -70,9 +70,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
     private boolean innerEnter(ExecutionContext context, PvmActivity pvmActivity, InclusiveGateway inclusiveGateway) {
 
-        AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
         VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
-        VariableInstanceStorage variableInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,VariableInstanceStorage.class);
 
         if (CommonGatewayHelper.isForkGateway(pvmActivity)) {
             //先 fork ,在 leave 阶段，再根据配置决定是否并发创建 pvmActivity
@@ -254,13 +252,13 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
         return root;
     }
 
-    private static void buildActivityTree(Map<String, PvmTransition> transitions, String targetId, ActivityTreeNode parent) {
+    private static void buildActivityTree(Map<String, PvmTransition> transitions, String forkGatewayActivityId, ActivityTreeNode parent) {
         for (Map.Entry<String, PvmTransition> entry : transitions.entrySet()) {
             PvmTransition transition = entry.getValue();
             PvmActivity source = transition.getSource();
             String activityId = source.getModel().getId();
             
-            if (activityId.equals(targetId)) {
+            if (activityId.equals(forkGatewayActivityId)) {
                 // 找到fork节点,停止遍历
                 return;
             }
@@ -268,7 +266,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
             ActivityTreeNode node = new ActivityTreeNode(activityId);
             parent.addChild(node);
             // 继续向上遍历source节点的income transitions
-            buildActivityTree(source.getIncomeTransitions(), targetId, node);
+            buildActivityTree(source.getIncomeTransitions(), forkGatewayActivityId, node);
         }
     }
 
@@ -480,8 +478,6 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
         VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
-
-        VariableInstanceStorage variableInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,VariableInstanceStorage.class);
 
         VariableInstance variableInstance = new DefaultVariableInstance();
         processEngineConfiguration.getIdGenerator().generate(variableInstance);

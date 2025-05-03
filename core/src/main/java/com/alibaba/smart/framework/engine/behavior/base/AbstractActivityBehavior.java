@@ -17,6 +17,7 @@ import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFact
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
@@ -50,6 +51,9 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     protected ProcessEngineConfiguration processEngineConfiguration;
     @Setter
     protected ExecutionInstanceStorage executionInstanceStorage;
+
+    @Setter
+    protected VariableInstanceStorage variableInstanceStorage;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractActivityBehavior.class);
 

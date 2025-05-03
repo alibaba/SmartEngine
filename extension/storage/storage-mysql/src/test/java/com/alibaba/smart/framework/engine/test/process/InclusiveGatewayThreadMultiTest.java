@@ -28,17 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ContextConfiguration("/spring/application-test.xml")
 @Transactional
 @RunWith(SpringRunner.class)
-/**
- *  场景1: 不嵌套（3个分支，都触发）- 验证当所有条件都满足时，所有分支都会被执行
- *  场景2: 不嵌套（3个分支，都不触发）- 验证当所有条件都不满足时，默认分支会被执行
- *  场景3: 不嵌套（3个分支，触发1个）- 验证当部分条件满足时，只有满足条件的分支会被执行
- *  场景4: 不嵌套（3个分支，触发2个）- 验证当部分条件满足时，只有满足条件的分支会被执行
- *  场景5: 包容网关的后续节点分别是（all service）- 验证包容网关后接服务任务的情况
- *  场景6: 包容网关的后续节点分别是（service+receiver）- 验证包容网关后接服务任务和接收任务的情况
- *  场景7: 包容网关的后续节点分别是（service+userTask）- 验证包容网关后接服务任务和用户任务的情况
- *  场景8: 不嵌套，但是unbalanced（1个fork 2个join）- 验证非平衡结构的包容网关
- *  场景9: 并行网关嵌套（包容网关内部有2个小的包容网关）- 验证嵌套结构的包容网关
- */
+
 public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
 
     protected void initProcessConfiguration() {

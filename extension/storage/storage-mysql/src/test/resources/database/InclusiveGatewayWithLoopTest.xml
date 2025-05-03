@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:smart="http://smart-framework/schema"
+             id="Definitions_1"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+    <process id="Process_1" isExecutable="true">
+        <startEvent id="startEvent" name="开始"/>
+        <inclusiveGateway id="inclusiveFork" name="包容网关分支"/>
+        <sequenceFlow id="flow1" sourceRef="startEvent" targetRef="inclusiveFork"/>
+        
+        <!-- 分支1：服务任务 -->
+        <sequenceFlow id="flow2" sourceRef="inclusiveFork" targetRef="service1">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${condition1 == true}]]></conditionExpression>
+        </sequenceFlow>
+        <serviceTask id="service1" name="服务任务1" smart:class="serviceTaskDelegation"/>
+        <sequenceFlow id="flow3" sourceRef="service1" targetRef="inclusiveJoin"/>
+        
+        <!-- 分支2：接收任务和互斥网关形成环路 -->
+        <sequenceFlow id="flow4" sourceRef="inclusiveFork" targetRef="receiveTask">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${condition2 == true}]]></conditionExpression>
+        </sequenceFlow>
+        <receiveTask id="receiveTask" name="接收任务"/>
+        <sequenceFlow id="flow5" sourceRef="receiveTask" targetRef="exclusiveGateway"/>
+        
+        <!-- 互斥网关：形成环路 -->
+        <exclusiveGateway id="exclusiveGateway" name="互斥网关"/>
+        
+        <!-- 环路路径：回到接收任务 -->
+        <sequenceFlow id="loopBack" sourceRef="exclusiveGateway" targetRef="receiveTask">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${loopCount < maxLoops}]]></conditionExpression>
+        </sequenceFlow>
+        
+        <!-- 继续前进路径：到包容网关合并 -->
+        <sequenceFlow id="continueFlow" sourceRef="exclusiveGateway" targetRef="inclusiveJoin">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${loopCount >= maxLoops}]]></conditionExpression>
+        </sequenceFlow>
+        
+        <!-- 合并 -->
+        <inclusiveGateway id="inclusiveJoin" name="包容网关合并"/>
+        <sequenceFlow id="flow6" sourceRef="inclusiveJoin" targetRef="endService"/>
+        
+        <serviceTask id="endService" name="结束服务" smart:class="serviceTaskDelegation"/>
+        <sequenceFlow id="flow7" sourceRef="endService" targetRef="endEvent"/>
+        
+        <endEvent id="endEvent" name="结束"/>
+    </process>
+</definitions>

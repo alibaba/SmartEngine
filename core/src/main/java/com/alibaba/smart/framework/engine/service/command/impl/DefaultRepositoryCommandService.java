@@ -29,6 +29,7 @@ import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFact
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
@@ -287,11 +288,10 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
                 activityBehavior.setActivityInstanceFactory(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ActivityInstanceFactory.class));
                 activityBehavior.setTaskInstanceFactory(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,TaskInstanceFactory.class));
 
-
                 activityBehavior.setProcessEngineConfiguration( processEngineConfiguration);
 
                 activityBehavior.setExecutionInstanceStorage(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class));
-
+                activityBehavior.setVariableInstanceStorage(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, VariableInstanceStorage.class));
 
 
 
