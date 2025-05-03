@@ -59,7 +59,7 @@ public class CustomVariablePersister implements VariablePersister {
 
     @Override
     public Object deserialize(String key, String type, String value) {
-        if(InclusiveGatewayBehavior.INCLUSIVE_GATE_WAY.equals(key)){
+        if(key.contains(InclusiveGatewayBehavior.TRIGGER_ACTIVITY_IDS)){
             return  JSON.parseArray(value,String.class);
         }
         return  JSON.parseObject(value);

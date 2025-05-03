@@ -36,6 +36,8 @@ public class DefaultExecutionContext implements ExecutionContext {
 
     private Map<String, Object> response;
 
+    private  Map<String, Object> innerExtra;
+
     private boolean needPause;
 
     @Deprecated
@@ -43,5 +45,19 @@ public class DefaultExecutionContext implements ExecutionContext {
 
     private String blockId; //目前仅用于包容网关 @2024.04.25
 
+    @Override
+    public String toString() {
 
+        String processInstanceId = null;
+        if(null != processInstance){
+            processInstanceId=  processInstance.getInstanceId();
+        }
+        String executionId = null;
+        String activityId = null;
+        if(null != executionInstance){
+            executionId=  executionInstance.getInstanceId();
+            activityId = executionInstance.getProcessDefinitionActivityId();
+        }
+        return activityId+":" +processInstanceId+":"+ executionId +":" + blockId;
+    }
 }

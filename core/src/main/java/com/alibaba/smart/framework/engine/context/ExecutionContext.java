@@ -85,10 +85,15 @@ public interface ExecutionContext {
     boolean isNeedPause();
 
 
+
     String getBlockId();
 
     void setBlockId(String blockId);
 
 
+
+    void setInnerExtra(Map<String, Object> response);
+
+    Map<String, Object> getInnerExtra();
 
 }

@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ContextConfiguration("/spring/application-test.xml")
-//@Transactional
+@Transactional
 @RunWith(SpringRunner.class)
 /**
  *  场景1: 不嵌套（3个分支，都触发）- 验证当所有条件都满足时，所有分支都会被执行
@@ -422,6 +422,8 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
         Set<String> actualActivityIds = executionInstanceList.stream()
                 .map(ExecutionInstance::getProcessDefinitionActivityId)
                 .collect(Collectors.toSet());
+
+        Assert.assertTrue(actualActivityIds.isEmpty());
 
         // 验证流程完成
         processInstance = processQueryService.findById(processInstance.getInstanceId());

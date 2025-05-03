@@ -74,6 +74,7 @@ public class DefaultContextFactory implements ContextFactory {
         subContext.setBaseElement(parentContext.getBaseElement());
         subContext.setActivityInstance(parentContext.getActivityInstance());
 
+        subContext.setInnerExtra(parentContext.getInnerExtra());
 
         return subContext;
     }

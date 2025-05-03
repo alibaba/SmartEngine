@@ -23,21 +23,21 @@
 
     <!--START MYSQL DATASOURCE-->
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="root"/>
-        <property name="password" value="ghj"/>
-    </bean>
+<!--    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+<!--        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>-->
+<!--        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;characterEncoding=UTF-8"/>-->
+<!--        <property name="username" value="root"/>-->
+<!--        <property name="password" value="ghj"/>-->
+<!--    </bean>-->
 
     <!--END MYSQL DATASOURCE-->
 
     <!--START H2 DATASOURCE-->
 
-<!--    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
-<!--        <property name="url" value="jdbc:h2:mem:test;INIT=create schema if not exists test\;runscript from 'src/main/resources/sql/schema-h2-only-for-test.sql'"/>-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="jdbc:h2:mem:test;INIT=create schema if not exists test\;runscript from 'src/main/resources/sql/schema-h2-only-for-test.sql'"/>
 
-<!--    </bean>-->
+    </bean>
 
 
 <!--    <jdbc:embedded-database id="dataSource" type="H2">-->
