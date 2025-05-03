@@ -71,7 +71,7 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
     }
 
     @Test
-    public void testScenario1_AllBranchesTriggered() {
+    public void testScenario01_AllBranchesTriggered() {
         // 本case验证场景1：所有分支都触发
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("database/InclusiveGatewayAllBranchesTest.xml").getFirstProcessDefinition();
@@ -107,7 +107,7 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
     }
 
     @Test
-    public void testScenario2_NoBranchesTriggered() {
+    public void testScenario02_NoBranchesTriggered() {
         // 本case验证场景2：所有分支都不触发，应走默认分支
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("database/InclusiveGatewayAllBranchesTest.xml").getFirstProcessDefinition();
@@ -134,7 +134,44 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
     }
 
     @Test
-    public void testScenario3_OneBranchTriggered() {
+    public void testScenario03_NoBranches_ButDefaultBranchTriggered() {
+        // 本case验证场景2：所有分支都不触发，应走默认分支
+        ProcessDefinition processDefinition = repositoryCommandService
+                .deploy("database/InclusiveGatewayDefaultBranchesTest.xml").getFirstProcessDefinition();
+
+        Map<String, Object> request = new HashMap<>();
+        // 设置条件变量，使所有分支都不被触发
+        request.put("condition1", false);
+        request.put("condition2", false);
+        request.put("condition3", false);
+
+
+        ProcessInstance processInstance = processCommandService.start(
+                processDefinition.getId(), processDefinition.getVersion(),
+                request);
+
+        // 流程启动后，正确状态断言
+        Assert.assertNotNull(processInstance);
+        Assert.assertNotNull(processInstance.getCompleteTime());
+        assertEquals(InstanceStatus.completed, processInstance.getStatus());
+
+        // 验证所有分支都被执行
+        List<ExecutionInstance> executionInstanceList = executionQueryService.findAll(processInstance.getInstanceId());
+
+        // 验证执行实例中包含所有分支的活动
+        Set<String> actualActivityIds = executionInstanceList.stream()
+                .map(ExecutionInstance::getProcessDefinitionActivityId)
+                .collect(Collectors.toSet());
+
+        assertTrue(actualActivityIds.contains("service1"));
+        assertFalse(actualActivityIds.contains("service2"));
+        assertFalse(actualActivityIds.contains("service3"));
+
+
+    }
+
+    @Test
+    public void testScenario04_OneBranchTriggered() {
         // 本case验证场景3：只触发一个分支
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("database/InclusiveGatewayAllBranchesTest.xml").getFirstProcessDefinition();
@@ -180,7 +217,7 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
     }
 
     @Test
-    public void testScenario4_TwoBranchesTriggered() {
+    public void testScenario05_TwoBranchesTriggered() {
         // 本case验证场景4：触发两个分支
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("database/InclusiveGatewayAllBranchesTest.xml").getFirstProcessDefinition();
@@ -214,7 +251,7 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
     }
 
     @Test
-    public void testScenario5_AllServiceTasks() {
+    public void testScenario06_AllServiceTasks() {
         // 本case验证场景5：包容网关后接服务任务
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("database/InclusiveGatewayAllServiceTaskTest.xml").getFirstProcessDefinition();
@@ -247,7 +284,7 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
     }
 
     @Test
-    public void testScenario6_ServiceAndReceiveTasks() {
+    public void testScenario07_ServiceAndReceiveTasks() {
         // 本case验证场景6：包容网关后接服务任务和接收任务
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("database/InclusiveGatewayServiceAndReceiveTest.xml").getFirstProcessDefinition();
@@ -290,7 +327,7 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
     }
 
     @Test
-    public void testScenario7_ServiceAndUserTasks() {
+    public void testScenario08_ServiceAndUserTasks() {
         // 本case验证场景7：包容网关后接服务任务和用户任务
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("database/InclusiveGatewayServiceAndUserTaskTest.xml").getFirstProcessDefinition();
@@ -334,7 +371,7 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
     }
 
     @Test
-    public void testScenario8_UnbalancedGateway() {
+    public void testScenario09_UnbalancedGateway() {
         // 本case验证场景8：不平衡的包容网关（1个fork 2个join）
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("database/InclusiveGatewayUnbalancedTest.xml").getFirstProcessDefinition();
@@ -395,7 +432,7 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
     }
 
     @Test
-    public void testScenario9_NestedGateways() {
+    public void testScenario10_NestedGateways() {
         // 本case验证场景9：嵌套的包容网关
         ProcessDefinition processDefinition = repositoryCommandService
             .deploy("database/InclusiveGatewayAllServiceNestedTest.xml").getFirstProcessDefinition();
@@ -436,7 +473,7 @@ public class InclusiveGatewayThreadMultiTest extends DatabaseBaseTestCase {
 
 
     @Test
-    public void testScenario10_NestedGateways() {
+    public void testScenario11_NestedGateways_PausedInstance() {
         // 本case验证场景9：嵌套的包容网关
         ProcessDefinition processDefinition = repositoryCommandService
                 .deploy("database/InclusiveGatewayNestedTest.xml").getFirstProcessDefinition();

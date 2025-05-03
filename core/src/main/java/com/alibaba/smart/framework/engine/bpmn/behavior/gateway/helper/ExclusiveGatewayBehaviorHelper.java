@@ -72,7 +72,7 @@ public abstract class ExclusiveGatewayBehaviorHelper {
                     if (null != pvmTransition){
                         matchedTransitions.add(pvmTransition);
                     }else {
-                        throw new EngineException("No default sequence flow found,check activity id :"+ processDefinitionActivityId);
+                        throw new EngineException("default sequence flow is assigned, but not found the pvmTransition ,check sequenceFlow id: "+ defaultSeqFLowId);
                     }
                 }else{
                     // do nothing
