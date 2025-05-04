@@ -20,10 +20,29 @@ import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
+import static com.alibaba.smart.framework.engine.deployment.impl.DefaultProcessDefinitionContainer.ACTIVITY_TREE_CACHE;
+import static com.alibaba.smart.framework.engine.deployment.impl.DefaultProcessDefinitionContainer.JOIN_LATCH_COUNT_CACHE;
 
 public class InclusiveGatewayHelper {
     public static final String TRIGGER_ACTIVITY_IDS = "$triggerActivityIds$";
+    
+
+    // 添加缓存键生成方法
+    private static String generateActivityTreeCacheKey(ProcessInstance processInstance,PvmActivity forkedPvmActivity, PvmActivity joinedPvmActivity) {
+        return processInstance.getProcessDefinitionIdAndVersion() + ":" +forkedPvmActivity.getModel().getId() + ":" + joinedPvmActivity.getModel().getId();
+    }
+
+    // 添加 JOIN_LATCH_COUNT 缓存键生成方法
+    private static String generateJoinLatchCountCacheKey(ProcessInstance processInstance, ActivityTreeNode node, List<String> triggerActivityIds) {
+        // 使用流程实例ID、节点ID和触发的活动ID列表作为缓存键
+        String processDefinitionIdAndVersion = processInstance.getProcessDefinitionIdAndVersion();
+        String nodeId = node.getActivityId();
+        String triggerIds = triggerActivityIds.stream().sorted().collect(Collectors.joining(":"));
+        return processDefinitionIdAndVersion + ":" + nodeId + ":" + triggerIds;
+    }
 
 
 
@@ -101,13 +120,27 @@ public class InclusiveGatewayHelper {
         return processDefinitionActivityId + ":" + TRIGGER_ACTIVITY_IDS;
     }
 
-    public static ActivityTreeNode buildActivityTreeFromJoinToFork(PvmActivity forkedPvmActivity, PvmActivity joinedPvmActivity) {
+    public static ActivityTreeNode buildActivityTreeFromJoinToFork(PvmActivity forkedPvmActivity, PvmActivity joinedPvmActivity,ProcessInstance processInstance) {
+        // 生成缓存键
+        String cacheKey = generateActivityTreeCacheKey(  processInstance,forkedPvmActivity, joinedPvmActivity);
+        
+        // 检查缓存中是否已存在
+        ActivityTreeNode cachedTree = ACTIVITY_TREE_CACHE.get(cacheKey);
+        if (cachedTree != null) {
+            return cachedTree;
+        }
+        
+        // 缓存中不存在，执行原有逻辑构建树
         String joinGatewayActivityId = joinedPvmActivity.getModel().getId();
         ActivityTreeNode root = new ActivityTreeNode(joinGatewayActivityId);
 
         String forkGatewayActivityId = forkedPvmActivity.getModel().getId();
 
         buildActivityTree(joinedPvmActivity.getIncomeTransitions(), forkGatewayActivityId, root);
+        
+        // 将结果存入缓存
+        ACTIVITY_TREE_CACHE.put(cacheKey, root);
+        
         return root;
     }
 
@@ -170,11 +203,22 @@ public class InclusiveGatewayHelper {
     }
 
 
-    public static int calcCountOfTheJoinLatch(ActivityTreeNode node, List<String> triggerActivityIds) {
+    public static int calcCountOfTheJoinLatch(ActivityTreeNode node, List<String> triggerActivityIds, ProcessInstance processInstance) {
+        // 生成缓存键
+        String cacheKey = generateJoinLatchCountCacheKey(processInstance, node, triggerActivityIds);
+        
+        // 检查缓存中是否已存在计算结果
+        Integer cachedCount = JOIN_LATCH_COUNT_CACHE.get(cacheKey);
+        if (cachedCount != null) {
+            return cachedCount;
+        }
+        
+        // 缓存中不存在，执行原有逻辑计算结果
         // 获取所有触发的叶子节点
         List<ActivityTreeNode> triggeredLeafNodes = getTriggeredLeafNodes(node, triggerActivityIds);
 
         if (triggeredLeafNodes.isEmpty()) {
+            JOIN_LATCH_COUNT_CACHE.put(cacheKey, 0);
             return 0;
         }
 
@@ -188,7 +232,7 @@ public class InclusiveGatewayHelper {
             Set<String> ancestorIdSet = new HashSet<>();
             String leafId = leaf.getActivityId();
 
-            onlyCollectAncestors(   leafId,leaf, ancestorIdSet);
+            onlyCollectAncestors(leafId, leaf, ancestorIdSet);
 
             // 检查是否与已计数的祖先节点有重叠
             boolean hasOverlap = false;
@@ -209,11 +253,12 @@ public class InclusiveGatewayHelper {
             }else {
                 // 去除子节点和 root 节点, ancestorIdSet 为空,那么这种情况下是简单场景
                 count++;
-
             }
-
         }
-
+        
+        // 将计算结果存入缓存
+        JOIN_LATCH_COUNT_CACHE.put(cacheKey, count);
+        
         return count;
     }
 

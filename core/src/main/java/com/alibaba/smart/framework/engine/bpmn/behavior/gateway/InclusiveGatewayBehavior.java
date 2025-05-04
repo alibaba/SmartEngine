@@ -113,13 +113,12 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
             List<ExecutionInstance> allExecutionInstanceList = calcAllExecutionInstances(context,  executionInstanceStorage);
 
-            //tune need cache activityIdList 是流程定义中，join配对的fork轨迹内部的所有的 activityId （由于存在 unbalanced gateway，会有 1个 fork，2个 join 这种情况  ）（与具体的流程实例无关）
-            ActivityTreeNode activityTreeNode = buildActivityTreeFromJoinToFork(forkedPvmActivity, joinedPvmActivity);
+            //  activityIdList 是流程定义中，join配对的fork轨迹内部的所有的 activityId （由于存在 unbalanced gateway，会有 1个 fork，2个 join 这种情况  ）（与具体的流程实例无关）
+            ActivityTreeNode activityTreeNode = buildActivityTreeFromJoinToFork(forkedPvmActivity, joinedPvmActivity,context.getProcessInstance());
 
             List<String> triggerActivityIds = calcTriggerActivityIds(context,variableInstanceStorage, forkedExecutionInstanceOfInclusiveGateway, variablePersister,  processEngineConfiguration);
 
-            //tune need cache
-            int     countOfTheJoinLatch = calcCountOfTheJoinLatch(activityTreeNode, triggerActivityIds);
+            int     countOfTheJoinLatch = calcCountOfTheJoinLatch(activityTreeNode, triggerActivityIds,context.getProcessInstance());
 
             List<ExecutionInstance> activeExecutionList =   allExecutionInstanceList.stream()
                     .filter(ExecutionInstance::isActive).collect(Collectors.toList());
@@ -149,7 +148,8 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
 
             cacheTriggerActivityIdsToContext(  pvmActivity,context, matchedTransitions);
 
-            List<String> triggerActivityIds = (List<String>)context.getInnerExtra().get(buildTriggeredActivityIdKey(pvmActivity.getModel().getId()));
+            String key = buildTriggeredActivityIdKey(pvmActivity.getModel().getId());
+            List<String> triggerActivityIds = (List<String>)context.getInnerExtra().get(key);
 
             // 暂停型流程实例,会丢失掉内存中的 context 数据,所以这里仍然需要持久化.
             persistMatchedTransitionsEagerly(  pvmActivity,context,  triggerActivityIds,  processEngineConfiguration,  variableInstanceStorage);

@@ -1,8 +1,10 @@
 package com.alibaba.smart.framework.engine.deployment.impl;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.tree.ActivityTreeNode;
 import com.alibaba.smart.framework.engine.common.util.IdAndVersionUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
@@ -32,6 +34,12 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
     private Map<String, PvmProcessDefinition> pvmProcessDefinitionConcurrentHashMap = new ConcurrentHashMap<String, PvmProcessDefinition>();
 
 
+    // 添加活动树缓存，使用ConcurrentHashMap保证线程安全. 当流程定义更新后,需要 clear 这个 cache 即可
+    public static Map<String, ActivityTreeNode> ACTIVITY_TREE_CACHE = new ConcurrentHashMap<>();
+
+    // 添加缓存用于存储 calcCountOfTheJoinLatch 方法的计算结果
+    public static final Map<String, Integer> JOIN_LATCH_COUNT_CACHE = new ConcurrentHashMap<>();
+
     /**
      * 同上.
      */
@@ -49,6 +57,9 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
         this.installPvmProcessDefinition(uniqueKey, pvmProcessDefinition);
         this.installProcessDefinition(uniqueKey,processDefinition);
 
+        ACTIVITY_TREE_CACHE.entrySet().removeIf(entry -> entry.getKey().startsWith(uniqueKey));
+        JOIN_LATCH_COUNT_CACHE.entrySet().removeIf(entry -> entry.getKey().startsWith(uniqueKey));
+
     }
 
     @Override
@@ -57,6 +68,8 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
         this.pvmProcessDefinitionConcurrentHashMap.remove(uniqueKey);
         this.processDefinitionConcurrentHashMap.remove(uniqueKey);
 
+        ACTIVITY_TREE_CACHE.entrySet().removeIf(entry -> entry.getKey().startsWith(uniqueKey));
+        JOIN_LATCH_COUNT_CACHE.entrySet().removeIf(entry -> entry.getKey().startsWith(uniqueKey));
     }
 
     @Override
