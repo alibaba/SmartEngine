@@ -4,23 +4,14 @@ import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.InclusiveGateway;
 import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.CommonGatewayHelper;
 import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.tree.ActivityTreeNode;
-import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
-import com.alibaba.smart.framework.engine.common.util.MapUtil;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
-import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
-import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
-import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
-import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
-import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 import org.slf4j.Logger;
@@ -117,10 +108,10 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
             ExecutionInstance joinedExecutionInstanceOfInclusiveGateway = context.getExecutionInstance();
 
             // 算法说明： 增加 blockId 字段，在 fork 环节完成设置；然后为本 fork 网关后续的每个 ei 设置 blockId （相同的blockId 标识他们在一个 fork-join 内 ） .这里的 blockId 为 fork gateway 的 instanceId ；
-            ExecutionInstance forkedExecutionInstanceOfInclusiveGateway = findForkedExecutionInstance(context, joinedExecutionInstanceOfInclusiveGateway,   processEngineConfiguration,   executionInstanceStorage);
+            ExecutionInstance forkedExecutionInstanceOfInclusiveGateway = findForkedExecutionInstance(context, joinedExecutionInstanceOfInclusiveGateway,   executionInstanceStorage);
             PvmActivity forkedPvmActivity = getForkPvmActivity(processInstance, forkedExecutionInstanceOfInclusiveGateway,processEngineConfiguration);
 
-            List<ExecutionInstance> allExecutionInstanceList = calcAllExecutionInstances(context, processInstance,  processEngineConfiguration,  executionInstanceStorage);
+            List<ExecutionInstance> allExecutionInstanceList = calcAllExecutionInstances(context,  executionInstanceStorage);
 
             //tune need cache activityIdList 是流程定义中，join配对的fork轨迹内部的所有的 activityId （由于存在 unbalanced gateway，会有 1个 fork，2个 join 这种情况  ）（与具体的流程实例无关）
             ActivityTreeNode activityTreeNode = buildActivityTreeFromJoinToFork(forkedPvmActivity, joinedPvmActivity);
@@ -130,7 +121,6 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
             //tune need cache
             int     countOfTheJoinLatch = calcCountOfTheJoinLatch(activityTreeNode, triggerActivityIds);
 
-            //当前内存中的，新产生的 active ExecutionInstance
             List<ExecutionInstance> activeExecutionList =   allExecutionInstanceList.stream()
                     .filter(ExecutionInstance::isActive).collect(Collectors.toList());
 
@@ -157,7 +147,7 @@ public class InclusiveGatewayBehavior extends AbstractActivityBehavior<Inclusive
             //fork
             List<PvmTransition> matchedTransitions = CommonGatewayHelper.calcMatchedTransitions(pvmActivity, context);
 
-            putTriggerActivityIdsAndKeepForkContext(  pvmActivity,context, matchedTransitions);
+            cacheTriggerActivityIdsToContext(  pvmActivity,context, matchedTransitions);
 
             List<String> triggerActivityIds = (List<String>)context.getInnerExtra().get(buildTriggeredActivityIdKey(pvmActivity.getModel().getId()));
 

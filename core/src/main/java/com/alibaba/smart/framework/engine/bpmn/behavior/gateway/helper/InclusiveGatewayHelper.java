@@ -27,7 +27,7 @@ public class InclusiveGatewayHelper {
 
 
 
-    public static void putTriggerActivityIdsAndKeepForkContext(PvmActivity pvmActivity, ExecutionContext context, List<PvmTransition> matchedTransitions) {
+    public static void cacheTriggerActivityIdsToContext(PvmActivity pvmActivity, ExecutionContext context, List<PvmTransition> matchedTransitions) {
         List<String> triggerActivityIds = matchedTransitions.stream().map(pvmTransition -> pvmTransition.getTarget()).map(activity -> activity.getModel().getId()).collect(Collectors.toList());
 
         if(MapUtil.isEmpty(context.getInnerExtra())){
@@ -104,7 +104,9 @@ public class InclusiveGatewayHelper {
     public static ActivityTreeNode buildActivityTreeFromJoinToFork(PvmActivity forkedPvmActivity, PvmActivity joinedPvmActivity) {
         String joinGatewayActivityId = joinedPvmActivity.getModel().getId();
         ActivityTreeNode root = new ActivityTreeNode(joinGatewayActivityId);
+
         String forkGatewayActivityId = forkedPvmActivity.getModel().getId();
+
         buildActivityTree(joinedPvmActivity.getIncomeTransitions(), forkGatewayActivityId, root);
         return root;
     }
@@ -137,17 +139,22 @@ public class InclusiveGatewayHelper {
         return forkPvmActivity;
     }
 
-    public static List<ExecutionInstance> calcAllExecutionInstances(ExecutionContext context, ProcessInstance processInstance,ProcessEngineConfiguration processEngineConfiguration,ExecutionInstanceStorage executionInstanceStorage) {
+    public static List<ExecutionInstance> calcAllExecutionInstances(ExecutionContext context ,ExecutionInstanceStorage executionInstanceStorage) {
+        ProcessInstance processInstance = context.getProcessInstance();
+        ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
+
         List<ExecutionInstance> allExecutionInstanceList =  executionInstanceStorage.findAll(processInstance.getInstanceId(), processEngineConfiguration);
         if(CollectionUtil.isEmpty(allExecutionInstanceList)){
             // 说明此时还没落库（SE 目前的设计是一次调用链结束后，才会在最后时刻落库。 这个时候需要从内存中查询）
-            allExecutionInstanceList = context.getProcessInstance().getActivityInstances().stream()
+            allExecutionInstanceList = processInstance.getActivityInstances().stream()
                     .flatMap(activityInstance -> activityInstance.getExecutionInstanceList().stream()).collect(Collectors.toList());
         }
         return allExecutionInstanceList;
     }
 
-    public static ExecutionInstance findForkedExecutionInstance(ExecutionContext context, ExecutionInstance joinedExecutionInstanceOfInclusiveGateway,ProcessEngineConfiguration processEngineConfiguration,ExecutionInstanceStorage executionInstanceStorage) {
+    public static ExecutionInstance findForkedExecutionInstance(ExecutionContext context, ExecutionInstance joinedExecutionInstanceOfInclusiveGateway,ExecutionInstanceStorage executionInstanceStorage) {
+        ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
+
         ExecutionInstance forkedExecutionInstanceOfInclusiveGateway = executionInstanceStorage.find(joinedExecutionInstanceOfInclusiveGateway.getBlockId(), processEngineConfiguration);
         if(null == forkedExecutionInstanceOfInclusiveGateway ){
             // 说明此时还没落库（SE 目前的设计是一次调用链结束后，才会在最后时刻落库。 这个时候需要从内存中查询）
@@ -194,7 +201,7 @@ public class InclusiveGatewayHelper {
                     }
                 }
 
-                // 如果没有重叠，则计数+1，并将当前叶子节点的祖先节点ID添加到已计数集合中
+                // 如果没有重叠，则计数+1，并将当前叶子节点的祖先节点ID添加到已计数集合中 (避免因触发同一祖先的两个子节点,而导致重复计数  unbalanced gateway)
                 if (!hasOverlap) {
                     count++;
                     allCountedAncestorIds.addAll(ancestorIdSet);
