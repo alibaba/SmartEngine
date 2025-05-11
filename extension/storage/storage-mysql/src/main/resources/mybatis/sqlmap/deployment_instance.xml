@@ -6,11 +6,11 @@
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,process_definition_id,process_definition_version,
         process_definition_type,process_definition_code,process_definition_name,process_definition_desc,process_definition_content,
-        deployment_user_id,deployment_status,logic_status
+        deployment_user_id,deployment_status,logic_status,customer_id
     </sql>
 
     <sql id="condition">
-        <where>
+        where customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
             <if test="id != null">and id = #{id}</if>
             <if test="processDefinitionVersion != null">and process_definition_version = #{processDefinitionVersion}</if>
             <if test="processDefinitionType != null">and process_definition_type = #{processDefinitionType}</if>
@@ -22,18 +22,18 @@
             <if test="deploymentStatus != null">and deployment_status = #{deploymentStatus}</if>
             <if test="logicStatus != null">and logic_status = #{logicStatus}</if>
 
-        </where>
     </sql>
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity"  keyProperty="id">
         insert into  se_deployment_instance(<include refid="baseColumn"/>)
         values (#{id}, #{gmtCreate}, #{gmtModified}, #{processDefinitionId}, #{processDefinitionVersion},#{processDefinitionType},#{processDefinitionCode},
         #{processDefinitionName},#{processDefinitionDesc},#{processDefinitionContent},
-        #{deploymentUserId},#{deploymentStatus} , #{logicStatus})
+        #{deploymentUserId},#{deploymentStatus} , #{logicStatus},'${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}')
     </insert>
 
     <delete id="delete" parameterType="long">
         delete from se_deployment_instance where id=#{id}
+        and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
     </delete>
 
     <update id="update"  parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity">
@@ -51,12 +51,14 @@
         <if test="logicStatus != null"> ,logic_status = #{logicStatus}</if>
 
         where id=#{id}
+        and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
     </update>
 
     <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity">
         select
         <include refid="baseColumn"/>
         from  se_deployment_instance where id=#{id}
+        and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
     </select>
 
 

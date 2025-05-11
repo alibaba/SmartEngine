@@ -5,7 +5,7 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,process_instance_id, process_definition_id_and_version,process_definition_type,
-        activity_instance_id, process_definition_activity_id, execution_instance_id,claim_user_id,priority,tag,claim_time,complete_time,status,comment,extension,title
+        activity_instance_id, process_definition_activity_id, execution_instance_id,claim_user_id,priority,tag,claim_time,complete_time,status,comment,extension,title,customer_id
     </sql>
 
 
@@ -13,11 +13,13 @@
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity"   keyProperty="id">
         insert into se_task_instance(<include refid="baseColumn"/>)
         values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId}, #{processDefinitionIdAndVersion},#{processDefinitionType},
-        #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status},#{comment},#{extension},#{title})
+        #{activityInstanceId}, #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status},#{comment},#{extension},#{title},
+        '${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}')
     </insert>
 
     <delete id="delete" parameterType="long">
         delete from se_task_instance where id=#{id}
+                                       and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
     </delete>
 
     <sql id="update_sql">
@@ -40,12 +42,14 @@
         update se_task_instance
        <include refid="update_sql"/>
         where id=#{taskInstanceEntity.id}
+        and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
     </update>
 
     <update id="updateFromStatus">
         update se_task_instance
         <include refid="update_sql"/>
         where id=#{taskInstanceEntity.id} and status = #{fromStatus}
+        and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
     </update>
 
 
@@ -54,18 +58,25 @@
         select
         <include refid="baseColumn"/>
         from se_task_instance where id=#{id}
+        and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
     </select>
 
     <select id="findTaskByProcessInstanceIdAndStatus" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity" >
         select
         <include refid="baseColumn"/>
         from se_task_instance where process_instance_id = #{param1} and status = #{param2}
+        and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
     </select>
 
     <select id="findTaskByAssignee" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity" parameterType="com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam">
         select distinct task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
         activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
-        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
+        from  se_task_instance task,se_task_assignee_instance assignee where
+
+        task.customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
+        and assignee.customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
+
+        and task.id = assignee.task_instance_id
 
         <if test = "status != null" > and task.status = #{status} </if>
 
@@ -82,7 +93,10 @@
 
     <select id="countTaskByAssignee" resultType="int" parameterType="com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam">
         select  count(distinct task.id)
-        from  se_task_instance task,se_task_assignee_instance assignee where task.id = assignee.task_instance_id
+        from  se_task_instance task,se_task_assignee_instance assignee where
+        task.customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
+        and assignee.customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
+        and task.id = assignee.task_instance_id
 
         <if test = "status != null" > and task.status = #{status} </if>
 
@@ -137,7 +151,7 @@
     <select id="findTaskList" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity" parameterType="com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam">
         select  task.id, task.gmt_create, task.gmt_modified,task.process_instance_id, process_definition_id_and_version,
         activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag, task.process_definition_type, claim_time,complete_time,status,comment,extension,title
-        from  se_task_instance task  where 1=1
+        from  se_task_instance task  where customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
         <include refid="where_condition"/>
 
         order by task.gmt_modified desc
@@ -148,7 +162,7 @@
 
     <select id="count" resultType="int" parameterType="com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam">
         select  count(task.id)
-        from  se_task_instance task where 1=1
+        from  se_task_instance task where customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
         <include refid="where_condition"/>
 
         <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
