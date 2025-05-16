@@ -12,7 +12,7 @@ public interface VariableInstanceStorage {
                 ProcessEngineConfiguration processEngineConfiguration);
 
     List<VariableInstance> findList(String processInstanceId, String executionInstanceId,
-                                    VariablePersister variablePersister,
+                                    VariablePersister variablePersister,String tenantId,
                                     ProcessEngineConfiguration processEngineConfiguration);
 
 //    List<VariableInstance> findAll(String processInstanceId,VariablePersister variablePersister,

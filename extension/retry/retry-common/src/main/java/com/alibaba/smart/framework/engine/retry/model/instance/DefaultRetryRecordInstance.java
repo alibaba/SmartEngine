@@ -11,6 +11,7 @@ import lombok.Data;
 @Data
 public class DefaultRetryRecordInstance implements RetryRecord {
     private String instanceId;
+    private String tenantId;
     private int retryTimes;
     private boolean retrySuccess;
     private Map<String, Object> requestParams;

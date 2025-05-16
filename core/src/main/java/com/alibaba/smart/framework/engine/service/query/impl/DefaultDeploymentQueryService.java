@@ -26,12 +26,18 @@ public class DefaultDeploymentQueryService implements DeploymentQueryService ,
 
     @Override
     public DeploymentInstance findById(String deploymentInstanceId) {
+        return this.findById(deploymentInstanceId,null);
+    }
+
+    @Override
+    public DeploymentInstance findById(String deploymentInstanceId,String tenantId) {
 
 
-        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,
-            processEngineConfiguration);
+        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,tenantId,
+                processEngineConfiguration);
         return  currentDeploymentInstance;
     }
+
 
     @Override
     public List<DeploymentInstance> findList(DeploymentInstanceQueryParam deploymentInstanceQueryParam) {

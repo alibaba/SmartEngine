@@ -9,6 +9,10 @@ import java.util.Map;
  */
 public interface ProcessDefinition extends ExtensionElementContainer,IdBasedElement {
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     String getName();
     void setName(String name);
 

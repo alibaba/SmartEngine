@@ -38,13 +38,21 @@ public class DefaultVariableQueryService implements VariableQueryService , LifeC
 
     @Override
     public List<VariableInstance> findProcessInstanceVariableList(String processInstanceId) {
-        return findList(  processInstanceId, AdHocConstant.DEFAULT_ZERO_VALUE );}
+        return this.findProcessInstanceVariableList(processInstanceId, null);
+    }
+    @Override
+    public List<VariableInstance> findProcessInstanceVariableList(String processInstanceId,String tenantId) {
+        return findList(  processInstanceId, AdHocConstant.DEFAULT_ZERO_VALUE ,tenantId);}
 
     @Override
     public List<VariableInstance> findList(String processInstanceId, String executionInstanceId) {
+        return findList(processInstanceId, executionInstanceId, null);
+    }
+    @Override
+    public List<VariableInstance> findList(String processInstanceId, String executionInstanceId,String tenantId) {
 
         VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
-        List<VariableInstance> variableInstanceList =   variableInstanceStorage.findList(processInstanceId,executionInstanceId,variablePersister,processEngineConfiguration );
+        List<VariableInstance> variableInstanceList =   variableInstanceStorage.findList(processInstanceId,executionInstanceId,variablePersister,tenantId,processEngineConfiguration );
 
         return  variableInstanceList;
     }

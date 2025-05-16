@@ -76,6 +76,7 @@ public abstract  class CommonServiceHelper {
                 variableInstance.setFieldKey(key);
                 variableInstance.setFieldType(type);
                 variableInstance.setFieldValue(value);
+                variableInstance.setTenantId(newProcessInstance.getTenantId());
 
                 variableInstanceStorage.insert(  variablePersister,variableInstance, processEngineConfiguration);
 

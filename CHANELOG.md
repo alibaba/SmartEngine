@@ -1,4 +1,4 @@
-# 3.5.0
+# 3.5.1-SNAPSHOT
 1. [Feature Enhancement] Full support for Inclusive Gateway, including default seqFlow, nested inclusive gateways and unbalanced gateways
 2. [Refinement] Refactored processing logic for inclusive/parallel/exclusive gateways to reduce code duplication
 3. [Minor Breaking Change] Added `block_id` field to `se_execution_instance` table to support inclusive gateways

@@ -13,6 +13,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
 import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
+import com.alibaba.smart.framework.engine.persister.database.builder.VariableInstanceBuilder;
 import com.alibaba.smart.framework.engine.persister.database.dao.VariableInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity;
 
@@ -21,8 +22,6 @@ import org.slf4j.LoggerFactory;
 
 @ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = VariableInstanceStorage.class)
 public class RelationshipDatabaseVariableInstanceStorage implements VariableInstanceStorage {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(RelationshipDatabaseVariableInstanceStorage.class);
 
     @Override
     public void insert(VariablePersister variablePersister, VariableInstance variableInstance,
@@ -39,6 +38,8 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
         if(null != variableInstanceInstanceId){
             variableInstanceEntity.setId(Long.valueOf(variableInstanceInstanceId));
         }
+
+        variableInstanceEntity.setTenantId(variableInstance.getTenantId());
         variableInstanceEntity.setExecutionInstanceId((Long.valueOf(variableInstance.getExecutionInstanceId())));
         variableInstanceEntity.setFieldKey(variableInstance.getFieldKey());
         variableInstanceEntity.setProcessInstanceId((Long.valueOf(variableInstance.getProcessInstanceId())));
@@ -47,29 +48,29 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
         if(null != fieldType){
             variableInstanceEntity.setFieldType(fieldType.getName());
 
-            if (isAssignableFromString(fieldType)) {
+            if (VariableInstanceBuilder.isAssignableFromString(fieldType)) {
                 variableInstanceEntity.setFieldStringValue((String)value);
-            } else if (isAssignableFromBoolean(fieldType)) {
+            } else if (VariableInstanceBuilder.isAssignableFromBoolean(fieldType)) {
                 variableInstanceEntity.setFieldStringValue(String.valueOf(value));
-            } else if (isAssignableFromInteger(fieldType)) {
+            } else if (VariableInstanceBuilder.isAssignableFromInteger(fieldType)) {
                 variableInstanceEntity.setFieldLongValue(Long.valueOf((Integer)value));
-            } else if (isAssignableFromShort(fieldType)) {
+            } else if (VariableInstanceBuilder.isAssignableFromShort(fieldType)) {
                 variableInstanceEntity.setFieldLongValue(Long.valueOf((Short)value));
-            } else if (isAssignableFromLong(fieldType)) {
+            } else if (VariableInstanceBuilder.isAssignableFromLong(fieldType)) {
                 variableInstanceEntity.setFieldLongValue((Long)value);
-            } else if (isAssignableFromFloat(fieldType)) {
+            } else if (VariableInstanceBuilder.isAssignableFromFloat(fieldType)) {
                 variableInstanceEntity.setFieldDoubleValue(Double.valueOf((Float)value));
-            } else if (isAssignableFromDouble(fieldType)) {
+            } else if (VariableInstanceBuilder.isAssignableFromDouble(fieldType)) {
                 variableInstanceEntity.setFieldDoubleValue((Double)value);
             } else if (byte.class.isAssignableFrom(fieldType) || byte[].class.isAssignableFrom(fieldType)) {
                 throw new EngineException("NOT support byte group so far");
             } else if (char.class.isAssignableFrom(fieldType) || char[].class.isAssignableFrom(fieldType)) {
                 throw new EngineException("NOT support char group so far");
             }else {
-                serialize(variablePersister, value, variableInstanceEntity);
+                VariableInstanceBuilder.serialize(variablePersister, value, variableInstanceEntity);
             }
         } else {
-            serialize(variablePersister, value, variableInstanceEntity);
+            VariableInstanceBuilder.serialize(variablePersister, value, variableInstanceEntity);
         }
 
         Date currentDate = DateUtil.getCurrentDate();
@@ -80,15 +81,10 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
 
     }
 
-    private static void serialize(VariablePersister variablePersister, Object value, VariableInstanceEntity variableInstanceEntity) {
-        //ASSUME the others are all pojos.
-        String serializedValue = variablePersister.serialize(value);
-        variableInstanceEntity.setFieldStringValue(serializedValue);
-    }
 
     @Override
     public List<VariableInstance> findList(String processInstanceId, String executionInstanceId,
-                                           VariablePersister variablePersister,
+                                           VariablePersister variablePersister,String tenantId,
                                            ProcessEngineConfiguration processEngineConfiguration) {
         VariableInstanceDAO variableInstanceDAO = (VariableInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("variableInstanceDAO");
         List<VariableInstance> variableInstanceList = null;
@@ -100,59 +96,11 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
              executionInstanceId1 = Long.valueOf(executionInstanceId);
 
         }
-        List<VariableInstanceEntity> list = variableInstanceDAO.findList(Long.valueOf(processInstanceId), executionInstanceId1);
+        List<VariableInstanceEntity> list = variableInstanceDAO.findList(Long.valueOf(processInstanceId), executionInstanceId1,tenantId);
         if (null != list) {
-            variableInstanceList = build(variablePersister, list);
+            variableInstanceList = VariableInstanceBuilder.build(variablePersister, list);
         }
 
-        return variableInstanceList;
-    }
-
-    private List<VariableInstance> build(VariablePersister variablePersister, List<VariableInstanceEntity> list) {
-        List<VariableInstance> variableInstanceList;
-        variableInstanceList = new ArrayList<VariableInstance>(list.size());
-        for (VariableInstanceEntity variableInstanceEntity : list) {
-            VariableInstance variableInstance = new DefaultVariableInstance();
-            variableInstance.setInstanceId(variableInstanceEntity.getId().toString());
-            variableInstance.setStartTime(variableInstanceEntity.getGmtCreate());
-            variableInstance.setCompleteTime(variableInstanceEntity.getGmtModified());
-            variableInstance.setProcessInstanceId(variableInstanceEntity.getProcessInstanceId().toString());
-            variableInstance.setExecutionInstanceId(variableInstanceEntity.getExecutionInstanceId().toString());
-
-            variableInstance.setFieldKey(variableInstanceEntity.getFieldKey());
-            String fieldType1 = variableInstanceEntity.getFieldType();
-
-            //TUNE CACHE
-            try {
-                Class<?> fieldType = Class.forName(fieldType1);
-                variableInstance.setFieldType(fieldType);
-
-                if (isAssignableFromString(fieldType)) {
-                    variableInstance.setFieldValue(variableInstanceEntity.getFieldStringValue());
-                } else if (isAssignableFromBoolean(fieldType)) {
-                    variableInstance.setFieldValue(Boolean.valueOf(variableInstanceEntity.getFieldStringValue()));
-                } else if (isAssignableFromInteger(fieldType)) {
-                    variableInstance.setFieldValue(variableInstanceEntity.getFieldLongValue().intValue());
-                } else if (isAssignableFromShort(fieldType)) {
-                    variableInstance.setFieldValue(variableInstanceEntity.getFieldLongValue().shortValue());
-                } else if (isAssignableFromLong(fieldType)) {
-                    variableInstance.setFieldValue(variableInstanceEntity.getFieldLongValue());
-                } else if (isAssignableFromFloat(fieldType)) {
-                    variableInstance.setFieldValue(variableInstanceEntity.getFieldDoubleValue().floatValue());
-                } else if (isAssignableFromDouble(fieldType)) {
-                    variableInstance.setFieldValue(variableInstanceEntity.getFieldDoubleValue());
-                } else {
-                    //ASSUME the others are all pojos.
-                    Object serializedValue =  variablePersister.deserialize(variableInstanceEntity.getFieldKey(),variableInstanceEntity
-                            .getFieldType(),variableInstanceEntity.getFieldStringValue());
-                    variableInstance.setFieldValue(serializedValue);
-                }
-
-            } catch (ClassNotFoundException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
-            variableInstanceList.add(variableInstance);
-        }
         return variableInstanceList;
     }
 
@@ -168,34 +116,4 @@ public class RelationshipDatabaseVariableInstanceStorage implements VariableInst
 //
 //        return variableInstanceList;
 //    }
-
-
-
-    private boolean isAssignableFromDouble(Class<?> fieldType) {
-        return double.class.isAssignableFrom(fieldType) || Double.class.isAssignableFrom(fieldType);
-    }
-
-    private boolean isAssignableFromLong(Class<?> fieldType) {
-        return long.class.isAssignableFrom(fieldType) || Long.class.isAssignableFrom(fieldType);
-    }
-
-    private boolean isAssignableFromInteger(Class<?> fieldType) {
-        return int.class.isAssignableFrom(fieldType) || Integer.class.isAssignableFrom(fieldType);
-    }
-
-    private boolean isAssignableFromString(Class<?> fieldType) {
-        return String.class.isAssignableFrom(fieldType);
-    }
-
-    private boolean isAssignableFromFloat(Class fieldType) {
-        return float.class.isAssignableFrom(fieldType) || Float.class.isAssignableFrom(fieldType);
-    }
-
-    private boolean isAssignableFromShort(Class fieldType) {
-        return short.class.isAssignableFrom(fieldType) || Short.class.isAssignableFrom(fieldType);
-    }
-
-    private boolean isAssignableFromBoolean(Class fieldType) {
-        return boolean.class.isAssignableFrom(fieldType) || Boolean.class.isAssignableFrom(fieldType);
-    }
 }

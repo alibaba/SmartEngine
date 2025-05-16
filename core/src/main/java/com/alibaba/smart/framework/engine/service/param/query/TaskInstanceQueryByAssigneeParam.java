@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TaskInstanceQueryByAssigneeParam extends PaginateQueryParam {
+public class TaskInstanceQueryByAssigneeParam extends BaseQueryParam {
 
     private String assigneeUserId;
 

@@ -20,7 +20,7 @@ public interface DeploymentInstanceStorage {
     DeploymentInstance update(DeploymentInstance deploymentInstance,
                               ProcessEngineConfiguration processEngineConfiguration);
 
-    DeploymentInstance findById(String id,
+    DeploymentInstance findById(String id,String tenantId,
                                 ProcessEngineConfiguration processEngineConfiguration);
 
     List<DeploymentInstance> findByPage(DeploymentInstanceQueryParam deploymentInstanceQueryParam,
@@ -29,7 +29,7 @@ public interface DeploymentInstanceStorage {
     int count(DeploymentInstanceQueryParam deploymentInstanceQueryParam,
               ProcessEngineConfiguration processEngineConfiguration);
 
-    void remove(String id,
+    void remove(String id,String tenantId,
                 ProcessEngineConfiguration processEngineConfiguration);
 
 }

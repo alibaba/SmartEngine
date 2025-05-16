@@ -57,7 +57,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
  * @author ettear 2016.04.13
  */
 @ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = RepositoryCommandService.class)
-        public class DefaultRepositoryCommandService implements RepositoryCommandService, ProcessEngineConfigurationAware, LifeCycleHook {
+public class DefaultRepositoryCommandService implements RepositoryCommandService, ProcessEngineConfigurationAware, LifeCycleHook {
 
     private ProcessEngineConfiguration processEngineConfiguration;
 
@@ -70,22 +70,31 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 
     @Override
-    public ProcessDefinitionSource deploy(String classPathResource) throws DeployException {
+    public ProcessDefinitionSource deploy(String classPathResource,String tenantId) throws DeployException {
 
-       ClassLoader classLoader = ClassUtil.getContextClassLoader();
+        ClassLoader classLoader = ClassUtil.getContextClassLoader();
 
-        ProcessDefinitionSource processDefinitionSource = this.parse(classLoader, classPathResource);
+        ProcessDefinitionSource processDefinitionSource = this.parse(classLoader, classPathResource,tenantId);
 
-        buildPvmDefinition( processDefinitionSource);
+        buildPvmDefinition( processDefinitionSource,tenantId);
 
         return processDefinitionSource;
+    }
+    @Override
+    public ProcessDefinitionSource deploy(String classPathResource) throws DeployException {
+        return deploy(classPathResource,null);
     }
 
     @Override
     public ProcessDefinitionSource deploy(InputStream inputStream) {
+        return deploy(inputStream,null);
+    }
+
+    @Override
+    public ProcessDefinitionSource deploy(InputStream inputStream,String tenantId) {
         try {
-            ProcessDefinitionSource processDefinitionSource = parseStream(inputStream);
-            buildPvmDefinition( processDefinitionSource);
+            ProcessDefinitionSource processDefinitionSource = parseStream(inputStream,tenantId);
+            buildPvmDefinition( processDefinitionSource,tenantId);
 
             return processDefinitionSource;
         } catch (Exception e) {
@@ -97,6 +106,12 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
     @Override
     public ProcessDefinitionSource deployWithUTF8Content(String uTF8ProcessDefinitionContent) {
+       return deployWithUTF8Content(uTF8ProcessDefinitionContent,null);
+
+    }
+
+    @Override
+    public ProcessDefinitionSource deployWithUTF8Content(String uTF8ProcessDefinitionContent,String tenantId) {
         byte[] bytes ;
         try {
             bytes = uTF8ProcessDefinitionContent.getBytes("UTF-8");
@@ -104,14 +119,14 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
             throw new EngineException(e);
         }
         InputStream stream = new ByteArrayInputStream(bytes);
-        ProcessDefinitionSource processDefinitionSource =  this.deploy(stream);
+        ProcessDefinitionSource processDefinitionSource =  this.deploy(stream,tenantId);
         return  processDefinitionSource;
 
     }
 
 
 
-    private ProcessDefinitionSource parse(ClassLoader classLoader, String uri) throws DeployException {
+    private ProcessDefinitionSource parse(ClassLoader classLoader, String uri,String tenantId) throws DeployException {
 
         InputStream inputStream = null;
         try {
@@ -121,7 +136,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
                 throw new IllegalArgumentException("Cant find any resources for the uri:"+uri);
             }
 
-            ProcessDefinitionSource processDefinitionSource = parseStream(inputStream);
+            ProcessDefinitionSource processDefinitionSource = parseStream(inputStream,tenantId);
             return processDefinitionSource;
 
         } catch (Exception e) {
@@ -131,7 +146,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
         }
     }
 
-    private ProcessDefinitionSource parseStream(InputStream inputStream) throws XMLStreamException, ParseException {
+    private ProcessDefinitionSource parseStream(InputStream inputStream,String tenantId) throws XMLStreamException, ParseException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
 
         XMLStreamReader reader = factory.createXMLStreamReader(inputStream);
@@ -152,14 +167,21 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
         if (findStart) {
             Object parseResult = this.xmlParserExtensionPoint.parseElement(reader, context);
-            return (ProcessDefinitionSource)parseResult;
+            ProcessDefinitionSource processDefinitionSource =  (ProcessDefinitionSource)parseResult;
+            if(processDefinitionSource.getProcessDefinitionList() != null){
+                for(ProcessDefinition processDefinition : processDefinitionSource.getProcessDefinitionList()){
+                    processDefinition.setTenantId(tenantId);
+                }
+            }
+            processDefinitionSource.setTenantId(tenantId);
+            return processDefinitionSource;
         } else {
             throw new DeployException("Read process definition file failure! Not found start element!");
         }
     }
 
     @SuppressWarnings("rawtypes")
-    private void buildPvmDefinition(ProcessDefinitionSource processDefinitionSource) {
+    private void buildPvmDefinition(ProcessDefinitionSource processDefinitionSource,String tenantId) {
 
         List<ProcessDefinition> processDefinitionList =  processDefinitionSource.getProcessDefinitionList();
 
@@ -171,7 +193,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
                 throw new EngineException("empty processDefinitionSourceId or version"+processDefinitionSource);
             }
 
-            PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(processDefinition);
+            PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(processDefinition,tenantId);
 
             this.processContainer.install(pvmProcessDefinition, processDefinition);
 
@@ -181,13 +203,13 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
     }
 
     @SuppressWarnings("rawtypes")
-    private PvmProcessDefinition buildPvmProcessDefinition(ProcessDefinition processDefinition) {
+    private PvmProcessDefinition buildPvmProcessDefinition(ProcessDefinition processDefinition,String tenantId) {
 
 
         DefaultPvmProcessDefinition pvmProcessDefinition = new DefaultPvmProcessDefinition();
         pvmProcessDefinition.setId(processDefinition.getId());
         pvmProcessDefinition.setVersion(processDefinition.getVersion());
-
+        pvmProcessDefinition.setTenantId(tenantId);
 
         pvmProcessDefinition.setModel(processDefinition);
 

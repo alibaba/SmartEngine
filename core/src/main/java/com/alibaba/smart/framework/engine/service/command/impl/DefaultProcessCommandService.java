@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
@@ -77,12 +78,10 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     @Override
     public ProcessInstance start(String processDefinitionId, String processDefinitionVersion, Map<String, Object> request, Map<String, Object> response) {
-
-
-        ProcessInstance processInstance = processInstanceFactory.create(  processEngineConfiguration,    processDefinitionId,processDefinitionVersion,   request);
+        ProcessInstance processInstance = processInstanceFactory.create(processEngineConfiguration, processDefinitionId, processDefinitionVersion, request);
 
         ExecutionContext executionContext = this.instanceContextFactory.createProcessContext(processEngineConfiguration, processInstance,
-            request, response, null);
+                request, response, null);
 
         // TUNE 减少不必要的对象创建
         PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
@@ -93,14 +92,23 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         processInstance = CommonServiceHelper.insertAndPersist(processInstance, request, processEngineConfiguration);
 
         return processInstance;
-
-
     }
 
     @Override
     public ProcessInstance start(String processDefinitionId, String processDefinitionVersion){
-        return this.start(processDefinitionId, processDefinitionVersion,null);
+        String tenantId = null;
+        return this.start(processDefinitionId, processDefinitionVersion,tenantId);
     }
+
+    @Override
+    public ProcessInstance start(String processDefinitionId, String processDefinitionVersion,String tenantId){
+        Map<String, Object> request = new HashMap<String, Object>();
+        if(StringUtil.isNotEmpty(tenantId)) {
+            request.put(RequestMapSpecialKeyConstant.TENANT_ID, tenantId);
+        }
+        return this.start(processDefinitionId, processDefinitionVersion,request);
+    }
+
 
     @Override
     public ProcessInstance startWith(String deploymentInstanceId, String userId, Map<String, Object> request
@@ -110,8 +118,12 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     @Override
     public ProcessInstance startWith(String deploymentInstanceId, String userId, Map<String, Object> request,Map<String, Object> response) {
+        String tenantId = null;
+        if(null != request) {
+            tenantId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TENANT_ID));
+        }
         DeploymentQueryService deploymentQueryService = processEngineConfiguration.getSmartEngine().getDeploymentQueryService();
-        DeploymentInstance deploymentInstance = deploymentQueryService.findById(deploymentInstanceId);
+        DeploymentInstance deploymentInstance = deploymentQueryService.findById(deploymentInstanceId,tenantId);
 
         if(null == request){
             request = new HashMap<String, Object>();
@@ -135,25 +147,48 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     @Override
     public ProcessInstance startWith(String deploymentInstanceId) {
-        return startWith(deploymentInstanceId,null, null);
+        String tenantId = null;
+        return startWith(deploymentInstanceId,tenantId);
+    }
+
+    @Override
+    public ProcessInstance startWith(String deploymentInstanceId,String tenantId) {
+        Map<String, Object> request = new HashMap<String, Object>();
+        if(StringUtil.isNotEmpty(tenantId)) {
+            request.put(RequestMapSpecialKeyConstant.TENANT_ID, tenantId);
+        }
+        return startWith(deploymentInstanceId,null, request);
     }
 
     @Override
     public void abort(String processInstanceId) {
-        this.abort(processInstanceId,"");
+        this.abort(processInstanceId,"",null);
     }
 
     @Override
-    public void abort(String processInstanceId, String reason){
+    public void abort(String processInstanceId,String reason) {
+        this.abort(processInstanceId,reason,null);
+    }
+
+    @Override
+    public void abort(String processInstanceId, String reason,String tenantId){
         Map<String, Object> request = new HashMap<String, Object>(2);
         request.put(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_ABORT_REASON,reason);
+
+        if(StringUtil.isNotEmpty(tenantId)) {
+            request.put(RequestMapSpecialKeyConstant.TENANT_ID, tenantId);
+        }
         abort(processInstanceId,request);
 
     }
 
     @Override
     public void abort(String processInstanceId, Map<String, Object> request) {
-        ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId,processEngineConfiguration );
+        String tenantId = null;
+        if(null != request) {
+            tenantId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TENANT_ID));
+        }
+        ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId,tenantId,processEngineConfiguration );
         processInstance.setStatus(InstanceStatus.aborted);
         String  reason = null;
         if (null != request){
@@ -163,7 +198,8 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
         processInstance.setReason(reason);
         processInstanceStorage.update(processInstance, processEngineConfiguration);
 
-        List<ExecutionInstance> executionInstanceList = executionInstanceStorage.findActiveExecution(processInstanceId, processEngineConfiguration);
+        List<ExecutionInstance> executionInstanceList = executionInstanceStorage.findActiveExecution(
+                processInstanceId, tenantId,processEngineConfiguration);
 
         if(null != executionInstanceList){
             for (ExecutionInstance executionInstance : executionInstanceList) {

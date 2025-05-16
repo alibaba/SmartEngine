@@ -34,8 +34,13 @@ public class DefaultActivityQueryService implements ActivityQueryService, LifeCy
 
     @Override
     public List<ActivityInstance> findAll(String processInstanceId) {
+        return this.findAll(processInstanceId, null);
+    }
 
-        return activityInstanceStorage.findAll(processInstanceId, processEngineConfiguration);
+    @Override
+    public List<ActivityInstance> findAll(String processInstanceId,String tenantId) {
+
+        return activityInstanceStorage.findAll(processInstanceId, tenantId,processEngineConfiguration);
     }
 
     private ProcessEngineConfiguration processEngineConfiguration;

@@ -8,6 +8,8 @@ import lombok.Data;
 public class BaseProcessEntity {
     protected Long id;
 
+    protected String tenantId;
+
     protected Date gmtCreate;
 
     protected Date gmtModified;

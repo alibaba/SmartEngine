@@ -15,6 +15,7 @@ public interface VariableQueryService {
      *
      */
      List<VariableInstance> findProcessInstanceVariableList(String processInstanceId);
+     List<VariableInstance> findProcessInstanceVariableList(String processInstanceId,String tenantId);
 
     /**
      *获取指定流程实例以及对应执行实例关联的变量数据.
@@ -23,4 +24,5 @@ public interface VariableQueryService {
      * @param executionInstanceId  可以从 @see {@link TaskInstance#getExecutionInstanceId()} 获取
      */
      List<VariableInstance> findList(String processInstanceId, String executionInstanceId);
+     List<VariableInstance> findList(String processInstanceId, String executionInstanceId,String tenantId);
 }

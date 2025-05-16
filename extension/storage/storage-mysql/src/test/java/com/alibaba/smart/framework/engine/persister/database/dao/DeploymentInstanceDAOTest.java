@@ -50,7 +50,7 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
         dao.insert(entity);
 
         Long id = entity.getId();
-        DeploymentInstanceEntity result = dao.findOne(id);
+        DeploymentInstanceEntity result = dao.findOne(id,null);
         Assert.assertNotNull(result);
     }
 
@@ -58,12 +58,12 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
     public void testDelete() {
         dao.insert(entity);
 
-        DeploymentInstanceEntity result = dao.findOne(entity.getId());
+        DeploymentInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertNotNull(result);
 
-        dao.delete(entity.getId());
+        dao.delete(entity.getId(),null);
 
-        result = dao.findOne(entity.getId());
+        result = dao.findOne(entity.getId(),null);
         Assert.assertNull(result);
     }
 
@@ -75,7 +75,7 @@ public class DeploymentInstanceDAOTest extends BaseElementTest {
 
         dao.update( entity);
 
-        DeploymentInstanceEntity result = dao.findOne(entity.getId());
+        DeploymentInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertNotNull(result);
 
 

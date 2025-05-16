@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
  */
 public interface ExecutionQueryService {
 
+    List<ExecutionInstance> findActiveExecutionList(String processInstanceId,String tenantId);
     List<ExecutionInstance> findActiveExecutionList(String processInstanceId);
 
     /**
@@ -19,5 +20,7 @@ public interface ExecutionQueryService {
      * @return
      */
     List<ExecutionInstance> findAll(String processInstanceId);
+
+    List<ExecutionInstance> findAll(String processInstanceId,String tenantId);
 
 }

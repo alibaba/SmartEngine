@@ -71,8 +71,11 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
     @Override
     public ProcessInstance complete(String taskId, Map<String, Object> request, Map<String, Object> response) {
 
-
-        TaskInstance taskInstance = taskInstanceStorage.find(taskId,processEngineConfiguration );
+        String tenantId = null;
+        if(null != request) {
+            tenantId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TENANT_ID));
+        }
+        TaskInstance taskInstance = taskInstanceStorage.find(taskId,tenantId,processEngineConfiguration );
         MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
             request, taskInstanceStorage, processEngineConfiguration);
 
@@ -99,6 +102,10 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
     @Override
     public void transfer(String taskId, String fromUserId, String toUserId) {
+        transfer(taskId,fromUserId,toUserId,null);
+    }
+    @Override
+    public void transfer(String taskId, String fromUserId, String toUserId,String tenantId) {
 
         ConfigurationOption configurationOption = processEngineConfiguration
             .getOptionContainer().get(ConfigurationOption.TRANSFER_ENABLED_OPTION.getId());
@@ -108,7 +115,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         }
 
 
-        List<TaskAssigneeInstance> taskAssigneeInstanceList = taskAssigneeStorage.findList(taskId,processEngineConfiguration );
+        List<TaskAssigneeInstance> taskAssigneeInstanceList = taskAssigneeStorage.findList(taskId,tenantId,processEngineConfiguration );
 
         if(CollectionUtil.isEmpty(taskAssigneeInstanceList)){
             throw new ValidationException("taskAssigneeInstanceList can't be empty for taskId:"+taskId);
@@ -133,7 +140,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
             throw new ValidationException("Illegal  AssigneeType :"+matchedTaskAssigneeInstance.getAssigneeType());
         }
 
-        taskAssigneeStorage.update(matchedTaskAssigneeInstance.getInstanceId(),toUserId,processEngineConfiguration);
+        taskAssigneeStorage.update(matchedTaskAssigneeInstance.getInstanceId(),toUserId,tenantId,processEngineConfiguration);
 
     }
 
@@ -183,12 +190,13 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
 
     @Override
-    public void addTaskAssigneeCandidate(String taskId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
+    public void addTaskAssigneeCandidate(String taskId,String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
 
-        TaskInstance taskInstance = taskInstanceStorage.find(taskId,processEngineConfiguration );
+        TaskInstance taskInstance = taskInstanceStorage.find(taskId,tenantId,processEngineConfiguration );
 
         TaskAssigneeInstance taskAssigneeInstance = new DefaultTaskAssigneeInstance();
 
+        taskAssigneeInstance.setTenantId(tenantId);
         taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
         taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
 
@@ -207,10 +215,10 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
     }
 
     @Override
-    public void removeTaskAssigneeCandidate(String taskId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
+    public void removeTaskAssigneeCandidate(String taskId,String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
 
 
-        List<TaskAssigneeInstance> taskAssigneeInstanceList = taskAssigneeStorage.findList(taskId,processEngineConfiguration );
+        List<TaskAssigneeInstance> taskAssigneeInstanceList = taskAssigneeStorage.findList(taskId,tenantId,processEngineConfiguration );
 
         boolean found = false;
         TaskAssigneeInstance matchedTaskAssigneeInstance = null;
@@ -229,7 +237,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
                 throw new ValidationException("No taskAssigneeCandidateInstance found for "+taskAssigneeCandidateInstance);
             }
 
-            taskAssigneeStorage.remove(matchedTaskAssigneeInstance.getInstanceId(),processEngineConfiguration);
+            taskAssigneeStorage.remove(matchedTaskAssigneeInstance.getInstanceId(),tenantId,processEngineConfiguration);
 
 
         }
@@ -240,7 +248,11 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
     @Override
     public void markDone(String taskId, Map<String, Object> request) {
 
-        TaskInstance taskInstance = taskInstanceStorage.find(taskId,processEngineConfiguration );
+        String tenantId = null;
+        if(null != request) {
+            tenantId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TENANT_ID));
+        }
+        TaskInstance taskInstance = taskInstanceStorage.find(taskId,tenantId,processEngineConfiguration );
         MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
             request, taskInstanceStorage, processEngineConfiguration);
 

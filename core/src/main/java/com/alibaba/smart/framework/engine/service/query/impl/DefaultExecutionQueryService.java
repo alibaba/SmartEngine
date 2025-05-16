@@ -34,17 +34,24 @@ public class DefaultExecutionQueryService implements ExecutionQueryService, Life
 
     }
 
+    @Override
+    public List<ExecutionInstance> findActiveExecutionList(String processInstanceId,String tenantId) {
+        return executionInstanceStorage.findActiveExecution(processInstanceId,tenantId, processEngineConfiguration);
+    }
 
     @Override
     public List<ExecutionInstance> findActiveExecutionList(String processInstanceId) {
-
-
-        return executionInstanceStorage.findActiveExecution(processInstanceId, processEngineConfiguration);
+        return this.findActiveExecutionList(processInstanceId,null);
     }
 
     @Override
     public List<ExecutionInstance> findAll(String processInstanceId) {
-        return executionInstanceStorage.findAll(processInstanceId, processEngineConfiguration);
+        return executionInstanceStorage.findAll(processInstanceId,null, processEngineConfiguration);
+    }
+
+    @Override
+    public List<ExecutionInstance> findAll(String processInstanceId,String tenantId) {
+        return executionInstanceStorage.findAll(processInstanceId,tenantId, processEngineConfiguration);
     }
 
     private ProcessEngineConfiguration processEngineConfiguration;

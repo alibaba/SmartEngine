@@ -7,6 +7,10 @@ import java.io.Serializable;
  */
 public interface Instance extends Serializable {
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     /**
      * 获取实例ID
      *

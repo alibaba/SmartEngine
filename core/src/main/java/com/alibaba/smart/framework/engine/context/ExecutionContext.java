@@ -91,6 +91,10 @@ public interface ExecutionContext {
     void setBlockId(String blockId);
 
 
+     String getTenantId();
+
+     void setTenantId(String tenantId);
+
 
     void setInnerExtra(Map<String, Object> response);
 

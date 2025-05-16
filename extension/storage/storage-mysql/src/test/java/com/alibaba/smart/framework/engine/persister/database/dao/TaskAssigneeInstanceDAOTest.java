@@ -69,7 +69,7 @@ public class TaskAssigneeInstanceDAOTest extends BaseElementTest {
     public void testFindOne() {
         taskAssigneeDAO.insert(entityOne);
 
-        TaskAssigneeEntity result = taskAssigneeDAO.findOne(entityOne.getId());
+        TaskAssigneeEntity result = taskAssigneeDAO.findOne(entityOne.getId(),null);
         Assert.assertNotNull(result);
     }
 
@@ -77,12 +77,12 @@ public class TaskAssigneeInstanceDAOTest extends BaseElementTest {
     public void testDelete() {
         taskAssigneeDAO.insert(entityOne);
 
-        TaskAssigneeEntity result = taskAssigneeDAO.findOne(entityOne.getId());
+        TaskAssigneeEntity result = taskAssigneeDAO.findOne(entityOne.getId(),null);
         Assert.assertNotNull(result);
 
-        taskAssigneeDAO.delete(entityOne.getId());
+        taskAssigneeDAO.delete(entityOne.getId(),null);
 
-        result = taskAssigneeDAO.findOne(entityOne.getId());
+        result = taskAssigneeDAO.findOne(entityOne.getId(),null);
         Assert.assertNull(result);
     }
 
@@ -102,8 +102,8 @@ public class TaskAssigneeInstanceDAOTest extends BaseElementTest {
         taskAssigneeDAO.insert(entityTwo);
         taskAssigneeDAO.insert(entityThree);
 
-        Assert.assertEquals(2,taskAssigneeDAO.findList(2000001L).size());
-        Assert.assertEquals(1,taskAssigneeDAO.findList(2000002L).size());
+        Assert.assertEquals(2,taskAssigneeDAO.findList(2000001L,null).size());
+        Assert.assertEquals(1,taskAssigneeDAO.findList(2000002L,null).size());
     }
 
     @Test
@@ -113,7 +113,7 @@ public class TaskAssigneeInstanceDAOTest extends BaseElementTest {
         taskAssigneeDAO.insert(entityThree);
 
         Long[] array = {2000001L,2000002L};
-        List<TaskAssigneeEntity> entityList = taskAssigneeDAO.findListForInstanceList(Arrays.asList(array));
+        List<TaskAssigneeEntity> entityList = taskAssigneeDAO.findListForInstanceList(Arrays.asList(array),null);
 
         Assert.assertEquals(3,entityList.size());
     }

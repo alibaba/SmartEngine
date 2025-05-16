@@ -11,6 +11,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultDeploymentInstance;
 import com.alibaba.smart.framework.engine.instance.storage.DeploymentInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.DeploymentInstance;
+import com.alibaba.smart.framework.engine.persister.database.builder.DeploymentInstanceBuilder;
 import com.alibaba.smart.framework.engine.persister.database.dao.DeploymentInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam;
@@ -24,14 +25,12 @@ import org.springframework.util.CollectionUtils;
  * @date 2017/09/22
  */
 @ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = DeploymentInstanceStorage.class)
-
 public class RelationshipDatabaseDeploymentInstanceStorage implements DeploymentInstanceStorage {
-
 
     @Override
     public DeploymentInstance insert(DeploymentInstance deploymentInstance,
                                      ProcessEngineConfiguration processEngineConfiguration) {
-        DeploymentInstanceEntity entity = convertByInstance(deploymentInstance);
+        DeploymentInstanceEntity entity = DeploymentInstanceBuilder.convertByInstance(deploymentInstance);
         DeploymentInstanceDAO deploymentInstanceDAO = (DeploymentInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("deploymentInstanceDAO");
 
         deploymentInstanceDAO.insert(entity);
@@ -43,7 +42,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
             entityId = Long.valueOf(deploymentInstance.getInstanceId());
         }
 
-        deploymentInstance = findById(entityId.toString(), processEngineConfiguration);
+        deploymentInstance = findById(entityId.toString(),deploymentInstance.getTenantId(), processEngineConfiguration);
 
         return deploymentInstance;
     }
@@ -51,27 +50,27 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     @Override
     public DeploymentInstance update(DeploymentInstance deploymentInstance,
                                      ProcessEngineConfiguration processEngineConfiguration) {
-        DeploymentInstanceEntity entity = convertByInstance(deploymentInstance);
+        DeploymentInstanceEntity entity = DeploymentInstanceBuilder.convertByInstance(deploymentInstance);
         DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("deploymentInstanceDAO");
 
         deploymentnstanceDAO.update(entity);
-        deploymentInstance = findById(entity.getId().toString(), processEngineConfiguration);
+        deploymentInstance = findById(entity.getId().toString(),deploymentInstance.getTenantId(), processEngineConfiguration);
         return deploymentInstance;
     }
 
     @Override
-    public DeploymentInstance findById(String id,
+    public DeploymentInstance findById(String id,String tenantId,
                                        ProcessEngineConfiguration processEngineConfiguration) {
         if (null == id){
             return null;
         }
         DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("deploymentInstanceDAO");
 
-        DeploymentInstanceEntity entity = deploymentnstanceDAO.findOne(Long.valueOf(id));
+        DeploymentInstanceEntity entity = deploymentnstanceDAO.findOne(Long.valueOf(id),tenantId);
         if (entity == null) {
             return null;
         }
-        return convertByEntity(entity);
+        return DeploymentInstanceBuilder.convertByEntity(entity);
     }
 
     @Override
@@ -84,7 +83,7 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
         if (!CollectionUtils.isEmpty(deploymentInstanceEntities)) {
             List<DeploymentInstance> deploymentInstances = new ArrayList<DeploymentInstance>(deploymentInstanceEntities.size());
             for (DeploymentInstanceEntity entity : deploymentInstanceEntities) {
-                DeploymentInstance instance = convertByEntity(entity);
+                DeploymentInstance instance = DeploymentInstanceBuilder.convertByEntity(entity);
                 deploymentInstances.add(instance);
             }
             return deploymentInstances;
@@ -101,71 +100,11 @@ public class RelationshipDatabaseDeploymentInstanceStorage implements Deployment
     }
 
     @Override
-    public void remove(String id,
+    public void remove(String id,String tenantId,
                        ProcessEngineConfiguration processEngineConfiguration) {
         DeploymentInstanceDAO deploymentnstanceDAO = (DeploymentInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("deploymentInstanceDAO");
 
-        deploymentnstanceDAO.delete(Long.valueOf(id));
+        deploymentnstanceDAO.delete(Long.valueOf(id),tenantId);
     }
 
-
-    //private DeploymentInstanceQueryParam convertParamByDeploymentInstance(DeploymentInstance deploymentInstance, Integer pageOffset, Integer pageSize){
-    //    DeploymentInstanceQueryParam param = new DeploymentInstanceQueryParam();
-    //    if (null != deploymentInstance) {
-    //        param.setDeploymentStatus(deploymentInstance.getDeploymentStatus());
-    //        param.setDeploymentUserId(deploymentInstance.getDeploymentUserId());
-    //        param.setLogicStatus(deploymentInstance.getLogicStatus());
-    //        param.setProcessDefinitionName(deploymentInstance.getProcessDefinitionName());
-    //        param.setProcessDefinitionType(deploymentInstance.getProcessDefinitionType());
-    //        param.setProcessDefinitionVersion(deploymentInstance.getProcessDefinitionVersion());
-    //        param.setId(deploymentInstance.getInstanceId());
-    //    }
-    //    param.setPageOffset(pageOffset);
-    //    param.setPageSize(pageSize);
-    //    return param;
-    //}
-
-    private DeploymentInstance convertByEntity(DeploymentInstanceEntity entity) {
-        DeploymentInstance deploymentInstance = new DefaultDeploymentInstance();
-
-        deploymentInstance.setInstanceId(entity.getId().toString());
-        deploymentInstance.setLogicStatus(entity.getLogicStatus());
-        deploymentInstance.setDeploymentStatus(entity.getDeploymentStatus());
-        deploymentInstance.setDeploymentUserId(entity.getDeploymentUserId());
-        deploymentInstance.setProcessDefinitionContent(entity.getProcessDefinitionContent());
-        deploymentInstance.setProcessDefinitionDesc(entity.getProcessDefinitionDesc());
-        deploymentInstance.setProcessDefinitionName(entity.getProcessDefinitionName());
-        deploymentInstance.setProcessDefinitionType(entity.getProcessDefinitionType());
-        deploymentInstance.setProcessDefinitionCode(entity.getProcessDefinitionCode());
-        deploymentInstance.setProcessDefinitionId(entity.getProcessDefinitionId());
-        deploymentInstance.setProcessDefinitionVersion(entity.getProcessDefinitionVersion());
-        deploymentInstance.setStartTime(entity.getGmtCreate());
-        deploymentInstance.setCompleteTime(entity.getGmtModified());
-        return deploymentInstance;
-    }
-
-    private DeploymentInstanceEntity convertByInstance(DeploymentInstance deploymentInstance) {
-        DeploymentInstanceEntity deploymentInstanceEntity = new DeploymentInstanceEntity();
-        deploymentInstanceEntity.setLogicStatus(deploymentInstance.getLogicStatus());
-        deploymentInstanceEntity.setDeploymentStatus(deploymentInstance.getDeploymentStatus());
-        deploymentInstanceEntity.setDeploymentUserId(deploymentInstance.getDeploymentUserId());
-        deploymentInstanceEntity.setProcessDefinitionContent(deploymentInstance.getProcessDefinitionContent());
-        deploymentInstanceEntity.setProcessDefinitionDesc(deploymentInstance.getProcessDefinitionDesc());
-        deploymentInstanceEntity.setProcessDefinitionName(deploymentInstance.getProcessDefinitionName());
-        deploymentInstanceEntity.setProcessDefinitionType(deploymentInstance.getProcessDefinitionType());
-        deploymentInstanceEntity.setProcessDefinitionCode(deploymentInstance.getProcessDefinitionCode());
-        deploymentInstanceEntity.setProcessDefinitionId(deploymentInstance.getProcessDefinitionId());
-        deploymentInstanceEntity.setProcessDefinitionVersion(deploymentInstance.getProcessDefinitionVersion());
-        String deploymentInstanceInstanceId = deploymentInstance.getInstanceId();
-
-        if(null != deploymentInstanceInstanceId){
-            deploymentInstanceEntity.setId(Long.valueOf(deploymentInstanceInstanceId));
-        }
-
-        Date currentDate = DateUtil.getCurrentDate();
-        deploymentInstanceEntity.setGmtCreate(currentDate);
-        deploymentInstanceEntity.setGmtModified(currentDate);
-
-        return deploymentInstanceEntity;
-    }
 }

@@ -10,10 +10,10 @@ import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryPa
 
 public interface TaskAssigneeStorage {
 
-    List<TaskAssigneeInstance> findList(String taskInstanceId,
+    List<TaskAssigneeInstance> findList(String taskInstanceId,String tenantId,
                                         ProcessEngineConfiguration processEngineConfiguration);
 
-    Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,
+    Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,String tenantId,
                                                                        ProcessEngineConfiguration processEngineConfiguration) ;
 
 
@@ -26,16 +26,16 @@ public interface TaskAssigneeStorage {
     TaskAssigneeInstance insert(TaskAssigneeInstance taskAssigneeInstance,
                                 ProcessEngineConfiguration processEngineConfiguration);
 
-    TaskAssigneeInstance update(String taskAssigneeInstanceId, String assigneeId,
+    TaskAssigneeInstance update(String taskAssigneeInstanceId, String assigneeId,String tenantId,
                                 ProcessEngineConfiguration processEngineConfiguration);
 
-    TaskAssigneeInstance findOne(String taskAssigneeId,
+    TaskAssigneeInstance findOne(String taskAssigneeId,String tenantId,
                                  ProcessEngineConfiguration processEngineConfiguration);
 
-    void remove(String taskAssigneeInstanceId,
+    void remove(String taskAssigneeInstanceId,String tenantId,
                 ProcessEngineConfiguration processEngineConfiguration);
 
-    void removeAll(String taskInstanceId,
+    void removeAll(String taskInstanceId,String tenantId,
                    ProcessEngineConfiguration processEngineConfiguration);
 
 }

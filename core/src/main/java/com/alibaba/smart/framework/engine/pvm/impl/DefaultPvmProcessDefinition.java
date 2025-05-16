@@ -22,6 +22,8 @@ public class DefaultPvmProcessDefinition implements PvmProcessDefinition {
 
     private String version;
 
+    private String tenantId;
+
     private Map<String, PvmActivity> activities;
 
     private Map<String, PvmTransition> transitions;

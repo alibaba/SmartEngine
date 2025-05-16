@@ -19,13 +19,13 @@ public class CustomTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
 
     @Override
-    public List<TaskAssigneeInstance> findList(String taskInstanceId,
+    public List<TaskAssigneeInstance> findList(String taskInstanceId,String tenantId,
                                                ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 
     @Override
-    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,
+    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,String tenantId,
                                                                               ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
@@ -49,25 +49,25 @@ public class CustomTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
     }
 
     @Override
-    public TaskAssigneeInstance update(String taskAssigneeId, String assigneeId,
+    public TaskAssigneeInstance update(String taskAssigneeId, String assigneeId,String tenantId,
                                        ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 
     @Override
-    public TaskAssigneeInstance findOne(String taskAssigneeId,
+    public TaskAssigneeInstance findOne(String taskAssigneeId,String tenantId,
                                         ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 
     @Override
-    public void remove(String taskAssigneeId,
+    public void remove(String taskAssigneeId,String tenantId,
                        ProcessEngineConfiguration processEngineConfiguration) {
 
     }
 
     @Override
-    public void removeAll(String taskInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+    public void removeAll(String taskInstanceId,String tenantId, ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
 
     }

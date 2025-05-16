@@ -95,7 +95,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
                 IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
 
-                UserTaskBehaviorHelper.buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
+                UserTaskBehaviorHelper.buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator,processInstance.getTenantId());
 
                 taskInstance.setTaskAssigneeInstanceList(taskAssigneeInstanceList);
 
@@ -119,7 +119,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
 
                 for (TaskAssigneeCandidateInstance taskAssigneeCandidateInstance : allTaskAssigneeCandidateInstanceList) {
-                    UserTaskBehaviorHelper.buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
+                    UserTaskBehaviorHelper.buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator,processInstance.getTenantId());
                 }
 
                 //2.1 普通UserTask，只会创建出一个TI和可能多个TACI(TaskAssigneeCandidateInstance)
@@ -176,7 +176,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
         //重要前提: 在会签场景中,ei:ti:tai= 1:1:1 ,并且会签场景中, assigneeType 应该只能为 user.
         //1. 当前的数据库中所有的 totalExecutionInstanceList，包含所有状态的。 但是此时，由于顺序会签的问题，totalExecutionInstanceList 不再是所有的ExecutionList了。
         List<ExecutionInstance> totalExecutionInstanceList = executionInstanceStorage.findByActivityInstanceId(
-            activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),
+            activityInstance.getProcessInstanceId(), activityInstance.getInstanceId(),activityInstance.getTenantId(),
             this.processEngineConfiguration);
 
         // 针对顺序会签,这里totalInstanceCount 为目前已经创建出来的count,未来还会补偿新增; 但是针对非顺序会签,则是最终的全量,不会再变.

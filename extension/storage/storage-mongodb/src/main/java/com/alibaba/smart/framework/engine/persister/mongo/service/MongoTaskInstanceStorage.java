@@ -216,7 +216,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
 
 
     @Override
-    public void remove(String taskInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+    public void remove(String taskInstanceId, String tenantId,ProcessEngineConfiguration processEngineConfiguration) {
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
@@ -306,7 +306,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
 
 
     @Override
-    public TaskInstance find(String instanceId, ProcessEngineConfiguration processEngineConfiguration) {
+    public TaskInstance find(String instanceId, String tenantId,ProcessEngineConfiguration processEngineConfiguration) {
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
@@ -370,7 +370,7 @@ public class MongoTaskInstanceStorage implements TaskInstanceStorage {
 
         TaskAssigneeStorage  taskAssigneeStorage =  processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,TaskAssigneeStorage.class);
 
-        taskAssigneeStorage.removeAll(taskInstance.getInstanceId(),processEngineConfiguration);
+        taskAssigneeStorage.removeAll(taskInstance.getInstanceId(), taskInstance.getTenantId(), processEngineConfiguration);
 
         //TUNE
         return 1;

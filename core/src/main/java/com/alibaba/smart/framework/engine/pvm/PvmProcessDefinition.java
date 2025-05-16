@@ -12,6 +12,8 @@ public interface PvmProcessDefinition {
 
     String getVersion();
 
+    String getTenantId();
+
     String getIdAndVersion();
 
     void setIdAndVersion(String idAndVersion);

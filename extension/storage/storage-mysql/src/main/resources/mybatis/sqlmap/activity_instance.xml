@@ -5,19 +5,22 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,
-        process_instance_id,process_definition_id_and_version,process_definition_activity_id,customer_id
+        process_instance_id,process_definition_id_and_version,process_definition_activity_id,tenant_id
     </sql>
 
-    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity"  keyProperty="id">
-        insert into  se_activity_instance(<include refid="baseColumn"/>)
+    <insert id="insert"
+            parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity"
+            keyProperty="id">
+        insert into se_activity_instance(<include refid="baseColumn"/>)
         values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId}, #{processDefinitionIdAndVersion},
-        #{processDefinitionActivityId},'${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}')
+        #{processDefinitionActivityId},#{tenantId})
     </insert>
 
-    <delete id="delete" parameterType="long">
-        delete from  se_activity_instance
-               where id=#{id}
-               and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
+    <delete id="delete">
+        delete
+        from se_activity_instance
+        where id = #{id}
+          <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </delete>
 
     <!--     <update id="update" parameterType="ActivityInstanceEntity">
@@ -30,18 +33,22 @@
             where id=#{id}
         </update> -->
 
-    <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity">
+    <select id="findOne"
+            resultType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from  se_activity_instance where id=#{id}
-        and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
+        from se_activity_instance
+        where id=#{id}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </select>
 
-    <select id="findAllActivity" resultType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity">
+    <select id="findAllActivity"
+            resultType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from  se_activity_instance where process_instance_id=#{processInstanceId}
-        and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
+        from se_activity_instance
+        where process_instance_id=#{processInstanceId}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
         order by gmt_modified desc
 
     </select>

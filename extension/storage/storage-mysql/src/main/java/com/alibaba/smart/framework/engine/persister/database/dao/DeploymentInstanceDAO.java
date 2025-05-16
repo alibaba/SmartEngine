@@ -16,13 +16,13 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DeploymentInstanceDAO {
-    DeploymentInstanceEntity findOne(@Param("id") Long id);
+    DeploymentInstanceEntity findOne(@Param("id") Long id, @Param("tenantId") String tenantId);
 
     List<DeploymentInstanceEntity> findByPage(DeploymentInstanceQueryParam param);
 
     void insert(DeploymentInstanceEntity deploymentInstanceEntity);
 
-    int delete(Long id);
+    int delete( @Param("id")Long id, @Param("tenantId") String tenantId);
 
     int update(DeploymentInstanceEntity taskAssigneeEntity);
 

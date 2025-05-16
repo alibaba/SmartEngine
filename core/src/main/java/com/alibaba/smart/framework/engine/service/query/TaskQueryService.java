@@ -32,14 +32,10 @@ public interface TaskQueryService {
      * @return
      */
     List<TaskInstance> findAllPendingTaskList(String processInstanceId);
+    List<TaskInstance> findAllPendingTaskList(String processInstanceId,String tenantId);
 
-
-
-
-
-
-    TaskInstance findOne(String taskInstanceId );
-
+    TaskInstance findOne(String taskInstanceId);
+    TaskInstance findOne(String taskInstanceId,String tenantId);
 
     /**
      * 扩展方法，可用于典型的审批场景等等，取决于tag的值是什么。tag 任意非null值，可以为 appproved,rejected 等等。

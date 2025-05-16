@@ -14,6 +14,8 @@ public interface ProcessQueryService {
 
     ProcessInstance findById(String processInstanceId);
 
+    ProcessInstance findById(String processInstanceId,String tenantId);
+
     List<ProcessInstance> findList(ProcessInstanceQueryParam processInstanceQueryParam);
 
     Long count(ProcessInstanceQueryParam processInstanceQueryParam);

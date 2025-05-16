@@ -37,7 +37,8 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         String  processDefinitionContent = createDeploymentCommand.getProcessDefinitionContent();
 
-        ProcessDefinition processDefinition =  repositoryCommandService.deployWithUTF8Content(processDefinitionContent).getFirstProcessDefinition();
+        ProcessDefinition processDefinition =  repositoryCommandService
+                .deployWithUTF8Content(processDefinitionContent, createDeploymentCommand.getTenantId()).getFirstProcessDefinition();
 
         DeploymentInstance deploymentInstance  = new DefaultDeploymentInstance();
 
@@ -51,11 +52,13 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         deploymentInstance.setProcessDefinitionDesc(createDeploymentCommand.getProcessDefinitionDesc());
         deploymentInstance.setProcessDefinitionType(createDeploymentCommand.getProcessDefinitionType());
         deploymentInstance.setProcessDefinitionCode(createDeploymentCommand.getProcessDefinitionCode());
+        deploymentInstance.setTenantId(createDeploymentCommand.getTenantId());
 
         deploymentInstance.setDeploymentUserId(createDeploymentCommand.getDeploymentUserId());
 
         deploymentInstance.setDeploymentStatus(createDeploymentCommand.getDeploymentStatus());
         deploymentInstance.setLogicStatus(LogicStatusConstant.VALID);
+
 
         deploymentInstance = deploymentInstanceStorage.insert(deploymentInstance, smartEngine.getProcessEngineConfiguration());
 
@@ -67,7 +70,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         String   deployInstanceId =  updateDeploymentCommand.getDeployInstanceId();
         DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deployInstanceId,
-            processEngineConfiguration);
+                updateDeploymentCommand.getTenantId(),processEngineConfiguration);
 
         setUpdateValue(currentDeploymentInstance,updateDeploymentCommand);
 
@@ -82,7 +85,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
             String processDefinitionContent = updateDeploymentCommand.getProcessDefinitionContent();
             if(StringUtil.isNotEmpty(processDefinitionContent)){
                 RepositoryCommandService repositoryCommandService =  processEngineConfiguration.getSmartEngine().getRepositoryCommandService();
-                repositoryCommandService.deployWithUTF8Content(processDefinitionContent);
+                repositoryCommandService.deployWithUTF8Content(processDefinitionContent,updateDeploymentCommand.getTenantId());
 
             }
         }
@@ -109,11 +112,14 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         }
     }
 
+
     @Override
     public void inactivateDeploymentInstance(String deploymentInstanceId) {
-
-
-        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,
+        inactivateDeploymentInstance(deploymentInstanceId,null);
+    }
+    @Override
+    public void inactivateDeploymentInstance(String deploymentInstanceId,String tenantId) {
+        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,tenantId,
             processEngineConfiguration);
 
         if(null == currentDeploymentInstance){
@@ -126,12 +132,17 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         //processDefinitionContainer.uninstall(currentDeploymentInstance.getProcessDefinitionId(),currentDeploymentInstance.getProcessDefinitionVersion());
     }
 
+
     @Override
-    public void activateDeploymentInstance(String deploymentInstanceId) {
+    public void activateDeploymentInstance(String deploymentInstanceId){
+        activateDeploymentInstance(deploymentInstanceId,null);
+    }
+    @Override
+    public void activateDeploymentInstance(String deploymentInstanceId,String tenantId) {
 
         RepositoryCommandService repositoryCommandService =  processEngineConfiguration.getSmartEngine().getRepositoryCommandService();
 
-        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,
+        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,tenantId,
             processEngineConfiguration);
 
         if(null == currentDeploymentInstance){
@@ -141,14 +152,19 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.ACTIVE);
         deploymentInstanceStorage.update(currentDeploymentInstance, processEngineConfiguration);
 
-        repositoryCommandService.deployWithUTF8Content(currentDeploymentInstance.getProcessDefinitionContent());
+        repositoryCommandService.deployWithUTF8Content(currentDeploymentInstance.getProcessDefinitionContent(),currentDeploymentInstance.getTenantId());
 
     }
 
     @Override
     public void deleteDeploymentInstanceLogically(String deploymentInstanceId) {
+        this.deleteDeploymentInstanceLogically(deploymentInstanceId,null);
+    }
 
-        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,
+    @Override
+    public void deleteDeploymentInstanceLogically(String deploymentInstanceId,String tenantId) {
+
+        DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deploymentInstanceId,tenantId,
             processEngineConfiguration);
 
         if(null == currentDeploymentInstance){
@@ -159,7 +175,8 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.DELETED);
         deploymentInstanceStorage.update(currentDeploymentInstance, processEngineConfiguration);
 
-        processDefinitionContainer.uninstall(currentDeploymentInstance.getProcessDefinitionId(),currentDeploymentInstance.getProcessDefinitionVersion());
+        processDefinitionContainer.uninstall(currentDeploymentInstance.getProcessDefinitionId(),
+                currentDeploymentInstance.getProcessDefinitionVersion(),currentDeploymentInstance.getTenantId());
 
     }
 

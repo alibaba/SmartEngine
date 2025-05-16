@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.context.factory.ContextFactory;
 import com.alibaba.smart.framework.engine.context.impl.DefaultExecutionContext;
@@ -16,6 +17,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.util.ObjectUtil;
 
 /**
  * Created by ettear on 16-4-20.
@@ -52,6 +54,23 @@ public class DefaultContextFactory implements ContextFactory {
 
         executionContext.setActivityInstance(activityInstance);
         executionContext.setRequest(request);
+
+        //设置租户ID：processDefinition>processInstance>activityInstance
+        if (executionContext != null && executionContext.getTenantId() == null
+                && processDefinition != null && processDefinition.getTenantId() != null) {
+            executionContext.setTenantId(processDefinition.getTenantId());
+        }
+
+        if (executionContext != null && executionContext.getTenantId() == null
+                && processInstance != null && processInstance.getTenantId() != null) {
+            executionContext.setTenantId(processInstance.getTenantId());
+        }
+
+        if (executionContext != null && executionContext.getTenantId() == null
+                && activityInstance != null && activityInstance.getTenantId() != null) {
+            executionContext.setTenantId(activityInstance.getTenantId());
+        }
+
         return executionContext;
     }
 
@@ -76,6 +95,8 @@ public class DefaultContextFactory implements ContextFactory {
 
         subContext.setInnerExtra(parentContext.getInnerExtra());
 
+        subContext.setTenantId(parentContext.getTenantId());
+
         return subContext;
     }
 
@@ -84,6 +105,10 @@ public class DefaultContextFactory implements ContextFactory {
                                                  ProcessInstance processInstance, Map<String, Object> request,
                                                  Map<String, Object> response, ExecutionContext mayBeNullParentContext) {
 
+        String tenantId = null;
+        if(null != request) {
+            tenantId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TENANT_ID));
+        }
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
 
         ProcessDefinitionContainer processDefinitionContainer = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,
@@ -95,12 +120,11 @@ public class DefaultContextFactory implements ContextFactory {
         String processDefinitionVersion = processInstance.getProcessDefinitionVersion();
 
         ProcessDefinition processDefinition = processDefinitionContainer.getProcessDefinition(processDefinitionId,
-            processDefinitionVersion);
+            processDefinitionVersion,tenantId);
 
         if(null == processDefinition){
             throw new EngineException("No ProcessDefinition found for processDefinitionId : "+processDefinitionId+",processDefinitionVersion : " +processDefinitionVersion);
         }
-
 
         subContext.setProcessDefinition(processDefinition);
         subContext.setProcessEngineConfiguration(processEngineConfiguration);
@@ -108,11 +132,8 @@ public class DefaultContextFactory implements ContextFactory {
         subContext.setResponse(response);
         subContext.setProcessInstance(processInstance);
         subContext.setParent(mayBeNullParentContext);
-
-
+        subContext.setTenantId(tenantId);
 
         return subContext;
     }
-
-
 }

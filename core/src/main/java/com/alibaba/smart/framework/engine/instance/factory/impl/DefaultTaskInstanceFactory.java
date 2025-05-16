@@ -37,6 +37,7 @@ public class DefaultTaskInstanceFactory implements TaskInstanceFactory {
         taskInstance.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
         taskInstance.setStartTime(DateUtil.getCurrentDate());
         taskInstance.setStatus(TaskInstanceConstant.PENDING);
+        taskInstance.setTenantId(context.getTenantId());
 
         ProcessInstance processInstance = context.getProcessInstance();
         taskInstance.setProcessDefinitionType(processInstance.getProcessDefinitionType());

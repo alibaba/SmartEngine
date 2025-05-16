@@ -66,6 +66,11 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleHook 
 
     @Override
     public List<TaskInstance> findAllPendingTaskList(String processInstanceId) {
+        return this.findAllPendingTaskList(processInstanceId, null);
+    }
+
+    @Override
+    public List<TaskInstance> findAllPendingTaskList(String processInstanceId,String tenantId) {
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
         List<String> processInstanceIdList = new ArrayList<String>(2);
@@ -78,7 +83,12 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleHook 
 
     @Override
     public TaskInstance findOne(String taskInstanceId) {
-        TaskInstance taskInstance = taskInstanceStorage.find(taskInstanceId, processEngineConfiguration);
+        return this.findOne(taskInstanceId,null);
+    }
+
+    @Override
+    public TaskInstance findOne(String taskInstanceId,String tenantId) {
+        TaskInstance taskInstance = taskInstanceStorage.find(taskInstanceId,tenantId, processEngineConfiguration);
         return taskInstance;
     }
 

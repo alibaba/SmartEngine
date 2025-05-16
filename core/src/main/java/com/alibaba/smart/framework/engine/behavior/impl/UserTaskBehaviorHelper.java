@@ -89,10 +89,12 @@ public class UserTaskBehaviorHelper {
 
     static void buildTaskAssigneeInstance(TaskAssigneeCandidateInstance taskAssigneeCandidateInstance,
                                            List<TaskAssigneeInstance> taskAssigneeInstanceList,
-                                           IdGenerator idGenerator) {
+                                           IdGenerator idGenerator,String tenantId) {
         TaskAssigneeInstance taskAssigneeInstance = new DefaultTaskAssigneeInstance();
         taskAssigneeInstance.setAssigneeId(taskAssigneeCandidateInstance.getAssigneeId());
         taskAssigneeInstance.setAssigneeType(taskAssigneeCandidateInstance.getAssigneeType());
+        taskAssigneeInstance.setTenantId(tenantId);
+
         idGenerator.generate(taskAssigneeInstance);
         taskAssigneeInstanceList.add(taskAssigneeInstance);
     }
@@ -151,7 +153,9 @@ public class UserTaskBehaviorHelper {
         }
         TaskAssigneeStorage taskAssigneeStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(
             ExtensionConstant.COMMON, TaskAssigneeStorage.class);
-        Map<String, List<TaskAssigneeInstance>> taskAssigneeInstanceMap = taskAssigneeStorage.findAssigneeOfInstanceList(taskInstanceIdList, processEngineConfiguration);
+        Map<String, List<TaskAssigneeInstance>> taskAssigneeInstanceMap = taskAssigneeStorage.findAssigneeOfInstanceList(
+                taskInstanceIdList,executionInstance.getTenantId(), processEngineConfiguration);
+
         if(taskAssigneeInstanceMap != null) {
             for(List<TaskAssigneeInstance> instanceList : taskAssigneeInstanceMap.values()) {
                 if(CollectionUtil.isNotEmpty(instanceList)) {
@@ -177,7 +181,7 @@ public class UserTaskBehaviorHelper {
 
                 List<TaskAssigneeInstance> taskAssigneeInstanceList = new ArrayList<TaskAssigneeInstance>(2);
                 IdGenerator idGenerator = context.getProcessEngineConfiguration().getIdGenerator();
-                UserTaskBehaviorHelper.buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator);
+                UserTaskBehaviorHelper.buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator,activityInstance.getTenantId());
                 for(TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstanceList) {
                     taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
                     taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
@@ -201,7 +205,7 @@ public class UserTaskBehaviorHelper {
     public static void abortAndSetNeedPause(ExecutionContext context, ExecutionInstance executionInstance, SmartEngine smartEngine) {
         context.getProcessInstance().setStatus(InstanceStatus.aborted);
         smartEngine.getProcessCommandService().abort(executionInstance.getProcessInstanceId(),
-            InstanceStatus.aborted.name());
+            InstanceStatus.aborted.name(),executionInstance.getTenantId());
         context.setNeedPause(true);
     }
 

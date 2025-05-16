@@ -13,6 +13,7 @@ import com.alibaba.smart.framework.engine.service.param.query.DeploymentInstance
 public interface DeploymentQueryService {
 
     DeploymentInstance findById(String deploymentInstanceId);
+    DeploymentInstance findById(String deploymentInstanceId,String tenantId);
 
     List<DeploymentInstance> findList(DeploymentInstanceQueryParam deploymentInstanceQueryParam) ;
 

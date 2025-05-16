@@ -19,6 +19,8 @@ public interface ProcessCommandService {
 
     ProcessInstance start(String processDefinitionId, String processDefinitionVersion);
 
+    ProcessInstance start(String processDefinitionId, String processDefinitionVersion,String tenantId);
+
     ProcessInstance startWith(String deploymentInstanceId, String userId, Map<String, Object> request, Map<String, Object> response);
 
 
@@ -28,6 +30,8 @@ public interface ProcessCommandService {
 
     ProcessInstance startWith(String deploymentInstanceId);
 
+    ProcessInstance startWith(String deploymentInstanceId,String tenantId);
+
     /**
      * 将流程实例,其他活跃的执行实例,任务实例都 abort 掉. 并行网关下可能由其他活跃的实例,所以需要全局关闭.
      *
@@ -35,7 +39,9 @@ public interface ProcessCommandService {
      */
     void abort(String processInstanceId);
 
-    void abort(String processInstanceId, String reason);
+    void abort(String processInstanceId,String tenantId);
+
+    void abort(String processInstanceId, String reason,String tenantId);
 
     void abort(String processInstanceId, Map<String, Object> request);
 

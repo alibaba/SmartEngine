@@ -95,7 +95,7 @@ public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
     }
 
     @Override
-    public ProcessInstance findOne(String instanceId, ProcessEngineConfiguration processEngineConfiguration) {
+    public ProcessInstance findOne(String instanceId,String tenantId, ProcessEngineConfiguration processEngineConfiguration) {
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
@@ -137,7 +137,7 @@ public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
     }
 
     @Override
-    public ProcessInstance findOneForUpdate(String instanceId, ProcessEngineConfiguration processEngineConfiguration) {
+    public ProcessInstance findOneForUpdate(String instanceId,String tenantId, ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 
@@ -217,7 +217,7 @@ public class MongoProcessInstanceStorage  implements ProcessInstanceStorage {
     }
 
     @Override
-    public void remove(String processInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+    public void remove(String processInstanceId,String tenantId, ProcessEngineConfiguration processEngineConfiguration) {
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);

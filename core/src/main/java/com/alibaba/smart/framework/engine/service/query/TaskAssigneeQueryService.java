@@ -11,7 +11,9 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 public interface TaskAssigneeQueryService {
 
     List<TaskAssigneeInstance> findList(String taskInstanceId);
+    List<TaskAssigneeInstance> findList(String taskInstanceId,String tenantId);
 
     Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList);
+    Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,String tenantId);
 
 }

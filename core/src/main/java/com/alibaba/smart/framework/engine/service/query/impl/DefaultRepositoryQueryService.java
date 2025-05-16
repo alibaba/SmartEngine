@@ -25,7 +25,12 @@ public class DefaultRepositoryQueryService  implements RepositoryQueryService, L
 
     @Override
     public ProcessDefinition getCachedProcessDefinition(String processDefinitionId, String version) {
-        return processDefinitionContainer.getProcessDefinition(processDefinitionId,version);
+        return this.getCachedProcessDefinition(processDefinitionId, version, null);
+    }
+
+    @Override
+    public ProcessDefinition getCachedProcessDefinition(String processDefinitionId, String version,String tenantId) {
+        return processDefinitionContainer.getProcessDefinition(processDefinitionId,version,tenantId);
     }
 
     @Override

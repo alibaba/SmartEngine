@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ActivityInstanceDAO {
-    List<ActivityInstanceEntity> findAllActivity(Long processInstanceId);
+    List<ActivityInstanceEntity> findAllActivity(@Param("processInstanceId") Long processInstanceId,@Param("tenantId") String tenantId);
 
-    ActivityInstanceEntity findOne(@Param("id") Long id);
+    ActivityInstanceEntity findOne(@Param("id") Long id, @Param("tenantId") String tenantId);
 
 
     void insert(ActivityInstanceEntity activityInstanceEntity );
 
-    Long delete(@Param("id") Long id);
+    Long delete(@Param("id") Long id, @Param("tenantId") String tenantId);
 
 
 }

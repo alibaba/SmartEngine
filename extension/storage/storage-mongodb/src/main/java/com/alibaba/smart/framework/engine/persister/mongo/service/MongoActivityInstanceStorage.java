@@ -73,7 +73,7 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
     }
 
     @Override
-    public ActivityInstance find(String activityInstanceId,
+    public ActivityInstance find(String activityInstanceId,String tenantId,
                                  ProcessEngineConfiguration processEngineConfiguration) {
 
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
@@ -88,7 +88,7 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
     }
 
     @Override
-    public ActivityInstance findWithShading(String processInstanceId, String activityInstanceId,
+    public ActivityInstance findWithShading(String processInstanceId, String activityInstanceId,String tenantId,
             ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
@@ -104,7 +104,7 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
     }
 
     @Override
-    public void remove(String activityInstanceId,
+    public void remove(String activityInstanceId,String tenantId,
                        ProcessEngineConfiguration processEngineConfiguration) {
 
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
@@ -118,7 +118,7 @@ public class MongoActivityInstanceStorage implements ActivityInstanceStorage {
     }
 
     @Override
-    public List<ActivityInstance> findAll(String processInstanceId,
+    public List<ActivityInstance> findAll(String processInstanceId,String tenantId,
                                           ProcessEngineConfiguration processEngineConfiguration) {
 
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);

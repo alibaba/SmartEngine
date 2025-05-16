@@ -14,21 +14,21 @@ public interface ExecutionInstanceStorage {
                 ProcessEngineConfiguration processEngineConfiguration);
 
 
-    ExecutionInstance find(String executionInstanceId,
+    ExecutionInstance find(String executionInstanceId,String tenantId,
                            ProcessEngineConfiguration processEngineConfiguration);
 
-    ExecutionInstance findWithShading(String processInstanceId, String executionInstanceId,
+    ExecutionInstance findWithShading(String processInstanceId, String executionInstanceId,String tenantId,
             ProcessEngineConfiguration processEngineConfiguration);
 
-    void remove(String executionInstanceId,
+    void remove(String executionInstanceId,String tenantId,
                 ProcessEngineConfiguration processEngineConfiguration);
 
-    List<ExecutionInstance> findActiveExecution(String processInstanceId,
+    List<ExecutionInstance> findActiveExecution(String processInstanceId,String tenantId,
                                                 ProcessEngineConfiguration processEngineConfiguration);
 
-    List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId,
+    List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId,String tenantId,
                                                      ProcessEngineConfiguration processEngineConfiguration);
 
-    List<ExecutionInstance> findAll(String processInstanceId,
+    List<ExecutionInstance> findAll(String processInstanceId,String tenantId,
                                    ProcessEngineConfiguration processEngineConfiguration);
 }

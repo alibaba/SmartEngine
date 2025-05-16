@@ -5,22 +5,25 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,process_instance_id,
-        task_instance_id,assignee_id,assignee_type,customer_id
+        task_instance_id,assignee_id,assignee_type,tenant_id
     </sql>
 
-    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity"   keyProperty="id">
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity"
+            keyProperty="id">
         insert into se_task_assignee_instance(<include refid="baseColumn"/>)
         values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId},
         #{taskInstanceId},#{assigneeId},#{assigneeType},
-        '${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}')
+        #{tenantId})
     </insert>
 
     <delete id="delete" parameterType="long">
-        delete from se_task_assignee_instance where id=#{id}
-                                                and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
+        delete
+        from se_task_assignee_instance
+        where id = #{id}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </delete>
 
-    <update id="update" >
+    <update id="update">
         update se_task_assignee_instance
         <set>
             gmt_modified=now(6)
@@ -28,32 +31,35 @@
             <!--<if test="assigneeType != null">,assignee_type = #{assigneeType}</if>-->
         </set>
         where id=#{id}
-        and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </update>
 
     <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity">
         select
         <include refid="baseColumn"/>
-        from se_task_assignee_instance where id=#{id}
-        and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
+        from se_task_assignee_instance
+        where id=#{id}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </select>
 
     <select id="findList" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity">
         select
         <include refid="baseColumn"/>
-        from se_task_assignee_instance where task_instance_id=#{taskInstanceId}
-        and customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
+        from se_task_assignee_instance
+        where task_instance_id=#{taskInstanceId}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </select>
 
-    <select id="findListForInstanceList" parameterType="java.util.List" resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity">
+    <select id="findListForInstanceList" parameterType="java.util.List"
+            resultType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity">
         select
         <include refid="baseColumn"/>
-        from se_task_assignee_instance where
-         customer_id='${@com.alibaba.smart.framework.engine.persister.common.utils.CustomerTrace@getCustomerId()}'
-         and task_instance_id in
-        <foreach item="item" index="index" separator="," open="(" close=")"  collection="list">
+        from se_task_assignee_instance
+        where task_instance_id in
+        <foreach item="item" index="index" separator="," open="(" close=")" collection="taskInstanceIdList">
             #{item}
         </foreach>
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </select>
 
 </mapper>
