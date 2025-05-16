@@ -44,7 +44,7 @@ public class VariableInstanceDAOTest extends BaseElementTest {
     public void testFindOne() {
         dao.insert(entity);
 
-        VariableInstanceEntity result = dao.findOne(entity.getId());
+        VariableInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertNotNull(result);
         Assert.assertEquals("testKey", result.getFieldKey());
         Assert.assertEquals("testValue", result.getFieldStringValue());
@@ -54,7 +54,7 @@ public class VariableInstanceDAOTest extends BaseElementTest {
     public void testFindList() {
         dao.insert(entity);
 
-        List<VariableInstanceEntity> result = dao.findList(entity.getProcessInstanceId(), entity.getExecutionInstanceId());
+        List<VariableInstanceEntity> result = dao.findList(entity.getProcessInstanceId(), entity.getExecutionInstanceId(),null);
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
         Assert.assertEquals("testKey", result.get(0).getFieldKey());
@@ -64,12 +64,12 @@ public class VariableInstanceDAOTest extends BaseElementTest {
     public void testDelete() {
         dao.insert(entity);
 
-        VariableInstanceEntity result = dao.findOne(entity.getId());
+        VariableInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertNotNull(result);
 
-        dao.delete(entity.getId());
+        dao.delete(entity.getId(),null);
 
-        result = dao.findOne(entity.getId());
+        result = dao.findOne(entity.getId(),null);
         Assert.assertNull(result);
     }
 
@@ -81,7 +81,7 @@ public class VariableInstanceDAOTest extends BaseElementTest {
 
         dao.update(entity);
 
-        VariableInstanceEntity result = dao.findOne(entity.getId());
+        VariableInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertNotNull(result);
         Assert.assertEquals("newValue", result.getFieldStringValue());
     }
@@ -94,12 +94,12 @@ public class VariableInstanceDAOTest extends BaseElementTest {
         entity.setFieldStringValue(null);
         dao.insert(entity);
         
-        VariableInstanceEntity result = dao.findOne(entity.getId());
+        VariableInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertEquals(123L, result.getFieldLongValue().longValue());
 
         // Test Double value
         entity = new VariableInstanceEntity();
-        entity.setId(System.currentTimeMillis());
+        entity.setId(System.currentTimeMillis() + (int) (Math.random() * 1000) + (int) (Math.random() * 1000));
         entity.setGmtCreate(DateUtil.getCurrentDate());
         entity.setGmtModified(DateUtil.getCurrentDate());
         entity.setProcessInstanceId(222L);
@@ -110,7 +110,7 @@ public class VariableInstanceDAOTest extends BaseElementTest {
         
         dao.insert(entity);
         
-        result = dao.findOne(entity.getId());
+        result = dao.findOne(entity.getId(),null);
         Assert.assertEquals(123.45, result.getFieldDoubleValue(), 0.001);
     }
 }

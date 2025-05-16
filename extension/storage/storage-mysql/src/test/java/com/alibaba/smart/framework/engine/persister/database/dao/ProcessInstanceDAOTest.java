@@ -52,7 +52,7 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
     public void testFindOne() {
         dao.insert(entity);
 
-        ProcessInstanceEntity result = dao.findOne(entity.getId());
+        ProcessInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertEquals("title",result.getTitle());
         Assert.assertEquals("tag",result.getTag());
         Assert.assertNotNull(result);
@@ -100,23 +100,23 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
     public void testDelete() {
         dao.insert(entity);
 
-        ProcessInstanceEntity result = dao.findOne(entity.getId());
+        ProcessInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertNotNull(result);
 
         // 返回删除行数,去掉findAll 接口
-        dao.delete(entity.getId());
+        dao.delete(entity.getId(),null);
 
-        result = dao.findOne(entity.getId());
+        result = dao.findOne(entity.getId(),null);
         Assert.assertNull(result);
 
-        result = dao.findOneForUpdate(entity.getId());
+        result = dao.findOneForUpdate(entity.getId(),null);
         Assert.assertNull(result);
     }
 
     @Test
     public void testUpdate() {
         dao.insert(entity);
-        ProcessInstanceEntity result = dao.findOne(entity.getId());
+        ProcessInstanceEntity result = dao.findOne(entity.getId(),null);
 
         Assert.assertEquals("comment",result.getComment());
 
@@ -126,7 +126,7 @@ public class ProcessInstanceDAOTest extends BaseElementTest {
         entity.setComment("new comment");
         dao.update(entity);
 
-        result = dao.findOne(entity.getId());
+        result = dao.findOne(entity.getId(),null);
         Assert.assertNotNull(result);
         Assert.assertEquals("test_status", entity.getStatus());
         Assert.assertEquals(222222L, entity.getParentProcessInstanceId().longValue());

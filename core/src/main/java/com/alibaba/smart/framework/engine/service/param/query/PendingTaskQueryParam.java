@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 
-public class PendingTaskQueryParam extends PaginateQueryParam{
+public class PendingTaskQueryParam extends BaseQueryParam{
 
     /**
      * 任务处理者的用户Id

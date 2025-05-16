@@ -83,13 +83,13 @@ public class CustomTaskInstanceStorage implements TaskInstanceStorage {
     }
 
     @Override
-    public TaskInstance find(String instanceId,
+    public TaskInstance find(String instanceId,String tenantId,
                              ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 
     @Override
-    public void remove(String instanceId,
+    public void remove(String instanceId,String tenantId,
                        ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }

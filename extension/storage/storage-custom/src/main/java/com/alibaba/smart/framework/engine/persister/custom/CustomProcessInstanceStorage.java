@@ -36,13 +36,13 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
     }
 
     @Override
-    public ProcessInstance findOne(String instanceId,
+    public ProcessInstance findOne(String instanceId,String tenantId,
                                    ProcessEngineConfiguration processEngineConfiguration) {
         return  PersisterSession.currentSession().getProcessInstance(instanceId);
     }
 
     @Override
-    public ProcessInstance findOneForUpdate(String instanceId,
+    public ProcessInstance findOneForUpdate(String instanceId,String tenantId,
                                             ProcessEngineConfiguration processEngineConfiguration) {
         return  PersisterSession.currentSession().getProcessInstance(instanceId);
     }
@@ -61,7 +61,7 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
 
 
     @Override
-    public void remove(String instanceId,
+    public void remove(String instanceId,String tenantId,
                        ProcessEngineConfiguration processEngineConfiguration) {
         PersisterSession.currentSession().getProcessInstances().remove(instanceId);
     }

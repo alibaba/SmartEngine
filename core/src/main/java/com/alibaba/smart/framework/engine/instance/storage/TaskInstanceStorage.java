@@ -40,10 +40,10 @@ public interface TaskInstanceStorage {
     int updateFromStatus(TaskInstance taskInstance, String fromStatus,
                          ProcessEngineConfiguration processEngineConfiguration);
 
-    TaskInstance find(String taskInstanceId,
+    TaskInstance find(String taskInstanceId,String tenantId,
                       ProcessEngineConfiguration processEngineConfiguration);
 
-    void remove(String taskInstanceId,
+    void remove(String taskInstanceId,String tenantId,
                 ProcessEngineConfiguration processEngineConfiguration);
 
 }

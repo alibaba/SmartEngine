@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.persister.database.builder.ActivityInstanceBuilder;
 import com.alibaba.smart.framework.engine.persister.database.dao.ActivityInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity;
 
@@ -23,15 +24,12 @@ import static com.alibaba.smart.framework.engine.persister.common.constant.Stora
 
 public class RelationshipDatabaseActivityInstanceStorage implements ActivityInstanceStorage {
 
-
-
     @Override
     public void insert(ActivityInstance activityInstance,
                        ProcessEngineConfiguration processEngineConfiguration) {
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("activityInstanceDAO");
 
-
-        ActivityInstanceEntity activityInstanceEntityToBePersisted = buildActivityInstanceEntity(activityInstance);
+        ActivityInstanceEntity activityInstanceEntityToBePersisted = ActivityInstanceBuilder.buildActivityInstanceEntity(activityInstance);
 
         activityInstanceDAO.insert(activityInstanceEntityToBePersisted);
 
@@ -43,27 +41,12 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
         }
 
         ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(
-            entityId);
+            entityId,activityInstance.getTenantId());
 
         activityInstance.setInstanceId(activityInstanceEntity.getId().toString());
         activityInstance.setStartTime(activityInstanceEntity.getGmtCreate());
 
         //return activityInstance;
-    }
-
-    private ActivityInstanceEntity buildActivityInstanceEntity(ActivityInstance activityInstance) {
-        ActivityInstanceEntity activityInstanceEntityToBePersisted = new ActivityInstanceEntity();
-        activityInstanceEntityToBePersisted.setProcessDefinitionIdAndVersion(activityInstance.getProcessDefinitionIdAndVersion());
-
-        activityInstanceEntityToBePersisted.setProcessDefinitionActivityId(activityInstance.getProcessDefinitionActivityId());
-        activityInstanceEntityToBePersisted.setProcessInstanceId(Long.valueOf(activityInstance.getProcessInstanceId()));
-        activityInstanceEntityToBePersisted.setId(Long.valueOf(activityInstance.getInstanceId()));
-
-        Date currentDate = DateUtil.getCurrentDate();
-        activityInstanceEntityToBePersisted.setGmtCreate(currentDate);
-        activityInstanceEntityToBePersisted.setGmtModified(currentDate);
-
-        return activityInstanceEntityToBePersisted;
     }
 
     @Override
@@ -74,51 +57,38 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
     }
 
     @Override
-    public ActivityInstance find(String instanceId,
+    public ActivityInstance find(String instanceId,String tenantId,
                                  ProcessEngineConfiguration processEngineConfiguration) {
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("activityInstanceDAO");
-        ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(Long.valueOf(instanceId));
+        ActivityInstanceEntity activityInstanceEntity =  activityInstanceDAO.findOne(Long.valueOf(instanceId),tenantId);
         if (activityInstanceEntity == null){
             return null;
         }
-        return buildActivityInstanceFromEntity(activityInstanceEntity);
+        return ActivityInstanceBuilder.buildActivityInstanceFromEntity(activityInstanceEntity);
     }
 
     @Override
-    public ActivityInstance findWithShading(String processInstanceId, String activityInstanceId,
+    public ActivityInstance findWithShading(String processInstanceId, String activityInstanceId,String tenantId,
             ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 
-    private ActivityInstance buildActivityInstanceFromEntity(ActivityInstanceEntity activityInstanceEntity) {
-        ActivityInstance activityInstance  = new DefaultActivityInstance();
-
-        activityInstance.setStartTime(activityInstanceEntity.getGmtCreate());
-        ((DefaultActivityInstance)activityInstance).setCompleteTime(activityInstanceEntity.getGmtModified());
-
-        activityInstance.setProcessDefinitionIdAndVersion(activityInstanceEntity.getProcessDefinitionIdAndVersion());
-        activityInstance.setInstanceId(activityInstanceEntity.getId().toString());
-        activityInstance.setProcessInstanceId(activityInstanceEntity.getProcessInstanceId().toString());
-        activityInstance.setProcessDefinitionActivityId(activityInstanceEntity.getProcessDefinitionActivityId());
-        return activityInstance;
-    }
-
     @Override
-    public void remove(String instanceId,
+    public void remove(String instanceId,String tenantId,
                        ProcessEngineConfiguration processEngineConfiguration) {
 
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("activityInstanceDAO");
-        activityInstanceDAO.delete(Long.valueOf(instanceId));
+        activityInstanceDAO.delete(Long.valueOf(instanceId),tenantId);
 
     }
 
     @Override
-    public List<ActivityInstance> findAll(String processInstanceId,
+    public List<ActivityInstance> findAll(String processInstanceId,String tenantId,
                                           ProcessEngineConfiguration processEngineConfiguration) {
         ActivityInstanceDAO activityInstanceDAO= (ActivityInstanceDAO)processEngineConfiguration.getInstanceAccessor().access("activityInstanceDAO");
 
 
-        List<ActivityInstanceEntity> activityInstanceEntities  = activityInstanceDAO.findAllActivity(Long.valueOf(processInstanceId));
+        List<ActivityInstanceEntity> activityInstanceEntities  = activityInstanceDAO.findAllActivity(Long.valueOf(processInstanceId),tenantId);
 
         if(CollectionUtil.isNotEmpty(activityInstanceEntities)){
 
@@ -126,7 +96,7 @@ public class RelationshipDatabaseActivityInstanceStorage implements ActivityInst
 
             for (ActivityInstanceEntity activityInstanceEntity : activityInstanceEntities) {
 
-                ActivityInstance activityInstance = buildActivityInstanceFromEntity(activityInstanceEntity);
+                ActivityInstance activityInstance = ActivityInstanceBuilder.buildActivityInstanceFromEntity(activityInstanceEntity);
 
                 activityInstanceList.add(activityInstance);
             }

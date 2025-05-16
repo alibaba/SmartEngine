@@ -28,7 +28,7 @@ public class TransactionHelper {
 
     public   void ya(TaskInstanceDAO taskInstanceDAO) {
         TaskInstanceEntity entity = new TaskInstanceEntity();
-        entity.setId(System.currentTimeMillis());
+        entity.setId(System.currentTimeMillis() + (int) (Math.random() * 1000));
 
         entity.setProcessDefinitionIdAndVersion("processDefinitionId");
         entity.setActivityInstanceId(11L);
@@ -56,7 +56,7 @@ public class TransactionHelper {
     @Transactional
     public TaskInstance signal(TaskCommandService taskCommandService, TaskQueryService taskQueryService,
                                ProcessInstance processInstance) {
-        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId());
+        List<TaskInstance> submitTaskInstanceList=  taskQueryService.findAllPendingTaskList(processInstance.getInstanceId(),processInstance.getTenantId());
         Assert.assertEquals(1,submitTaskInstanceList.size());
         TaskInstance submitTaskInstance = submitTaskInstanceList.get(0);
 
@@ -78,7 +78,7 @@ public class TransactionHelper {
     public ProcessInstance start(ProcessCommandService processCommandService, ProcessDefinition processDefinition) {
         //4.启动流程实例
         ProcessInstance processInstance = processCommandService.start(
-            processDefinition.getId(), processDefinition.getVersion()
+            processDefinition.getId(), processDefinition.getVersion(),processDefinition.getTenantId()
         );
         Assert.assertNotNull(processInstance);
         return processInstance;

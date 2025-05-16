@@ -51,8 +51,9 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
     public void install(PvmProcessDefinition pvmProcessDefinition, ProcessDefinition processDefinition) {
         String processDefinitionId = pvmProcessDefinition.getId();
         String version = pvmProcessDefinition.getVersion();
+        String tenantId = pvmProcessDefinition.getTenantId();
 
-        String uniqueKey = IdAndVersionUtil.buildProcessDefinitionKey(processDefinitionId, version);
+        String uniqueKey = IdAndVersionUtil.buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId);
 
         this.installPvmProcessDefinition(uniqueKey, pvmProcessDefinition);
         this.installProcessDefinition(uniqueKey,processDefinition);
@@ -64,7 +65,12 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     @Override
     public void uninstall(String processDefinitionId, String version) {
-        String uniqueKey = IdAndVersionUtil.buildProcessDefinitionKey(processDefinitionId, version);
+        uninstall(processDefinitionId, version,null);
+    }
+
+    @Override
+    public void uninstall(String processDefinitionId, String version,String tenantId) {
+        String uniqueKey = IdAndVersionUtil.buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId);
         this.pvmProcessDefinitionConcurrentHashMap.remove(uniqueKey);
         this.processDefinitionConcurrentHashMap.remove(uniqueKey);
 
@@ -74,7 +80,12 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     @Override
     public PvmProcessDefinition getPvmProcessDefinition(String processDefinitionId, String version) {
-        String uniqueKey = IdAndVersionUtil.buildProcessDefinitionKey(processDefinitionId, version);
+        return this.getPvmProcessDefinition(processDefinitionId, version, null);
+    }
+
+    @Override
+    public PvmProcessDefinition getPvmProcessDefinition(String processDefinitionId, String version,String tenantId) {
+        String uniqueKey = IdAndVersionUtil.buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId);
         return this.getPvmProcessDefinition(uniqueKey);
     }
 
@@ -86,7 +97,12 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     @Override
     public ProcessDefinition getProcessDefinition(String processDefinitionId, String version) {
-        String uniqueKey = IdAndVersionUtil.buildProcessDefinitionKey(processDefinitionId, version);
+        return this.getProcessDefinition(processDefinitionId, version,null);
+    }
+
+    @Override
+    public ProcessDefinition getProcessDefinition(String processDefinitionId, String version,String tenantId) {
+        String uniqueKey = IdAndVersionUtil.buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId);
         return this.getProcessDefinition(uniqueKey);
     }
 

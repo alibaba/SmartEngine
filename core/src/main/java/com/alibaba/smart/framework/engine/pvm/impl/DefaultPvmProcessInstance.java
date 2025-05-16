@@ -25,7 +25,7 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
                 ProcessDefinitionContainer.class);
 
         PvmProcessDefinition pvmProcessDefinition = processDefinitionContainer.getPvmProcessDefinition(processDefinition.getId(),
-                processDefinition.getVersion());
+                processDefinition.getVersion(),processDefinition.getTenantId());
 
         PvmActivity pvmActivity = pvmProcessDefinition.getStartActivity();
 

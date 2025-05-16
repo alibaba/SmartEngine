@@ -63,9 +63,10 @@ public class ExtenstionTest {
 
     @Test
     public void testServiceTask() throws Exception {
+        String tenantId = "-1";
         //1. 部署流程定义
         ProcessDefinitionSource processDefinitionSource = repositoryCommandService
-                .deploy("process-def/extend/extend.bpmn20.xml");
+                .deploy("process-def/extend/extend.bpmn20.xml",tenantId);
 
         ProcessDefinition processDefinition = processDefinitionSource.getProcessDefinitionList().get(0);
         Assert.assertNotNull(processDefinition);

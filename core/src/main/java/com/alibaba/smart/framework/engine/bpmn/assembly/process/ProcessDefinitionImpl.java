@@ -29,6 +29,8 @@ public class ProcessDefinitionImpl implements ProcessDefinition {
 
     private String version;
 
+    private String tenantId;
+
     //private String idAndVersion;
 
 

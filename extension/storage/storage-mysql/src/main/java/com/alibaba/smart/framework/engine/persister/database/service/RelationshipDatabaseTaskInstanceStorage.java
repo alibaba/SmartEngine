@@ -12,6 +12,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.persister.database.builder.TaskInstanceBuilder;
 import com.alibaba.smart.framework.engine.persister.database.dao.TaskInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
@@ -25,35 +26,13 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     @Override
     public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
                                                   ProcessEngineConfiguration processEngineConfiguration) {
-        return findTaskListByAssignee(convertToTaskInstanceQueryByAssigneeParam(pendingTaskQueryParam), processEngineConfiguration);
-    }
-
-    private TaskInstanceQueryByAssigneeParam convertToTaskInstanceQueryByAssigneeParam(PendingTaskQueryParam pendingTaskQueryParam) {
-        TaskInstanceQueryByAssigneeParam taskInstanceQueryByAssigneeParam = new TaskInstanceQueryByAssigneeParam();
-        taskInstanceQueryByAssigneeParam.setAssigneeGroupIdList(pendingTaskQueryParam.getAssigneeGroupIdList());
-        taskInstanceQueryByAssigneeParam.setAssigneeUserId(pendingTaskQueryParam.getAssigneeUserId());
-        taskInstanceQueryByAssigneeParam.setProcessDefinitionType(pendingTaskQueryParam.getProcessDefinitionType());
-
-        List<String> processInstanceIdList = pendingTaskQueryParam.getProcessInstanceIdList();
-        if(null != processInstanceIdList){
-            List<Long> idArrayList  = new ArrayList<Long>(processInstanceIdList.size());
-            for (String s : processInstanceIdList) {
-                idArrayList.add(Long.valueOf(s));
-            }
-            taskInstanceQueryByAssigneeParam.setProcessInstanceIdList(idArrayList);
-        }
-
-        taskInstanceQueryByAssigneeParam.setPageOffset(pendingTaskQueryParam.getPageOffset());
-        taskInstanceQueryByAssigneeParam.setPageSize(pendingTaskQueryParam.getPageSize());
-
-        taskInstanceQueryByAssigneeParam.setStatus(TaskInstanceConstant.PENDING);
-        return taskInstanceQueryByAssigneeParam;
+        return findTaskListByAssignee(TaskInstanceBuilder.convertToTaskInstanceQueryByAssigneeParam(pendingTaskQueryParam), processEngineConfiguration);
     }
 
     @Override
     public Long countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam,
                                      ProcessEngineConfiguration processEngineConfiguration) {
-        return countTaskListByAssignee(convertToTaskInstanceQueryByAssigneeParam(pendingTaskQueryParam),processEngineConfiguration );
+        return countTaskListByAssignee(TaskInstanceBuilder.convertToTaskInstanceQueryByAssigneeParam(pendingTaskQueryParam),processEngineConfiguration );
     }
 
     @Override
@@ -64,7 +43,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
 
-            TaskInstance taskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
+            TaskInstance taskInstance= TaskInstanceBuilder.buildTaskInstanceFromEntity(taskInstanceEntity);
 
             taskInstanceList.add(taskInstance);
 
@@ -86,12 +65,12 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("taskInstanceDAO");
         String processInstanceId = taskInstanceQueryParam.getProcessInstanceIdList().get(0);
         List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskByProcessInstanceIdAndStatus(
-            Long.valueOf(processInstanceId),taskInstanceQueryParam.getStatus());
+            Long.valueOf(processInstanceId),taskInstanceQueryParam.getStatus(),taskInstanceQueryParam.getTenantId());
 
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
 
-            TaskInstance taskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
+            TaskInstance taskInstance= TaskInstanceBuilder.buildTaskInstanceFromEntity(taskInstanceEntity);
 
             taskInstanceList.add(taskInstance);
 
@@ -111,7 +90,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {
 
-          TaskInstance taskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
+          TaskInstance taskInstance= TaskInstanceBuilder.buildTaskInstanceFromEntity(taskInstanceEntity);
 
           taskInstanceList.add(taskInstance);
 
@@ -148,7 +127,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
                                ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("taskInstanceDAO");
 
-        TaskInstanceEntity taskInstanceEntity = buildTaskInstanceEntity(taskInstance);
+        TaskInstanceEntity taskInstanceEntity = TaskInstanceBuilder.buildTaskInstanceEntity(taskInstance);
         taskInstanceDAO.insert(taskInstanceEntity);
 
         Long entityId = taskInstanceEntity.getId();
@@ -158,10 +137,10 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
             entityId = Long.valueOf( taskInstance.getInstanceId());
         }
 
-        taskInstanceEntity = taskInstanceDAO.findOne(entityId);
+        taskInstanceEntity = taskInstanceDAO.findOne(entityId,taskInstance.getTenantId());
 
         //reAssign
-        TaskInstance   resultTaskInstance= buildTaskInstanceFromEntity(taskInstanceEntity);
+        TaskInstance   resultTaskInstance= TaskInstanceBuilder.buildTaskInstanceFromEntity(taskInstanceEntity);
         resultTaskInstance.setTaskAssigneeInstanceList(taskInstance.getTaskAssigneeInstanceList());
 
         return resultTaskInstance;
@@ -172,7 +151,7 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     public TaskInstance update(TaskInstance taskInstance,
                                ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("taskInstanceDAO");
-        TaskInstanceEntity taskInstanceEntity = buildTaskInstanceEntity(taskInstance);
+        TaskInstanceEntity taskInstanceEntity = TaskInstanceBuilder.buildTaskInstanceEntity(taskInstance);
         taskInstanceDAO.update(taskInstanceEntity);
 
 
@@ -183,80 +162,29 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     public int updateFromStatus(TaskInstance taskInstance, String fromStatus,
                                 ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("taskInstanceDAO");
-        TaskInstanceEntity taskInstanceEntity = buildTaskInstanceEntity(taskInstance);
+        TaskInstanceEntity taskInstanceEntity = TaskInstanceBuilder.buildTaskInstanceEntity(taskInstance);
         return taskInstanceDAO.updateFromStatus(taskInstanceEntity,fromStatus);
     }
 
     @Override
-    public TaskInstance find(String instanceId,
+    public TaskInstance find(String instanceId,String tenantId,
                              ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("taskInstanceDAO");
-        TaskInstanceEntity taskInstanceEntity =  taskInstanceDAO.findOne(Long.valueOf(instanceId));
+        TaskInstanceEntity taskInstanceEntity =  taskInstanceDAO.findOne(Long.valueOf(instanceId),tenantId);
         if (taskInstanceEntity == null){
             return null;
         }
-        return buildTaskInstanceFromEntity(taskInstanceEntity);
+        return TaskInstanceBuilder.buildTaskInstanceFromEntity(taskInstanceEntity);
     }
 
-    private TaskInstance buildTaskInstanceFromEntity(TaskInstanceEntity taskInstanceEntity) {
-        TaskInstance taskInstance = new DefaultTaskInstance();
-        taskInstance.setInstanceId(taskInstanceEntity.getId().toString());
-        taskInstance.setStartTime(taskInstanceEntity.getGmtCreate());
-        taskInstance.setProcessDefinitionIdAndVersion(taskInstanceEntity.getProcessDefinitionIdAndVersion());
-        taskInstance.setProcessInstanceId(taskInstanceEntity.getProcessInstanceId().toString());
-        taskInstance.setActivityInstanceId(taskInstanceEntity.getActivityInstanceId().toString());
-        taskInstance.setProcessDefinitionType(taskInstanceEntity.getProcessDefinitionType());
-        taskInstance.setTag(taskInstanceEntity.getTag());
-        taskInstance.setStatus(taskInstanceEntity.getStatus());
 
-        taskInstance.setProcessDefinitionActivityId(taskInstanceEntity.getProcessDefinitionActivityId());
-        taskInstance.setExecutionInstanceId(taskInstanceEntity.getExecutionInstanceId().toString());
-
-        taskInstance.setClaimUserId(taskInstanceEntity.getClaimUserId());
-        taskInstance.setCompleteTime(taskInstanceEntity.getCompleteTime());
-        taskInstance.setClaimTime(taskInstanceEntity.getClaimTime());
-        taskInstance.setComment(taskInstanceEntity.getComment());
-        taskInstance.setExtension(taskInstanceEntity.getExtension());
-        taskInstance.setTitle(taskInstanceEntity.getTitle());
-        taskInstance.setPriority(taskInstanceEntity.getPriority());
-        return taskInstance;
-    }
-
-    private TaskInstanceEntity buildTaskInstanceEntity(TaskInstance taskInstance) {
-        TaskInstanceEntity taskInstanceEntity = new TaskInstanceEntity();
-
-        taskInstanceEntity.setId(Long.valueOf(taskInstance.getInstanceId()));
-        taskInstanceEntity.setProcessDefinitionIdAndVersion(taskInstance.getProcessDefinitionIdAndVersion());
-        taskInstanceEntity.setProcessInstanceId(Long.valueOf(taskInstance.getProcessInstanceId()));
-        taskInstanceEntity.setActivityInstanceId(Long.valueOf(taskInstance.getActivityInstanceId()));
-        taskInstanceEntity.setProcessDefinitionActivityId(taskInstance.getProcessDefinitionActivityId());
-        taskInstanceEntity.setExecutionInstanceId(Long.valueOf(taskInstance.getExecutionInstanceId()));
-        taskInstanceEntity.setClaimUserId(taskInstance.getClaimUserId());
-        taskInstanceEntity.setClaimTime(taskInstance.getClaimTime());
-        taskInstanceEntity.setStatus(taskInstance.getStatus());
-        taskInstanceEntity.setCompleteTime(taskInstance.getCompleteTime());
-        taskInstanceEntity.setPriority(taskInstance.getPriority());
-        taskInstanceEntity.setTag(taskInstance.getTag());
-        taskInstanceEntity.setProcessDefinitionType(taskInstance.getProcessDefinitionType());
-        taskInstanceEntity.setClaimTime(taskInstance.getClaimTime());
-        taskInstanceEntity.setComment(taskInstance.getComment());
-        taskInstanceEntity.setTitle(taskInstance.getTitle());
-        taskInstanceEntity.setExtension(taskInstance.getExtension());
-        //taskInstanceEntity.setGmtModified(taskInstance.getCompleteTime());
-
-        Date currentDate = DateUtil.getCurrentDate();
-        taskInstanceEntity.setGmtCreate(currentDate);
-        taskInstanceEntity.setGmtModified(currentDate);
-
-        return taskInstanceEntity;
-    }
 
 
     @Override
-    public void remove(String instanceId,
+    public void remove(String instanceId,String tenantId,
                        ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("taskInstanceDAO");
-        taskInstanceDAO.delete(Long.valueOf(instanceId));
+        taskInstanceDAO.delete(Long.valueOf(instanceId),tenantId);
 
     }
 }

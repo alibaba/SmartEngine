@@ -34,17 +34,20 @@ public interface DeploymentCommandService {
      * @param deploymentInstanceId
      */
     void inactivateDeploymentInstance(String deploymentInstanceId);
+    void inactivateDeploymentInstance(String deploymentInstanceId,String tenantId);
 
     /**
      * 将DeploymentInstance的状态置为 active, 将关联的流程定义的重新加载到内存里面.
      * @param deploymentInstanceId
      */
     void activateDeploymentInstance(String deploymentInstanceId);
+    void activateDeploymentInstance(String deploymentInstanceId,String tenantId);
 
     /**
      * 逻辑删除DeploymentInstance
      * @param deploymentInstanceId
      */
     void deleteDeploymentInstanceLogically(String deploymentInstanceId);
+    void deleteDeploymentInstanceLogically(String deploymentInstanceId,String tenantId);
 
 }

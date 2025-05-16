@@ -25,6 +25,7 @@ public interface TaskCommandService {
      * 任务转交。
      */
     void transfer(String taskId, String fromUserId, String toUserId);
+    void transfer(String taskId, String fromUserId, String toUserId,String tenantId);
 
     /**
      * 创建任务实例. 这个相当于是数据订正，一般不需要使用。
@@ -39,11 +40,11 @@ public interface TaskCommandService {
     /**
      * 删除任务的处理者. 这个相当于是数据订正，一般不需要使用。
      */
-    void removeTaskAssigneeCandidate(String taskId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance);
+    void removeTaskAssigneeCandidate(String taskId,String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance);
 
     /**
      * 增加任务的处理者. 这个相当于是数据订正，一般不需要使用。
      */
-    void addTaskAssigneeCandidate(String taskId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance);
+    void addTaskAssigneeCandidate(String taskId,String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance);
 
 }

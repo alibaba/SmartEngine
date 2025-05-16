@@ -39,16 +39,24 @@ public class DefaultTaskAssigneeQueryService implements TaskAssigneeQueryService
 
     @Override
     public List<TaskAssigneeInstance> findList(String taskInstanceId) {
+        return this.findList(taskInstanceId,null);
+    }
 
-
-        List<TaskAssigneeInstance>  taskAssigneeStorageList =  taskAssigneeStorage.findList(taskInstanceId, processEngineConfiguration);
+    @Override
+    public List<TaskAssigneeInstance> findList(String taskInstanceId,String tenantId) {
+        List<TaskAssigneeInstance>  taskAssigneeStorageList =  taskAssigneeStorage.findList(taskInstanceId,tenantId, processEngineConfiguration);
         return taskAssigneeStorageList;
     }
 
     @Override
     public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList) {
+        return this.findAssigneeOfInstanceList(taskInstanceIdList, null);
+    }
 
-        return taskAssigneeStorage.findAssigneeOfInstanceList(taskInstanceIdList,processEngineConfiguration );
+    @Override
+    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,String tenantId) {
+
+        return taskAssigneeStorage.findAssigneeOfInstanceList(taskInstanceIdList,tenantId,processEngineConfiguration );
     }
 
 

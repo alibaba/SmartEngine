@@ -18,10 +18,12 @@ public interface TaskInstanceDAO {
 
     Integer count(TaskInstanceQueryParam taskInstanceQueryParam);
 
-    List<TaskInstanceEntity> findTaskByProcessInstanceIdAndStatus(Long processInstanceId,String status);
+    List<TaskInstanceEntity> findTaskByProcessInstanceIdAndStatus(
+            @Param("processInstanceId")Long processInstanceId,
+            @Param("status")String status,@Param("tenantId") String tenantId);
 
 
-    TaskInstanceEntity findOne(@Param("id") Long id);
+    TaskInstanceEntity findOne(@Param("id") Long id,@Param("tenantId") String tenantId);
 
 
     void insert(  TaskInstanceEntity taskInstanceEntity );
@@ -30,6 +32,6 @@ public interface TaskInstanceDAO {
 
     int updateFromStatus(@Param("taskInstanceEntity") TaskInstanceEntity taskInstanceEntity,@Param("fromStatus") String fromStatus);
 
-    void delete(@Param("id") Long id);
+    void delete(@Param("id") Long id,@Param("tenantId") String tenantId);
 
 }

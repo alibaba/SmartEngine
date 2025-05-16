@@ -36,7 +36,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
     }
 
     @Override
-    public ExecutionInstance find(String instanceId,
+    public ExecutionInstance find(String instanceId,String tenantId,
                                   ProcessEngineConfiguration processEngineConfiguration) {
 
         Collection<ProcessInstance> processInstances = PersisterSession.currentSession().getProcessInstances().values();
@@ -84,20 +84,20 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
     }
 
     @Override
-    public ExecutionInstance findWithShading(String processInstanceId, String executionInstanceId,
+    public ExecutionInstance findWithShading(String processInstanceId, String executionInstanceId,String tenantId,
                                              ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
 
     }
 
     @Override
-    public void remove(String instanceId,
+    public void remove(String instanceId,String tenantId,
                        ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
     }
 
     @Override
-    public List<ExecutionInstance> findActiveExecution(String processInstanceId,
+    public List<ExecutionInstance> findActiveExecution(String processInstanceId,String tenantId,
                                                        ProcessEngineConfiguration processEngineConfiguration) {
         ProcessInstance processInstance = PersisterSession.currentSession().getProcessInstance(processInstanceId);
         if(null==processInstance){
@@ -109,7 +109,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
      }
 
     @Override
-    public List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId,
+    public List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId,String tenantId,
                                                             ProcessEngineConfiguration processEngineConfiguration) {
         ProcessInstance processInstance = PersisterSession.currentSession().getProcessInstance(processInstanceId);
         if (null == processInstance) {
@@ -129,7 +129,7 @@ public class CustomExecutionInstanceStorage implements ExecutionInstanceStorage 
     }
 
     @Override
-    public List<ExecutionInstance> findAll(String processInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+    public List<ExecutionInstance> findAll(String processInstanceId,String tenantId, ProcessEngineConfiguration processEngineConfiguration) {
         ProcessInstance processInstance= PersisterSession.currentSession().getProcessInstance(processInstanceId);
         List<ActivityInstance> activityInstances = processInstance.getActivityInstances();
         if (null == activityInstances || activityInstances.size() == 0) {

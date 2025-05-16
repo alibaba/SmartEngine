@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProcessInstanceDAO {
 
-    ProcessInstanceEntity findOne(@Param("id") Long id);
+    ProcessInstanceEntity findOne(@Param("id") Long id,@Param("tenantId") String tenantId);
 
-    ProcessInstanceEntity findOneForUpdate(@Param("id") Long id);
+    ProcessInstanceEntity findOneForUpdate(@Param("id") Long id,@Param("tenantId") String tenantId);
 
     List<ProcessInstanceEntity> find(ProcessInstanceQueryParam processInstanceQueryParam);
 
@@ -23,7 +23,7 @@ public interface ProcessInstanceDAO {
 
     int update(ProcessInstanceEntity processInstanceEntity);
 
-    void delete(@Param("id") Long id);
+    void delete(@Param("id") Long id,@Param("tenantId") String tenantId);
 
-    void tryLock(Long id);
+    void tryLock(@Param("id") Long id,@Param("tenantId") String tenantId);
 }

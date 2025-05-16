@@ -11,9 +11,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DeploymentInstanceQueryParam extends PaginateQueryParam {
-
-    private Long id;
+public class DeploymentInstanceQueryParam extends BaseQueryParam {
 
     private String processDefinitionVersion;
 

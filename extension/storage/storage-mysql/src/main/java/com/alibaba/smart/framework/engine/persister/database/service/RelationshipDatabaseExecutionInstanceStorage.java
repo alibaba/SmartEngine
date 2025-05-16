@@ -15,6 +15,7 @@ import com.alibaba.smart.framework.engine.instance.impl.DefaultTransitionInstanc
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
+import com.alibaba.smart.framework.engine.persister.database.builder.ExecutionInstanceBuilder;
 import com.alibaba.smart.framework.engine.persister.database.dao.ExecutionInstanceDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity;
 
@@ -27,7 +28,7 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
                        ProcessEngineConfiguration processEngineConfiguration) {
         ExecutionInstanceDAO executionInstanceDAO = (ExecutionInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("executionInstanceDAO");
 
-        ExecutionInstanceEntity executionInstanceEntity = buildExecutionInstanceEntity(executionInstance);
+        ExecutionInstanceEntity executionInstanceEntity = ExecutionInstanceBuilder.buildExecutionInstanceEntity(executionInstance);
 
         executionInstanceDAO.insert(executionInstanceEntity);
 
@@ -39,9 +40,9 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
         }
 
 
-        executionInstanceEntity = executionInstanceDAO.findOne(entityId);
+        executionInstanceEntity = executionInstanceDAO.findOne(entityId,executionInstance.getTenantId());
 
-        executionInstance = buildExecutionInstance(executionInstance, executionInstanceEntity);
+        executionInstance = ExecutionInstanceBuilder.buildExecutionInstance(executionInstance, executionInstanceEntity);
 
     }
 
@@ -50,7 +51,7 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
                        ProcessEngineConfiguration processEngineConfiguration) {
 
         ExecutionInstanceDAO executionInstanceDAO = (ExecutionInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("executionInstanceDAO");
-        ExecutionInstanceEntity executionInstanceEntity = buildExecutionInstanceEntity(executionInstance);
+        ExecutionInstanceEntity executionInstanceEntity = ExecutionInstanceBuilder.buildExecutionInstanceEntity(executionInstance);
         executionInstanceEntity.setId(Long.valueOf(executionInstance.getInstanceId()));
         executionInstanceEntity.setGmtCreate(executionInstance.getStartTime());
         executionInstanceEntity.setGmtModified(executionInstance.getCompleteTime());
@@ -60,49 +61,49 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
 
 
     @Override
-    public ExecutionInstance find(String instanceId,
+    public ExecutionInstance find(String instanceId,String tenantId,
                                   ProcessEngineConfiguration processEngineConfiguration) {
 
         ExecutionInstanceDAO executionInstanceDAO = (ExecutionInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("executionInstanceDAO");
-        ExecutionInstanceEntity executionInstanceEntity = executionInstanceDAO.findOne(Long.valueOf(instanceId));
+        ExecutionInstanceEntity executionInstanceEntity = executionInstanceDAO.findOne(Long.valueOf(instanceId),tenantId);
         if (executionInstanceEntity == null) {
             return null;
         }
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
-        buildExecutionInstance(executionInstance, executionInstanceEntity);
+        ExecutionInstanceBuilder.buildExecutionInstance(executionInstance, executionInstanceEntity);
         return executionInstance;
 
     }
 
     @Override
-    public ExecutionInstance findWithShading(String processInstanceId, String executionInstanceId,
+    public ExecutionInstance findWithShading(String processInstanceId, String executionInstanceId,String tenantId,
                                              ProcessEngineConfiguration processEngineConfiguration) {
         ExecutionInstanceDAO executionInstanceDAO = (ExecutionInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("executionInstanceDAO");
-        ExecutionInstanceEntity executionInstanceEntity = executionInstanceDAO.findWithShading(Long.valueOf(executionInstanceId), Long.valueOf(processInstanceId));
+        ExecutionInstanceEntity executionInstanceEntity = executionInstanceDAO.findWithShading(Long.valueOf(executionInstanceId), Long.valueOf(processInstanceId),tenantId);
         ExecutionInstance executionInstance = new DefaultExecutionInstance();
-        buildExecutionInstance(executionInstance, executionInstanceEntity);
+        ExecutionInstanceBuilder.buildExecutionInstance(executionInstance, executionInstanceEntity);
         return executionInstance;
     }
 
     @Override
-    public void remove(String instanceId,
+    public void remove(String instanceId,String tenantId,
                        ProcessEngineConfiguration processEngineConfiguration) {
         ExecutionInstanceDAO executionInstanceDAO = (ExecutionInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("executionInstanceDAO");
-        executionInstanceDAO.delete(Long.valueOf(instanceId));
+        executionInstanceDAO.delete(Long.valueOf(instanceId),tenantId);
     }
 
     @Override
-    public List<ExecutionInstance> findActiveExecution(String processInstanceId,
+    public List<ExecutionInstance> findActiveExecution(String processInstanceId,String tenantId,
                                                        ProcessEngineConfiguration processEngineConfiguration) {
         ExecutionInstanceDAO executionInstanceDAO = (ExecutionInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("executionInstanceDAO");
-        List<ExecutionInstanceEntity> executionInstanceEntities = executionInstanceDAO.findActiveExecution(Long.valueOf(processInstanceId));
+        List<ExecutionInstanceEntity> executionInstanceEntities = executionInstanceDAO.findActiveExecution(Long.valueOf(processInstanceId),tenantId);
 
         List<ExecutionInstance> executionInstanceList = Collections.emptyList();
         if (null != executionInstanceEntities) {
             executionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceEntities.size());
             for (ExecutionInstanceEntity executionInstanceEntity : executionInstanceEntities) {
                 ExecutionInstance executionInstance = new DefaultExecutionInstance();
-                buildExecutionInstance(executionInstance, executionInstanceEntity);
+                ExecutionInstanceBuilder.buildExecutionInstance(executionInstance, executionInstanceEntity);
                 executionInstanceList.add(executionInstance);
             }
         }
@@ -111,17 +112,17 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
     }
 
     @Override
-    public List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId,
+    public List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId,String tenantId,
                                                             ProcessEngineConfiguration processEngineConfiguration) {
         ExecutionInstanceDAO executionInstanceDAO = (ExecutionInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("executionInstanceDAO");
-        List<ExecutionInstanceEntity> executionInstanceEntities = executionInstanceDAO.findByActivityInstanceId(Long.valueOf(processInstanceId), Long.valueOf(activityInstanceId));
+        List<ExecutionInstanceEntity> executionInstanceEntities = executionInstanceDAO.findByActivityInstanceId(Long.valueOf(processInstanceId), Long.valueOf(activityInstanceId),tenantId);
         return buildList(executionInstanceEntities);
     }
 
     @Override
-    public List<ExecutionInstance> findAll(String processInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+    public List<ExecutionInstance> findAll(String processInstanceId,String tenantId, ProcessEngineConfiguration processEngineConfiguration) {
         ExecutionInstanceDAO executionInstanceDAO = (ExecutionInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("executionInstanceDAO");
-        List<ExecutionInstanceEntity> executionInstanceEntities = executionInstanceDAO.findAllExecutionList(Long.valueOf(processInstanceId));
+        List<ExecutionInstanceEntity> executionInstanceEntities = executionInstanceDAO.findAllExecutionList(Long.valueOf(processInstanceId),tenantId);
         return buildList(executionInstanceEntities);
     }
 
@@ -130,72 +131,11 @@ public class RelationshipDatabaseExecutionInstanceStorage implements ExecutionIn
             List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceEntities.size());
             for (ExecutionInstanceEntity executionInstanceEntity : executionInstanceEntities) {
                 ExecutionInstance executionInstance = new DefaultExecutionInstance();
-                buildExecutionInstance(executionInstance, executionInstanceEntity);
+                ExecutionInstanceBuilder.buildExecutionInstance(executionInstance, executionInstanceEntity);
                 executionInstanceList.add(executionInstance);
             }
             return executionInstanceList;
         }
         return new ArrayList<ExecutionInstance>();
     }
-
-
-
-    private ExecutionInstanceEntity buildExecutionInstanceEntity(ExecutionInstance executionInstance) {
-        ExecutionInstanceEntity executionInstanceEntity = new ExecutionInstanceEntity();
-        executionInstanceEntity.setId(Long.valueOf(executionInstance.getInstanceId()));
-        executionInstanceEntity.setActive(executionInstance.isActive());
-        executionInstanceEntity.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
-        executionInstanceEntity.setProcessInstanceId(Long.valueOf(executionInstance.getProcessInstanceId()));
-        executionInstanceEntity.setActivityInstanceId(Long.valueOf(executionInstance.getActivityInstanceId()));
-        executionInstanceEntity.setProcessDefinitionActivityId(executionInstance.getProcessDefinitionActivityId());
-
-        String blockId = executionInstance.getBlockId();
-        if(StringUtil.isNotEmpty(blockId) ){
-            executionInstanceEntity.setBlockId(Long.valueOf(blockId));
-        }
-
-        Date currentDate = DateUtil.getCurrentDate();
-        executionInstanceEntity.setGmtCreate(currentDate);
-        executionInstanceEntity.setGmtModified(currentDate);
-
-
-
-        //TransitionInstance incomeTransition=executionInstance.getIncomeTransition();
-        //if(null!=incomeTransition){
-        //    executionInstanceEntity.setIncomeTransitionId(incomeTransition.getTransitionId());
-        //    executionInstanceEntity.setIncomeActivityInstanceId(Long.valueOf(incomeTransition.getSourceActivityInstanceId()));
-        //
-        //
-        //}
-        return executionInstanceEntity;
-    }
-
-    private ExecutionInstance buildExecutionInstance(ExecutionInstance executionInstance, ExecutionInstanceEntity executionInstanceEntity) {
-        executionInstance.setInstanceId(executionInstanceEntity.getId().toString());
-        executionInstance.setProcessDefinitionIdAndVersion(executionInstanceEntity.getProcessDefinitionIdAndVersion());
-        executionInstance.setProcessInstanceId(executionInstanceEntity.getProcessInstanceId().toString());
-        executionInstance.setActivityInstanceId(executionInstanceEntity.getActivityInstanceId().toString());
-        executionInstance.setProcessDefinitionActivityId(executionInstanceEntity.getProcessDefinitionActivityId());
-        executionInstance.setActive(executionInstanceEntity.isActive());
-        executionInstance.setStartTime(executionInstanceEntity.getGmtCreate());
-        executionInstance.setCompleteTime(executionInstanceEntity.getGmtModified());
-
-        Long blockId = executionInstanceEntity.getBlockId();
-        if(null != blockId){
-            executionInstance.setBlockId(blockId +"");
-        }
-
-        String incomeTransitionId = executionInstanceEntity.getIncomeTransitionId();
-        Long incomeActivityInstanceId = executionInstanceEntity.getIncomeActivityInstanceId();
-        if (null != incomeTransitionId || null != incomeActivityInstanceId) {
-            TransitionInstance incomeTransition = new DefaultTransitionInstance();
-            incomeTransition.setTransitionId(incomeTransitionId);
-            incomeTransition.setSourceActivityInstanceId(incomeActivityInstanceId.toString());
-            //executionInstance.setIncomeTransition(incomeTransition);
-        }
-        return executionInstance;
-    }
-
-
-
 }

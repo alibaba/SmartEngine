@@ -13,6 +13,7 @@ public interface ProcessInstance extends LifeCycleInstance {
      * @return
      */
     String getProcessDefinitionIdAndVersion();
+    String getUniqueProcessDefinitionIdAndVersion();
 
     /**
      * get ProcessDefinitionId

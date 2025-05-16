@@ -31,7 +31,7 @@ public class MongoDeploymentInstanceStorage implements DeploymentInstanceStorage
     }
 
     @Override
-    public DeploymentInstance findById(String id, ProcessEngineConfiguration processEngineConfiguration) {
+    public DeploymentInstance findById(String id,String tenantId, ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 
@@ -48,7 +48,7 @@ public class MongoDeploymentInstanceStorage implements DeploymentInstanceStorage
     }
 
     @Override
-    public void remove(String id, ProcessEngineConfiguration processEngineConfiguration) {
+    public void remove(String id,String tenantId, ProcessEngineConfiguration processEngineConfiguration) {
 
     }
 }

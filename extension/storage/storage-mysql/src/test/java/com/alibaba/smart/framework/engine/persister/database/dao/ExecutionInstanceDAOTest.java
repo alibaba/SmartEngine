@@ -46,7 +46,7 @@ public class ExecutionInstanceDAOTest extends BaseElementTest {
     public void testFindOne() {
         dao.insert(entity);
 
-        ExecutionInstanceEntity result = dao.findOne(entity.getId());
+        ExecutionInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertNotNull(result);
         Assert.assertEquals(666L,result.getBlockId().longValue());
     }
@@ -55,12 +55,12 @@ public class ExecutionInstanceDAOTest extends BaseElementTest {
     public void testDelete() {
         dao.insert(entity);
 
-        ExecutionInstanceEntity result = dao.findOne(entity.getId());
+        ExecutionInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertNotNull(result);
 
-        dao.delete(entity.getId());
+        dao.delete(entity.getId(),null);
 
-        result = dao.findOne(entity.getId());
+        result = dao.findOne(entity.getId(),null);
         Assert.assertNull(result);
     }
 
@@ -72,7 +72,7 @@ public class ExecutionInstanceDAOTest extends BaseElementTest {
 
         dao.update(entity);
 
-        ExecutionInstanceEntity result = dao.findOne(entity.getId());
+        ExecutionInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertNotNull(result);
         Assert.assertTrue(entity.isActive());
 

@@ -84,7 +84,7 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
     }
 
     @Override
-    public ExecutionInstance find(String executionInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+    public ExecutionInstance find(String executionInstanceId, String tenantId,ProcessEngineConfiguration processEngineConfiguration) {
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
@@ -98,7 +98,7 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
     }
 
     @Override
-    public ExecutionInstance findWithShading(String processInstanceId, String executionInstanceId,
+    public ExecutionInstance findWithShading(String processInstanceId, String executionInstanceId,String tenantId,
                                              ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
 
@@ -115,7 +115,7 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
     }
 
     @Override
-    public void remove(String executionInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+    public void remove(String executionInstanceId, String tenantId,ProcessEngineConfiguration processEngineConfiguration) {
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
@@ -127,15 +127,15 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
     }
 
     @Override
-    public List<ExecutionInstance> findActiveExecution(String processInstanceId,
+    public List<ExecutionInstance> findActiveExecution(String processInstanceId,String tenantId,
                                                        ProcessEngineConfiguration processEngineConfiguration) {
 
-        return findByActivityInstanceId(processInstanceId,null,processEngineConfiguration);
+        return findByActivityInstanceId(processInstanceId,null,tenantId,processEngineConfiguration);
 
     }
 
     @Override
-    public List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId,
+    public List<ExecutionInstance> findByActivityInstanceId(String processInstanceId, String activityInstanceId,String tenantId,
                                                             ProcessEngineConfiguration processEngineConfiguration) {
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
@@ -167,7 +167,7 @@ public class MongoExecutionInstanceStorage  implements ExecutionInstanceStorage 
     }
 
     @Override
-    public List<ExecutionInstance> findAll(String processInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+    public List<ExecutionInstance> findAll(String processInstanceId,String tenantId, ProcessEngineConfiguration processEngineConfiguration) {
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);

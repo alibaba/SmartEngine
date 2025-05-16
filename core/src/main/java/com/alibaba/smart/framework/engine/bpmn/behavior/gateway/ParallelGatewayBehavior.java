@@ -106,7 +106,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
                 //当前内存中的，新产生的 active ExecutionInstance
 
                 //当前持久化介质中中，已产生的 active ExecutionInstance。
-                List<ExecutionInstance> activeExecutionList =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(), super.processEngineConfiguration);
+                List<ExecutionInstance> activeExecutionList =  executionInstanceStorage.findActiveExecution(processInstance.getInstanceId(),processInstance.getTenantId(), super.processEngineConfiguration);
 
 
                 int countOfTheJoinLatch = inComingPvmTransitions.size();

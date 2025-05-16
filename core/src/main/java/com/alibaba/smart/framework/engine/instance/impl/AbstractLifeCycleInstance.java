@@ -27,5 +27,8 @@ public abstract class AbstractLifeCycleInstance extends AbstractInstance impleme
      */
     private Date completeTime;
 
-
+    /**
+     * 租户id
+     */
+    private String  tenantId;
 }

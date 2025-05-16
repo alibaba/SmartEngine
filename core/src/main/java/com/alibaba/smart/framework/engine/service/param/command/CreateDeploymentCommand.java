@@ -7,7 +7,7 @@ package com.alibaba.smart.framework.engine.service.param.command;
 import lombok.Data;
 
 @Data
-public class CreateDeploymentCommand {
+public class CreateDeploymentCommand extends BaseCommand{
 
     private  String processDefinitionType;
     private  String processDefinitionCode;

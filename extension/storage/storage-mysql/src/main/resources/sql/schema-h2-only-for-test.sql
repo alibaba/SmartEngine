@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `se_deployment_instance` (
   `deployment_user_id` varchar(128) NOT NULL  COMMENT 'deployment user id' ,
   `deployment_status` varchar(64) NOT NULL   COMMENT 'deployment status' ,
   `logic_status` varchar(64) NOT NULL  COMMENT 'logic status' ,
-
+  `tenant_id` varchar(64) DEFAULT NULL  COMMENT 'tenant id' ,
   PRIMARY KEY (`id`)
 )  ;
 
@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `se_process_instance` (
   `comment` varchar(255) DEFAULT NULL   COMMENT 'comment' ,
   `title` varchar(255) DEFAULT NULL  COMMENT 'title' ,
   `tag` varchar(255) DEFAULT NULL  COMMENT 'tag' ,
+  `tenant_id` varchar(64) DEFAULT NULL  COMMENT 'tenant id' ,
 
   PRIMARY KEY (`id`)
 )   ;
@@ -42,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `se_activity_instance` (
   `process_instance_id` bigint DEFAULT NULL  COMMENT 'process instance id'  ,
   `process_definition_id_and_version` varchar(255) NOT NULL  COMMENT 'process definition id and version'  ,
   `process_definition_activity_id` varchar(64) NOT NULL COMMENT 'process definition activity id'   ,
+  `tenant_id` varchar(64) DEFAULT NULL  COMMENT 'tenant id' ,
   PRIMARY KEY (`id`)
 )  ;
 
@@ -64,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `se_task_instance` (
   `status` varchar(255) NOT NULL COMMENT 'status'     ,
   `comment` varchar(255) DEFAULT NULL  COMMENT 'comment'  ,
   `extension` varchar(255) DEFAULT NULL COMMENT 'extension'  ,
+  `tenant_id` varchar(64) DEFAULT NULL  COMMENT 'tenant id' ,
 
   PRIMARY KEY (`id`)
 )   ;
@@ -78,6 +81,7 @@ CREATE TABLE IF NOT EXISTS `se_execution_instance` (
   `activity_instance_id` bigint NOT NULL COMMENT 'activity instance id'   ,
   `active` bigint NOT NULL COMMENT '1:active 0:inactive',
   `block_id` bigint COMMENT '1:active 0:inactive',
+  `tenant_id` varchar(64) DEFAULT NULL  COMMENT 'tenant id' ,
 
   PRIMARY KEY (`id`)
 )   ;
@@ -91,6 +95,8 @@ CREATE TABLE IF NOT EXISTS `se_task_assignee_instance` (
   `task_instance_id` bigint NOT NULL  COMMENT 'task instance id'  ,
   `assignee_id` varchar(255) NOT NULL  COMMENT 'assignee id'  ,
   `assignee_type` varchar(128) NOT NULL  COMMENT 'assignee type'  ,
+  `tenant_id` varchar(64) DEFAULT NULL  COMMENT 'tenant id' ,
+
   PRIMARY KEY (`id`)
 )  ;
 
@@ -106,6 +112,7 @@ CREATE TABLE IF NOT EXISTS `se_variable_instance` (
   `field_double_value` decimal(65,30) DEFAULT NULL   COMMENT 'field double value' ,
   `field_long_value` bigint DEFAULT NULL  COMMENT 'field long value'  ,
   `field_string_value` varchar(4000) DEFAULT NULL  COMMENT 'field string value' ,
+  `tenant_id` varchar(64) DEFAULT NULL  COMMENT 'tenant id' ,
 
   PRIMARY KEY (`id`)
 )  ;

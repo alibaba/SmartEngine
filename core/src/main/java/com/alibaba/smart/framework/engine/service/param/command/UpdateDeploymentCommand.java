@@ -7,7 +7,7 @@ package com.alibaba.smart.framework.engine.service.param.command;
 import lombok.Data;
 
 @Data
-public class UpdateDeploymentCommand {
+public class UpdateDeploymentCommand extends BaseCommand{
 
     private  String   deployInstanceId;
 

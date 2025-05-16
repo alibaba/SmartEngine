@@ -32,6 +32,8 @@ public interface ProcessDefinitionContainer {
      */
     void uninstall(String processDefinitionId, String version);
 
+    void uninstall(String processDefinitionId, String version,String tenantId);
+
     /**
      * 获取流程
      *
@@ -40,6 +42,8 @@ public interface ProcessDefinitionContainer {
      * @return 流程
      */
     PvmProcessDefinition getPvmProcessDefinition(String processDefinitionId, String version);
+
+    PvmProcessDefinition getPvmProcessDefinition(String processDefinitionId, String version,String tenantId);
 
     /**
      * 获取流程
@@ -51,6 +55,8 @@ public interface ProcessDefinitionContainer {
 
 
     ProcessDefinition getProcessDefinition(String processDefinitionId, String version);
+
+    ProcessDefinition getProcessDefinition(String processDefinitionId, String version,String tenantId);
 
     ProcessDefinition getProcessDefinition(String uri);
 }

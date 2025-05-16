@@ -56,9 +56,10 @@ public class CommentsTest {
 
     @Test
     public void testParseCommentElements() throws Exception {
+        String tenantId = "-1";
         //1. 部署流程定义
         ProcessDefinitionSource processDefinitionSource = repositoryCommandService
-                .deploy("process-def/comments/comments.bpmn20.xml");
+                .deploy("process-def/comments/comments.bpmn20.xml",tenantId);
 
         ProcessDefinition processDefinition = processDefinitionSource.getProcessDefinitionList().get(0);
         Assert.assertNotNull(processDefinition);

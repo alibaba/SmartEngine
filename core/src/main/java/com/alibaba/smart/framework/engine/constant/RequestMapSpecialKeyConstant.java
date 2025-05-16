@@ -9,6 +9,11 @@ public class RequestMapSpecialKeyConstant {
 
     public static final String $_SMART_ENGINE_$_PREFIX = "_$_smart_engine_$_";
 
+    /**
+     * 租户id key
+     */
+    public static final String TENANT_ID = $_SMART_ENGINE_$_PREFIX +"tenant_id";
+
     public static final String PROCESS_DEFINITION_TYPE = $_SMART_ENGINE_$_PREFIX + "process_definition_type";
 
     public static final String PROCESS_INSTANCE_START_USER_ID = $_SMART_ENGINE_$_PREFIX + "start_user_id";

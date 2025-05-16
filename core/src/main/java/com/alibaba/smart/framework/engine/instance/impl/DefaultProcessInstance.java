@@ -3,14 +3,17 @@ package com.alibaba.smart.framework.engine.instance.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
+import com.alibaba.smart.framework.engine.util.ObjectUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.util.StringUtils;
 
 /**
  * Default Process Instance Created by ettear on 16-4-12.
@@ -27,7 +30,7 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     private String processDefinitionVersion;
     private String processDefinitionType;
 
-
+    private  String tenantId;
 
     private  String startUserId;
     /**
@@ -74,4 +77,14 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
         return activityInstances;
     }
 
+
+    @Override
+    public
+    String getUniqueProcessDefinitionIdAndVersion(){
+        if(StringUtils.isEmpty(getTenantId())){
+            return processDefinitionIdAndVersion;
+        }else {
+            return String.format("%s:%s", processDefinitionIdAndVersion, getTenantId());
+        }
+    }
 }

@@ -73,9 +73,10 @@ public class ExtensionNameSpaceParseTest {
     }
 
     private void testDifferentNsParse(String processDefineName) throws Exception {
+        String tenantId = "-1";
         //1. 部署流程定义
         ProcessDefinitionSource processDefinitionSource = repositoryCommandService
-                .deploy(String.format("process-def/extension/%s", processDefineName));
+                .deploy(String.format("process-def/extension/%s", processDefineName),tenantId);
 
         ProcessDefinition processDefinition = processDefinitionSource.getProcessDefinitionList().get(0);
         Assert.assertNotNull(processDefinition);

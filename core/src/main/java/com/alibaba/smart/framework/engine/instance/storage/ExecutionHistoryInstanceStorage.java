@@ -35,7 +35,7 @@ public interface ExecutionHistoryInstanceStorage {
      * @param processEngineConfiguration
      * @return 执行历史
      */
-    ExecutionHistoryInstance find(String instanceId,
+    ExecutionHistoryInstance find(String instanceId,String tenantId,
                                   ProcessEngineConfiguration processEngineConfiguration);
 
     /**
@@ -43,7 +43,7 @@ public interface ExecutionHistoryInstanceStorage {
      * @param instanceId 执行历史ID
      * @param processEngineConfiguration
      */
-    void remove(String instanceId,
+    void remove(String instanceId,String tenantId,
                 ProcessEngineConfiguration processEngineConfiguration);
 
     /**
@@ -52,7 +52,7 @@ public interface ExecutionHistoryInstanceStorage {
      * @param processEngineConfiguration
      * @return 流程实例所有执行历史
      */
-    List<ExecutionHistoryInstance> findAll(String processInstanceId,
+    List<ExecutionHistoryInstance> findAll(String processInstanceId,String tenantId,
                                            ProcessEngineConfiguration processEngineConfiguration);
 
 }

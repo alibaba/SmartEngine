@@ -41,7 +41,13 @@ public class DefaultProcessQueryService implements ProcessQueryService, LifeCycl
     @Override
     public ProcessInstance findById(String processInstanceId) {
 
-        return processInstanceStorage.findOne(processInstanceId, processEngineConfiguration);
+        return findById(processInstanceId,null);
+    }
+
+    @Override
+    public ProcessInstance findById(String processInstanceId,String tenantId) {
+
+        return processInstanceStorage.findOne(processInstanceId,tenantId, processEngineConfiguration);
     }
 
     @Override

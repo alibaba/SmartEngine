@@ -175,7 +175,7 @@ public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
 
     @Override
-    public void remove(String taskAssigneeId, ProcessEngineConfiguration processEngineConfiguration) {
+    public void remove(String taskAssigneeId, String tenantId,ProcessEngineConfiguration processEngineConfiguration) {
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
@@ -188,7 +188,7 @@ public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
     }
 
     @Override
-    public void removeAll(String taskInstanceId, ProcessEngineConfiguration processEngineConfiguration) {
+    public void removeAll(String taskInstanceId, String tenantId,ProcessEngineConfiguration processEngineConfiguration) {
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
         String collectionName = tableSchemaStrategy.getTableSchemaFormatter(INSTANCE);
@@ -199,7 +199,7 @@ public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
     }
 
     @Override
-    public List<TaskAssigneeInstance> findList(String taskInstanceId,
+    public List<TaskAssigneeInstance> findList(String taskInstanceId,String tenantId,
                                                ProcessEngineConfiguration processEngineConfiguration) {
         MongoTemplate mongoTemplate =  (MongoTemplate)processEngineConfiguration.getInstanceAccessor().access(MONGO_TEMPLATE);
         TableSchemaStrategy tableSchemaStrategy = processEngineConfiguration.getTableSchemaStrategy();
@@ -233,20 +233,20 @@ public class MongoTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
     }
 
     @Override
-    public TaskAssigneeInstance update(String taskAssigneeId, String assigneeId,
+    public TaskAssigneeInstance update(String taskAssigneeId, String assigneeId,String tenantId,
                                        ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 
     @Override
-    public TaskAssigneeInstance findOne(String taskAssigneeId, ProcessEngineConfiguration processEngineConfiguration) {
+    public TaskAssigneeInstance findOne(String taskAssigneeId,String tenantId, ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }
 
 
 
     @Override
-    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,
+    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,String tenantId,
                                                                               ProcessEngineConfiguration processEngineConfiguration) {
         return null;
     }

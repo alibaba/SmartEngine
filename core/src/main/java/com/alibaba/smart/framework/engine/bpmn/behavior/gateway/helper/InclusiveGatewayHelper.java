@@ -32,13 +32,13 @@ public class InclusiveGatewayHelper {
 
     // 添加缓存键生成方法
     private static String generateActivityTreeCacheKey(ProcessInstance processInstance,PvmActivity forkedPvmActivity, PvmActivity joinedPvmActivity) {
-        return processInstance.getProcessDefinitionIdAndVersion() + ":" +forkedPvmActivity.getModel().getId() + ":" + joinedPvmActivity.getModel().getId();
+        return processInstance.getUniqueProcessDefinitionIdAndVersion() + ":" +forkedPvmActivity.getModel().getId() + ":" + joinedPvmActivity.getModel().getId();
     }
 
     // 添加 JOIN_LATCH_COUNT 缓存键生成方法
     private static String generateJoinLatchCountCacheKey(ProcessInstance processInstance, ActivityTreeNode node, List<String> triggerActivityIds) {
         // 使用流程实例ID、节点ID和触发的活动ID列表作为缓存键
-        String processDefinitionIdAndVersion = processInstance.getProcessDefinitionIdAndVersion();
+        String processDefinitionIdAndVersion = processInstance.getUniqueProcessDefinitionIdAndVersion();
         String nodeId = node.getActivityId();
         String triggerIds = triggerActivityIds.stream().sorted().collect(Collectors.joining(":"));
         return processDefinitionIdAndVersion + ":" + nodeId + ":" + triggerIds;
@@ -67,6 +67,7 @@ public class InclusiveGatewayHelper {
         VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
 
         VariableInstance variableInstance = new DefaultVariableInstance();
+        variableInstance.setTenantId(context.getTenantId());
         processEngineConfiguration.getIdGenerator().generate(variableInstance);
         ProcessInstance processInstance = context.getProcessInstance();
         variableInstance.setProcessInstanceId(processInstance.getInstanceId());
@@ -105,7 +106,7 @@ public class InclusiveGatewayHelper {
 
     private static List<String> findTriggerActivityIdsFromDB(VariableInstanceStorage variableInstanceStorage, ExecutionInstance forkedExecutionInstanceOfInclusiveGateway, VariablePersister variablePersister, String key,ProcessEngineConfiguration processEngineConfiguration) {
         List<VariableInstance> list = variableInstanceStorage.findList(forkedExecutionInstanceOfInclusiveGateway.getProcessInstanceId(),
-                forkedExecutionInstanceOfInclusiveGateway.getInstanceId(), variablePersister, processEngineConfiguration);
+                forkedExecutionInstanceOfInclusiveGateway.getInstanceId(), variablePersister,forkedExecutionInstanceOfInclusiveGateway.getTenantId(), processEngineConfiguration);
         Optional<VariableInstance> first = list.stream().filter(variableInstance -> key.equals(variableInstance.getFieldKey())).findFirst();
 
         VariableInstance variableInstance = first.get();
@@ -166,7 +167,7 @@ public class InclusiveGatewayHelper {
         PvmProcessDefinition pvmProcessDefinition = processEngineConfiguration
                 .getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE,
                         ProcessDefinitionContainer.class).getPvmProcessDefinition(processInstance.getProcessDefinitionId(),
-                        processInstance.getProcessDefinitionVersion());
+                        processInstance.getProcessDefinitionVersion(),processInstance.getTenantId());
 
         PvmActivity forkPvmActivity = pvmProcessDefinition.getActivities().get(forkedExecutionInstanceOfInclusiveGateway.getProcessDefinitionActivityId());
         return forkPvmActivity;
@@ -176,7 +177,7 @@ public class InclusiveGatewayHelper {
         ProcessInstance processInstance = context.getProcessInstance();
         ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
 
-        List<ExecutionInstance> allExecutionInstanceList =  executionInstanceStorage.findAll(processInstance.getInstanceId(), processEngineConfiguration);
+        List<ExecutionInstance> allExecutionInstanceList =  executionInstanceStorage.findAll(processInstance.getInstanceId(),processInstance.getTenantId(), processEngineConfiguration);
         if(CollectionUtil.isEmpty(allExecutionInstanceList)){
             // 说明此时还没落库（SE 目前的设计是一次调用链结束后，才会在最后时刻落库。 这个时候需要从内存中查询）
             allExecutionInstanceList = processInstance.getActivityInstances().stream()
@@ -188,7 +189,9 @@ public class InclusiveGatewayHelper {
     public static ExecutionInstance findForkedExecutionInstance(ExecutionContext context, ExecutionInstance joinedExecutionInstanceOfInclusiveGateway,ExecutionInstanceStorage executionInstanceStorage) {
         ProcessEngineConfiguration processEngineConfiguration = context.getProcessEngineConfiguration();
 
-        ExecutionInstance forkedExecutionInstanceOfInclusiveGateway = executionInstanceStorage.find(joinedExecutionInstanceOfInclusiveGateway.getBlockId(), processEngineConfiguration);
+        ExecutionInstance forkedExecutionInstanceOfInclusiveGateway = executionInstanceStorage.find(
+                joinedExecutionInstanceOfInclusiveGateway.getBlockId(),joinedExecutionInstanceOfInclusiveGateway.getTenantId(), processEngineConfiguration);
+
         if(null == forkedExecutionInstanceOfInclusiveGateway ){
             // 说明此时还没落库（SE 目前的设计是一次调用链结束后，才会在最后时刻落库。 这个时候需要从内存中查询）
             ExecutionInstance matchedExecutionInstance = context.getProcessInstance().getActivityInstances().stream()

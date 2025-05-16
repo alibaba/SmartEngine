@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ProcessInstanceQueryParam extends PaginateQueryParam {
+public class ProcessInstanceQueryParam extends BaseQueryParam {
 
     private String startUserId;
     private String status ;

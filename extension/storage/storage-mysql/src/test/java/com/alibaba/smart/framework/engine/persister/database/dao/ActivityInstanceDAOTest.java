@@ -43,7 +43,7 @@ public class ActivityInstanceDAOTest extends BaseElementTest {
     public void testFindOne() {
         dao.insert(entity);
 
-        ActivityInstanceEntity result = dao.findOne(entity.getId());
+        ActivityInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertNotNull(result);
     }
 
@@ -51,12 +51,12 @@ public class ActivityInstanceDAOTest extends BaseElementTest {
     public void testDelete() {
         dao.insert(entity);
 
-        ActivityInstanceEntity result = dao.findOne(entity.getId());
+        ActivityInstanceEntity result = dao.findOne(entity.getId(),null);
         Assert.assertNotNull(result);
 
-        dao.delete(entity.getId());
+        dao.delete(entity.getId(),null);
 
-        result = dao.findOne(entity.getId());
+        result = dao.findOne(entity.getId(),null);
         Assert.assertNull(result);
 
 

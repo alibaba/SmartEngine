@@ -23,7 +23,13 @@ import com.alibaba.smart.framework.engine.util.ObjectUtil;
 public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
     @Override
-    public ProcessInstance create( ProcessEngineConfiguration processEngineConfiguration,String processDefinitionId, String processDefinitionVersion, Map<String, Object> request) {
+    public ProcessInstance create( ProcessEngineConfiguration processEngineConfiguration,
+                                   String processDefinitionId, String processDefinitionVersion, Map<String, Object> request) {
+        String tenantId = null;
+        if(null != request) {
+            tenantId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TENANT_ID));
+        }
+
         DefaultProcessInstance defaultProcessInstance = new DefaultProcessInstance();
         IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
 
@@ -50,6 +56,8 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
             String comment = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_COMMENT));
             defaultProcessInstance.setComment(comment);
+
+            defaultProcessInstance.setTenantId(tenantId);
         }
 
         return defaultProcessInstance;

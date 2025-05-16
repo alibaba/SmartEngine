@@ -31,7 +31,7 @@ public interface ProcessInstanceStorage {
      * @param processEngineConfiguration
      * @return 实例
      */
-    ProcessInstance findOne(String processInstanceId,
+    ProcessInstance findOne(String processInstanceId,String tenantId,
                             ProcessEngineConfiguration processEngineConfiguration);
 
     /**
@@ -40,7 +40,7 @@ public interface ProcessInstanceStorage {
      * @param processEngineConfiguration
      * @return
      */
-    ProcessInstance findOneForUpdate(String instanceId,
+    ProcessInstance findOneForUpdate(String instanceId,String tenantId,
                                      ProcessEngineConfiguration processEngineConfiguration);
 
     List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam,
@@ -55,7 +55,7 @@ public interface ProcessInstanceStorage {
      * @param processInstanceId 流程实例ID
      * @param processEngineConfiguration
      */
-    void remove(String processInstanceId,
+    void remove(String processInstanceId,String tenantId,
                 ProcessEngineConfiguration processEngineConfiguration);
 
 

@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.context.impl;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
@@ -10,6 +11,7 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
+import com.alibaba.smart.framework.engine.util.ObjectUtil;
 import lombok.Data;
 
 /**
@@ -44,6 +46,39 @@ public class DefaultExecutionContext implements ExecutionContext {
     private boolean nested;
 
     private String blockId; //目前仅用于包容网关 @2024.04.25
+
+    private String tenantId;
+
+    @Override
+    public String getTenantId() {
+        if (null != tenantId) {
+            return tenantId;
+        }
+
+        String tenantIdInRequest = null;
+        if (null != request) {
+            tenantIdInRequest = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TENANT_ID));
+        }
+
+        if (null != tenantIdInRequest) {
+            this.tenantId = tenantIdInRequest;
+        }
+
+        return tenantId;
+    }
+
+    @Override
+    public void setTenantId(String tenantId) {
+        if (tenantId == null) {
+            return;
+        }
+
+        this.tenantId = tenantId;
+
+        if (null != request) {
+            request.put(RequestMapSpecialKeyConstant.TENANT_ID, tenantId);
+        }
+    }
 
     @Override
     public String toString() {

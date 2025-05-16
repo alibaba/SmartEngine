@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
+import com.alibaba.smart.framework.engine.model.instance.Instance;
 
 public interface ActivityInstanceStorage {
 
@@ -13,16 +14,16 @@ public interface ActivityInstanceStorage {
     ActivityInstance update(ActivityInstance activityInstance,
                             ProcessEngineConfiguration processEngineConfiguration);
 
-    ActivityInstance find(String activityInstanceId,
+    ActivityInstance find(String activityInstanceId,String tenantId,
                           ProcessEngineConfiguration processEngineConfiguration);
 
-    ActivityInstance findWithShading(String processInstanceId, String activityInstanceId,
+    ActivityInstance findWithShading(String processInstanceId, String activityInstanceId,String tenantId,
             ProcessEngineConfiguration processEngineConfiguration);
 
-    void remove(String activityInstanceId,
+    void remove(String activityInstanceId,String tenantId,
                 ProcessEngineConfiguration processEngineConfiguration);
 
-    List<ActivityInstance> findAll(String processInstanceId,
+    List<ActivityInstance> findAll(String processInstanceId,String tenantId,
                                    ProcessEngineConfiguration processEngineConfiguration);
 
 }

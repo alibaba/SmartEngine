@@ -6,58 +6,84 @@
     <!-- income_transition_id,income_activity_instance_id, -->
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,
-        process_instance_id,process_definition_id_and_version,process_definition_activity_id,activity_instance_id,active,block_id
+        process_instance_id,process_definition_id_and_version,process_definition_activity_id,activity_instance_id,active,block_id,tenant_id
     </sql>
 
     <!-- #{incomeTransitionId},#{incomeActivityInstanceId}, -->
-    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity"   keyProperty="id">
-        insert into  se_execution_instance(<include refid="baseColumn"/>)
+    <insert id="insert"
+            parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity"
+            keyProperty="id">
+        insert into se_execution_instance(<include refid="baseColumn"/>)
         values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId}, #{processDefinitionIdAndVersion},
-        #{processDefinitionActivityId}, #{activityInstanceId},#{active},#{blockId})
+        #{processDefinitionActivityId},
+        #{activityInstanceId},#{active},#{blockId},#{tenantId})
     </insert>
 
     <delete id="delete" parameterType="long">
-        delete from  se_execution_instance where id=#{id}
+        delete
+        from se_execution_instance
+        where id = #{id}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </delete>
 
-    <update id="update" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
-        update  se_execution_instance
+    <update id="update"
+            parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
+        update se_execution_instance
         <set>
             gmt_modified=now(6)
             <if test="active != null">,active = #{active}</if>
         </set>
         where id=#{id}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </update>
 
-    <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
+    <select id="findOne"
+            resultType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from  se_execution_instance where id=#{id}
+        from se_execution_instance
+        where id=#{id}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </select>
 
 
-    <select id="findWithShading" resultType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
+    <select id="findWithShading"
+            resultType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from  se_execution_instance where id=#{id} and process_instance_id=#{processInstanceId}
+        from se_execution_instance
+        where id=#{id}
+        and process_instance_id=#{processInstanceId}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </select>
 
-    <select id="findAllExecutionList" resultType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
+    <select id="findAllExecutionList"
+            resultType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from  se_execution_instance where process_instance_id=#{processInstanceId}
+        from se_execution_instance
+        where process_instance_id=#{processInstanceId}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </select>
 
-    <select id="findActiveExecution" resultType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
+    <select id="findActiveExecution"
+            resultType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from  se_execution_instance where process_instance_id=#{processInstanceId} and active = 1
+        from se_execution_instance
+        where process_instance_id=#{processInstanceId}
+        and active = 1
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </select>
 
-    <select id="findByActivityInstanceId" resultType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
+    <select id="findByActivityInstanceId"
+            resultType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
         select
         <include refid="baseColumn"/>
-        from  se_execution_instance where process_instance_id=#{processInstanceId} and activity_instance_id = #{activityInstanceId}
+        from se_execution_instance
+        where process_instance_id=#{processInstanceId}
+        and activity_instance_id = #{activityInstanceId}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
     </select>
 
 </mapper>

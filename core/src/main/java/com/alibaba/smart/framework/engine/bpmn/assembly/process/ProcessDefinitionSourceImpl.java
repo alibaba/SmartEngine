@@ -20,6 +20,8 @@ public class ProcessDefinitionSourceImpl implements ProcessDefinitionSource {
 
     private List<ProcessDefinition> processDefinitionList = new ArrayList<ProcessDefinition>();
 
+    private String tenantId;
+
     @Override
     public ProcessDefinition getFirstProcessDefinition() {
         return processDefinitionList.get(0);

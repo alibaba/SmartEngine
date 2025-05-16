@@ -15,9 +15,15 @@ public interface RepositoryCommandService {
 
     ProcessDefinitionSource deploy(String classPathResource) ;
 
+    ProcessDefinitionSource deploy(String classPathResource,String tenantId) ;
+
     ProcessDefinitionSource deploy(InputStream inputStream) ;
 
+    ProcessDefinitionSource deploy(InputStream inputStream,String tenantId) ;
+
     ProcessDefinitionSource deployWithUTF8Content(String uTF8ProcessDefinitionContent) ;
+
+    ProcessDefinitionSource deployWithUTF8Content(String uTF8ProcessDefinitionContent,String tenantId) ;
 
 
 }
