@@ -5,7 +5,6 @@ import com.alibaba.smart.framework.engine.instance.impl.DefaultProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.persister.database.entity.ProcessInstanceEntity;
-import org.springframework.util.StringUtils;
 
 /**
  * @author yanricheng@163.com
