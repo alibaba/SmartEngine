@@ -187,20 +187,10 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     }
 
 
-    @Override
-    public ProcessInstance signal(TenantId tenantId,String executionInstanceId) {
-        Map<String, Object> request = null;
-        if (tenantId!=null && StringUtil.isNotEmpty(tenantId.getValue())) {
-            request = new HashMap<>();
-            request.put(RequestMapSpecialKeyConstant.TENANT_ID, tenantId.getValue());
-            return signal(executionInstanceId, request);
-        }
-        return signal(executionInstanceId, request);
-    }
 
     @Override
     public ProcessInstance signal(String executionInstanceId) {
-        return signal(null,executionInstanceId);
+        return this.signal(executionInstanceId, null, null);
     }
 
     @Override

@@ -82,7 +82,10 @@ public class MultiInstanceWithTenantIdTest extends DatabaseBaseTestCase {
         // 驱动 ReceiverTask
         List<ExecutionInstance> activeExecutions = executionQueryService.findActiveExecutionList(processInstance.getInstanceId(),processInstance.getTenantId());
         assertEquals(1,activeExecutions.size());
-        executionCommandService.signal(TenantId.builder().value(activeExecutions.get(0).getTenantId()).build(),activeExecutions.get(0).getInstanceId());
+
+        HashMap<String,Object> hashMap = new HashMap<>();
+        hashMap.put(RequestMapSpecialKeyConstant.TENANT_ID,tenantId);
+        executionCommandService.signal(activeExecutions.get(0).getInstanceId(),hashMap);
 
 
         //7. 获取当前待处理任务.

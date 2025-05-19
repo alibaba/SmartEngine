@@ -25,7 +25,6 @@ public interface ExecutionCommandService {
 
     ProcessInstance signal(String executionInstanceId);
 
-    ProcessInstance signal(TenantId tenantId,String executionInstanceId );
 
     /**
      * UNSAFE!!!

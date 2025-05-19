@@ -1,6 +1,7 @@
 package com.alibaba.smart.framework.engine.test.process;
 
 import com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow;
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
@@ -234,9 +235,13 @@ public class ParallelGatewayThreadMultiWithTenantIdTest extends DatabaseBaseTest
         Optional<ExecutionInstance> receiveTask1 = executionInstanceList.stream()
                 .filter(a -> a.getProcessDefinitionActivityId().equals("receiveTask1"))
                 .findFirst();
+
+        String tenantId1 = receiveTask1.get().getTenantId();
+        HashMap hashMap = MapUtil.newHashMap();
+        hashMap.put(RequestMapSpecialKeyConstant.TENANT_ID,tenantId1);
         processInstance = executionCommandService.signal(
-                TenantId.builder().value(receiveTask1.get().getTenantId()).build(),
-                receiveTask1.get().getInstanceId()
+
+                receiveTask1.get().getInstanceId(),hashMap
                 );
 
 
@@ -254,9 +259,11 @@ public class ParallelGatewayThreadMultiWithTenantIdTest extends DatabaseBaseTest
         Optional<ExecutionInstance> receiveTask2 = executionInstanceList.stream()
                 .filter(a -> a.getProcessDefinitionActivityId().equals("receiveTask2"))
                 .findFirst();
+        String tenantId2 = receiveTask2.get().getTenantId();
+        HashMap<String,Object> hashMap1 = MapUtil.newHashMap();
+        hashMap1.put(RequestMapSpecialKeyConstant.TENANT_ID,tenantId2);
         processInstance = executionCommandService.signal(
-                TenantId.builder().value(receiveTask2.get().getTenantId()).build(),
-                receiveTask2.get().getInstanceId()
+                receiveTask2.get().getInstanceId(),hashMap1
                 );
 
         // 验证最终状态

@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.test.process;
 
+import com.alibaba.smart.framework.engine.common.util.MapUtil;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
@@ -52,7 +53,9 @@ public class DataBaseCallActivityWithTenantIdTest extends DatabaseBaseTestCase {
         //=======2.0 START ========= 这里需要驱动子流程运作。
 
         //完成下单确认,将流程驱动到等待资金到账环节。
-        executionCommandService.signal(TenantId.builder().value(childDebitExecutionInstance.getTenantId()).build(),childDebitExecutionInstance.getInstanceId());
+        HashMap<String,Object> hashMap = new HashMap<>();
+        hashMap.put(RequestMapSpecialKeyConstant.TENANT_ID,tenantId);
+        executionCommandService.signal(childDebitExecutionInstance.getInstanceId(),hashMap);
 
         // 父流程还是在callActivity节点（其实没啥必要再断言了）
         List<ExecutionInstance> parentCallActivityExecutionInstanceList = executionQueryService.findActiveExecutionList(parentProcessInstanceId,tenantId);
@@ -73,7 +76,7 @@ public class DataBaseCallActivityWithTenantIdTest extends DatabaseBaseTestCase {
         //=======3.0 START ========= 完成驱动子流程，此时流程需要回到父流程。
 
         //完成资金到账,将流程驱动到资金交割处理环节。
-        executionCommandService.signal(TenantId.builder().value(tenantId).build(),childDebitChildExecutionInstance.getInstanceId());
+          executionCommandService.signal(childDebitChildExecutionInstance.getInstanceId(),hashMap);
 
         //当子流程结束后，父主流程将从callActivity回到下一个节点。在本例中，callActivity的下一个节点是在end_order节点
         List<ExecutionInstance> endOrderExecutionInstanceList = executionQueryService.findActiveExecutionList(parentProcessInstanceId,tenantId);
@@ -88,7 +91,7 @@ public class DataBaseCallActivityWithTenantIdTest extends DatabaseBaseTestCase {
         assertEquals(0, childExecutionInstanceList4.size());
 
         //完成资金交割处理,将流程驱动到ACK确认环节。
-        ProcessInstance   processInstance4 = executionCommandService.signal(TenantId.builder().value(tenantId).build(),endOrderExecutionInstance.getInstanceId());
+        ProcessInstance   processInstance4 = executionCommandService.signal(endOrderExecutionInstance.getInstanceId(),hashMap);
 
         //测试下是否符合预期
         List<ExecutionInstance> parentExecutionInstanceList4 = executionQueryService.findActiveExecutionList(processInstance4.getInstanceId(),tenantId);
@@ -192,7 +195,9 @@ public class DataBaseCallActivityWithTenantIdTest extends DatabaseBaseTestCase {
 
 
             //=======1.1 ========= 触发主流程执行进入到子流程里面
-            executionCommandService.signal(TenantId.builder().value(firstExecutionInstance.getTenantId()).build(),firstExecutionInstance.getInstanceId());
+            HashMap<String,Object> hashMap = new HashMap<>();
+            hashMap.put(RequestMapSpecialKeyConstant.TENANT_ID,tenantId);
+            executionCommandService.signal(firstExecutionInstance.getInstanceId(),hashMap);
 
             //=======1.2 ========= START 111 因为执行到了callActivity节点,有主流程和子流程两个实例.获得子流程实例 id。
 

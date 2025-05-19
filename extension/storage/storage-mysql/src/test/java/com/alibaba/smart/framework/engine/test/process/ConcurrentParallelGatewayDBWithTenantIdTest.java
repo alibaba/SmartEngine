@@ -75,7 +75,8 @@ public class ConcurrentParallelGatewayDBWithTenantIdTest extends DatabaseBaseTes
 
         //完成两个任务节点创建,已经进入fork节点后面的数据。
         //完成其中一个节点的驱动。
-        processInstance = executionCommandService.signal(TenantId.builder().value(firstExecutionInstance.getTenantId()).build(), firstExecutionInstance.getInstanceId());
+        String tenantId1 = firstExecutionInstance.getTenantId();
+        processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(),request);
 
 
         String runningActivityId = secondActivityId;
