@@ -1,4 +1,8 @@
-# 3.5.1-SNAPSHOT 
+# 3.6.0-SNAPSHOT
+1. [功能增强] 增加多租户特性,谢谢  @yanricheng1 提交的 PR
+2. [模块调整] 移除 MongoDB Storage
+
+# 3.5.0
 1. [功能增强] 完整支持了包容网关,包括 default seqFlow,嵌套包容网关和 Unbalanced gateway
 2. [细节重构] 重构了包容和并行以及互斥网关的处理逻辑,减少了一些重复代码
 3. [微型非兼容升级] 为了支持包容网关，在`se_execution_instance`表增加了 `block_id`字段
