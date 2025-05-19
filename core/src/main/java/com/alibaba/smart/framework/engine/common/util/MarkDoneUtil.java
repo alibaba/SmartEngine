@@ -56,7 +56,6 @@ public class MarkDoneUtil {
 
         }
 
-        // 需要注意，针对 mongodb 模式，该方法会在内部实现，删除人员和任务的冗余存储关系。
         int updateCount = taskInstanceStorage.updateFromStatus(taskInstance, sourceStatus, processEngineConfiguration);
         if (updateCount != 1) {
             throw new ConcurrentException(String

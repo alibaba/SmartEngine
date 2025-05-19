@@ -123,14 +123,12 @@ public interface ProcessEngineConfiguration {
 
     LockStrategy getLockStrategy();
 
-    /**
-     * 目前仅用于 MongoDB 模式
-     *
-     * @param tableSchemaStrategy
-     */
+
     @Experiment
+    @Deprecated
     void setTableSchemaStrategy(TableSchemaStrategy tableSchemaStrategy);
 
+    @Deprecated
     TableSchemaStrategy getTableSchemaStrategy();
 
     /**
