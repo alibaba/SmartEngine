@@ -77,11 +77,10 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
 
 
     @Override
-    public
-    String getUniqueProcessDefinitionIdAndVersion(){
+    public String getUniqueProcessDefinitionIdAndVersion(){
         if(StringUtil.isEmpty(getTenantId())){
             return processDefinitionIdAndVersion;
-        }else {
+        } else {
             return String.format("%s:%s", processDefinitionIdAndVersion, getTenantId());
         }
     }
