@@ -6,7 +6,6 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
-import com.alibaba.smart.framework.engine.model.instance.TenantId;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomVariablePersister;

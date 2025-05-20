@@ -5,7 +5,6 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
-import com.alibaba.smart.framework.engine.model.instance.TenantId;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import org.junit.Assert;
 import org.junit.Test;
