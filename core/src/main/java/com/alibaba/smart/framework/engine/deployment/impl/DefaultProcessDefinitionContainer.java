@@ -53,7 +53,7 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
         String version = pvmProcessDefinition.getVersion();
         String tenantId = pvmProcessDefinition.getTenantId();
 
-        String uniqueKey = IdAndVersionUtil.buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId);
+        String uniqueKey = processEngineConfiguration.getProcessDefinitionKeyGenerator().buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId);
 
         this.installPvmProcessDefinition(uniqueKey, pvmProcessDefinition);
         this.installProcessDefinition(uniqueKey,processDefinition);
@@ -70,7 +70,7 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     @Override
     public void uninstall(String processDefinitionId, String version,String tenantId) {
-        String uniqueKey = IdAndVersionUtil.buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId);
+        String uniqueKey = processEngineConfiguration.getProcessDefinitionKeyGenerator().buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId);
         this.pvmProcessDefinitionConcurrentHashMap.remove(uniqueKey);
         this.processDefinitionConcurrentHashMap.remove(uniqueKey);
 
@@ -85,7 +85,7 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     @Override
     public PvmProcessDefinition getPvmProcessDefinition(String processDefinitionId, String version,String tenantId) {
-        String uniqueKey = IdAndVersionUtil.buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId);
+        String uniqueKey = processEngineConfiguration.getProcessDefinitionKeyGenerator().buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId);
         return this.getPvmProcessDefinition(uniqueKey);
     }
 
@@ -102,7 +102,7 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     @Override
     public ProcessDefinition getProcessDefinition(String processDefinitionId, String version,String tenantId) {
-        String uniqueKey = IdAndVersionUtil.buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId);
+        String uniqueKey = processEngineConfiguration.getProcessDefinitionKeyGenerator().buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId);
         return this.getProcessDefinition(uniqueKey);
     }
 

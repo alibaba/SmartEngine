@@ -18,6 +18,11 @@ public interface ProcessEngineConfiguration {
     SmartEngine getSmartEngine();
 
     void setSmartEngine(SmartEngine smartEngine);
+
+    ProcessDefinitionKeyGenerator getProcessDefinitionKeyGenerator();
+
+    void setProcessDefinitionKeyGenerator(ProcessDefinitionKeyGenerator processDefinitionKeyGenerator);
+
     /**
      * 主要用于外部扩展。
      * 在生产环境下必须设置。

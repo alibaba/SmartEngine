@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -57,7 +58,9 @@ public abstract  class CommonServiceHelper {
         if( variablePersister.isPersisteVariableInstanceEnabled() && null!= request ){
             AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
             VariableInstanceStorage variableInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,VariableInstanceStorage.class);
-            for (Entry<String, Object> entry : request.entrySet()) {
+            Iterator<Entry<String, Object>> iterator =request.entrySet().iterator();
+            while(iterator.hasNext()){
+                Entry<String, Object> entry = iterator.next();
                 String key = entry.getKey();
 
                 Set<String> blackList = variablePersister.getBlockList();

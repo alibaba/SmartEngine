@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+
 import java.util.List;
 
 /**
@@ -14,6 +16,7 @@ public interface ProcessInstance extends LifeCycleInstance {
      */
     String getProcessDefinitionIdAndVersion();
     String getUniqueProcessDefinitionIdAndVersion();
+    void setUniqueProcessDefinitionIdAndVersion(String uniqueProcessDefinitionIdAndVersion);
 
     /**
      * get ProcessDefinitionId

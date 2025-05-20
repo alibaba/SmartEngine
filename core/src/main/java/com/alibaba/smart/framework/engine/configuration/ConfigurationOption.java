@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.configuration;
 
 import com.alibaba.smart.framework.engine.configuration.impl.option.DisabledOption;
 import com.alibaba.smart.framework.engine.configuration.impl.option.ExpressionCompileResultCachedOption;
+import com.alibaba.smart.framework.engine.configuration.impl.option.ProcessDefinitionMultiTenantModeOption;
 import com.alibaba.smart.framework.engine.configuration.impl.option.ServiceOrchestrationEnabledOption;
 import com.alibaba.smart.framework.engine.configuration.impl.option.TransferEnabledOption;
 
@@ -17,7 +18,8 @@ public interface ConfigurationOption {
 
     ConfigurationOption EXPRESSION_COMPILE_RESULT_CACHED_OPTION = new ExpressionCompileResultCachedOption();
 
-    ConfigurationOption SERVICE_ORCHESTRATION_OPTION = new ServiceOrchestrationEnabledOption(  );
+    ConfigurationOption SERVICE_ORCHESTRATION_OPTION = new ServiceOrchestrationEnabledOption();
+    ConfigurationOption PROCESS_DEFINITION_MULTI_TENANT_MODE_OPTION = new ProcessDefinitionMultiTenantModeOption(true);
 
     boolean isEnabled();
 

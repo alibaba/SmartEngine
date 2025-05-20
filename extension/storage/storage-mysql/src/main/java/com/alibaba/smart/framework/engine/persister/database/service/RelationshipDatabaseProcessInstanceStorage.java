@@ -67,7 +67,12 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         if (processInstanceEntity == null) {
             return null;
         }
-        return ProcessInstanceBuilder.buildProcessInstanceFromEntity(processInstanceEntity);
+
+        ProcessInstance processInstance = ProcessInstanceBuilder.buildProcessInstanceFromEntity(processInstanceEntity);
+
+        processEngineConfiguration.getProcessDefinitionKeyGenerator().generate(processInstance);
+
+        return processInstance;
     }
 
 
@@ -81,6 +86,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOneForUpdate(Long.valueOf(instanceId),tenantId);
 
         ProcessInstance processInstance = ProcessInstanceBuilder.buildProcessInstanceFromEntity(processInstanceEntity);
+        processEngineConfiguration.getProcessDefinitionKeyGenerator().generate(processInstance);
 
         return processInstance;
     }
@@ -98,6 +104,7 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
             processInstanceList = new ArrayList<ProcessInstance>(processInstanceEntities.size());
             for (ProcessInstanceEntity processInstanceEntity : processInstanceEntities) {
                 ProcessInstance processInstance = ProcessInstanceBuilder.buildProcessInstanceFromEntity(processInstanceEntity);
+                processEngineConfiguration.getProcessDefinitionKeyGenerator().generate(processInstance);
                 processInstanceList.add(processInstance);
             }
         }

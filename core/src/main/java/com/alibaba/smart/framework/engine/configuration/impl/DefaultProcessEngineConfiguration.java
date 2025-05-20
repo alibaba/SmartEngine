@@ -30,6 +30,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private SmartEngine smartEngine;
 
+    private ProcessDefinitionKeyGenerator processDefinitionKeyGenerator;
+
     private IdGenerator idGenerator;
 
     private InstanceAccessor instanceAccessor;
@@ -85,6 +87,9 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         this.tableSchemaStrategy = new DefaultTableSchemaStrategy();
         this.optionContainer = new DefaultOptionContainer();
         optionContainer.put(ConfigurationOption.EXPRESSION_COMPILE_RESULT_CACHED_OPTION);
+        optionContainer.put(ConfigurationOption.PROCESS_DEFINITION_MULTI_TENANT_MODE_OPTION);
+
+        this.processDefinitionKeyGenerator = new DefaultProcessDefinitionKeyGenerator(this);
 
         buildDefaultSupportNameSpace();
     }

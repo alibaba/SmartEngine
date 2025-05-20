@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.IdAndVersionUtil;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance;
@@ -34,7 +35,7 @@ public class InstanceSerializerFacade {
 
     public static ProcessInstance mockSimpleProcessInstance( String  processDefinitionId,String version,InstanceStatus instanceStatus,String processDefinitionActivityId ) {
         ProcessInstance processInstance = new DefaultProcessInstance();
-        processInstance.setProcessDefinitionIdAndVersion(processDefinitionId+":"+version);
+        processInstance.setProcessDefinitionIdAndVersion(IdAndVersionUtil.buildProcessDefinitionKey(processDefinitionId,version));
         processInstance.setProcessDefinitionId(processDefinitionId);
         processInstance.setProcessDefinitionVersion(version);
         processInstance.setStatus(instanceStatus);

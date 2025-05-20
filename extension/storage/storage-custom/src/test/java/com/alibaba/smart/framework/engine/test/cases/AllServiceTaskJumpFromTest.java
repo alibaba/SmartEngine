@@ -18,7 +18,8 @@ public class AllServiceTaskJumpFromTest extends CustomBaseTestCase {
             .deploy("all-simple-servicetask.bpmn.xml").getFirstProcessDefinition();
         assertEquals(9, processDefinition.getBaseElementList().size());
 
-        ProcessInstance processInstance =  executionCommandService.jumpTo("1",processDefinition.getId(),processDefinition.getVersion(),InstanceStatus.running,"serviceTask1");
+        ProcessInstance processInstance =  executionCommandService.jumpTo("1",processDefinition.getId(),
+                processDefinition.getVersion(),InstanceStatus.running,"serviceTask1",null);
 
 
         processInstance =   executionCommandService.jumpFrom(processInstance,"serviceTask1",null,null);

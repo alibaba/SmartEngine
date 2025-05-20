@@ -40,8 +40,9 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
         //execute
         pvmActivity.execute( executionContext);
 
-        return executionContext.getProcessInstance();
-
+        ProcessInstance processInstance =  executionContext.getProcessInstance();
+        executionContext.getProcessEngineConfiguration().getProcessDefinitionKeyGenerator().generate(processInstance);
+        return processInstance;
     }
 
     @Override
@@ -50,7 +51,9 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
         //enter
         pvmActivity.enter(executionContext);
 
-        return executionContext.getProcessInstance();
+        ProcessInstance processInstance =  executionContext.getProcessInstance();
+        executionContext.getProcessEngineConfiguration().getProcessDefinitionKeyGenerator().generate(processInstance);
+        return processInstance;
 
     }
 

@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.test.service;
 
+import com.alibaba.smart.framework.engine.common.util.IdAndVersionUtil;
+import com.alibaba.smart.framework.engine.configuration.impl.option.ProcessDefinitionMultiTenantModeOption;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
@@ -38,6 +40,8 @@ public class RepositoryServiceWithTenantIdTest extends DatabaseBaseTestCase {
     public void testSimple() throws Exception {
 
         String tenantId = "-1";
+        String processDefinitionId = "exclusiveTest";
+        String version = "1.0.0";
 
         String content = IOUtil.readResourceFileAsUTF8String("multi-instance-test.bpmn20.xml");
         repositoryCommandService.deployWithUTF8Content(content,tenantId);
@@ -45,7 +49,8 @@ public class RepositoryServiceWithTenantIdTest extends DatabaseBaseTestCase {
 
         repositoryCommandService.deploy("test-usertask-and-servicetask-exclusive.bpmn20.xml",tenantId);
 
-        ProcessDefinition processDefinition = repositoryQueryService.getCachedProcessDefinition("exclusiveTest:1.0.0:-1");
+        ProcessDefinition processDefinition = repositoryQueryService.getCachedProcessDefinition(processEngineConfiguration.getProcessDefinitionKeyGenerator()
+                .buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId));
 
         Assert.assertNotNull(processDefinition);
 
@@ -57,7 +62,26 @@ public class RepositoryServiceWithTenantIdTest extends DatabaseBaseTestCase {
 
         Assert.assertEquals(2,processDefinitionCollection.size());
 
+        processEngineConfiguration.setLockStrategy(new DoNothingLockStrategy());
 
+        Assert.assertTrue(processEngineConfiguration.getProcessDefinitionKeyGenerator().isProcessDefinitionMultiTenantMode());
+
+        processEngineConfiguration.getOptionContainer().put(new ProcessDefinitionMultiTenantModeOption(false));
+        Assert.assertFalse(processEngineConfiguration.getProcessDefinitionKeyGenerator().isProcessDefinitionMultiTenantMode());
+
+        ProcessDefinition processDefinition1 = repositoryQueryService.getCachedProcessDefinition(processEngineConfiguration.getProcessDefinitionKeyGenerator()
+                .buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId));
+
+        Assert.assertNull(processDefinition1);
+
+        processEngineConfiguration.getOptionContainer().put(new ProcessDefinitionMultiTenantModeOption(true));
+        Assert.assertTrue(processEngineConfiguration.getProcessDefinitionKeyGenerator().isProcessDefinitionMultiTenantMode());
+
+
+        ProcessDefinition processDefinition2 = repositoryQueryService.getCachedProcessDefinition(processEngineConfiguration.getProcessDefinitionKeyGenerator()
+                .buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId));
+
+        Assert.assertNotNull(processDefinition2);
 
     }
 
