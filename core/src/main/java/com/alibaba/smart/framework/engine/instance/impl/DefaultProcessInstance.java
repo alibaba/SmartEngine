@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.instance.impl;
 
+import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
@@ -20,8 +21,6 @@ import java.util.List;
 public class DefaultProcessInstance extends AbstractLifeCycleInstance implements ProcessInstance {
 
     private static final long serialVersionUID = -201885591457164713L;
-
-    private String uniqueProcessDefinitionIdAndVersion;
 
     private String processDefinitionIdAndVersion;
     private String processDefinitionId;

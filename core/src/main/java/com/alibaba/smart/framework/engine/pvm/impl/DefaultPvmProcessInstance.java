@@ -41,7 +41,6 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
         pvmActivity.execute( executionContext);
 
         ProcessInstance processInstance =  executionContext.getProcessInstance();
-        executionContext.getProcessEngineConfiguration().getProcessDefinitionKeyGenerator().generate(processInstance);
         return processInstance;
     }
 
@@ -52,7 +51,6 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
         pvmActivity.enter(executionContext);
 
         ProcessInstance processInstance =  executionContext.getProcessInstance();
-        executionContext.getProcessEngineConfiguration().getProcessDefinitionKeyGenerator().generate(processInstance);
         return processInstance;
 
     }

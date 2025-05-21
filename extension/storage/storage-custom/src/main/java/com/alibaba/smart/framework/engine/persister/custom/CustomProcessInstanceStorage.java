@@ -42,7 +42,6 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
     public ProcessInstance findOne(String instanceId, String tenantId,
                                    ProcessEngineConfiguration processEngineConfiguration) {
         ProcessInstance processInstance = PersisterSession.currentSession().getProcessInstance(instanceId);
-        processEngineConfiguration.getProcessDefinitionKeyGenerator().generate(processInstance);
         return processInstance;
     }
 
@@ -50,7 +49,6 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
     public ProcessInstance findOneForUpdate(String instanceId, String tenantId,
                                             ProcessEngineConfiguration processEngineConfiguration) {
         ProcessInstance processInstance = PersisterSession.currentSession().getProcessInstance(instanceId);
-        processEngineConfiguration.getProcessDefinitionKeyGenerator().generate(processInstance);
         return processInstance;
     }
 
@@ -117,9 +115,6 @@ public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
         if (processInstanceQueryParam.getPageOffset() != null && processInstanceQueryParam.getPageSize() != null) {
             list = list.stream().sorted(Comparator.comparing(Instance::getInstanceId)).collect(Collectors.toList())
                     .subList(processInstanceQueryParam.getPageOffset(), processInstanceQueryParam.getPageOffset() + processInstanceQueryParam.getPageSize());
-            list.forEach(pi -> {
-                processEngineConfiguration.getProcessDefinitionKeyGenerator().generate(pi);
-            });
         }
 
         return list;

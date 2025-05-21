@@ -14,4 +14,14 @@ public abstract class IdAndVersionUtil {
         return uriBuilder.toString();
     }
 
+    public static String buildProcessDefinitionUniqueKey(String processDefinitionId, String version, String tenantId) {
+
+        if (StringUtil.isEmpty(tenantId)) {
+            return buildProcessDefinitionKey(processDefinitionId, version);
+        } else {
+            return buildProcessDefinitionKey(processDefinitionId, version) + ":" + tenantId;
+        }
+    }
+
+
 }

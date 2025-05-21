@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1719jcy" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:process id="parent" name="parent" isExecutable="true" camunda:versionTag="1.0">
+    <bpmn:startEvent id="StartEvent" name="StartEvent">
+      <bpmn:outgoing>Flow_0fhmm41</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="End_Event" name="End_Event">
+      <bpmn:incoming>Flow_0b9hun8</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0fhmm41" sourceRef="StartEvent" targetRef="service1">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="listener1" event="take" />
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="service1" name="service1" camunda:class="com.alibaba.smart.framework.engine.test.callcactivity1.CallActivityJavaDelegation1">
+      <bpmn:incoming>Flow_0fhmm41</bpmn:incoming>
+      <bpmn:outgoing>Flow_0i3txvb</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="service2" name="service2" camunda:class="com.alibaba.smart.framework.engine.test.callcactivity1.CallActivityJavaDelegation2">
+      <bpmn:incoming>Flow_0il9l93</bpmn:incoming>
+      <bpmn:outgoing>Flow_0b9hun8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0b9hun8" sourceRef="service2" targetRef="End_Event" />
+    <bpmn:callActivity id="sub_call_activity" name="子流程" calledElement="sub" camunda:calledElementBinding="version" camunda:calledElementVersion="1.0" camunda:calledElementTenantId="10000">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_0i3txvb</bpmn:incoming>
+      <bpmn:outgoing>Flow_0il9l93</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:sequenceFlow id="Flow_0i3txvb" sourceRef="service1" targetRef="sub_call_activity" />
+    <bpmn:sequenceFlow id="Flow_0il9l93" sourceRef="sub_call_activity" targetRef="service2" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="parent">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent">
+        <dc:Bounds x="122" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="114" y="145" width="52" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1yqy1lq_di" bpmnElement="End_Event">
+        <dc:Bounds x="852" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="843" y="145" width="54" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1y098qz_di" bpmnElement="service1">
+        <dc:Bounds x="220" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1otwjir_di" bpmnElement="service2">
+        <dc:Bounds x="630" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xj6o6q_di" bpmnElement="sub_call_activity">
+        <dc:Bounds x="380" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0fhmm41_di" bpmnElement="Flow_0fhmm41">
+        <di:waypoint x="158" y="120" />
+        <di:waypoint x="220" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0b9hun8_di" bpmnElement="Flow_0b9hun8">
+        <di:waypoint x="730" y="120" />
+        <di:waypoint x="852" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0i3txvb_di" bpmnElement="Flow_0i3txvb">
+        <di:waypoint x="320" y="120" />
+        <di:waypoint x="380" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0il9l93_di" bpmnElement="Flow_0il9l93">
+        <di:waypoint x="480" y="120" />
+        <di:waypoint x="630" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -10,13 +10,13 @@ import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
  * @author yanricheng
  * @date 2025/5/20
  */
-public class ProcessDefinitionMultiTenantModeOption implements ConfigurationOption {
+public class ProcessDefinitionShareOption implements ConfigurationOption {
     boolean isEnabled = true;
-    public ProcessDefinitionMultiTenantModeOption(){
+    public ProcessDefinitionShareOption(){
         this.isEnabled = true;
     }
 
-    public ProcessDefinitionMultiTenantModeOption(boolean isEnabled){
+    public ProcessDefinitionShareOption(boolean isEnabled){
         this.isEnabled = isEnabled;
     }
     @Override
@@ -26,7 +26,7 @@ public class ProcessDefinitionMultiTenantModeOption implements ConfigurationOpti
 
     @Override
     public String getId() {
-        return "processDefinitionMultiTenantMode";
+        return "processDefinitionShareOption";
     }
 
     @Override

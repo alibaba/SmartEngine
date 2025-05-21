@@ -247,8 +247,6 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         processInstance.setTenantId(tenantId);
         processInstance.setStatus(instanceStatus);
         processInstance.setInstanceId(processInstanceId);
-        processEngineConfiguration.getProcessDefinitionKeyGenerator().generate(processInstance);
-
 
 
         ActivityInstance activityInstance = new DefaultActivityInstance();

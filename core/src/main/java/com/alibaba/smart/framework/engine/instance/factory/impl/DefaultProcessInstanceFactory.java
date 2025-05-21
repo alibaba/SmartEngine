@@ -60,8 +60,6 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
             defaultProcessInstance.setTenantId(tenantId);
         }
 
-        processEngineConfiguration.getProcessDefinitionKeyGenerator().generate(defaultProcessInstance);
-
         return defaultProcessInstance;
     }
 
