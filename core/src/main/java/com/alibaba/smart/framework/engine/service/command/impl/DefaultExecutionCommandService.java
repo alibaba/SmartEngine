@@ -113,7 +113,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
-            CommonServiceHelper.createExecution(executionInstanceId, newProcessInstance, request,
+            CommonServiceHelper.createSingleExecution(executionInstanceId, newProcessInstance, request,
                 processEngineConfiguration);
 
             return newProcessInstance;
@@ -148,7 +148,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
             ProcessInstance newProcessInstance = pvmProcessInstance.signal(pvmActivity, executionContext);
 
-            CommonServiceHelper.createExecution(executionInstanceId, newProcessInstance, request,
+            CommonServiceHelper.createSingleExecution(executionInstanceId, newProcessInstance, request,
                     processEngineConfiguration);
 
             return newProcessInstance;
@@ -226,7 +226,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         ProcessInstance newProcessInstance = this.pvmProcessInstance.jump(pvmActivity, executionContext);
 
         //NOTATION3：executionInstance is set to null for jump case
-        CommonServiceHelper.createExecution(executionInstanceId, newProcessInstance, request,
+        CommonServiceHelper.createSingleExecution(executionInstanceId, newProcessInstance, request,
             processEngineConfiguration);
 
         return newProcessInstance;
@@ -268,7 +268,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         activityInstance.setExecutionInstanceList(executionInstanceList);
         processInstance.getActivityInstances().add(activityInstance);
 
-        CommonServiceHelper.createExecution(executionInstance.getInstanceId(), processInstance, null,
+        CommonServiceHelper.createSingleExecution(executionInstance.getInstanceId(), processInstance, null,
             processEngineConfiguration);
 
         return processInstance;
@@ -387,7 +387,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         if(CollectionUtil.isNotEmpty(activityInstance.getExecutionInstanceList())) {
         	activityInstance.getExecutionInstanceList().add(executionInstance);
         }
-        CommonServiceHelper.createExecution(executionInstance, processEngineConfiguration);
+        CommonServiceHelper.createSingleExecution(executionInstance, processEngineConfiguration);
 		return executionInstance;
 	}
 }

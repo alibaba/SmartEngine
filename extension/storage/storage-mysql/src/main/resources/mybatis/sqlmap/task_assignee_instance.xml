@@ -9,7 +9,7 @@
     </sql>
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity"
-            keyProperty="id">
+            keyProperty="id"  useGeneratedKeys="true" >
         insert into se_task_assignee_instance(<include refid="baseColumn"/>)
         values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId},
         #{taskInstanceId},#{assigneeId},#{assigneeType},

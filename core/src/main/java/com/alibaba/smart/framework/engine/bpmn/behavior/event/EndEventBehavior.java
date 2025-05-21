@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
+import com.alibaba.smart.framework.engine.service.command.impl.EagerFlushHelper;
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = EndEvent.class)
 public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
@@ -38,6 +39,9 @@ public class EndEventBehavior extends AbstractActivityBehavior<EndEvent> {
                 processInstance.setTag(taskInstanceTag.toString());
             }
         }
+
+        EagerFlushHelper.update(processInstance,processEngineConfiguration);
+
 
         //==== 子流程结束，执行父流程 ====
         //子流程结束时,才会进入到该环节里面来。需要找出父流程的执行实例id,然后继续执行父流程的后续节点。

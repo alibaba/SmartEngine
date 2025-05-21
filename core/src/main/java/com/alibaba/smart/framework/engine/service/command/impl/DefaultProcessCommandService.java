@@ -80,6 +80,8 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     public ProcessInstance start(String processDefinitionId, String processDefinitionVersion, Map<String, Object> request, Map<String, Object> response) {
         ProcessInstance processInstance = processInstanceFactory.create(processEngineConfiguration, processDefinitionId, processDefinitionVersion, request);
 
+        EagerFlushHelper.createProcessInstanceAndVariableInstance(processInstance,request,processEngineConfiguration);
+
         ExecutionContext executionContext = this.instanceContextFactory.createProcessContext(processEngineConfiguration, processInstance,
                 request, response, null);
 

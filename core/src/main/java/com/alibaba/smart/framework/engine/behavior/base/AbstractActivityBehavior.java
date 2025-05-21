@@ -19,16 +19,20 @@ import com.alibaba.smart.framework.engine.instance.factory.ExecutionInstanceFact
 import com.alibaba.smart.framework.engine.instance.factory.ProcessInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.factory.TaskInstanceFactory;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
+import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.IdBasedElement;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 
+import com.alibaba.smart.framework.engine.service.command.impl.EagerFlushHelper;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +59,12 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
     protected ExecutionInstanceStorage executionInstanceStorage;
 
     @Setter
+    protected TaskInstanceStorage taskInstanceStorage;
+
+    @Setter
+    protected TaskAssigneeStorage taskAssigneeStorage;
+
+    @Setter
     protected VariableInstanceStorage variableInstanceStorage;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractActivityBehavior.class);
@@ -73,12 +83,14 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         synchronized (processInstance){
 
             ActivityInstance activityInstance = createSingleActivityInstanceAndAttachToProcessInstance(context, pvmActivity.getModel());
+            //tune 可以使用 bulkInsert
+            EagerFlushHelper.createActivityInstance(activityInstance,processEngineConfiguration);
 
             ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
+            EagerFlushHelper.createExecutionInstance(executionInstance,processEngineConfiguration);
 
             List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(1);
             executionInstanceList.add(executionInstance);
-
             activityInstance.setExecutionInstanceList(executionInstanceList);
             context.setExecutionInstance(executionInstance);
 

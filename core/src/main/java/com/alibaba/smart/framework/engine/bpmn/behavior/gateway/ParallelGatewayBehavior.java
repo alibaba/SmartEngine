@@ -123,58 +123,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
         return true;
     }
 
-    private boolean common(ParallelGateway parallelGateway, ProcessInstance processInstance, List<ExecutionInstance> executionInstanceListFromDB, int countOfTheJoinLatch) {
-        List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
-
-        List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
-
-        LOGGER.debug("ParallelGatewayBehavior Joined, the  value of  executionInstanceListFromMemory, executionInstanceListFromDB   is {} , {} ",executionInstanceListFromMemory,executionInstanceListFromDB);
-
-        for (ExecutionInstance instance : executionInstanceListFromDB) {
-            if (executionInstanceListFromMemory.contains(instance)){
-                //ignore
-            }else {
-                mergedExecutionInstanceList.add(instance);
-            }
-        }
-
-
-        mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
-
-        int reachedJoinCounter = 0;
-        List<ExecutionInstance> chosenExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
-
-        if(null != mergedExecutionInstanceList){
-
-            for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
-
-                if (executionInstance.getProcessDefinitionActivityId().equals(parallelGateway.getId())) {
-                    reachedJoinCounter++;
-                    chosenExecutionInstanceList.add(executionInstance);
-                }
-            }
-        }
-
-
-        LOGGER.debug("chosenExecutionInstanceList , reachedJoinCounter,countOfTheJoinLatch  is {} , {} , {} ",chosenExecutionInstanceList,reachedJoinCounter, countOfTheJoinLatch);
-
-        if(reachedJoinCounter == countOfTheJoinLatch){
-            //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
-
-            if(null != chosenExecutionInstanceList){
-                for (ExecutionInstance executionInstance : chosenExecutionInstanceList) {
-                    MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
-                            processEngineConfiguration);
-                }
-            }
-
-            return false;
-
-        }else{
-            //未完成的话,流程继续暂停
-            return true;
-        }
-    }
 
 
 }

@@ -1,10 +1,13 @@
 package com.alibaba.smart.framework.engine.test;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
+import com.alibaba.smart.framework.engine.configuration.OptionContainer;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.impl.DefaultSmartEngine;
+import com.alibaba.smart.framework.engine.configuration.impl.option.DefaultOptionContainer;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
@@ -103,6 +106,11 @@ public class DatabaseBaseTestCase implements ApplicationContextAware {
         processEngineConfiguration.setIdGenerator(new TimeBasedIdGenerator());
         processEngineConfiguration.setInstanceAccessor(new DataBaseAccessService());
         processEngineConfiguration.setTaskAssigneeDispatcher(new DefaultTaskAssigneeDispatcher());
+
+
+        OptionContainer optionContainer = new DefaultOptionContainer();
+        optionContainer.put(ConfigurationOption.EAGER_FLUSH_ENABLED_OPTION);
+        processEngineConfiguration.setOptionContainer(optionContainer);
     }
 
     @After

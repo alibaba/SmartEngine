@@ -28,6 +28,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 
+import com.alibaba.smart.framework.engine.service.command.impl.EagerFlushHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +65,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             fireEvent(context,pvmActivity, EventConstant.ACTIVITY_START);
 
             ActivityInstance activityInstance  = super.createSingleActivityInstanceAndAttachToProcessInstance(context,userTask);
-
+            EagerFlushHelper.createActivityInstance(activityInstance,processEngineConfiguration);
 
             List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(allTaskAssigneeCandidateInstanceList.size());
             activityInstance.setExecutionInstanceList(executionInstanceList);
@@ -103,9 +104,16 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
             }
 
+            for(ExecutionInstance instance :executionInstanceList){
+                //tune bulk insert
+                EagerFlushHelper.createEIAndTiAndTAI(executionInstanceStorage,taskInstanceStorage,taskAssigneeStorage,instance,processEngineConfiguration);
+            }
+
+
+
         } else {
 
-            //2.  普通任务节点
+            //2.  普通任务节点 ,在 eager_flush 模式下 已经 save 了 AI 和 EI
             super.enter(context, pvmActivity);
 
             if (null != allTaskAssigneeCandidateInstanceList) {
@@ -122,9 +130,12 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                     UserTaskBehaviorHelper.buildTaskAssigneeInstance(taskAssigneeCandidateInstance, taskAssigneeInstanceList, idGenerator,processInstance.getTenantId());
                 }
 
-                //2.1 普通UserTask，只会创建出一个TI和可能多个TACI(TaskAssigneeCandidateInstance)
+                //2.1 普通UserTask，只会创建出一个TI和可能多个TAI(TaskAssigneeInstance)
                 taskInstance.setTaskAssigneeInstanceList(taskAssigneeInstanceList);
                 executionInstance.setTaskInstance(taskInstance);
+
+                //tune bulk insert
+                EagerFlushHelper.createTIAndTAI(taskInstanceStorage,taskAssigneeStorage,executionInstance,processEngineConfiguration);
             }
         }
 

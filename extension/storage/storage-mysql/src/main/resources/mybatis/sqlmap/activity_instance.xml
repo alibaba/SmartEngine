@@ -10,7 +10,7 @@
 
     <insert id="insert"
             parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ActivityInstanceEntity"
-            keyProperty="id">
+            keyProperty="id" useGeneratedKeys="true" >
         insert into se_activity_instance(<include refid="baseColumn"/>)
         values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId}, #{processDefinitionIdAndVersion},
         #{processDefinitionActivityId},#{tenantId})

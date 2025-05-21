@@ -5,10 +5,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.constant.AdHocConstant;
+import com.alibaba.smart.framework.engine.exception.ValidationException;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultVariableInstance;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
@@ -24,6 +26,8 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.model.instance.VariableInstance;
 
+import static com.alibaba.smart.framework.engine.service.command.impl.EagerFlushHelper.*;
+
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  20:38.
  */
@@ -32,6 +36,14 @@ public abstract  class CommonServiceHelper {
 
     public static ProcessInstance insertAndPersist(ProcessInstance processInstance, Map<String, Object> request,
                                                    ProcessEngineConfiguration processEngineConfiguration) {
+
+        ConfigurationOption configurationOption = processEngineConfiguration
+                .getOptionContainer().get(ConfigurationOption.EAGER_FLUSH_ENABLED_OPTION.getId());
+
+        if (configurationOption.isEnabled()){
+            //NOT persist again,just return
+            return processInstance;
+        }
 
 
         //TUNE 可以在对象创建时初始化,但是这里依赖稍微有点问题
@@ -49,7 +61,7 @@ public abstract  class CommonServiceHelper {
         return newProcessInstance;
     }
 
-    private static void persistVariableInstanceIfPossible(Map<String, Object> request,
+    public static void persistVariableInstanceIfPossible(Map<String, Object> request,
                                                           ProcessEngineConfiguration processEngineConfiguration,
                                                           ProcessInstance newProcessInstance, String executionInstanceId) {
         VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
@@ -84,8 +96,17 @@ public abstract  class CommonServiceHelper {
         }
     }
 
-    public static  ProcessInstance createExecution(String executionInstanceId, ProcessInstance processInstance, Map<String, Object> request,
-                                                   ProcessEngineConfiguration processEngineConfiguration) {
+    public static  ProcessInstance createSingleExecution(String executionInstanceId, ProcessInstance processInstance, Map<String, Object> request,
+                                                         ProcessEngineConfiguration processEngineConfiguration) {
+
+        ConfigurationOption configurationOption = processEngineConfiguration
+                .getOptionContainer().get(ConfigurationOption.EAGER_FLUSH_ENABLED_OPTION.getId());
+
+        if (configurationOption.isEnabled()){
+
+            //NOT persist again,just return
+            return processInstance;
+        }
 
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
         ProcessInstanceStorage processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
@@ -138,41 +159,53 @@ public abstract  class CommonServiceHelper {
         if (null != executionInstance) {
             executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
             executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
-            executionInstanceStorage.insert(executionInstance,processEngineConfiguration );
 
-            TaskInstance taskInstance = executionInstance.getTaskInstance();
-            if(null!= taskInstance) {
-                taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
-                taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
-                taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
-
-                //reAssign
-                taskInstance = taskInstanceStorage.insert(taskInstance,processEngineConfiguration );
-
-                List<TaskAssigneeInstance>  taskAssigneeInstances =  taskInstance.getTaskAssigneeInstanceList();
-
-                if(null != taskAssigneeInstances){
-                    for (TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstances) {
-                        taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
-                        taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
-                        taskAssigneeStorage.insert(taskAssigneeInstance,processEngineConfiguration );
-                    }
-                }
-
-                executionInstance.setTaskInstance(taskInstance);
-            }
+            justCreateEIAndTIAndTAI(executionInstanceStorage, taskInstanceStorage, taskAssigneeStorage, executionInstance, processEngineConfiguration);
 
 
         }
     }
-    
-    
-	public static void createExecution(ExecutionInstance executionInstance, ProcessEngineConfiguration processEngineConfiguration) {
+
+
+
+
+    public static void createSingleExecution(ExecutionInstance executionInstance, ProcessEngineConfiguration processEngineConfiguration) {
 		AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
 		ExecutionInstanceStorage executionInstanceStorage=annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
 		if (null != executionInstance) {
             executionInstanceStorage.insert(executionInstance,processEngineConfiguration );
         }
 	}
+
+    public static void justCreateEIAndTIAndTAI(ExecutionInstanceStorage executionInstanceStorage, TaskInstanceStorage taskInstanceStorage, TaskAssigneeStorage taskAssigneeStorage, ExecutionInstance executionInstance, ProcessEngineConfiguration processEngineConfiguration) {
+        executionInstanceStorage.insert(executionInstance, processEngineConfiguration);
+
+        justCreateTIAndTAI(taskInstanceStorage, taskAssigneeStorage, executionInstance, processEngineConfiguration);
+    }
+
+
+    public static void justCreateTIAndTAI(TaskInstanceStorage taskInstanceStorage, TaskAssigneeStorage taskAssigneeStorage, ExecutionInstance executionInstance, ProcessEngineConfiguration processEngineConfiguration) {
+        TaskInstance taskInstance = executionInstance.getTaskInstance();
+        if(null!= taskInstance) {
+            taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
+            taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
+            taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
+
+            //reAssign
+            taskInstance = taskInstanceStorage.insert(taskInstance, processEngineConfiguration);
+
+            List<TaskAssigneeInstance>  taskAssigneeInstances =  taskInstance.getTaskAssigneeInstanceList();
+
+            if(null != taskAssigneeInstances){
+                for (TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstances) {
+                    taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
+                    taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
+                    taskAssigneeStorage.insert(taskAssigneeInstance, processEngineConfiguration);
+                }
+            }
+
+            executionInstance.setTaskInstance(taskInstance);
+        }
+    }
 
 }

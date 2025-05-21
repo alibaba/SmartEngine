@@ -15,6 +15,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.impl.CommonServiceHelper;
+import com.alibaba.smart.framework.engine.service.command.impl.EagerFlushHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +63,8 @@ public class CallActivityBehavior extends AbstractActivityBehavior<CallActivity>
         //隔离父子流程的request和response,业务上如果有需要共享的,可以在第一个context里面手动从parentContext获取.
         ProcessInstance childProcessInstance = processInstanceFactory.createChild(processEngineConfiguration,   processDefinitionId,processDefinitionVersion,
                 subRequest,  parentInstanceId,   parentExecutionInstanceId);
+
+        EagerFlushHelper.createProcessInstanceAndVariableInstance(childProcessInstance,subRequest,processEngineConfiguration);
 
         ExecutionContext subContext = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, ContextFactory.class)
             .createProcessContext( processEngineConfiguration , childProcessInstance,

@@ -31,7 +31,7 @@
 
     <insert id="insert"
             parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity"
-            keyProperty="id">
+            keyProperty="id" useGeneratedKeys="true" >
         insert into se_deployment_instance(<include refid="baseColumn"/>)
         values (#{id}, #{gmtCreate}, #{gmtModified}, #{processDefinitionId},
         #{processDefinitionVersion},#{processDefinitionType},#{processDefinitionCode},
