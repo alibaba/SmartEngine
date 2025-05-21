@@ -175,9 +175,13 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         currentDeploymentInstance.setDeploymentStatus(DeploymentStatusConstant.DELETED);
         deploymentInstanceStorage.update(currentDeploymentInstance, processEngineConfiguration);
 
-        processDefinitionContainer.uninstall(currentDeploymentInstance.getProcessDefinitionId(),
-                currentDeploymentInstance.getProcessDefinitionVersion(),currentDeploymentInstance.getTenantId());
-
+        if(StringUtil.isEmpty(tenantId)){
+            processDefinitionContainer.uninstall(currentDeploymentInstance.getProcessDefinitionId(),
+                    currentDeploymentInstance.getProcessDefinitionVersion());
+        }else{
+            processDefinitionContainer.uninstall(currentDeploymentInstance.getProcessDefinitionId(),
+                    currentDeploymentInstance.getProcessDefinitionVersion(),currentDeploymentInstance.getTenantId());
+        }
     }
 
 

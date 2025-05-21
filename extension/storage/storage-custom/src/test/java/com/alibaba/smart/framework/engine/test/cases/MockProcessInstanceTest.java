@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
@@ -44,6 +45,7 @@ public class MockProcessInstanceTest extends CustomBaseTestCase {
         ExecutionInstance firstExecutionInstance = executionInstanceList.get(0);
         Assert.assertEquals("createOrder", firstExecutionInstance.getProcessDefinitionActivityId());
         request.put("action", "complete");
+//        request.put(RequestMapSpecialKeyConstant.TENANT_ID,tenantId);
         processInstance = executionCommandService.signal(firstExecutionInstance.getInstanceId(), request);
 
         processInstance = persisteAndUpdateThreadLocal(InstanceStatus.running, "completeOrder");

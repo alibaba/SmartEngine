@@ -67,7 +67,9 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         if (processInstanceEntity == null) {
             return null;
         }
-        return ProcessInstanceBuilder.buildProcessInstanceFromEntity(processInstanceEntity);
+
+        ProcessInstance processInstance = ProcessInstanceBuilder.buildProcessInstanceFromEntity(processInstanceEntity);
+        return processInstance;
     }
 
 
@@ -81,7 +83,6 @@ public class RelationshipDatabaseProcessInstanceStorage implements ProcessInstan
         ProcessInstanceEntity processInstanceEntity = processInstanceDAO.findOneForUpdate(Long.valueOf(instanceId),tenantId);
 
         ProcessInstance processInstance = ProcessInstanceBuilder.buildProcessInstanceFromEntity(processInstanceEntity);
-
         return processInstance;
     }
 

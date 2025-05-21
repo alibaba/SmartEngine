@@ -53,7 +53,8 @@ public class JumpFreeNode1Test  extends CustomBaseTestCase {
 
         //String processInstanceId, String  processDefinitionId, String version,
         //                                 InstanceStatus instanceStatus, String processDefinitionActivityId
-        processInstance = this.executionCommandService.jumpTo(processInstance.getInstanceId(),processInstance.getProcessDefinitionId(), processInstance.getProcessDefinitionVersion(),InstanceStatus.running,"task1");
+        processInstance = this.executionCommandService.jumpTo(processInstance.getInstanceId(),processInstance.getProcessDefinitionId(),
+                processInstance.getProcessDefinitionVersion(),InstanceStatus.running,"task1",null);
 
         //assert task1
                 Assert.assertTrue(InstanceStatus.running == processInstance.getStatus());

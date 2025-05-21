@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
+import com.alibaba.smart.framework.engine.common.util.IdAndVersionUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -235,14 +236,15 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
     @Override
    public ProcessInstance jumpTo(String processInstanceId, String  processDefinitionId, String version,
-                                 InstanceStatus instanceStatus, String processDefinitionActivityId) {
+                                 InstanceStatus instanceStatus, String processDefinitionActivityId,String tenantId) {
         IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
 
 
         ProcessInstance processInstance = new DefaultProcessInstance();
-        processInstance.setProcessDefinitionIdAndVersion(processDefinitionId+":"+version);
+        processInstance.setProcessDefinitionIdAndVersion(IdAndVersionUtil.buildProcessDefinitionKey(processDefinitionId,version));
         processInstance.setProcessDefinitionId(processDefinitionId);
         processInstance.setProcessDefinitionVersion(version);
+        processInstance.setTenantId(tenantId);
         processInstance.setStatus(instanceStatus);
         processInstance.setInstanceId(processInstanceId);
 

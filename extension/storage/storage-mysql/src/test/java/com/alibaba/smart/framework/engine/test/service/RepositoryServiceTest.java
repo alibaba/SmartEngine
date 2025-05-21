@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.test.service;
 
 import java.util.Collection;
 
+import com.alibaba.smart.framework.engine.common.util.IdAndVersionUtil;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
@@ -38,17 +39,20 @@ public class RepositoryServiceTest extends DatabaseBaseTestCase {
     @Test
     public void testSimple() throws Exception {
 
+        String processDefinitionId="exclusiveTest";
+        String version = "1.0.0";
+
         String content = IOUtil.readResourceFileAsUTF8String("multi-instance-test.bpmn20.xml");
         repositoryCommandService.deployWithUTF8Content(content);
 
 
         repositoryCommandService.deploy("test-usertask-and-servicetask-exclusive.bpmn20.xml");
 
-        ProcessDefinition processDefinition = repositoryQueryService.getCachedProcessDefinition("exclusiveTest:1.0.0");
+        ProcessDefinition processDefinition = repositoryQueryService.getCachedProcessDefinition(IdAndVersionUtil.buildProcessDefinitionUniqueKey(processDefinitionId,version,null));
 
         Assert.assertNotNull(processDefinition);
 
-        processDefinition = repositoryQueryService.getCachedProcessDefinition("exclusiveTest","1.0.0");
+        processDefinition = repositoryQueryService.getCachedProcessDefinition(IdAndVersionUtil.buildProcessDefinitionUniqueKey(processDefinitionId,version,null));
 
         Assert.assertNotNull(processDefinition);
 

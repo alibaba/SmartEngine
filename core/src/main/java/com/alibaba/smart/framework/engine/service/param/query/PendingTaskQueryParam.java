@@ -10,7 +10,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-
 public class PendingTaskQueryParam extends BaseQueryParam{
 
     /**

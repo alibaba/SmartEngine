@@ -50,7 +50,7 @@ public interface ExecutionCommandService {
      * executionInstanceId，request may be null
      */
     ProcessInstance jumpTo(String processInstanceId, String  processDefinitionId, String version,
-                           InstanceStatus instanceStatus, String processDefinitionActivityId);
+                           InstanceStatus instanceStatus, String processDefinitionActivityId,String tenantId);
 
     /**
      * UNSAFE!!!

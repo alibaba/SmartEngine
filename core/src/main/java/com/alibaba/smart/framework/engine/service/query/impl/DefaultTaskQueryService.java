@@ -77,6 +77,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleHook 
         processInstanceIdList.add(processInstanceId);
         taskInstanceQueryParam.setProcessInstanceIdList(processInstanceIdList);
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
+        taskInstanceQueryParam.setTenantId(tenantId);
 
         return taskInstanceStorage.findTaskByProcessInstanceIdAndStatus(taskInstanceQueryParam, processEngineConfiguration);
     }

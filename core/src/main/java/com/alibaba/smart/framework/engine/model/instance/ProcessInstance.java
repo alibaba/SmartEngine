@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+
 import java.util.List;
 
 /**

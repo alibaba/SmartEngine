@@ -40,8 +40,8 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
         //execute
         pvmActivity.execute( executionContext);
 
-        return executionContext.getProcessInstance();
-
+        ProcessInstance processInstance =  executionContext.getProcessInstance();
+        return processInstance;
     }
 
     @Override
@@ -50,7 +50,8 @@ public class DefaultPvmProcessInstance implements PvmProcessInstance {
         //enter
         pvmActivity.enter(executionContext);
 
-        return executionContext.getProcessInstance();
+        ProcessInstance processInstance =  executionContext.getProcessInstance();
+        return processInstance;
 
     }
 

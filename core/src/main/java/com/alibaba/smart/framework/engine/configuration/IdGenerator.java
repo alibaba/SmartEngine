@@ -7,5 +7,5 @@ import com.alibaba.smart.framework.engine.model.instance.Instance;
  */
 public interface IdGenerator {
 
-        void generate(Instance instance) ;
+    void generate(Instance instance);
 }

@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.test.process;
 
+import com.alibaba.smart.framework.engine.configuration.impl.option.ProcessDefinitionShareOption;
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
@@ -46,6 +47,7 @@ public class MultiInstanceCompatibleAllModelPassedWithTenantIdTest extends Datab
         processEngineConfiguration.setMultiInstanceCounter(new DefaultMultiInstanceCounter());
         processEngineConfiguration.setVariablePersister(new CustomVariablePersister());
         processEngineConfiguration.setLockStrategy(new DoNothingLockStrategy());
+        processEngineConfiguration.getOptionContainer().put(new ProcessDefinitionShareOption(false));
     }
 
 
@@ -108,7 +110,6 @@ public class MultiInstanceCompatibleAllModelPassedWithTenantIdTest extends Datab
         PaginateQueryParam paginateQueryParam = new  PaginateQueryParam ();
         paginateQueryParam.setPageSize(10);
         paginateQueryParam.setPageOffset(0);
-
         List<TaskInstance>  taskInstances = taskQueryService.findPendingTaskList( pendingTaskQueryParam);
 
         Assert.assertEquals(1,taskInstances.size());
