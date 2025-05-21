@@ -6,7 +6,7 @@ import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
-import com.alibaba.smart.framework.engine.configuration.impl.option.ProcessDefinitionShareOption;
+import com.alibaba.smart.framework.engine.configuration.impl.option.ProcessDefinitionMultiTenantShareOption;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
@@ -116,7 +116,7 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
 
     public boolean isProcessDefinitionShareMode() {
         ConfigurationOption processDefinitionShareOption = processEngineConfiguration.getOptionContainer()
-                .get(ProcessDefinitionShareOption.PROCESS_DEFINITION_SHARE_OPTION.getId());
+                .get(ProcessDefinitionMultiTenantShareOption.PROCESS_DEFINITION_MULTI_TENANT_SHARE_OPTION.getId());
 
         return processDefinitionShareOption != null && processDefinitionShareOption.isEnabled();
     }
@@ -134,7 +134,7 @@ public class DefaultProcessDefinitionContainer implements ProcessDefinitionConta
     @Override
     public ProcessDefinition getProcessDefinition(String processDefinitionId, String version, String tenantId) {
         if (StringUtil.isEmpty(tenantId) && !isProcessDefinitionShareMode()) {
-            return null;
+            throw new EngineException("tenantId cannot be null unless process definition multi-tenant share mode is enabled. Please provide a valid tenantId or enable ProcessDefinitionMultiTenantShareOption.");
         }
 
         //通过${processDefinitionId}:${version}:${tenantId}获取

@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.test.service;
 
 import com.alibaba.smart.framework.engine.common.util.IdAndVersionUtil;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
-import com.alibaba.smart.framework.engine.configuration.impl.option.ProcessDefinitionShareOption;
+import com.alibaba.smart.framework.engine.configuration.impl.option.ProcessDefinitionMultiTenantShareOption;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
 import com.alibaba.smart.framework.engine.test.process.helper.CustomExceptioinProcessor;
@@ -103,24 +103,24 @@ public class RepositoryServiceWithTenantIdTest extends DatabaseBaseTestCase {
 
         processEngineConfiguration.setLockStrategy(new DoNothingLockStrategy());
         ConfigurationOption processDefinitionMultiTenantMode = processEngineConfiguration.getOptionContainer()
-                .get(ProcessDefinitionShareOption.PROCESS_DEFINITION_SHARE_OPTION.getId());
+                .get(ProcessDefinitionMultiTenantShareOption.PROCESS_DEFINITION_MULTI_TENANT_SHARE_OPTION.getId());
 
         Assert.assertTrue(processDefinitionMultiTenantMode.isEnabled());
 
-        processEngineConfiguration.getOptionContainer().put(new ProcessDefinitionShareOption(false));
+        processEngineConfiguration.getOptionContainer().put(new ProcessDefinitionMultiTenantShareOption(false));
 
         processDefinitionMultiTenantMode = processEngineConfiguration.getOptionContainer()
-                .get(ProcessDefinitionShareOption.PROCESS_DEFINITION_SHARE_OPTION.getId());
+                .get(ProcessDefinitionMultiTenantShareOption.PROCESS_DEFINITION_MULTI_TENANT_SHARE_OPTION.getId());
         Assert.assertFalse(processDefinitionMultiTenantMode.isEnabled());
 
         ProcessDefinition processDefinition1 = repositoryQueryService.getCachedProcessDefinition(IdAndVersionUtil.buildProcessDefinitionUniqueKey(processDefinitionId, version,tenantId));
 
         Assert.assertNull(processDefinition1);
 
-        processEngineConfiguration.getOptionContainer().put(new ProcessDefinitionShareOption(true));
+        processEngineConfiguration.getOptionContainer().put(new ProcessDefinitionMultiTenantShareOption(true));
 
         processDefinitionMultiTenantMode = processEngineConfiguration.getOptionContainer()
-                .get(ProcessDefinitionShareOption.PROCESS_DEFINITION_SHARE_OPTION.getId());
+                .get(ProcessDefinitionMultiTenantShareOption.PROCESS_DEFINITION_MULTI_TENANT_SHARE_OPTION.getId());
         Assert.assertTrue(processDefinitionMultiTenantMode.isEnabled());
 
 
