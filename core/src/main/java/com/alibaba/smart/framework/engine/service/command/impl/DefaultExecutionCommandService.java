@@ -202,12 +202,11 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         //NOTATION1：should markDone all active excutioninstances and activityinstances by hands.
         PvmProcessDefinition pvmProcessDefinition = DefaultExecutionCommandService.this.processContainer
-            .getPvmProcessDefinition(
-                processInstance.getUniqueProcessDefinitionIdAndVersion());
+            .getPvmProcessDefinition(processInstance.getProcessDefinitionId(),processInstance.getProcessDefinitionVersion(),processInstance.getTenantId());
 
         ProcessDefinition processDefinition =
             DefaultExecutionCommandService.this.processContainer.getProcessDefinition(
-                processInstance.getUniqueProcessDefinitionIdAndVersion());
+                    processInstance.getProcessDefinitionId(),processInstance.getProcessDefinitionVersion(),processInstance.getTenantId());
 
         //NOTATION2：executionInstance,activityInstance maybe  set to null for jump case
         ExecutionInstance executionInstance = null;
@@ -281,7 +280,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
     public void retry(ProcessInstance processInstance, String activityId, ExecutionContext executionContext) {
 
         ProcessDefinition definition = this.processContainer.getProcessDefinition(
-            processInstance.getUniqueProcessDefinitionIdAndVersion());
+                processInstance.getProcessDefinitionId(),processInstance.getProcessDefinitionVersion(),processInstance.getTenantId());
 
         IdBasedElement idBasedElement = definition.getIdBasedElementMap().get(activityId);
 
@@ -345,11 +344,11 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
 
             pvmProcessDefinition = DefaultExecutionCommandService.this.processContainer.getPvmProcessDefinition(
-                processInstance.getUniqueProcessDefinitionIdAndVersion());
+                    processInstance.getProcessDefinitionId(),processInstance.getProcessDefinitionVersion(),processInstance.getTenantId());
 
             ProcessDefinition processDefinition =
                 DefaultExecutionCommandService.this.processContainer.getProcessDefinition(
-                    processInstance.getUniqueProcessDefinitionIdAndVersion());
+                        processInstance.getProcessDefinitionId(),processInstance.getProcessDefinitionVersion(),processInstance.getTenantId());
 
             executionContext = instanceContextFactory.createSignalContext(request, processEngineConfiguration,
                 executionInstance, activityInstance, processInstance, processDefinition);
@@ -363,11 +362,11 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
             ActivityInstance activityInstance = activityInstanceStorage.findWithShading(processInstance.getInstanceId(), executionInstance.getActivityInstanceId(),
                     processInstance.getTenantId(),processEngineConfiguration);
             pvmProcessDefinition = DefaultExecutionCommandService.this.processContainer.getPvmProcessDefinition(
-                    processInstance.getUniqueProcessDefinitionIdAndVersion());
+                    processInstance.getProcessDefinitionId(),processInstance.getProcessDefinitionVersion(),processInstance.getTenantId());
 
             ProcessDefinition processDefinition =
                     DefaultExecutionCommandService.this.processContainer.getProcessDefinition(
-                            processInstance.getUniqueProcessDefinitionIdAndVersion());
+                            processInstance.getProcessDefinitionId(),processInstance.getProcessDefinitionVersion(),processInstance.getTenantId());
 
             executionContext = instanceContextFactory.createSignalContext(request, processEngineConfiguration,
                     executionInstance, activityInstance, processInstance, processDefinition);
