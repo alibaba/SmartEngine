@@ -5,6 +5,7 @@ import com.alibaba.smart.framework.engine.configuration.impl.option.ExpressionCo
 import com.alibaba.smart.framework.engine.configuration.impl.option.ProcessDefinitionMultiTenantModeOption;
 import com.alibaba.smart.framework.engine.configuration.impl.option.ServiceOrchestrationEnabledOption;
 import com.alibaba.smart.framework.engine.configuration.impl.option.TransferEnabledOption;
+import com.alibaba.smart.framework.engine.configuration.impl.option.*;
 
 /**
  * Created by 高海军 帝奇 74394 on  2020-02-15 21:40.
@@ -20,6 +21,8 @@ public interface ConfigurationOption {
 
     ConfigurationOption SERVICE_ORCHESTRATION_OPTION = new ServiceOrchestrationEnabledOption();
     ConfigurationOption PROCESS_DEFINITION_MULTI_TENANT_MODE_OPTION = new ProcessDefinitionMultiTenantModeOption(true);
+
+    ConfigurationOption EAGER_FLUSH_ENABLED_OPTION = new EagerFlushEnabledOption();
 
     boolean isEnabled();
 

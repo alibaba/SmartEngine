@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.alibaba.smart.framework.engine.configuration.LockStrategy;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.VariablePersister;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
@@ -125,7 +124,7 @@ public abstract  class CommonServiceHelper {
 
             if(null != executionInstanceList){
                 for (ExecutionInstance executionInstance : executionInstanceList) {
-                    persisteInstance( executionInstanceStorage, taskInstanceStorage,taskAssigneeStorage,
+                    persistInstance( executionInstanceStorage, taskInstanceStorage,taskAssigneeStorage,
                         activityInstance,
                         executionInstance,  processEngineConfiguration);
                 }
@@ -136,9 +135,9 @@ public abstract  class CommonServiceHelper {
     }
 
     //TUNE too many args
-    private static void persisteInstance(ExecutionInstanceStorage executionInstanceStorage,
-                                         TaskInstanceStorage taskInstanceStorage, TaskAssigneeStorage taskAssigneeStorage, ActivityInstance activityInstance,
-                                         ExecutionInstance executionInstance, ProcessEngineConfiguration processEngineConfiguration) {
+    private static void persistInstance(ExecutionInstanceStorage executionInstanceStorage,
+                                        TaskInstanceStorage taskInstanceStorage, TaskAssigneeStorage taskAssigneeStorage, ActivityInstance activityInstance,
+                                        ExecutionInstance executionInstance, ProcessEngineConfiguration processEngineConfiguration) {
         if (null != executionInstance) {
             executionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
             executionInstance.setActivityInstanceId(activityInstance.getInstanceId());

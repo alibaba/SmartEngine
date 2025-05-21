@@ -72,4 +72,13 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
         return activityInstances;
     }
 
+
+    @Override
+    public String getUniqueProcessDefinitionIdAndVersion(){
+        if(StringUtil.isEmpty(getTenantId())){
+            return processDefinitionIdAndVersion;
+        } else {
+            return String.format("%s:%s", processDefinitionIdAndVersion, getTenantId());
+        }
+    }
 }
