@@ -250,7 +250,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
 
         ActivityInstance activityInstance = new DefaultActivityInstance();
         activityInstance.setProcessDefinitionActivityId(processDefinitionActivityId);
-        activityInstance.setProcessDefinitionIdAndVersion(processInstance.getUniqueProcessDefinitionIdAndVersion());
+        activityInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
         activityInstance.setProcessInstanceId(processInstance.getInstanceId());
         idGenerator.generate(activityInstance);
 
@@ -259,7 +259,7 @@ public class DefaultExecutionCommandService implements ExecutionCommandService, 
         executionInstance.setProcessInstanceId(processInstance.getInstanceId());
         executionInstance.setActivityInstanceId(activityInstance.getInstanceId());
         executionInstance.setProcessDefinitionActivityId(processDefinitionActivityId);
-        executionInstance.setProcessDefinitionIdAndVersion(processInstance.getUniqueProcessDefinitionIdAndVersion());
+        executionInstance.setProcessDefinitionIdAndVersion(processInstance.getProcessDefinitionIdAndVersion());
         idGenerator.generate(executionInstance);
         executionInstance.setActive(true);
 
