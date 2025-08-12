@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.extension.annoation;
+package com.alibaba.smart.framework.engine.extension.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
