@@ -20,7 +20,7 @@ import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfi
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.extension.annoation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.util.ClassUtil;
 
 import lombok.Getter;
