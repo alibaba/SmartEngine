@@ -353,7 +353,7 @@ public abstract class CommonGatewayHelper {
                     } else {
                         throw new EngineException(
                                 "default sequence flow is assigned, but not found the pvmTransition"
-                                    + " ,check sequenceFlow id: "
+                                        + " ,check sequenceFlow id: "
                                         + defaultSeqFLowId);
                     }
                 } else {
@@ -370,7 +370,7 @@ public abstract class CommonGatewayHelper {
         if (0 == matchedTransitions.size()) {
             throw new EngineException(
                     "No Transitions matched,please check input request and condition"
-                        + " expression,activity id :"
+                            + " expression,activity id :"
                             + processDefinitionActivityId);
         }
         return matchedTransitions;

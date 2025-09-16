@@ -255,7 +255,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
         if (currentBindingAnnotation.priority() < exBindingAnnotation.priority()) {
             LOGGER.warn(
                     "Because of lower priority, current extension  {} is ignored, now using the new"
-                        + " extension {} ",
+                            + " extension {} ",
                     targetClass,
                     objectInBindingMap.getClass());
         } else if (currentBindingAnnotation.priority() == exBindingAnnotation.priority()) {
@@ -271,7 +271,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
             LOGGER.warn(
                     "Because of higher priority, current extension  {} is replaced, now using the"
-                        + " new extension {} ",
+                            + " new extension {} ",
                     objectInBindingMap.getClass(),
                     targetClass);
         }

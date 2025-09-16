@@ -197,7 +197,7 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
         LOGGER.debug(
                 "chosenExecutionInstanceList , reachedJoinCounter,countOfTheJoinLatch  is {} , {} ,"
-                    + " {} ",
+                        + " {} ",
                 chosenExecutionInstanceList,
                 reachedJoinCounter,
                 countOfTheJoinLatch);

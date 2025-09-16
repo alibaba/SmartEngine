@@ -293,7 +293,7 @@ public class InclusiveGatewayHelper {
                                     () ->
                                             new EngineException(
                                                     "No forkedExecutionInstanceOfInclusiveGateway"
-                                                        + " found："
+                                                            + " found："
                                                             + joinedExecutionInstanceOfInclusiveGateway
                                                                     .getBlockId()));
 

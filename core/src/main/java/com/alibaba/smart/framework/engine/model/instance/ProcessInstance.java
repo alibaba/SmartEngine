@@ -1,6 +1,5 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
-
 import java.util.List;
 
 /**

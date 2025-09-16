@@ -137,7 +137,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         LOGGER.debug(
                 "ParallelGatewayBehavior Joined, the  value of  executionInstanceListFromMemory,"
-                    + " executionInstanceListFromDB   is {} , {} ",
+                        + " executionInstanceListFromDB   is {} , {} ",
                 executionInstanceListFromMemory,
                 executionInstanceListFromDB);
 
@@ -170,7 +170,7 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         LOGGER.debug(
                 "chosenExecutionInstanceList , reachedJoinCounter,countOfTheJoinLatch  is {} , {} ,"
-                    + " {} ",
+                        + " {} ",
                 chosenExecutionInstanceList,
                 reachedJoinCounter,
                 countOfTheJoinLatch);

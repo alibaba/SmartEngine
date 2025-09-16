@@ -157,8 +157,8 @@ public class DefaultProcessDefinitionContainer
         if (StringUtil.isEmpty(tenantId) && !isProcessDefinitionShareMode()) {
             throw new EngineException(
                     "tenantId cannot be null unless process definition multi-tenant share mode is"
-                        + " enabled. Please provide a valid tenantId or enable"
-                        + " ProcessDefinitionMultiTenantShareOption.");
+                            + " enabled. Please provide a valid tenantId or enable"
+                            + " ProcessDefinitionMultiTenantShareOption.");
         }
 
         // 通过${processDefinitionId}:${version}:${tenantId}获取

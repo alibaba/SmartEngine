@@ -384,7 +384,7 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             Integer rejectedTaskInstanceCount) {
         String message =
                 "Error args: passedTaskInstanceCount, rejectedTaskInstanceCount, totalInstanceCount"
-                    + " each is :"
+                        + " each is :"
                         + passedTaskInstanceCount
                         + ","
                         + rejectedTaskInstanceCount
