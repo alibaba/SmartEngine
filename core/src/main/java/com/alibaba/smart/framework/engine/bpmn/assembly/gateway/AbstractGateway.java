@@ -7,9 +7,6 @@ import com.alibaba.smart.framework.engine.model.assembly.impl.AbstractActivity;
  */
 public abstract class AbstractGateway extends AbstractActivity {
 
-    /**
-     *
-     */
+    /** */
     private static final long serialVersionUID = 2096892589768688904L;
-
 }

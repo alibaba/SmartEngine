@@ -1,10 +1,5 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
@@ -33,13 +28,17 @@ import com.alibaba.smart.framework.engine.service.command.ExecutionCommandServic
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.util.ObjectUtil;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  */
 @ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = TaskCommandService.class)
-
-public class DefaultTaskCommandService implements TaskCommandService, LifeCycleHook ,
-    ProcessEngineConfigurationAware {
+public class DefaultTaskCommandService
+        implements TaskCommandService, LifeCycleHook, ProcessEngineConfigurationAware {
 
     private ProcessInstanceStorage processInstanceStorage;
     private ActivityInstanceStorage activityInstanceStorage;
@@ -52,147 +51,187 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
     @Override
     public void start() {
 
-        AnnotationScanner annotationScanner = this.processEngineConfiguration.getAnnotationScanner();
-        this.executionCommandService = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,ExecutionCommandService.class);
-        this.processInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
-        this.taskAssigneeStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,TaskAssigneeStorage.class);
-        this.activityInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ActivityInstanceStorage.class);
-        this.executionInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
-        this.taskInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,TaskInstanceStorage.class);
-
+        AnnotationScanner annotationScanner =
+                this.processEngineConfiguration.getAnnotationScanner();
+        this.executionCommandService =
+                annotationScanner.getExtensionPoint(
+                        ExtensionConstant.SERVICE, ExecutionCommandService.class);
+        this.processInstanceStorage =
+                annotationScanner.getExtensionPoint(
+                        ExtensionConstant.COMMON, ProcessInstanceStorage.class);
+        this.taskAssigneeStorage =
+                annotationScanner.getExtensionPoint(
+                        ExtensionConstant.COMMON, TaskAssigneeStorage.class);
+        this.activityInstanceStorage =
+                annotationScanner.getExtensionPoint(
+                        ExtensionConstant.COMMON, ActivityInstanceStorage.class);
+        this.executionInstanceStorage =
+                annotationScanner.getExtensionPoint(
+                        ExtensionConstant.COMMON, ExecutionInstanceStorage.class);
+        this.taskInstanceStorage =
+                annotationScanner.getExtensionPoint(
+                        ExtensionConstant.COMMON, TaskInstanceStorage.class);
     }
 
     @Override
-    public void stop() {
-
-    }
-
+    public void stop() {}
 
     @Override
-    public ProcessInstance complete(String taskId, Map<String, Object> request, Map<String, Object> response) {
+    public ProcessInstance complete(
+            String taskId, Map<String, Object> request, Map<String, Object> response) {
 
         String tenantId = null;
-        if(null != request) {
+        if (null != request) {
             tenantId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TENANT_ID));
         }
-        TaskInstance taskInstance = taskInstanceStorage.find(taskId,tenantId,processEngineConfiguration );
-        MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
-            request, taskInstanceStorage, processEngineConfiguration);
+        TaskInstance taskInstance =
+                taskInstanceStorage.find(taskId, tenantId, processEngineConfiguration);
+        MarkDoneUtil.markDoneTaskInstance(
+                taskInstance,
+                TaskInstanceConstant.COMPLETED,
+                TaskInstanceConstant.PENDING,
+                request,
+                taskInstanceStorage,
+                processEngineConfiguration);
 
-       return  executionCommandService.signal(taskInstance.getExecutionInstanceId(), request,response);
-
+        return executionCommandService.signal(
+                taskInstance.getExecutionInstanceId(), request, response);
     }
 
     @Override
     public ProcessInstance complete(String taskId, Map<String, Object> request) {
-      return   this.complete(taskId,request,null);
+        return this.complete(taskId, request, null);
     }
 
     @Override
     public ProcessInstance complete(String taskId, String userId, Map<String, Object> request) {
-        if(null == request){
+        if (null == request) {
             request = new HashMap<String, Object>();
         }
-        request.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID,userId);
+        request.put(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID, userId);
 
-        //TUNE check privilege
+        // TUNE check privilege
 
-      return   complete(  taskId, request);
+        return complete(taskId, request);
     }
 
     @Override
     public void transfer(String taskId, String fromUserId, String toUserId) {
-        transfer(taskId,fromUserId,toUserId,null);
+        transfer(taskId, fromUserId, toUserId, null);
     }
+
     @Override
-    public void transfer(String taskId, String fromUserId, String toUserId,String tenantId) {
+    public void transfer(String taskId, String fromUserId, String toUserId, String tenantId) {
 
-        ConfigurationOption configurationOption = processEngineConfiguration
-            .getOptionContainer().get(ConfigurationOption.TRANSFER_ENABLED_OPTION.getId());
+        ConfigurationOption configurationOption =
+                processEngineConfiguration
+                        .getOptionContainer()
+                        .get(ConfigurationOption.TRANSFER_ENABLED_OPTION.getId());
 
-        if (!configurationOption.isEnabled()){
+        if (!configurationOption.isEnabled()) {
             throw new ValidationException("should set TRANSFER_ENABLED_OPTION ");
         }
 
+        List<TaskAssigneeInstance> taskAssigneeInstanceList =
+                taskAssigneeStorage.findList(taskId, tenantId, processEngineConfiguration);
 
-        List<TaskAssigneeInstance> taskAssigneeInstanceList = taskAssigneeStorage.findList(taskId,tenantId,processEngineConfiguration );
-
-        if(CollectionUtil.isEmpty(taskAssigneeInstanceList)){
-            throw new ValidationException("taskAssigneeInstanceList can't be empty for taskId:"+taskId);
+        if (CollectionUtil.isEmpty(taskAssigneeInstanceList)) {
+            throw new ValidationException(
+                    "taskAssigneeInstanceList can't be empty for taskId:" + taskId);
         }
 
         boolean found = false;
 
         TaskAssigneeInstance matchedTaskAssigneeInstance = null;
         for (TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstanceList) {
-            if (taskAssigneeInstance.getAssigneeId().equals(fromUserId)){
-                found =true;
+            if (taskAssigneeInstance.getAssigneeId().equals(fromUserId)) {
+                found = true;
                 matchedTaskAssigneeInstance = taskAssigneeInstance;
                 break;
             }
         }
 
-        if(!found){
-            throw new ValidationException("No taskAssigneeInstance found  for fromUserId:"+fromUserId);
+        if (!found) {
+            throw new ValidationException(
+                    "No taskAssigneeInstance found  for fromUserId:" + fromUserId);
         }
 
-        if( !AssigneeTypeConstant.USER.equals( matchedTaskAssigneeInstance.getAssigneeType())){
-            throw new ValidationException("Illegal  AssigneeType :"+matchedTaskAssigneeInstance.getAssigneeType());
+        if (!AssigneeTypeConstant.USER.equals(matchedTaskAssigneeInstance.getAssigneeType())) {
+            throw new ValidationException(
+                    "Illegal  AssigneeType :" + matchedTaskAssigneeInstance.getAssigneeType());
         }
 
-        taskAssigneeStorage.update(matchedTaskAssigneeInstance.getInstanceId(),toUserId,tenantId,processEngineConfiguration);
-
+        taskAssigneeStorage.update(
+                matchedTaskAssigneeInstance.getInstanceId(),
+                toUserId,
+                tenantId,
+                processEngineConfiguration);
     }
 
     @Override
-    public TaskInstance createTask(ExecutionInstance executionInstance, String taskInstanceStatus,Map<String, Object> request) {
-    	IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
-    	
+    public TaskInstance createTask(
+            ExecutionInstance executionInstance,
+            String taskInstanceStatus,
+            Map<String, Object> request) {
+        IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
+
         TaskInstance taskInstance = new DefaultTaskInstance();
         taskInstance.setActivityInstanceId(executionInstance.getActivityInstanceId());
         taskInstance.setExecutionInstanceId(executionInstance.getInstanceId());
-        taskInstance.setProcessDefinitionActivityId(executionInstance.getProcessDefinitionActivityId());
-        taskInstance.setProcessDefinitionIdAndVersion(executionInstance.getProcessDefinitionIdAndVersion());
+        taskInstance.setProcessDefinitionActivityId(
+                executionInstance.getProcessDefinitionActivityId());
+        taskInstance.setProcessDefinitionIdAndVersion(
+                executionInstance.getProcessDefinitionIdAndVersion());
         taskInstance.setProcessInstanceId(executionInstance.getProcessInstanceId());
 
         taskInstance.setStatus(taskInstanceStatus);
         idGenerator.generate(taskInstance);
 
-        if(null != request){
+        if (null != request) {
 
-            String processDefinitionType = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE));
+            String processDefinitionType =
+                    ObjectUtil.obj2Str(
+                            request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE));
             taskInstance.setProcessDefinitionType(processDefinitionType);
 
-            Date startTime = ObjectUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.TASK_START_TIME));
+            Date startTime =
+                    ObjectUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.TASK_START_TIME));
             taskInstance.setStartTime(startTime);
 
-            Date completeTime = ObjectUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.TASK_COMPLETE_TIME));
+            Date completeTime =
+                    ObjectUtil.obj2Date(
+                            request.get(RequestMapSpecialKeyConstant.TASK_COMPLETE_TIME));
             taskInstance.setCompleteTime(completeTime);
 
-            String claimUserId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.CLAIM_USER_ID));
+            String claimUserId =
+                    ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.CLAIM_USER_ID));
             taskInstance.setClaimUserId(claimUserId);
 
-            Date claimTime = ObjectUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.CLAIM_USER_TIME));
+            Date claimTime =
+                    ObjectUtil.obj2Date(request.get(RequestMapSpecialKeyConstant.CLAIM_USER_TIME));
             taskInstance.setClaimTime(claimTime);
 
-            String tag = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG));
+            String tag =
+                    ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG));
             taskInstance.setTag(tag);
-
         }
 
         InstanceUtil.enrich(request, taskInstance);
 
-        //reAssign
-        taskInstance = taskInstanceStorage.insert(taskInstance,processEngineConfiguration);
+        // reAssign
+        taskInstance = taskInstanceStorage.insert(taskInstance, processEngineConfiguration);
 
         return taskInstance;
     }
 
-
     @Override
-    public void addTaskAssigneeCandidate(String taskId,String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
+    public void addTaskAssigneeCandidate(
+            String taskId,
+            String tenantId,
+            TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
 
-        TaskInstance taskInstance = taskInstanceStorage.find(taskId,tenantId,processEngineConfiguration );
+        TaskInstance taskInstance =
+                taskInstanceStorage.find(taskId, tenantId, processEngineConfiguration);
 
         TaskAssigneeInstance taskAssigneeInstance = new DefaultTaskAssigneeInstance();
 
@@ -209,61 +248,69 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         taskAssigneeInstance.setStartTime(currentDate);
         taskAssigneeInstance.setCompleteTime(currentDate);
 
-        taskAssigneeStorage.insert(taskAssigneeInstance,processEngineConfiguration);
-
-
+        taskAssigneeStorage.insert(taskAssigneeInstance, processEngineConfiguration);
     }
 
     @Override
-    public void removeTaskAssigneeCandidate(String taskId,String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
+    public void removeTaskAssigneeCandidate(
+            String taskId,
+            String tenantId,
+            TaskAssigneeCandidateInstance taskAssigneeCandidateInstance) {
 
-
-        List<TaskAssigneeInstance> taskAssigneeInstanceList = taskAssigneeStorage.findList(taskId,tenantId,processEngineConfiguration );
+        List<TaskAssigneeInstance> taskAssigneeInstanceList =
+                taskAssigneeStorage.findList(taskId, tenantId, processEngineConfiguration);
 
         boolean found = false;
         TaskAssigneeInstance matchedTaskAssigneeInstance = null;
-        if(CollectionUtil.isNotEmpty(taskAssigneeInstanceList)){
+        if (CollectionUtil.isNotEmpty(taskAssigneeInstanceList)) {
 
             for (TaskAssigneeInstance taskAssigneeInstance : taskAssigneeInstanceList) {
-                if(taskAssigneeInstance.getAssigneeId().equals(taskAssigneeCandidateInstance.getAssigneeId())
-                    && taskAssigneeInstance.getAssigneeType().equals(taskAssigneeCandidateInstance.getAssigneeType())){
+                if (taskAssigneeInstance
+                                .getAssigneeId()
+                                .equals(taskAssigneeCandidateInstance.getAssigneeId())
+                        && taskAssigneeInstance
+                                .getAssigneeType()
+                                .equals(taskAssigneeCandidateInstance.getAssigneeType())) {
                     found = true;
                     matchedTaskAssigneeInstance = taskAssigneeInstance;
                     break;
                 }
             }
 
-            if(!found){
-                throw new ValidationException("No taskAssigneeCandidateInstance found for "+taskAssigneeCandidateInstance);
+            if (!found) {
+                throw new ValidationException(
+                        "No taskAssigneeCandidateInstance found for "
+                                + taskAssigneeCandidateInstance);
             }
 
-            taskAssigneeStorage.remove(matchedTaskAssigneeInstance.getInstanceId(),tenantId,processEngineConfiguration);
-
-
+            taskAssigneeStorage.remove(
+                    matchedTaskAssigneeInstance.getInstanceId(),
+                    tenantId,
+                    processEngineConfiguration);
         }
-
-
     }
 
     @Override
     public void markDone(String taskId, Map<String, Object> request) {
 
         String tenantId = null;
-        if(null != request) {
+        if (null != request) {
             tenantId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TENANT_ID));
         }
-        TaskInstance taskInstance = taskInstanceStorage.find(taskId,tenantId,processEngineConfiguration );
-        MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
-            request, taskInstanceStorage, processEngineConfiguration);
-
+        TaskInstance taskInstance =
+                taskInstanceStorage.find(taskId, tenantId, processEngineConfiguration);
+        MarkDoneUtil.markDoneTaskInstance(
+                taskInstance,
+                TaskInstanceConstant.COMPLETED,
+                TaskInstanceConstant.PENDING,
+                request,
+                taskInstanceStorage,
+                processEngineConfiguration);
     }
 
-
-
-
-
     @Override
-    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+    public void setProcessEngineConfiguration(
+            ProcessEngineConfiguration processEngineConfiguration) {
         this.processEngineConfiguration = processEngineConfiguration;
     }
 }

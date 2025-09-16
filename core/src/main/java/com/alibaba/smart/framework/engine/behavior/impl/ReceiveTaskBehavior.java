@@ -21,5 +21,4 @@ public class ReceiveTaskBehavior extends AbstractActivityBehavior<ReceiveTask> {
 
         return true;
     }
-
 }

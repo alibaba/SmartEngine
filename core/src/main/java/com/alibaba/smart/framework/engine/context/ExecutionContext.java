@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.context;
 
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
@@ -9,16 +7,15 @@ import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 
+import java.util.Map;
 
 public interface ExecutionContext {
-
 
     /**
      * 前提: 目前SE中仅 fork 后的链路会存在并发执行的场景; 当并发执行时,如下这几个变量会被并发修改. 所以需要在fork时,创建独立的context对象,避免导致数据紊乱.
      *
-     *  START 1:
+     * <p>START 1:
      */
-
     ExecutionInstance getExecutionInstance();
 
     void setExecutionInstance(ExecutionInstance executionInstance);
@@ -33,13 +30,11 @@ public interface ExecutionContext {
 
     /* END 1 */
 
-
     /**
      * 前提: 如果需要在并发场景使用,则一般应优先考虑使用ConcurrentHashMap来代替.
      *
-     *  START 2:
+     * <p>START 2:
      */
-
     Map<String, Object> getRequest();
 
     void setRequest(Map<String, Object> request);
@@ -50,14 +45,10 @@ public interface ExecutionContext {
 
     /* END 2 */
 
-
-
-
-
     /**
      * 前提: 理论上,执行期间应该是只读对象 (ProcessDefinition 在reDeploy时,会发生改变).
      *
-     *  START 3:
+     * <p>START 3:
      */
     ProcessDefinition getProcessDefinition();
 
@@ -69,8 +60,6 @@ public interface ExecutionContext {
 
     /* END 3 */
 
-
-
     ExecutionContext getParent();
 
     void setParent(ExecutionContext parent);
@@ -79,25 +68,19 @@ public interface ExecutionContext {
 
     void setProcessInstance(ProcessInstance processInstance);
 
-
     void setNeedPause(boolean needPause);
 
     boolean isNeedPause();
-
-
 
     String getBlockId();
 
     void setBlockId(String blockId);
 
+    String getTenantId();
 
-     String getTenantId();
-
-     void setTenantId(String tenantId);
-
+    void setTenantId(String tenantId);
 
     void setInnerExtra(Map<String, Object> response);
 
     Map<String, Object> getInnerExtra();
-
 }

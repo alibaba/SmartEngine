@@ -1,9 +1,5 @@
 package com.alibaba.smart.framework.engine.bpmn.assembly.task.parser;
 
-import java.util.Map;
-
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.bpmn.assembly.process.parser.AbstractBpmnParser;
 import com.alibaba.smart.framework.engine.bpmn.assembly.task.BusinessRuleTask;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
@@ -12,12 +8,15 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
+import java.util.Map;
+
+import javax.xml.stream.XMLStreamReader;
+
 @ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = BusinessRuleTask.class)
 /**
  * @author zilong.jiangzl 2020-07-17
  */
 public class BusinessRuleTaskParser extends AbstractBpmnParser<BusinessRuleTask> {
-
 
     @Override
     public Class<BusinessRuleTask> getModelType() {
@@ -30,8 +29,7 @@ public class BusinessRuleTaskParser extends AbstractBpmnParser<BusinessRuleTask>
         businessRuleTask.setId(XmlParseUtil.getString(reader, "id"));
         businessRuleTask.setName(XmlParseUtil.getString(reader, "name"));
 
-
-        Map<String, String> userTaskProperties = super.parseExtendedProperties(reader,  context);
+        Map<String, String> userTaskProperties = super.parseExtendedProperties(reader, context);
         businessRuleTask.setProperties(userTaskProperties);
 
         return businessRuleTask;
@@ -42,5 +40,4 @@ public class BusinessRuleTaskParser extends AbstractBpmnParser<BusinessRuleTask>
 
         return false;
     }
-
 }

@@ -19,5 +19,4 @@ public class SendTaskBehavior extends AbstractActivityBehavior<SendTask> {
     public SendTaskBehavior() {
         super();
     }
-
 }

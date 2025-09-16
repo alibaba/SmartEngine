@@ -6,11 +6,11 @@ import java.util.Map;
 
 public class MapUtil {
 
-    public static LinkedHashMap newLinkedHashMap (){
+    public static LinkedHashMap newLinkedHashMap() {
         return new LinkedHashMap();
     }
 
-    public static HashMap newHashMap (){
+    public static HashMap newHashMap() {
         return new HashMap();
     }
 
@@ -22,7 +22,7 @@ public class MapUtil {
         return !isNotEmpty(map);
     }
 
-    public static Object safeGet(Map map,String key){
+    public static Object safeGet(Map map, String key) {
         if (null == map) {
             return null;
         }

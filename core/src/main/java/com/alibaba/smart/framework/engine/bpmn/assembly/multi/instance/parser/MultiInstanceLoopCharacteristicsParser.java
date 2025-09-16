@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.bpmn.assembly.multi.instance.parser;
 
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.bpmn.assembly.multi.instance.CompletionCondition;
 import com.alibaba.smart.framework.engine.bpmn.assembly.multi.instance.InputDataItem;
 import com.alibaba.smart.framework.engine.bpmn.assembly.multi.instance.MultiInstanceLoopCharacteristics;
@@ -14,13 +12,14 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
-/**
- * Created by 高海军 帝奇 74394 on 2017 September  21:01.
- */
-@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = MultiInstanceLoopCharacteristics.class)
+import javax.xml.stream.XMLStreamReader;
 
-public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParser<MultiInstanceLoopCharacteristics>
-{
+/** Created by 高海军 帝奇 74394 on 2017 September 21:01. */
+@ExtensionBinding(
+        group = ExtensionConstant.ELEMENT_PARSER,
+        bindKey = MultiInstanceLoopCharacteristics.class)
+public class MultiInstanceLoopCharacteristicsParser
+        extends AbstractElementParser<MultiInstanceLoopCharacteristics> {
 
     @Override
     public Class<MultiInstanceLoopCharacteristics> getModelType() {
@@ -28,19 +27,24 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
     }
 
     @Override
-    protected MultiInstanceLoopCharacteristics parseModel(XMLStreamReader reader, ParseContext context) {
-        MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = new MultiInstanceLoopCharacteristics();
-        multiInstanceLoopCharacteristics.setSequential(XmlParseUtil.getBoolean(reader, "isSequential", false));
+    protected MultiInstanceLoopCharacteristics parseModel(
+            XMLStreamReader reader, ParseContext context) {
+        MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics =
+                new MultiInstanceLoopCharacteristics();
+        multiInstanceLoopCharacteristics.setSequential(
+                XmlParseUtil.getBoolean(reader, "isSequential", false));
         return multiInstanceLoopCharacteristics;
     }
 
     @Override
-    protected void decorateChild(MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics, BaseElement child, ParseContext context) {
-          if (child instanceof InputDataItem) {
-            //ignore
-        }
-         else if (child instanceof CompletionCondition) {
-             CompletionCondition condition = (CompletionCondition)child;
+    protected void decorateChild(
+            MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics,
+            BaseElement child,
+            ParseContext context) {
+        if (child instanceof InputDataItem) {
+            // ignore
+        } else if (child instanceof CompletionCondition) {
+            CompletionCondition condition = (CompletionCondition) child;
 
             if (CompletionCondition.ACTION_ABORT.equals(condition.getAction())) {
                 multiInstanceLoopCharacteristics.setAbortCondition(condition.getExpression());
@@ -48,9 +52,9 @@ public class MultiInstanceLoopCharacteristicsParser extends AbstractElementParse
                 // Default
                 multiInstanceLoopCharacteristics.setCompletionCondition(condition.getExpression());
             }
-        }
-        else {
-            throw  new EngineException("Should be a instance of CompletionCondition :"+child.getClass());
+        } else {
+            throw new EngineException(
+                    "Should be a instance of CompletionCondition :" + child.getClass());
         }
     }
 }

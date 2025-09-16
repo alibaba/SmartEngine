@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 @Data
 public class DefaultVariableInstance extends AbstractLifeCycleInstance implements VariableInstance {
 
-
     private String processInstanceId;
 
     private String executionInstanceId;
@@ -19,5 +18,4 @@ public class DefaultVariableInstance extends AbstractLifeCycleInstance implement
     private Class fieldType;
 
     private Object fieldValue;
-
 }

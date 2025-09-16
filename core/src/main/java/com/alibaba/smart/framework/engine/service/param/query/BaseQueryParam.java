@@ -2,8 +2,6 @@ package com.alibaba.smart.framework.engine.service.param.query;
 
 import lombok.Data;
 
-
-
 /**
  * 基本查询信息
  *

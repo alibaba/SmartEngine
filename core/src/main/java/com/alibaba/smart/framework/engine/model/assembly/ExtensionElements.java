@@ -9,14 +9,12 @@ public interface ExtensionElements extends NoneIdBasedElement {
 
     void decorate(ExtensionDecorator extension, ParseContext context);
 
-
     List<ExtensionDecorator> getExtensionList();
 
-    //void setExtensionList(List<Extension> extensionList);
+    // void setExtensionList(List<Extension> extensionList);
 
+    Map<String, Object> getDecorationMap();
 
-    Map<String,Object> getDecorationMap();
-
-    //void   setDecorationMap (Map<String,Object> decorationMap );
+    // void   setDecorationMap (Map<String,Object> decorationMap );
 
 }

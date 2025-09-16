@@ -13,12 +13,13 @@ import com.alibaba.smart.framework.engine.service.command.VariableCommandService
 /**
  * 主要变量插入。
  *
- * @author 高海军 帝奇  2021.02.25
+ * @author 高海军 帝奇 2021.02.25
  */
 @ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = VariableCommandService.class)
-public class DefaultVariableCommandService   implements VariableCommandService , LifeCycleHook, ProcessEngineConfigurationAware {
+public class DefaultVariableCommandService
+        implements VariableCommandService, LifeCycleHook, ProcessEngineConfigurationAware {
 
-    private  ProcessEngineConfiguration processEngineConfiguration;
+    private ProcessEngineConfiguration processEngineConfiguration;
 
     @Override
     public void insert(VariableInstance... variableInstances) {
@@ -26,33 +27,27 @@ public class DefaultVariableCommandService   implements VariableCommandService ,
         VariablePersister variablePersister = processEngineConfiguration.getVariablePersister();
 
         for (VariableInstance instance : variableInstances) {
-            variableInstanceStorage.insert(variablePersister,instance,processEngineConfiguration);
+            variableInstanceStorage.insert(variablePersister, instance, processEngineConfiguration);
         }
-
     }
-
 
     @Override
     public void start() {
 
-        this.variableInstanceStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(
-            ExtensionConstant.COMMON, VariableInstanceStorage.class);
-
+        this.variableInstanceStorage =
+                processEngineConfiguration
+                        .getAnnotationScanner()
+                        .getExtensionPoint(ExtensionConstant.COMMON, VariableInstanceStorage.class);
     }
-
 
     @Override
-    public void stop() {
-
-    }
-
-
+    public void stop() {}
 
     private VariableInstanceStorage variableInstanceStorage;
+
     @Override
-    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+    public void setProcessEngineConfiguration(
+            ProcessEngineConfiguration processEngineConfiguration) {
         this.processEngineConfiguration = processEngineConfiguration;
     }
-
-
 }

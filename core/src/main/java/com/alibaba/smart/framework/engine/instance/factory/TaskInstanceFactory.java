@@ -5,9 +5,7 @@ import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 
-/**
- * 任务实例工厂 Created by ettear on 16-4-20.
- */
+/** 任务实例工厂 Created by ettear on 16-4-20. */
 public interface TaskInstanceFactory {
 
     /**
@@ -15,5 +13,6 @@ public interface TaskInstanceFactory {
      *
      * @return 任务实例
      */
-    TaskInstance create(Activity activity, ExecutionInstance executionInstance, ExecutionContext context);
+    TaskInstance create(
+            Activity activity, ExecutionInstance executionInstance, ExecutionContext context);
 }

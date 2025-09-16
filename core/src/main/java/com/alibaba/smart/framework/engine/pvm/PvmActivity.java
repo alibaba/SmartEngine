@@ -1,13 +1,13 @@
 package com.alibaba.smart.framework.engine.pvm;
 
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.context.ExecutionContext;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 
+import java.util.Map;
+
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
 public interface PvmActivity extends PvmElement<Activity> {
@@ -28,5 +28,4 @@ public interface PvmActivity extends PvmElement<Activity> {
     void setBehavior(ActivityBehavior activityBehavior);
 
     ActivityBehavior getBehavior();
-
 }

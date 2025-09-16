@@ -4,6 +4,7 @@ import com.alibaba.smart.framework.engine.common.util.StringUtil;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -12,9 +13,7 @@ import lombok.ToString;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Default Process Instance Created by ettear on 16-4-12.
- */
+/** Default Process Instance Created by ettear on 16-4-12. */
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Data
@@ -30,9 +29,8 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
     private String tenantId;
 
     private String startUserId;
-    /**
-     * 业务唯一标识
-     */
+
+    /** 业务唯一标识 */
     private String bizUniqueId;
 
     private String parentInstanceId;
@@ -46,14 +44,10 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
 
     private String title;
 
-    /**
-     * 备注
-     */
+    /** 备注 */
     private String comment;
 
-
-    @Setter
-    private InstanceStatus status = InstanceStatus.running;
+    @Setter private InstanceStatus status = InstanceStatus.running;
     private List<ActivityInstance> activityInstances = new ArrayList<ActivityInstance>();
 
     @Override
@@ -71,10 +65,9 @@ public class DefaultProcessInstance extends AbstractLifeCycleInstance implements
         return activityInstances;
     }
 
-
     @Override
-    public String getUniqueProcessDefinitionIdAndVersion(){
-        if(StringUtil.isEmpty(getTenantId())){
+    public String getUniqueProcessDefinitionIdAndVersion() {
+        if (StringUtil.isEmpty(getTenantId())) {
             return processDefinitionIdAndVersion;
         } else {
             return String.format("%s:%s", processDefinitionIdAndVersion, getTenantId());

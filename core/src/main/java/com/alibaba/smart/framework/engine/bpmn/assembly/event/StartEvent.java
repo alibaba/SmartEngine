@@ -1,11 +1,11 @@
 package com.alibaba.smart.framework.engine.bpmn.assembly.event;
 
-import javax.xml.namespace.QName;
-
 import com.alibaba.smart.framework.engine.bpmn.constant.BpmnNameSpaceConstant;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import javax.xml.namespace.QName;
 
 /**
  * @author 高海军 帝奇 Apr 14, 2016 2:50:20 PM
@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class StartEvent extends AbstractEvent {
 
-    public final static QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "startEvent");
+    public static final QName qtype = new QName(BpmnNameSpaceConstant.NAME_SPACE, "startEvent");
 
     private static final long serialVersionUID = 8769494440379002970L;
 

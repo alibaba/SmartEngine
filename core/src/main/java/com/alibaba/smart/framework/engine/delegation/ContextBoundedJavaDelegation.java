@@ -10,12 +10,6 @@ import lombok.Setter;
  */
 public abstract class ContextBoundedJavaDelegation implements JavaDelegation {
 
-    @Getter
-    @Setter
-    protected String className;
-    @Getter
-    @Setter
-    protected Activity activity;
-
-
+    @Getter @Setter protected String className;
+    @Getter @Setter protected Activity activity;
 }

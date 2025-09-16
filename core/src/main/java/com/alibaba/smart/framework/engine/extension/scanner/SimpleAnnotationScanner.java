@@ -1,5 +1,18 @@
 package com.alibaba.smart.framework.engine.extension.scanner;
 
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
+import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
+import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
+import com.alibaba.smart.framework.engine.exception.EngineException;
+import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.util.ClassUtil;
+
+import lombok.Getter;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -15,18 +28,6 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
-import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
-import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
-import com.alibaba.smart.framework.engine.exception.EngineException;
-import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
-import com.alibaba.smart.framework.engine.util.ClassUtil;
-
-import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class SimpleAnnotationScanner implements AnnotationScanner {
 
     public static final String JAR = "jar";
@@ -35,13 +36,15 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleAnnotationScanner.class);
 
-
     @Getter
-    private Map<String, ExtensionBindingResult> scanResult = new HashMap<String, ExtensionBindingResult>();
+    private Map<String, ExtensionBindingResult> scanResult =
+            new HashMap<String, ExtensionBindingResult>();
 
     private String[] packageNameList;
 
-    public SimpleAnnotationScanner(String... packageNameList) {this.packageNameList = packageNameList;}
+    public SimpleAnnotationScanner(String... packageNameList) {
+        this.packageNameList = packageNameList;
+    }
 
     protected static Set<Class<?>> scan(String... packageNames) throws IOException {
 
@@ -51,7 +54,8 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
             String formattedPackageDirName = packageName.replace('.', '/');
 
-            Enumeration<URL> allMatchedURLs = ClassUtil.getContextClassLoader().getResources(formattedPackageDirName);
+            Enumeration<URL> allMatchedURLs =
+                    ClassUtil.getContextClassLoader().getResources(formattedPackageDirName);
 
             while (allMatchedURLs.hasMoreElements()) {
 
@@ -65,7 +69,7 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
                 } else if (JAR.equals(protocol)) {
 
-                    JarFile jar = ((JarURLConnection)url.openConnection()).getJarFile();
+                    JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile();
 
                     Enumeration<JarEntry> entries = jar.entries();
 
@@ -79,18 +83,21 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
                             if (idx != -1) {
 
-                                String    finalPackageName = entryName.substring(0, idx).replace('/', '.');
+                                String finalPackageName =
+                                        entryName.substring(0, idx).replace('/', '.');
 
                                 if (entryName.endsWith(".class") && !entry.isDirectory()) {
 
-                                    String className = entryName.substring(finalPackageName.length() + 1,
-                                        entryName.length() - 6);
+                                    String className =
+                                            entryName.substring(
+                                                    finalPackageName.length() + 1,
+                                                    entryName.length() - 6);
 
-                                    clazzSet.add(ClassUtil.loadClass(finalPackageName + '.' + className));
-
+                                    clazzSet.add(
+                                            ClassUtil.loadClass(
+                                                    finalPackageName + '.' + className));
                                 }
                             }
-
                         }
                     }
 
@@ -100,38 +107,42 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
             }
         }
 
-
-
         return clazzSet;
     }
 
-    private static void scanFiles(String packageName, String packagePath,
-                                  final boolean recursive,
-                                  Set<Class<?>> classes) {
+    private static void scanFiles(
+            String packageName,
+            String packagePath,
+            final boolean recursive,
+            Set<Class<?>> classes) {
         File dir = new File(packagePath);
 
         if (!dir.exists() || !dir.isDirectory()) {
             return;
         }
 
-        File[] filteredFiles = dir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"));
-            }
-        });
+        File[] filteredFiles =
+                dir.listFiles(
+                        new FileFilter() {
+                            @Override
+                            public boolean accept(File file) {
+                                return (recursive && file.isDirectory())
+                                        || (file.getName().endsWith(".class"));
+                            }
+                        });
 
         for (File file : filteredFiles) {
 
             if (file.isDirectory()) {
-                scanFiles(packageName + "." + file.getName(), file.getAbsolutePath(), recursive,
-                    classes);
+                scanFiles(
+                        packageName + "." + file.getName(),
+                        file.getAbsolutePath(),
+                        recursive,
+                        classes);
             } else {
                 String className = file.getName().substring(0, file.getName().length() - 6);
 
-                classes.add(
-                    ClassUtil.loadClass(packageName + '.' + className));
-
+                classes.add(ClassUtil.loadClass(packageName + '.' + className));
             }
         }
     }
@@ -143,7 +154,8 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
     @Override
     public void scan(
-        ProcessEngineConfiguration processEngineConfiguration, Class<? extends Annotation> targetAnnotationType) {
+            ProcessEngineConfiguration processEngineConfiguration,
+            Class<? extends Annotation> targetAnnotationType) {
 
         Set<Class<?>> classSet;
         try {
@@ -158,7 +170,8 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
             if (present) {
 
-                ExtensionBinding currentBindingAnnotation = (ExtensionBinding)currentClazz.getAnnotation(targetAnnotationType);
+                ExtensionBinding currentBindingAnnotation =
+                        (ExtensionBinding) currentClazz.getAnnotation(targetAnnotationType);
                 String group = currentBindingAnnotation.group();
 
                 ExtensionBindingResult extensionBindingResult = scanResult.get(group);
@@ -182,22 +195,28 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
                     put(processEngineConfiguration, currentClazz, bindingMap, bindKeyClass);
 
                 } else {
-                    handleDuplicatedKey( processEngineConfiguration,bindingMap,  currentBindingAnnotation, currentClazz,objectInBindingMap,targetAnnotationType);
+                    handleDuplicatedKey(
+                            processEngineConfiguration,
+                            bindingMap,
+                            currentBindingAnnotation,
+                            currentClazz,
+                            objectInBindingMap,
+                            targetAnnotationType);
                 }
-
             }
-
         }
-
     }
 
-    private void put(ProcessEngineConfiguration processEngineConfiguration, Class<?> currentClazz,
-                     Map<Class, Object> bindingMap, Class bindKeyClass) {
+    private void put(
+            ProcessEngineConfiguration processEngineConfiguration,
+            Class<?> currentClazz,
+            Map<Class, Object> bindingMap,
+            Class bindKeyClass) {
         boolean pecFound = false;
 
         Class tempClazz = currentClazz;
 
-        while (tempClazz != null && !tempClazz.equals(Object.class)){
+        while (tempClazz != null && !tempClazz.equals(Object.class)) {
 
             Class<?>[] interfaces = tempClazz.getInterfaces();
             for (Class<?> anInterface : interfaces) {
@@ -209,55 +228,64 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
             tempClazz = tempClazz.getSuperclass();
         }
 
-        Object newInstance  = ClassUtil.createNewInstance(currentClazz);
+        Object newInstance = ClassUtil.createNewInstance(currentClazz);
         if (pecFound) {
-            ((ProcessEngineConfigurationAware)newInstance).setProcessEngineConfiguration(
-                processEngineConfiguration);
+            ((ProcessEngineConfigurationAware) newInstance)
+                    .setProcessEngineConfiguration(processEngineConfiguration);
         }
 
         bindingMap.put(bindKeyClass, newInstance);
     }
 
-    protected void handleDuplicatedKey(ProcessEngineConfiguration processEngineConfiguration,Map<Class, Object> bindingMap, ExtensionBinding currentBindingAnnotation, Class targetClass,Object objectInBindingMap,Class<? extends Annotation> targetAnnotationType) {
+    protected void handleDuplicatedKey(
+            ProcessEngineConfiguration processEngineConfiguration,
+            Map<Class, Object> bindingMap,
+            ExtensionBinding currentBindingAnnotation,
+            Class targetClass,
+            Object objectInBindingMap,
+            Class<? extends Annotation> targetAnnotationType) {
 
         String group = currentBindingAnnotation.group();
         Class bindKeyClass = currentBindingAnnotation.bindKey();
 
-        ExtensionBinding exBindingAnnotation = (ExtensionBinding)objectInBindingMap.getClass().getAnnotation(targetAnnotationType);
+        ExtensionBinding exBindingAnnotation =
+                (ExtensionBinding)
+                        objectInBindingMap.getClass().getAnnotation(targetAnnotationType);
 
-        if(currentBindingAnnotation.priority() < exBindingAnnotation.priority()){
-            LOGGER.warn("Because of lower priority, current extension  {} is ignored, now using the new extension {} " ,targetClass,objectInBindingMap.getClass());
-        }
-
-       else if(currentBindingAnnotation.priority() == exBindingAnnotation.priority()){
+        if (currentBindingAnnotation.priority() < exBindingAnnotation.priority()) {
+            LOGGER.warn(
+                    "Because of lower priority, current extension  {} is ignored, now using the new"
+                        + " extension {} ",
+                    targetClass,
+                    objectInBindingMap.getClass());
+        } else if (currentBindingAnnotation.priority() == exBindingAnnotation.priority()) {
             throw new EngineException(
-
-                "Duplicated bindKeyClass  found " + bindKeyClass + " for group " + group
-                    + ", because of duplicated annotation or init twice.");
-        }else {
+                    "Duplicated bindKeyClass  found "
+                            + bindKeyClass
+                            + " for group "
+                            + group
+                            + ", because of duplicated annotation or init twice.");
+        } else {
 
             put(processEngineConfiguration, targetClass, bindingMap, bindKeyClass);
 
-
-            LOGGER.warn("Because of higher priority, current extension  {} is replaced, now using the new extension {} " ,objectInBindingMap.getClass(),targetClass);
-
-
+            LOGGER.warn(
+                    "Because of higher priority, current extension  {} is replaced, now using the"
+                        + " new extension {} ",
+                    objectInBindingMap.getClass(),
+                    targetClass);
         }
-
-
     }
 
     @Override
     public <T> T getExtensionPoint(String group, Class<T> clazz) {
         ExtensionBindingResult extensionBindingResult = this.scanResult.get(group);
         Map<Class, Object> bindingMap = extensionBindingResult.getBindingMap();
-        return (T)bindingMap.get(clazz);
+        return (T) bindingMap.get(clazz);
     }
 
     @Override
     public Object getObject(String group, Class clazz) {
         return this.scanResult.get(group).getBindingMap().get(clazz);
-
     }
-
 }

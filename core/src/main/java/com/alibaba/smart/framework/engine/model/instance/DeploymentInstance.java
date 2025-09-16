@@ -1,9 +1,7 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
-/**
- * Created by 高海军 帝奇 74394 on 2017 September  10:03.
- */
-public interface  DeploymentInstance  extends  LifeCycleInstance{
+/** Created by 高海军 帝奇 74394 on 2017 September 10:03. */
+public interface DeploymentInstance extends LifeCycleInstance {
 
     String getProcessDefinitionId();
 
@@ -12,7 +10,6 @@ public interface  DeploymentInstance  extends  LifeCycleInstance{
     void setProcessDefinitionVersion(String processDefinitionVersion);
 
     String getProcessDefinitionVersion();
-
 
     String getProcessDefinitionType();
 
@@ -25,7 +22,6 @@ public interface  DeploymentInstance  extends  LifeCycleInstance{
     String getProcessDefinitionName();
 
     void setProcessDefinitionName(String processDefinitionName);
-
 
     String getProcessDefinitionDesc();
 
@@ -41,11 +37,9 @@ public interface  DeploymentInstance  extends  LifeCycleInstance{
 
     String getDeploymentStatus();
 
-    void setDeploymentStatus(String  deploymentStatus);
+    void setDeploymentStatus(String deploymentStatus);
 
     String getLogicStatus();
 
     void setLogicStatus(String logicStatus);
-
-
 }

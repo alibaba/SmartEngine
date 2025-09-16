@@ -1,11 +1,9 @@
 package com.alibaba.smart.framework.engine.exception;
 
-
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  */
 public class LockException extends EngineException {
-
 
     private static final long serialVersionUID = -5576514678329147766L;
 

@@ -10,13 +10,9 @@ import com.alibaba.smart.framework.engine.instance.impl.DefaultActivityInstance;
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 
-/**
- * 默认活动实例工厂实现 Created by ettear on 16-4-20.
- */
+/** 默认活动实例工厂实现 Created by ettear on 16-4-20. */
 @ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = ActivityInstanceFactory.class)
-
 public class DefaultActivityInstanceFactory implements ActivityInstanceFactory {
-
 
     @Override
     public ActivityInstance create(Activity activity, ExecutionContext context) {
@@ -26,7 +22,8 @@ public class DefaultActivityInstanceFactory implements ActivityInstanceFactory {
         idGenerator.generate(activityInstance);
         activityInstance.setStartTime(DateUtil.getCurrentDate());
         activityInstance.setProcessInstanceId(context.getProcessInstance().getInstanceId());
-        activityInstance.setProcessDefinitionIdAndVersion(context.getProcessInstance().getProcessDefinitionIdAndVersion());
+        activityInstance.setProcessDefinitionIdAndVersion(
+                context.getProcessInstance().getProcessDefinitionIdAndVersion());
         String activityId = activity.getId();
         activityInstance.setProcessDefinitionActivityId(activityId);
         activityInstance.setTenantId(context.getTenantId());

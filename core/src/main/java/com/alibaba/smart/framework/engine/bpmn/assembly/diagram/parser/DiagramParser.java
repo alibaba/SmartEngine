@@ -1,9 +1,5 @@
 package com.alibaba.smart.framework.engine.bpmn.assembly.diagram.parser;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.bpmn.assembly.diagram.Diagram;
 import com.alibaba.smart.framework.engine.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
@@ -12,14 +8,16 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
-/**
- * Created by 高海军 帝奇 74394 on 2017 August  10:02.
- */
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+/** Created by 高海军 帝奇 74394 on 2017 August 10:02. */
 @ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = Diagram.class)
+public class DiagramParser extends AbstractElementParser<Diagram> {
 
-public class DiagramParser extends AbstractElementParser<Diagram>   {
-
-    public final static QName qtype = new QName(BpmnNameSpaceConstant.BPMNDI_NAME_SPACE, "BPMNDiagram");
+    public static final QName qtype =
+            new QName(BpmnNameSpaceConstant.BPMNDI_NAME_SPACE, "BPMNDiagram");
 
     private static final long serialVersionUID = -2660788294142169268L;
 
@@ -29,11 +27,11 @@ public class DiagramParser extends AbstractElementParser<Diagram>   {
     }
 
     @Override
-    public Diagram parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
+    public Diagram parseElement(XMLStreamReader reader, ParseContext context)
+            throws XMLStreamException {
         // JUST SKIP
         XmlParseUtil.skipToEndElement(reader);
 
         return null;
     }
-
 }

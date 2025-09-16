@@ -7,11 +7,8 @@ import com.alibaba.smart.framework.engine.instance.factory.TransitionInstanceFac
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTransitionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 
-/**
- * 默认关联实例工厂实现 Created by ettear on 16-4-20.
- */
+/** 默认关联实例工厂实现 Created by ettear on 16-4-20. */
 @ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = TransitionInstanceFactory.class)
-
 public class DefaultTransitionInstanceFactory implements TransitionInstanceFactory {
 
     @Override

@@ -16,12 +16,12 @@ public abstract class InheritableTaskWithCache implements Callable<Void> {
     private static volatile Method createInheritedMapMethod;
     private static final Object accessLock = new Object();
 
-
     public InheritableTaskWithCache() {
         try {
             Thread currentThread = Thread.currentThread();
             Field field = getInheritableThreadLocalsField();
-            // 得到当前线程中的inheritableThreadLocals熟悉值ThreadLocalMap, key是各种inheritableThreadLocal，value是值
+            // 得到当前线程中的inheritableThreadLocals熟悉值ThreadLocalMap,
+            // key是各种inheritableThreadLocal，value是值
             Object threadLocalMapObj = field.get(currentThread);
             if (threadLocalMapObj != null) {
                 Class threadLocalMapClazz = getThreadLocalMapClazz();
@@ -73,7 +73,9 @@ public abstract class InheritableTaskWithCache implements Callable<Void> {
             synchronized (accessLock) {
                 if (createInheritedMapMethod == null) {
                     try {
-                        Method method = ThreadLocal.class.getDeclaredMethod("createInheritedMap", threadLocalMapClazz);
+                        Method method =
+                                ThreadLocal.class.getDeclaredMethod(
+                                        "createInheritedMap", threadLocalMapClazz);
                         method.setAccessible(true);
                         createInheritedMapMethod = method;
                     } catch (Exception e) {

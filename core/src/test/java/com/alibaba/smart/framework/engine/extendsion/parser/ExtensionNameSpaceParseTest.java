@@ -1,8 +1,5 @@
 package com.alibaba.smart.framework.engine.extendsion.parser;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.bpmn.assembly.task.ServiceTask;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
@@ -25,12 +22,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author zilong.jiangzl
  * @create 2020-07-17 2:29 下午
  */
 public class ExtensionNameSpaceParseTest {
-
 
     private SmartEngine smartEngine;
 
@@ -44,8 +43,9 @@ public class ExtensionNameSpaceParseTest {
 
     @Before
     public void initEngine() {
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        // 1.初始化
+        ProcessEngineConfiguration processEngineConfiguration =
+                new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new DefaultIdGenerator());
 
         processEngineConfiguration.setAnnotationScanner(
@@ -55,7 +55,7 @@ public class ExtensionNameSpaceParseTest {
         smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 
-        //2.获得常用服务
+        // 2.获得常用服务
         repositoryCommandService = smartEngine.getRepositoryCommandService();
         processCommandService = smartEngine.getProcessCommandService();
         executionQueryService = smartEngine.getExecutionQueryService();
@@ -74,24 +74,32 @@ public class ExtensionNameSpaceParseTest {
 
     private void testDifferentNsParse(String processDefineName) throws Exception {
         String tenantId = "-1";
-        //1. 部署流程定义
-        ProcessDefinitionSource processDefinitionSource = repositoryCommandService
-                .deploy(String.format("process-def/extension/%s", processDefineName),tenantId);
+        // 1. 部署流程定义
+        ProcessDefinitionSource processDefinitionSource =
+                repositoryCommandService.deploy(
+                        String.format("process-def/extension/%s", processDefineName), tenantId);
 
-        ProcessDefinition processDefinition = processDefinitionSource.getProcessDefinitionList().get(0);
+        ProcessDefinition processDefinition =
+                processDefinitionSource.getProcessDefinitionList().get(0);
         Assert.assertNotNull(processDefinition);
 
-        for (Map.Entry<String, IdBasedElement> entry : processDefinition.getIdBasedElementMap().entrySet()) {
+        for (Map.Entry<String, IdBasedElement> entry :
+                processDefinition.getIdBasedElementMap().entrySet()) {
             if (entry.getValue() instanceof ServiceTask) {
                 ServiceTask serviceTask = (ServiceTask) entry.getValue();
                 Map<PropertyCompositeKey, String> extensionMap =
-                        (Map<PropertyCompositeKey, String>)serviceTask.getExtensionElements().getDecorationMap().get(ExtensionElementsConstant.PROPERTIES);
+                        (Map<PropertyCompositeKey, String>)
+                                serviceTask
+                                        .getExtensionElements()
+                                        .getDecorationMap()
+                                        .get(ExtensionElementsConstant.PROPERTIES);
                 Assert.assertTrue(extensionMap.size() == 1);
                 final Map<String, Object> properties = new HashMap<String, Object>();
-                for(Map.Entry<PropertyCompositeKey, String> e :  extensionMap.entrySet()) {
+                for (Map.Entry<PropertyCompositeKey, String> e : extensionMap.entrySet()) {
                     properties.put(e.getKey().getName(), e.getValue());
                 }
-                PropertyCompositeValue taskOption = (PropertyCompositeValue)properties.get("taskOption");
+                PropertyCompositeValue taskOption =
+                        (PropertyCompositeValue) properties.get("taskOption");
                 Assert.assertEquals(taskOption.getAttrMap().get("value"), "100");
             }
         }

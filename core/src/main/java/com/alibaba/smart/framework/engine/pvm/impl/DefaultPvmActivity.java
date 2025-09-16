@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
 @Data
@@ -18,11 +18,8 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     @Override
     public void enter(ExecutionContext context) {
 
-
         ActivityBehavior behavior = this.getBehavior();
-        boolean needPause= behavior.enter(context, this);
-
-
+        boolean needPause = behavior.enter(context, this);
 
         if (needPause) {
 
@@ -33,13 +30,10 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         this.execute(context);
     }
 
-
-
     @Override
     public void execute(ExecutionContext context) {
 
-
-        this.getBehavior().execute(context,this);
+        this.getBehavior().execute(context, this);
 
         if (context.isNeedPause()) {
 
@@ -48,10 +42,7 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
         }
 
         this.getBehavior().leave(context, this);
-
     }
-
-
 
     @Override
     public String toString() {
@@ -59,12 +50,8 @@ public class DefaultPvmActivity extends AbstractPvmActivity implements PvmActivi
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
-    public void stop() {
-
-    }
+    public void stop() {}
 }

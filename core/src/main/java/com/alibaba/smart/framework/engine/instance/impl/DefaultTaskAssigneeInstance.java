@@ -5,12 +5,11 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * 默认任务处理者 Created by 帝奇 on 17.01.02.
- */
+/** 默认任务处理者 Created by 帝奇 on 17.01.02. */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DefaultTaskAssigneeInstance extends AbstractLifeCycleInstance implements TaskAssigneeInstance {
+public class DefaultTaskAssigneeInstance extends AbstractLifeCycleInstance
+        implements TaskAssigneeInstance {
 
     private static final long serialVersionUID = -3920292154786127202L;
 

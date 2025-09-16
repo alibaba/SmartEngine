@@ -1,8 +1,5 @@
 package com.alibaba.smart.framework.engine.service.query.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
@@ -16,42 +13,40 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryB
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
-/**
- * Created by 高海军 帝奇 74394 on 2016 November  22:10.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+/** Created by 高海军 帝奇 74394 on 2016 November 22:10. */
 @ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = TaskQueryService.class)
+public class DefaultTaskQueryService
+        implements TaskQueryService, LifeCycleHook, ProcessEngineConfigurationAware {
 
-public class DefaultTaskQueryService implements TaskQueryService, LifeCycleHook ,
-    ProcessEngineConfigurationAware {
-
-    private ProcessEngineConfiguration processEngineConfiguration ;
+    private ProcessEngineConfiguration processEngineConfiguration;
     private TaskInstanceStorage taskInstanceStorage;
 
     @Override
     public void start() {
-        this.taskInstanceStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,TaskInstanceStorage.class);
-
+        this.taskInstanceStorage =
+                processEngineConfiguration
+                        .getAnnotationScanner()
+                        .getExtensionPoint(ExtensionConstant.COMMON, TaskInstanceStorage.class);
     }
-
-
 
     @Override
-    public void stop() {
-
-    }
+    public void stop() {}
 
     @Override
     public List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
 
-        return taskInstanceStorage.findPendingTaskList(pendingTaskQueryParam, processEngineConfiguration);
+        return taskInstanceStorage.findPendingTaskList(
+                pendingTaskQueryParam, processEngineConfiguration);
     }
 
     @Override
     public Long countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam) {
 
-
-
-        return taskInstanceStorage.countPendingTaskList(pendingTaskQueryParam, processEngineConfiguration);
+        return taskInstanceStorage.countPendingTaskList(
+                pendingTaskQueryParam, processEngineConfiguration);
     }
 
     @Override
@@ -61,7 +56,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleHook 
 
     @Override
     public Long countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param) {
-        return taskInstanceStorage.countTaskListByAssignee(param,processEngineConfiguration );
+        return taskInstanceStorage.countTaskListByAssignee(param, processEngineConfiguration);
     }
 
     @Override
@@ -70,7 +65,7 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleHook 
     }
 
     @Override
-    public List<TaskInstance> findAllPendingTaskList(String processInstanceId,String tenantId) {
+    public List<TaskInstance> findAllPendingTaskList(String processInstanceId, String tenantId) {
 
         TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
         List<String> processInstanceIdList = new ArrayList<String>(2);
@@ -79,22 +74,24 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleHook 
         taskInstanceQueryParam.setStatus(TaskInstanceConstant.PENDING);
         taskInstanceQueryParam.setTenantId(tenantId);
 
-        return taskInstanceStorage.findTaskByProcessInstanceIdAndStatus(taskInstanceQueryParam, processEngineConfiguration);
+        return taskInstanceStorage.findTaskByProcessInstanceIdAndStatus(
+                taskInstanceQueryParam, processEngineConfiguration);
     }
 
     @Override
     public TaskInstance findOne(String taskInstanceId) {
-        return this.findOne(taskInstanceId,null);
+        return this.findOne(taskInstanceId, null);
     }
 
     @Override
-    public TaskInstance findOne(String taskInstanceId,String tenantId) {
-        TaskInstance taskInstance = taskInstanceStorage.find(taskInstanceId,tenantId, processEngineConfiguration);
+    public TaskInstance findOne(String taskInstanceId, String tenantId) {
+        TaskInstance taskInstance =
+                taskInstanceStorage.find(taskInstanceId, tenantId, processEngineConfiguration);
         return taskInstance;
     }
 
     @Override
-    public List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam){
+    public List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam) {
 
         return taskInstanceStorage.findTaskList(taskInstanceQueryParam, processEngineConfiguration);
     }
@@ -105,9 +102,9 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleHook 
         return taskInstanceStorage.count(taskInstanceQueryParam, processEngineConfiguration);
     }
 
-
     @Override
-    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+    public void setProcessEngineConfiguration(
+            ProcessEngineConfiguration processEngineConfiguration) {
         this.processEngineConfiguration = processEngineConfiguration;
     }
 }

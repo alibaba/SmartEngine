@@ -1,8 +1,5 @@
 package com.alibaba.smart.framework.engine.common.util;
 
-import java.util.Date;
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.constant.RequestMapSpecialKeyConstant;
 import com.alibaba.smart.framework.engine.exception.ConcurrentException;
@@ -12,14 +9,16 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.util.ObjectUtil;
 
-/**
- * Created by 高海军 帝奇 74394 on 2017 June  10:35.
- */
+import java.util.Date;
+import java.util.Map;
+
+/** Created by 高海军 帝奇 74394 on 2017 June 10:35. */
 public class MarkDoneUtil {
 
-    public static ExecutionInstance markDoneExecutionInstance(ExecutionInstance executionInstance,
-                                                              ExecutionInstanceStorage executionInstanceStorage,
-                                                              ProcessEngineConfiguration processEngineConfiguration) {
+    public static ExecutionInstance markDoneExecutionInstance(
+            ExecutionInstance executionInstance,
+            ExecutionInstanceStorage executionInstanceStorage,
+            ProcessEngineConfiguration processEngineConfiguration) {
         Date completeDate = DateUtil.getCurrentDate();
         executionInstance.setCompleteTime(completeDate);
         executionInstance.setActive(false);
@@ -28,11 +27,13 @@ public class MarkDoneUtil {
         return executionInstance;
     }
 
-
-    public static TaskInstance markDoneTaskInstance(TaskInstance taskInstance, String targetStatus, String sourceStatus,
-                                                    Map<String, Object> variables,
-                                                    TaskInstanceStorage taskInstanceStorage,
-                                                    ProcessEngineConfiguration processEngineConfiguration) {
+    public static TaskInstance markDoneTaskInstance(
+            TaskInstance taskInstance,
+            String targetStatus,
+            String sourceStatus,
+            Map<String, Object> variables,
+            TaskInstanceStorage taskInstanceStorage,
+            ProcessEngineConfiguration processEngineConfiguration) {
         Date currentDate = DateUtil.getCurrentDate();
         taskInstance.setCompleteTime(currentDate);
 
@@ -43,26 +44,31 @@ public class MarkDoneUtil {
         taskInstance.setStatus(targetStatus);
 
         if (null != variables) {
-            String tag = ObjectUtil.obj2Str(variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG));
+            String tag =
+                    ObjectUtil.obj2Str(
+                            variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_TAG));
             taskInstance.setTag(tag);
 
-            String claimUserId = ObjectUtil.obj2Str(variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID));
+            String claimUserId =
+                    ObjectUtil.obj2Str(
+                            variables.get(
+                                    RequestMapSpecialKeyConstant.TASK_INSTANCE_CLAIM_USER_ID));
             taskInstance.setClaimUserId(claimUserId);
             Object o = variables.get(RequestMapSpecialKeyConstant.TASK_INSTANCE_COMMENT);
-            String comment =  o == null?null:String.valueOf(
-                o);
+            String comment = o == null ? null : String.valueOf(o);
             taskInstance.setClaimUserId(claimUserId);
             taskInstance.setComment(comment);
-
         }
 
-        int updateCount = taskInstanceStorage.updateFromStatus(taskInstance, sourceStatus, processEngineConfiguration);
+        int updateCount =
+                taskInstanceStorage.updateFromStatus(
+                        taskInstance, sourceStatus, processEngineConfiguration);
         if (updateCount != 1) {
-            throw new ConcurrentException(String
-                .format("update_task_status_fail task_id=%s expect_from_[%s]_to_[%s]", taskInstance.getInstanceId(), sourceStatus,
-                    taskInstance.getStatus()));
+            throw new ConcurrentException(
+                    String.format(
+                            "update_task_status_fail task_id=%s expect_from_[%s]_to_[%s]",
+                            taskInstance.getInstanceId(), sourceStatus, taskInstance.getStatus()));
         }
         return taskInstance;
     }
-
 }

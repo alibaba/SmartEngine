@@ -9,10 +9,8 @@ import lombok.Data;
  * @date 2017/09/22
  */
 @Data
-
 public class PaginateQueryParam {
 
     protected Integer pageOffset;
     protected Integer pageSize;
-
 }

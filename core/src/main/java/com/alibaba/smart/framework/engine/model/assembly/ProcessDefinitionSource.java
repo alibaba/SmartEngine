@@ -13,5 +13,4 @@ public interface ProcessDefinitionSource extends NoneIdBasedElement {
     void setProcessDefinitionList(List<ProcessDefinition> processDefinitionList);
 
     ProcessDefinition getFirstProcessDefinition();
-
 }

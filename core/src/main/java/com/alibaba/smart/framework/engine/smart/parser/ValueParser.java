@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.smart.parser;
 
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.smart.Value;
@@ -9,11 +7,11 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
-/**
- * @author ettear
- * Created by ettear on 06/08/2017.
- */
+import javax.xml.stream.XMLStreamReader;
 
+/**
+ * @author ettear Created by ettear on 06/08/2017.
+ */
 @ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = Value.class)
 public class ValueParser extends AbstractElementParser<Value> {
 

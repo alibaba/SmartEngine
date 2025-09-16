@@ -1,10 +1,5 @@
 package com.alibaba.smart.framework.engine.behavior.base;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.alibaba.smart.framework.engine.behavior.ActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.gateway.AbstractGateway;
 import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.helper.CommonGatewayHelper;
@@ -30,39 +25,38 @@ import com.alibaba.smart.framework.engine.pvm.PvmTransition;
 import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 
 import lombok.Setter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
 public abstract class AbstractActivityBehavior<T extends Activity> implements ActivityBehavior {
 
+    @Setter protected ProcessInstanceFactory processInstanceFactory;
+    @Setter protected ExecutionInstanceFactory executionInstanceFactory;
+    @Setter protected ActivityInstanceFactory activityInstanceFactory;
+    @Setter protected TaskInstanceFactory taskInstanceFactory;
+    @Setter protected ProcessEngineConfiguration processEngineConfiguration;
+    @Setter protected ExecutionInstanceStorage executionInstanceStorage;
 
-
-    @Setter
-    protected ProcessInstanceFactory processInstanceFactory;
-    @Setter
-    protected ExecutionInstanceFactory executionInstanceFactory;
-    @Setter
-    protected ActivityInstanceFactory activityInstanceFactory;
-    @Setter
-    protected TaskInstanceFactory taskInstanceFactory;
-    @Setter
-    protected ProcessEngineConfiguration processEngineConfiguration;
-    @Setter
-    protected ExecutionInstanceStorage executionInstanceStorage;
-
-    @Setter
-    protected VariableInstanceStorage variableInstanceStorage;
+    @Setter protected VariableInstanceStorage variableInstanceStorage;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractActivityBehavior.class);
 
-    protected void fireEvent(ExecutionContext context,PvmActivity pvmActivity, EventConstant event) {
+    protected void fireEvent(
+            ExecutionContext context, PvmActivity pvmActivity, EventConstant event) {
 
-        context.getProcessEngineConfiguration().getListenerExecutor().execute(event,pvmActivity.getModel(),context);
-
+        context.getProcessEngineConfiguration()
+                .getListenerExecutor()
+                .execute(event, pvmActivity.getModel(), context);
     }
 
     @Override
@@ -70,11 +64,13 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
         ProcessInstance processInstance = context.getProcessInstance();
 
-        synchronized (processInstance){
+        synchronized (processInstance) {
+            ActivityInstance activityInstance =
+                    createSingleActivityInstanceAndAttachToProcessInstance(
+                            context, pvmActivity.getModel());
 
-            ActivityInstance activityInstance = createSingleActivityInstanceAndAttachToProcessInstance(context, pvmActivity.getModel());
-
-            ExecutionInstance executionInstance = this.executionInstanceFactory.create(activityInstance, context);
+            ExecutionInstance executionInstance =
+                    this.executionInstanceFactory.create(activityInstance, context);
 
             List<ExecutionInstance> executionInstanceList = new ArrayList<ExecutionInstance>(1);
             executionInstanceList.add(executionInstance);
@@ -82,16 +78,18 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             activityInstance.setExecutionInstanceList(executionInstanceList);
             context.setExecutionInstance(executionInstance);
 
-            IdBasedElement idBasedElement = context.getProcessDefinition().getIdBasedElementMap().get(executionInstance.getProcessDefinitionActivityId());
+            IdBasedElement idBasedElement =
+                    context.getProcessDefinition()
+                            .getIdBasedElementMap()
+                            .get(executionInstance.getProcessDefinitionActivityId());
             context.setBaseElement(idBasedElement);
 
-            fireEvent(context,pvmActivity, EventConstant.ACTIVITY_START);
+            fireEvent(context, pvmActivity, EventConstant.ACTIVITY_START);
 
-            hookEnter(context,pvmActivity);
+            hookEnter(context, pvmActivity);
 
             return false;
         }
-
     }
 
     protected void hookEnter(ExecutionContext context, PvmActivity pvmActivity) {
@@ -101,7 +99,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
     }
 
-    protected ActivityInstance createSingleActivityInstanceAndAttachToProcessInstance(ExecutionContext context, Activity activity) {
+    protected ActivityInstance createSingleActivityInstanceAndAttachToProcessInstance(
+            ExecutionContext context, Activity activity) {
         ProcessInstance processInstance = context.getProcessInstance();
 
         ActivityInstance activityInstance = this.activityInstanceFactory.create(activity, context);
@@ -111,9 +110,8 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         return activityInstance;
     }
 
-
     @Override
-    public void execute(ExecutionContext context,PvmActivity pvmActivity) {
+    public void execute(ExecutionContext context, PvmActivity pvmActivity) {
 
         hookExecute(context, pvmActivity);
         if (context.isNeedPause()) {
@@ -121,12 +119,11 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             return;
         }
 
-        fireEvent(context,pvmActivity, EventConstant.ACTIVITY_EXECUTE);
+        fireEvent(context, pvmActivity, EventConstant.ACTIVITY_EXECUTE);
 
-        executeDelegation(context,pvmActivity.getModel());
+        executeDelegation(context, pvmActivity.getModel());
 
         commonUpdateExecutionInstance(context);
-
     }
 
     protected void hookExecute(ExecutionContext context, PvmActivity pvmActivity) {
@@ -137,12 +134,11 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         // 一般示例: 传入 开启选项参数 和 按钮名称, 然后反射调用对应的类执行业务逻辑
     }
 
-
     protected void commonUpdateExecutionInstance(ExecutionContext context) {
         if (!context.isNeedPause()) {
             ExecutionInstance executionInstance = context.getExecutionInstance();
-            MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
-                processEngineConfiguration);
+            MarkDoneUtil.markDoneExecutionInstance(
+                    executionInstance, executionInstanceStorage, processEngineConfiguration);
         }
     }
 
@@ -151,9 +147,9 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
         context.getProcessEngineConfiguration().getDelegationExecutor().execute(context, activity);
     }
 
-
     /**
      * dead or alive ,maybe change later...
+     *
      * @param context
      * @param gateway
      * @param processInstance
@@ -162,25 +158,33 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
      * @param forkedExecutionInstanceOfInclusiveGateway
      * @return
      */
-    protected boolean doa(ExecutionContext context, AbstractGateway gateway, ProcessInstance processInstance, List<ExecutionInstance> activeExecutionList, int countOfTheJoinLatch, ExecutionInstance forkedExecutionInstanceOfInclusiveGateway) {
-        List<ExecutionInstance> executionInstanceListFromMemory = InstanceUtil.findActiveExecution(processInstance);
+    protected boolean doa(
+            ExecutionContext context,
+            AbstractGateway gateway,
+            ProcessInstance processInstance,
+            List<ExecutionInstance> activeExecutionList,
+            int countOfTheJoinLatch,
+            ExecutionInstance forkedExecutionInstanceOfInclusiveGateway) {
+        List<ExecutionInstance> executionInstanceListFromMemory =
+                InstanceUtil.findActiveExecution(processInstance);
 
         List<ExecutionInstance> mergedExecutionInstanceList = new ArrayList<ExecutionInstance>();
 
         mergedExecutionInstanceList.addAll(executionInstanceListFromMemory);
 
         for (ExecutionInstance executionInstance : activeExecutionList) {
-            if(mergedExecutionInstanceList.contains(executionInstance)){
-                //do nothing
-            }else {
+            if (mergedExecutionInstanceList.contains(executionInstance)) {
+                // do nothing
+            } else {
                 mergedExecutionInstanceList.add(executionInstance);
             }
         }
 
         int reachedJoinCounter = 0;
-        List<ExecutionInstance> chosenExecutionInstanceList = new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
+        List<ExecutionInstance> chosenExecutionInstanceList =
+                new ArrayList<ExecutionInstance>(executionInstanceListFromMemory.size());
 
-        if(null != mergedExecutionInstanceList){
+        if (null != mergedExecutionInstanceList) {
 
             for (ExecutionInstance executionInstance : mergedExecutionInstanceList) {
 
@@ -191,17 +195,26 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
             }
         }
 
+        LOGGER.debug(
+                "chosenExecutionInstanceList , reachedJoinCounter,countOfTheJoinLatch  is {} , {} ,"
+                    + " {} ",
+                chosenExecutionInstanceList,
+                reachedJoinCounter,
+                countOfTheJoinLatch);
+        if (reachedJoinCounter > countOfTheJoinLatch) {
+            throw new EngineException(
+                    "Unexpected behavior,reachedJoinCounter: "
+                            + reachedJoinCounter
+                            + ",countOfTheJoinLatch: "
+                            + countOfTheJoinLatch);
+        } else if (reachedJoinCounter == countOfTheJoinLatch) {
+            // 把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
 
-        LOGGER.debug("chosenExecutionInstanceList , reachedJoinCounter,countOfTheJoinLatch  is {} , {} , {} ",chosenExecutionInstanceList,reachedJoinCounter, countOfTheJoinLatch);
-        if(reachedJoinCounter > countOfTheJoinLatch){
-            throw new EngineException("Unexpected behavior,reachedJoinCounter: " + reachedJoinCounter +",countOfTheJoinLatch: "+ countOfTheJoinLatch);
-        }
-        else if(reachedJoinCounter == countOfTheJoinLatch){
-            //把当前停留在join节点的执行实例全部complete掉,然后再持久化时,会自动忽略掉这些节点。
-
-            if(null != chosenExecutionInstanceList){
+            if (null != chosenExecutionInstanceList) {
                 for (ExecutionInstance executionInstance : chosenExecutionInstanceList) {
-                    MarkDoneUtil.markDoneExecutionInstance(executionInstance,executionInstanceStorage,
+                    MarkDoneUtil.markDoneExecutionInstance(
+                            executionInstance,
+                            executionInstanceStorage,
                             processEngineConfiguration);
                 }
             }
@@ -213,47 +226,40 @@ public abstract class AbstractActivityBehavior<T extends Activity> implements Ac
 
             return false;
 
-        }else{
-            //未完成的话,流程继续暂停
+        } else {
+            // 未完成的话,流程继续暂停
             return true;
         }
     }
 
-    protected    void hookCleanUp(ExecutionContext context, ExecutionInstance forkedExecutionInstanceOfInclusiveGateway) {
-
-    }
-
-
+    protected void hookCleanUp(
+            ExecutionContext context,
+            ExecutionInstance forkedExecutionInstanceOfInclusiveGateway) {}
 
     @Override
     public void leave(ExecutionContext context, PvmActivity pvmActivity) {
-        fireEvent(context,pvmActivity, EventConstant.ACTIVITY_END);
-
+        fireEvent(context, pvmActivity, EventConstant.ACTIVITY_END);
 
         Map<String, PvmTransition> outcomeTransitions = pvmActivity.getOutcomeTransitions();
 
-        if(MapUtil.isEmpty(outcomeTransitions)){
-            LOGGER.debug("No outcomeTransitions found for activity id: "+pvmActivity.getModel().getId()+", it's just fine, it should be the last activity of the process");
+        if (MapUtil.isEmpty(outcomeTransitions)) {
+            LOGGER.debug(
+                    "No outcomeTransitions found for activity id: "
+                            + pvmActivity.getModel().getId()
+                            + ", it's just fine, it should be the last activity of the process");
 
-        }else{
+        } else {
 
-            if( outcomeTransitions.size() ==1){
-                for (Entry<String, PvmTransition> pvmTransitionEntry : outcomeTransitions.entrySet()) {
+            if (outcomeTransitions.size() == 1) {
+                for (Entry<String, PvmTransition> pvmTransitionEntry :
+                        outcomeTransitions.entrySet()) {
                     PvmActivity target = pvmTransitionEntry.getValue().getTarget();
                     target.enter(context);
                 }
-            }else {
+            } else {
 
-                 CommonGatewayHelper.chooseOnlyOne(pvmActivity,context);
-
+                CommonGatewayHelper.chooseOnlyOne(pvmActivity, context);
             }
         }
-
     }
-
-
-
-
-
-
 }

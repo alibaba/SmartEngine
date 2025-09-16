@@ -1,9 +1,5 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
@@ -16,17 +12,22 @@ import com.alibaba.smart.framework.engine.constant.SmartBase;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 
 import lombok.Data;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  */
 @Data
-public class DefaultProcessEngineConfiguration implements ProcessEngineConfiguration
-{
+public class DefaultProcessEngineConfiguration implements ProcessEngineConfiguration {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProcessEngineConfiguration.class);
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(DefaultProcessEngineConfiguration.class);
 
     private SmartEngine smartEngine;
 
@@ -64,12 +65,12 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private boolean expressionCompileResultCached;
 
-    private OptionContainer optionContainer ;
+    private OptionContainer optionContainer;
 
-    private Map<String,Object> magicExtension;
+    private Map<String, Object> magicExtension;
 
     public DefaultProcessEngineConfiguration() {
-        //说明:先默认设置一个id生成器,业务使用方可以根据自己的需要再覆盖掉这个值。
+        // 说明:先默认设置一个id生成器,业务使用方可以根据自己的需要再覆盖掉这个值。
         this.idGenerator = new DefaultIdGenerator();
         this.exceptionProcessor = new DefaultExceptionProcessor();
         this.instanceAccessor = new DefaultInstanceAccessor();
@@ -77,7 +78,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         this.expressionEvaluator = new MvelExpressionEvaluator();
         this.parallelServiceOrchestration = new DefaultParallelServiceOrchestration();
         this.listenerExecutor = new DefaultListenerExecutor();
-        this.annotationScanner = new SimpleAnnotationScanner(SmartEngine.class.getPackage().getName());
+        this.annotationScanner =
+                new SimpleAnnotationScanner(SmartEngine.class.getPackage().getName());
         this.variablePersister = new DefaultVariablePersister();
 
         this.pvmActivityTaskFactory = new DefaultPvmActivityTaskFactory();
@@ -91,19 +93,18 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
     }
 
     private void buildDefaultSupportNameSpace() {
-        Map<String,Object> magicExtension = MapUtil.newHashMap();
+        Map<String, Object> magicExtension = MapUtil.newHashMap();
 
-        Map<String,String> tuples = new HashMap<String, String>();
-        tuples.put(SmartBase.SMART_NS,"");
+        Map<String, String> tuples = new HashMap<String, String>();
+        tuples.put(SmartBase.SMART_NS, "");
 
-        //兼容主流开源的 namespace，便于兼容他们配套的前端设计器
-        tuples.put(BpmnNameSpaceConstant.CAMUNDA_NAME_SPACE,"smart");
-        tuples.put(BpmnNameSpaceConstant.FLOWABLE_NAME_SPACE,"flowable");
-        tuples.put(BpmnNameSpaceConstant.ACTIVITI_NAME_SPACE,"activiti");
+        // 兼容主流开源的 namespace，便于兼容他们配套的前端设计器
+        tuples.put(BpmnNameSpaceConstant.CAMUNDA_NAME_SPACE, "smart");
+        tuples.put(BpmnNameSpaceConstant.FLOWABLE_NAME_SPACE, "flowable");
+        tuples.put(BpmnNameSpaceConstant.ACTIVITI_NAME_SPACE, "activiti");
 
-        magicExtension.put("fallBack",tuples);
+        magicExtension.put("fallBack", tuples);
 
         this.setMagicExtension(magicExtension);
     }
-
 }

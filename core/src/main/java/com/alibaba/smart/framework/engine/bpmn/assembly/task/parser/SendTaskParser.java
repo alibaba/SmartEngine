@@ -1,9 +1,5 @@
 package com.alibaba.smart.framework.engine.bpmn.assembly.task.parser;
 
-import java.util.Map;
-
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.bpmn.assembly.process.parser.AbstractBpmnParser;
 import com.alibaba.smart.framework.engine.bpmn.assembly.task.SendTask;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
@@ -11,6 +7,10 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
+
+import java.util.Map;
+
+import javax.xml.stream.XMLStreamReader;
 
 @ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = SendTask.class)
 /**
@@ -29,7 +29,7 @@ public class SendTaskParser extends AbstractBpmnParser<SendTask> {
         sendtask.setId(XmlParseUtil.getString(reader, "id"));
         sendtask.setName(XmlParseUtil.getString(reader, "name"));
 
-        Map<String, String> userTaskProperties = super.parseExtendedProperties(reader,  context);
+        Map<String, String> userTaskProperties = super.parseExtendedProperties(reader, context);
         sendtask.setProperties(userTaskProperties);
 
         return sendtask;
@@ -40,5 +40,4 @@ public class SendTaskParser extends AbstractBpmnParser<SendTask> {
 
         return false;
     }
-
 }

@@ -1,8 +1,5 @@
 package com.alibaba.smart.framework.engine.extendsion.parser.engine.parser;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extendsion.parser.engine.StringField;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
@@ -12,6 +9,9 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
 /**
  * @author zilong.jiangzl
  * @create 2020-07-16 9:40 下午
@@ -20,10 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 @ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = StringField.class)
 public class StringFieldParser extends AbstractElementParser<StringField> {
 
-
-
     @Override
-    public StringField parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
+    public StringField parseElement(XMLStreamReader reader, ParseContext context)
+            throws XMLStreamException {
         StringField field = new StringField();
 
         try {
@@ -31,14 +30,11 @@ public class StringFieldParser extends AbstractElementParser<StringField> {
             String elementText = reader.getElementText();
             field.setValue(elementText);
 
-
         } catch (Exception e) {
-            throw  new EngineException(e);
+            throw new EngineException(e);
         }
 
-
         return field;
-
     }
 
     @Override

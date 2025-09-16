@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.smart.parser;
 
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -10,9 +8,10 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
+import javax.xml.stream.XMLStreamReader;
+
 /**
- * @author ettear
- * Created by ettear on 06/08/2017.
+ * @author ettear Created by ettear on 06/08/2017.
  */
 @ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = ExecutionListener.class)
 public class ExecutionListenerParser extends AbstractElementParser<ExecutionListener> {
@@ -30,7 +29,7 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
 
             executionListener.setListenerClass(listener);
             return executionListener;
-        }else{
+        } else {
             throw new EngineException("Events can not be empty for ExecutionListener");
         }
     }
@@ -39,5 +38,4 @@ public class ExecutionListenerParser extends AbstractElementParser<ExecutionList
     public Class<ExecutionListener> getModelType() {
         return ExecutionListener.class;
     }
-
 }

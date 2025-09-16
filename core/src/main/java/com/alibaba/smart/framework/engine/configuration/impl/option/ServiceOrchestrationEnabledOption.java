@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.configuration.impl.option;
 
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 
-
 public class ServiceOrchestrationEnabledOption implements ConfigurationOption {
 
     @Override

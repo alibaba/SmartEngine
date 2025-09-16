@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.bpmn.assembly.process.parser;
 
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.bpmn.assembly.process.ProcessDefinitionSourceImpl;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
@@ -14,12 +12,17 @@ import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = ProcessDefinitionSourceImpl.class)
+import javax.xml.stream.XMLStreamReader;
 
-public class ProcessDefinitionSourceParser extends AbstractElementParser<ProcessDefinitionSourceImpl>
-  implements   ProcessEngineConfigurationAware {
+@ExtensionBinding(
+        group = ExtensionConstant.ELEMENT_PARSER,
+        bindKey = ProcessDefinitionSourceImpl.class)
+public class ProcessDefinitionSourceParser
+        extends AbstractElementParser<ProcessDefinitionSourceImpl>
+        implements ProcessEngineConfigurationAware {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDefinitionSourceParser.class);
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(ProcessDefinitionSourceParser.class);
 
     @Override
     public Class<ProcessDefinitionSourceImpl> getModelType() {
@@ -34,11 +37,14 @@ public class ProcessDefinitionSourceParser extends AbstractElementParser<Process
     }
 
     @Override
-    protected void decorateChild(ProcessDefinitionSourceImpl processDefinitionSource, BaseElement child, ParseContext context) {
+    protected void decorateChild(
+            ProcessDefinitionSourceImpl processDefinitionSource,
+            BaseElement child,
+            ParseContext context) {
         if (child instanceof ProcessDefinition) {
             processDefinitionSource.getProcessDefinitionList().add((ProcessDefinition) child);
-        }else{
-            LOGGER.warn("NOT SUPPORTED:"+child);
+        } else {
+            LOGGER.warn("NOT SUPPORTED:" + child);
         }
     }
 }

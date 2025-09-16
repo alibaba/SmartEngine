@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
 public interface ExecutionInstance extends LifeCycleInstance {
@@ -9,7 +9,6 @@ public interface ExecutionInstance extends LifeCycleInstance {
     String getProcessDefinitionIdAndVersion();
 
     void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
-
 
     String getProcessInstanceId();
 
@@ -23,7 +22,6 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     void setProcessDefinitionActivityId(String processDefinitionActivityId);
 
-
     String getActivityInstanceId();
 
     void setActivityInstanceId(String activityInstanceId);
@@ -32,10 +30,7 @@ public interface ExecutionInstance extends LifeCycleInstance {
 
     void setBlockId(String blockId);
 
-
     void setTaskInstance(TaskInstance taskInstance);
 
     TaskInstance getTaskInstance();
-
-
 }

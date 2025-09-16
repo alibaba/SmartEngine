@@ -21,5 +21,4 @@ public interface VariableInstance extends LifeCycleInstance {
     void setFieldValue(Object value);
 
     Object getFieldValue();
-
 }

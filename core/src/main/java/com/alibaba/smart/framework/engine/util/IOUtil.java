@@ -1,5 +1,7 @@
 package com.alibaba.smart.framework.engine.util;
 
+import com.alibaba.smart.framework.engine.exception.EngineException;
+
 import java.io.BufferedInputStream;
 import java.io.Closeable;
 import java.io.File;
@@ -7,8 +9,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
-
-import com.alibaba.smart.framework.engine.exception.EngineException;
 
 public class IOUtil {
 
@@ -29,7 +29,7 @@ public class IOUtil {
         try {
             inputStream = new BufferedInputStream(new FileInputStream(resourceFile));
             inputStream.read(buffer);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new EngineException("Couldn't read file " + filePath + ": " + e.getMessage());
         } finally {
             IOUtil.closeQuietly(inputStream);
@@ -45,5 +45,4 @@ public class IOUtil {
             throw new EngineException("Couldn't get file " + filePath + ": " + e.getMessage());
         }
     }
-
 }

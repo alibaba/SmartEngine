@@ -19,5 +19,4 @@ public class ScriptTaskBehavior extends AbstractActivityBehavior<ScriptTask> {
     public ScriptTaskBehavior() {
         super();
     }
-
 }

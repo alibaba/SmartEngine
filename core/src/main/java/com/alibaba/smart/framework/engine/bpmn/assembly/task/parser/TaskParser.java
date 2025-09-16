@@ -8,11 +8,11 @@ import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
-import javax.xml.stream.XMLStreamReader;
 import java.util.Map;
 
-@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = Task.class)
+import javax.xml.stream.XMLStreamReader;
 
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = Task.class)
 public class TaskParser extends AbstractBpmnParser<Task> {
 
     @Override
@@ -26,8 +26,7 @@ public class TaskParser extends AbstractBpmnParser<Task> {
         serviceTask.setId(XmlParseUtil.getString(reader, "id"));
         serviceTask.setName(XmlParseUtil.getString(reader, "name"));
 
-
-        Map<String, String> userTaskProperties = super.parseExtendedProperties(reader,  context);
+        Map<String, String> userTaskProperties = super.parseExtendedProperties(reader, context);
         serviceTask.setProperties(userTaskProperties);
 
         return serviceTask;
@@ -38,5 +37,4 @@ public class TaskParser extends AbstractBpmnParser<Task> {
 
         return false;
     }
-
 }

@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.instance.factory.impl;
 
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.IdAndVersionUtil;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
@@ -15,18 +13,20 @@ import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.util.ObjectUtil;
 
-/**
- * 默认流程实例工厂实现 Created by ettear on 16-4-20.
- */
-@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = ProcessInstanceFactory.class)
+import java.util.Map;
 
+/** 默认流程实例工厂实现 Created by ettear on 16-4-20. */
+@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = ProcessInstanceFactory.class)
 public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
 
     @Override
-    public ProcessInstance create( ProcessEngineConfiguration processEngineConfiguration,
-                                   String processDefinitionId, String processDefinitionVersion, Map<String, Object> request) {
+    public ProcessInstance create(
+            ProcessEngineConfiguration processEngineConfiguration,
+            String processDefinitionId,
+            String processDefinitionVersion,
+            Map<String, Object> request) {
         String tenantId = null;
-        if(null != request) {
+        if (null != request) {
             tenantId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.TENANT_ID));
         }
 
@@ -37,24 +37,36 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
         defaultProcessInstance.setStatus(InstanceStatus.running);
         defaultProcessInstance.setStartTime(DateUtil.getCurrentDate());
 
-        defaultProcessInstance.setProcessDefinitionIdAndVersion(IdAndVersionUtil.buildProcessDefinitionKey(processDefinitionId,processDefinitionVersion));
+        defaultProcessInstance.setProcessDefinitionIdAndVersion(
+                IdAndVersionUtil.buildProcessDefinitionKey(
+                        processDefinitionId, processDefinitionVersion));
         defaultProcessInstance.setProcessDefinitionId(processDefinitionId);
         defaultProcessInstance.setProcessDefinitionVersion(processDefinitionVersion);
 
         if (null != request) {
-            String startUserId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID));
+            String startUserId =
+                    ObjectUtil.obj2Str(
+                            request.get(
+                                    RequestMapSpecialKeyConstant.PROCESS_INSTANCE_START_USER_ID));
             defaultProcessInstance.setStartUserId(startUserId);
 
-            String processDefinitionType = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE));
+            String processDefinitionType =
+                    ObjectUtil.obj2Str(
+                            request.get(RequestMapSpecialKeyConstant.PROCESS_DEFINITION_TYPE));
             defaultProcessInstance.setProcessDefinitionType(processDefinitionType);
 
-            String bizUniqueId = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_BIZ_UNIQUE_ID));
+            String bizUniqueId =
+                    ObjectUtil.obj2Str(
+                            request.get(RequestMapSpecialKeyConstant.PROCESS_BIZ_UNIQUE_ID));
             defaultProcessInstance.setBizUniqueId(bizUniqueId);
 
-            String title = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_TITLE));
+            String title =
+                    ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_TITLE));
             defaultProcessInstance.setTitle(title);
 
-            String comment = ObjectUtil.obj2Str(request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_COMMENT));
+            String comment =
+                    ObjectUtil.obj2Str(
+                            request.get(RequestMapSpecialKeyConstant.PROCESS_INSTANCE_COMMENT));
             defaultProcessInstance.setComment(comment);
 
             defaultProcessInstance.setTenantId(tenantId);
@@ -64,16 +76,22 @@ public class DefaultProcessInstanceFactory implements ProcessInstanceFactory {
     }
 
     @Override
-    public ProcessInstance createChild(ProcessEngineConfiguration processEngineConfiguration,
-                                       String processDefinitionId, String processDefinitionVersion,
-                                       Map<String, Object> request, String parentInstanceId,
-                                       String parentExecutionInstanceId) {
-        ProcessInstance childProcessInstance = this.create(processEngineConfiguration,   processDefinitionId,processDefinitionVersion,
-            request);
+    public ProcessInstance createChild(
+            ProcessEngineConfiguration processEngineConfiguration,
+            String processDefinitionId,
+            String processDefinitionVersion,
+            Map<String, Object> request,
+            String parentInstanceId,
+            String parentExecutionInstanceId) {
+        ProcessInstance childProcessInstance =
+                this.create(
+                        processEngineConfiguration,
+                        processDefinitionId,
+                        processDefinitionVersion,
+                        request);
         childProcessInstance.setParentInstanceId(parentInstanceId);
         childProcessInstance.setParentExecutionInstanceId(parentExecutionInstanceId);
 
         return childProcessInstance;
     }
-
 }

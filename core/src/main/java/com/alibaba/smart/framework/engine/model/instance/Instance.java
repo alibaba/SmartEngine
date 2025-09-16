@@ -2,9 +2,7 @@ package com.alibaba.smart.framework.engine.model.instance;
 
 import java.io.Serializable;
 
-/**
- * 实例 Created by ettear on 16-4-19.
- */
+/** 实例 Created by ettear on 16-4-19. */
 public interface Instance extends Serializable {
 
     String getTenantId();
@@ -16,7 +14,6 @@ public interface Instance extends Serializable {
      *
      * @return 实例ID
      */
-
     String getInstanceId();
 
     /**

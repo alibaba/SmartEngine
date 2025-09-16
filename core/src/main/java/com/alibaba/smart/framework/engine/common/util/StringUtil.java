@@ -1,11 +1,11 @@
 package com.alibaba.smart.framework.engine.common.util;
 
 /**
- * Created by 高海军 帝奇 74394 on 2017 February  10:23.
+ * Created by 高海军 帝奇 74394 on 2017 February 10:23.
  *
- * reduced from apache StringUtils
+ * <p>reduced from apache StringUtils
  */
-public abstract  class StringUtil {
+public abstract class StringUtil {
 
     public static final String EMPTY = "";
     public static final int INDEX_NOT_FOUND = -1;
@@ -38,11 +38,12 @@ public abstract  class StringUtil {
         }
         return str;
     }
+
     public static String removeStart(final String str, final String remove) {
         if (isEmpty(str) || isEmpty(remove)) {
             return str;
         }
-        if (str.startsWith(remove)){
+        if (str.startsWith(remove)) {
             return str.substring(remove.length());
         }
         return str;
@@ -62,7 +63,6 @@ public abstract  class StringUtil {
         return str.substring(0, pos);
     }
 
-
     public static String substringAfter(String str, String separator) {
         if (isEmpty(str)) {
             return str;
@@ -77,4 +77,3 @@ public abstract  class StringUtil {
         return str.substring(pos + separator.length());
     }
 }
-

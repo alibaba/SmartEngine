@@ -10,9 +10,6 @@ import lombok.EqualsAndHashCode;
 @Data
 public abstract class AbstractTask extends AbstractActivity {
 
-    /**
-     *
-     */
+    /** */
     private static final long serialVersionUID = 5042056118774610434L;
-
 }

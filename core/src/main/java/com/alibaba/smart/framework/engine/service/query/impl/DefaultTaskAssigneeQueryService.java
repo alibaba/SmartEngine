@@ -1,8 +1,5 @@
 package com.alibaba.smart.framework.engine.service.query.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
@@ -12,57 +9,58 @@ import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
 
-/**
- * Created by 高海军 帝奇 74394 on 2017 October  07:46.
- */
+import java.util.List;
+import java.util.Map;
+
+/** Created by 高海军 帝奇 74394 on 2017 October 07:46. */
 @ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = TaskAssigneeQueryService.class)
+public class DefaultTaskAssigneeQueryService
+        implements TaskAssigneeQueryService, LifeCycleHook, ProcessEngineConfigurationAware {
 
-public class DefaultTaskAssigneeQueryService implements TaskAssigneeQueryService, LifeCycleHook,
-    ProcessEngineConfigurationAware {
-
-    private   ProcessEngineConfiguration processEngineConfiguration;
+    private ProcessEngineConfiguration processEngineConfiguration;
     private TaskAssigneeStorage taskAssigneeStorage;
-
-
 
     @Override
     public void start() {
 
-        this.taskAssigneeStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON, TaskAssigneeStorage.class);
-
+        this.taskAssigneeStorage =
+                processEngineConfiguration
+                        .getAnnotationScanner()
+                        .getExtensionPoint(ExtensionConstant.COMMON, TaskAssigneeStorage.class);
     }
 
     @Override
-    public void stop() {
-
-    }
+    public void stop() {}
 
     @Override
     public List<TaskAssigneeInstance> findList(String taskInstanceId) {
-        return this.findList(taskInstanceId,null);
+        return this.findList(taskInstanceId, null);
     }
 
     @Override
-    public List<TaskAssigneeInstance> findList(String taskInstanceId,String tenantId) {
-        List<TaskAssigneeInstance>  taskAssigneeStorageList =  taskAssigneeStorage.findList(taskInstanceId,tenantId, processEngineConfiguration);
+    public List<TaskAssigneeInstance> findList(String taskInstanceId, String tenantId) {
+        List<TaskAssigneeInstance> taskAssigneeStorageList =
+                taskAssigneeStorage.findList(taskInstanceId, tenantId, processEngineConfiguration);
         return taskAssigneeStorageList;
     }
 
     @Override
-    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList) {
+    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(
+            List<String> taskInstanceIdList) {
         return this.findAssigneeOfInstanceList(taskInstanceIdList, null);
     }
 
     @Override
-    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(List<String> taskInstanceIdList,String tenantId) {
+    public Map<String, List<TaskAssigneeInstance>> findAssigneeOfInstanceList(
+            List<String> taskInstanceIdList, String tenantId) {
 
-        return taskAssigneeStorage.findAssigneeOfInstanceList(taskInstanceIdList,tenantId,processEngineConfiguration );
+        return taskAssigneeStorage.findAssigneeOfInstanceList(
+                taskInstanceIdList, tenantId, processEngineConfiguration);
     }
 
-
     @Override
-    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+    public void setProcessEngineConfiguration(
+            ProcessEngineConfiguration processEngineConfiguration) {
         this.processEngineConfiguration = processEngineConfiguration;
     }
 }
-

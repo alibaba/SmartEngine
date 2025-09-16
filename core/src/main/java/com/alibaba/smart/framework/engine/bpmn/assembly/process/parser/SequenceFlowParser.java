@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.bpmn.assembly.process.parser;
 
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -10,9 +8,10 @@ import com.alibaba.smart.framework.engine.model.assembly.ConditionExpression;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
-@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = SequenceFlow.class)
+import javax.xml.stream.XMLStreamReader;
 
-public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = SequenceFlow.class)
+public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow> {
 
     @Override
     public Class<SequenceFlow> getModelType() {
@@ -27,8 +26,8 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
         sequenceFlow.setSourceRef(XmlParseUtil.getString(reader, "sourceRef"));
         sequenceFlow.setTargetRef(XmlParseUtil.getString(reader, "targetRef"));
 
-        //Map<String, String> properties = super.parseExtendedProperties(reader,  context);
-        //sequenceFlow.setProperties(properties);
+        // Map<String, String> properties = super.parseExtendedProperties(reader,  context);
+        // sequenceFlow.setProperties(properties);
 
         return sequenceFlow;
     }
@@ -36,10 +35,9 @@ public class SequenceFlowParser extends AbstractBpmnParser<SequenceFlow>   {
     @Override
     protected boolean parseModelChild(SequenceFlow model, BaseElement child) {
         if (child instanceof ConditionExpression) {
-            model.setConditionExpression((ConditionExpression)child);
+            model.setConditionExpression((ConditionExpression) child);
             return true;
         }
         return false;
     }
-
 }

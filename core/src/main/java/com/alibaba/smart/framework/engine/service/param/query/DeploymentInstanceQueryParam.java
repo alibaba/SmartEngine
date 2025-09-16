@@ -21,14 +21,10 @@ public class DeploymentInstanceQueryParam extends BaseQueryParam {
 
     private String processDefinitionName;
 
-    /**
-     * processDefinitionName like "%${processDefinitionNameLike}%"
-     */
+    /** processDefinitionName like "%${processDefinitionNameLike}%" */
     private String processDefinitionNameLike;
 
-    /**
-     * processDefinitionDesc like "%${processDefinitionDescLike}%"
-     */
+    /** processDefinitionDesc like "%${processDefinitionDescLike}%" */
     private String processDefinitionDescLike;
 
     private String deploymentUserId;

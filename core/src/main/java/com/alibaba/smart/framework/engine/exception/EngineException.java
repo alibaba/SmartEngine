@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.exception;
 
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  */
 public class EngineException extends RuntimeException {
 
@@ -11,7 +11,7 @@ public class EngineException extends RuntimeException {
         super(message);
     }
 
-    public EngineException( Exception e) {
+    public EngineException(Exception e) {
         super(e.getMessage(), e);
     }
 

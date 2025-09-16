@@ -2,7 +2,6 @@ package com.alibaba.smart.framework.engine.smart;
 
 import lombok.Data;
 
-
 @Data
 public class PropertyCompositeKey {
 
@@ -14,7 +13,7 @@ public class PropertyCompositeKey {
         this.name = name;
     }
 
-    public PropertyCompositeKey( String name) {
+    public PropertyCompositeKey(String name) {
         this.name = name;
     }
 }

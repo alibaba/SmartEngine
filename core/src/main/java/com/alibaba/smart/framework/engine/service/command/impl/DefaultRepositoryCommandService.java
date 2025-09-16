@@ -1,14 +1,7 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 import com.alibaba.smart.framework.engine.behavior.TransitionBehavior;
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
@@ -47,20 +40,27 @@ import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.parser.XmlParserFacade;
 
-import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
-import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Map;
 
-//import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+// import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmTransition;
 
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
 @ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = RepositoryCommandService.class)
-public class DefaultRepositoryCommandService implements RepositoryCommandService, ProcessEngineConfigurationAware, LifeCycleHook {
+public class DefaultRepositoryCommandService
+        implements RepositoryCommandService, ProcessEngineConfigurationAware, LifeCycleHook {
 
     private ProcessEngineConfiguration processEngineConfiguration;
-
 
     private XmlParserFacade xmlParserExtensionPoint;
 
@@ -68,33 +68,35 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
     private AnnotationScanner annotationScanner;
 
-
     @Override
-    public ProcessDefinitionSource deploy(String classPathResource,String tenantId) throws DeployException {
+    public ProcessDefinitionSource deploy(String classPathResource, String tenantId)
+            throws DeployException {
 
         ClassLoader classLoader = ClassUtil.getContextClassLoader();
 
-        ProcessDefinitionSource processDefinitionSource = this.parse(classLoader, classPathResource,tenantId);
+        ProcessDefinitionSource processDefinitionSource =
+                this.parse(classLoader, classPathResource, tenantId);
 
-        buildPvmDefinition( processDefinitionSource,tenantId);
+        buildPvmDefinition(processDefinitionSource, tenantId);
 
         return processDefinitionSource;
     }
+
     @Override
     public ProcessDefinitionSource deploy(String classPathResource) throws DeployException {
-        return deploy(classPathResource,null);
+        return deploy(classPathResource, null);
     }
 
     @Override
     public ProcessDefinitionSource deploy(InputStream inputStream) {
-        return deploy(inputStream,null);
+        return deploy(inputStream, null);
     }
 
     @Override
-    public ProcessDefinitionSource deploy(InputStream inputStream,String tenantId) {
+    public ProcessDefinitionSource deploy(InputStream inputStream, String tenantId) {
         try {
-            ProcessDefinitionSource processDefinitionSource = parseStream(inputStream,tenantId);
-            buildPvmDefinition( processDefinitionSource,tenantId);
+            ProcessDefinitionSource processDefinitionSource = parseStream(inputStream, tenantId);
+            buildPvmDefinition(processDefinitionSource, tenantId);
 
             return processDefinitionSource;
         } catch (Exception e) {
@@ -106,37 +108,35 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
     @Override
     public ProcessDefinitionSource deployWithUTF8Content(String uTF8ProcessDefinitionContent) {
-       return deployWithUTF8Content(uTF8ProcessDefinitionContent,null);
-
+        return deployWithUTF8Content(uTF8ProcessDefinitionContent, null);
     }
 
     @Override
-    public ProcessDefinitionSource deployWithUTF8Content(String uTF8ProcessDefinitionContent,String tenantId) {
-        byte[] bytes ;
+    public ProcessDefinitionSource deployWithUTF8Content(
+            String uTF8ProcessDefinitionContent, String tenantId) {
+        byte[] bytes;
         try {
             bytes = uTF8ProcessDefinitionContent.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new EngineException(e);
         }
         InputStream stream = new ByteArrayInputStream(bytes);
-        ProcessDefinitionSource processDefinitionSource =  this.deploy(stream,tenantId);
-        return  processDefinitionSource;
-
+        ProcessDefinitionSource processDefinitionSource = this.deploy(stream, tenantId);
+        return processDefinitionSource;
     }
 
-
-
-    private ProcessDefinitionSource parse(ClassLoader classLoader, String uri,String tenantId) throws DeployException {
+    private ProcessDefinitionSource parse(ClassLoader classLoader, String uri, String tenantId)
+            throws DeployException {
 
         InputStream inputStream = null;
         try {
             inputStream = classLoader.getResourceAsStream(uri);
 
-            if(null == inputStream){
-                throw new IllegalArgumentException("Cant find any resources for the uri:"+uri);
+            if (null == inputStream) {
+                throw new IllegalArgumentException("Cant find any resources for the uri:" + uri);
             }
 
-            ProcessDefinitionSource processDefinitionSource = parseStream(inputStream,tenantId);
+            ProcessDefinitionSource processDefinitionSource = parseStream(inputStream, tenantId);
             return processDefinitionSource;
 
         } catch (Exception e) {
@@ -146,7 +146,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
         }
     }
 
-    private ProcessDefinitionSource parseStream(InputStream inputStream,String tenantId) throws XMLStreamException, ParseException {
+    private ProcessDefinitionSource parseStream(InputStream inputStream, String tenantId)
+            throws XMLStreamException, ParseException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
 
         XMLStreamReader reader = factory.createXMLStreamReader(inputStream);
@@ -167,44 +168,47 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
         if (findStart) {
             Object parseResult = this.xmlParserExtensionPoint.parseElement(reader, context);
-            ProcessDefinitionSource processDefinitionSource =  (ProcessDefinitionSource)parseResult;
-            if(processDefinitionSource.getProcessDefinitionList() != null){
-                for(ProcessDefinition processDefinition : processDefinitionSource.getProcessDefinitionList()){
+            ProcessDefinitionSource processDefinitionSource = (ProcessDefinitionSource) parseResult;
+            if (processDefinitionSource.getProcessDefinitionList() != null) {
+                for (ProcessDefinition processDefinition :
+                        processDefinitionSource.getProcessDefinitionList()) {
                     processDefinition.setTenantId(tenantId);
                 }
             }
             processDefinitionSource.setTenantId(tenantId);
             return processDefinitionSource;
         } else {
-            throw new DeployException("Read process definition file failure! Not found start element!");
+            throw new DeployException(
+                    "Read process definition file failure! Not found start element!");
         }
     }
 
     @SuppressWarnings("rawtypes")
-    private void buildPvmDefinition(ProcessDefinitionSource processDefinitionSource,String tenantId) {
+    private void buildPvmDefinition(
+            ProcessDefinitionSource processDefinitionSource, String tenantId) {
 
-        List<ProcessDefinition> processDefinitionList =  processDefinitionSource.getProcessDefinitionList();
+        List<ProcessDefinition> processDefinitionList =
+                processDefinitionSource.getProcessDefinitionList();
 
         for (ProcessDefinition processDefinition : processDefinitionList) {
             String processDefinitionSourceId = processDefinition.getId();
             String version = processDefinition.getVersion();
 
             if (StringUtil.isEmpty(processDefinitionSourceId) || StringUtil.isEmpty(version)) {
-                throw new EngineException("empty processDefinitionSourceId or version"+processDefinitionSource);
+                throw new EngineException(
+                        "empty processDefinitionSourceId or version" + processDefinitionSource);
             }
 
-            PvmProcessDefinition pvmProcessDefinition = this.buildPvmProcessDefinition(processDefinition,tenantId);
+            PvmProcessDefinition pvmProcessDefinition =
+                    this.buildPvmProcessDefinition(processDefinition, tenantId);
 
             this.processContainer.install(pvmProcessDefinition, processDefinition);
-
         }
-
-
     }
 
     @SuppressWarnings("rawtypes")
-    private PvmProcessDefinition buildPvmProcessDefinition(ProcessDefinition processDefinition,String tenantId) {
-
+    private PvmProcessDefinition buildPvmProcessDefinition(
+            ProcessDefinition processDefinition, String tenantId) {
 
         DefaultPvmProcessDefinition pvmProcessDefinition = new DefaultPvmProcessDefinition();
         pvmProcessDefinition.setId(processDefinition.getId());
@@ -229,10 +233,9 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                     String id = pvmTransition.getModel().getId();
 
-
-                    PvmTransition oldValue =    pvmTransitionMap.put(id, pvmTransition);
-                    if(null != oldValue){
-                        throw new EngineException("duplicated id found for "+id);
+                    PvmTransition oldValue = pvmTransitionMap.put(id, pvmTransition);
+                    if (null != oldValue) {
+                        throw new EngineException("duplicated id found for " + id);
                     }
 
                 } else if (element instanceof Activity) {
@@ -243,12 +246,10 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
 
                     String id = pvmActivity.getModel().getId();
 
-
-                    PvmActivity oldValue =   pvmActivityMap.put(id, pvmActivity);
-                    if(null != oldValue){
-                        throw new EngineException("duplicated id found for "+id);
+                    PvmActivity oldValue = pvmActivityMap.put(id, pvmActivity);
+                    if (null != oldValue) {
+                        throw new EngineException("duplicated id found for " + id);
                     }
-
 
                     if (pvmActivity.getModel().isStartActivity()) {
                         pvmProcessDefinition.setStartActivity(pvmActivity);
@@ -256,67 +257,84 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
                 }
             }
 
-
-
             // Process Transition Flow
-            for (Map.Entry<String, PvmTransition> pvmTransitionEntry : pvmTransitionMap.entrySet()) {
+            for (Map.Entry<String, PvmTransition> pvmTransitionEntry :
+                    pvmTransitionMap.entrySet()) {
 
-                DefaultPvmTransition pvmTransition = (DefaultPvmTransition) pvmTransitionEntry.getValue();
+                DefaultPvmTransition pvmTransition =
+                        (DefaultPvmTransition) pvmTransitionEntry.getValue();
                 String sourceRef = pvmTransition.getModel().getSourceRef();
                 String targetRef = pvmTransition.getModel().getTargetRef();
-                DefaultPvmActivity sourcePvmActivity = (DefaultPvmActivity) pvmActivityMap.get(sourceRef);
-                DefaultPvmActivity targetPvmActivity = (DefaultPvmActivity) pvmActivityMap.get(targetRef);
+                DefaultPvmActivity sourcePvmActivity =
+                        (DefaultPvmActivity) pvmActivityMap.get(sourceRef);
+                DefaultPvmActivity targetPvmActivity =
+                        (DefaultPvmActivity) pvmActivityMap.get(targetRef);
 
-                if(null == sourcePvmActivity){
-                    throw new EngineException("No source activity found for id "+sourceRef );
+                if (null == sourcePvmActivity) {
+                    throw new EngineException("No source activity found for id " + sourceRef);
                 }
-                if(null == targetPvmActivity){
-                    throw new EngineException("No target activity found for id "+targetRef );
+                if (null == targetPvmActivity) {
+                    throw new EngineException("No target activity found for id " + targetRef);
                 }
 
                 pvmTransition.setSource(sourcePvmActivity);
                 pvmTransition.setTarget(targetPvmActivity);
 
-                sourcePvmActivity.addOutcomeTransition(pvmTransition.getModel().getId(), pvmTransition);
-                targetPvmActivity.addIncomeTransition(pvmTransition.getModel().getId(), pvmTransition);
-
+                sourcePvmActivity.addOutcomeTransition(
+                        pvmTransition.getModel().getId(), pvmTransition);
+                targetPvmActivity.addIncomeTransition(
+                        pvmTransition.getModel().getId(), pvmTransition);
             }
 
-            for (Map.Entry<String, PvmTransition> pvmTransitionEntry : pvmTransitionMap.entrySet()) {
+            for (Map.Entry<String, PvmTransition> pvmTransitionEntry :
+                    pvmTransitionMap.entrySet()) {
                 PvmTransition pvmTransition = pvmTransitionEntry.getValue();
 
-                TransitionBehavior transitionBehavior = annotationScanner.getExtensionPoint(ExtensionConstant.ACTIVITY_BEHAVIOR,TransitionBehavior.class);
+                TransitionBehavior transitionBehavior =
+                        annotationScanner.getExtensionPoint(
+                                ExtensionConstant.ACTIVITY_BEHAVIOR, TransitionBehavior.class);
 
                 pvmTransition.setBehavior(transitionBehavior);
-
             }
 
             for (Map.Entry<String, PvmActivity> pvmActivityEntry : pvmActivityMap.entrySet()) {
                 PvmActivity pvmActivity = pvmActivityEntry.getValue();
 
-                Activity activity=pvmActivity.getModel();
+                Activity activity = pvmActivity.getModel();
 
-                AbstractActivityBehavior activityBehavior = (AbstractActivityBehavior) annotationScanner.getObject(ExtensionConstant.ACTIVITY_BEHAVIOR,activity.getClass());
+                AbstractActivityBehavior activityBehavior =
+                        (AbstractActivityBehavior)
+                                annotationScanner.getObject(
+                                        ExtensionConstant.ACTIVITY_BEHAVIOR, activity.getClass());
 
-                if(null == activityBehavior){
-                    throw new EngineException("ActivityBehavior should be coded for activity:"+activity.getClass());
+                if (null == activityBehavior) {
+                    throw new EngineException(
+                            "ActivityBehavior should be coded for activity:" + activity.getClass());
                 }
 
                 pvmActivity.setBehavior(activityBehavior);
 
+                activityBehavior.setProcessInstanceFactory(
+                        annotationScanner.getExtensionPoint(
+                                ExtensionConstant.COMMON, ProcessInstanceFactory.class));
+                activityBehavior.setExecutionInstanceFactory(
+                        annotationScanner.getExtensionPoint(
+                                ExtensionConstant.COMMON, ExecutionInstanceFactory.class));
+                activityBehavior.setActivityInstanceFactory(
+                        annotationScanner.getExtensionPoint(
+                                ExtensionConstant.COMMON, ActivityInstanceFactory.class));
+                activityBehavior.setTaskInstanceFactory(
+                        annotationScanner.getExtensionPoint(
+                                ExtensionConstant.COMMON, TaskInstanceFactory.class));
 
-                activityBehavior.setProcessInstanceFactory(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceFactory.class));
-                activityBehavior.setExecutionInstanceFactory(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceFactory.class));
-                activityBehavior.setActivityInstanceFactory(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ActivityInstanceFactory.class));
-                activityBehavior.setTaskInstanceFactory(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,TaskInstanceFactory.class));
+                activityBehavior.setProcessEngineConfiguration(processEngineConfiguration);
 
-                activityBehavior.setProcessEngineConfiguration( processEngineConfiguration);
-
-                activityBehavior.setExecutionInstanceStorage(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class));
-                activityBehavior.setVariableInstanceStorage(annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, VariableInstanceStorage.class));
-
-
-
+                activityBehavior.setExecutionInstanceStorage(
+                        annotationScanner.getExtensionPoint(
+                                ExtensionConstant.COMMON, ExecutionInstanceStorage.class));
+                activityBehavior.setVariableInstanceStorage(
+                        annotationScanner.getExtensionPoint(
+                                ExtensionConstant.COMMON, VariableInstanceStorage.class));
             }
 
             pvmProcessDefinition.setActivities(pvmActivityMap);
@@ -326,7 +344,8 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     }
 
     @Override
-    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+    public void setProcessEngineConfiguration(
+            ProcessEngineConfiguration processEngineConfiguration) {
         this.processEngineConfiguration = processEngineConfiguration;
     }
 
@@ -334,14 +353,14 @@ public class DefaultRepositoryCommandService implements RepositoryCommandService
     public void start() {
 
         this.annotationScanner = processEngineConfiguration.getAnnotationScanner();
-        this.xmlParserExtensionPoint = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,
-            XmlParserFacade.class);
-        this.processContainer = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE,ProcessDefinitionContainer.class);
+        this.xmlParserExtensionPoint =
+                annotationScanner.getExtensionPoint(
+                        ExtensionConstant.COMMON, XmlParserFacade.class);
+        this.processContainer =
+                annotationScanner.getExtensionPoint(
+                        ExtensionConstant.SERVICE, ProcessDefinitionContainer.class);
     }
 
     @Override
-    public void stop() {
-
-    }
-
+    public void stop() {}
 }

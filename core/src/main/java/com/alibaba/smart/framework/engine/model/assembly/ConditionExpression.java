@@ -5,11 +5,11 @@ package com.alibaba.smart.framework.engine.model.assembly;
  */
 public interface ConditionExpression extends NoneIdBasedElement {
 
-      String getExpressionType();
-      void setExpressionType(String type);
+    String getExpressionType();
 
-      String getExpressionContent();
-      void setExpressionContent(String content);
+    void setExpressionType(String type);
 
+    String getExpressionContent();
 
+    void setExpressionContent(String content);
 }

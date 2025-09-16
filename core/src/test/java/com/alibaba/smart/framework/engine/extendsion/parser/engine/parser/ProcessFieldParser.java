@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.extendsion.parser.engine.parser;
 
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.bpmn.assembly.process.parser.AbstractBpmnParser;
 import com.alibaba.smart.framework.engine.extendsion.parser.engine.ProcessField;
 import com.alibaba.smart.framework.engine.extendsion.parser.engine.StringField;
@@ -10,6 +8,8 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.model.assembly.BaseElement;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
+
+import javax.xml.stream.XMLStreamReader;
 
 /**
  * @author zilong.jiangzl
@@ -40,22 +40,21 @@ public class ProcessFieldParser extends AbstractBpmnParser<ProcessField> {
 
     @Override
     protected void decorateChild(ProcessField model, BaseElement child, ParseContext context) {
-            if (child instanceof StringField) {
-                model.setValue(((StringField)child).getValue());
-                model.setValueType("string");
-            }
+        if (child instanceof StringField) {
+            model.setValue(((StringField) child).getValue());
+            model.setValueType("string");
+        }
     }
 
     @Override
     protected boolean parseModelChild(ProcessField model, BaseElement child) {
         if (child instanceof StringField) {
-            model.setValue(((StringField)child).getValue());
+            model.setValue(((StringField) child).getValue());
             model.setValueType("string");
             return true;
         }
         return false;
     }
-
 
     @Override
     public Class<ProcessField> getModelType() {

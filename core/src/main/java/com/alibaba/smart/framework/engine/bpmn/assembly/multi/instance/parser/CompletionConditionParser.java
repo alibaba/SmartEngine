@@ -1,8 +1,5 @@
 package com.alibaba.smart.framework.engine.bpmn.assembly.multi.instance.parser;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.bpmn.assembly.expression.ConditionExpressionImpl;
 import com.alibaba.smart.framework.engine.bpmn.assembly.multi.instance.CompletionCondition;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
@@ -12,13 +9,12 @@ import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
-/**
- * Created by 高海军 帝奇 74394 on 2017 September  21:26.
- */
-@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = CompletionCondition.class)
-public class CompletionConditionParser extends AbstractElementParser<CompletionCondition>
-{
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
+/** Created by 高海军 帝奇 74394 on 2017 September 21:26. */
+@ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = CompletionCondition.class)
+public class CompletionConditionParser extends AbstractElementParser<CompletionCondition> {
 
     @Override
     public Class<CompletionCondition> getModelType() {
@@ -26,7 +22,8 @@ public class CompletionConditionParser extends AbstractElementParser<CompletionC
     }
 
     @Override
-    public CompletionCondition parseElement(XMLStreamReader reader, ParseContext context) throws XMLStreamException {
+    public CompletionCondition parseElement(XMLStreamReader reader, ParseContext context)
+            throws XMLStreamException {
         CompletionCondition completionCondition = new CompletionCondition();
 
         String expressionType = XmlParseUtil.getString(reader, "group");

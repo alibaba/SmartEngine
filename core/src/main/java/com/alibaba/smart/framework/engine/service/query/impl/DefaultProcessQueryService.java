@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.service.query.impl;
 
-import java.util.List;
-
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
@@ -12,60 +10,58 @@ import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 
-/**
- * Created by 高海军 帝奇 74394 on 2016 November  22:10.
- */
+import java.util.List;
 
+/** Created by 高海军 帝奇 74394 on 2016 November 22:10. */
 @ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = ProcessQueryService.class)
-
-public class DefaultProcessQueryService implements ProcessQueryService, LifeCycleHook ,
-    ProcessEngineConfigurationAware {
+public class DefaultProcessQueryService
+        implements ProcessQueryService, LifeCycleHook, ProcessEngineConfigurationAware {
 
     private ProcessInstanceStorage processInstanceStorage;
-
-
 
     @Override
     public void start() {
 
-        this.processInstanceStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,ProcessInstanceStorage.class);
-
-
+        this.processInstanceStorage =
+                processEngineConfiguration
+                        .getAnnotationScanner()
+                        .getExtensionPoint(ExtensionConstant.COMMON, ProcessInstanceStorage.class);
     }
 
     @Override
-    public void stop() {
-
-    }
+    public void stop() {}
 
     @Override
     public ProcessInstance findById(String processInstanceId) {
 
-        return findById(processInstanceId,null);
+        return findById(processInstanceId, null);
     }
 
     @Override
-    public ProcessInstance findById(String processInstanceId,String tenantId) {
+    public ProcessInstance findById(String processInstanceId, String tenantId) {
 
-        return processInstanceStorage.findOne(processInstanceId,tenantId, processEngineConfiguration);
+        return processInstanceStorage.findOne(
+                processInstanceId, tenantId, processEngineConfiguration);
     }
 
     @Override
     public List<ProcessInstance> findList(ProcessInstanceQueryParam processInstanceQueryParam) {
 
-        return processInstanceStorage.queryProcessInstanceList(processInstanceQueryParam, processEngineConfiguration);
+        return processInstanceStorage.queryProcessInstanceList(
+                processInstanceQueryParam, processEngineConfiguration);
     }
 
     @Override
     public Long count(ProcessInstanceQueryParam processInstanceQueryParam) {
 
-        return processInstanceStorage.count(processInstanceQueryParam,processEngineConfiguration );
+        return processInstanceStorage.count(processInstanceQueryParam, processEngineConfiguration);
     }
 
     private ProcessEngineConfiguration processEngineConfiguration;
 
     @Override
-    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+    public void setProcessEngineConfiguration(
+            ProcessEngineConfiguration processEngineConfiguration) {
         this.processEngineConfiguration = processEngineConfiguration;
     }
 }

@@ -6,10 +6,10 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DefaultExecutionInstance extends AbstractLifeCycleInstance implements ExecutionInstance {
+public class DefaultExecutionInstance extends AbstractLifeCycleInstance
+        implements ExecutionInstance {
 
     private static final long serialVersionUID = 2323809298485587299L;
     private String processDefinitionIdAndVersion;
@@ -25,6 +25,10 @@ public class DefaultExecutionInstance extends AbstractLifeCycleInstance implemen
 
     @Override
     public String toString() {
-        return this.getInstanceId()+":"+this.getProcessDefinitionActivityId()+":"+this.isActive();
+        return this.getInstanceId()
+                + ":"
+                + this.getProcessDefinitionActivityId()
+                + ":"
+                + this.isActive();
     }
 }

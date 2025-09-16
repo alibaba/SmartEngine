@@ -1,9 +1,6 @@
 package com.alibaba.smart.framework.engine.configuration;
 
-
-
-public  interface PvmActivityTaskFactory {
+public interface PvmActivityTaskFactory {
 
     PvmActivityTask create(Object... args);
-
 }

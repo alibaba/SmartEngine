@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
 public interface TaskInstance extends LifeCycleInstance {
@@ -39,7 +39,6 @@ public interface TaskInstance extends LifeCycleInstance {
 
     String getStatus();
 
-
     /**
      * @see com.alibaba.smart.framework.engine.constant.TaskInstanceConstant
      * @param status
@@ -62,9 +61,9 @@ public interface TaskInstance extends LifeCycleInstance {
 
     void setClaimTime(Date claimTime);
 
-    //Date getEndTime();
+    // Date getEndTime();
     //
-    //void setEndTime(Date endTime);
+    // void setEndTime(Date endTime);
 
     String getComment();
 
@@ -74,9 +73,7 @@ public interface TaskInstance extends LifeCycleInstance {
 
     void setExtension(String extension);
 
-
     String getTitle();
 
     void setTitle(String title);
-
 }

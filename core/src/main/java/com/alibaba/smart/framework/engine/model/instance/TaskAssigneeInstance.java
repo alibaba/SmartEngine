@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
 public interface TaskAssigneeInstance extends LifeCycleInstance {
@@ -14,12 +14,11 @@ public interface TaskAssigneeInstance extends LifeCycleInstance {
 
     void setTaskInstanceId(String taskInstanceId);
 
-     String getAssigneeId() ;
+    String getAssigneeId();
 
-     void setAssigneeId(String assigneeId);
+    void setAssigneeId(String assigneeId);
 
-     String getAssigneeType();
+    String getAssigneeType();
 
-     void setAssigneeType(String assigneeType);
-
+    void setAssigneeType(String assigneeType);
 }

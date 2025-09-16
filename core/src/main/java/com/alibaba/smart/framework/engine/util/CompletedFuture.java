@@ -18,7 +18,6 @@ public class CompletedFuture<T> implements Future<T> {
         this.re = re;
     }
 
-
     @Override
     public boolean cancel(boolean mayInterruptIfRunning) {
         return false;

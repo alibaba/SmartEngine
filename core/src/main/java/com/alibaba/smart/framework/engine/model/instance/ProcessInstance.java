@@ -1,24 +1,26 @@
 package com.alibaba.smart.framework.engine.model.instance;
 
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 
 import java.util.List;
 
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
 public interface ProcessInstance extends LifeCycleInstance {
 
     /**
      * get ProcessDefinitionId and ProcessDefinitionVersion
+     *
      * @return
      */
     String getProcessDefinitionIdAndVersion();
+
     String getUniqueProcessDefinitionIdAndVersion();
 
     /**
      * get ProcessDefinitionId
+     *
      * @return
      */
     String getProcessDefinitionId();
@@ -29,6 +31,7 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     /**
      * get ProcessDefinitionVersion
+     *
      * @return
      */
     String getProcessDefinitionVersion();
@@ -47,7 +50,6 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     void setParentInstanceId(String parentInstanceId);
 
-
     String getParentExecutionInstanceId();
 
     void setParentExecutionInstanceId(String parentExecutionInstanceId);
@@ -60,17 +62,15 @@ public interface ProcessInstance extends LifeCycleInstance {
 
     void setSuspend(boolean suspend);
 
-
-//
-//    Long getParentActivityInstanceId();
-//
-//    void setParentActivityInstanceId(Long parentActivityInstanceId);
+    //
+    //    Long getParentActivityInstanceId();
+    //
+    //    void setParentActivityInstanceId(Long parentActivityInstanceId);
 
     // should used  internally
     void addActivityInstance(ActivityInstance activityInstance);
 
     List<ActivityInstance> getActivityInstances();
-
 
     String getBizUniqueId();
 

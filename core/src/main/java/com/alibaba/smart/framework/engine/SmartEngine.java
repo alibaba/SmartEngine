@@ -17,14 +17,10 @@ import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
 
 /**
- * @author 高海军 帝奇
- * 业务处理引擎和服务编排引擎，此类是各种 API 的顶层入口。
- *
- * 下面的 API 方法名称比较简单，不需要额外说明 。 详细注释见各个方法的返回值对象说明。
- *
+ * @author 高海军 帝奇 业务处理引擎和服务编排引擎，此类是各种 API 的顶层入口。
+ *     <p>下面的 API 方法名称比较简单，不需要额外说明 。 详细注释见各个方法的返回值对象说明。
  */
 public interface SmartEngine {
-
 
     ProcessEngineConfiguration getProcessEngineConfiguration();
 
@@ -50,7 +46,6 @@ public interface SmartEngine {
 
     VariableCommandService getVariableCommandService();
 
-
     ExecutionQueryService getExecutionQueryService();
 
     TaskQueryService getTaskQueryService();
@@ -59,10 +54,7 @@ public interface SmartEngine {
 
     TaskAssigneeQueryService getTaskAssigneeQueryService();
 
-
     void init(ProcessEngineConfiguration processEngineConfiguration);
 
     void destroy();
-
-
 }

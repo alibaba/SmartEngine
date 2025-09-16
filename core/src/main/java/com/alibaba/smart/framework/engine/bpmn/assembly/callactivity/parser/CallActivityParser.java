@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.bpmn.assembly.callactivity.parser;
 
-import javax.xml.stream.XMLStreamReader;
-
 import com.alibaba.smart.framework.engine.bpmn.assembly.callactivity.CallActivity;
 import com.alibaba.smart.framework.engine.bpmn.assembly.process.parser.AbstractBpmnParser;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
@@ -9,13 +7,11 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
 import com.alibaba.smart.framework.engine.xml.util.XmlParseUtil;
 
-/**
- * Created by 高海军 帝奇 74394 on 2017 May  14:55.
- */
+import javax.xml.stream.XMLStreamReader;
 
+/** Created by 高海军 帝奇 74394 on 2017 May 14:55. */
 @ExtensionBinding(group = ExtensionConstant.ELEMENT_PARSER, bindKey = CallActivity.class)
-
-public class CallActivityParser  extends AbstractBpmnParser<CallActivity> {
+public class CallActivityParser extends AbstractBpmnParser<CallActivity> {
 
     @Override
     public Class<CallActivity> getModelType() {
@@ -29,13 +25,11 @@ public class CallActivityParser  extends AbstractBpmnParser<CallActivity> {
         callActivity.setCalledElement(XmlParseUtil.getString(reader, "calledElement"));
         String calledElementVersion = XmlParseUtil.getString(reader, "calledElementVersion");
 
-        if(null == calledElementVersion){
+        if (null == calledElementVersion) {
             calledElementVersion = XmlParseUtil.getString(reader, "calledElementVersionTag");
         }
 
         callActivity.setCalledElementVersion(calledElementVersion);
-
-
 
         return callActivity;
     }

@@ -1,14 +1,12 @@
 package com.alibaba.smart.framework.engine.deployment;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.alibaba.smart.framework.engine.bpmn.behavior.gateway.tree.ActivityTreeNode;
 import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 
+import java.util.Map;
+
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
 public interface ProcessDefinitionContainer {
@@ -16,7 +14,6 @@ public interface ProcessDefinitionContainer {
     Map<String, PvmProcessDefinition> getPvmProcessDefinitionConcurrentHashMap();
 
     Map<String, ProcessDefinition> getProcessDefinitionConcurrentHashMap();
-
 
     /**
      * 安装流程
@@ -32,18 +29,19 @@ public interface ProcessDefinitionContainer {
      */
     void uninstall(String processDefinitionId, String version);
 
-    void uninstall(String processDefinitionId, String version,String tenantId);
+    void uninstall(String processDefinitionId, String version, String tenantId);
 
     /**
      * 获取流程
      *
      * @param processDefinitionId 流程ID
-     * @param version   版本
+     * @param version 版本
      * @return 流程
      */
     PvmProcessDefinition getPvmProcessDefinition(String processDefinitionId, String version);
 
-    PvmProcessDefinition getPvmProcessDefinition(String processDefinitionId, String version,String tenantId);
+    PvmProcessDefinition getPvmProcessDefinition(
+            String processDefinitionId, String version, String tenantId);
 
     /**
      * 获取流程
@@ -53,10 +51,10 @@ public interface ProcessDefinitionContainer {
      */
     PvmProcessDefinition getPvmProcessDefinition(String uri);
 
-
     ProcessDefinition getProcessDefinition(String processDefinitionId, String version);
 
-    ProcessDefinition getProcessDefinition(String processDefinitionId, String version,String tenantId);
+    ProcessDefinition getProcessDefinition(
+            String processDefinitionId, String version, String tenantId);
 
     ProcessDefinition getProcessDefinition(String uri);
 }

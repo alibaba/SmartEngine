@@ -1,7 +1,5 @@
 package com.alibaba.smart.framework.engine.service.query.impl;
 
-import java.util.List;
-
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
@@ -11,26 +9,25 @@ import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStora
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 
-/**
- * Created by 高海军 帝奇 74394 on 2016 November  22:10.
- */
+import java.util.List;
+
+/** Created by 高海军 帝奇 74394 on 2016 November 22:10. */
 @ExtensionBinding(group = ExtensionConstant.SERVICE, bindKey = ActivityQueryService.class)
-public class DefaultActivityQueryService implements ActivityQueryService, LifeCycleHook ,
-    ProcessEngineConfigurationAware {
+public class DefaultActivityQueryService
+        implements ActivityQueryService, LifeCycleHook, ProcessEngineConfigurationAware {
 
     private ActivityInstanceStorage activityInstanceStorage;
 
     @Override
     public void start() {
-        this.activityInstanceStorage = processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.COMMON,ActivityInstanceStorage.class);
-
+        this.activityInstanceStorage =
+                processEngineConfiguration
+                        .getAnnotationScanner()
+                        .getExtensionPoint(ExtensionConstant.COMMON, ActivityInstanceStorage.class);
     }
 
     @Override
-    public void stop() {
-
-    }
-
+    public void stop() {}
 
     @Override
     public List<ActivityInstance> findAll(String processInstanceId) {
@@ -38,15 +35,17 @@ public class DefaultActivityQueryService implements ActivityQueryService, LifeCy
     }
 
     @Override
-    public List<ActivityInstance> findAll(String processInstanceId,String tenantId) {
+    public List<ActivityInstance> findAll(String processInstanceId, String tenantId) {
 
-        return activityInstanceStorage.findAll(processInstanceId, tenantId,processEngineConfiguration);
+        return activityInstanceStorage.findAll(
+                processInstanceId, tenantId, processEngineConfiguration);
     }
 
     private ProcessEngineConfiguration processEngineConfiguration;
 
     @Override
-    public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
+    public void setProcessEngineConfiguration(
+            ProcessEngineConfiguration processEngineConfiguration) {
         this.processEngineConfiguration = processEngineConfiguration;
     }
 }

@@ -1,14 +1,12 @@
 package com.alibaba.smart.framework.engine.instance.storage;
 
-import java.util.List;
-
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.service.param.query.ProcessInstanceQueryParam;
 
-/**
- * 流程实例存储
- */
+import java.util.List;
+
+/** 流程实例存储 */
 public interface ProcessInstanceStorage {
 
     /**
@@ -17,12 +15,11 @@ public interface ProcessInstanceStorage {
      * @param processInstance 流程实例
      * @param processEngineConfiguration
      */
-    ProcessInstance insert(ProcessInstance processInstance,
-                           ProcessEngineConfiguration processEngineConfiguration);
+    ProcessInstance insert(
+            ProcessInstance processInstance, ProcessEngineConfiguration processEngineConfiguration);
 
-    ProcessInstance update(ProcessInstance processInstance,
-                           ProcessEngineConfiguration processEngineConfiguration);
-
+    ProcessInstance update(
+            ProcessInstance processInstance, ProcessEngineConfiguration processEngineConfiguration);
 
     /**
      * 加载流程实例
@@ -31,23 +28,30 @@ public interface ProcessInstanceStorage {
      * @param processEngineConfiguration
      * @return 实例
      */
-    ProcessInstance findOne(String processInstanceId,String tenantId,
-                            ProcessEngineConfiguration processEngineConfiguration);
+    ProcessInstance findOne(
+            String processInstanceId,
+            String tenantId,
+            ProcessEngineConfiguration processEngineConfiguration);
 
     /**
      * 查询流程实例
+     *
      * @param instanceId
      * @param processEngineConfiguration
      * @return
      */
-    ProcessInstance findOneForUpdate(String instanceId,String tenantId,
-                                     ProcessEngineConfiguration processEngineConfiguration);
+    ProcessInstance findOneForUpdate(
+            String instanceId,
+            String tenantId,
+            ProcessEngineConfiguration processEngineConfiguration);
 
-    List<ProcessInstance> queryProcessInstanceList(ProcessInstanceQueryParam processInstanceQueryParam,
-                                                   ProcessEngineConfiguration processEngineConfiguration);
+    List<ProcessInstance> queryProcessInstanceList(
+            ProcessInstanceQueryParam processInstanceQueryParam,
+            ProcessEngineConfiguration processEngineConfiguration);
 
-    Long count(ProcessInstanceQueryParam processInstanceQueryParam,
-               ProcessEngineConfiguration processEngineConfiguration);
+    Long count(
+            ProcessInstanceQueryParam processInstanceQueryParam,
+            ProcessEngineConfiguration processEngineConfiguration);
 
     /**
      * 删除流程实例
@@ -55,8 +59,8 @@ public interface ProcessInstanceStorage {
      * @param processInstanceId 流程实例ID
      * @param processEngineConfiguration
      */
-    void remove(String processInstanceId,String tenantId,
-                ProcessEngineConfiguration processEngineConfiguration);
-
-
+    void remove(
+            String processInstanceId,
+            String tenantId,
+            ProcessEngineConfiguration processEngineConfiguration);
 }

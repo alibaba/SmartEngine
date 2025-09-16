@@ -4,34 +4,34 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
-public interface ProcessDefinition extends ExtensionElementContainer,IdBasedElement {
+public interface ProcessDefinition extends ExtensionElementContainer, IdBasedElement {
 
     String getTenantId();
 
     void setTenantId(String tenantId);
 
     String getName();
+
     void setName(String name);
 
-
     String getVersion();
+
     void setVersion(String version);
 
-    //String getIdAndVersion();
+    // String getIdAndVersion();
     //
-    //void setIdAndVersion(String idAndVersion);
-    
+    // void setIdAndVersion(String idAndVersion);
 
     List<BaseElement> getBaseElementList();
 
-    void setBaseElementList( List<BaseElement> elementList);
+    void setBaseElementList(List<BaseElement> elementList);
 
-    Map<String, IdBasedElement>  getIdBasedElementMap();
+    Map<String, IdBasedElement> getIdBasedElementMap();
 
-    void setIdBasedElementMap( Map<String, IdBasedElement> idBasedElementMap);
+    void setIdBasedElementMap(Map<String, IdBasedElement> idBasedElementMap);
 
-    void  setProperties(Map<String,String> properties);
+    void setProperties(Map<String, String> properties);
 }

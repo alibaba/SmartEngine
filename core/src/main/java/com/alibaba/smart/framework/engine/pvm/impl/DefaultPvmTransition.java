@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
 @Data
@@ -26,18 +26,14 @@ public class DefaultPvmTransition extends AbstractPvmElement<Transition> impleme
     public boolean match(ExecutionContext context) {
         Transition model = this.getModel();
 
-        return this.behavior.match(context,model);
+        return this.behavior.match(context, model);
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
-    public void stop() {
-
-    }
+    public void stop() {}
 
     @Override
     public String toString() {

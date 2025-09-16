@@ -23,7 +23,6 @@ import org.junit.Test;
  */
 public class CommentsTest {
 
-
     private SmartEngine smartEngine;
 
     private RepositoryCommandService repositoryCommandService;
@@ -36,18 +35,19 @@ public class CommentsTest {
 
     @Before
     public void initEngine() {
-        //1.初始化
-        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        // 1.初始化
+        ProcessEngineConfiguration processEngineConfiguration =
+                new DefaultProcessEngineConfiguration();
         processEngineConfiguration.setIdGenerator(new DefaultIdGenerator());
 
         processEngineConfiguration.setAnnotationScanner(
-            new SimpleAnnotationScanner(
-                SmartEngine.class.getPackage().getName(),
-                CommentsTest.class.getPackage().getName()));
+                new SimpleAnnotationScanner(
+                        SmartEngine.class.getPackage().getName(),
+                        CommentsTest.class.getPackage().getName()));
         smartEngine = new DefaultSmartEngine();
         smartEngine.init(processEngineConfiguration);
 
-        //2.获得常用服务
+        // 2.获得常用服务
         repositoryCommandService = smartEngine.getRepositoryCommandService();
         processCommandService = smartEngine.getProcessCommandService();
         executionQueryService = smartEngine.getExecutionQueryService();
@@ -57,11 +57,13 @@ public class CommentsTest {
     @Test
     public void testParseCommentElements() throws Exception {
         String tenantId = "-1";
-        //1. 部署流程定义
-        ProcessDefinitionSource processDefinitionSource = repositoryCommandService
-                .deploy("process-def/comments/comments.bpmn20.xml",tenantId);
+        // 1. 部署流程定义
+        ProcessDefinitionSource processDefinitionSource =
+                repositoryCommandService.deploy(
+                        "process-def/comments/comments.bpmn20.xml", tenantId);
 
-        ProcessDefinition processDefinition = processDefinitionSource.getProcessDefinitionList().get(0);
+        ProcessDefinition processDefinition =
+                processDefinitionSource.getProcessDefinitionList().get(0);
         Assert.assertNotNull(processDefinition);
     }
 }

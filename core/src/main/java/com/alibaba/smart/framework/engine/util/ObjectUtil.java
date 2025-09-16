@@ -31,5 +31,4 @@ public class ObjectUtil {
         }
         return (Integer) obj;
     }
-
 }

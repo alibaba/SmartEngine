@@ -3,14 +3,12 @@ package com.alibaba.smart.framework.engine.model.instance;
 import java.util.List;
 
 /**
- * @author ettear
- * Created by ettear on 18/08/2017.
+ * @author ettear Created by ettear on 18/08/2017.
  */
 public interface ExecutionHistoryInstance extends LifeCycleInstance {
     String getParentProcessInstanceId();
 
     void setParentProcessInstanceId(String parentProcessInstanceId);
-
 
     String getParentExecutionInstanceId();
 
@@ -20,7 +18,6 @@ public interface ExecutionHistoryInstance extends LifeCycleInstance {
 
     void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
 
-
     String getProcessInstanceId();
 
     void setProcessInstanceId(String processInstanceId);
@@ -28,7 +25,6 @@ public interface ExecutionHistoryInstance extends LifeCycleInstance {
     String getProcessDefinitionActivityId();
 
     void setProcessDefinitionActivityId(String activityId);
-
 
     String getActivityInstanceId();
 

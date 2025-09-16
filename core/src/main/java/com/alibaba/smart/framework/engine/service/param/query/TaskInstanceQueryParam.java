@@ -1,38 +1,36 @@
 package com.alibaba.smart.framework.engine.service.param.query;
 
-import java.util.Date;
-import java.util.List;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TaskInstanceQueryParam extends BaseQueryParam {
 
-   private List<String> processInstanceIdList;
+    private List<String> processInstanceIdList;
 
-   private String activityInstanceId;
+    private String activityInstanceId;
 
-   private String processDefinitionType;
+    private String processDefinitionType;
 
-   private String processDefinitionActivityId;
-   /**
-    * @see com.alibaba.smart.framework.engine.constant.TaskInstanceConstant
-    */
-   private String status;
+    private String processDefinitionActivityId;
 
-   private String claimUserId;
+    /**
+     * @see com.alibaba.smart.framework.engine.constant.TaskInstanceConstant
+     */
+    private String status;
 
-   private String tag;
+    private String claimUserId;
 
-   private String extension;
+    private String tag;
 
-   private Integer priority;
+    private String extension;
 
-   private String comment;
+    private Integer priority;
 
-   private String title;
+    private String comment;
 
+    private String title;
 }

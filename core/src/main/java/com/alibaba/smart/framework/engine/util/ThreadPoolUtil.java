@@ -1,10 +1,6 @@
 package com.alibaba.smart.framework.engine.util;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -21,7 +17,6 @@ public class ThreadPoolUtil {
 
     private static long KEEP_ALIVE_TIME = 1000L;
 
-
     private static class DefaultThreadFactory implements ThreadFactory {
 
         final AtomicInteger THREAD_NUMBER = new AtomicInteger(1);
@@ -37,18 +32,18 @@ public class ThreadPoolUtil {
         }
     }
 
-//    public static ExecutorService createNewDefaultThreadPool(String poolName) {
-//        return new ThreadPoolExecutor(CORE_THREAD_SIZE, MAXIMUM_POOL_SIZE,
-//            KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(BUFFER_SIZE),
-//            new DefaultThreadFactory(poolName), new ThreadPoolExecutor.AbortPolicy());
-//    }
+    //    public static ExecutorService createNewDefaultThreadPool(String poolName) {
+    //        return new ThreadPoolExecutor(CORE_THREAD_SIZE, MAXIMUM_POOL_SIZE,
+    //            KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, new
+    // LinkedBlockingQueue<Runnable>(BUFFER_SIZE),
+    //            new DefaultThreadFactory(poolName), new ThreadPoolExecutor.AbortPolicy());
+    //    }
 
-
-    public static  void sleepSilently(long delay) {
+    public static void sleepSilently(long delay) {
         try {
             Thread.sleep(delay);
         } catch (InterruptedException ex) {
-            //ignored
+            // ignored
         }
     }
 }

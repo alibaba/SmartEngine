@@ -9,9 +9,7 @@ import com.alibaba.smart.framework.engine.pvm.PvmActivity;
 import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 
 @ExtensionBinding(group = ExtensionConstant.ACTIVITY_BEHAVIOR, bindKey = StartEvent.class)
-
 public class StartEventBehavior extends AbstractActivityBehavior<StartEvent> {
-
 
     public StartEventBehavior() {
         super();

@@ -19,5 +19,4 @@ public class BusinessRuleTaskBehavior extends AbstractActivityBehavior<BusinessR
     public BusinessRuleTaskBehavior() {
         super();
     }
-
 }

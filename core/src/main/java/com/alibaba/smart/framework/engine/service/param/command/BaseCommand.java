@@ -1,8 +1,6 @@
 package com.alibaba.smart.framework.engine.service.param.command;
 
-import com.alibaba.smart.framework.engine.service.param.query.PaginateQueryParam;
 import lombok.Data;
-
 
 /**
  * 基本命令信息

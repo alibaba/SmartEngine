@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
 public interface ActivityInstance extends Instance {
@@ -13,7 +13,6 @@ public interface ActivityInstance extends Instance {
 
     void setProcessDefinitionIdAndVersion(String processDefinitionIdAndVersion);
 
-
     /**
      * 获取活动ID
      *
@@ -21,10 +20,7 @@ public interface ActivityInstance extends Instance {
      */
     String getProcessDefinitionActivityId();
 
-    /**
-     * 设置活动ID
-     *
-     */
+    /** 设置活动ID */
     void setProcessDefinitionActivityId(String processDefinitionActivityId);
 
     /**
@@ -44,21 +40,21 @@ public interface ActivityInstance extends Instance {
     void setExecutionInstanceList(List<ExecutionInstance> executionInstanceList);
 
     List<ExecutionInstance> getExecutionInstanceList();
-//
-//    /**
-//     * 获取进入活动的关联
-//     *
-//     * @return 进入活动的关联
-//     */
-//    List<TransitionInstance> getIncomeTransitions();
-//
-//    /**
-//     * 添加进入活动的关联
-//     *
-//     * @param transitionInstance 进入活动的关联
-//     */
-//    void addIncomeTransition(TransitionInstance transitionInstance);
 
+    //
+    //    /**
+    //     * 获取进入活动的关联
+    //     *
+    //     * @return 进入活动的关联
+    //     */
+    //    List<TransitionInstance> getIncomeTransitions();
+    //
+    //    /**
+    //     * 添加进入活动的关联
+    //     *
+    //     * @param transitionInstance 进入活动的关联
+    //     */
+    //    void addIncomeTransition(TransitionInstance transitionInstance);
 
     Date getStartTime();
 

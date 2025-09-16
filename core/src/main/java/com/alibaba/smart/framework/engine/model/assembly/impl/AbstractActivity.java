@@ -1,18 +1,18 @@
 package com.alibaba.smart.framework.engine.model.assembly.impl;
 
-import java.util.Map;
-
 import com.alibaba.smart.framework.engine.model.assembly.Activity;
 import com.alibaba.smart.framework.engine.model.assembly.ExtensionElements;
 
 import lombok.Data;
 
+import java.util.Map;
+
 /**
- * @author 高海军 帝奇  2016.11.11
+ * @author 高海军 帝奇 2016.11.11
  * @author ettear 2016.04.13
  */
 @Data
-public abstract class AbstractActivity  implements Activity {
+public abstract class AbstractActivity implements Activity {
 
     private static final long serialVersionUID = 3558917263151685441L;
 
@@ -23,7 +23,7 @@ public abstract class AbstractActivity  implements Activity {
 
     private boolean startActivity;
 
-    private Map<String,String> properties;
+    private Map<String, String> properties;
 
     @Override
     public boolean isStartActivity() {
@@ -33,6 +33,4 @@ public abstract class AbstractActivity  implements Activity {
     public void setStartActivity(boolean startActivity) {
         this.startActivity = startActivity;
     }
-
-
 }

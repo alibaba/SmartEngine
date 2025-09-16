@@ -4,9 +4,7 @@ import com.alibaba.smart.framework.engine.model.instance.TransitionInstance;
 
 import lombok.Data;
 
-/**
- * 默认关联实例 Created by ettear on 16-4-19.
- */
+/** 默认关联实例 Created by ettear on 16-4-19. */
 @Data
 public class DefaultTransitionInstance implements TransitionInstance {
 

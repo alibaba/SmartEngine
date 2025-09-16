@@ -19,5 +19,4 @@ public class ManualTaskBehavior extends AbstractActivityBehavior<ManualTask> {
     public ManualTaskBehavior() {
         super();
     }
-
 }

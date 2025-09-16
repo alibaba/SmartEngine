@@ -12,5 +12,4 @@ public interface ExecutionInstanceFactory {
      * @return 执行实例
      */
     ExecutionInstance create(ActivityInstance activityInstance, ExecutionContext executionContext);
-
 }

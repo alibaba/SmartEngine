@@ -11,29 +11,29 @@ import com.alibaba.smart.framework.engine.instance.impl.DefaultExecutionInstance
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 
-
 @ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = ExecutionInstanceFactory.class)
 public class DefaultExecutionInstanceFactory implements ExecutionInstanceFactory {
 
     @Override
-    public ExecutionInstance create(ActivityInstance activityInstance,ExecutionContext executionContext) {
+    public ExecutionInstance create(
+            ActivityInstance activityInstance, ExecutionContext executionContext) {
         DefaultExecutionInstance defaultExecutionInstance = new DefaultExecutionInstance();
         IdGenerator idGenerator = executionContext.getProcessEngineConfiguration().getIdGenerator();
         idGenerator.generate(defaultExecutionInstance);
-        defaultExecutionInstance.setProcessDefinitionActivityId(activityInstance.getProcessDefinitionActivityId());
+        defaultExecutionInstance.setProcessDefinitionActivityId(
+                activityInstance.getProcessDefinitionActivityId());
         defaultExecutionInstance.setActivityInstanceId(activityInstance.getInstanceId());
         defaultExecutionInstance.setProcessInstanceId(activityInstance.getProcessInstanceId());
-        defaultExecutionInstance.setProcessDefinitionIdAndVersion(activityInstance.getProcessDefinitionIdAndVersion());
+        defaultExecutionInstance.setProcessDefinitionIdAndVersion(
+                activityInstance.getProcessDefinitionIdAndVersion());
         defaultExecutionInstance.setStartTime(DateUtil.getCurrentDate());
         defaultExecutionInstance.setActive(true);
         defaultExecutionInstance.setTenantId(executionContext.getTenantId());
 
-        if(StringUtil.isNotEmpty(executionContext.getBlockId())){
+        if (StringUtil.isNotEmpty(executionContext.getBlockId())) {
             defaultExecutionInstance.setBlockId(executionContext.getBlockId());
         }
 
         return defaultExecutionInstance;
     }
-
-
 }

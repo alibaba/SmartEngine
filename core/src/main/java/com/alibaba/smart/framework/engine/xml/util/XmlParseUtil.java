@@ -1,5 +1,11 @@
 package com.alibaba.smart.framework.engine.xml.util;
 
+import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
+import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,19 +14,12 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.alibaba.smart.framework.engine.xml.parser.AbstractElementParser;
-import com.alibaba.smart.framework.engine.xml.parser.ParseContext;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class XmlParseUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractElementParser.class);
 
-
     public static String getString(XMLStreamReader reader, String name) {
-        return reader.getAttributeValue((String)null, name);
+        return reader.getAttributeValue((String) null, name);
     }
 
     public static boolean getBoolean(XMLStreamReader reader, String name) {
@@ -28,7 +27,7 @@ public class XmlParseUtil {
     }
 
     public static boolean getBoolean(XMLStreamReader reader, String name, boolean defaultValue) {
-        String value = reader.getAttributeValue((String)null, name);
+        String value = reader.getAttributeValue((String) null, name);
         Boolean attr = value == null ? null : Boolean.valueOf(value);
         if (attr == null) {
             return defaultValue;
@@ -69,30 +68,28 @@ public class XmlParseUtil {
         }
     }
 
+    public static Map<String, String> parseExtendedProperties(
+            XMLStreamReader reader, ParseContext context) {
 
-    public static Map<String, String> parseExtendedProperties(XMLStreamReader reader, ParseContext context) {
+        Map<String, String> properties = new HashMap();
 
-        Map<String,String> properties = new HashMap();
-
-        int attributeCount=reader.getAttributeCount();
-        if(attributeCount>0){
+        int attributeCount = reader.getAttributeCount();
+        if (attributeCount > 0) {
             for (int i = 0; i < attributeCount; i++) {
-                QName attributeName=reader.getAttributeName(i);
+                QName attributeName = reader.getAttributeName(i);
 
                 String localPart = attributeName.getLocalPart();
 
-                Object value=reader.getAttributeValue(attributeName.getNamespaceURI(), localPart);
-                properties.put(localPart,(String)value);
-
-
+                Object value = reader.getAttributeValue(attributeName.getNamespaceURI(), localPart);
+                properties.put(localPart, (String) value);
             }
         }
-
 
         return properties;
     }
 
-    //public static void skipToStartElementEvent(XMLStreamReader reader) throws XMLStreamException {
+    // public static void skipToStartElementEvent(XMLStreamReader reader) throws XMLStreamException
+    // {
     //
     //    while (reader.hasNext()) {
     //
@@ -107,9 +104,9 @@ public class XmlParseUtil {
     //        }
     //
     //    }
-    //}
+    // }
     //
-    //public static void skipToEndElementEvent(XMLStreamReader reader) throws XMLStreamException {
+    // public static void skipToEndElementEvent(XMLStreamReader reader) throws XMLStreamException {
     //
     //    while (reader.hasNext()) {
     //
@@ -124,5 +121,5 @@ public class XmlParseUtil {
     //        }
     //
     //    }
-    //}
+    // }
 }
