@@ -35,5 +35,7 @@ public class DeploymentInstanceEntity extends BaseProcessEntity {
 
     private String logicStatus;
 
+    private String extension;
+
 
 }

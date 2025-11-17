@@ -30,6 +30,7 @@ public final class DeploymentInstanceBuilder {
         deploymentInstance.setProcessDefinitionVersion(entity.getProcessDefinitionVersion());
         deploymentInstance.setStartTime(entity.getGmtCreate());
         deploymentInstance.setCompleteTime(entity.getGmtModified());
+        deploymentInstance.setExtension(entity.getExtension());
         deploymentInstance.setTenantId(entity.getTenantId());
         return deploymentInstance;
     }
@@ -55,6 +56,7 @@ public final class DeploymentInstanceBuilder {
         Date currentDate = DateUtil.getCurrentDate();
         deploymentInstanceEntity.setGmtCreate(currentDate);
         deploymentInstanceEntity.setGmtModified(currentDate);
+        deploymentInstanceEntity.setExtension(deploymentInstance.getExtension());
         deploymentInstanceEntity.setTenantId(deploymentInstance.getTenantId());
 
         return deploymentInstanceEntity;

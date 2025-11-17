@@ -14,6 +14,7 @@ CREATE TABLE `se_deployment_instance` (
   `deployment_user_id` varchar(128) NOT NULL  COMMENT 'deployment user id' ,
   `deployment_status` varchar(64) NOT NULL   COMMENT 'deployment status' ,
   `logic_status` varchar(64) NOT NULL  COMMENT 'logic status' ,
+  `extension` mediumtext DEFAULT NULL  COMMENT 'extension' ,
   `tenant_id` varchar(64) DEFAULT NULL  COMMENT 'tenant id' ,
 
   PRIMARY KEY (`id`)

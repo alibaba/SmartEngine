@@ -28,6 +28,7 @@ public class DefaultDeploymentInstance extends  AbstractLifeCycleInstance implem
     private  String deploymentUserId;
     private  String deploymentStatus;
     private  String logicStatus;
+    private  String extension;
 
     //引擎上不需要实现租户功能. 由业务上支持,另外,可以通过流程类型来区分.
 
