@@ -1,0 +1,266 @@
+{
+  "name": "新建流程",
+  "key": "process_1763379016790",
+  "version": 1,
+  "status": "draft",
+  "nodes": [
+    {
+      "id": "startEvent-1763379018399",
+      "type": "startEvent",
+      "position": {
+        "x": 140,
+        "y": 180
+      },
+      "data": {
+        "type": "startEvent",
+        "label": "开始事件",
+        "config": {
+          "name": "开始",
+          "description": "",
+          "initiator": "initiator"
+        }
+      }
+    },
+    {
+      "id": "userTask-1763379019795",
+      "type": "userTask",
+      "position": {
+        "x": 300,
+        "y": 160
+      },
+      "data": {
+        "type": "userTask",
+        "label": "员工申请",
+        "config": {
+          "name": "用户任务",
+          "description": "",
+          "assignee": {
+            "type": "user",
+            "multi": false,
+            "assigneeMode": "single"
+          },
+          "priority": 50,
+          "skipable": false
+        }
+      }
+    },
+    {
+      "id": "userTask-1763379023480",
+      "type": "userTask",
+      "position": {
+        "x": 620,
+        "y": 80
+      },
+      "data": {
+        "type": "userTask",
+        "label": "领导审批",
+        "config": {
+          "name": "用户任务",
+          "description": "",
+          "assignee": {
+            "type": "user",
+            "multi": false,
+            "assigneeMode": "single"
+          },
+          "priority": 50,
+          "skipable": false
+        }
+      }
+    },
+    {
+      "id": "userTask-1763379027894",
+      "type": "userTask",
+      "position": {
+        "x": 620,
+        "y": 260
+      },
+      "data": {
+        "type": "userTask",
+        "label": "HR审批",
+        "config": {
+          "name": "用户任务",
+          "description": "",
+          "assignee": {
+            "type": "user",
+            "multi": false,
+            "assigneeMode": "single"
+          },
+          "priority": 50,
+          "skipable": false
+        }
+      }
+    },
+    {
+      "id": "endEvent-1763379036897",
+      "type": "endEvent",
+      "position": {
+        "x": 920,
+        "y": 209
+      },
+      "data": {
+        "type": "endEvent",
+        "label": "结束事件",
+        "config": {
+          "name": "结束",
+          "description": "",
+          "terminateAll": false
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1763379021762",
+      "source": "startEvent-1763379018399",
+      "target": "userTask-1763379019795",
+      "type": "smoothstep",
+      "animated": false,
+      "label": "",
+      "labelStyle": {
+        "fill": "#374151",
+        "fontSize": 12,
+        "fontWeight": 500
+      },
+      "labelBgStyle": {
+        "fill": "#ffffff",
+        "fillOpacity": 0.9
+      },
+      "labelBgPadding": [
+        8,
+        4
+      ],
+      "labelBgBorderRadius": 4,
+      "style": {
+        "stroke": "#94a3b8",
+        "strokeWidth": 2
+      },
+      "data": {
+        "label": ""
+      }
+    },
+    {
+      "id": "edge-1763379025162",
+      "source": "userTask-1763379019795",
+      "target": "userTask-1763379023480",
+      "type": "smoothstep",
+      "animated": false,
+      "label": "请假天数< 3天",
+      "labelStyle": {
+        "fill": "#374151",
+        "fontSize": 12,
+        "fontWeight": 500
+      },
+      "labelBgStyle": {
+        "fill": "#ffffff",
+        "fillOpacity": 0.9
+      },
+      "labelBgPadding": [
+        8,
+        4
+      ],
+      "labelBgBorderRadius": 4,
+      "style": {
+        "stroke": "#3b82f6",
+        "strokeWidth": 3
+      },
+      "data": {
+        "label": "请假天数< 3天",
+        "condition": {
+          "type": "expression",
+          "content": "leaveDays < 3"
+        }
+      }
+    },
+    {
+      "id": "edge-1763379030029",
+      "source": "userTask-1763379019795",
+      "target": "userTask-1763379027894",
+      "type": "smoothstep",
+      "animated": false,
+      "label": "请假天数 >=3天",
+      "labelStyle": {
+        "fill": "#374151",
+        "fontSize": 12,
+        "fontWeight": 500
+      },
+      "labelBgStyle": {
+        "fill": "#ffffff",
+        "fillOpacity": 0.9
+      },
+      "labelBgPadding": [
+        8,
+        4
+      ],
+      "labelBgBorderRadius": 4,
+      "style": {
+        "stroke": "#94a3b8",
+        "strokeWidth": 2
+      },
+      "data": {
+        "label": "请假天数 >=3天",
+        "condition": {
+          "type": "expression",
+          "content": "leaveDays >=3"
+        }
+      }
+    },
+    {
+      "id": "edge-1763379038895",
+      "source": "userTask-1763379023480",
+      "target": "endEvent-1763379036897",
+      "type": "smoothstep",
+      "animated": false,
+      "label": "",
+      "labelStyle": {
+        "fill": "#374151",
+        "fontSize": 12,
+        "fontWeight": 500
+      },
+      "labelBgStyle": {
+        "fill": "#ffffff",
+        "fillOpacity": 0.9
+      },
+      "labelBgPadding": [
+        8,
+        4
+      ],
+      "labelBgBorderRadius": 4,
+      "style": {
+        "stroke": "#94a3b8",
+        "strokeWidth": 2
+      },
+      "data": {
+        "label": ""
+      }
+    },
+    {
+      "id": "edge-1763379041329",
+      "source": "userTask-1763379027894",
+      "target": "endEvent-1763379036897",
+      "type": "smoothstep",
+      "animated": false,
+      "label": "",
+      "labelStyle": {
+        "fill": "#374151",
+        "fontSize": 12,
+        "fontWeight": 500
+      },
+      "labelBgStyle": {
+        "fill": "#ffffff",
+        "fillOpacity": 0.9
+      },
+      "labelBgPadding": [
+        8,
+        4
+      ],
+      "labelBgBorderRadius": 4,
+      "style": {
+        "stroke": "#94a3b8",
+        "strokeWidth": 2
+      },
+      "data": {
+        "label": ""
+      }
+    }
+  ]
+}
