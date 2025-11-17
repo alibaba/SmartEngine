@@ -17,4 +17,5 @@ public class CreateDeploymentCommand extends BaseCommand{
 
     private  String deploymentUserId;
     private  String deploymentStatus;
+    private  String extension;
 }

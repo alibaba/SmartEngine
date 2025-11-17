@@ -17,5 +17,6 @@ public class UpdateDeploymentCommand extends BaseCommand{
     private  String processDefinitionContent;
 
     private  String deploymentUserId;
+    private  String extension;
     //private  String deploymentStatus;
 }

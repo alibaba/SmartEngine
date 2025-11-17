@@ -48,4 +48,6 @@ public interface  DeploymentInstance  extends  LifeCycleInstance{
     void setLogicStatus(String logicStatus);
 
 
+    String getExtension();
+    void setExtension(String extension);
 }

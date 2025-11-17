@@ -58,6 +58,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         deploymentInstance.setDeploymentStatus(createDeploymentCommand.getDeploymentStatus());
         deploymentInstance.setLogicStatus(LogicStatusConstant.VALID);
+        deploymentInstance.setExtension(createDeploymentCommand.getExtension());
 
 
         deploymentInstance = deploymentInstanceStorage.insert(deploymentInstance, smartEngine.getProcessEngineConfiguration());
@@ -109,6 +110,9 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         }
         if (updateDeploymentCommand.getProcessDefinitionType() != null) {
             currentDeploymentInstance.setProcessDefinitionType(updateDeploymentCommand.getProcessDefinitionType());
+        }
+        if (updateDeploymentCommand.getExtension() != null) {
+            currentDeploymentInstance.setExtension(updateDeploymentCommand.getExtension());
         }
     }
 
