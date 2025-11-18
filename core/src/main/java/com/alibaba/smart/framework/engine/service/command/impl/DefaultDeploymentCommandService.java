@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanne
 import com.alibaba.smart.framework.engine.constant.DeploymentStatusConstant;
 import com.alibaba.smart.framework.engine.constant.LogicStatusConstant;
 import com.alibaba.smart.framework.engine.deployment.ProcessDefinitionContainer;
+import com.alibaba.smart.framework.engine.ecology.designer.converter.JsonToBpmnConverter;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
@@ -44,7 +45,19 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         processEngineConfiguration.getIdGenerator().generate(deploymentInstance);
 
-        deploymentInstance.setProcessDefinitionContent(processDefinitionContent);
+        if(null != createDeploymentCommand.getExtension() ){
+            deploymentInstance.setExtension(createDeploymentCommand.getExtension());
+            String convert = JsonToBpmnConverter.convert(createDeploymentCommand.getExtension());
+            deploymentInstance.setProcessDefinitionContent(convert);
+
+        }else {
+
+
+            deploymentInstance.setProcessDefinitionContent(processDefinitionContent);
+
+        }
+
+
         deploymentInstance.setProcessDefinitionId(processDefinition.getId());
         deploymentInstance.setProcessDefinitionVersion(processDefinition.getVersion());
 
@@ -58,7 +71,6 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
 
         deploymentInstance.setDeploymentStatus(createDeploymentCommand.getDeploymentStatus());
         deploymentInstance.setLogicStatus(LogicStatusConstant.VALID);
-        deploymentInstance.setExtension(createDeploymentCommand.getExtension());
 
 
         deploymentInstance = deploymentInstanceStorage.insert(deploymentInstance, smartEngine.getProcessEngineConfiguration());
@@ -73,7 +85,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         DeploymentInstance currentDeploymentInstance = deploymentInstanceStorage.findById(deployInstanceId,
                 updateDeploymentCommand.getTenantId(),processEngineConfiguration);
 
-        setUpdateValue(currentDeploymentInstance,updateDeploymentCommand);
+        buildUpdateValue(currentDeploymentInstance,updateDeploymentCommand);
 
         if(null == currentDeploymentInstance){
             throw  new EngineException("Can't find a deploymentInstance by deployInstanceId: "+deployInstanceId);
@@ -94,11 +106,20 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         return deploymentInstance;
     }
 
-    private void setUpdateValue(DeploymentInstance currentDeploymentInstance,
-                                UpdateDeploymentCommand updateDeploymentCommand) {
-        if (updateDeploymentCommand.getProcessDefinitionContent() != null) {
-            currentDeploymentInstance.setProcessDefinitionContent(updateDeploymentCommand.getProcessDefinitionContent());
+    private void buildUpdateValue(DeploymentInstance currentDeploymentInstance,
+                                  UpdateDeploymentCommand updateDeploymentCommand) {
+        if (updateDeploymentCommand.getExtension() != null) {
+            currentDeploymentInstance.setExtension(updateDeploymentCommand.getExtension());
+            String convert = JsonToBpmnConverter.convert(updateDeploymentCommand.getExtension());
+            currentDeploymentInstance.setProcessDefinitionContent(convert);
+
+        }else{
+            if (updateDeploymentCommand.getProcessDefinitionContent() != null) {
+                currentDeploymentInstance.setProcessDefinitionContent(updateDeploymentCommand.getProcessDefinitionContent());
+            }
         }
+
+
         if (updateDeploymentCommand.getProcessDefinitionDesc() != null) {
             currentDeploymentInstance.setProcessDefinitionDesc(updateDeploymentCommand.getProcessDefinitionDesc());
         }
@@ -111,9 +132,7 @@ public class DefaultDeploymentCommandService implements DeploymentCommandService
         if (updateDeploymentCommand.getProcessDefinitionType() != null) {
             currentDeploymentInstance.setProcessDefinitionType(updateDeploymentCommand.getProcessDefinitionType());
         }
-        if (updateDeploymentCommand.getExtension() != null) {
-            currentDeploymentInstance.setExtension(updateDeploymentCommand.getExtension());
-        }
+
     }
 
 

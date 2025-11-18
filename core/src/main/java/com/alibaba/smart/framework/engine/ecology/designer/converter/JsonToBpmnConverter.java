@@ -2,6 +2,7 @@ package com.alibaba.smart.framework.engine.ecology.designer.converter;
 
 import com.alibaba.smart.framework.engine.ecology.designer.bpmn.BpmnModel;
 import com.alibaba.smart.framework.engine.ecology.designer.element.bean.ProcessFlowModel;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -15,15 +16,20 @@ public abstract class JsonToBpmnConverter {
     /**
      * 完整转换流程: JSON字符串 → ProcessFlowModel → BPMN对象 → XML字符串
      */
-    public static String convert(String jsonString) throws IOException {
+    public static String convert(String jsonString) {
 
           final ObjectMapper objectMapper = new ObjectMapper();
           final BpmnModelConverter modelConverter = new BpmnModelConverter();
           final BpmnXmlGenerator xmlGenerator = new BpmnXmlGenerator();
 
         // 1. JSON String → ProcessFlowModel
-        ProcessFlowModel flowModel = objectMapper.readValue(jsonString, ProcessFlowModel.class);
-        
+        ProcessFlowModel flowModel = null;
+        try {
+            flowModel = objectMapper.readValue(jsonString, ProcessFlowModel.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
         // 2. ProcessFlowModel → BpmnModel
         BpmnModel bpmnModel = modelConverter.convert(flowModel);
         
