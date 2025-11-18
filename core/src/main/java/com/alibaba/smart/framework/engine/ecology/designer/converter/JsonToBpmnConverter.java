@@ -9,16 +9,18 @@ import java.io.IOException;
 /**
  * JSON到BPMN XML转换器
  */
-public class JsonToBpmnConverter {
+public abstract class JsonToBpmnConverter {
     
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private final BpmnModelConverter modelConverter = new BpmnModelConverter();
-    private final BpmnXmlGenerator xmlGenerator = new BpmnXmlGenerator();
-    
+
     /**
      * 完整转换流程: JSON字符串 → ProcessFlowModel → BPMN对象 → XML字符串
      */
-    public String convert(String jsonString) throws IOException {
+    public static String convert(String jsonString) throws IOException {
+
+          final ObjectMapper objectMapper = new ObjectMapper();
+          final BpmnModelConverter modelConverter = new BpmnModelConverter();
+          final BpmnXmlGenerator xmlGenerator = new BpmnXmlGenerator();
+
         // 1. JSON String → ProcessFlowModel
         ProcessFlowModel flowModel = objectMapper.readValue(jsonString, ProcessFlowModel.class);
         
@@ -34,7 +36,10 @@ public class JsonToBpmnConverter {
     /**
      * 从ProcessFlowModel对象转换
      */
-    public String convert(ProcessFlowModel flowModel) {
+    public static String convert(ProcessFlowModel flowModel) {
+        final BpmnModelConverter modelConverter = new BpmnModelConverter();
+        final BpmnXmlGenerator xmlGenerator = new BpmnXmlGenerator();
+
         // 1. ProcessFlowModel → BpmnModel
         BpmnModel bpmnModel = modelConverter.convert(flowModel);
         

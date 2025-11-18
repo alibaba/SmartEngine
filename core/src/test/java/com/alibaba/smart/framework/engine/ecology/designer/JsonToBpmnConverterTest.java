@@ -72,8 +72,7 @@ public class JsonToBpmnConverterTest {
         Assert.assertEquals(5, flowModel.getEdges().size());
         
         // 转换为BPMN XML
-        JsonToBpmnConverter converter = new JsonToBpmnConverter();
-        String bpmnXml = converter.convert(flowModel);
+        String bpmnXml = JsonToBpmnConverter.convert(flowModel);
         System.out.println(bpmnXml);
 
         ProcessDefinitionSource processDefinitionSource = repositoryCommandService.deployWithUTF8Content(bpmnXml);
@@ -191,9 +190,8 @@ public class JsonToBpmnConverterTest {
         String jsonContent = readFile(jsonPath);
         
         // 直接从JSON字符串转换
-        JsonToBpmnConverter converter = new JsonToBpmnConverter();
-        String bpmnXml = converter.convert(jsonContent);
-        
+        String bpmnXml = JsonToBpmnConverter.convert(jsonContent);
+
         // 验证
         Assert.assertNotNull(bpmnXml);
         Assert.assertTrue(bpmnXml.contains("process_1763379016790"));
@@ -209,8 +207,7 @@ public class JsonToBpmnConverterTest {
         ProcessFlowModel flowModel = createSimpleFlowModel();
         
         // 转换
-        JsonToBpmnConverter converter = new JsonToBpmnConverter();
-        String bpmnXml = converter.convert(flowModel);
+        String bpmnXml = JsonToBpmnConverter.convert(flowModel);
         
         // 验证
         Assert.assertNotNull(bpmnXml);
@@ -230,8 +227,7 @@ public class JsonToBpmnConverterTest {
         ProcessFlowModel flowModel = createGatewayFlowModel();
         
         // 转换
-        JsonToBpmnConverter converter = new JsonToBpmnConverter();
-        String bpmnXml = converter.convert(flowModel);
+        String bpmnXml = JsonToBpmnConverter.convert(flowModel);
         
         // 验证
         Assert.assertNotNull(bpmnXml);
@@ -248,8 +244,7 @@ public class JsonToBpmnConverterTest {
         ProcessFlowModel flowModel = createServiceTaskFlowModel();
         
         // 转换
-        JsonToBpmnConverter converter = new JsonToBpmnConverter();
-        String bpmnXml = converter.convert(flowModel);
+        String bpmnXml = JsonToBpmnConverter.convert(flowModel);
         
         // 验证
         Assert.assertNotNull(bpmnXml);
