@@ -27,7 +27,7 @@ public class BpmnModelConverter {
     private Definitions createDefinitions(ProcessFlowModel flowModel) {
         Definitions definitions = new Definitions();
         definitions.setId(flowModel.getKey() + "_def");
-        definitions.setVersion(flowModel.getVersion() != null ? flowModel.getVersion().toString() : "1");
+        definitions.setVersion(flowModel.getVersion() != null ? flowModel.getVersion().toString() : "1.0.0");
         definitions.setTargetNamespace("Examples");
         return definitions;
     }
@@ -35,7 +35,7 @@ public class BpmnModelConverter {
     private Process createProcess(ProcessFlowModel flowModel) {
         Process process = new Process();
         process.setId(flowModel.getKey());
-        process.setVersion(flowModel.getVersion() != null ? flowModel.getVersion().toString() : "1");
+        process.setVersion(flowModel.getVersion() != null ? flowModel.getVersion().toString() : "1.0.0");
         process.setName(flowModel.getName());
         
         // 转换节点

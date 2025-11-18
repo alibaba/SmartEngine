@@ -43,32 +43,28 @@ public class BpmnXmlGenerator {
         Element element = doc.addElement("definitions");
         
         // 添加命名空间
-        for (Map.Entry<String, String> ns : def.getNamespaces().entrySet()) {
-            String key = ns.getKey();
-            String uri = ns.getValue();
-            
-            if ("xmlns".equals(key)) {
-                // 默认命名空间
-                element.addNamespace("", uri);
-            } else if (key.startsWith("xmlns:")) {
-                // 带前缀的命名空间
-                String prefix = key.substring(6);
-                element.addNamespace(prefix, uri);
-            }
-        }
+        element.addNamespace("", "http://www.omg.org/spec/BPMN/20100524/MODEL");
+        element.addNamespace("smart", "http://smartengine.org/schema/process");
+        element.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         
         // 添加属性
         element.addAttribute("id", def.getId());
         if (def.getVersion() != null) {
             element.addAttribute("version", def.getVersion());
         }
-        element.addAttribute("targetNamespace", def.getTargetNamespace());
+        if (def.getTargetNamespace() != null) {
+            element.addAttribute("targetNamespace", def.getTargetNamespace());
+        }
         
         return element;
     }
     
     private Element createProcess(Element parent, Process process) {
-        Element element = parent.addElement("process");
+        // 使用父元素的默认命名空间创建 process 元素
+//        Namespace defaultNs = parent.getNamespace();
+        Namespace defaultNs = new Namespace("", "http://www.omg.org/spec/BPMN/20100524/MODEL");
+
+        Element element = parent.addElement(new QName("process", defaultNs));
         
         element.addAttribute("id", process.getId());
         if (process.getVersion() != null) {
@@ -88,7 +84,10 @@ public class BpmnXmlGenerator {
     
     private void createBpmnElement(Element parent, BpmnElement bpmnElement) {
         String tagName = bpmnElement.getElementType();
-        Element element = parent.addElement(tagName);
+        
+        // 使用父元素的默认命名空间创建子元素，避免生成 xmlns=""
+        Namespace defaultNs = parent.getNamespace();
+        Element element = parent.addElement(new QName(tagName, defaultNs));
         
         // 添加属性
         Map<String, String> attrs = bpmnElement.getAttributes();
@@ -136,7 +135,9 @@ public class BpmnXmlGenerator {
     }
     
     private void createExtensionElements(Element parent, ExtensionElements ext) {
-        Element extElement = parent.addElement("extensionElements");
+        // 使用父元素的默认命名空间
+        Namespace defaultNs = parent.getNamespace();
+        Element extElement = parent.addElement(new QName("extensionElements", defaultNs));
         
         // 添加 position 等自定义属性
         if (ext.getProperty("x") != null && ext.getProperty("y") != null) {
@@ -148,7 +149,9 @@ public class BpmnXmlGenerator {
     }
     
     private void createConditionExpression(Element parent, ConditionExpression expression) {
-        Element condElement = parent.addElement("conditionExpression");
+        // 使用父元素的默认命名空间
+        Namespace defaultNs = parent.getNamespace();
+        Element condElement = parent.addElement(new QName("conditionExpression", defaultNs));
         
         if (expression.getType() != null) {
             Namespace xsiNs = parent.getNamespaceForPrefix("xsi");
