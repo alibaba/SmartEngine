@@ -24,6 +24,7 @@ public class StartEventParser extends AbstractBpmnParser<StartEvent> {
     public StartEvent parseModel(XMLStreamReader reader, ParseContext context) {
         StartEvent startEvent = new StartEvent();
         startEvent.setId(XmlParseUtil.getString(reader, "id"));
+        startEvent.setName(XmlParseUtil.getString(reader, "name"));
         startEvent.setStartActivity(true);
 
         Map<String, String> properties = super.parseExtendedProperties(reader,  context);

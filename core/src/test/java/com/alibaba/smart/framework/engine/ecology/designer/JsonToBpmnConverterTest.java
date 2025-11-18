@@ -84,45 +84,104 @@ public class JsonToBpmnConverterTest {
         Assert.assertEquals("新建流程",firstProcessDefinition.getName());
         Assert.assertEquals("1.0.0",firstProcessDefinition.getVersion());
 
-        // 验证节点
+        // 验证节点 - 使用从ProcessDefinition获取元素的方式
 
+        // 验证开始事件
         String startEventId = "startEvent-1763379018399";
-        StartEvent startEvent = (StartEvent) firstProcessDefinition.getIdBasedElementMap().get(startEventId) ;
-       Assert.assertNotNull(startEvent);
-        Assert.assertEquals(startEventId,startEvent.getId());
+        com.alibaba.smart.framework.engine.bpmn.assembly.event.StartEvent startEvent = 
+            (com.alibaba.smart.framework.engine.bpmn.assembly.event.StartEvent) firstProcessDefinition.getIdBasedElementMap().get(startEventId);
+        Assert.assertNotNull(startEvent);
+        Assert.assertEquals(startEventId, startEvent.getId());
+        Assert.assertEquals("开始", startEvent.getName());
 
+        // 验证结束事件
+        String endEventId = "endEvent-1763379036897";
+        com.alibaba.smart.framework.engine.bpmn.assembly.event.EndEvent endEvent = 
+            (com.alibaba.smart.framework.engine.bpmn.assembly.event.EndEvent) firstProcessDefinition.getIdBasedElementMap().get(endEventId);
+        Assert.assertNotNull(endEvent);
+        Assert.assertEquals(endEventId, endEvent.getId());
+        Assert.assertEquals("结束", endEvent.getName());
 
-        Assert.assertTrue(bpmnXml.contains("<startEvent"));
-        Assert.assertTrue(bpmnXml.contains("id=\"startEvent-1763379018399\""));
-        Assert.assertTrue(bpmnXml.contains("<endEvent"));
-        Assert.assertTrue(bpmnXml.contains("id=\"endEvent-1763379036897\""));
-        Assert.assertTrue(bpmnXml.contains("<userTask"));
-        Assert.assertTrue(bpmnXml.contains("id=\"userTask-1763379019795\""));
-        Assert.assertTrue(bpmnXml.contains("name=\"员工申请\""));
+        // 验证用户任务1 - 员工申请
+        String userTask1Id = "userTask-1763379019795";
+        com.alibaba.smart.framework.engine.bpmn.assembly.task.UserTask userTask1 = 
+            (com.alibaba.smart.framework.engine.bpmn.assembly.task.UserTask) firstProcessDefinition.getIdBasedElementMap().get(userTask1Id);
+        Assert.assertNotNull(userTask1);
+        Assert.assertEquals(userTask1Id, userTask1.getId());
+        Assert.assertEquals("员工申请", userTask1.getName());
+
+        // 验证用户任务2 - 领导审批
+        String userTask2Id = "userTask-1763379023480";
+        com.alibaba.smart.framework.engine.bpmn.assembly.task.UserTask userTask2 = 
+            (com.alibaba.smart.framework.engine.bpmn.assembly.task.UserTask) firstProcessDefinition.getIdBasedElementMap().get(userTask2Id);
+        Assert.assertNotNull(userTask2);
+        Assert.assertEquals(userTask2Id, userTask2.getId());
+        Assert.assertEquals("领导审批", userTask2.getName());
+
+        // 验证用户任务3 - HR审批
+        String userTask3Id = "userTask-1763379027894";
+        com.alibaba.smart.framework.engine.bpmn.assembly.task.UserTask userTask3 = 
+            (com.alibaba.smart.framework.engine.bpmn.assembly.task.UserTask) firstProcessDefinition.getIdBasedElementMap().get(userTask3Id);
+        Assert.assertNotNull(userTask3);
+        Assert.assertEquals(userTask3Id, userTask3.getId());
+        Assert.assertEquals("HR审批", userTask3.getName());
         
-        // 验证连线
-        Assert.assertTrue(bpmnXml.contains("<sequenceFlow"));
-        Assert.assertTrue(bpmnXml.contains("sourceRef=\"startEvent-1763379018399\""));
-        Assert.assertTrue(bpmnXml.contains("targetRef=\"userTask-1763379019795\""));
+        // 验证连线 - 从开始到员工申请
+        String flow1Id = "edge-1763379021762";
+        com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow flow1 = 
+            (com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow) firstProcessDefinition.getIdBasedElementMap().get(flow1Id);
+        Assert.assertNotNull(flow1);
+        Assert.assertEquals(flow1Id, flow1.getId());
+        Assert.assertEquals(startEventId, flow1.getSourceRef());
+        Assert.assertEquals(userTask1Id, flow1.getTargetRef());
         
-        // 验证条件表达式
-        Assert.assertTrue(bpmnXml.contains("<conditionExpression"));
-        Assert.assertTrue(bpmnXml.contains("leaveDays < 3") || bpmnXml.contains("leaveDays &lt; 3"));
-        Assert.assertTrue(bpmnXml.contains("leaveDays >= 3") || bpmnXml.contains("leaveDays &gt;= 3"));
+        // 验证条件连线1 - 请假天数< 3天
+        String flow2Id = "edge-1763379025162";
+        com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow flow2 = 
+            (com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow) firstProcessDefinition.getIdBasedElementMap().get(flow2Id);
+        Assert.assertNotNull(flow2);
+        Assert.assertEquals(flow2Id, flow2.getId());
+        Assert.assertEquals(userTask1Id, flow2.getSourceRef());
+        Assert.assertEquals(userTask2Id, flow2.getTargetRef());
+        Assert.assertEquals("请假天数< 3天", flow2.getName());
+        Assert.assertNotNull(flow2.getConditionExpression());
+        Assert.assertEquals("leaveDays < 3", flow2.getConditionExpression().getExpressionContent());
         
-        // 验证扩展元素（position）
-        Assert.assertTrue(bpmnXml.contains("<extensionElements>"));
-        Assert.assertTrue(bpmnXml.contains("position"));
+        // 验证条件连线2 - 请假天数 >=3天
+        String flow3Id = "edge-1763379030029";
+        com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow flow3 = 
+            (com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow) firstProcessDefinition.getIdBasedElementMap().get(flow3Id);
+        Assert.assertNotNull(flow3);
+        Assert.assertEquals(flow3Id, flow3.getId());
+        Assert.assertEquals(userTask1Id, flow3.getSourceRef());
+        Assert.assertEquals(userTask3Id, flow3.getTargetRef());
+        Assert.assertEquals("请假天数 >=3天", flow3.getName());
+        Assert.assertNotNull(flow3.getConditionExpression());
+        Assert.assertEquals("leaveDays >=3", flow3.getConditionExpression().getExpressionContent());
+
+        // 验证连线 - 领导审批到结束
+        String flow4Id = "edge-1763379038895";
+        com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow flow4 = 
+            (com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow) firstProcessDefinition.getIdBasedElementMap().get(flow4Id);
+        Assert.assertNotNull(flow4);
+        Assert.assertEquals(flow4Id, flow4.getId());
+        Assert.assertEquals(userTask2Id, flow4.getSourceRef());
+        Assert.assertEquals(endEventId, flow4.getTargetRef());
+
+        // 验证连线 - HR审批到结束
+        String flow5Id = "edge-1763379041329";
+        com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow flow5 = 
+            (com.alibaba.smart.framework.engine.bpmn.assembly.process.SequenceFlow) firstProcessDefinition.getIdBasedElementMap().get(flow5Id);
+        Assert.assertNotNull(flow5);
+        Assert.assertEquals(flow5Id, flow5.getId());
+        Assert.assertEquals(userTask3Id, flow5.getSourceRef());
+        Assert.assertEquals(endEventId, flow5.getTargetRef());
         
         // 打印生成的XML（用于调试）
         System.out.println("Generated BPMN XML:");
         System.out.println(bpmnXml);
         
-//        // 保存到文件
-//        String outputPath = "target/test-output-process.bpmn20.xml";
-//        Files.createDirectories(Paths.get("target"));
-//        Files.writeString(Paths.get(outputPath), bpmnXml, StandardCharsets.UTF_8);
-//        System.out.println("\nBPMN XML saved to: " + outputPath);
+
     }
     
     @Test

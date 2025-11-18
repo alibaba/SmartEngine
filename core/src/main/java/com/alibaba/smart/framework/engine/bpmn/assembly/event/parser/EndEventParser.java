@@ -24,6 +24,7 @@ public class EndEventParser extends AbstractBpmnParser<EndEvent> {
     public EndEvent parseModel(XMLStreamReader reader, ParseContext context) {
         EndEvent endEvent = new EndEvent();
         endEvent.setId(XmlParseUtil.getString(reader, "id"));
+        endEvent.setName(XmlParseUtil.getString(reader, "name"));
 
         Map<String, String> properties = super.parseExtendedProperties(reader,  context);
         endEvent.setProperties(properties);
