@@ -1,10 +1,22 @@
 package com.alibaba.smart.framework.engine.ecology.designer;
 
+import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.bpmn.assembly.event.StartEvent;
+import com.alibaba.smart.framework.engine.comments.parser.CommentsTest;
+import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.impl.DefaultIdGenerator;
+import com.alibaba.smart.framework.engine.configuration.impl.DefaultProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.configuration.impl.DefaultSmartEngine;
 import com.alibaba.smart.framework.engine.ecology.designer.converter.JsonToBpmnConverter;
 import com.alibaba.smart.framework.engine.ecology.designer.element.bean.*;
+import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
+import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinitionSource;
+import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
 import com.alibaba.smart.framework.engine.util.IOUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -15,13 +27,37 @@ import java.util.List;
  * JSON到BPMN转换器测试
  */
 public class JsonToBpmnConverterTest {
-    
+
+    private SmartEngine smartEngine;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+
+    private RepositoryCommandService repositoryCommandService;
+
+    @Before
+    public void initEngine() {
+        //1.初始化
+        ProcessEngineConfiguration processEngineConfiguration = new DefaultProcessEngineConfiguration();
+        processEngineConfiguration.setIdGenerator(new DefaultIdGenerator());
+
+        processEngineConfiguration.setAnnotationScanner(
+                new SimpleAnnotationScanner(
+                        SmartEngine.class.getPackage().getName(),
+                        CommentsTest.class.getPackage().getName()));
+        smartEngine = new DefaultSmartEngine();
+        smartEngine.init(processEngineConfiguration);
+
+        //2.获得常用服务
+        repositoryCommandService = smartEngine.getRepositoryCommandService();
+
+    }
     
+
     @Test
     public void testConvertProcessJson() throws IOException {
         // 读取JSON文件
-        String jsonPath = "src/test/resources/json-to-bpmn/process.json";
+        String jsonPath = "json-to-bpmn/process.json";
         String jsonContent = readFile(jsonPath);
         
         // 使用Jackson解析JSON
@@ -38,16 +74,24 @@ public class JsonToBpmnConverterTest {
         // 转换为BPMN XML
         JsonToBpmnConverter converter = new JsonToBpmnConverter();
         String bpmnXml = converter.convert(flowModel);
-        
-        // 验证XML生成
-        Assert.assertNotNull(bpmnXml);
-        Assert.assertTrue(bpmnXml.contains("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
-        Assert.assertTrue(bpmnXml.contains("<definitions"));
-        Assert.assertTrue(bpmnXml.contains("<process"));
-        Assert.assertTrue(bpmnXml.contains("id=\"process_1763379016790\""));
-        Assert.assertTrue(bpmnXml.contains("name=\"新建流程\""));
-        
+        System.out.println(bpmnXml);
+
+        ProcessDefinitionSource processDefinitionSource = repositoryCommandService.deployWithUTF8Content(bpmnXml);
+        ProcessDefinition firstProcessDefinition = processDefinitionSource.getFirstProcessDefinition();
+
+
+       Assert.assertEquals("process_1763379016790",firstProcessDefinition.getId());
+        Assert.assertEquals("新建流程",firstProcessDefinition.getName());
+        Assert.assertEquals("1.0",firstProcessDefinition.getVersion());
+
         // 验证节点
+
+        String startEventId = "startEvent-1763379018399";
+        StartEvent startEvent = (StartEvent) firstProcessDefinition.getIdBasedElementMap().get(startEventId) ;
+       Assert.assertNotNull(startEvent);
+        Assert.assertEquals(startEventId,startEvent.getId());
+
+
         Assert.assertTrue(bpmnXml.contains("<startEvent"));
         Assert.assertTrue(bpmnXml.contains("id=\"startEvent-1763379018399\""));
         Assert.assertTrue(bpmnXml.contains("<endEvent"));

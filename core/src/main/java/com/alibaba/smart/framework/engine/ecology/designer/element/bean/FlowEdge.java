@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.ecology.designer.element.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import java.util.Map;
  * 流程连线
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FlowEdge {
     private String id;
     private String source;
