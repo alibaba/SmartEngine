@@ -92,10 +92,12 @@ public class BpmnModelConverter {
     
     private ExtensionElements createExtensionElements(FlowNode node) {
         ExtensionElements ext = new ExtensionElements();
-        if (node.getPosition() != null) {
-            ext.addProperty("x", node.getPosition().getX());
-            ext.addProperty("y", node.getPosition().getY());
-        }
+
+        //ignore now
+//        if (node.getPosition() != null) {
+//            ext.addProperty("x", node.getPosition().getX());
+//            ext.addProperty("y", node.getPosition().getY());
+//        }
         return ext;
     }
     

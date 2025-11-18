@@ -67,7 +67,7 @@ public class JsonToBpmnConverterTest {
         Assert.assertNotNull(flowModel);
         Assert.assertEquals("新建流程", flowModel.getName());
         Assert.assertEquals("process_1763379016790", flowModel.getKey());
-        Assert.assertEquals(Integer.valueOf(1), flowModel.getVersion());
+        Assert.assertEquals("1.0.0", flowModel.getVersion());
         Assert.assertEquals(5, flowModel.getNodes().size());
         Assert.assertEquals(5, flowModel.getEdges().size());
         
@@ -82,7 +82,7 @@ public class JsonToBpmnConverterTest {
 
        Assert.assertEquals("process_1763379016790",firstProcessDefinition.getId());
         Assert.assertEquals("新建流程",firstProcessDefinition.getName());
-        Assert.assertEquals("1.0",firstProcessDefinition.getVersion());
+        Assert.assertEquals("1.0.0",firstProcessDefinition.getVersion());
 
         // 验证节点
 
@@ -205,7 +205,7 @@ public class JsonToBpmnConverterTest {
         ProcessFlowModel model = new ProcessFlowModel();
         model.setName("简单流程");
         model.setKey("simple-process");
-        model.setVersion(1);
+        model.setVersion("1.0.0");
         model.setStatus("draft");
         
         List<FlowNode> nodes = new ArrayList<>();
@@ -266,7 +266,7 @@ public class JsonToBpmnConverterTest {
         ProcessFlowModel model = new ProcessFlowModel();
         model.setName("网关流程");
         model.setKey("gateway-process");
-        model.setVersion(1);
+        model.setVersion("1.0.0");
         
         List<FlowNode> nodes = new ArrayList<>();
         List<FlowEdge> edges = new ArrayList<>();
@@ -302,7 +302,7 @@ public class JsonToBpmnConverterTest {
         ProcessFlowModel model = new ProcessFlowModel();
         model.setName("服务任务流程");
         model.setKey("service-task-process");
-        model.setVersion(1);
+        model.setVersion("1.0.0");
         
         List<FlowNode> nodes = new ArrayList<>();
         List<FlowEdge> edges = new ArrayList<>();

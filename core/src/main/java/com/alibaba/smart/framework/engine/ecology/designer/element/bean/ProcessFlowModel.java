@@ -13,7 +13,7 @@ import java.util.List;
 public class ProcessFlowModel {
     private String name;
     private String key;
-    private Integer version;
+    private String version;
     private String status;
     private List<FlowNode> nodes;
     private List<FlowEdge> edges;
