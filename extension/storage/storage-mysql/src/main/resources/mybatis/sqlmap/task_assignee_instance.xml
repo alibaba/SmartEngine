@@ -26,7 +26,7 @@
     <update id="update">
         update se_task_assignee_instance
         <set>
-            gmt_modified=now(6)
+            gmt_modified=CURRENT_TIMESTAMP
             <if test="assigneeId != null">,assignee_id = #{assigneeId}</if>
             <!--<if test="assigneeType != null">,assignee_type = #{assigneeType}</if>-->
         </set>

@@ -50,7 +50,7 @@
     <update id="update"
             parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity">
         update se_deployment_instance set
-        gmt_modified = now(6)
+        gmt_modified = CURRENT_TIMESTAMP
         <if test="processDefinitionId != null">,process_definition_id = #{processDefinitionId}</if>
         <if test="processDefinitionVersion != null">,process_definition_version = #{processDefinitionVersion}</if>
         <if test="processDefinitionType != null">,process_definition_type = #{processDefinitionType}</if>
@@ -85,7 +85,7 @@
         from se_deployment_instance
         <include refid="condition"/>
         order by gmt_modified desc
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
 
     </select>
 
@@ -93,7 +93,7 @@
             parameterType="com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam">
         select count(1) from se_deployment_instance
         <include refid="condition"/>
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
     </select>
 
 

@@ -28,7 +28,7 @@
             parameterType="com.alibaba.smart.framework.engine.persister.database.entity.VariableInstanceEntity">
         update se_variable_instance
         <set>
-            gmt_modified=now(6)
+            gmt_modified=CURRENT_TIMESTAMP
             <if test="fieldLongValue != null">,field_long_value = #{fieldLongValue}</if>
             <if test="fieldDoubleValue != null">,field_double_value = #{fieldDoubleValue}</if>
             <if test="fieldStringValue != null">,field_string_value = #{fieldStringValue}</if>

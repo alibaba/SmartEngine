@@ -28,7 +28,7 @@
 
     <sql id="update_sql">
         <set>
-            gmt_modified=now(6)
+            gmt_modified=CURRENT_TIMESTAMP
             <if test="taskInstanceEntity.claimUserId != null">,claim_user_id = #{taskInstanceEntity.claimUserId}</if>
             <if test="taskInstanceEntity.priority != null">,priority = #{taskInstanceEntity.priority}</if>
             <if test="taskInstanceEntity.claimTime != null">,claim_time = #{taskInstanceEntity.claimTime}</if>
@@ -96,7 +96,7 @@
 
         order by task.gmt_modified desc
 
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
 
     </select>
 
@@ -117,7 +117,7 @@
 
         <include refid="pending_task_assignee_choose_sql"/>
 
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
 
     </select>
 
@@ -155,7 +155,7 @@
         <if test="processInstanceIdList != null">
             and task.process_instance_id in
             <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
-                #{item}
+                CAST(#{item} AS BIGINT)
             </foreach>
         </if>
     </sql>
@@ -173,7 +173,7 @@
         <include refid="where_condition"/>
 
         order by task.gmt_modified desc
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
 
     </select>
 
@@ -186,7 +186,7 @@
 
         <include refid="where_condition"/>
 
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
 
     </select>
 
@@ -202,14 +202,14 @@
         <if test="priority != null">and task.priority = #{priority}</if>
         <if test="comment != null">and task.comment = #{comment}</if>
 
-        <if test="activityInstanceId != null">and task.activity_instance_id = #{activityInstanceId}</if>
+        <if test="activityInstanceId != null">and task.activity_instance_id = CAST(#{activityInstanceId} AS BIGINT) </if>
         <if test="processDefinitionActivityId != null">and task.process_definition_activity_id =
             #{processDefinitionActivityId}
         </if>
         <if test="processInstanceIdList != null">
             and task.process_instance_id in
             <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
-                #{item}
+                CAST(#{item} AS BIGINT)
             </foreach>
         </if>
     </sql>

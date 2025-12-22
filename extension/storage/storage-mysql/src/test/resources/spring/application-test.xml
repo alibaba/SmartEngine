@@ -21,6 +21,17 @@
         <property name="basePackage" value="com.alibaba.smart.framework.engine.persister.database" />
     </bean>
 
+
+    <!--START Postgresql DATASOURCE-->
+
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value="org.postgresql.Driver"/>
+            <property name="url" value="jdbc:postgresql://localhost:5432/one_piece?charSet=UTF8"/>
+            <property name="username" value="ghj"/>
+        </bean>
+
+    <!--END Postgresql DATASOURCE-->
+
     <!--START MYSQL DATASOURCE-->
 
 <!--    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
@@ -34,10 +45,10 @@
 
     <!--START H2 DATASOURCE-->
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="url" value="jdbc:h2:mem:test;INIT=create schema if not exists test\;runscript from 'src/main/resources/sql/schema-h2-only-for-test.sql'"/>
+<!--    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+<!--        <property name="url" value="jdbc:h2:mem:test;INIT=create schema if not exists test\;runscript from 'src/main/resources/sql/schema-h2-only-for-test.sql'"/>-->
 
-    </bean>
+<!--    </bean>-->
 
 
 <!--    <jdbc:embedded-database id="dataSource" type="H2">-->
@@ -45,6 +56,9 @@
 <!--    </jdbc:embedded-database>-->
 
     <!--END H2 DATASOURCE-->
+
+
+
 
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
