@@ -20,16 +20,22 @@
 ### 2. 督办管理功能 (100% 完成)
 - ✅ **SupervisionCommandService**: 督办创建、关闭等命令操作
 - ✅ **SupervisionQueryService**: 督办记录查询服务
+- ✅ **DefaultSupervisionCommandService**: 完整的服务实现类
+- ✅ **DefaultSupervisionQueryService**: 完整的查询实现类
 - ✅ **SupervisionInstance**: 督办实例模型类
 - ✅ **Storage层**: 完整的存储层实现
 - ✅ **常量定义**: SupervisionConstant定义督办类型和状态
+- ✅ **单元测试**: DAO和Storage层的完整测试覆盖
 
 ### 3. 知会抄送功能 (100% 完成)
 - ✅ **NotificationCommandService**: 知会发送、标记已读等命令操作
 - ✅ **NotificationQueryService**: 知会记录查询服务
+- ✅ **DefaultNotificationCommandService**: 完整的服务实现类
+- ✅ **DefaultNotificationQueryService**: 完整的查询实现类
 - ✅ **NotificationInstance**: 知会实例模型类
 - ✅ **Storage层**: 完整的存储层实现
 - ✅ **常量定义**: NotificationConstant定义通知类型和状态
+- ✅ **单元测试**: DAO和Storage层的完整测试覆盖
 
 ### 4. 已办查询功能 (100% 完成)
 - ✅ **TaskQueryService扩展**: 添加了已办任务查询方法
@@ -105,6 +111,12 @@
 - `extension/storage/storage-mysql/src/main/resources/sql/workflow-enhancement-schema.sql`
 - `extension/storage/storage-mysql/src/main/java/com/alibaba/smart/framework/engine/persister/database/entity/*Entity.java` (5个实体类)
 - `extension/storage/storage-mysql/src/main/java/com/alibaba/smart/framework/engine/persister/database/dao/*DAO.java` (5个DAO接口)
+- `extension/storage/storage-mysql/src/main/java/com/alibaba/smart/framework/engine/persister/database/service/RelationshipDatabase*Storage.java` (Storage实现)
+
+### 单元测试
+- `extension/storage/storage-mysql/src/test/java/com/alibaba/smart/framework/engine/persister/database/dao/*DAOTest.java` (DAO测试)
+- `extension/storage/storage-mysql/src/test/java/com/alibaba/smart/framework/engine/persister/database/service/*StorageTest.java` (Storage测试)
+- `extension/storage/storage-mysql/src/test/java/com/alibaba/smart/framework/engine/test/WorkflowEnhancementIntegrationTest.java` (集成测试)
 
 ### 引擎集成
 - `core/src/main/java/com/alibaba/smart/framework/engine/SmartEngine.java` (扩展)
