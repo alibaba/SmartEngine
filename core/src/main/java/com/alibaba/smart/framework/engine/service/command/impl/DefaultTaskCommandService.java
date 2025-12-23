@@ -266,4 +266,56 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
     public void setProcessEngineConfiguration(ProcessEngineConfiguration processEngineConfiguration) {
         this.processEngineConfiguration = processEngineConfiguration;
     }
+
+    @Override
+    public void transferWithReason(String taskId, String fromUserId, String toUserId, String reason, String tenantId) {
+        // 执行原有的转交逻辑
+        transfer(taskId, fromUserId, toUserId, tenantId);
+        
+        // 记录转交操作
+        // TODO: 实现转交记录的保存逻辑
+        // 这里需要获取TaskTransferRecordDAO并保存记录
+    }
+
+    @Override
+    public ProcessInstance rollbackTask(String taskId, String targetActivityId, String reason, String tenantId) {
+        TaskInstance taskInstance = taskInstanceStorage.find(taskId, tenantId, processEngineConfiguration);
+        
+        if (taskInstance == null) {
+            throw new ValidationException("Task instance not found for taskId: " + taskId);
+        }
+        
+        // 使用ExecutionCommandService的jumpTo方法实现回退
+        ProcessInstance processInstance = processInstanceStorage.findOne(taskInstance.getProcessInstanceId(), tenantId, processEngineConfiguration);
+        
+        // 记录回退操作
+        // TODO: 实现回退记录的保存逻辑
+        
+        return executionCommandService.jumpTo(
+            taskInstance.getProcessInstanceId(), 
+            processInstance.getProcessDefinitionId(),
+            processInstance.getProcessDefinitionVersion(),
+            processInstance.getStatus(),
+            targetActivityId,
+            tenantId
+        );
+    }
+
+    @Override
+    public void addTaskAssigneeCandidateWithReason(String taskId, String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance, String reason) {
+        // 执行原有的加签逻辑
+        addTaskAssigneeCandidate(taskId, tenantId, taskAssigneeCandidateInstance);
+        
+        // 记录加签操作
+        // TODO: 实现加签记录的保存逻辑
+    }
+
+    @Override
+    public void removeTaskAssigneeCandidateWithReason(String taskId, String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance, String reason) {
+        // 执行原有的减签逻辑
+        removeTaskAssigneeCandidate(taskId, tenantId, taskAssigneeCandidateInstance);
+        
+        // 记录减签操作
+        // TODO: 实现减签记录的保存逻辑
+    }
 }

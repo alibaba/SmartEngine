@@ -14,6 +14,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.CompletedTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 
 /**
@@ -103,6 +104,49 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleHook 
     public Long count(TaskInstanceQueryParam taskInstanceQueryParam) {
 
         return taskInstanceStorage.count(taskInstanceQueryParam, processEngineConfiguration);
+    }
+
+    @Override
+    public List<TaskInstance> findCompletedTaskList(CompletedTaskQueryParam param) {
+        // 将CompletedTaskQueryParam转换为TaskInstanceQueryParam
+        TaskInstanceQueryParam taskInstanceQueryParam = convertToTaskInstanceQueryParam(param);
+        taskInstanceQueryParam.setStatus(TaskInstanceConstant.COMPLETED);
+        
+        return taskInstanceStorage.findTaskList(taskInstanceQueryParam, processEngineConfiguration);
+    }
+
+    @Override
+    public Long countCompletedTaskList(CompletedTaskQueryParam param) {
+        // 将CompletedTaskQueryParam转换为TaskInstanceQueryParam
+        TaskInstanceQueryParam taskInstanceQueryParam = convertToTaskInstanceQueryParam(param);
+        taskInstanceQueryParam.setStatus(TaskInstanceConstant.COMPLETED);
+        
+        return taskInstanceStorage.count(taskInstanceQueryParam, processEngineConfiguration);
+    }
+
+    /**
+     * 将CompletedTaskQueryParam转换为TaskInstanceQueryParam
+     */
+    private TaskInstanceQueryParam convertToTaskInstanceQueryParam(CompletedTaskQueryParam param) {
+        TaskInstanceQueryParam taskInstanceQueryParam = new TaskInstanceQueryParam();
+        
+        taskInstanceQueryParam.setTenantId(param.getTenantId());
+        taskInstanceQueryParam.setPageOffset(param.getPageOffset());
+        taskInstanceQueryParam.setPageSize(param.getPageSize());
+        
+        taskInstanceQueryParam.setClaimUserId(param.getClaimUserId());
+        taskInstanceQueryParam.setProcessInstanceIdList(param.getProcessInstanceIdList());
+        taskInstanceQueryParam.setTitle(param.getTitle());
+        taskInstanceQueryParam.setTag(param.getTag());
+        taskInstanceQueryParam.setComment(param.getComment());
+        
+        // 处理流程定义类型
+        if (param.getProcessDefinitionTypes() != null && !param.getProcessDefinitionTypes().isEmpty()) {
+            // 这里简化处理，取第一个类型，实际可能需要扩展TaskInstanceQueryParam支持多个类型
+            taskInstanceQueryParam.setProcessDefinitionType(param.getProcessDefinitionTypes().get(0));
+        }
+        
+        return taskInstanceQueryParam;
     }
 
 

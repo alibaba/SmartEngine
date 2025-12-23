@@ -3,15 +3,19 @@ package com.alibaba.smart.framework.engine;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
+import com.alibaba.smart.framework.engine.service.command.NotificationCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
+import com.alibaba.smart.framework.engine.service.command.SupervisionCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.command.VariableCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
+import com.alibaba.smart.framework.engine.service.query.NotificationQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
+import com.alibaba.smart.framework.engine.service.query.SupervisionQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
@@ -58,6 +62,14 @@ public interface SmartEngine {
     VariableQueryService getVariableQueryService();
 
     TaskAssigneeQueryService getTaskAssigneeQueryService();
+
+    SupervisionCommandService getSupervisionCommandService();
+
+    SupervisionQueryService getSupervisionQueryService();
+
+    NotificationCommandService getNotificationCommandService();
+
+    NotificationQueryService getNotificationQueryService();
 
 
     void init(ProcessEngineConfiguration processEngineConfiguration);

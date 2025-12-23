@@ -6,6 +6,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
+import com.alibaba.smart.framework.engine.service.param.query.CompletedTaskQueryParam;
 
 /**
  * 用户任务查询服务。
@@ -44,5 +45,21 @@ public interface TaskQueryService {
     List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam);
 
     Long count(TaskInstanceQueryParam taskInstanceQueryParam);
+
+    /**
+     * 查询已办任务列表 - 基于现有findList方法扩展
+     * 
+     * @param param 已办任务查询参数
+     * @return 已办任务列表
+     */
+    List<TaskInstance> findCompletedTaskList(CompletedTaskQueryParam param);
+
+    /**
+     * 统计已办任务数量
+     * 
+     * @param param 已办任务查询参数
+     * @return 已办任务数量
+     */
+    Long countCompletedTaskList(CompletedTaskQueryParam param);
 
 }

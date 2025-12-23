@@ -12,15 +12,19 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
+import com.alibaba.smart.framework.engine.service.command.NotificationCommandService;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
 import com.alibaba.smart.framework.engine.service.command.RepositoryCommandService;
+import com.alibaba.smart.framework.engine.service.command.SupervisionCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.service.command.VariableCommandService;
 import com.alibaba.smart.framework.engine.service.query.ActivityQueryService;
 import com.alibaba.smart.framework.engine.service.query.DeploymentQueryService;
 import com.alibaba.smart.framework.engine.service.query.ExecutionQueryService;
+import com.alibaba.smart.framework.engine.service.query.NotificationQueryService;
 import com.alibaba.smart.framework.engine.service.query.ProcessQueryService;
 import com.alibaba.smart.framework.engine.service.query.RepositoryQueryService;
+import com.alibaba.smart.framework.engine.service.query.SupervisionQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
@@ -142,6 +146,26 @@ public class DefaultSmartEngine implements SmartEngine {
     @Override
     public TaskAssigneeQueryService getTaskAssigneeQueryService() {
         return processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE,TaskAssigneeQueryService.class);
+    }
+
+    @Override
+    public SupervisionCommandService getSupervisionCommandService() {
+        return processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE, SupervisionCommandService.class);
+    }
+
+    @Override
+    public SupervisionQueryService getSupervisionQueryService() {
+        return processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE, SupervisionQueryService.class);
+    }
+
+    @Override
+    public NotificationCommandService getNotificationCommandService() {
+        return processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE, NotificationCommandService.class);
+    }
+
+    @Override
+    public NotificationQueryService getNotificationQueryService() {
+        return processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE, NotificationQueryService.class);
     }
 
 }

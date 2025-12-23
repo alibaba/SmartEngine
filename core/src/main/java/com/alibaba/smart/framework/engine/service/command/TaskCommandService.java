@@ -47,4 +47,24 @@ public interface TaskCommandService {
      */
     void addTaskAssigneeCandidate(String taskId,String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance);
 
+    /**
+     * 增强的任务移交，支持原因和时限
+     */
+    void transferWithReason(String taskId, String fromUserId, String toUserId, String reason, String tenantId);
+
+    /**
+     * 任务回退到指定节点
+     */
+    ProcessInstance rollbackTask(String taskId, String targetActivityId, String reason, String tenantId);
+
+    /**
+     * 增强的加签操作，支持操作记录
+     */
+    void addTaskAssigneeCandidateWithReason(String taskId, String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance, String reason);
+
+    /**
+     * 增强的减签操作，支持操作记录
+     */
+    void removeTaskAssigneeCandidateWithReason(String taskId, String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance, String reason);
+
 }
