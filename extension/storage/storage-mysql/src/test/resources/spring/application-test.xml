@@ -26,7 +26,7 @@
 
         <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
             <property name="driverClassName" value="org.postgresql.Driver"/>
-            <property name="url" value="jdbc:postgresql://localhost:5432/one_piece?charSet=UTF8"/>
+            <property name="url" value="jdbc:postgresql://localhost:5432/aura_meta?charSet=UTF8"/>
             <property name="username" value="ghj"/>
         </bean>
 
