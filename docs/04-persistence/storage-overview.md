@@ -23,7 +23,7 @@ SmartEngine 的存储设计核心思想是：
 - `TaskInstanceStorage`
 - `VariableInstanceStorage`
 
-> 这些接口的入参里经常包含 `ProcessEngineConfiguration`，用于拿到 tenantId、idGenerator、instanceAccessor、variablePersister 等上下文能力。
+> 这些接口的入参里经常包含 `ProcessEngineConfiguration`，用于拿到 tenantId、idGenerator、instanceAccessor、variablePersister 等上下文权限。
 
 ---
 

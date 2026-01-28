@@ -2,8 +2,8 @@
 
 SmartEngine 从源码层面把“引擎核心语义”与“存储/集成实现”拆开：
 
-- 核心执行能力在 `core/`（解析、执行模型、行为、服务接口、扩展机制）
-- 存储与增强能力通过 `extension/` 提供（Custom / DataBase / Retry 等）
+- 核心执行权限在 `core/`（解析、执行模型、行为、服务接口、扩展机制）
+- 存储与增强权限通过 `extension/` 提供（Custom / DataBase / Retry 等）
 
 本章说明两种最常见的落地模式，以及它们的边界。
 

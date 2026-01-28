@@ -92,7 +92,7 @@ SmartEngine 在并行处理上引入了：
 - `markDone`：把某个 execution / activity 标记完成（常见于补偿或人工处理）
 - `jumpFrom` / `jumpTo`：流程跳转（见 `03-usage/jump-and-advanced.md`）
 
-这些能力在“异常补偿、人工干预、重跑”场景非常关键，但也意味着你必须：
+这些权限在“异常补偿、人工干预、重跑”场景非常关键，但也意味着你必须：
 
 - 明确幂等（避免重复跳转）
 - 明确数据一致性（尤其是 DataBase 模式下任务/变量）

@@ -39,7 +39,7 @@ SmartEngine 的关键组件：
 - jump：跳过故障节点或跳到修复节点
 - markDone：强制标记完成某分支
 
-这些能力在 `ExecutionCommandService` 中提供（见 `03-usage/jump-and-advanced.md`）。
+这些权限在 `ExecutionCommandService` 中提供（见 `03-usage/jump-and-advanced.md`）。
 
 ---
 

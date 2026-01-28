@@ -97,6 +97,9 @@ public class DefaultProcessQueryService implements ProcessQueryService, LifeCycl
         processInstanceQueryParam.setBizUniqueId(param.getBizUniqueId());
         processInstanceQueryParam.setProcessStartTime(param.getCompleteTimeStart());
         processInstanceQueryParam.setProcessEndTime(param.getCompleteTimeEnd());
+
+        processInstanceQueryParam.setCompleteTimeStart(param.getCompleteTimeStart());
+        processInstanceQueryParam.setCompleteTimeEnd(param.getCompleteTimeEnd());
         
         // 处理流程定义类型
         if (param.getProcessDefinitionTypes() != null && !param.getProcessDefinitionTypes().isEmpty()) {

@@ -36,4 +36,14 @@ public class ProcessInstanceQueryParam extends BaseQueryParam {
      * 查询启动时间在processEndTime之前的流程实例
      */
     private Date processEndTime;
+
+    /**
+     * 完成时间开始
+     */
+    private Date completeTimeStart;
+
+    /**
+     * 完成时间结束
+     */
+    private Date completeTimeEnd;
 }

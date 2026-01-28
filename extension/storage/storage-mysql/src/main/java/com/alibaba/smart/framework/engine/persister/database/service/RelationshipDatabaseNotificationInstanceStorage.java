@@ -79,29 +79,18 @@ public class RelationshipDatabaseNotificationInstanceStorage implements Notifica
                                                           ProcessEngineConfiguration processEngineConfiguration) {
         NotificationInstanceDAO notificationInstanceDAO = (NotificationInstanceDAO) processEngineConfiguration
                 .getInstanceAccessor().access("notificationInstanceDAO");
-        
-        List<NotificationInstanceEntity> notificationInstanceEntityList;
-        
-        if (param.getReceiverUserId() != null) {
-            notificationInstanceEntityList = notificationInstanceDAO
-                    .findByReceiver(param.getReceiverUserId(), param.getReadStatus(), param.getTenantId(),
-                                  param.getPageOffset(), param.getPageSize());
-        } else if (param.getSenderUserId() != null) {
-            notificationInstanceEntityList = notificationInstanceDAO
-                    .findBySender(param.getSenderUserId(), param.getTenantId(),
-                                param.getPageOffset(), param.getPageSize());
-        } else {
-            // 默认查询逻辑，可以根据需要扩展
-            notificationInstanceEntityList = new ArrayList<>();
-        }
-        
+
+        // 使用综合查询方法
+        List<NotificationInstanceEntity> notificationInstanceEntityList = notificationInstanceDAO
+                .findByQuery(param);
+
         List<NotificationInstance> notificationInstanceList = new ArrayList<>(notificationInstanceEntityList.size());
         for (NotificationInstanceEntity notificationInstanceEntity : notificationInstanceEntityList) {
             NotificationInstance notificationInstance = NotificationInstanceBuilder
                     .buildNotificationInstanceFromEntity(notificationInstanceEntity);
             notificationInstanceList.add(notificationInstance);
         }
-        
+
         return notificationInstanceList;
     }
 
@@ -110,18 +99,9 @@ public class RelationshipDatabaseNotificationInstanceStorage implements Notifica
                                   ProcessEngineConfiguration processEngineConfiguration) {
         NotificationInstanceDAO notificationInstanceDAO = (NotificationInstanceDAO) processEngineConfiguration
                 .getInstanceAccessor().access("notificationInstanceDAO");
-        
-        Integer count;
-        
-        if (param.getReceiverUserId() != null) {
-            count = notificationInstanceDAO.countByReceiver(param.getReceiverUserId(), 
-                                                          param.getReadStatus(), param.getTenantId());
-        } else if (param.getSenderUserId() != null) {
-            count = notificationInstanceDAO.countBySender(param.getSenderUserId(), param.getTenantId());
-        } else {
-            count = 0;
-        }
-        
+
+        Integer count = notificationInstanceDAO.countByQuery(param);
+
         return count != null ? count.longValue() : 0L;
     }
 

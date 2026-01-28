@@ -23,15 +23,24 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskInstance;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultTaskTransferRecord;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultAssigneeOperationRecord;
+import com.alibaba.smart.framework.engine.instance.impl.DefaultRollbackRecord;
 import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.TaskTransferRecordStorage;
+import com.alibaba.smart.framework.engine.instance.storage.AssigneeOperationRecordStorage;
+import com.alibaba.smart.framework.engine.instance.storage.RollbackRecordStorage;
+import com.alibaba.smart.framework.engine.instance.storage.SupervisionInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.*;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.TaskCommandService;
 import com.alibaba.smart.framework.engine.util.ObjectUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -41,6 +50,8 @@ import com.alibaba.smart.framework.engine.util.ObjectUtil;
 public class DefaultTaskCommandService implements TaskCommandService, LifeCycleHook ,
     ProcessEngineConfigurationAware {
 
+    private static final Logger logger = LoggerFactory.getLogger(DefaultTaskCommandService.class);
+
     private ProcessInstanceStorage processInstanceStorage;
     private ActivityInstanceStorage activityInstanceStorage;
     private ExecutionInstanceStorage executionInstanceStorage;
@@ -48,6 +59,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
     private ProcessEngineConfiguration processEngineConfiguration;
     private TaskInstanceStorage taskInstanceStorage;
     private TaskAssigneeStorage taskAssigneeStorage;
+    private TaskTransferRecordStorage taskTransferRecordStorage;
+    private AssigneeOperationRecordStorage assigneeOperationRecordStorage;
+    private RollbackRecordStorage rollbackRecordStorage;
 
     @Override
     public void start() {
@@ -59,6 +73,11 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         this.activityInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ActivityInstanceStorage.class);
         this.executionInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,ExecutionInstanceStorage.class);
         this.taskInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON,TaskInstanceStorage.class);
+
+        // Initialize Storage for operation records
+        this.taskTransferRecordStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, TaskTransferRecordStorage.class);
+        this.assigneeOperationRecordStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, AssigneeOperationRecordStorage.class);
+        this.rollbackRecordStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, RollbackRecordStorage.class);
 
     }
 
@@ -78,6 +97,18 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         TaskInstance taskInstance = taskInstanceStorage.find(taskId,tenantId,processEngineConfiguration );
         MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
             request, taskInstanceStorage, processEngineConfiguration);
+
+        // 自动关闭该任务的所有督办
+        try {
+            SupervisionInstanceStorage supervisionStorage = (SupervisionInstanceStorage)
+                processEngineConfiguration.getInstanceAccessor().access("supervisionInstanceStorage");
+            if (supervisionStorage != null) {
+                supervisionStorage.closeSupervisionByTask(taskInstance.getInstanceId(), tenantId, processEngineConfiguration);
+            }
+        } catch (Exception e) {
+            // 记录日志但不影响任务完成
+            logger.warn("Failed to close supervision for task: " + taskId, e);
+        }
 
        return  executionCommandService.signal(taskInstance.getExecutionInstanceId(), request,response);
 
@@ -271,28 +302,48 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
     public void transferWithReason(String taskId, String fromUserId, String toUserId, String reason, String tenantId) {
         // 执行原有的转交逻辑
         transfer(taskId, fromUserId, toUserId, tenantId);
-        
+
         // 记录转交操作
-        // TODO: 实现转交记录的保存逻辑
-        // 这里需要获取TaskTransferRecordDAO并保存记录
+        DefaultTaskTransferRecord record = new DefaultTaskTransferRecord();
+        record.setTaskInstanceId(taskId);
+        record.setFromUserId(fromUserId);
+        record.setToUserId(toUserId);
+        record.setTransferReason(reason);
+        record.setTenantId(tenantId);
+
+        taskTransferRecordStorage.insert(record, processEngineConfiguration);
     }
 
     @Override
     public ProcessInstance rollbackTask(String taskId, String targetActivityId, String reason, String tenantId) {
         TaskInstance taskInstance = taskInstanceStorage.find(taskId, tenantId, processEngineConfiguration);
-        
+
         if (taskInstance == null) {
             throw new ValidationException("Task instance not found for taskId: " + taskId);
         }
-        
-        // 使用ExecutionCommandService的jumpTo方法实现回退
-        ProcessInstance processInstance = processInstanceStorage.findOne(taskInstance.getProcessInstanceId(), tenantId, processEngineConfiguration);
-        
-        // 记录回退操作
-        // TODO: 实现回退记录的保存逻辑
-        
+
+        // 获取流程实例
+        ProcessInstance processInstance = processInstanceStorage.findOne(
+            taskInstance.getProcessInstanceId(), tenantId, processEngineConfiguration);
+
+        String currentActivityId = taskInstance.getProcessDefinitionActivityId();
+
+        // 记录回退操作（在执行回退之前）
+        DefaultRollbackRecord record = new DefaultRollbackRecord();
+        record.setProcessInstanceId(processInstance.getInstanceId());
+        record.setTaskInstanceId(taskInstance.getInstanceId());
+        record.setRollbackType("specific");
+        record.setFromActivityId(currentActivityId);
+        record.setToActivityId(targetActivityId);
+        record.setOperatorUserId(taskInstance.getClaimUserId()); // 使用当前任务处理人作为操作人
+        record.setRollbackReason(reason);
+        record.setTenantId(tenantId);
+
+        rollbackRecordStorage.insert(record, processEngineConfiguration);
+
+        // 执行回退
         return executionCommandService.jumpTo(
-            taskInstance.getProcessInstanceId(), 
+            taskInstance.getProcessInstanceId(),
             processInstance.getProcessDefinitionId(),
             processInstance.getProcessDefinitionVersion(),
             processInstance.getStatus(),
@@ -305,17 +356,45 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
     public void addTaskAssigneeCandidateWithReason(String taskId, String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance, String reason) {
         // 执行原有的加签逻辑
         addTaskAssigneeCandidate(taskId, tenantId, taskAssigneeCandidateInstance);
-        
+
         // 记录加签操作
-        // TODO: 实现加签记录的保存逻辑
+        DefaultAssigneeOperationRecord record = new DefaultAssigneeOperationRecord();
+        record.setTaskInstanceId(taskId);
+
+        // 获取任务实例以获取操作人
+        TaskInstance taskInstance = taskInstanceStorage.find(taskId, tenantId, processEngineConfiguration);
+        if (taskInstance != null) {
+            record.setOperatorUserId(taskInstance.getClaimUserId());
+        }
+
+        record.setOperationType("add_assignee");
+        record.setTargetUserId(taskAssigneeCandidateInstance.getAssigneeId());
+        record.setOperationReason(reason);
+        record.setTenantId(tenantId);
+
+        assigneeOperationRecordStorage.insert(record, processEngineConfiguration);
     }
 
     @Override
     public void removeTaskAssigneeCandidateWithReason(String taskId, String tenantId, TaskAssigneeCandidateInstance taskAssigneeCandidateInstance, String reason) {
         // 执行原有的减签逻辑
         removeTaskAssigneeCandidate(taskId, tenantId, taskAssigneeCandidateInstance);
-        
+
         // 记录减签操作
-        // TODO: 实现减签记录的保存逻辑
+        DefaultAssigneeOperationRecord record = new DefaultAssigneeOperationRecord();
+        record.setTaskInstanceId(taskId);
+
+        // 获取任务实例以获取操作人
+        TaskInstance taskInstance = taskInstanceStorage.find(taskId, tenantId, processEngineConfiguration);
+        if (taskInstance != null) {
+            record.setOperatorUserId(taskInstance.getClaimUserId());
+        }
+
+        record.setOperationType("remove_assignee");
+        record.setTargetUserId(taskAssigneeCandidateInstance.getAssigneeId());
+        record.setOperationReason(reason);
+        record.setTenantId(tenantId);
+
+        assigneeOperationRecordStorage.insert(record, processEngineConfiguration);
     }
 }

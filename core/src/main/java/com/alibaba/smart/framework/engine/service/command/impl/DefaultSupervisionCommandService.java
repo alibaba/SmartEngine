@@ -14,8 +14,11 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
 import com.alibaba.smart.framework.engine.instance.impl.DefaultSupervisionInstance;
 import com.alibaba.smart.framework.engine.instance.storage.SupervisionInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.SupervisionInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.service.command.SupervisionCommandService;
+import com.alibaba.smart.framework.engine.service.command.NotificationCommandService;
 
 /**
  * 督办命令服务默认实现
@@ -27,11 +30,15 @@ public class DefaultSupervisionCommandService implements SupervisionCommandServi
 
     private ProcessEngineConfiguration processEngineConfiguration;
     private SupervisionInstanceStorage supervisionInstanceStorage;
+    private TaskInstanceStorage taskInstanceStorage;
+    private NotificationCommandService notificationCommandService;
 
     @Override
     public void start() {
         AnnotationScanner annotationScanner = this.processEngineConfiguration.getAnnotationScanner();
         this.supervisionInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, SupervisionInstanceStorage.class);
+        this.taskInstanceStorage = annotationScanner.getExtensionPoint(ExtensionConstant.COMMON, TaskInstanceStorage.class);
+        this.notificationCommandService = annotationScanner.getExtensionPoint(ExtensionConstant.SERVICE, NotificationCommandService.class);
     }
 
     @Override
@@ -60,11 +67,47 @@ public class DefaultSupervisionCommandService implements SupervisionCommandServi
             supervisionInstance.setSupervisionType(supervisionType);
             supervisionInstance.setStatus(SupervisionConstant.SupervisionStatus.ACTIVE);
             supervisionInstance.setTenantId(tenantId);
-            
+
             // 设置ID生成器
             processEngineConfiguration.getIdGenerator().generate(supervisionInstance);
-            
-            return supervisionInstanceStorage.insert(supervisionInstance, processEngineConfiguration);
+
+            // 保存督办记录
+            SupervisionInstance result = supervisionInstanceStorage.insert(supervisionInstance, processEngineConfiguration);
+
+            // 新增：提高任务优先级和发送通知
+            if (taskInstanceId != null) {
+                TaskInstance taskInstance = taskInstanceStorage.find(
+                    taskInstanceId,
+                    tenantId,
+                    processEngineConfiguration
+                );
+
+                if (taskInstance != null) {
+                    // 设置processInstanceId
+                    result.setProcessInstanceId(taskInstance.getProcessInstanceId());
+
+                    // 优先级 +1
+                    int newPriority = (taskInstance.getPriority() != null ? taskInstance.getPriority() : 0) + 1;
+                    taskInstance.setPriority(newPriority);
+                    taskInstanceStorage.update(taskInstance, processEngineConfiguration);
+
+                    // 发送督办通知给任务处理人
+                    if (taskInstance.getClaimUserId() != null && notificationCommandService != null) {
+                        notificationCommandService.sendSingleNotification(
+                            taskInstance.getProcessInstanceId(),
+                            taskInstanceId,
+                            supervisorUserId,
+                            taskInstance.getClaimUserId(),
+                            "任务督办通知",
+                            "您的任务被督办，原因：" + reason,
+                            "督办提醒",
+                            tenantId
+                        );
+                    }
+                }
+            }
+
+            return result;
         } catch (Exception e) {
             throw new SupervisionException("Failed to create supervision", e);
         }

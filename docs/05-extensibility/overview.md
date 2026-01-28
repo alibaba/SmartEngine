@@ -1,6 +1,6 @@
 # 扩展点总览：parser / behavior / storage / user integration / lock / executor…
 
-SmartEngine 的二次开发能力主要来自：
+SmartEngine 的二次开发权限主要来自：
 
 1) **ExtensionBinding（注解扩展）**：按 group + bindKey 绑定实现  
 2) **配置注入（ProcessEngineConfiguration）**：把关键组件换成你的实现  
@@ -72,7 +72,7 @@ SmartEngine 的二次开发能力主要来自：
 - `void setPvmActivityTaskFactory(PvmActivityTaskFactory pvmActivityTaskFactory);`
 - `PvmActivityTaskFactory getPvmActivityTaskFactory();`
 
-> 建议阅读 `DefaultProcessEngineConfiguration`，它展示了“引擎默认怎么组装这些能力”。
+> 建议阅读 `DefaultProcessEngineConfiguration`，它展示了“引擎默认怎么组装这些权限”。
 
 ---
 
@@ -102,7 +102,7 @@ SmartEngine 的二次开发能力主要来自：
 - 配置 `InstanceAccessor` 与 `TaskCommandService` 的调用策略
 - 参考：`05-extensibility/user-integration.md`
 
-### 3.5 你想加强并行/异步执行能力
+### 3.5 你想加强并行/异步执行权限
 
 - 配置 `ParallelServiceOrchestration` / ExecutorService poolsMap
 - 理解 `ParallelGatewayUtil` 的属性语义

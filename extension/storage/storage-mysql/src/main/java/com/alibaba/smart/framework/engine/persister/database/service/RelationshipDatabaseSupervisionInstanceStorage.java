@@ -81,10 +81,9 @@ public class RelationshipDatabaseSupervisionInstanceStorage implements Supervisi
         SupervisionInstanceDAO supervisionInstanceDAO = (SupervisionInstanceDAO) processEngineConfiguration
                 .getInstanceAccessor().access("supervisionInstanceDAO");
         
-        // 这里需要根据param构建查询条件，暂时简化实现
+        // 使用综合查询方法
         List<SupervisionInstanceEntity> supervisionInstanceEntityList = supervisionInstanceDAO
-                .findBySupervisor(param.getSupervisorUserId(), param.getTenantId(), 
-                                param.getPageOffset(), param.getPageSize());
+                .findByQuery(param);
         
         List<SupervisionInstance> supervisionInstanceList = new ArrayList<>(supervisionInstanceEntityList.size());
         for (SupervisionInstanceEntity supervisionInstanceEntity : supervisionInstanceEntityList) {
@@ -101,8 +100,8 @@ public class RelationshipDatabaseSupervisionInstanceStorage implements Supervisi
                                 ProcessEngineConfiguration processEngineConfiguration) {
         SupervisionInstanceDAO supervisionInstanceDAO = (SupervisionInstanceDAO) processEngineConfiguration
                 .getInstanceAccessor().access("supervisionInstanceDAO");
-        
-        Integer count = supervisionInstanceDAO.countBySupervisor(param.getSupervisorUserId(), param.getTenantId());
+
+        Integer count = supervisionInstanceDAO.countByQuery(param);
         return count != null ? count.longValue() : 0L;
     }
 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.RollbackRecordDAO">
+
+    <sql id="baseColumn">
+        id, gmt_create, gmt_modified, process_instance_id, task_instance_id,
+        rollback_type, from_activity_id, to_activity_id, operator_user_id,
+        rollback_reason, tenant_id
+    </sql>
+
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.RollbackRecordEntity"
+            keyProperty="id">
+        insert into se_process_rollback_record(<include refid="baseColumn"/>)
+        values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId}, #{taskInstanceId},
+                #{rollbackType}, #{fromActivityId}, #{toActivityId}, #{operatorUserId},
+                #{rollbackReason}, #{tenantId})
+    </insert>
+
+    <update id="update" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.RollbackRecordEntity">
+        update se_process_rollback_record
+        <set>
+            gmt_modified = CURRENT_TIMESTAMP
+            <if test="rollbackReason != null">,rollback_reason = #{rollbackReason}</if>
+        </set>
+        where id = #{id}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </update>
+
+    <select id="select" resultType="com.alibaba.smart.framework.engine.persister.database.entity.RollbackRecordEntity">
+        select <include refid="baseColumn"/>
+        from se_process_rollback_record
+        where id = #{id}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </select>
+
+    <select id="selectByProcessInstanceId" resultType="com.alibaba.smart.framework.engine.persister.database.entity.RollbackRecordEntity">
+        select <include refid="baseColumn"/>
+        from se_process_rollback_record
+        where process_instance_id = #{processInstanceId}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+        order by gmt_create desc
+    </select>
+
+    <delete id="delete">
+        delete from se_process_rollback_record
+        where id = #{id}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </delete>
+
+</mapper>

@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.persister.database.entity.NotificationInstanceEntity;
+import com.alibaba.smart.framework.engine.service.param.query.NotificationQueryParam;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -72,4 +73,14 @@ public interface NotificationInstanceDAO {
      * 删除知会记录
      */
     void delete(@Param("id") Long id, @Param("tenantId") String tenantId);
+
+    /**
+     * 根据查询参数综合查询知会记录
+     */
+    List<NotificationInstanceEntity> findByQuery(NotificationQueryParam param);
+
+    /**
+     * 根据查询参数统计知会记录数量
+     */
+    Integer countByQuery(NotificationQueryParam param);
 }

@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 import java.util.List;
 
 import com.alibaba.smart.framework.engine.persister.database.entity.SupervisionInstanceEntity;
+import com.alibaba.smart.framework.engine.service.param.query.SupervisionQueryParam;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -62,4 +63,14 @@ public interface SupervisionInstanceDAO {
      * 删除督办记录
      */
     void delete(@Param("id") Long id, @Param("tenantId") String tenantId);
+
+    /**
+     * 根据查询参数综合查询督办记录
+     */
+    List<SupervisionInstanceEntity> findByQuery(SupervisionQueryParam param);
+
+    /**
+     * 根据查询参数统计督办记录数量
+     */
+    Integer countByQuery(SupervisionQueryParam param);
 }

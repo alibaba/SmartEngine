@@ -206,6 +206,8 @@
         <if test="processDefinitionActivityId != null">and task.process_definition_activity_id =
             #{processDefinitionActivityId}
         </if>
+        <if test="completeTimeStart != null">and task.complete_time <![CDATA[>=]]> #{completeTimeStart}</if>
+        <if test="completeTimeEnd != null">and task.complete_time <![CDATA[<]]> #{completeTimeEnd}</if>
         <if test="processInstanceIdList != null">
             and task.process_instance_id in
             <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">

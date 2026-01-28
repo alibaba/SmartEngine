@@ -5,7 +5,7 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified, process_definition_id_and_version,process_definition_type,start_user_id,
-        status, parent_process_instance_id,parent_execution_instance_id, reason, biz_unique_id, title,tag,comment,tenant_id
+        status, complete_time, parent_process_instance_id,parent_execution_instance_id, reason, biz_unique_id, title,tag,comment,tenant_id
     </sql>
 
     <insert id="insert"
@@ -14,7 +14,7 @@
         insert into se_process_instance (<include refid="baseColumn"/>)
         values (#{id}, #{gmtCreate}, #{gmtModified},
         #{processDefinitionIdAndVersion},#{processDefinitionType},#{startUserId},
-        #{status}, #{parentProcessInstanceId},#{parentExecutionInstanceId}, #{reason}, #{bizUniqueId}, #{title},
+        #{status}, #{completeTime}, #{parentProcessInstanceId},#{parentExecutionInstanceId}, #{reason}, #{bizUniqueId}, #{title},
         #{tag},#{comment},
         #{tenantId})
     </insert>
@@ -33,6 +33,7 @@
         <set>
             gmt_modified=CURRENT_TIMESTAMP
             <if test="status != null">,status = #{status}</if>
+            <if test="completeTime != null">,complete_time = #{completeTime}</if>
             <if test="parentProcessInstanceId != null">,parent_process_instance_id = #{parentProcessInstanceId}</if>
             <if test="reason != null">,reason = #{reason}</if>
             <if test="tag != null">,tag = #{tag}</if>
@@ -106,6 +107,8 @@
             <if test="bizUniqueId != null">and biz_unique_id = #{bizUniqueId}</if>
             <if test="processStartTime != null">and gmt_create <![CDATA[>=]]> #{processStartTime}</if>
             <if test="processEndTime != null">and gmt_create <![CDATA[<]]> #{processEndTime}</if>
+            <if test="completeTimeStart != null">and complete_time <![CDATA[>=]]> #{completeTimeStart}</if>
+            <if test="completeTimeEnd != null">and complete_time <![CDATA[<]]> #{completeTimeEnd}</if>
             <if test="processInstanceIdList != null">
                 and id in
                 <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">

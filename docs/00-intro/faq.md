@@ -5,7 +5,7 @@
 优先按“你想让引擎负责多少事情”来选：
 
 - 选 **Custom**：你已经有自己的任务/用户/变量/存储体系，或者希望完全控制持久化与事务；SmartEngine 只负责“解析 + 执行 + 并发语义 + 行为扩展”。
-- 选 **DataBase**：你需要一套开箱即用的关系库存储，尤其是 userTask 待办、任务分派、变量持久化、督办/通知等增强能力。
+- 选 **DataBase**：你需要一套开箱即用的关系库存储，尤其是 userTask 待办、任务分派、变量持久化、督办/通知等增强权限。
 
 详见：`02-concepts/modes.md`
 
@@ -60,7 +60,7 @@ SmartEngine 并行网关在运行期会出现多个 ExecutionInstance；join 的
 
 并且 Request/Context 中存在一组“特殊 key”（如 tenantId、task 扩展字段等），见 `RequestMapSpecialKeyConstant`。详见：`03-usage/variables.md`。
 
-## 6. 引擎异常发生后会怎样？有没有重试能力？
+## 6. 引擎异常发生后会怎样？有没有重试权限？
 
 - 引擎层面的异常处理由 `ExceptionProcessor` 统一入口处理（默认 `DefaultExceptionProcessor`）。
 - 仓库提供 retry 扩展模块（`extension/retry/*`），并有 `@Retryable` 注解用于声明最大次数与 delay。

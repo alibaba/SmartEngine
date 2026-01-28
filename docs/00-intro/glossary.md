@@ -14,7 +14,7 @@
 - **ProcessInstance（流程实例）**：一次流程运行的顶层实例。对应 `model/instance/ProcessInstance`，表 `se_process_instance`。
 - **ExecutionInstance（执行实例）**：更细粒度的“token/执行上下文”载体；并行网关分叉后会出现多个活跃 execution。对应 `model/instance/ExecutionInstance`，表 `se_execution_instance`。
 - **ActivityInstance（活动实例）**：某个 BPMN 节点（activity）在运行期的实例化记录。对应 `model/instance/ActivityInstance`，表 `se_activity_instance`。
-- **TaskInstance（任务实例）**：主要对应 userTask 的待办/任务记录（DataBase 模式增强能力）。对应 `model/instance/TaskInstance`，表 `se_task_instance`。
+- **TaskInstance（任务实例）**：主要对应 userTask 的待办/任务记录（DataBase 模式增强权限）。对应 `model/instance/TaskInstance`，表 `se_task_instance`。
 - **TaskAssigneeInstance（任务分派实例）**：任务的处理人/候选人/候选组等分派记录。对应 `model/instance/TaskAssigneeInstance` 等，表 `se_task_assignee_instance`。
 - **VariableInstance（变量实例）**：持久化的流程变量记录。对应 `model/instance/VariableInstance`，表 `se_variable_instance`。
 - **TransitionInstance（流转实例）**：描述从一个节点到另一个节点的流转轨迹（更偏运行期内部）。对应 `model/instance/TransitionInstance`。

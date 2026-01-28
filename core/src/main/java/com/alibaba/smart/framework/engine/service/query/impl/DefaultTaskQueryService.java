@@ -145,7 +145,11 @@ public class DefaultTaskQueryService implements TaskQueryService, LifeCycleHook 
             // 这里简化处理，取第一个类型，实际可能需要扩展TaskInstanceQueryParam支持多个类型
             taskInstanceQueryParam.setProcessDefinitionType(param.getProcessDefinitionTypes().get(0));
         }
-        
+
+        // 映射完成时间范围
+        taskInstanceQueryParam.setCompleteTimeStart(param.getCompleteTimeStart());
+        taskInstanceQueryParam.setCompleteTimeEnd(param.getCompleteTimeEnd());
+
         return taskInstanceQueryParam;
     }
 
