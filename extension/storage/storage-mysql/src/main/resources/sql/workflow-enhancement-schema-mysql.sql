@@ -1,7 +1,9 @@
--- 工作流管理系统增强功能数据库表结构
--- 基于SmartEngine现有表结构设计规范
+-- Workflow enhancement database schema for MySQL
+-- Based on SmartEngine existing table structure design
 
--- 督办记录表
+-- ===========================================
+-- Supervision instance table
+-- ===========================================
 CREATE TABLE `se_supervision_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `gmt_create` datetime(6) NOT NULL COMMENT 'create time',
@@ -15,14 +17,17 @@ CREATE TABLE `se_supervision_instance` (
   `close_time` datetime(6) DEFAULT NULL COMMENT 'close time',
   `tenant_id` varchar(64) DEFAULT NULL COMMENT 'tenant id',
   PRIMARY KEY (`id`),
-  KEY `idx_process_instance_id` (`process_instance_id`),
-  KEY `idx_task_instance_id` (`task_instance_id`),
-  KEY `idx_supervisor_user_id` (`supervisor_user_id`),
-  KEY `idx_status` (`status`),
-  KEY `idx_tenant_id` (`tenant_id`)
-);
+  -- Composite index for findActiveByTaskId (high frequency query)
+  KEY `idx_task_status_tenant` (`task_instance_id`, `status`, `tenant_id`),
+  -- Composite index for findBySupervisor
+  KEY `idx_supervisor_tenant` (`supervisor_user_id`, `tenant_id`),
+  -- Single column index for cross-process queries
+  KEY `idx_process_instance_id` (`process_instance_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Supervision instance table';
 
--- 知会抄送表
+-- ===========================================
+-- Notification instance table
+-- ===========================================
 CREATE TABLE `se_notification_instance` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `gmt_create` datetime(6) NOT NULL COMMENT 'create time',
@@ -38,15 +43,18 @@ CREATE TABLE `se_notification_instance` (
   `read_time` datetime(6) DEFAULT NULL COMMENT 'read time',
   `tenant_id` varchar(64) DEFAULT NULL COMMENT 'tenant id',
   PRIMARY KEY (`id`),
+  -- Composite index for findByReceiver (highest frequency query - user unread messages)
+  KEY `idx_receiver_read_tenant` (`receiver_user_id`, `read_status`, `tenant_id`),
+  -- Composite index for findBySender
+  KEY `idx_sender_tenant` (`sender_user_id`, `tenant_id`),
+  -- Single column indexes for cross-entity queries
   KEY `idx_process_instance_id` (`process_instance_id`),
-  KEY `idx_task_instance_id` (`task_instance_id`),
-  KEY `idx_sender_user_id` (`sender_user_id`),
-  KEY `idx_receiver_user_id` (`receiver_user_id`),
-  KEY `idx_read_status` (`read_status`),
-  KEY `idx_tenant_id` (`tenant_id`)
-);
+  KEY `idx_task_instance_id` (`task_instance_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Notification instance table';
 
--- 任务移交记录表
+-- ===========================================
+-- Task transfer record table
+-- ===========================================
 CREATE TABLE `se_task_transfer_record` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `gmt_create` datetime(6) NOT NULL COMMENT 'create time',
@@ -58,13 +66,16 @@ CREATE TABLE `se_task_transfer_record` (
   `deadline` datetime(6) DEFAULT NULL COMMENT 'processing deadline',
   `tenant_id` varchar(64) DEFAULT NULL COMMENT 'tenant id',
   PRIMARY KEY (`id`),
-  KEY `idx_task_instance_id` (`task_instance_id`),
+  -- Composite index for selectByTaskInstanceId
+  KEY `idx_task_tenant` (`task_instance_id`, `tenant_id`),
+  -- Single column indexes for user queries
   KEY `idx_from_user_id` (`from_user_id`),
-  KEY `idx_to_user_id` (`to_user_id`),
-  KEY `idx_tenant_id` (`tenant_id`)
-);
+  KEY `idx_to_user_id` (`to_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Task transfer record table';
 
--- 加签减签操作记录表
+-- ===========================================
+-- Assignee operation record table
+-- ===========================================
 CREATE TABLE `se_assignee_operation_record` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `gmt_create` datetime(6) NOT NULL COMMENT 'create time',
@@ -76,14 +87,17 @@ CREATE TABLE `se_assignee_operation_record` (
   `operation_reason` varchar(500) DEFAULT NULL COMMENT 'operation reason',
   `tenant_id` varchar(64) DEFAULT NULL COMMENT 'tenant id',
   PRIMARY KEY (`id`),
-  KEY `idx_task_instance_id` (`task_instance_id`),
+  -- Composite index for selectByTaskInstanceId
+  KEY `idx_task_tenant` (`task_instance_id`, `tenant_id`),
+  -- Single column indexes for audit queries
   KEY `idx_operation_type` (`operation_type`),
   KEY `idx_operator_user_id` (`operator_user_id`),
-  KEY `idx_target_user_id` (`target_user_id`),
-  KEY `idx_tenant_id` (`tenant_id`)
-);
+  KEY `idx_target_user_id` (`target_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Assignee operation record table';
 
--- 流程回退记录表
+-- ===========================================
+-- Process rollback record table
+-- ===========================================
 CREATE TABLE `se_process_rollback_record` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `gmt_create` datetime(6) NOT NULL COMMENT 'create time',
@@ -97,9 +111,10 @@ CREATE TABLE `se_process_rollback_record` (
   `rollback_reason` varchar(500) DEFAULT NULL COMMENT 'rollback reason',
   `tenant_id` varchar(64) DEFAULT NULL COMMENT 'tenant id',
   PRIMARY KEY (`id`),
-  KEY `idx_process_instance_id` (`process_instance_id`),
+  -- Composite index for selectByProcessInstanceId
+  KEY `idx_process_tenant` (`process_instance_id`, `tenant_id`),
+  -- Single column indexes for audit queries
   KEY `idx_task_instance_id` (`task_instance_id`),
   KEY `idx_rollback_type` (`rollback_type`),
-  KEY `idx_operator_user_id` (`operator_user_id`),
-  KEY `idx_tenant_id` (`tenant_id`)
-);
+  KEY `idx_operator_user_id` (`operator_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Process rollback record table';

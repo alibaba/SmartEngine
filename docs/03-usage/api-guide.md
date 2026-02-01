@@ -210,10 +210,122 @@ SmartEngine 的 API 设计允许你在上层实现幂等（尤其是 start / sig
 
 ## 5. 事务边界建议
 
-- Custom 模式：推荐把引擎推进与业务写入放在同一事务（你掌控存储接口）
-- DataBase 模式：推荐用 Spring 事务包裹“引擎调用 + 业务写入”，并明确：
+SmartEngine 作为 SDK，**不在内部强制事务控制**，事务边界由调用方决定。这种设计提供了最大的灵活性，但需要调用方正确使用事务。
+
+### 5.1 基本原则
+
+- **Custom 模式**：推荐把引擎推进与业务写入放在同一事务（你掌控存储接口）
+- **DataBase 模式**：推荐用 Spring 事务包裹"引擎调用 + 业务写入"，并明确：
   - 引擎写入失败时整体回滚
-  - 业务写入失败时引擎回滚（避免产生“孤儿流程实例/任务”）
+  - 业务写入失败时引擎回滚（避免产生"孤儿流程实例/任务"）
+
+### 5.2 需要事务保护的关键方法
+
+以下方法涉及**多个数据库操作**，调用方**必须**在事务上下文中使用，否则可能导致数据不一致：
+
+| 方法 | 内部操作 | 不加事务的风险 |
+|------|---------|---------------|
+| `SupervisionCommandService.createSupervision()` | 插入督办记录 → 更新任务优先级 → 发送通知 | 督办创建成功但优先级未更新 |
+| `TaskCommandService.complete()` | 标记任务完成 → 关闭督办 → 触发流程执行 | 任务完成但流程未继续 |
+| `TaskCommandService.rollbackTask()` | 记录回退 → 执行跳转 | 回退记录存在但流程未回退 |
+| `TaskCommandService.transferWithReason()` | 执行转交 → 记录操作 | 转交成功但无记录 |
+| `ProcessCommandService.start()` | 创建流程实例 → 创建执行实例 → 创建任务 | 孤儿流程实例 |
+
+### 5.3 正确用法示例
+
+```java
+@Service
+public class WorkflowFacade {
+
+    @Autowired
+    private SmartEngine smartEngine;
+
+    /**
+     * 创建督办 - 必须在事务中调用
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public SupervisionInstance createSupervision(String taskId, String supervisorId,
+                                                  String reason, String type, String tenantId) {
+        return smartEngine.getSupervisionCommandService()
+            .createSupervision(taskId, supervisorId, reason, type, tenantId);
+    }
+
+    /**
+     * 完成任务 - 必须在事务中调用
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ProcessInstance completeTask(String taskId, Map<String, Object> request) {
+        // 业务校验
+        validateBusinessRules(taskId);
+
+        // 引擎操作（会自动加入当前事务）
+        ProcessInstance result = smartEngine.getTaskCommandService().complete(taskId, request);
+
+        // 业务后处理
+        postProcessCompletion(result);
+
+        return result;
+    }
+
+    /**
+     * 组合操作 - 多个引擎调用在同一事务中
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void submitWithSupervision(String taskId, String supervisorId,
+                                      Map<String, Object> request) {
+        // 先创建督办
+        smartEngine.getSupervisionCommandService()
+            .createSupervision(taskId, supervisorId, "紧急处理", "urge", getTenantId());
+
+        // 再完成任务
+        smartEngine.getTaskCommandService().complete(taskId, request);
+
+        // 如果任一步骤失败，整体回滚
+    }
+}
+```
+
+### 5.4 事务传播行为
+
+SmartEngine 内部的数据库操作会**自动参与调用方的事务**（Spring 事务传播默认是 `REQUIRED`）：
+
+```
+调用方事务
+├── smartEngine.createSupervision()
+│   ├── INSERT supervision_instance  ← 参与外部事务
+│   ├── UPDATE task_instance         ← 参与外部事务
+│   └── INSERT notification_instance ← 参与外部事务
+└── 其他业务操作
+```
+
+如果调用方未开启事务，每个数据库操作将**独立提交**，无法保证原子性。
+
+### 5.5 Spring 事务配置示例
+
+```xml
+<!-- Spring 事务管理器配置 -->
+<bean id="transactionManager"
+      class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource"/>
+</bean>
+
+<!-- 启用注解事务 -->
+<tx:annotation-driven transaction-manager="transactionManager"/>
+```
+
+或使用 Java 配置：
+
+```java
+@Configuration
+@EnableTransactionManagement
+public class TransactionConfig {
+
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
+}
+```
 
 详见：`04-persistence/storage-overview.md`
 

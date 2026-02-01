@@ -3,12 +3,14 @@ package com.alibaba.smart.framework.engine.service.param.query;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.IdConverter;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 知会通知查询参数
- * 
+ * Notification query parameter.
+ *
  * @author SmartEngine Team
  */
 @Data
@@ -16,42 +18,64 @@ import lombok.EqualsAndHashCode;
 public class NotificationQueryParam extends BaseQueryParam {
 
     /**
-     * 发送人用户ID
+     * Sender user ID
      */
     private String senderUserId;
 
     /**
-     * 接收人用户ID
+     * Receiver user ID
      */
     private String receiverUserId;
 
     /**
-     * 流程实例ID列表
+     * Process instance ID list (String type for API compatibility)
      */
     private List<String> processInstanceIdList;
 
     /**
-     * 任务实例ID列表
+     * Task instance ID list (String type for API compatibility)
      */
     private List<String> taskInstanceIdList;
 
     /**
-     * 通知类型
+     * Notification type
      */
     private String notificationType;
 
     /**
-     * 读取状态
+     * Read status
      */
     private String readStatus;
 
     /**
-     * 通知开始时间
+     * Notification start time
      */
     private Date notificationStartTime;
 
     /**
-     * 通知结束时间
+     * Notification end time
      */
     private Date notificationEndTime;
+
+    // ============ Long type getters for MyBatis (avoid CAST in SQL) ============
+
+    /**
+     * Get task instance ID list as Long type.
+     * Used by MyBatis to avoid CAST operation in SQL.
+     *
+     * @return Long type ID list, or null if source is null
+     */
+    public List<Long> getTaskInstanceIdListAsLong() {
+        return IdConverter.toLongList(taskInstanceIdList);
+    }
+
+    /**
+     * Get process instance ID list as Long type.
+     * Used by MyBatis to avoid CAST operation in SQL.
+     *
+     * @return Long type ID list, or null if source is null
+     */
+    public List<Long> getProcessInstanceIdListAsLong() {
+        return IdConverter.toLongList(processInstanceIdList);
+    }
 }

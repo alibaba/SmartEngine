@@ -28,6 +28,14 @@ import com.alibaba.smart.framework.engine.service.query.SupervisionQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
+import com.alibaba.smart.framework.engine.query.NotificationQuery;
+import com.alibaba.smart.framework.engine.query.ProcessInstanceQuery;
+import com.alibaba.smart.framework.engine.query.SupervisionQuery;
+import com.alibaba.smart.framework.engine.query.TaskQuery;
+import com.alibaba.smart.framework.engine.query.impl.NotificationQueryImpl;
+import com.alibaba.smart.framework.engine.query.impl.ProcessInstanceQueryImpl;
+import com.alibaba.smart.framework.engine.query.impl.SupervisionQueryImpl;
+import com.alibaba.smart.framework.engine.query.impl.TaskQueryImpl;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -166,6 +174,28 @@ public class DefaultSmartEngine implements SmartEngine {
     @Override
     public NotificationQueryService getNotificationQueryService() {
         return processEngineConfiguration.getAnnotationScanner().getExtensionPoint(ExtensionConstant.SERVICE, NotificationQueryService.class);
+    }
+
+    // ============ Fluent Query API ============
+
+    @Override
+    public TaskQuery createTaskQuery() {
+        return new TaskQueryImpl(processEngineConfiguration);
+    }
+
+    @Override
+    public ProcessInstanceQuery createProcessQuery() {
+        return new ProcessInstanceQueryImpl(processEngineConfiguration);
+    }
+
+    @Override
+    public SupervisionQuery createSupervisionQuery() {
+        return new SupervisionQueryImpl(processEngineConfiguration);
+    }
+
+    @Override
+    public NotificationQuery createNotificationQuery() {
+        return new NotificationQueryImpl(processEngineConfiguration);
     }
 
 }

@@ -152,10 +152,11 @@
 
     <sql id="pending_where_condition">
         <if test="processDefinitionType != null">and task.process_definition_type = #{processDefinitionType}</if>
+        <!-- Note: TaskInstanceQueryByAssigneeParam.processInstanceIdList is already List<Long> -->
         <if test="processInstanceIdList != null">
             and task.process_instance_id in
             <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
-                CAST(#{item} AS BIGINT)
+                #{item}
             </foreach>
         </if>
     </sql>
@@ -172,7 +173,7 @@
 
         <include refid="where_condition"/>
 
-        order by task.gmt_modified desc
+        <include refid="order_by"/>
         <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
 
     </select>
@@ -202,18 +203,33 @@
         <if test="priority != null">and task.priority = #{priority}</if>
         <if test="comment != null">and task.comment = #{comment}</if>
 
-        <if test="activityInstanceId != null">and task.activity_instance_id = CAST(#{activityInstanceId} AS BIGINT) </if>
+        <if test="activityInstanceIdAsLong != null">and task.activity_instance_id = #{activityInstanceIdAsLong} </if>
         <if test="processDefinitionActivityId != null">and task.process_definition_activity_id =
             #{processDefinitionActivityId}
         </if>
         <if test="completeTimeStart != null">and task.complete_time <![CDATA[>=]]> #{completeTimeStart}</if>
         <if test="completeTimeEnd != null">and task.complete_time <![CDATA[<]]> #{completeTimeEnd}</if>
-        <if test="processInstanceIdList != null">
+        <if test="processInstanceIdListAsLong != null">
             and task.process_instance_id in
-            <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
-                CAST(#{item} AS BIGINT)
+            <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdListAsLong">
+                #{item}
             </foreach>
         </if>
+    </sql>
+
+    <!-- Dynamic order by support for fluent query API -->
+    <sql id="order_by">
+        <choose>
+            <when test="orderBySpecs != null and orderBySpecs.size() > 0">
+                ORDER BY
+                <foreach item="spec" collection="orderBySpecs" separator=",">
+                    task.${spec.columnName} ${spec.directionSql}
+                </foreach>
+            </when>
+            <otherwise>
+                ORDER BY task.gmt_modified DESC
+            </otherwise>
+        </choose>
     </sql>
 
 </mapper>

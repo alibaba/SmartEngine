@@ -3,12 +3,14 @@ package com.alibaba.smart.framework.engine.service.param.query;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.smart.framework.engine.common.util.IdConverter;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 督办查询参数
- * 
+ * Supervision query parameter.
+ *
  * @author SmartEngine Team
  */
 @Data
@@ -16,37 +18,59 @@ import lombok.EqualsAndHashCode;
 public class SupervisionQueryParam extends BaseQueryParam {
 
     /**
-     * 督办人用户ID
+     * Supervisor user ID
      */
     private String supervisorUserId;
 
     /**
-     * 任务实例ID列表
+     * Task instance ID list (String type for API compatibility)
      */
     private List<String> taskInstanceIdList;
 
     /**
-     * 流程实例ID列表
+     * Process instance ID list (String type for API compatibility)
      */
     private List<String> processInstanceIdList;
 
     /**
-     * 督办类型
+     * Supervision type
      */
     private String supervisionType;
 
     /**
-     * 督办状态
+     * Supervision status
      */
     private String status;
 
     /**
-     * 督办开始时间
+     * Supervision start time
      */
     private Date supervisionStartTime;
 
     /**
-     * 督办结束时间
+     * Supervision end time
      */
     private Date supervisionEndTime;
+
+    // ============ Long type getters for MyBatis (avoid CAST in SQL) ============
+
+    /**
+     * Get task instance ID list as Long type.
+     * Used by MyBatis to avoid CAST operation in SQL.
+     *
+     * @return Long type ID list, or null if source is null
+     */
+    public List<Long> getTaskInstanceIdListAsLong() {
+        return IdConverter.toLongList(taskInstanceIdList);
+    }
+
+    /**
+     * Get process instance ID list as Long type.
+     * Used by MyBatis to avoid CAST operation in SQL.
+     *
+     * @return Long type ID list, or null if source is null
+     */
+    public List<Long> getProcessInstanceIdListAsLong() {
+        return IdConverter.toLongList(processInstanceIdList);
+    }
 }

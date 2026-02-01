@@ -4,20 +4,22 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.persister.database.entity.RollbackRecordEntity;
 
+import org.apache.ibatis.annotations.Param;
+
 /**
- * 流程回退记录DAO接口
- * 
+ * RollbackRecordDAO interface
+ *
  * @author SmartEngine Team
  */
 public interface RollbackRecordDAO {
 
     void insert(RollbackRecordEntity entity);
 
-    RollbackRecordEntity select(Long id, String tenantId);
+    RollbackRecordEntity select(@Param("id") Long id, @Param("tenantId") String tenantId);
 
-    List<RollbackRecordEntity> selectByProcessInstanceId(Long processInstanceId, String tenantId);
+    List<RollbackRecordEntity> selectByProcessInstanceId(@Param("processInstanceId") Long processInstanceId, @Param("tenantId") String tenantId);
 
     void update(RollbackRecordEntity entity);
 
-    void delete(Long id, String tenantId);
+    void delete(@Param("id") Long id, @Param("tenantId") String tenantId);
 }

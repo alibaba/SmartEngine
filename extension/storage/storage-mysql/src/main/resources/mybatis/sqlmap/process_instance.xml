@@ -81,7 +81,7 @@
         <include refid="baseColumn"/>
         from se_process_instance
         <include refid="condition"/>
-        order by gmt_modified desc
+        <include refid="order_by"/>
         <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
 
     </select>
@@ -103,19 +103,34 @@
             </if>
             <if test="status != null">and status = #{status}</if>
             <if test="startUserId != null">and start_user_id = #{startUserId}</if>
-            <if test="parentInstanceId != null">and parent_process_instance_id = CAST(#{parentInstanceId} AS BIGINT)</if>
+            <if test="parentInstanceIdAsLong != null">and parent_process_instance_id = #{parentInstanceIdAsLong}</if>
             <if test="bizUniqueId != null">and biz_unique_id = #{bizUniqueId}</if>
             <if test="processStartTime != null">and gmt_create <![CDATA[>=]]> #{processStartTime}</if>
             <if test="processEndTime != null">and gmt_create <![CDATA[<]]> #{processEndTime}</if>
             <if test="completeTimeStart != null">and complete_time <![CDATA[>=]]> #{completeTimeStart}</if>
             <if test="completeTimeEnd != null">and complete_time <![CDATA[<]]> #{completeTimeEnd}</if>
-            <if test="processInstanceIdList != null">
+            <if test="processInstanceIdListAsLong != null">
                 and id in
-                <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
-                           CAST(#{item} AS BIGINT)
+                <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdListAsLong">
+                    #{item}
                 </foreach>
             </if>
         </where>
+    </sql>
+
+    <!-- Dynamic order by support for fluent query API -->
+    <sql id="order_by">
+        <choose>
+            <when test="orderBySpecs != null and orderBySpecs.size() > 0">
+                ORDER BY
+                <foreach item="spec" collection="orderBySpecs" separator=",">
+                    ${spec.columnName} ${spec.directionSql}
+                </foreach>
+            </when>
+            <otherwise>
+                ORDER BY gmt_modified DESC
+            </otherwise>
+        </choose>
     </sql>
 
 

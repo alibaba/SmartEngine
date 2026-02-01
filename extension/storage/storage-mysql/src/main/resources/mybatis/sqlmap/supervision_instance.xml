@@ -14,16 +14,16 @@
             <if test="supervisorUserId != null"> and supervisor_user_id = #{supervisorUserId} </if>
             <if test="status != null"> and status = #{status} </if>
             <if test="supervisionType != null"> and supervision_type = #{supervisionType} </if>
-            <if test="taskInstanceIdList != null">
+            <if test="taskInstanceIdListAsLong != null">
                 and task_instance_id in
-                <foreach item="item" index="index" separator="," open="(" close=")" collection="taskInstanceIdList">
-                    CAST(#{item} AS BIGINT)
+                <foreach item="item" index="index" separator="," open="(" close=")" collection="taskInstanceIdListAsLong">
+                    #{item}
                 </foreach>
             </if>
-            <if test="processInstanceIdList != null">
+            <if test="processInstanceIdListAsLong != null">
                 and process_instance_id in
-                <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
-                    CAST(#{item} AS BIGINT)
+                <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdListAsLong">
+                    #{item}
                 </foreach>
             </if>
             <if test="supervisionStartTime != null">and gmt_create <![CDATA[>=]]> #{supervisionStartTime}</if>
@@ -116,7 +116,7 @@
         select <include refid="baseColumn"/>
         from se_supervision_instance
         <include refid="query_condition"/>
-        order by gmt_create desc
+        <include refid="order_by"/>
         <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
     </select>
 
@@ -126,5 +126,20 @@
         from se_supervision_instance
         <include refid="query_condition"/>
     </select>
+
+    <!-- Dynamic order by support for fluent query API -->
+    <sql id="order_by">
+        <choose>
+            <when test="orderBySpecs != null and orderBySpecs.size() > 0">
+                ORDER BY
+                <foreach item="spec" collection="orderBySpecs" separator=",">
+                    ${spec.columnName} ${spec.directionSql}
+                </foreach>
+            </when>
+            <otherwise>
+                ORDER BY gmt_create DESC
+            </otherwise>
+        </choose>
+    </sql>
 
 </mapper>

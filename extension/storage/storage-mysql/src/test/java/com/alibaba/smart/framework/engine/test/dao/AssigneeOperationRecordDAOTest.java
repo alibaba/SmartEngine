@@ -1,195 +1,167 @@
 package com.alibaba.smart.framework.engine.test.dao;
 
+import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.persister.database.dao.AssigneeOperationRecordDAO;
+import com.alibaba.smart.framework.engine.persister.database.dao.BaseElementTest;
 import com.alibaba.smart.framework.engine.persister.database.entity.AssigneeOperationRecordEntity;
-import com.alibaba.smart.framework.engine.test.DatabaseBaseTestCase;
+import lombok.Setter;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 /**
- * AssigneeOperationRecordDAO单元测试
+ * AssigneeOperationRecordDAO unit test
  *
  * @author SmartEngine Team
  */
-@ContextConfiguration("/spring/application-test.xml")
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
-public class AssigneeOperationRecordDAOTest extends DatabaseBaseTestCase {
+public class AssigneeOperationRecordDAOTest extends BaseElementTest {
 
-    @Autowired
+    @Setter(onMethod = @__({@Autowired}))
     private AssigneeOperationRecordDAO assigneeOperationRecordDAO;
 
-    @Test
-    public void testInsertAndSelect() {
-        // 创建加签记录
-        AssigneeOperationRecordEntity entity = new AssigneeOperationRecordEntity();
-        entity.setGmtCreate(new Date());
-        entity.setGmtModified(new Date());
-        entity.setTaskInstanceId(22345L);
+    private static final String TENANT_ID = "-3";
+    private static final Long TASK_INSTANCE_ID = 22345L;
+
+    private AssigneeOperationRecordEntity entity;
+
+    @Before
+    public void before() {
+        entity = new AssigneeOperationRecordEntity();
+        entity.setId(3001L);
+        entity.setGmtCreate(DateUtil.getCurrentDate());
+        entity.setGmtModified(DateUtil.getCurrentDate());
+        entity.setTaskInstanceId(TASK_INSTANCE_ID);
         entity.setOperationType("add_assignee");
         entity.setOperatorUserId("manager001");
         entity.setTargetUserId("user011");
-        entity.setOperationReason("需要增加技术专家进行审核");
-        entity.setTenantId("tenant001");
-
-        // 插入记录
-        assigneeOperationRecordDAO.insert(entity);
-        assertNotNull("ID should be auto-generated", entity.getId());
-
-        // 查询记录
-        AssigneeOperationRecordEntity retrieved = assigneeOperationRecordDAO.select(entity.getId(), "tenant001");
-        assertNotNull("Retrieved entity should not be null", retrieved);
-        assertEquals("Task instance ID should match", Long.valueOf(22345L), retrieved.getTaskInstanceId());
-        assertEquals("Operation type should match", "add_assignee", retrieved.getOperationType());
-        assertEquals("Operator user ID should match", "manager001", retrieved.getOperatorUserId());
-        assertEquals("Target user ID should match", "user011", retrieved.getTargetUserId());
-        assertEquals("Operation reason should match", "需要增加技术专家进行审核", retrieved.getOperationReason());
+        entity.setOperationReason("Need to add technical expert for review");
+        entity.setTenantId(TENANT_ID);
     }
 
     @Test
-    public void testUpdate() {
-        // 插入初始记录
-        AssigneeOperationRecordEntity entity = new AssigneeOperationRecordEntity();
-        entity.setGmtCreate(new Date());
-        entity.setGmtModified(new Date());
-        entity.setTaskInstanceId(22346L);
-        entity.setOperationType("remove_assignee");
-        entity.setOperatorUserId("manager002");
-        entity.setTargetUserId("user012");
-        entity.setOperationReason("初始原因");
-        entity.setTenantId("tenant001");
+    public void testInsertAndSelect() {
+        assigneeOperationRecordDAO.insert(entity);
+        Assert.assertNotNull(entity.getId());
+
+        AssigneeOperationRecordEntity retrieved = assigneeOperationRecordDAO.select(entity.getId(), TENANT_ID);
+        Assert.assertNotNull("Retrieved entity should not be null", retrieved);
+        Assert.assertEquals("Task instance ID should match", TASK_INSTANCE_ID, retrieved.getTaskInstanceId());
+        Assert.assertEquals("Operation type should match", "add_assignee", retrieved.getOperationType());
+        Assert.assertEquals("Operator user ID should match", "manager001", retrieved.getOperatorUserId());
+        Assert.assertEquals("Target user ID should match", "user011", retrieved.getTargetUserId());
+    }
+
+    @Test
+    public void testOperationTypeValidation() {
+        // Test add_assignee operation
         assigneeOperationRecordDAO.insert(entity);
 
-        // 更新记录
-        entity.setOperationReason("更新后的减签原因：该人员已离职");
-        assigneeOperationRecordDAO.update(entity);
+        AssigneeOperationRecordEntity retrieved = assigneeOperationRecordDAO.select(entity.getId(), TENANT_ID);
+        Assert.assertEquals("Operation type should be add_assignee", "add_assignee", retrieved.getOperationType());
 
-        // 验证更新
-        AssigneeOperationRecordEntity retrieved = assigneeOperationRecordDAO.select(entity.getId(), "tenant001");
-        assertEquals("Operation reason should be updated", "更新后的减签原因：该人员已离职", retrieved.getOperationReason());
+        // Test remove_assignee operation
+        AssigneeOperationRecordEntity removeEntity = new AssigneeOperationRecordEntity();
+        removeEntity.setId(3002L);
+        removeEntity.setGmtCreate(DateUtil.getCurrentDate());
+        removeEntity.setGmtModified(DateUtil.getCurrentDate());
+        removeEntity.setTaskInstanceId(TASK_INSTANCE_ID);
+        removeEntity.setOperationType("remove_assignee");
+        removeEntity.setOperatorUserId("manager005");
+        removeEntity.setTargetUserId("user016");
+        removeEntity.setOperationReason("Remove assignee test");
+        removeEntity.setTenantId(TENANT_ID);
+        assigneeOperationRecordDAO.insert(removeEntity);
+
+        AssigneeOperationRecordEntity retrieved2 = assigneeOperationRecordDAO.select(removeEntity.getId(), TENANT_ID);
+        Assert.assertEquals("Operation type should be remove_assignee", "remove_assignee", retrieved2.getOperationType());
+    }
+
+    @Test
+    public void testDelete() {
+        assigneeOperationRecordDAO.insert(entity);
+
+        AssigneeOperationRecordEntity retrieved = assigneeOperationRecordDAO.select(entity.getId(), TENANT_ID);
+        Assert.assertNotNull("Record should exist before delete", retrieved);
+
+        assigneeOperationRecordDAO.delete(entity.getId(), TENANT_ID);
+
+        retrieved = assigneeOperationRecordDAO.select(entity.getId(), TENANT_ID);
+        Assert.assertNull("Record should be deleted", retrieved);
     }
 
     @Test
     public void testSelectByTaskInstanceId() {
-        Long taskInstanceId = 22347L;
-        String tenantId = "tenant001";
+        Long taskId = 22347L;
 
-        // 插入加签记录
+        // Insert add_assignee record 1
         AssigneeOperationRecordEntity addEntity1 = new AssigneeOperationRecordEntity();
-        addEntity1.setGmtCreate(new Date());
-        addEntity1.setGmtModified(new Date());
-        addEntity1.setTaskInstanceId(taskInstanceId);
+        addEntity1.setId(3003L);
+        addEntity1.setGmtCreate(DateUtil.getCurrentDate());
+        addEntity1.setGmtModified(DateUtil.getCurrentDate());
+        addEntity1.setTaskInstanceId(taskId);
         addEntity1.setOperationType("add_assignee");
         addEntity1.setOperatorUserId("manager003");
         addEntity1.setTargetUserId("user013");
-        addEntity1.setOperationReason("加签原因1");
-        addEntity1.setTenantId(tenantId);
+        addEntity1.setOperationReason("Add reason 1");
+        addEntity1.setTenantId(TENANT_ID);
         assigneeOperationRecordDAO.insert(addEntity1);
 
-        // 插入第二条加签记录
+        // Insert add_assignee record 2
         AssigneeOperationRecordEntity addEntity2 = new AssigneeOperationRecordEntity();
-        addEntity2.setGmtCreate(new Date());
-        addEntity2.setGmtModified(new Date());
-        addEntity2.setTaskInstanceId(taskInstanceId);
+        addEntity2.setId(3004L);
+        addEntity2.setGmtCreate(DateUtil.getCurrentDate());
+        addEntity2.setGmtModified(DateUtil.getCurrentDate());
+        addEntity2.setTaskInstanceId(taskId);
         addEntity2.setOperationType("add_assignee");
         addEntity2.setOperatorUserId("manager003");
         addEntity2.setTargetUserId("user014");
-        addEntity2.setOperationReason("加签原因2");
-        addEntity2.setTenantId(tenantId);
+        addEntity2.setOperationReason("Add reason 2");
+        addEntity2.setTenantId(TENANT_ID);
         assigneeOperationRecordDAO.insert(addEntity2);
 
-        // 插入减签记录
+        // Insert remove_assignee record
         AssigneeOperationRecordEntity removeEntity = new AssigneeOperationRecordEntity();
-        removeEntity.setGmtCreate(new Date());
-        removeEntity.setGmtModified(new Date());
-        removeEntity.setTaskInstanceId(taskInstanceId);
+        removeEntity.setId(3005L);
+        removeEntity.setGmtCreate(DateUtil.getCurrentDate());
+        removeEntity.setGmtModified(DateUtil.getCurrentDate());
+        removeEntity.setTaskInstanceId(taskId);
         removeEntity.setOperationType("remove_assignee");
         removeEntity.setOperatorUserId("manager003");
         removeEntity.setTargetUserId("user013");
-        removeEntity.setOperationReason("减签原因");
-        removeEntity.setTenantId(tenantId);
+        removeEntity.setOperationReason("Remove reason");
+        removeEntity.setTenantId(TENANT_ID);
         assigneeOperationRecordDAO.insert(removeEntity);
 
-        // 查询任务的所有加签减签记录
-        List<AssigneeOperationRecordEntity> records = assigneeOperationRecordDAO.selectByTaskInstanceId(taskInstanceId, tenantId);
-        assertNotNull("Records should not be null", records);
-        assertEquals("Should have 3 operation records", 3, records.size());
+        // Query all operation records for task
+        List<AssigneeOperationRecordEntity> records = assigneeOperationRecordDAO.selectByTaskInstanceId(taskId, TENANT_ID);
+        Assert.assertNotNull("Records should not be null", records);
+        Assert.assertEquals("Should have 3 operation records", 3, records.size());
 
-        // 验证包含不同类型的操作
+        // Verify operation types
         long addCount = records.stream()
             .filter(r -> "add_assignee".equals(r.getOperationType()))
             .count();
         long removeCount = records.stream()
             .filter(r -> "remove_assignee".equals(r.getOperationType()))
             .count();
-        assertEquals("Should have 2 add operations", 2, addCount);
-        assertEquals("Should have 1 remove operation", 1, removeCount);
+        Assert.assertEquals("Should have 2 add operations", 2, addCount);
+        Assert.assertEquals("Should have 1 remove operation", 1, removeCount);
     }
 
     @Test
-    public void testDelete() {
-        // 插入记录
-        AssigneeOperationRecordEntity entity = new AssigneeOperationRecordEntity();
-        entity.setGmtCreate(new Date());
-        entity.setGmtModified(new Date());
-        entity.setTaskInstanceId(22348L);
-        entity.setOperationType("add_assignee");
-        entity.setOperatorUserId("manager004");
-        entity.setTargetUserId("user015");
-        entity.setOperationReason("待删除的记录");
-        entity.setTenantId("tenant001");
+    public void testUpdate() {
         assigneeOperationRecordDAO.insert(entity);
 
-        Long recordId = entity.getId();
-        assertNotNull("Record ID should exist", recordId);
+        AssigneeOperationRecordEntity retrieved = assigneeOperationRecordDAO.select(entity.getId(), TENANT_ID);
+        Assert.assertEquals("Need to add technical expert for review", retrieved.getOperationReason());
 
-        // 删除记录
-        assigneeOperationRecordDAO.delete(recordId, "tenant001");
+        entity.setOperationReason("Updated reason: employee has left");
+        assigneeOperationRecordDAO.update(entity);
 
-        // 验证已删除
-        AssigneeOperationRecordEntity retrieved = assigneeOperationRecordDAO.select(recordId, "tenant001");
-        assertNull("Record should be deleted", retrieved);
-    }
-
-    @Test
-    public void testOperationTypeValidation() {
-        // 测试加签操作
-        AssigneeOperationRecordEntity addEntity = new AssigneeOperationRecordEntity();
-        addEntity.setGmtCreate(new Date());
-        addEntity.setGmtModified(new Date());
-        addEntity.setTaskInstanceId(22349L);
-        addEntity.setOperationType("add_assignee");
-        addEntity.setOperatorUserId("manager005");
-        addEntity.setTargetUserId("user016");
-        addEntity.setOperationReason("加签测试");
-        addEntity.setTenantId("tenant001");
-        assigneeOperationRecordDAO.insert(addEntity);
-
-        AssigneeOperationRecordEntity retrieved = assigneeOperationRecordDAO.select(addEntity.getId(), "tenant001");
-        assertEquals("Operation type should be add_assignee", "add_assignee", retrieved.getOperationType());
-
-        // 测试减签操作
-        AssigneeOperationRecordEntity removeEntity = new AssigneeOperationRecordEntity();
-        removeEntity.setGmtCreate(new Date());
-        removeEntity.setGmtModified(new Date());
-        removeEntity.setTaskInstanceId(22349L);
-        removeEntity.setOperationType("remove_assignee");
-        removeEntity.setOperatorUserId("manager005");
-        removeEntity.setTargetUserId("user016");
-        removeEntity.setOperationReason("减签测试");
-        removeEntity.setTenantId("tenant001");
-        assigneeOperationRecordDAO.insert(removeEntity);
-
-        AssigneeOperationRecordEntity retrieved2 = assigneeOperationRecordDAO.select(removeEntity.getId(), "tenant001");
-        assertEquals("Operation type should be remove_assignee", "remove_assignee", retrieved2.getOperationType());
+        retrieved = assigneeOperationRecordDAO.select(entity.getId(), TENANT_ID);
+        Assert.assertEquals("Operation reason should be updated", "Updated reason: employee has left", retrieved.getOperationReason());
     }
 }

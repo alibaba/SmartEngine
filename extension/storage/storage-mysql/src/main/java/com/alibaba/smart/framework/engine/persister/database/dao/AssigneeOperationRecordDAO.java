@@ -4,20 +4,22 @@ import java.util.List;
 
 import com.alibaba.smart.framework.engine.persister.database.entity.AssigneeOperationRecordEntity;
 
+import org.apache.ibatis.annotations.Param;
+
 /**
- * 加签减签操作记录DAO接口
- * 
+ * AssigneeOperationRecordDAO interface
+ *
  * @author SmartEngine Team
  */
 public interface AssigneeOperationRecordDAO {
 
     void insert(AssigneeOperationRecordEntity entity);
 
-    AssigneeOperationRecordEntity select(Long id, String tenantId);
+    AssigneeOperationRecordEntity select(@Param("id") Long id, @Param("tenantId") String tenantId);
 
-    List<AssigneeOperationRecordEntity> selectByTaskInstanceId(Long taskInstanceId, String tenantId);
+    List<AssigneeOperationRecordEntity> selectByTaskInstanceId(@Param("taskInstanceId") Long taskInstanceId, @Param("tenantId") String tenantId);
 
     void update(AssigneeOperationRecordEntity entity);
 
-    void delete(Long id, String tenantId);
+    void delete(@Param("id") Long id, @Param("tenantId") String tenantId);
 }
