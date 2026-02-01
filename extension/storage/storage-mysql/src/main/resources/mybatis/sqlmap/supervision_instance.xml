@@ -14,16 +14,16 @@
             <if test="supervisorUserId != null"> and supervisor_user_id = #{supervisorUserId} </if>
             <if test="status != null"> and status = #{status} </if>
             <if test="supervisionType != null"> and supervision_type = #{supervisionType} </if>
-            <if test="taskInstanceIdListAsLong != null">
+            <if test="taskInstanceIdList != null">
                 and task_instance_id in
-                <foreach item="item" index="index" separator="," open="(" close=")" collection="taskInstanceIdListAsLong">
-                    #{item}
+                <foreach item="item" index="index" separator="," open="(" close=")" collection="taskInstanceIdList">
+                    #{item, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.SmartIdTypeHandler}
                 </foreach>
             </if>
-            <if test="processInstanceIdListAsLong != null">
+            <if test="processInstanceIdList != null">
                 and process_instance_id in
-                <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdListAsLong">
-                    #{item}
+                <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
+                    #{item, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.SmartIdTypeHandler}
                 </foreach>
             </if>
             <if test="supervisionStartTime != null">and gmt_create <![CDATA[>=]]> #{supervisionStartTime}</if>

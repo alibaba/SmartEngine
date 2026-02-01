@@ -1,9 +1,8 @@
 package com.alibaba.smart.framework.engine.service.param.query;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import com.alibaba.smart.framework.engine.common.util.IdConverter;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,13 +20,13 @@ public class ProcessInstanceQueryParam extends BaseQueryParam {
     private String startUserId;
     private String status ;
     private String processDefinitionType;
-    private String parentInstanceId;
+    private Serializable parentInstanceId;
     private String bizUniqueId;
     private String processDefinitionIdAndVersion;
     /**
      * 流程引擎实例id列表
      */
-    private List<String> processInstanceIdList;
+    private List<? extends Serializable> processInstanceIdList;
 
     /**
      * 查询启动时间在processStartTime之后的流程实例
@@ -49,25 +48,4 @@ public class ProcessInstanceQueryParam extends BaseQueryParam {
      */
     private Date completeTimeEnd;
 
-    // ============ Long type getters for MyBatis (avoid CAST in SQL) ============
-
-    /**
-     * Get process instance ID list as Long type.
-     * Used by MyBatis to avoid CAST operation in SQL.
-     *
-     * @return Long type ID list, or null if source is null
-     */
-    public List<Long> getProcessInstanceIdListAsLong() {
-        return IdConverter.toLongList(processInstanceIdList);
-    }
-
-    /**
-     * Get parent instance ID as Long type.
-     * Used by MyBatis to avoid CAST operation in SQL.
-     *
-     * @return Long type ID, or null if source is null
-     */
-    public Long getParentInstanceIdAsLong() {
-        return IdConverter.toLong(parentInstanceId);
-    }
 }

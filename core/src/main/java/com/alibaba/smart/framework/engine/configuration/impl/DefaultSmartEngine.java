@@ -56,6 +56,11 @@ public class DefaultSmartEngine implements SmartEngine {
         this.setProcessEngineConfiguration(processEngineConfiguration);
         processEngineConfiguration.setSmartEngine(this);
 
+        // Configure global ID type for MyBatis TypeHandler
+        if (processEngineConfiguration.getIdGenerator() != null) {
+            processEngineConfiguration.getIdGenerator().configure();
+        }
+
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
         annotationScanner.scan(processEngineConfiguration,  ExtensionBinding.class);
 

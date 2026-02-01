@@ -63,9 +63,12 @@ public class RelationshipDatabaseTaskInstanceStorage implements TaskInstanceStor
     public List<TaskInstance> findTaskByProcessInstanceIdAndStatus(TaskInstanceQueryParam taskInstanceQueryParam,
                                                                    ProcessEngineConfiguration processEngineConfiguration) {
         TaskInstanceDAO taskInstanceDAO= (TaskInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("taskInstanceDAO");
-        String processInstanceId = taskInstanceQueryParam.getProcessInstanceIdList().get(0);
+        Object processInstanceIdObj = taskInstanceQueryParam.getProcessInstanceIdList().get(0);
+        Long processInstanceId = processInstanceIdObj instanceof Long
+            ? (Long) processInstanceIdObj
+            : Long.valueOf(processInstanceIdObj.toString());
         List<TaskInstanceEntity>  taskInstanceEntityList= taskInstanceDAO.findTaskByProcessInstanceIdAndStatus(
-            Long.valueOf(processInstanceId),taskInstanceQueryParam.getStatus(),taskInstanceQueryParam.getTenantId());
+            processInstanceId, taskInstanceQueryParam.getStatus(),taskInstanceQueryParam.getTenantId());
 
         List<TaskInstance> taskInstanceList = new ArrayList<TaskInstance>(taskInstanceEntityList.size());
         for (TaskInstanceEntity taskInstanceEntity : taskInstanceEntityList) {

@@ -1,9 +1,8 @@
 package com.alibaba.smart.framework.engine.service.param.query;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import com.alibaba.smart.framework.engine.common.util.IdConverter;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,14 +22,14 @@ public class SupervisionQueryParam extends BaseQueryParam {
     private String supervisorUserId;
 
     /**
-     * Task instance ID list (String type for API compatibility)
+     * Task instance ID list
      */
-    private List<String> taskInstanceIdList;
+    private List<? extends Serializable> taskInstanceIdList;
 
     /**
-     * Process instance ID list (String type for API compatibility)
+     * Process instance ID list
      */
-    private List<String> processInstanceIdList;
+    private List<? extends Serializable> processInstanceIdList;
 
     /**
      * Supervision type
@@ -52,25 +51,4 @@ public class SupervisionQueryParam extends BaseQueryParam {
      */
     private Date supervisionEndTime;
 
-    // ============ Long type getters for MyBatis (avoid CAST in SQL) ============
-
-    /**
-     * Get task instance ID list as Long type.
-     * Used by MyBatis to avoid CAST operation in SQL.
-     *
-     * @return Long type ID list, or null if source is null
-     */
-    public List<Long> getTaskInstanceIdListAsLong() {
-        return IdConverter.toLongList(taskInstanceIdList);
-    }
-
-    /**
-     * Get process instance ID list as Long type.
-     * Used by MyBatis to avoid CAST operation in SQL.
-     *
-     * @return Long type ID list, or null if source is null
-     */
-    public List<Long> getProcessInstanceIdListAsLong() {
-        return IdConverter.toLongList(processInstanceIdList);
-    }
 }

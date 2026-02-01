@@ -1,9 +1,8 @@
 package com.alibaba.smart.framework.engine.service.param.query;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import com.alibaba.smart.framework.engine.common.util.IdConverter;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,9 +12,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class TaskInstanceQueryParam extends BaseQueryParam {
 
-   private List<String> processInstanceIdList;
+   private List<? extends Serializable> processInstanceIdList;
 
-   private String activityInstanceId;
+   private Serializable activityInstanceId;
 
    private String processDefinitionType;
 
@@ -46,27 +45,5 @@ public class TaskInstanceQueryParam extends BaseQueryParam {
     * 完成时间结束
     */
    private Date completeTimeEnd;
-
-   // ============ Long type getters for MyBatis (avoid CAST in SQL) ============
-
-   /**
-    * Get process instance ID list as Long type.
-    * Used by MyBatis to avoid CAST operation in SQL.
-    *
-    * @return Long type ID list, or null if source is null
-    */
-   public List<Long> getProcessInstanceIdListAsLong() {
-      return IdConverter.toLongList(processInstanceIdList);
-   }
-
-   /**
-    * Get activity instance ID as Long type.
-    * Used by MyBatis to avoid CAST operation in SQL.
-    *
-    * @return Long type ID, or null if source is null
-    */
-   public Long getActivityInstanceIdAsLong() {
-      return IdConverter.toLong(activityInstanceId);
-   }
 
 }

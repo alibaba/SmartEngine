@@ -203,16 +203,16 @@
         <if test="priority != null">and task.priority = #{priority}</if>
         <if test="comment != null">and task.comment = #{comment}</if>
 
-        <if test="activityInstanceIdAsLong != null">and task.activity_instance_id = #{activityInstanceIdAsLong} </if>
+        <if test="activityInstanceId != null">and task.activity_instance_id = #{activityInstanceId, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.SmartIdTypeHandler} </if>
         <if test="processDefinitionActivityId != null">and task.process_definition_activity_id =
             #{processDefinitionActivityId}
         </if>
         <if test="completeTimeStart != null">and task.complete_time <![CDATA[>=]]> #{completeTimeStart}</if>
         <if test="completeTimeEnd != null">and task.complete_time <![CDATA[<]]> #{completeTimeEnd}</if>
-        <if test="processInstanceIdListAsLong != null">
+        <if test="processInstanceIdList != null">
             and task.process_instance_id in
-            <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdListAsLong">
-                #{item}
+            <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
+                #{item, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.SmartIdTypeHandler}
             </foreach>
         </if>
     </sql>

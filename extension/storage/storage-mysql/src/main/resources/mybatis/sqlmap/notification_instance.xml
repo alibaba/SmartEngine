@@ -16,16 +16,16 @@
             <if test="receiverUserId != null"> and receiver_user_id = #{receiverUserId} </if>
             <if test="readStatus != null"> and read_status = #{readStatus} </if>
             <if test="notificationType != null"> and notification_type = #{notificationType} </if>
-            <if test="taskInstanceIdListAsLong != null">
+            <if test="taskInstanceIdList != null">
                 and task_instance_id in
-                <foreach item="item" index="index" separator="," open="(" close=")" collection="taskInstanceIdListAsLong">
-                    #{item}
+                <foreach item="item" index="index" separator="," open="(" close=")" collection="taskInstanceIdList">
+                    #{item, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.SmartIdTypeHandler}
                 </foreach>
             </if>
-            <if test="processInstanceIdListAsLong != null">
+            <if test="processInstanceIdList != null">
                 and process_instance_id in
-                <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdListAsLong">
-                    #{item}
+                <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
+                    #{item, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.SmartIdTypeHandler}
                 </foreach>
             </if>
             <if test="notificationStartTime != null">and gmt_create <![CDATA[>=]]> #{notificationStartTime}</if>
