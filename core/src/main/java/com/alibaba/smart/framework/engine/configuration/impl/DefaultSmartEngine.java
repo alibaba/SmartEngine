@@ -9,7 +9,16 @@ import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanne
 import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
+import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.hook.LifeCycleHook;
+import com.alibaba.smart.framework.engine.instance.storage.ActivityInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.ExecutionInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.ProcessInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
+import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
+import com.alibaba.smart.framework.engine.instance.storage.VariableInstanceStorage;
+import com.alibaba.smart.framework.engine.storage.StorageMode;
+import com.alibaba.smart.framework.engine.storage.StorageRouter;
 import com.alibaba.smart.framework.engine.service.command.DeploymentCommandService;
 import com.alibaba.smart.framework.engine.service.command.ExecutionCommandService;
 import com.alibaba.smart.framework.engine.service.command.NotificationCommandService;
@@ -64,10 +73,88 @@ public class DefaultSmartEngine implements SmartEngine {
         AnnotationScanner annotationScanner = processEngineConfiguration.getAnnotationScanner();
         annotationScanner.scan(processEngineConfiguration,  ExtensionBinding.class);
 
+        // Register storage implementations to StorageRouter
+        initializeStorageRouter(processEngineConfiguration, annotationScanner);
+
         Map<String, ExtensionBindingResult> scanResult = annotationScanner.getScanResult();
 
         lifeCycleStarted(scanResult);
 
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initializeStorageRouter(ProcessEngineConfiguration config, AnnotationScanner scanner) {
+        StorageRouter storageRouter = config.getStorageRouter();
+        if (storageRouter == null) {
+            return;
+        }
+
+        Class<?>[] storageTypes = {
+            ProcessInstanceStorage.class,
+            ExecutionInstanceStorage.class,
+            ActivityInstanceStorage.class,
+            TaskInstanceStorage.class,
+            TaskAssigneeStorage.class,
+            VariableInstanceStorage.class
+        };
+
+        Map<String, ExtensionBindingResult> scanResult = scanner.getScanResult();
+
+        boolean hasCommon = false;
+        boolean hasCustom = false;
+
+        // Register "common" group storages as DATABASE mode
+        ExtensionBindingResult commonResult = scanResult.get(ExtensionConstant.COMMON);
+        if (commonResult != null) {
+            Map<Class, Object> commonBindings = commonResult.getBindingMap();
+            for (Class<?> storageType : storageTypes) {
+                Object impl = commonBindings.get(storageType);
+                if (impl != null) {
+                    storageRouter.registerStorage(StorageMode.DATABASE, (Class) storageType, impl);
+                    hasCommon = true;
+                }
+            }
+        }
+
+        // Register "custom" group storages as MEMORY mode
+        ExtensionBindingResult customResult = scanResult.get(ExtensionConstant.CUSTOM);
+        if (customResult != null) {
+            Map<Class, Object> customBindings = customResult.getBindingMap();
+            for (Class<?> storageType : storageTypes) {
+                Object impl = customBindings.get(storageType);
+                if (impl != null) {
+                    storageRouter.registerStorage(StorageMode.MEMORY, (Class) storageType, impl);
+                    hasCustom = true;
+                }
+            }
+        }
+
+        // When only one storage module is present, also register it as the default mode
+        // to ensure backward compatibility
+        if (hasCustom && !hasCommon) {
+            // Only custom module: also register as DATABASE (default mode) for compatibility
+            Map<Class, Object> customBindings = customResult.getBindingMap();
+            for (Class<?> storageType : storageTypes) {
+                Object impl = customBindings.get(storageType);
+                if (impl != null) {
+                    storageRouter.registerStorage(StorageMode.DATABASE, (Class) storageType, impl);
+                }
+            }
+        } else if (hasCommon && !hasCustom) {
+            // Only common module: also register as MEMORY for completeness
+            Map<Class, Object> commonBindings = commonResult.getBindingMap();
+            for (Class<?> storageType : storageTypes) {
+                Object impl = commonBindings.get(storageType);
+                if (impl != null) {
+                    storageRouter.registerStorage(StorageMode.MEMORY, (Class) storageType, impl);
+                }
+            }
+        }
+
+        // Set StorageRouter to Scanner for transparent proxy
+        if (scanner instanceof SimpleAnnotationScanner) {
+            ((SimpleAnnotationScanner) scanner).setStorageRouter(storageRouter);
+        }
     }
 
     protected void lifeCycleStarted(Map<String, ExtensionBindingResult> scanResult) {

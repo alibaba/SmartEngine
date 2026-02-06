@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
-import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 
 /**
  * Router for selecting storage implementations based on current mode.
@@ -86,14 +84,7 @@ public class StorageRouter {
             }
         }
 
-        // Fall back to AnnotationScanner (original mechanism)
-        if (mode == StorageMode.DATABASE) {
-            AnnotationScanner scanner = configuration.getAnnotationScanner();
-            if (scanner != null) {
-                return scanner.getExtensionPoint(ExtensionConstant.COMMON, storageType);
-            }
-        }
-
+        // No implementation found in registry or strategies
         throw new IllegalStateException(
                 "No storage implementation found for type " + storageType.getName() + " and mode " + mode);
     }
@@ -169,5 +160,15 @@ public class StorageRouter {
      */
     public StorageRegistry getRegistry() {
         return registry;
+    }
+
+    /**
+     * Check if a storage type is registered in the router under any mode.
+     *
+     * @param storageType the storage interface type
+     * @return true if registered
+     */
+    public boolean hasStorageType(Class<?> storageType) {
+        return registry.containsType(storageType);
     }
 }

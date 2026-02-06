@@ -103,4 +103,19 @@ public class StorageRegistry {
             modeMap.clear();
         }
     }
+
+    /**
+     * Check if a storage type is registered under any mode.
+     *
+     * @param storageType the storage interface type
+     * @return true if registered under at least one mode
+     */
+    public boolean containsType(Class<?> storageType) {
+        for (Map<Class<?>, Object> modeMap : storageMap.values()) {
+            if (modeMap.containsKey(storageType)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

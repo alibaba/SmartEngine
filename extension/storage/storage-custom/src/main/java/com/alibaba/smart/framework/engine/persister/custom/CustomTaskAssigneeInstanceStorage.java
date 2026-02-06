@@ -12,7 +12,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 
 import static com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant.NOT_IMPLEMENT_INTENTIONALLY;
-@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = TaskAssigneeStorage.class)
+@ExtensionBinding(group = ExtensionConstant.CUSTOM, bindKey = TaskAssigneeStorage.class)
 
 public class CustomTaskAssigneeInstanceStorage implements TaskAssigneeStorage {
 
