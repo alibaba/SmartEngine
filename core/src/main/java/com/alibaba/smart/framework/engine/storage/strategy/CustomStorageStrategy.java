@@ -9,63 +9,63 @@ import com.alibaba.smart.framework.engine.storage.StorageMode;
 import com.alibaba.smart.framework.engine.storage.StorageStrategy;
 
 /**
- * Storage strategy for in-memory mode.
- * Uses pre-registered memory-based storage implementations.
+ * Storage strategy for custom mode.
+ * Uses pre-registered custom storage implementations.
  *
  * @author SmartEngine Team
  */
-public class MemoryStorageStrategy implements StorageStrategy {
+public class CustomStorageStrategy implements StorageStrategy {
 
-    private final Map<Class<?>, Object> memoryStorages = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Object> customStorages = new ConcurrentHashMap<>();
 
     @Override
     public StorageMode getStorageMode() {
-        return StorageMode.MEMORY;
+        return StorageMode.CUSTOM;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T> T resolveStorage(Class<T> storageType, StorageContext context, ProcessEngineConfiguration config) {
-        return (T) memoryStorages.get(storageType);
+        return (T) customStorages.get(storageType);
     }
 
     @Override
     public boolean supportsStorageType(Class<?> storageType) {
-        return memoryStorages.containsKey(storageType);
+        return customStorages.containsKey(storageType);
     }
 
     /**
-     * Register a memory storage implementation.
+     * Register a custom storage implementation.
      *
      * @param storageType the storage interface type
-     * @param instance    the memory storage implementation
+     * @param instance    the custom storage implementation
      * @param <T>         the storage type
      */
-    public <T> void registerMemoryStorage(Class<T> storageType, T instance) {
-        memoryStorages.put(storageType, instance);
+    public <T> void registerCustomStorage(Class<T> storageType, T instance) {
+        customStorages.put(storageType, instance);
     }
 
     /**
-     * Remove a memory storage implementation.
+     * Remove a custom storage implementation.
      *
      * @param storageType the storage interface type
      * @param <T>         the storage type
      * @return the removed implementation
      */
     @SuppressWarnings("unchecked")
-    public <T> T removeMemoryStorage(Class<T> storageType) {
-        return (T) memoryStorages.remove(storageType);
+    public <T> T removeCustomStorage(Class<T> storageType) {
+        return (T) customStorages.remove(storageType);
     }
 
     /**
-     * Clear all memory storage implementations.
+     * Clear all custom storage implementations.
      */
     public void clear() {
-        memoryStorages.clear();
+        customStorages.clear();
     }
 
     @Override
     public int getPriority() {
-        return 10; // Higher priority than database for memory mode
+        return 10; // Higher priority than database for custom mode
     }
 }

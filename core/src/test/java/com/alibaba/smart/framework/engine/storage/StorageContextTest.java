@@ -25,14 +25,14 @@ public class StorageContextTest {
     public void testBuilderWithProperties() {
         StorageContext context = StorageContext.builder()
             .tenantId("tenant002")
-            .storageMode(StorageMode.MEMORY)
+            .storageMode(StorageMode.CUSTOM)
             .property("key1", "value1")
             .property("key2", 123)
             .property("key3", true)
             .build();
 
         Assert.assertEquals("tenant002", context.getTenantId());
-        Assert.assertEquals(StorageMode.MEMORY, context.getStorageMode());
+        Assert.assertEquals(StorageMode.CUSTOM, context.getStorageMode());
         Assert.assertEquals("value1", context.getProperty("key1"));
         Assert.assertEquals(123, context.getProperty("key2"));
         Assert.assertEquals(true, context.getProperty("key3"));

@@ -29,8 +29,8 @@ public class StorageModeHolderTest {
         StorageModeHolder.set(StorageMode.DATABASE);
         Assert.assertEquals(StorageMode.DATABASE, StorageModeHolder.get());
 
-        StorageModeHolder.set(StorageMode.MEMORY);
-        Assert.assertEquals(StorageMode.MEMORY, StorageModeHolder.get());
+        StorageModeHolder.set(StorageMode.CUSTOM);
+        Assert.assertEquals(StorageMode.CUSTOM, StorageModeHolder.get());
     }
 
     @Test
@@ -56,8 +56,8 @@ public class StorageModeHolderTest {
         Assert.assertEquals(StorageMode.DATABASE,
             StorageModeHolder.getOrDefault(StorageMode.DATABASE));
 
-        StorageModeHolder.set(StorageMode.MEMORY);
-        Assert.assertEquals(StorageMode.MEMORY,
+        StorageModeHolder.set(StorageMode.CUSTOM);
+        Assert.assertEquals(StorageMode.CUSTOM,
             StorageModeHolder.getOrDefault(StorageMode.DATABASE));
     }
 
@@ -82,7 +82,7 @@ public class StorageModeHolderTest {
     @Test
     public void testSetContextNull() {
         StorageContext context = StorageContext.builder()
-            .storageMode(StorageMode.MEMORY)
+            .storageMode(StorageMode.CUSTOM)
             .build();
         StorageModeHolder.setContext(context);
         Assert.assertNotNull(StorageModeHolder.getContext());
@@ -110,8 +110,8 @@ public class StorageModeHolderTest {
             // Should be null in other thread
             Assert.assertNull(StorageModeHolder.get());
 
-            StorageModeHolder.set(StorageMode.MEMORY);
-            Assert.assertEquals(StorageMode.MEMORY, StorageModeHolder.get());
+            StorageModeHolder.set(StorageMode.CUSTOM);
+            Assert.assertEquals(StorageMode.CUSTOM, StorageModeHolder.get());
         });
 
         otherThread.start();

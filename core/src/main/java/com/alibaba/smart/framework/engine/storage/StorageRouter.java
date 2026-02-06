@@ -27,7 +27,7 @@ import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfigurati
  * TaskInstanceStorage storage = router.getStorage(TaskInstanceStorage.class);
  *
  * // Get storage for specific mode
- * TaskInstanceStorage memoryStorage = router.getStorage(TaskInstanceStorage.class, StorageMode.MEMORY);
+ * TaskInstanceStorage customStorage = router.getStorage(TaskInstanceStorage.class, StorageMode.CUSTOM);
  * }</pre>
  *
  * @author SmartEngine Team

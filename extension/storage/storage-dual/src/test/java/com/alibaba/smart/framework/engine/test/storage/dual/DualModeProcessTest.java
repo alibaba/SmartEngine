@@ -49,11 +49,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Dual-mode integration test: verify that DATABASE and MEMORY storage modes
+ * Dual-mode integration test: verify that DATABASE and CUSTOM storage modes
  * both work correctly within a single engine instance and a single test method.
  *
  * <p>Phase 1 (DATABASE): runs an audit process with user tasks, persisted to PostgreSQL.
- * <p>Phase 2 (MEMORY):   runs a basic service-task process, persisted in-memory via PersisterSession.
+ * <p>Phase 2 (CUSTOM):   runs a basic service-task process, persisted in-memory via PersisterSession.
  */
 @ContextConfiguration("/spring/application-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -173,10 +173,10 @@ public class DualModeProcessTest implements ApplicationContextAware {
         }
 
         // ================================================================
-        // Phase 2: MEMORY MODE — Basic service-task process in-memory
+        // Phase 2: CUSTOM MODE — Basic service-task process in-memory
         // ================================================================
         PersisterSession.create();
-        StorageModeHolder.set(StorageMode.MEMORY);
+        StorageModeHolder.set(StorageMode.CUSTOM);
         try {
             BasicServiceTaskDelegation.resetCounter();
 

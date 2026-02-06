@@ -44,10 +44,10 @@ public class StorageRegistryTest {
         MockStorage memStorage = new MockMemoryStorage();
 
         registry.register(StorageMode.DATABASE, MockStorage.class, dbStorage);
-        registry.register(StorageMode.MEMORY, MockStorage.class, memStorage);
+        registry.register(StorageMode.CUSTOM, MockStorage.class, memStorage);
 
         MockStorage retrieved1 = registry.get(StorageMode.DATABASE, MockStorage.class);
-        MockStorage retrieved2 = registry.get(StorageMode.MEMORY, MockStorage.class);
+        MockStorage retrieved2 = registry.get(StorageMode.CUSTOM, MockStorage.class);
 
         Assert.assertSame(dbStorage, retrieved1);
         Assert.assertSame(memStorage, retrieved2);
@@ -66,7 +66,7 @@ public class StorageRegistryTest {
         registry.register(StorageMode.DATABASE, MockStorage.class, new MockDatabaseStorage());
 
         Assert.assertTrue(registry.contains(StorageMode.DATABASE, MockStorage.class));
-        Assert.assertFalse(registry.contains(StorageMode.MEMORY, MockStorage.class));
+        Assert.assertFalse(registry.contains(StorageMode.CUSTOM, MockStorage.class));
     }
 
     @Test
@@ -91,26 +91,26 @@ public class StorageRegistryTest {
     @Test
     public void testClear() {
         registry.register(StorageMode.DATABASE, MockStorage.class, new MockDatabaseStorage());
-        registry.register(StorageMode.MEMORY, MockStorage.class, new MockMemoryStorage());
+        registry.register(StorageMode.CUSTOM, MockStorage.class, new MockMemoryStorage());
 
         Assert.assertTrue(registry.contains(StorageMode.DATABASE, MockStorage.class));
-        Assert.assertTrue(registry.contains(StorageMode.MEMORY, MockStorage.class));
+        Assert.assertTrue(registry.contains(StorageMode.CUSTOM, MockStorage.class));
 
         registry.clear();
 
         Assert.assertFalse(registry.contains(StorageMode.DATABASE, MockStorage.class));
-        Assert.assertFalse(registry.contains(StorageMode.MEMORY, MockStorage.class));
+        Assert.assertFalse(registry.contains(StorageMode.CUSTOM, MockStorage.class));
     }
 
     @Test
     public void testClearByMode() {
         registry.register(StorageMode.DATABASE, MockStorage.class, new MockDatabaseStorage());
-        registry.register(StorageMode.MEMORY, MockStorage.class, new MockMemoryStorage());
+        registry.register(StorageMode.CUSTOM, MockStorage.class, new MockMemoryStorage());
 
         registry.clear(StorageMode.DATABASE);
 
         Assert.assertFalse(registry.contains(StorageMode.DATABASE, MockStorage.class));
-        Assert.assertTrue(registry.contains(StorageMode.MEMORY, MockStorage.class));
+        Assert.assertTrue(registry.contains(StorageMode.CUSTOM, MockStorage.class));
     }
 
     // Another mock storage interface for testing multiple types

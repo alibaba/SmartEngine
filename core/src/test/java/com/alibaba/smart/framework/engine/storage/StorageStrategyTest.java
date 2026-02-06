@@ -1,7 +1,7 @@
 package com.alibaba.smart.framework.engine.storage;
 
 import com.alibaba.smart.framework.engine.storage.strategy.DatabaseStorageStrategy;
-import com.alibaba.smart.framework.engine.storage.strategy.MemoryStorageStrategy;
+import com.alibaba.smart.framework.engine.storage.strategy.CustomStorageStrategy;
 import com.alibaba.smart.framework.engine.storage.strategy.DualStorageStrategy;
 
 import org.junit.Assert;
@@ -42,20 +42,20 @@ public class StorageStrategyTest {
         Assert.assertEquals(0, strategy.getPriority());
     }
 
-    // ============ MemoryStorageStrategy Tests ============
+    // ============ CustomStorageStrategy Tests ============
 
     @Test
-    public void testMemoryStorageStrategyMode() {
-        MemoryStorageStrategy strategy = new MemoryStorageStrategy();
-        Assert.assertEquals(StorageMode.MEMORY, strategy.getStorageMode());
+    public void testCustomStorageStrategyMode() {
+        CustomStorageStrategy strategy = new CustomStorageStrategy();
+        Assert.assertEquals(StorageMode.CUSTOM, strategy.getStorageMode());
     }
 
     @Test
-    public void testMemoryStorageStrategyRegisterAndResolve() {
-        MemoryStorageStrategy strategy = new MemoryStorageStrategy();
+    public void testCustomStorageStrategyRegisterAndResolve() {
+        CustomStorageStrategy strategy = new CustomStorageStrategy();
 
         MockStorage mockStorage = () -> "test-value";
-        strategy.registerMemoryStorage(MockStorage.class, mockStorage);
+        strategy.registerCustomStorage(MockStorage.class, mockStorage);
 
         Assert.assertTrue(strategy.supportsStorageType(MockStorage.class));
 
@@ -65,8 +65,8 @@ public class StorageStrategyTest {
     }
 
     @Test
-    public void testMemoryStorageStrategyNotSupported() {
-        MemoryStorageStrategy strategy = new MemoryStorageStrategy();
+    public void testCustomStorageStrategyNotSupported() {
+        CustomStorageStrategy strategy = new CustomStorageStrategy();
 
         Assert.assertFalse(strategy.supportsStorageType(MockStorage.class));
 
@@ -75,23 +75,23 @@ public class StorageStrategyTest {
     }
 
     @Test
-    public void testMemoryStorageStrategyRemove() {
-        MemoryStorageStrategy strategy = new MemoryStorageStrategy();
+    public void testCustomStorageStrategyRemove() {
+        CustomStorageStrategy strategy = new CustomStorageStrategy();
 
         MockStorage mockStorage = () -> "value";
-        strategy.registerMemoryStorage(MockStorage.class, mockStorage);
+        strategy.registerCustomStorage(MockStorage.class, mockStorage);
         Assert.assertTrue(strategy.supportsStorageType(MockStorage.class));
 
-        MockStorage removed = strategy.removeMemoryStorage(MockStorage.class);
+        MockStorage removed = strategy.removeCustomStorage(MockStorage.class);
         Assert.assertSame(mockStorage, removed);
         Assert.assertFalse(strategy.supportsStorageType(MockStorage.class));
     }
 
     @Test
-    public void testMemoryStorageStrategyClear() {
-        MemoryStorageStrategy strategy = new MemoryStorageStrategy();
+    public void testCustomStorageStrategyClear() {
+        CustomStorageStrategy strategy = new CustomStorageStrategy();
 
-        strategy.registerMemoryStorage(MockStorage.class, () -> "value1");
+        strategy.registerCustomStorage(MockStorage.class, () -> "value1");
         Assert.assertTrue(strategy.supportsStorageType(MockStorage.class));
 
         strategy.clear();
@@ -99,8 +99,8 @@ public class StorageStrategyTest {
     }
 
     @Test
-    public void testMemoryStorageStrategyPriority() {
-        MemoryStorageStrategy strategy = new MemoryStorageStrategy();
+    public void testCustomStorageStrategyPriority() {
+        CustomStorageStrategy strategy = new CustomStorageStrategy();
         Assert.assertEquals(10, strategy.getPriority());
     }
 
@@ -109,27 +109,27 @@ public class StorageStrategyTest {
     @Test
     public void testDualStorageStrategyMode() {
         DatabaseStorageStrategy dbStrategy = new DatabaseStorageStrategy();
-        MemoryStorageStrategy memStrategy = new MemoryStorageStrategy();
+        CustomStorageStrategy customStrategy = new CustomStorageStrategy();
 
-        DualStorageStrategy dualStrategy = new DualStorageStrategy(dbStrategy, memStrategy);
+        DualStorageStrategy dualStrategy = new DualStorageStrategy(dbStrategy, customStrategy);
         Assert.assertEquals(StorageMode.DUAL_WRITE, dualStrategy.getStorageMode());
     }
 
     @Test
     public void testDualStorageStrategyPriority() {
         DatabaseStorageStrategy dbStrategy = new DatabaseStorageStrategy();
-        MemoryStorageStrategy memStrategy = new MemoryStorageStrategy();
+        CustomStorageStrategy customStrategy = new CustomStorageStrategy();
 
-        DualStorageStrategy dualStrategy = new DualStorageStrategy(dbStrategy, memStrategy);
+        DualStorageStrategy dualStrategy = new DualStorageStrategy(dbStrategy, customStrategy);
         Assert.assertEquals(20, dualStrategy.getPriority());
     }
 
     @Test
     public void testDualStorageStrategySupportsType() {
         DatabaseStorageStrategy dbStrategy = new DatabaseStorageStrategy();
-        MemoryStorageStrategy memStrategy = new MemoryStorageStrategy();
+        CustomStorageStrategy customStrategy = new CustomStorageStrategy();
 
-        DualStorageStrategy dualStrategy = new DualStorageStrategy(dbStrategy, memStrategy);
+        DualStorageStrategy dualStrategy = new DualStorageStrategy(dbStrategy, customStrategy);
 
         // Should delegate to database strategy
         Assert.assertTrue(dualStrategy.supportsStorageType(MockStorage.class));
@@ -138,9 +138,9 @@ public class StorageStrategyTest {
     @Test
     public void testDualStorageStrategyClearCache() {
         DatabaseStorageStrategy dbStrategy = new DatabaseStorageStrategy();
-        MemoryStorageStrategy memStrategy = new MemoryStorageStrategy();
+        CustomStorageStrategy customStrategy = new CustomStorageStrategy();
 
-        DualStorageStrategy dualStrategy = new DualStorageStrategy(dbStrategy, memStrategy);
+        DualStorageStrategy dualStrategy = new DualStorageStrategy(dbStrategy, customStrategy);
 
         // Should not throw
         dualStrategy.clearCache();
@@ -151,11 +151,11 @@ public class StorageStrategyTest {
     @Test
     public void testStrategyPriorityOrdering() {
         DatabaseStorageStrategy dbStrategy = new DatabaseStorageStrategy();
-        MemoryStorageStrategy memStrategy = new MemoryStorageStrategy();
-        DualStorageStrategy dualStrategy = new DualStorageStrategy(dbStrategy, memStrategy);
+        CustomStorageStrategy customStrategy = new CustomStorageStrategy();
+        DualStorageStrategy dualStrategy = new DualStorageStrategy(dbStrategy, customStrategy);
 
         // Dual should have highest priority
-        Assert.assertTrue(dualStrategy.getPriority() > memStrategy.getPriority());
-        Assert.assertTrue(memStrategy.getPriority() > dbStrategy.getPriority());
+        Assert.assertTrue(dualStrategy.getPriority() > customStrategy.getPriority());
+        Assert.assertTrue(customStrategy.getPriority() > dbStrategy.getPriority());
     }
 }

@@ -49,8 +49,8 @@ public class ThreadLocalModeSwitchTest {
         assertTrue("Default should be database storage",
             !dbStorage.getClass().getSimpleName().startsWith("Custom"));
 
-        // Switch to MEMORY mode — router resolves to custom storage
-        StorageModeHolder.set(StorageMode.MEMORY);
+        // Switch to CUSTOM mode — router resolves to custom storage
+        StorageModeHolder.set(StorageMode.CUSTOM);
         try {
             ProcessInstanceStorage memStorage = router.getStorage(ProcessInstanceStorage.class);
             assertNotNull(memStorage);
@@ -69,15 +69,15 @@ public class ThreadLocalModeSwitchTest {
 
     @Test
     public void testThreadLocalOverridesDefault() {
-        // Set default to MEMORY
-        router.setDefaultMode(StorageMode.MEMORY);
+        // Set default to CUSTOM
+        router.setDefaultMode(StorageMode.CUSTOM);
 
         // ThreadLocal overrides to DATABASE
         StorageModeHolder.set(StorageMode.DATABASE);
         try {
             ProcessInstanceStorage storage = router.getStorage(ProcessInstanceStorage.class);
             assertNotNull(storage);
-            assertTrue("ThreadLocal DATABASE should override default MEMORY",
+            assertTrue("ThreadLocal DATABASE should override default CUSTOM",
                 !storage.getClass().getSimpleName().startsWith("Custom"));
         } finally {
             StorageModeHolder.clear();

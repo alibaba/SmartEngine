@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Verify that when default mode is set to MEMORY,
+ * Verify that when default mode is set to CUSTOM,
  * the scanner returns memory (custom) storage implementations.
  */
 public class MemoryModeTest {
@@ -45,9 +45,9 @@ public class MemoryModeTest {
     @Test
     public void testMemoryModeViaDefaultSetting() {
         StorageRouter router = processEngineConfiguration.getStorageRouter();
-        router.setDefaultMode(StorageMode.MEMORY);
+        router.setDefaultMode(StorageMode.CUSTOM);
 
-        assertEquals("Default mode should be MEMORY", StorageMode.MEMORY, router.getDefaultMode());
+        assertEquals("Default mode should be CUSTOM", StorageMode.CUSTOM, router.getDefaultMode());
 
         // Verify router resolves to Custom (memory) implementation
         ProcessInstanceStorage storage = router.getStorage(ProcessInstanceStorage.class);
@@ -63,13 +63,13 @@ public class MemoryModeTest {
 
     @Test
     public void testMemoryModeViaThreadLocal() {
-        StorageModeHolder.set(StorageMode.MEMORY);
+        StorageModeHolder.set(StorageMode.CUSTOM);
         try {
             // Verify router resolves to Custom (memory) implementation
             StorageRouter router = processEngineConfiguration.getStorageRouter();
             ProcessInstanceStorage storage = router.getStorage(ProcessInstanceStorage.class);
             assertNotNull("Storage should not be null", storage);
-            assertTrue("Storage should be Custom (memory) implementation when ThreadLocal is MEMORY",
+            assertTrue("Storage should be Custom (memory) implementation when ThreadLocal is CUSTOM",
                 storage.getClass().getSimpleName().startsWith("Custom"));
         } finally {
             StorageModeHolder.clear();

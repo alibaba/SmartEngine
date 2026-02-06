@@ -15,10 +15,10 @@ public enum StorageMode {
     DATABASE,
 
     /**
-     * Use in-memory storage.
-     * Data is kept in memory only, suitable for testing or lightweight scenarios.
+     * Use custom storage (e.g. in-memory, custom persistence, etc.).
+     * Backed by storage-custom module implementations.
      */
-    MEMORY,
+    CUSTOM,
 
     /**
      * Dual-write mode.

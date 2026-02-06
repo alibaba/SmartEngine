@@ -116,14 +116,14 @@ public class DefaultSmartEngine implements SmartEngine {
             }
         }
 
-        // Register "custom" group storages as MEMORY mode
+        // Register "custom" group storages as CUSTOM mode
         ExtensionBindingResult customResult = scanResult.get(ExtensionConstant.CUSTOM);
         if (customResult != null) {
             Map<Class, Object> customBindings = customResult.getBindingMap();
             for (Class<?> storageType : storageTypes) {
                 Object impl = customBindings.get(storageType);
                 if (impl != null) {
-                    storageRouter.registerStorage(StorageMode.MEMORY, (Class) storageType, impl);
+                    storageRouter.registerStorage(StorageMode.CUSTOM, (Class) storageType, impl);
                     hasCustom = true;
                 }
             }
@@ -141,12 +141,12 @@ public class DefaultSmartEngine implements SmartEngine {
                 }
             }
         } else if (hasCommon && !hasCustom) {
-            // Only common module: also register as MEMORY for completeness
+            // Only common module: also register as CUSTOM for completeness
             Map<Class, Object> commonBindings = commonResult.getBindingMap();
             for (Class<?> storageType : storageTypes) {
                 Object impl = commonBindings.get(storageType);
                 if (impl != null) {
-                    storageRouter.registerStorage(StorageMode.MEMORY, (Class) storageType, impl);
+                    storageRouter.registerStorage(StorageMode.CUSTOM, (Class) storageType, impl);
                 }
             }
         }

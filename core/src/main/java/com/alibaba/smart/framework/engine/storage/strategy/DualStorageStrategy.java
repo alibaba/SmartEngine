@@ -16,14 +16,14 @@ import com.alibaba.smart.framework.engine.storage.StorageStrategy;
 
 /**
  * Storage strategy for dual-write mode.
- * Writes to both database and memory, reads from memory for better performance.
+ * Writes to both database and custom storage, reads from custom storage for better performance.
  *
  * @author SmartEngine Team
  */
 public class DualStorageStrategy implements StorageStrategy {
 
     private final DatabaseStorageStrategy databaseStrategy;
-    private final MemoryStorageStrategy memoryStrategy;
+    private final CustomStorageStrategy customStrategy;
     private final Map<Class<?>, Object> proxyCache = new ConcurrentHashMap<>();
 
     /**
@@ -33,9 +33,9 @@ public class DualStorageStrategy implements StorageStrategy {
             "insert", "update", "delete", "remove", "save", "create", "add", "close", "mark", "batch"
     ));
 
-    public DualStorageStrategy(DatabaseStorageStrategy databaseStrategy, MemoryStorageStrategy memoryStrategy) {
+    public DualStorageStrategy(DatabaseStorageStrategy databaseStrategy, CustomStorageStrategy customStrategy) {
         this.databaseStrategy = databaseStrategy;
-        this.memoryStrategy = memoryStrategy;
+        this.customStrategy = customStrategy;
     }
 
     @Override
@@ -52,21 +52,21 @@ public class DualStorageStrategy implements StorageStrategy {
     @SuppressWarnings("unchecked")
     private <T> T createProxy(Class<T> storageType, StorageContext context, ProcessEngineConfiguration config) {
         T databaseStorage = databaseStrategy.resolveStorage(storageType, context, config);
-        T memoryStorage = memoryStrategy.resolveStorage(storageType, context, config);
+        T customStorage = customStrategy.resolveStorage(storageType, context, config);
 
         if (databaseStorage == null) {
             throw new IllegalStateException("Database storage not found for type: " + storageType.getName());
         }
 
-        // If no memory storage is registered, just return database storage
-        if (memoryStorage == null) {
+        // If no custom storage is registered, just return database storage
+        if (customStorage == null) {
             return databaseStorage;
         }
 
         return (T) Proxy.newProxyInstance(
                 storageType.getClassLoader(),
                 new Class<?>[]{storageType},
-                new DualStorageInvocationHandler(databaseStorage, memoryStorage)
+                new DualStorageInvocationHandler(databaseStorage, customStorage)
         );
     }
 
@@ -82,16 +82,16 @@ public class DualStorageStrategy implements StorageStrategy {
 
     /**
      * Invocation handler for dual-write proxy.
-     * Routes write operations to both storages, read operations to memory first.
+     * Routes write operations to both storages, read operations to custom storage first.
      */
     private static class DualStorageInvocationHandler implements InvocationHandler {
 
         private final Object databaseStorage;
-        private final Object memoryStorage;
+        private final Object customStorage;
 
-        DualStorageInvocationHandler(Object databaseStorage, Object memoryStorage) {
+        DualStorageInvocationHandler(Object databaseStorage, Object customStorage) {
             this.databaseStorage = databaseStorage;
-            this.memoryStorage = memoryStorage;
+            this.customStorage = customStorage;
         }
 
         @Override
@@ -104,18 +104,18 @@ public class DualStorageStrategy implements StorageStrategy {
 
                 // Then sync to memory (best effort)
                 try {
-                    method.invoke(memoryStorage, args);
+                    method.invoke(customStorage, args);
                 } catch (Exception e) {
                     // Log but don't fail the operation
                     // In production, this should use proper logging
-                    System.err.println("Failed to sync write to memory storage: " + e.getMessage());
+                    System.err.println("Failed to sync write to custom storage: " + e.getMessage());
                 }
 
                 return result;
             } else {
                 // Read from memory first, fall back to database
                 try {
-                    Object result = method.invoke(memoryStorage, args);
+                    Object result = method.invoke(customStorage, args);
                     if (result != null) {
                         return result;
                     }
