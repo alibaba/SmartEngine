@@ -19,6 +19,7 @@ import com.alibaba.smart.framework.engine.service.query.SupervisionQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
+import com.alibaba.smart.framework.engine.query.DeploymentQuery;
 import com.alibaba.smart.framework.engine.query.NotificationQuery;
 import com.alibaba.smart.framework.engine.query.ProcessInstanceQuery;
 import com.alibaba.smart.framework.engine.query.SupervisionQuery;
@@ -142,6 +143,22 @@ public interface SmartEngine {
      * @return a new NotificationQuery instance
      */
     NotificationQuery createNotificationQuery();
+
+    /**
+     * Create a new deployment query for fluent API style querying.
+     *
+     * <p>Example usage:
+     * <pre>{@code
+     * List<DeploymentInstance> deployments = smartEngine.createDeploymentQuery()
+     *     .processDefinitionType("approval")
+     *     .deploymentStatus(DeploymentStatusConstant.ACTIVE)
+     *     .orderByModifyTime().desc()
+     *     .listPage(0, 10);
+     * }</pre>
+     *
+     * @return a new DeploymentQuery instance
+     */
+    DeploymentQuery createDeploymentQuery();
 
 
     void init(ProcessEngineConfiguration processEngineConfiguration);

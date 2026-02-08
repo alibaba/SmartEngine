@@ -38,6 +38,14 @@ public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInst
     private String title;
     private Date completeTimeStart;
     private Date completeTimeEnd;
+    private Date createTimeStart;
+    private Date createTimeEnd;
+    private String titleLike;
+    private boolean unassigned;
+    private List<String> processDefinitionTypeList;
+    private String claimUserIdLike;
+    private Integer minPriority;
+    private Integer maxPriority;
 
     // Candidate assignee filters (triggers assignee JOIN query path)
     private String candidateUserId;
@@ -206,6 +214,62 @@ public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInst
         return this;
     }
 
+    @Override
+    public TaskQuery createdAfter(Date createTimeStart) {
+        this.createTimeStart = createTimeStart;
+        return this;
+    }
+
+    @Override
+    public TaskQuery createdBefore(Date createTimeEnd) {
+        this.createTimeEnd = createTimeEnd;
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskTitleLike(String titleLike) {
+        this.titleLike = titleLike;
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskTitleLike(boolean condition, String titleLike) {
+        if (condition) {
+            this.titleLike = titleLike;
+        }
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskUnassigned() {
+        this.unassigned = true;
+        return this;
+    }
+
+    @Override
+    public TaskQuery processDefinitionTypeIn(List<String> types) {
+        this.processDefinitionTypeList = types != null ? new ArrayList<String>(types) : null;
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskAssigneeLike(String claimUserIdLike) {
+        this.claimUserIdLike = claimUserIdLike;
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskMinPriority(Integer minPriority) {
+        this.minPriority = minPriority;
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskMaxPriority(Integer maxPriority) {
+        this.maxPriority = maxPriority;
+        return this;
+    }
+
     // ============ Ordering ============
 
     @Override
@@ -291,7 +355,9 @@ public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInst
         // Set pagination and tenant
         param.setPageOffset(pageOffset);
         param.setPageSize(pageSize);
-        param.setTenantId(tenantId);
+        if (!excludeTenant) {
+            param.setTenantId(tenantId);
+        }
 
         return param;
     }
@@ -329,13 +395,26 @@ public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInst
         param.setPriority(priority);
         param.setComment(comment);
         param.setTitle(title);
+        param.setTitleLike(titleLike);
         param.setCompleteTimeStart(completeTimeStart);
         param.setCompleteTimeEnd(completeTimeEnd);
+        param.setCreateTimeStart(createTimeStart);
+        param.setCreateTimeEnd(createTimeEnd);
+        param.setUnassigned(unassigned ? Boolean.TRUE : null);
+        param.setClaimUserIdLike(claimUserIdLike);
+        param.setMinPriority(minPriority);
+        param.setMaxPriority(maxPriority);
+        // processDefinitionTypeList takes precedence over single type
+        if (processDefinitionTypeList != null && !processDefinitionTypeList.isEmpty()) {
+            param.setProcessDefinitionTypeList(processDefinitionTypeList);
+        }
 
         // Set pagination
         param.setPageOffset(pageOffset);
         param.setPageSize(pageSize);
-        param.setTenantId(tenantId);
+        if (!excludeTenant) {
+            param.setTenantId(tenantId);
+        }
 
         // Set order by specs
         param.setOrderBySpecs(orderBySpecs);

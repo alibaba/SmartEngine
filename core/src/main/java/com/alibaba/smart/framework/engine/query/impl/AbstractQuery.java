@@ -22,6 +22,7 @@ public abstract class AbstractQuery<Q extends Query<Q, T>, T> implements Query<Q
     protected Integer pageOffset;
     protected Integer pageSize;
     protected String tenantId;
+    protected boolean excludeTenant = false;
 
     protected List<OrderSpec> orderBySpecs = new ArrayList<>();
     protected String currentOrderByProperty;
@@ -79,6 +80,12 @@ public abstract class AbstractQuery<Q extends Query<Q, T>, T> implements Query<Q
         if (condition) {
             this.pageSize = size;
         }
+        return self();
+    }
+
+    @Override
+    public Q withoutTenantId() {
+        this.excludeTenant = true;
         return self();
     }
 

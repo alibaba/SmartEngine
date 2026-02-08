@@ -67,6 +67,13 @@ public interface Query<Q extends Query<Q, T>, T> {
      */
     Q pageSize(boolean condition, int size);
 
+    /**
+     * Exclude tenant filtering. Useful for cross-tenant queries.
+     *
+     * @return this query for method chaining
+     */
+    Q withoutTenantId();
+
     // ============ Execution methods ============
 
     /**

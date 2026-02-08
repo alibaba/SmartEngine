@@ -85,18 +85,22 @@ public interface TaskQueryService {
 
     /**
      * 查询已办任务列表 - 基于现有findList方法扩展
-     * 
+     *
      * @param param 已办任务查询参数
      * @return 已办任务列表
+     * @deprecated Use {@code smartEngine.createTaskQuery().taskAssignee(u).processDefinitionTypeIn(types).completeTimeAfter(s).completeTimeBefore(e).taskStatus("completed").list()} instead
      */
+    @Deprecated
     List<TaskInstance> findCompletedTaskList(CompletedTaskQueryParam param);
 
     /**
      * 统计已办任务数量
-     * 
+     *
      * @param param 已办任务查询参数
      * @return 已办任务数量
+     * @deprecated Use {@code smartEngine.createTaskQuery().taskAssignee(u).processDefinitionTypeIn(types).completeTimeAfter(s).completeTimeBefore(e).taskStatus("completed").count()} instead
      */
+    @Deprecated
     Long countCompletedTaskList(CompletedTaskQueryParam param);
 
 }

@@ -196,11 +196,16 @@
         <if test="status != null">and task.status = #{status}</if>
         <if test="processDefinitionType != null">and task.process_definition_type = #{processDefinitionType}</if>
         <if test="claimUserId != null">and task.claim_user_id = #{claimUserId}</if>
+        <if test="claimUserIdLike != null">and task.claim_user_id like CONCAT('%', #{claimUserIdLike}, '%')</if>
+        <if test="unassigned != null and unassigned == true">and task.claim_user_id is null</if>
         <if test="tag != null">and task.tag = #{tag}</if>
         <if test="extension != null">and task.extension = #{extension}</if>
 
         <if test="title != null">and task.title = #{title}</if>
+        <if test="titleLike != null">and task.title like CONCAT('%', #{titleLike}, '%')</if>
         <if test="priority != null">and task.priority = #{priority}</if>
+        <if test="minPriority != null">and task.priority <![CDATA[>=]]> #{minPriority}</if>
+        <if test="maxPriority != null">and task.priority <![CDATA[<=]]> #{maxPriority}</if>
         <if test="comment != null">and task.comment = #{comment}</if>
 
         <if test="activityInstanceId != null">and task.activity_instance_id = #{activityInstanceId, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.SmartIdTypeHandler} </if>
@@ -209,6 +214,8 @@
         </if>
         <if test="completeTimeStart != null">and task.complete_time <![CDATA[>=]]> #{completeTimeStart}</if>
         <if test="completeTimeEnd != null">and task.complete_time <![CDATA[<]]> #{completeTimeEnd}</if>
+        <if test="createTimeStart != null">and task.gmt_create <![CDATA[>=]]> #{createTimeStart}</if>
+        <if test="createTimeEnd != null">and task.gmt_create <![CDATA[<]]> #{createTimeEnd}</if>
         <if test="processInstanceIdList != null">
             and task.process_instance_id in
             <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
@@ -218,6 +225,12 @@
         <if test="statusList != null and statusList.size() > 0">
             and task.status in
             <foreach item="item" collection="statusList" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="processDefinitionTypeList != null and processDefinitionTypeList.size() > 0">
+            and task.process_definition_type in
+            <foreach item="item" collection="processDefinitionTypeList" separator="," open="(" close=")">
                 #{item}
             </foreach>
         </if>

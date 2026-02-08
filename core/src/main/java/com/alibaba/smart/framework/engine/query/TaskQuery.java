@@ -251,6 +251,88 @@ public interface TaskQuery extends ProcessBoundQuery<TaskQuery, TaskInstance> {
      */
     TaskQuery completeTimeBefore(Date completeTimeEnd);
 
+    /**
+     * Filter by create time range (start, inclusive).
+     *
+     * @param createTimeStart tasks created at or after this time
+     * @return this query for method chaining
+     */
+    TaskQuery createdAfter(Date createTimeStart);
+
+    /**
+     * Filter by create time range (end, exclusive).
+     *
+     * @param createTimeEnd tasks created before this time
+     * @return this query for method chaining
+     */
+    TaskQuery createdBefore(Date createTimeEnd);
+
+    /**
+     * Filter by title using fuzzy match (LIKE %titleLike%).
+     *
+     * @param titleLike the title pattern to match
+     * @return this query for method chaining
+     */
+    TaskQuery taskTitleLike(String titleLike);
+
+    /**
+     * Conditionally filter by title using fuzzy match.
+     *
+     * @param condition if true, the filter is applied
+     * @param titleLike the title pattern to match
+     * @return this query for method chaining
+     */
+    TaskQuery taskTitleLike(boolean condition, String titleLike);
+
+    /**
+     * Filter for unassigned tasks (no claim user).
+     *
+     * @return this query for method chaining
+     */
+    TaskQuery taskUnassigned();
+
+    /**
+     * Filter by multiple process definition types.
+     *
+     * @param types the list of process definition types
+     * @return this query for method chaining
+     */
+    TaskQuery processDefinitionTypeIn(List<String> types);
+
+    /**
+     * Filter by multiple process definition types (varargs).
+     *
+     * @param types the process definition types
+     * @return this query for method chaining
+     */
+    default TaskQuery processDefinitionTypeIn(String... types) {
+        return processDefinitionTypeIn(Arrays.asList(types));
+    }
+
+    /**
+     * Filter by assignee using fuzzy match (LIKE %claimUserIdLike%).
+     *
+     * @param claimUserIdLike the assignee pattern to match
+     * @return this query for method chaining
+     */
+    TaskQuery taskAssigneeLike(String claimUserIdLike);
+
+    /**
+     * Filter by minimum priority (inclusive).
+     *
+     * @param minPriority the minimum priority value
+     * @return this query for method chaining
+     */
+    TaskQuery taskMinPriority(Integer minPriority);
+
+    /**
+     * Filter by maximum priority (inclusive).
+     *
+     * @param maxPriority the maximum priority value
+     * @return this query for method chaining
+     */
+    TaskQuery taskMaxPriority(Integer maxPriority);
+
     // ============ Ordering ============
 
     /**
