@@ -4,6 +4,8 @@ import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import com.alibaba.smart.framework.engine.service.param.query.JsonCondition;
+import com.alibaba.smart.framework.engine.service.param.query.JsonInCondition;
 
 /**
  * Created by jerry.zzy on 2017/11/16.
@@ -21,5 +23,21 @@ public class TaskInstanceQueryByAssigneeParam extends BaseQueryParam {
     private List<Long> processInstanceIdList;
 
     private String status;
+
+    // ============ domain_code filters ============
+
+    private String domainCode;
+
+    private List<String> domainCodeList;
+
+    private String domainCodeLike;
+
+    // ============ extra JSON conditions (built by Dialect) ============
+
+    private List<JsonCondition> jsonConditions;
+
+    private List<JsonInCondition> jsonInConditions;
+
+    private List<JsonCondition> jsonLikeConditions;
 
 }

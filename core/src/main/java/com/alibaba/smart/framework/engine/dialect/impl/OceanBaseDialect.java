@@ -62,6 +62,12 @@ public class OceanBaseDialect extends AbstractDialect {
     }
 
     @Override
+    public String jsonExtractText(String column, String key) {
+        // MySQL compatible
+        return "JSON_UNQUOTE(JSON_EXTRACT(" + column + ", '$." + key + "'))";
+    }
+
+    @Override
     public boolean supportsFeature(DialectFeature feature) {
         switch (feature) {
             case LIMIT_OFFSET:

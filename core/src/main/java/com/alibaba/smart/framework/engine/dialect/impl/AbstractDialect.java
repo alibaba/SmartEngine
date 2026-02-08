@@ -73,4 +73,10 @@ public abstract class AbstractDialect implements Dialect {
         // Default: use double quotes (ANSI SQL standard)
         return "\"" + identifier + "\"";
     }
+
+    @Override
+    public String jsonExtractText(String column, String key) {
+        // Default: Oracle/DM/SQL Server syntax
+        return "JSON_VALUE(" + column + ", '$." + key + "')";
+    }
 }

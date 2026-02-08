@@ -53,6 +53,10 @@ public class DefaultTaskInstance extends AbstractLifeCycleInstance implements Ta
      */
     private String extension;
 
+    private String domainCode;
+
+    private String extra;
+
     /**
      * 任务标题
      */

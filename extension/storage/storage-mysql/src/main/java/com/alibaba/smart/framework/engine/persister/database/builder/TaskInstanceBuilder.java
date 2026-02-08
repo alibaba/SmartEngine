@@ -59,6 +59,8 @@ public final class TaskInstanceBuilder {
         taskInstance.setClaimTime(taskInstanceEntity.getClaimTime());
         taskInstance.setComment(taskInstanceEntity.getComment());
         taskInstance.setExtension(taskInstanceEntity.getExtension());
+        taskInstance.setDomainCode(taskInstanceEntity.getDomainCode());
+        taskInstance.setExtra(taskInstanceEntity.getExtra());
         taskInstance.setTitle(taskInstanceEntity.getTitle());
         taskInstance.setPriority(taskInstanceEntity.getPriority());
         taskInstance.setTenantId(taskInstanceEntity.getTenantId());
@@ -86,6 +88,8 @@ public final class TaskInstanceBuilder {
         taskInstanceEntity.setComment(taskInstance.getComment());
         taskInstanceEntity.setTitle(taskInstance.getTitle());
         taskInstanceEntity.setExtension(taskInstance.getExtension());
+        taskInstanceEntity.setDomainCode(taskInstance.getDomainCode());
+        taskInstanceEntity.setExtra(taskInstance.getExtra());
         taskInstanceEntity.setTenantId(taskInstance.getTenantId());
         //taskInstanceEntity.setGmtModified(taskInstance.getCompleteTime());
 

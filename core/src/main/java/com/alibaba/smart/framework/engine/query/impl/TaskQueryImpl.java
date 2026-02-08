@@ -4,13 +4,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
+import com.alibaba.smart.framework.engine.dialect.Dialect;
+import com.alibaba.smart.framework.engine.dialect.DialectRegistry;
 import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.query.TaskQuery;
+import com.alibaba.smart.framework.engine.service.param.query.JsonCondition;
+import com.alibaba.smart.framework.engine.service.param.query.JsonInCondition;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
@@ -46,6 +53,14 @@ public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInst
     private String claimUserIdLike;
     private Integer minPriority;
     private Integer maxPriority;
+    private String domainCode;
+    private List<String> domainCodeList;
+    private String domainCodeLike;
+    private Map<String, String> jsonExactFilters = new LinkedHashMap<String, String>();
+    private Map<String, List<String>> jsonInFilters = new LinkedHashMap<String, List<String>>();
+    private Map<String, String> jsonLikeFilters = new LinkedHashMap<String, String>();
+
+    private static final Pattern VALID_JSON_KEY = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9_.]*$");
 
     // Candidate assignee filters (triggers assignee JOIN query path)
     private String candidateUserId;
@@ -270,6 +285,64 @@ public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInst
         return this;
     }
 
+    // ============ Domain code filters ============
+
+    @Override
+    public TaskQuery domainCode(String domainCode) {
+        this.domainCode = domainCode;
+        return this;
+    }
+
+    @Override
+    public TaskQuery domainCode(boolean condition, String domainCode) {
+        if (condition) {
+            this.domainCode = domainCode;
+        }
+        return this;
+    }
+
+    @Override
+    public TaskQuery domainCodeIn(List<String> domainCodes) {
+        this.domainCodeList = domainCodes != null ? new ArrayList<String>(domainCodes) : null;
+        return this;
+    }
+
+    @Override
+    public TaskQuery domainCodeLike(String domainCodeLike) {
+        this.domainCodeLike = domainCodeLike;
+        return this;
+    }
+
+    // ============ Extra JSON filters ============
+
+    @Override
+    public TaskQuery extraJson(String key, String value) {
+        validateJsonKey(key);
+        jsonExactFilters.put(key, value);
+        return this;
+    }
+
+    @Override
+    public TaskQuery extraJsonIn(String key, List<String> values) {
+        validateJsonKey(key);
+        jsonInFilters.put(key, values);
+        return this;
+    }
+
+    @Override
+    public TaskQuery extraJsonLike(String key, String pattern) {
+        validateJsonKey(key);
+        jsonLikeFilters.put(key, pattern);
+        return this;
+    }
+
+    private void validateJsonKey(String key) {
+        if (key == null || !VALID_JSON_KEY.matcher(key).matches()) {
+            throw new IllegalArgumentException("Invalid JSON key: " + key
+                    + ". Only [a-zA-Z_][a-zA-Z0-9_.]* is allowed.");
+        }
+    }
+
     // ============ Ordering ============
 
     @Override
@@ -352,6 +425,14 @@ public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInst
             param.setStatus(status);
         }
 
+        // domain_code filters
+        param.setDomainCode(domainCode);
+        param.setDomainCodeList(domainCodeList);
+        param.setDomainCodeLike(domainCodeLike);
+
+        // Build JSON conditions
+        buildJsonConditionsForAssignee(param);
+
         // Set pagination and tenant
         param.setPageOffset(pageOffset);
         param.setPageSize(pageSize);
@@ -409,6 +490,14 @@ public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInst
             param.setProcessDefinitionTypeList(processDefinitionTypeList);
         }
 
+        // domain_code filters
+        param.setDomainCode(domainCode);
+        param.setDomainCodeList(domainCodeList);
+        param.setDomainCodeLike(domainCodeLike);
+
+        // Build JSON conditions
+        buildJsonConditions(param);
+
         // Set pagination
         param.setPageOffset(pageOffset);
         param.setPageSize(pageSize);
@@ -420,5 +509,81 @@ public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInst
         param.setOrderBySpecs(orderBySpecs);
 
         return param;
+    }
+
+    private Dialect resolveDialect() {
+        Dialect dialect = processEngineConfiguration.getDialect();
+        if (dialect == null) {
+            dialect = DialectRegistry.getInstance().getDefaultDialect();
+        }
+        return dialect;
+    }
+
+    private void buildJsonConditions(TaskInstanceQueryParam param) {
+        if (jsonExactFilters.isEmpty() && jsonInFilters.isEmpty() && jsonLikeFilters.isEmpty()) {
+            return;
+        }
+        Dialect dialect = resolveDialect();
+
+        if (!jsonExactFilters.isEmpty()) {
+            List<JsonCondition> conditions = new ArrayList<JsonCondition>();
+            for (Map.Entry<String, String> e : jsonExactFilters.entrySet()) {
+                String expr = dialect.jsonExtractText("task.extra", e.getKey());
+                conditions.add(new JsonCondition(expr, e.getValue()));
+            }
+            param.setJsonConditions(conditions);
+        }
+
+        if (!jsonInFilters.isEmpty()) {
+            List<JsonInCondition> inConditions = new ArrayList<JsonInCondition>();
+            for (Map.Entry<String, List<String>> e : jsonInFilters.entrySet()) {
+                String expr = dialect.jsonExtractText("task.extra", e.getKey());
+                inConditions.add(new JsonInCondition(expr, e.getValue()));
+            }
+            param.setJsonInConditions(inConditions);
+        }
+
+        if (!jsonLikeFilters.isEmpty()) {
+            List<JsonCondition> likeConditions = new ArrayList<JsonCondition>();
+            for (Map.Entry<String, String> e : jsonLikeFilters.entrySet()) {
+                String expr = dialect.jsonExtractText("task.extra", e.getKey());
+                likeConditions.add(new JsonCondition(expr, e.getValue()));
+            }
+            param.setJsonLikeConditions(likeConditions);
+        }
+    }
+
+    private void buildJsonConditionsForAssignee(TaskInstanceQueryByAssigneeParam param) {
+        if (jsonExactFilters.isEmpty() && jsonInFilters.isEmpty() && jsonLikeFilters.isEmpty()) {
+            return;
+        }
+        Dialect dialect = resolveDialect();
+
+        if (!jsonExactFilters.isEmpty()) {
+            List<JsonCondition> conditions = new ArrayList<JsonCondition>();
+            for (Map.Entry<String, String> e : jsonExactFilters.entrySet()) {
+                String expr = dialect.jsonExtractText("task.extra", e.getKey());
+                conditions.add(new JsonCondition(expr, e.getValue()));
+            }
+            param.setJsonConditions(conditions);
+        }
+
+        if (!jsonInFilters.isEmpty()) {
+            List<JsonInCondition> inConditions = new ArrayList<JsonInCondition>();
+            for (Map.Entry<String, List<String>> e : jsonInFilters.entrySet()) {
+                String expr = dialect.jsonExtractText("task.extra", e.getKey());
+                inConditions.add(new JsonInCondition(expr, e.getValue()));
+            }
+            param.setJsonInConditions(inConditions);
+        }
+
+        if (!jsonLikeFilters.isEmpty()) {
+            List<JsonCondition> likeConditions = new ArrayList<JsonCondition>();
+            for (Map.Entry<String, String> e : jsonLikeFilters.entrySet()) {
+                String expr = dialect.jsonExtractText("task.extra", e.getKey());
+                likeConditions.add(new JsonCondition(expr, e.getValue()));
+            }
+            param.setJsonLikeConditions(likeConditions);
+        }
     }
 }

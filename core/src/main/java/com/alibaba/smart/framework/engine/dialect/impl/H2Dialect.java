@@ -60,6 +60,11 @@ public class H2Dialect extends AbstractDialect {
     }
 
     @Override
+    public String jsonExtractText(String column, String key) {
+        return "JSON_VALUE(" + column + " FORMAT JSON, '$." + key + "')";
+    }
+
+    @Override
     public boolean supportsFeature(DialectFeature feature) {
         switch (feature) {
             case LIMIT_OFFSET:

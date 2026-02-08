@@ -60,6 +60,11 @@ public class MySqlDialect extends AbstractDialect {
     }
 
     @Override
+    public String jsonExtractText(String column, String key) {
+        return "JSON_UNQUOTE(JSON_EXTRACT(" + column + ", '$." + key + "'))";
+    }
+
+    @Override
     public boolean supportsFeature(DialectFeature feature) {
         switch (feature) {
             case LIMIT_OFFSET:

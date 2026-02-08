@@ -66,6 +66,8 @@ CREATE TABLE se_task_instance (
   status varchar(255) NOT NULL,
   comment varchar(255),
   extension varchar(255),
+  domain_code varchar(64) DEFAULT NULL,
+  extra jsonb DEFAULT NULL,
   tenant_id varchar(64),
   PRIMARY KEY (id)
 );

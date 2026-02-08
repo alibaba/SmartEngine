@@ -74,6 +74,13 @@ public interface TaskInstance extends LifeCycleInstance {
 
     void setExtension(String extension);
 
+    String getDomainCode();
+
+    void setDomainCode(String domainCode);
+
+    String getExtra();
+
+    void setExtra(String extra);
 
     String getTitle();
 

@@ -69,6 +69,12 @@ public class KingbaseDialect extends AbstractDialect {
     }
 
     @Override
+    public String jsonExtractText(String column, String key) {
+        // PostgreSQL compatible
+        return "(" + column + "->>'" + key + "')";
+    }
+
+    @Override
     public boolean supportsFeature(DialectFeature feature) {
         switch (feature) {
             case LIMIT_OFFSET:

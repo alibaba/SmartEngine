@@ -136,6 +136,8 @@ CREATE TABLE se_task_instance (
   status                                VARCHAR2(255) NOT NULL,
   comment                               VARCHAR2(255) DEFAULT NULL,
   extension                             VARCHAR2(255) DEFAULT NULL,
+  domain_code                           VARCHAR2(64) DEFAULT NULL,
+  extra                                 CLOB DEFAULT NULL CHECK (extra IS JSON),
   tenant_id                             VARCHAR2(64) DEFAULT NULL,
   CONSTRAINT pk_task_instance PRIMARY KEY (id)
 );

@@ -185,6 +185,17 @@ public interface Dialect {
      */
     String quoteIdentifier(String identifier);
 
+    // ============ JSON functions ============
+
+    /**
+     * Generate SQL to extract text value from a JSON column by key.
+     *
+     * @param column the column reference (e.g., "task.extra")
+     * @param key    single-level JSON key (e.g., "category")
+     * @return SQL expression evaluating to text value
+     */
+    String jsonExtractText(String column, String key);
+
     /**
      * Enumeration of database features that may or may not be supported.
      */

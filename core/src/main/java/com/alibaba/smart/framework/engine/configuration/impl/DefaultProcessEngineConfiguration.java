@@ -13,6 +13,7 @@ import com.alibaba.smart.framework.engine.configuration.*;
 import com.alibaba.smart.framework.engine.configuration.impl.option.DefaultOptionContainer;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.constant.SmartBase;
+import com.alibaba.smart.framework.engine.dialect.Dialect;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
 import com.alibaba.smart.framework.engine.storage.StorageRouter;
 
@@ -70,6 +71,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
     private Map<String,Object> magicExtension;
 
     private StorageRouter storageRouter;
+
+    private Dialect dialect;
 
     public DefaultProcessEngineConfiguration() {
         //说明:先默认设置一个id生成器,业务使用方可以根据自己的需要再覆盖掉这个值。

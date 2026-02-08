@@ -6,6 +6,8 @@ import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import com.alibaba.smart.framework.engine.service.param.query.JsonCondition;
+import com.alibaba.smart.framework.engine.service.param.query.JsonInCondition;
 
 
 @Data
@@ -90,5 +92,21 @@ public class TaskInstanceQueryParam extends BaseQueryParam {
     * Filter by maximum priority (inclusive).
     */
    private Integer maxPriority;
+
+   // ============ domain_code filters ============
+
+   private String domainCode;
+
+   private List<String> domainCodeList;
+
+   private String domainCodeLike;
+
+   // ============ extra JSON conditions (built by Dialect) ============
+
+   private List<JsonCondition> jsonConditions;
+
+   private List<JsonInCondition> jsonInConditions;
+
+   private List<JsonCondition> jsonLikeConditions;
 
 }

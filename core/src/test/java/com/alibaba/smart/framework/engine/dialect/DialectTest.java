@@ -310,4 +310,73 @@ public class DialectTest {
         Assert.assertEquals("SUBSTRING(name, 1, 10)", mysql.substring("name", 1, 10));
         Assert.assertEquals("SUBSTR(name, 1, 10)", oracle.substring("name", 1, 10));
     }
+
+    // ============ JSON Extract Text Tests ============
+
+    @Test
+    public void testMySqlJsonExtractText() {
+        MySqlDialect dialect = new MySqlDialect();
+        String result = dialect.jsonExtractText("task.extra", "category");
+        Assert.assertEquals("JSON_UNQUOTE(JSON_EXTRACT(task.extra, '$.category'))", result);
+    }
+
+    @Test
+    public void testPostgreSqlJsonExtractText() {
+        PostgreSqlDialect dialect = new PostgreSqlDialect();
+        String result = dialect.jsonExtractText("task.extra", "category");
+        Assert.assertEquals("(task.extra->>'category')", result);
+    }
+
+    @Test
+    public void testOracleJsonExtractText() {
+        OracleDialect dialect = new OracleDialect();
+        String result = dialect.jsonExtractText("task.extra", "category");
+        Assert.assertEquals("JSON_VALUE(task.extra, '$.category')", result);
+    }
+
+    @Test
+    public void testH2JsonExtractText() {
+        H2Dialect dialect = new H2Dialect();
+        String result = dialect.jsonExtractText("task.extra", "category");
+        Assert.assertEquals("JSON_VALUE(task.extra FORMAT JSON, '$.category')", result);
+    }
+
+    @Test
+    public void testSqlServerJsonExtractText() {
+        SqlServerDialect dialect = new SqlServerDialect();
+        String result = dialect.jsonExtractText("task.extra", "category");
+        // SQL Server inherits AbstractDialect default (JSON_VALUE)
+        Assert.assertEquals("JSON_VALUE(task.extra, '$.category')", result);
+    }
+
+    @Test
+    public void testDmJsonExtractText() {
+        DmDialect dialect = new DmDialect();
+        String result = dialect.jsonExtractText("task.extra", "category");
+        // DM inherits AbstractDialect default (JSON_VALUE, Oracle compatible)
+        Assert.assertEquals("JSON_VALUE(task.extra, '$.category')", result);
+    }
+
+    @Test
+    public void testKingbaseJsonExtractText() {
+        KingbaseDialect dialect = new KingbaseDialect();
+        String result = dialect.jsonExtractText("task.extra", "category");
+        // KingBase is PostgreSQL compatible
+        Assert.assertEquals("(task.extra->>'category')", result);
+    }
+
+    @Test
+    public void testOceanBaseJsonExtractText() {
+        OceanBaseDialect dialect = new OceanBaseDialect();
+        String result = dialect.jsonExtractText("task.extra", "category");
+        // OceanBase is MySQL compatible
+        Assert.assertEquals("JSON_UNQUOTE(JSON_EXTRACT(task.extra, '$.category'))", result);
+    }
+
+    @Test
+    public void testJsonExtractTextWithNestedKey() {
+        MySqlDialect mysql = new MySqlDialect();
+        String result = mysql.jsonExtractText("task.extra", "department.name");
+        Assert.assertEquals("JSON_UNQUOTE(JSON_EXTRACT(task.extra, '$.department.name'))", result);
+    }
 }
