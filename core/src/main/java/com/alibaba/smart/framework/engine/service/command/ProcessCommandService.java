@@ -45,4 +45,15 @@ public interface ProcessCommandService {
 
     void abort(String processInstanceId, Map<String, Object> request);
 
+    /**
+     * Suspend a running process instance. Sets status to suspended without terminating
+     * active executions or tasks.
+     */
+    void suspend(String processInstanceId, String tenantId);
+
+    /**
+     * Resume a suspended process instance. Restores status to running.
+     */
+    void resume(String processInstanceId, String tenantId);
+
 }
