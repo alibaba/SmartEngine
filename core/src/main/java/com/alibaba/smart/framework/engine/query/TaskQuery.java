@@ -333,6 +333,91 @@ public interface TaskQuery extends ProcessBoundQuery<TaskQuery, TaskInstance> {
      */
     TaskQuery taskMaxPriority(Integer maxPriority);
 
+    // ============ Domain code filters ============
+
+    /**
+     * Filter by domain code (exact match).
+     *
+     * @param domainCode the domain code
+     * @return this query for method chaining
+     */
+    TaskQuery domainCode(String domainCode);
+
+    /**
+     * Conditionally filter by domain code.
+     *
+     * @param condition  if true, the filter is applied
+     * @param domainCode the domain code
+     * @return this query for method chaining
+     */
+    TaskQuery domainCode(boolean condition, String domainCode);
+
+    /**
+     * Filter by multiple domain codes (IN clause).
+     *
+     * @param domainCodes the list of domain codes
+     * @return this query for method chaining
+     */
+    TaskQuery domainCodeIn(List<String> domainCodes);
+
+    /**
+     * Filter by multiple domain codes (varargs).
+     *
+     * @param domainCodes the domain codes
+     * @return this query for method chaining
+     */
+    default TaskQuery domainCodeIn(String... domainCodes) {
+        return domainCodeIn(Arrays.asList(domainCodes));
+    }
+
+    /**
+     * Filter by domain code using fuzzy match (LIKE %domainCodeLike%).
+     *
+     * @param domainCodeLike the domain code pattern to match
+     * @return this query for method chaining
+     */
+    TaskQuery domainCodeLike(String domainCodeLike);
+
+    // ============ Extra JSON filters ============
+
+    /**
+     * Filter by a JSON key-value in the extra field (exact match).
+     *
+     * @param key   JSON key (single-level, e.g., "category")
+     * @param value expected value
+     * @return this query for method chaining
+     */
+    TaskQuery extraJson(String key, String value);
+
+    /**
+     * Filter by JSON key matching any of the given values (IN clause).
+     *
+     * @param key    JSON key (single-level)
+     * @param values the list of expected values
+     * @return this query for method chaining
+     */
+    TaskQuery extraJsonIn(String key, List<String> values);
+
+    /**
+     * Filter by JSON key matching any of the given values (varargs).
+     *
+     * @param key    JSON key (single-level)
+     * @param values the expected values
+     * @return this query for method chaining
+     */
+    default TaskQuery extraJsonIn(String key, String... values) {
+        return extraJsonIn(key, Arrays.asList(values));
+    }
+
+    /**
+     * Filter by JSON key using LIKE match.
+     *
+     * @param key     JSON key (single-level)
+     * @param pattern the LIKE pattern
+     * @return this query for method chaining
+     */
+    TaskQuery extraJsonLike(String key, String pattern);
+
     // ============ Ordering ============
 
     /**

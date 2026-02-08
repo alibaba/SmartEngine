@@ -50,4 +50,14 @@ public class TaskInstanceEntity extends BaseProcessEntity {
      * 任务标题
      */
     private String title;
+
+    /**
+     * Domain code for categorization and filtering.
+     */
+    private String domainCode;
+
+    /**
+     * Extra JSON data (stored as String in Java).
+     */
+    private String extra;
 }
