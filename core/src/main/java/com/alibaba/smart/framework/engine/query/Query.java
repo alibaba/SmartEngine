@@ -40,6 +40,33 @@ public interface Query<Q extends Query<Q, T>, T> {
      */
     Q tenantId(String tenantId);
 
+    /**
+     * Conditionally filter by tenant ID.
+     *
+     * @param condition if true, the tenantId filter is applied
+     * @param tenantId  the tenant ID
+     * @return this query for method chaining
+     */
+    Q tenantId(boolean condition, String tenantId);
+
+    /**
+     * Conditionally set the page offset (0-based).
+     *
+     * @param condition if true, the offset is applied
+     * @param offset    page offset, starting from 0
+     * @return this query for method chaining
+     */
+    Q pageOffset(boolean condition, int offset);
+
+    /**
+     * Conditionally set the page size.
+     *
+     * @param condition if true, the size is applied
+     * @param size      maximum number of results to return
+     * @return this query for method chaining
+     */
+    Q pageSize(boolean condition, int size);
+
     // ============ Execution methods ============
 
     /**

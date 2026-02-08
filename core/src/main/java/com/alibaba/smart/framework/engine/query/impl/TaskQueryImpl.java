@@ -1,7 +1,6 @@
 package com.alibaba.smart.framework.engine.query.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -17,18 +16,17 @@ import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryP
  *
  * @author SmartEngine Team
  */
-public class TaskQueryImpl extends AbstractQuery<TaskQuery, TaskInstance> implements TaskQuery {
+public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInstance> implements TaskQuery {
 
     private TaskInstanceStorage taskInstanceStorage;
 
     // Filter conditions
     private String taskInstanceId;
-    private String processInstanceId;
-    private List<String> processInstanceIds;
     private String activityInstanceId;
     private String processDefinitionType;
     private String processDefinitionActivityId;
     private String status;
+    private List<String> statusList;
     private String claimUserId;
     private String tag;
     private String extension;
@@ -53,18 +51,6 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, TaskInstance> implem
     }
 
     @Override
-    public TaskQuery processInstanceId(String processInstanceId) {
-        this.processInstanceId = processInstanceId;
-        return this;
-    }
-
-    @Override
-    public TaskQuery processInstanceIdIn(List<String> processInstanceIds) {
-        this.processInstanceIds = processInstanceIds;
-        return this;
-    }
-
-    @Override
     public TaskQuery activityInstanceId(String activityInstanceId) {
         this.activityInstanceId = activityInstanceId;
         return this;
@@ -73,6 +59,14 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, TaskInstance> implem
     @Override
     public TaskQuery processDefinitionType(String processDefinitionType) {
         this.processDefinitionType = processDefinitionType;
+        return this;
+    }
+
+    @Override
+    public TaskQuery processDefinitionType(boolean condition, String processDefinitionType) {
+        if (condition) {
+            this.processDefinitionType = processDefinitionType;
+        }
         return this;
     }
 
@@ -89,14 +83,50 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, TaskInstance> implem
     }
 
     @Override
+    public TaskQuery taskStatus(boolean condition, String status) {
+        if (condition) {
+            this.status = status;
+        }
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskStatusIn(List<String> statuses) {
+        this.statusList = statuses;
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskStatusIn(String... statuses) {
+        this.statusList = Arrays.asList(statuses);
+        return this;
+    }
+
+    @Override
     public TaskQuery taskAssignee(String claimUserId) {
         this.claimUserId = claimUserId;
         return this;
     }
 
     @Override
+    public TaskQuery taskAssignee(boolean condition, String claimUserId) {
+        if (condition) {
+            this.claimUserId = claimUserId;
+        }
+        return this;
+    }
+
+    @Override
     public TaskQuery taskTag(String tag) {
         this.tag = tag;
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskTag(boolean condition, String tag) {
+        if (condition) {
+            this.tag = tag;
+        }
         return this;
     }
 
@@ -125,6 +155,14 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, TaskInstance> implem
     }
 
     @Override
+    public TaskQuery taskTitle(boolean condition, String title) {
+        if (condition) {
+            this.title = title;
+        }
+        return this;
+    }
+
+    @Override
     public TaskQuery completeTimeAfter(Date completeTimeStart) {
         this.completeTimeStart = completeTimeStart;
         return this;
@@ -144,16 +182,6 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, TaskInstance> implem
     }
 
     @Override
-    public TaskQuery orderByCreateTime() {
-        return orderBy("gmtCreate", "gmt_create");
-    }
-
-    @Override
-    public TaskQuery orderByModifyTime() {
-        return orderBy("gmtModified", "gmt_modified");
-    }
-
-    @Override
     public TaskQuery orderByClaimTime() {
         return orderBy("claimTime", "claim_time");
     }
@@ -166,16 +194,6 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, TaskInstance> implem
     @Override
     public TaskQuery orderByPriority() {
         return orderBy("priority", "priority");
-    }
-
-    @Override
-    public TaskQuery asc() {
-        return applyAsc();
-    }
-
-    @Override
-    public TaskQuery desc() {
-        return applyDesc();
     }
 
     // ============ Execution ============
@@ -204,20 +222,22 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, TaskInstance> implem
             param.setId(Long.parseLong(taskInstanceId));
         }
 
-        // Set process instance filter
-        if (processInstanceId != null) {
-            List<String> ids = new ArrayList<>();
-            ids.add(processInstanceId);
-            param.setProcessInstanceIdList(ids);
-        } else if (processInstanceIds != null && !processInstanceIds.isEmpty()) {
-            param.setProcessInstanceIdList(processInstanceIds);
+        // Set process instance filter (from base class)
+        List<String> processInstanceIdList = buildProcessInstanceIdList();
+        if (processInstanceIdList != null) {
+            param.setProcessInstanceIdList(processInstanceIdList);
         }
 
         // Set other filters
         param.setActivityInstanceId(activityInstanceId);
         param.setProcessDefinitionType(processDefinitionType);
         param.setProcessDefinitionActivityId(processDefinitionActivityId);
-        param.setStatus(status);
+        // statusList takes precedence over single status
+        if (statusList != null && !statusList.isEmpty()) {
+            param.setStatusList(statusList);
+        } else {
+            param.setStatus(status);
+        }
         param.setClaimUserId(claimUserId);
         param.setTag(tag);
         param.setExtension(extension);

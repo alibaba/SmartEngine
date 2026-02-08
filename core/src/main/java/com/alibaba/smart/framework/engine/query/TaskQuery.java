@@ -21,7 +21,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
  *
  * @author SmartEngine Team
  */
-public interface TaskQuery extends Query<TaskQuery, TaskInstance> {
+public interface TaskQuery extends ProcessBoundQuery<TaskQuery, TaskInstance> {
 
     // ============ Filter conditions ============
 
@@ -32,22 +32,6 @@ public interface TaskQuery extends Query<TaskQuery, TaskInstance> {
      * @return this query for method chaining
      */
     TaskQuery taskInstanceId(String taskInstanceId);
-
-    /**
-     * Filter by process instance ID.
-     *
-     * @param processInstanceId the process instance ID
-     * @return this query for method chaining
-     */
-    TaskQuery processInstanceId(String processInstanceId);
-
-    /**
-     * Filter by multiple process instance IDs.
-     *
-     * @param processInstanceIds the list of process instance IDs
-     * @return this query for method chaining
-     */
-    TaskQuery processInstanceIdIn(List<String> processInstanceIds);
 
     /**
      * Filter by activity instance ID.
@@ -64,6 +48,15 @@ public interface TaskQuery extends Query<TaskQuery, TaskInstance> {
      * @return this query for method chaining
      */
     TaskQuery processDefinitionType(String processDefinitionType);
+
+    /**
+     * Conditionally filter by process definition type.
+     *
+     * @param condition             if true, the filter is applied
+     * @param processDefinitionType the process definition type
+     * @return this query for method chaining
+     */
+    TaskQuery processDefinitionType(boolean condition, String processDefinitionType);
 
     /**
      * Filter by process definition activity ID.
@@ -83,6 +76,31 @@ public interface TaskQuery extends Query<TaskQuery, TaskInstance> {
     TaskQuery taskStatus(String status);
 
     /**
+     * Conditionally filter by task status.
+     *
+     * @param condition if true, the filter is applied
+     * @param status    the task status
+     * @return this query for method chaining
+     */
+    TaskQuery taskStatus(boolean condition, String status);
+
+    /**
+     * Filter by multiple task statuses.
+     *
+     * @param statuses the list of task statuses
+     * @return this query for method chaining
+     */
+    TaskQuery taskStatusIn(List<String> statuses);
+
+    /**
+     * Filter by multiple task statuses (varargs).
+     *
+     * @param statuses the task statuses
+     * @return this query for method chaining
+     */
+    TaskQuery taskStatusIn(String... statuses);
+
+    /**
      * Filter by claim user ID (task assignee).
      *
      * @param claimUserId the user ID who claimed the task
@@ -91,12 +109,30 @@ public interface TaskQuery extends Query<TaskQuery, TaskInstance> {
     TaskQuery taskAssignee(String claimUserId);
 
     /**
+     * Conditionally filter by claim user ID (task assignee).
+     *
+     * @param condition   if true, the filter is applied
+     * @param claimUserId the user ID who claimed the task
+     * @return this query for method chaining
+     */
+    TaskQuery taskAssignee(boolean condition, String claimUserId);
+
+    /**
      * Filter by tag.
      *
      * @param tag the task tag
      * @return this query for method chaining
      */
     TaskQuery taskTag(String tag);
+
+    /**
+     * Conditionally filter by tag.
+     *
+     * @param condition if true, the filter is applied
+     * @param tag       the task tag
+     * @return this query for method chaining
+     */
+    TaskQuery taskTag(boolean condition, String tag);
 
     /**
      * Filter by extension field.
@@ -131,6 +167,15 @@ public interface TaskQuery extends Query<TaskQuery, TaskInstance> {
     TaskQuery taskTitle(String title);
 
     /**
+     * Conditionally filter by title.
+     *
+     * @param condition if true, the filter is applied
+     * @param title     the task title
+     * @return this query for method chaining
+     */
+    TaskQuery taskTitle(boolean condition, String title);
+
+    /**
      * Filter by complete time range (start).
      *
      * @param completeTimeStart the start of complete time range
@@ -156,20 +201,6 @@ public interface TaskQuery extends Query<TaskQuery, TaskInstance> {
     TaskQuery orderByTaskId();
 
     /**
-     * Order by create time.
-     *
-     * @return this query for method chaining (call asc() or desc() next)
-     */
-    TaskQuery orderByCreateTime();
-
-    /**
-     * Order by modify time.
-     *
-     * @return this query for method chaining (call asc() or desc() next)
-     */
-    TaskQuery orderByModifyTime();
-
-    /**
      * Order by claim time.
      *
      * @return this query for method chaining (call asc() or desc() next)
@@ -189,18 +220,4 @@ public interface TaskQuery extends Query<TaskQuery, TaskInstance> {
      * @return this query for method chaining (call asc() or desc() next)
      */
     TaskQuery orderByPriority();
-
-    /**
-     * Set ascending order for the previous orderBy call.
-     *
-     * @return this query for method chaining
-     */
-    TaskQuery asc();
-
-    /**
-     * Set descending order for the previous orderBy call.
-     *
-     * @return this query for method chaining
-     */
-    TaskQuery desc();
 }

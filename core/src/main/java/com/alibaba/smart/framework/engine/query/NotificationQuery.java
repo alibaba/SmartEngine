@@ -20,7 +20,7 @@ import com.alibaba.smart.framework.engine.model.instance.NotificationInstance;
  *
  * @author SmartEngine Team
  */
-public interface NotificationQuery extends Query<NotificationQuery, NotificationInstance> {
+public interface NotificationQuery extends ProcessBoundQuery<NotificationQuery, NotificationInstance> {
 
     // ============ Filter conditions ============
 
@@ -49,6 +49,15 @@ public interface NotificationQuery extends Query<NotificationQuery, Notification
     NotificationQuery receiverUserId(String receiverUserId);
 
     /**
+     * Conditionally filter by receiver user ID.
+     *
+     * @param condition      if true, the filter is applied
+     * @param receiverUserId the receiver user ID
+     * @return this query for method chaining
+     */
+    NotificationQuery receiverUserId(boolean condition, String receiverUserId);
+
+    /**
      * Filter by task instance ID.
      *
      * @param taskInstanceId the task instance ID
@@ -65,22 +74,6 @@ public interface NotificationQuery extends Query<NotificationQuery, Notification
     NotificationQuery taskInstanceIdIn(List<String> taskInstanceIds);
 
     /**
-     * Filter by process instance ID.
-     *
-     * @param processInstanceId the process instance ID
-     * @return this query for method chaining
-     */
-    NotificationQuery processInstanceId(String processInstanceId);
-
-    /**
-     * Filter by multiple process instance IDs.
-     *
-     * @param processInstanceIds the list of process instance IDs
-     * @return this query for method chaining
-     */
-    NotificationQuery processInstanceIdIn(List<String> processInstanceIds);
-
-    /**
      * Filter by notification type.
      *
      * @param notificationType the notification type
@@ -89,12 +82,30 @@ public interface NotificationQuery extends Query<NotificationQuery, Notification
     NotificationQuery notificationType(String notificationType);
 
     /**
+     * Conditionally filter by notification type.
+     *
+     * @param condition        if true, the filter is applied
+     * @param notificationType the notification type
+     * @return this query for method chaining
+     */
+    NotificationQuery notificationType(boolean condition, String notificationType);
+
+    /**
      * Filter by read status.
      *
      * @param readStatus the read status
      * @return this query for method chaining
      */
     NotificationQuery readStatus(String readStatus);
+
+    /**
+     * Conditionally filter by read status.
+     *
+     * @param condition  if true, the filter is applied
+     * @param readStatus the read status
+     * @return this query for method chaining
+     */
+    NotificationQuery readStatus(boolean condition, String readStatus);
 
     /**
      * Filter by notification time range (start).
@@ -122,37 +133,9 @@ public interface NotificationQuery extends Query<NotificationQuery, Notification
     NotificationQuery orderByNotificationId();
 
     /**
-     * Order by create time.
-     *
-     * @return this query for method chaining (call asc() or desc() next)
-     */
-    NotificationQuery orderByCreateTime();
-
-    /**
-     * Order by modify time.
-     *
-     * @return this query for method chaining (call asc() or desc() next)
-     */
-    NotificationQuery orderByModifyTime();
-
-    /**
      * Order by read time.
      *
      * @return this query for method chaining (call asc() or desc() next)
      */
     NotificationQuery orderByReadTime();
-
-    /**
-     * Set ascending order for the previous orderBy call.
-     *
-     * @return this query for method chaining
-     */
-    NotificationQuery asc();
-
-    /**
-     * Set descending order for the previous orderBy call.
-     *
-     * @return this query for method chaining
-     */
-    NotificationQuery desc();
 }

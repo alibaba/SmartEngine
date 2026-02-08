@@ -13,12 +13,28 @@ import com.alibaba.smart.framework.engine.service.param.query.CompletedProcessQu
  */
 public interface ProcessQueryService {
 
+    /**
+     * @deprecated Use {@code smartEngine.createProcessQuery().processInstanceId(id).singleResult()} instead
+     */
+    @Deprecated
     ProcessInstance findById(String processInstanceId);
 
+    /**
+     * @deprecated Use {@code smartEngine.createProcessQuery().processInstanceId(id).tenantId(t).singleResult()} instead
+     */
+    @Deprecated
     ProcessInstance findById(String processInstanceId,String tenantId);
 
+    /**
+     * @deprecated Use {@code smartEngine.createProcessQuery()} fluent API instead
+     */
+    @Deprecated
     List<ProcessInstance> findList(ProcessInstanceQueryParam processInstanceQueryParam);
 
+    /**
+     * @deprecated Use {@code smartEngine.createProcessQuery()...count()} instead
+     */
+    @Deprecated
     Long count(ProcessInstanceQueryParam processInstanceQueryParam);
 
     /**

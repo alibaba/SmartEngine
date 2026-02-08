@@ -58,6 +58,30 @@ public abstract class AbstractQuery<Q extends Query<Q, T>, T> implements Query<Q
         return self();
     }
 
+    @Override
+    public Q tenantId(boolean condition, String tenantId) {
+        if (condition) {
+            this.tenantId = tenantId;
+        }
+        return self();
+    }
+
+    @Override
+    public Q pageOffset(boolean condition, int offset) {
+        if (condition) {
+            this.pageOffset = offset;
+        }
+        return self();
+    }
+
+    @Override
+    public Q pageSize(boolean condition, int size) {
+        if (condition) {
+            this.pageSize = size;
+        }
+        return self();
+    }
+
     // ============ Ordering helpers ============
 
     /**
