@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- ===== Archive Configuration ===== -->
+
+    <!-- Property placeholder (if not already configured) -->
+    <!-- <context:property-placeholder location="classpath:application.properties" ignore-unresolvable="true"/> -->
+
+    <bean id="archiveProperties" class="com.alibaba.smart.framework.engine.archive.config.ArchiveProperties">
+        <property name="enabled" value="${smart-engine.archive.enabled:false}"/>
+        <property name="retentionDays" value="${smart-engine.archive.retention-days:90}"/>
+        <property name="batchSize" value="${smart-engine.archive.batch-size:100}"/>
+        <property name="cron" value="${smart-engine.archive.cron:0 0 2 * * ?}"/>
+    </bean>
+
+    <!-- ===== MyBatis Mapper Scanner ===== -->
+    <!-- Make sure to include archive mapper in your SqlSessionFactoryBean mapperLocations -->
+    <!-- Example: p:mapperLocations="classpath:mybatis/sqlmap/*.xml,classpath*:mybatis/sqlmap/archive.xml" -->
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.alibaba.smart.framework.engine.archive.dao"/>
+    </bean>
+
+    <!-- ===== Transaction Template ===== -->
+    <bean id="archiveTransactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="txManager"/>
+    </bean>
+
+    <!-- ===== Archive Service ===== -->
+    <bean id="archiveService" class="com.alibaba.smart.framework.engine.archive.service.DefaultArchiveService">
+        <property name="archiveDAO" ref="archiveDAO"/>
+        <property name="archiveProperties" ref="archiveProperties"/>
+        <property name="transactionTemplate" ref="archiveTransactionTemplate"/>
+    </bean>
+
+    <!-- ===== Task Scheduler ===== -->
+    <task:scheduler id="archiveTaskScheduler" pool-size="1"/>
+
+    <!-- ===== Archive Scheduler ===== -->
+    <bean id="archiveScheduler" class="com.alibaba.smart.framework.engine.archive.scheduler.ArchiveScheduler"
+          init-method="start" destroy-method="stop">
+        <property name="archiveProperties" ref="archiveProperties"/>
+        <property name="archiveService" ref="archiveService"/>
+        <property name="taskScheduler" ref="archiveTaskScheduler"/>
+        <!-- Set tenantId for multi-tenant mode, null for single-tenant -->
+        <!-- <property name="tenantId" value="${smart-engine.archive.tenant-id:}"/> -->
+    </bean>
+
+    <!--
+    Usage in application.properties or application.yml:
+
+    smart-engine.archive.enabled=true
+    smart-engine.archive.retention-days=30
+    smart-engine.archive.batch-size=500
+    smart-engine.archive.cron=0 0 2 * * ?
+
+    Or in YAML:
+
+    smart-engine:
+      archive:
+        enabled: true
+        retention-days: 30
+        batch-size: 500
+        cron: "0 0 2 * * ?"
+    -->
+
+</beans>
