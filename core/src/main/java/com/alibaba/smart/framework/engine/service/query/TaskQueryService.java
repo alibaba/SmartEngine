@@ -17,13 +17,28 @@ public interface TaskQueryService {
 
     /**
      * 待办任务列表
+     *
+     * @deprecated Use {@code smartEngine.createTaskQuery().taskCandidateOrGroup(userId, groupIds).taskStatus("pending").list()} instead
      */
+    @Deprecated
     List<TaskInstance> findPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam);
 
+    /**
+     * @deprecated Use {@code smartEngine.createTaskQuery().taskCandidateOrGroup(userId, groupIds).taskStatus("pending").count()} instead
+     */
+    @Deprecated
     Long countPendingTaskList(PendingTaskQueryParam pendingTaskQueryParam);
 
+    /**
+     * @deprecated Use {@code smartEngine.createTaskQuery().taskCandidateOrGroup(userId, groupIds).taskStatus(s).list()} instead
+     */
+    @Deprecated
     List<TaskInstance> findTaskListByAssignee(TaskInstanceQueryByAssigneeParam param);
 
+    /**
+     * @deprecated Use {@code smartEngine.createTaskQuery().taskCandidateOrGroup(userId, groupIds).taskStatus(s).count()} instead
+     */
+    @Deprecated
     Long countTaskListByAssignee(TaskInstanceQueryByAssigneeParam param);
 
     /**

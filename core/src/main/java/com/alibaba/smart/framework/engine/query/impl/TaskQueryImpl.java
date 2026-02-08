@@ -1,6 +1,8 @@
 package com.alibaba.smart.framework.engine.query.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 import com.alibaba.smart.framework.engine.instance.storage.TaskInstanceStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.query.TaskQuery;
+import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam;
 import com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam;
 
 /**
@@ -35,6 +38,10 @@ public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInst
     private String title;
     private Date completeTimeStart;
     private Date completeTimeEnd;
+
+    // Candidate assignee filters (triggers assignee JOIN query path)
+    private String candidateUserId;
+    private List<String> candidateGroupIds;
 
     public TaskQueryImpl(ProcessEngineConfiguration processEngineConfiguration) {
         super(processEngineConfiguration);
@@ -113,6 +120,31 @@ public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInst
         if (condition) {
             this.claimUserId = claimUserId;
         }
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskCandidateUser(String userId) {
+        this.candidateUserId = userId;
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskCandidateGroup(String groupId) {
+        this.candidateGroupIds = Collections.singletonList(groupId);
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskCandidateGroupIn(List<String> groupIds) {
+        this.candidateGroupIds = groupIds;
+        return this;
+    }
+
+    @Override
+    public TaskQuery taskCandidateOrGroup(String userId, List<String> groupIds) {
+        this.candidateUserId = userId;
+        this.candidateGroupIds = groupIds;
         return this;
     }
 
@@ -198,17 +230,70 @@ public class TaskQueryImpl extends AbstractProcessBoundQuery<TaskQuery, TaskInst
 
     // ============ Execution ============
 
+    /**
+     * Check if candidate assignee filters are set, which requires the assignee JOIN query path.
+     */
+    private boolean isCandidateQuery() {
+        return candidateUserId != null || (candidateGroupIds != null && !candidateGroupIds.isEmpty());
+    }
+
     @Override
     protected List<TaskInstance> executeList() {
+        if (isCandidateQuery()) {
+            TaskInstanceQueryByAssigneeParam param = buildAssigneeQueryParam();
+            return taskInstanceStorage.findTaskListByAssignee(param, processEngineConfiguration);
+        }
         TaskInstanceQueryParam param = buildQueryParam();
         return taskInstanceStorage.findTaskList(param, processEngineConfiguration);
     }
 
     @Override
     protected long executeCount() {
+        if (isCandidateQuery()) {
+            TaskInstanceQueryByAssigneeParam param = buildAssigneeQueryParam();
+            Long count = taskInstanceStorage.countTaskListByAssignee(param, processEngineConfiguration);
+            return count != null ? count : 0L;
+        }
         TaskInstanceQueryParam param = buildQueryParam();
         Long count = taskInstanceStorage.count(param, processEngineConfiguration);
         return count != null ? count : 0L;
+    }
+
+    /**
+     * Build TaskInstanceQueryByAssigneeParam for the assignee JOIN query path.
+     */
+    private TaskInstanceQueryByAssigneeParam buildAssigneeQueryParam() {
+        TaskInstanceQueryByAssigneeParam param = new TaskInstanceQueryByAssigneeParam();
+
+        param.setAssigneeUserId(candidateUserId);
+        // Treat empty group list as null to avoid empty IN() SQL syntax error
+        param.setAssigneeGroupIdList(
+            candidateGroupIds != null && !candidateGroupIds.isEmpty() ? candidateGroupIds : null);
+        param.setProcessDefinitionType(processDefinitionType);
+
+        // Set process instance ID list
+        List<String> processInstanceIdList = buildProcessInstanceIdList();
+        if (processInstanceIdList != null) {
+            List<Long> longIds = new ArrayList<Long>(processInstanceIdList.size());
+            for (String id : processInstanceIdList) {
+                longIds.add(Long.parseLong(id));
+            }
+            param.setProcessInstanceIdList(longIds);
+        }
+
+        // statusList takes precedence, else single status
+        if (statusList != null && !statusList.isEmpty()) {
+            param.setStatus(statusList.get(0));
+        } else {
+            param.setStatus(status);
+        }
+
+        // Set pagination and tenant
+        param.setPageOffset(pageOffset);
+        param.setPageSize(pageSize);
+        param.setTenantId(tenantId);
+
+        return param;
     }
 
     /**

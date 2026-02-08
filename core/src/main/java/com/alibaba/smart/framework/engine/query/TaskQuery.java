@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.query;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -116,6 +117,65 @@ public interface TaskQuery extends ProcessBoundQuery<TaskQuery, TaskInstance> {
      * @return this query for method chaining
      */
     TaskQuery taskAssignee(boolean condition, String claimUserId);
+
+    /**
+     * Filter by candidate user ID (via assignee table JOIN).
+     * Finds tasks where the specified user is a candidate assignee (assignee_type = 'user').
+     *
+     * <p>This differs from {@link #taskAssignee(String)} which filters by the already-claimed user.
+     * This method queries the task assignee candidate table to find tasks assigned to the user.
+     *
+     * @param userId the candidate user ID
+     * @return this query for method chaining
+     */
+    TaskQuery taskCandidateUser(String userId);
+
+    /**
+     * Filter by candidate group ID (via assignee table JOIN).
+     * Finds tasks where the specified group is a candidate assignee (assignee_type = 'group').
+     *
+     * @param groupId the candidate group ID
+     * @return this query for method chaining
+     */
+    TaskQuery taskCandidateGroup(String groupId);
+
+    /**
+     * Filter by multiple candidate group IDs (via assignee table JOIN).
+     * Finds tasks where any of the specified groups is a candidate assignee.
+     *
+     * @param groupIds the candidate group ID list
+     * @return this query for method chaining
+     */
+    TaskQuery taskCandidateGroupIn(List<String> groupIds);
+
+    /**
+     * Filter by multiple candidate group IDs (varargs).
+     *
+     * @param groupIds the candidate group IDs
+     * @return this query for method chaining
+     */
+    default TaskQuery taskCandidateGroupIn(String... groupIds) {
+        return taskCandidateGroupIn(Arrays.asList(groupIds));
+    }
+
+    /**
+     * Filter by candidate user OR candidate groups (via assignee table JOIN).
+     * Finds tasks where the user is a candidate (assignee_type = 'user')
+     * OR any of the groups is a candidate (assignee_type = 'group').
+     *
+     * <p>This is the most common pattern for pending task queries:
+     * <pre>{@code
+     * List<TaskInstance> myTasks = smartEngine.createTaskQuery()
+     *     .taskCandidateOrGroup("user001", Arrays.asList("dept-A", "role-manager"))
+     *     .taskStatus(TaskInstanceConstant.PENDING)
+     *     .listPage(0, 10);
+     * }</pre>
+     *
+     * @param userId   the candidate user ID
+     * @param groupIds the candidate group ID list
+     * @return this query for method chaining
+     */
+    TaskQuery taskCandidateOrGroup(String userId, List<String> groupIds);
 
     /**
      * Filter by tag.
