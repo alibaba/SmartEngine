@@ -88,6 +88,20 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
 
     @Override
+    public void claim(String taskId, String userId, String tenantId) {
+        TaskInstance taskInstance = taskInstanceStorage.find(taskId, tenantId, processEngineConfiguration);
+        if (taskInstance == null) {
+            throw new ValidationException("Task instance not found for taskId: " + taskId);
+        }
+        if (taskInstance.getClaimUserId() != null && !taskInstance.getClaimUserId().isEmpty()) {
+            throw new ValidationException("Task already claimed by user: " + taskInstance.getClaimUserId());
+        }
+        taskInstance.setClaimUserId(userId);
+        taskInstance.setClaimTime(DateUtil.getCurrentDate());
+        taskInstanceStorage.update(taskInstance, processEngineConfiguration);
+    }
+
+    @Override
     public ProcessInstance complete(String taskId, Map<String, Object> request, Map<String, Object> response) {
 
         String tenantId = null;

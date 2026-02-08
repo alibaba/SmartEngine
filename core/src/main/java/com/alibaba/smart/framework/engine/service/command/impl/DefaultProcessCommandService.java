@@ -229,6 +229,32 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
     }
 
 
+    @Override
+    public void suspend(String processInstanceId, String tenantId) {
+        ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId, tenantId, processEngineConfiguration);
+        if (processInstance == null) {
+            throw new IllegalArgumentException("ProcessInstance not found: " + processInstanceId);
+        }
+        if (processInstance.getStatus() != InstanceStatus.running) {
+            throw new IllegalStateException("Can only suspend a running process instance, current status: " + processInstance.getStatus());
+        }
+        processInstance.setStatus(InstanceStatus.suspended);
+        processInstanceStorage.update(processInstance, processEngineConfiguration);
+    }
+
+    @Override
+    public void resume(String processInstanceId, String tenantId) {
+        ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId, tenantId, processEngineConfiguration);
+        if (processInstance == null) {
+            throw new IllegalArgumentException("ProcessInstance not found: " + processInstanceId);
+        }
+        if (processInstance.getStatus() != InstanceStatus.suspended) {
+            throw new IllegalStateException("Can only resume a suspended process instance, current status: " + processInstance.getStatus());
+        }
+        processInstance.setStatus(InstanceStatus.running);
+        processInstanceStorage.update(processInstance, processEngineConfiguration);
+    }
+
     private ProcessEngineConfiguration processEngineConfiguration;
     private  ProcessInstanceStorage processInstanceStorage;
     private TaskInstanceStorage taskInstanceStorage;

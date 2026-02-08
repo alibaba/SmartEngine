@@ -17,6 +17,11 @@ public interface TaskCommandService {
 
     ProcessInstance complete(String taskId, Map<String, Object> request);
 
+    /**
+     * Claim a task by setting the claimUserId. Only unclaimed tasks can be claimed.
+     */
+    void claim(String taskId, String userId, String tenantId);
+
     ProcessInstance complete(String taskId, String userId, Map<String, Object> request);
 
     ProcessInstance complete(String taskId, Map<String, Object> request, Map<String, Object> response);
