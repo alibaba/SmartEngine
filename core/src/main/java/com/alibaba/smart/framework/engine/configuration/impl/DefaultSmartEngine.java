@@ -37,10 +37,12 @@ import com.alibaba.smart.framework.engine.service.query.SupervisionQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskAssigneeQueryService;
 import com.alibaba.smart.framework.engine.service.query.TaskQueryService;
 import com.alibaba.smart.framework.engine.service.query.VariableQueryService;
+import com.alibaba.smart.framework.engine.query.DeploymentQuery;
 import com.alibaba.smart.framework.engine.query.NotificationQuery;
 import com.alibaba.smart.framework.engine.query.ProcessInstanceQuery;
 import com.alibaba.smart.framework.engine.query.SupervisionQuery;
 import com.alibaba.smart.framework.engine.query.TaskQuery;
+import com.alibaba.smart.framework.engine.query.impl.DeploymentQueryImpl;
 import com.alibaba.smart.framework.engine.query.impl.NotificationQueryImpl;
 import com.alibaba.smart.framework.engine.query.impl.ProcessInstanceQueryImpl;
 import com.alibaba.smart.framework.engine.query.impl.SupervisionQueryImpl;
@@ -288,6 +290,11 @@ public class DefaultSmartEngine implements SmartEngine {
     @Override
     public NotificationQuery createNotificationQuery() {
         return new NotificationQueryImpl(processEngineConfiguration);
+    }
+
+    @Override
+    public DeploymentQuery createDeploymentQuery() {
+        return new DeploymentQueryImpl(processEngineConfiguration);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.query;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -165,6 +166,33 @@ public interface ProcessInstanceQuery extends Query<ProcessInstanceQuery, Proces
      * @return this query for method chaining
      */
     ProcessInstanceQuery completedBefore(Date completeTimeEnd);
+
+    /**
+     * Filter by multiple process definition types.
+     *
+     * @param types the list of process definition types
+     * @return this query for method chaining
+     */
+    ProcessInstanceQuery processDefinitionTypeIn(List<String> types);
+
+    /**
+     * Filter by multiple process definition types (varargs).
+     *
+     * @param types the process definition types
+     * @return this query for method chaining
+     */
+    default ProcessInstanceQuery processDefinitionTypeIn(String... types) {
+        return processDefinitionTypeIn(Arrays.asList(types));
+    }
+
+    /**
+     * Filter by involved user. Finds processes where the user is the starter.
+     * This is a semantic alias for {@link #startedBy(String)}.
+     *
+     * @param userId the involved user ID
+     * @return this query for method chaining
+     */
+    ProcessInstanceQuery involvedUser(String userId);
 
     // ============ Ordering ============
 

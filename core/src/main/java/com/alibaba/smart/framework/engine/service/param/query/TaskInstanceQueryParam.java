@@ -42,6 +42,11 @@ public class TaskInstanceQueryParam extends BaseQueryParam {
    private String title;
 
    /**
+    * Fuzzy search on title (LIKE %titleLike%).
+    */
+   private String titleLike;
+
+   /**
     * 完成时间开始
     */
    private Date completeTimeStart;
@@ -50,5 +55,40 @@ public class TaskInstanceQueryParam extends BaseQueryParam {
     * 完成时间结束
     */
    private Date completeTimeEnd;
+
+   /**
+    * Filter by create time range (start, inclusive).
+    */
+   private Date createTimeStart;
+
+   /**
+    * Filter by create time range (end, exclusive).
+    */
+   private Date createTimeEnd;
+
+   /**
+    * Filter by multiple process definition types (IN clause).
+    */
+   private List<String> processDefinitionTypeList;
+
+   /**
+    * Filter for unassigned tasks (claim_user_id IS NULL).
+    */
+   private Boolean unassigned;
+
+   /**
+    * Fuzzy search on claim user ID (LIKE %claimUserIdLike%).
+    */
+   private String claimUserIdLike;
+
+   /**
+    * Filter by minimum priority (inclusive).
+    */
+   private Integer minPriority;
+
+   /**
+    * Filter by maximum priority (inclusive).
+    */
+   private Integer maxPriority;
 
 }

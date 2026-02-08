@@ -34,6 +34,7 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
     private Date startTimeBefore;
     private Date completeTimeStart;
     private Date completeTimeEnd;
+    private List<String> processDefinitionTypeList;
 
     public ProcessInstanceQueryImpl(ProcessEngineConfiguration processEngineConfiguration) {
         super(processEngineConfiguration);
@@ -155,6 +156,18 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
         return this;
     }
 
+    @Override
+    public ProcessInstanceQuery processDefinitionTypeIn(List<String> types) {
+        this.processDefinitionTypeList = types != null ? new ArrayList<String>(types) : null;
+        return this;
+    }
+
+    @Override
+    public ProcessInstanceQuery involvedUser(String userId) {
+        this.startUserId = userId;
+        return this;
+    }
+
     // ============ Ordering ============
 
     @Override
@@ -228,11 +241,17 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
         param.setProcessEndTime(startTimeBefore);
         param.setCompleteTimeStart(completeTimeStart);
         param.setCompleteTimeEnd(completeTimeEnd);
+        // processDefinitionTypeList takes precedence over single type
+        if (processDefinitionTypeList != null && !processDefinitionTypeList.isEmpty()) {
+            param.setProcessDefinitionTypeList(processDefinitionTypeList);
+        }
 
         // Set pagination
         param.setPageOffset(pageOffset);
         param.setPageSize(pageSize);
-        param.setTenantId(tenantId);
+        if (!excludeTenant) {
+            param.setTenantId(tenantId);
+        }
 
         // Set order by specs
         param.setOrderBySpecs(orderBySpecs);

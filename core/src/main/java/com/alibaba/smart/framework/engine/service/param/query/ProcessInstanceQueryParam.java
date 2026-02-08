@@ -48,4 +48,9 @@ public class ProcessInstanceQueryParam extends BaseQueryParam {
      */
     private Date completeTimeEnd;
 
+    /**
+     * Filter by multiple process definition types (IN clause).
+     */
+    private List<String> processDefinitionTypeList;
+
 }
