@@ -20,7 +20,7 @@ import com.alibaba.smart.framework.engine.model.instance.SupervisionInstance;
  *
  * @author SmartEngine Team
  */
-public interface SupervisionQuery extends Query<SupervisionQuery, SupervisionInstance> {
+public interface SupervisionQuery extends ProcessBoundQuery<SupervisionQuery, SupervisionInstance> {
 
     // ============ Filter conditions ============
 
@@ -41,6 +41,15 @@ public interface SupervisionQuery extends Query<SupervisionQuery, SupervisionIns
     SupervisionQuery supervisorUserId(String supervisorUserId);
 
     /**
+     * Conditionally filter by supervisor user ID.
+     *
+     * @param condition        if true, the filter is applied
+     * @param supervisorUserId the supervisor user ID
+     * @return this query for method chaining
+     */
+    SupervisionQuery supervisorUserId(boolean condition, String supervisorUserId);
+
+    /**
      * Filter by task instance ID.
      *
      * @param taskInstanceId the task instance ID
@@ -57,22 +66,6 @@ public interface SupervisionQuery extends Query<SupervisionQuery, SupervisionIns
     SupervisionQuery taskInstanceIdIn(List<String> taskInstanceIds);
 
     /**
-     * Filter by process instance ID.
-     *
-     * @param processInstanceId the process instance ID
-     * @return this query for method chaining
-     */
-    SupervisionQuery processInstanceId(String processInstanceId);
-
-    /**
-     * Filter by multiple process instance IDs.
-     *
-     * @param processInstanceIds the list of process instance IDs
-     * @return this query for method chaining
-     */
-    SupervisionQuery processInstanceIdIn(List<String> processInstanceIds);
-
-    /**
      * Filter by supervision type.
      *
      * @param supervisionType the supervision type
@@ -81,12 +74,30 @@ public interface SupervisionQuery extends Query<SupervisionQuery, SupervisionIns
     SupervisionQuery supervisionType(String supervisionType);
 
     /**
+     * Conditionally filter by supervision type.
+     *
+     * @param condition       if true, the filter is applied
+     * @param supervisionType the supervision type
+     * @return this query for method chaining
+     */
+    SupervisionQuery supervisionType(boolean condition, String supervisionType);
+
+    /**
      * Filter by supervision status.
      *
      * @param status the supervision status
      * @return this query for method chaining
      */
     SupervisionQuery supervisionStatus(String status);
+
+    /**
+     * Conditionally filter by supervision status.
+     *
+     * @param condition if true, the filter is applied
+     * @param status    the supervision status
+     * @return this query for method chaining
+     */
+    SupervisionQuery supervisionStatus(boolean condition, String status);
 
     /**
      * Filter by supervision time range (start).
@@ -114,37 +125,9 @@ public interface SupervisionQuery extends Query<SupervisionQuery, SupervisionIns
     SupervisionQuery orderBySupervisionId();
 
     /**
-     * Order by create time.
-     *
-     * @return this query for method chaining (call asc() or desc() next)
-     */
-    SupervisionQuery orderByCreateTime();
-
-    /**
-     * Order by modify time.
-     *
-     * @return this query for method chaining (call asc() or desc() next)
-     */
-    SupervisionQuery orderByModifyTime();
-
-    /**
      * Order by close time.
      *
      * @return this query for method chaining (call asc() or desc() next)
      */
     SupervisionQuery orderByCloseTime();
-
-    /**
-     * Set ascending order for the previous orderBy call.
-     *
-     * @return this query for method chaining
-     */
-    SupervisionQuery asc();
-
-    /**
-     * Set descending order for the previous orderBy call.
-     *
-     * @return this query for method chaining
-     */
-    SupervisionQuery desc();
 }

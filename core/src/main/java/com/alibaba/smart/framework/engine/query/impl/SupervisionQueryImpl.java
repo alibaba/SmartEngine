@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.service.param.query.SupervisionQueryPa
  *
  * @author SmartEngine Team
  */
-public class SupervisionQueryImpl extends AbstractQuery<SupervisionQuery, SupervisionInstance>
+public class SupervisionQueryImpl extends AbstractProcessBoundQuery<SupervisionQuery, SupervisionInstance>
         implements SupervisionQuery {
 
     private SupervisionInstanceStorage supervisionInstanceStorage;
@@ -26,8 +26,6 @@ public class SupervisionQueryImpl extends AbstractQuery<SupervisionQuery, Superv
     private String supervisorUserId;
     private String taskInstanceId;
     private List<String> taskInstanceIds;
-    private String processInstanceId;
-    private List<String> processInstanceIds;
     private String supervisionType;
     private String status;
     private Date supervisionStartTime;
@@ -54,6 +52,14 @@ public class SupervisionQueryImpl extends AbstractQuery<SupervisionQuery, Superv
     }
 
     @Override
+    public SupervisionQuery supervisorUserId(boolean condition, String supervisorUserId) {
+        if (condition) {
+            this.supervisorUserId = supervisorUserId;
+        }
+        return this;
+    }
+
+    @Override
     public SupervisionQuery taskInstanceId(String taskInstanceId) {
         this.taskInstanceId = taskInstanceId;
         return this;
@@ -66,26 +72,30 @@ public class SupervisionQueryImpl extends AbstractQuery<SupervisionQuery, Superv
     }
 
     @Override
-    public SupervisionQuery processInstanceId(String processInstanceId) {
-        this.processInstanceId = processInstanceId;
-        return this;
-    }
-
-    @Override
-    public SupervisionQuery processInstanceIdIn(List<String> processInstanceIds) {
-        this.processInstanceIds = processInstanceIds;
-        return this;
-    }
-
-    @Override
     public SupervisionQuery supervisionType(String supervisionType) {
         this.supervisionType = supervisionType;
         return this;
     }
 
     @Override
+    public SupervisionQuery supervisionType(boolean condition, String supervisionType) {
+        if (condition) {
+            this.supervisionType = supervisionType;
+        }
+        return this;
+    }
+
+    @Override
     public SupervisionQuery supervisionStatus(String status) {
         this.status = status;
+        return this;
+    }
+
+    @Override
+    public SupervisionQuery supervisionStatus(boolean condition, String status) {
+        if (condition) {
+            this.status = status;
+        }
         return this;
     }
 
@@ -109,28 +119,8 @@ public class SupervisionQueryImpl extends AbstractQuery<SupervisionQuery, Superv
     }
 
     @Override
-    public SupervisionQuery orderByCreateTime() {
-        return orderBy("gmtCreate", "gmt_create");
-    }
-
-    @Override
-    public SupervisionQuery orderByModifyTime() {
-        return orderBy("gmtModified", "gmt_modified");
-    }
-
-    @Override
     public SupervisionQuery orderByCloseTime() {
         return orderBy("closeTime", "close_time");
-    }
-
-    @Override
-    public SupervisionQuery asc() {
-        return applyAsc();
-    }
-
-    @Override
-    public SupervisionQuery desc() {
-        return applyDesc();
     }
 
     // ============ Execution ============
@@ -171,13 +161,10 @@ public class SupervisionQueryImpl extends AbstractQuery<SupervisionQuery, Superv
             param.setTaskInstanceIdList(taskInstanceIds);
         }
 
-        // Set process instance filter
-        if (processInstanceId != null) {
-            List<String> ids = new ArrayList<>();
-            ids.add(processInstanceId);
-            param.setProcessInstanceIdList(ids);
-        } else if (processInstanceIds != null && !processInstanceIds.isEmpty()) {
-            param.setProcessInstanceIdList(processInstanceIds);
+        // Set process instance filter (from base class)
+        List<String> processInstanceIdList = buildProcessInstanceIdList();
+        if (processInstanceIdList != null) {
+            param.setProcessInstanceIdList(processInstanceIdList);
         }
 
         // Set other filters

@@ -31,19 +31,41 @@ public interface TaskQueryService {
      *
      * @param processInstanceId
      * @return
+     * @deprecated Use {@code smartEngine.createTaskQuery().processInstanceId(id).taskStatus("pending").list()} instead
      */
+    @Deprecated
     List<TaskInstance> findAllPendingTaskList(String processInstanceId);
+
+    /**
+     * @deprecated Use {@code smartEngine.createTaskQuery().processInstanceId(id).taskStatus("pending").tenantId(t).list()} instead
+     */
+    @Deprecated
     List<TaskInstance> findAllPendingTaskList(String processInstanceId,String tenantId);
 
+    /**
+     * @deprecated Use {@code smartEngine.createTaskQuery().taskInstanceId(id).singleResult()} instead
+     */
+    @Deprecated
     TaskInstance findOne(String taskInstanceId);
+
+    /**
+     * @deprecated Use {@code smartEngine.createTaskQuery().taskInstanceId(id).tenantId(t).singleResult()} instead
+     */
+    @Deprecated
     TaskInstance findOne(String taskInstanceId,String tenantId);
 
     /**
      * 扩展方法，可用于典型的审批场景等等，取决于tag的值是什么。tag 任意非null值，可以为 appproved,rejected 等等。
      *
+     * @deprecated Use {@code smartEngine.createTaskQuery()} fluent API instead
      */
+    @Deprecated
     List<TaskInstance> findList(TaskInstanceQueryParam taskInstanceQueryParam);
 
+    /**
+     * @deprecated Use {@code smartEngine.createTaskQuery()...count()} instead
+     */
+    @Deprecated
     Long count(TaskInstanceQueryParam taskInstanceQueryParam);
 
     /**

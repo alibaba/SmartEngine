@@ -24,6 +24,11 @@ public class TaskInstanceQueryParam extends BaseQueryParam {
     */
    private String status;
 
+   /**
+    * Filter by multiple task statuses.
+    */
+   private List<String> statusList;
+
    private String claimUserId;
 
    private String tag;

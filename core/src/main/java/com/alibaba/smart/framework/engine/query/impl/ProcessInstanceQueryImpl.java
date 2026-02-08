@@ -50,6 +50,14 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
     }
 
     @Override
+    public ProcessInstanceQuery processInstanceId(boolean condition, String processInstanceId) {
+        if (condition) {
+            this.processInstanceId = processInstanceId;
+        }
+        return this;
+    }
+
+    @Override
     public ProcessInstanceQuery processInstanceIdIn(List<String> processInstanceIds) {
         this.processInstanceIds = processInstanceIds;
         return this;
@@ -62,14 +70,38 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
     }
 
     @Override
+    public ProcessInstanceQuery startedBy(boolean condition, String startUserId) {
+        if (condition) {
+            this.startUserId = startUserId;
+        }
+        return this;
+    }
+
+    @Override
     public ProcessInstanceQuery processStatus(String status) {
         this.status = status;
         return this;
     }
 
     @Override
+    public ProcessInstanceQuery processStatus(boolean condition, String status) {
+        if (condition) {
+            this.status = status;
+        }
+        return this;
+    }
+
+    @Override
     public ProcessInstanceQuery processDefinitionType(String processDefinitionType) {
         this.processDefinitionType = processDefinitionType;
+        return this;
+    }
+
+    @Override
+    public ProcessInstanceQuery processDefinitionType(boolean condition, String processDefinitionType) {
+        if (condition) {
+            this.processDefinitionType = processDefinitionType;
+        }
         return this;
     }
 
@@ -88,6 +120,14 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
     @Override
     public ProcessInstanceQuery bizUniqueId(String bizUniqueId) {
         this.bizUniqueId = bizUniqueId;
+        return this;
+    }
+
+    @Override
+    public ProcessInstanceQuery bizUniqueId(boolean condition, String bizUniqueId) {
+        if (condition) {
+            this.bizUniqueId = bizUniqueId;
+        }
         return this;
     }
 

@@ -34,6 +34,15 @@ public interface ProcessInstanceQuery extends Query<ProcessInstanceQuery, Proces
     ProcessInstanceQuery processInstanceId(String processInstanceId);
 
     /**
+     * Conditionally filter by process instance ID.
+     *
+     * @param condition         if true, the filter is applied
+     * @param processInstanceId the process instance ID
+     * @return this query for method chaining
+     */
+    ProcessInstanceQuery processInstanceId(boolean condition, String processInstanceId);
+
+    /**
      * Filter by multiple process instance IDs.
      *
      * @param processInstanceIds the list of process instance IDs
@@ -50,6 +59,15 @@ public interface ProcessInstanceQuery extends Query<ProcessInstanceQuery, Proces
     ProcessInstanceQuery startedBy(String startUserId);
 
     /**
+     * Conditionally filter by start user ID.
+     *
+     * @param condition   if true, the filter is applied
+     * @param startUserId the user ID who started the process
+     * @return this query for method chaining
+     */
+    ProcessInstanceQuery startedBy(boolean condition, String startUserId);
+
+    /**
      * Filter by process status.
      *
      * @param status the process status (use InstanceStatus enum value name)
@@ -58,12 +76,30 @@ public interface ProcessInstanceQuery extends Query<ProcessInstanceQuery, Proces
     ProcessInstanceQuery processStatus(String status);
 
     /**
+     * Conditionally filter by process status.
+     *
+     * @param condition if true, the filter is applied
+     * @param status    the process status
+     * @return this query for method chaining
+     */
+    ProcessInstanceQuery processStatus(boolean condition, String status);
+
+    /**
      * Filter by process definition type.
      *
      * @param processDefinitionType the process definition type
      * @return this query for method chaining
      */
     ProcessInstanceQuery processDefinitionType(String processDefinitionType);
+
+    /**
+     * Conditionally filter by process definition type.
+     *
+     * @param condition             if true, the filter is applied
+     * @param processDefinitionType the process definition type
+     * @return this query for method chaining
+     */
+    ProcessInstanceQuery processDefinitionType(boolean condition, String processDefinitionType);
 
     /**
      * Filter by process definition ID and version.
@@ -88,6 +124,15 @@ public interface ProcessInstanceQuery extends Query<ProcessInstanceQuery, Proces
      * @return this query for method chaining
      */
     ProcessInstanceQuery bizUniqueId(String bizUniqueId);
+
+    /**
+     * Conditionally filter by business unique ID.
+     *
+     * @param condition   if true, the filter is applied
+     * @param bizUniqueId the business unique ID
+     * @return this query for method chaining
+     */
+    ProcessInstanceQuery bizUniqueId(boolean condition, String bizUniqueId);
 
     /**
      * Filter by start time range (start).

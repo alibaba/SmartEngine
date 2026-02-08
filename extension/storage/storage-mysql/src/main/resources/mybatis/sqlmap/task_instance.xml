@@ -215,6 +215,12 @@
                 #{item, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.SmartIdTypeHandler}
             </foreach>
         </if>
+        <if test="statusList != null and statusList.size() > 0">
+            and task.status in
+            <foreach item="item" collection="statusList" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
     </sql>
 
     <!-- Dynamic order by support for fluent query API -->

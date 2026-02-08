@@ -16,7 +16,7 @@ import com.alibaba.smart.framework.engine.service.param.query.NotificationQueryP
  *
  * @author SmartEngine Team
  */
-public class NotificationQueryImpl extends AbstractQuery<NotificationQuery, NotificationInstance>
+public class NotificationQueryImpl extends AbstractProcessBoundQuery<NotificationQuery, NotificationInstance>
         implements NotificationQuery {
 
     private NotificationInstanceStorage notificationInstanceStorage;
@@ -27,8 +27,6 @@ public class NotificationQueryImpl extends AbstractQuery<NotificationQuery, Noti
     private String receiverUserId;
     private String taskInstanceId;
     private List<String> taskInstanceIds;
-    private String processInstanceId;
-    private List<String> processInstanceIds;
     private String notificationType;
     private String readStatus;
     private Date notificationStartTime;
@@ -61,6 +59,14 @@ public class NotificationQueryImpl extends AbstractQuery<NotificationQuery, Noti
     }
 
     @Override
+    public NotificationQuery receiverUserId(boolean condition, String receiverUserId) {
+        if (condition) {
+            this.receiverUserId = receiverUserId;
+        }
+        return this;
+    }
+
+    @Override
     public NotificationQuery taskInstanceId(String taskInstanceId) {
         this.taskInstanceId = taskInstanceId;
         return this;
@@ -73,26 +79,30 @@ public class NotificationQueryImpl extends AbstractQuery<NotificationQuery, Noti
     }
 
     @Override
-    public NotificationQuery processInstanceId(String processInstanceId) {
-        this.processInstanceId = processInstanceId;
-        return this;
-    }
-
-    @Override
-    public NotificationQuery processInstanceIdIn(List<String> processInstanceIds) {
-        this.processInstanceIds = processInstanceIds;
-        return this;
-    }
-
-    @Override
     public NotificationQuery notificationType(String notificationType) {
         this.notificationType = notificationType;
         return this;
     }
 
     @Override
+    public NotificationQuery notificationType(boolean condition, String notificationType) {
+        if (condition) {
+            this.notificationType = notificationType;
+        }
+        return this;
+    }
+
+    @Override
     public NotificationQuery readStatus(String readStatus) {
         this.readStatus = readStatus;
+        return this;
+    }
+
+    @Override
+    public NotificationQuery readStatus(boolean condition, String readStatus) {
+        if (condition) {
+            this.readStatus = readStatus;
+        }
         return this;
     }
 
@@ -116,28 +126,8 @@ public class NotificationQueryImpl extends AbstractQuery<NotificationQuery, Noti
     }
 
     @Override
-    public NotificationQuery orderByCreateTime() {
-        return orderBy("gmtCreate", "gmt_create");
-    }
-
-    @Override
-    public NotificationQuery orderByModifyTime() {
-        return orderBy("gmtModified", "gmt_modified");
-    }
-
-    @Override
     public NotificationQuery orderByReadTime() {
         return orderBy("readTime", "read_time");
-    }
-
-    @Override
-    public NotificationQuery asc() {
-        return applyAsc();
-    }
-
-    @Override
-    public NotificationQuery desc() {
-        return applyDesc();
     }
 
     // ============ Execution ============
@@ -179,13 +169,10 @@ public class NotificationQueryImpl extends AbstractQuery<NotificationQuery, Noti
             param.setTaskInstanceIdList(taskInstanceIds);
         }
 
-        // Set process instance filter
-        if (processInstanceId != null) {
-            List<String> ids = new ArrayList<>();
-            ids.add(processInstanceId);
-            param.setProcessInstanceIdList(ids);
-        } else if (processInstanceIds != null && !processInstanceIds.isEmpty()) {
-            param.setProcessInstanceIdList(processInstanceIds);
+        // Set process instance filter (from base class)
+        List<String> processInstanceIdList = buildProcessInstanceIdList();
+        if (processInstanceIdList != null) {
+            param.setProcessInstanceIdList(processInstanceIdList);
         }
 
         // Set other filters
