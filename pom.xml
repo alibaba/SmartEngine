@@ -82,6 +82,8 @@
         <module>extension/retry/retry-custom</module>
         <module>extension/retry/retry-mysql</module>
 
+        <module>extension/archive/archive-mysql</module>
+
     </modules>
 
     <dependencies>
