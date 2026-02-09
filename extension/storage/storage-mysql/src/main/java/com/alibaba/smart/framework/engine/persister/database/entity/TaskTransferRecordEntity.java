@@ -13,6 +13,7 @@ public class TaskTransferRecordEntity {
     private Date gmtCreate;
     private Date gmtModified;
     private Long taskInstanceId;
+    private Long processInstanceId;
     private String fromUserId;
     private String toUserId;
     private String transferReason;
@@ -49,6 +50,14 @@ public class TaskTransferRecordEntity {
 
     public void setTaskInstanceId(Long taskInstanceId) {
         this.taskInstanceId = taskInstanceId;
+    }
+
+    public Long getProcessInstanceId() {
+        return processInstanceId;
+    }
+
+    public void setProcessInstanceId(Long processInstanceId) {
+        this.processInstanceId = processInstanceId;
     }
 
     public String getFromUserId() {

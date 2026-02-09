@@ -22,6 +22,7 @@ public class TaskTransferRecordBuilder {
         DefaultTaskTransferRecord record = new DefaultTaskTransferRecord();
         record.setInstanceId(entity.getId() != null ? entity.getId().toString() : null);
         record.setTaskInstanceId(entity.getTaskInstanceId() != null ? entity.getTaskInstanceId().toString() : null);
+        record.setProcessInstanceId(entity.getProcessInstanceId() != null ? entity.getProcessInstanceId().toString() : null);
         record.setFromUserId(entity.getFromUserId());
         record.setToUserId(entity.getToUserId());
         record.setTransferReason(entity.getTransferReason());
@@ -48,6 +49,10 @@ public class TaskTransferRecordBuilder {
 
         if (record.getTaskInstanceId() != null) {
             entity.setTaskInstanceId(Long.valueOf(record.getTaskInstanceId()));
+        }
+
+        if (record.getProcessInstanceId() != null) {
+            entity.setProcessInstanceId(Long.valueOf(record.getProcessInstanceId()));
         }
 
         entity.setFromUserId(record.getFromUserId());

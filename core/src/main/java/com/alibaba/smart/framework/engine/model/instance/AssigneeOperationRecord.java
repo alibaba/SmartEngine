@@ -8,6 +8,16 @@ package com.alibaba.smart.framework.engine.model.instance;
 public interface AssigneeOperationRecord extends LifeCycleInstance {
 
     /**
+     * 获取流程实例ID
+     */
+    String getProcessInstanceId();
+
+    /**
+     * 设置流程实例ID
+     */
+    void setProcessInstanceId(String processInstanceId);
+
+    /**
      * 获取任务实例ID
      */
     String getTaskInstanceId();

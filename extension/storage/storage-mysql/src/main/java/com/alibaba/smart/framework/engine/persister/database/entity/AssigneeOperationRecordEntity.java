@@ -13,6 +13,7 @@ public class AssigneeOperationRecordEntity {
     private Date gmtCreate;
     private Date gmtModified;
     private Long taskInstanceId;
+    private Long processInstanceId;
     private String operationType; // add_assignee, remove_assignee
     private String operatorUserId;
     private String targetUserId;
@@ -49,6 +50,14 @@ public class AssigneeOperationRecordEntity {
 
     public void setTaskInstanceId(Long taskInstanceId) {
         this.taskInstanceId = taskInstanceId;
+    }
+
+    public Long getProcessInstanceId() {
+        return processInstanceId;
+    }
+
+    public void setProcessInstanceId(Long processInstanceId) {
+        this.processInstanceId = processInstanceId;
     }
 
     public String getOperationType() {

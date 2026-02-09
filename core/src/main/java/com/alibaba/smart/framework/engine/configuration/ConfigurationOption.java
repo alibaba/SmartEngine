@@ -24,6 +24,8 @@ public interface ConfigurationOption {
 
     ConfigurationOption EAGER_FLUSH_ENABLED_OPTION = new EagerFlushEnabledOption();
 
+    ConfigurationOption SHARDING_MODE_ENABLED_OPTION = new ShardingModeEnabledOption();
+
     boolean isEnabled();
 
     String getId();
