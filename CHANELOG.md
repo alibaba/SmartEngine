@@ -1,3 +1,20 @@
+# 3.7.0-SNAPSHOT
+1. [Feature] Add database sharding support with index tables and Snowflake ID generator
+2. [Feature] Add suspend/resume/claim APIs to SmartEngine command services
+3. [Feature] Add data archive module for MySQL, Oracle, and PostgreSQL
+4. [Feature] Add dynamic query support for task_instance
+5. [Feature] Add chain query API for fluent query operations
+6. [Feature] Enhance fluent query API with advanced filtering and pagination
+7. [Feature] Add database dialect support - Oracle, DM, PostgreSQL, MySQL, OceanBase, Kingbase, SQL Server, H2
+8. [Feature] Add SmartIdTypeHandler for multiple ID type support
+9. [Feature] Add NotificationQueryService and SupervisionQueryService
+10. [Feature] Add NotificationCommandService and SupervisionCommandService
+11. [Feature] Support dual storage mode (MEMORY + CUSTOM)
+12. [Breaking Change] StorageMode.MEMORY renamed to StorageMode.CUSTOM
+13. [Refactor] Deprecate old QueryService methods in favor of fluent query API
+14. [Docs] Comprehensive documentation updates including API guide, architecture, and database schema
+15. [Feature] Add EventBasedGateway and IntermediateCatchEvent support for event-driven branching
+
 # 3.6.0-SNAPSHOT
 1. [Feature Enhancement] Add multi-tenancy feature, thanks to @yanricheng1 for submitting the PR.
 2. [Module adjustment] Remove MongoDB Storage
