@@ -1,0 +1,47 @@
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+    xmlns:smart="http://smartengine.org/schema/process"
+    xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    targetNamespace="smart">
+
+    <!--
+        Start -> EventBasedGateway_1
+          -> ICE_A -> ReceiveTask_A -> End_A
+          -> ICE_B -> End_B
+    -->
+
+    <process id="event-based-gateway-test" isExecutable="true">
+        <startEvent id="start" name="Start"/>
+
+        <eventBasedGateway id="eventGateway1" name="EventBasedGateway"/>
+
+        <intermediateCatchEvent id="ICE_A" name="CatchEventA"/>
+        <intermediateCatchEvent id="ICE_B" name="CatchEventB"/>
+
+        <receiveTask id="receiveTaskA" name="ReceiveTaskA"/>
+
+        <endEvent id="endA" name="EndA"/>
+        <endEvent id="endB" name="EndB"/>
+
+        <!-- Start -> EventBasedGateway -->
+        <sequenceFlow id="flow1" sourceRef="start" targetRef="eventGateway1"/>
+
+        <!-- EventBasedGateway -> ICE_A -->
+        <sequenceFlow id="flow2" sourceRef="eventGateway1" targetRef="ICE_A"/>
+
+        <!-- EventBasedGateway -> ICE_B -->
+        <sequenceFlow id="flow3" sourceRef="eventGateway1" targetRef="ICE_B"/>
+
+        <!-- ICE_A -> ReceiveTask_A -->
+        <sequenceFlow id="flow4" sourceRef="ICE_A" targetRef="receiveTaskA"/>
+
+        <!-- ReceiveTask_A -> End_A -->
+        <sequenceFlow id="flow5" sourceRef="receiveTaskA" targetRef="endA"/>
+
+        <!-- ICE_B -> End_B -->
+        <sequenceFlow id="flow6" sourceRef="ICE_B" targetRef="endB"/>
+    </process>
+
+</definitions>
