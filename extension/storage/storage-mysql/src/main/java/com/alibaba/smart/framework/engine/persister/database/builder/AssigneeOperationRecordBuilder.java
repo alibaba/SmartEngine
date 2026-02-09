@@ -22,6 +22,7 @@ public class AssigneeOperationRecordBuilder {
         DefaultAssigneeOperationRecord record = new DefaultAssigneeOperationRecord();
         record.setInstanceId(entity.getId() != null ? entity.getId().toString() : null);
         record.setTaskInstanceId(entity.getTaskInstanceId() != null ? entity.getTaskInstanceId().toString() : null);
+        record.setProcessInstanceId(entity.getProcessInstanceId() != null ? entity.getProcessInstanceId().toString() : null);
         record.setOperationType(entity.getOperationType());
         record.setOperatorUserId(entity.getOperatorUserId());
         record.setTargetUserId(entity.getTargetUserId());
@@ -48,6 +49,10 @@ public class AssigneeOperationRecordBuilder {
 
         if (record.getTaskInstanceId() != null) {
             entity.setTaskInstanceId(Long.valueOf(record.getTaskInstanceId()));
+        }
+
+        if (record.getProcessInstanceId() != null) {
+            entity.setProcessInstanceId(Long.valueOf(record.getProcessInstanceId()));
         }
 
         entity.setOperationType(record.getOperationType());

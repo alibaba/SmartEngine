@@ -4,14 +4,14 @@
 <mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.AssigneeOperationRecordDAO">
 
     <sql id="baseColumn">
-        id, gmt_create, gmt_modified, task_instance_id, operation_type,
+        id, gmt_create, gmt_modified, task_instance_id, process_instance_id, operation_type,
         operator_user_id, target_user_id, operation_reason, tenant_id
     </sql>
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.AssigneeOperationRecordEntity"
             keyProperty="id">
         insert into se_assignee_operation_record(<include refid="baseColumn"/>)
-        values (#{id}, #{gmtCreate}, #{gmtModified}, #{taskInstanceId}, #{operationType},
+        values (#{id}, #{gmtCreate}, #{gmtModified}, #{taskInstanceId}, #{processInstanceId}, #{operationType},
                 #{operatorUserId}, #{targetUserId}, #{operationReason}, #{tenantId})
     </insert>
 

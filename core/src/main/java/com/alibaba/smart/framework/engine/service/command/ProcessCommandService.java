@@ -56,4 +56,10 @@ public interface ProcessCommandService {
      */
     void resume(String processInstanceId, String tenantId);
 
+    /**
+     * Jump to a specific node in the process instance.
+     * Aborts current active executions/tasks and creates a new execution at the target node.
+     */
+    void jump(String processInstanceId, String targetNodeId, Map<String, Object> variables);
+
 }

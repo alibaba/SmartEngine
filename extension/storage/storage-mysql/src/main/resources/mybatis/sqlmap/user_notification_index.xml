@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.UserNotificationIndexDAO">
+
+    <sql id="baseColumn">
+        id, tenant_id, receiver_user_id, notification_id, process_instance_id,
+        notification_type, title, read_status, gmt_create
+    </sql>
+
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.UserNotificationIndexEntity"
+            keyProperty="id" useGeneratedKeys="true">
+        insert into se_user_notification_index(tenant_id, receiver_user_id, notification_id, process_instance_id,
+        notification_type, title, read_status, gmt_create)
+        values (#{tenantId}, #{receiverUserId}, #{notificationId}, #{processInstanceId},
+        #{notificationType}, #{title}, #{readStatus}, #{gmtCreate})
+    </insert>
+
+    <delete id="deleteByNotificationId">
+        delete from se_user_notification_index where notification_id = #{notificationId}
+        <if test="tenantId != null">and tenant_id = #{tenantId}</if>
+    </delete>
+
+    <update id="updateReadStatus">
+        update se_user_notification_index set read_status = #{readStatus}
+        where notification_id = #{notificationId}
+        <if test="tenantId != null">and tenant_id = #{tenantId}</if>
+    </update>
+
+    <update id="batchUpdateReadStatus">
+        update se_user_notification_index set read_status = #{readStatus}
+        where notification_id in
+        <foreach item="item" collection="notificationIds" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        <if test="tenantId != null">and tenant_id = #{tenantId}</if>
+    </update>
+
+    <select id="findByReceiver" resultType="com.alibaba.smart.framework.engine.persister.database.entity.UserNotificationIndexEntity">
+        select <include refid="baseColumn"/>
+        from se_user_notification_index
+        where receiver_user_id = #{receiverUserId}
+        <if test="readStatus != null">and read_status = #{readStatus}</if>
+        <if test="tenantId != null">and tenant_id = #{tenantId}</if>
+        order by gmt_create desc
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
+    </select>
+
+    <select id="countByReceiver" resultType="int">
+        select count(*)
+        from se_user_notification_index
+        where receiver_user_id = #{receiverUserId}
+        <if test="readStatus != null">and read_status = #{readStatus}</if>
+        <if test="tenantId != null">and tenant_id = #{tenantId}</if>
+    </select>
+
+</mapper>

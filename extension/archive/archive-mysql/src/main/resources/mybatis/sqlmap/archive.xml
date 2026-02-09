@@ -142,9 +142,9 @@
 
     <insert id="archiveTaskTransferRecords">
         INSERT INTO se_task_transfer_record_archive
-            (id, gmt_create, gmt_modified, task_instance_id, from_user_id, to_user_id,
+            (id, gmt_create, gmt_modified, task_instance_id, process_instance_id, from_user_id, to_user_id,
              transfer_reason, deadline, tenant_id, archived_time)
-        SELECT r.id, r.gmt_create, r.gmt_modified, r.task_instance_id, r.from_user_id, r.to_user_id,
+        SELECT r.id, r.gmt_create, r.gmt_modified, r.task_instance_id, r.process_instance_id, r.from_user_id, r.to_user_id,
                r.transfer_reason, r.deadline, r.tenant_id, CURRENT_TIMESTAMP(6)
         FROM se_task_transfer_record r
         WHERE r.task_instance_id IN (
@@ -158,9 +158,9 @@
 
     <insert id="archiveAssigneeOperationRecords">
         INSERT INTO se_assignee_operation_record_archive
-            (id, gmt_create, gmt_modified, task_instance_id, operation_type, operator_user_id,
+            (id, gmt_create, gmt_modified, task_instance_id, process_instance_id, operation_type, operator_user_id,
              target_user_id, operation_reason, tenant_id, archived_time)
-        SELECT r.id, r.gmt_create, r.gmt_modified, r.task_instance_id, r.operation_type, r.operator_user_id,
+        SELECT r.id, r.gmt_create, r.gmt_modified, r.task_instance_id, r.process_instance_id, r.operation_type, r.operator_user_id,
                r.target_user_id, r.operation_reason, r.tenant_id, CURRENT_TIMESTAMP(6)
         FROM se_assignee_operation_record r
         WHERE r.task_instance_id IN (

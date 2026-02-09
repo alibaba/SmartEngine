@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.UserTaskIndexDAO">
+
+    <sql id="baseColumn">
+        id, tenant_id, assignee_id, assignee_type, task_instance_id, process_instance_id,
+        process_definition_type, domain_code, extra, task_status, task_gmt_modified, title, priority
+    </sql>
+
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.UserTaskIndexEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into se_user_task_index(tenant_id, assignee_id, assignee_type, task_instance_id, process_instance_id,
+        process_definition_type, domain_code, extra, task_status, task_gmt_modified, title, priority)
+        values (#{tenantId}, #{assigneeId}, #{assigneeType}, #{taskInstanceId}, #{processInstanceId},
+        #{processDefinitionType}, #{domainCode}, #{extra, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.JsonTypeHandler}, #{taskStatus}, #{taskGmtModified}, #{title}, #{priority})
+    </insert>
+
+    <delete id="deleteByTaskInstanceId">
+        delete from se_user_task_index where task_instance_id = #{taskInstanceId}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </delete>
+
+    <delete id="deleteByAssigneeAndTask">
+        delete from se_user_task_index where assignee_id = #{assigneeId} and task_instance_id = #{taskInstanceId}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </delete>
+
+    <update id="updateTaskStatus">
+        update se_user_task_index
+        <set>
+            task_status = #{taskStatus}
+        </set>
+        where task_instance_id = #{taskInstanceId}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </update>
+
+    <update id="updateTaskFields">
+        update se_user_task_index
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="priority != null">priority = #{priority},</if>
+            <if test="domainCode != null">domain_code = #{domainCode},</if>
+        </set>
+        where task_instance_id = #{taskInstanceId}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </update>
+
+    <sql id="assignee_choose_sql">
+        <choose>
+            <when test="assigneeUserId != null and assigneeGroupIdList != null">
+                and ( (assignee_id = #{assigneeUserId} and assignee_type = 'user') or
+                (assignee_id in
+                <foreach item="item" index="index" separator="," open="(" close=")" collection="assigneeGroupIdList">
+                    #{item}
+                </foreach>
+                and assignee_type = 'group') )
+            </when>
+            <when test="assigneeUserId != null">
+                and assignee_id = #{assigneeUserId} and assignee_type = 'user'
+            </when>
+            <when test="assigneeGroupIdList != null">
+                and assignee_id in
+                <foreach item="item" index="index" separator="," open="(" close=")" collection="assigneeGroupIdList">
+                    #{item}
+                </foreach>
+                and assignee_type = 'group'
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="where_condition">
+        <if test="processDefinitionType != null">and process_definition_type = #{processDefinitionType}</if>
+        <if test="processInstanceIdList != null">
+            and process_instance_id in
+            <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
+                #{item}
+            </foreach>
+        </if>
+        <if test="domainCode != null">and domain_code = #{domainCode}</if>
+        <if test="domainCodeLike != null">and domain_code like CONCAT('%', #{domainCodeLike}, '%')</if>
+        <if test="domainCodeList != null and domainCodeList.size() > 0">
+            and domain_code in
+            <foreach item="item" collection="domainCodeList" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- extra JSON conditions (Dialect-generated SQL expressions) -->
+        <if test="jsonConditions != null and jsonConditions.size() > 0">
+            <foreach item="jc" collection="jsonConditions">
+                and ${jc.sqlExpression} = #{jc.value}
+            </foreach>
+        </if>
+        <if test="jsonInConditions != null and jsonInConditions.size() > 0">
+            <foreach item="jic" collection="jsonInConditions">
+                and ${jic.sqlExpression} IN
+                <foreach item="v" collection="jic.values" separator="," open="(" close=")">
+                    #{v}
+                </foreach>
+            </foreach>
+        </if>
+        <if test="jsonLikeConditions != null and jsonLikeConditions.size() > 0">
+            <foreach item="jlc" collection="jsonLikeConditions">
+                and ${jlc.sqlExpression} LIKE CONCAT('%', #{jlc.value}, '%')
+            </foreach>
+        </if>
+    </sql>
+
+    <select id="findByAssignee"
+            resultType="com.alibaba.smart.framework.engine.persister.database.entity.UserTaskIndexEntity"
+            parameterType="com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam">
+        select <include refid="baseColumn"/>
+        from se_user_task_index
+        where 1=1
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+        <if test="status != null">and task_status = #{status}</if>
+
+        <include refid="assignee_choose_sql"/>
+        <include refid="where_condition"/>
+
+        order by task_gmt_modified desc
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
+    </select>
+
+    <select id="countByAssignee" resultType="int"
+            parameterType="com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryByAssigneeParam">
+        select count(*)
+        from se_user_task_index
+        where 1=1
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+        <if test="status != null">and task_status = #{status}</if>
+
+        <include refid="assignee_choose_sql"/>
+        <include refid="where_condition"/>
+    </select>
+
+</mapper>

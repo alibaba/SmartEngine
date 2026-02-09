@@ -4,14 +4,14 @@
 <mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.TaskTransferRecordDAO">
 
     <sql id="baseColumn">
-        id, gmt_create, gmt_modified, task_instance_id, from_user_id, to_user_id,
+        id, gmt_create, gmt_modified, task_instance_id, process_instance_id, from_user_id, to_user_id,
         transfer_reason, deadline, tenant_id
     </sql>
 
     <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.TaskTransferRecordEntity"
             keyProperty="id">
         insert into se_task_transfer_record(<include refid="baseColumn"/>)
-        values (#{id}, #{gmtCreate}, #{gmtModified}, #{taskInstanceId}, #{fromUserId},
+        values (#{id}, #{gmtCreate}, #{gmtModified}, #{taskInstanceId}, #{processInstanceId}, #{fromUserId},
                 #{toUserId}, #{transferReason}, #{deadline}, #{tenantId})
     </insert>
 

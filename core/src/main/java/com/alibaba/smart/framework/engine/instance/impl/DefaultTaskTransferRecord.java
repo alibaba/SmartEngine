@@ -20,6 +20,8 @@ public class DefaultTaskTransferRecord extends AbstractLifeCycleInstance impleme
 
     private static final long serialVersionUID = 1L;
 
+    private String processInstanceId;
+
     private String taskInstanceId;
 
     private String fromUserId;
