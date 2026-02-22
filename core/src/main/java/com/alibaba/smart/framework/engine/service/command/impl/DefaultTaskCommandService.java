@@ -318,7 +318,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         transfer(taskId, fromUserId, toUserId, tenantId);
 
         // 记录转交操作
+        IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
         DefaultTaskTransferRecord record = new DefaultTaskTransferRecord();
+        idGenerator.generate(record);
         record.setTaskInstanceId(taskId);
         record.setFromUserId(fromUserId);
         record.setToUserId(toUserId);
@@ -343,7 +345,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         String currentActivityId = taskInstance.getProcessDefinitionActivityId();
 
         // 记录回退操作（在执行回退之前）
+        IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
         DefaultRollbackRecord record = new DefaultRollbackRecord();
+        idGenerator.generate(record);
         record.setProcessInstanceId(processInstance.getInstanceId());
         record.setTaskInstanceId(taskInstance.getInstanceId());
         record.setRollbackType("specific");
@@ -372,7 +376,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         addTaskAssigneeCandidate(taskId, tenantId, taskAssigneeCandidateInstance);
 
         // 记录加签操作
+        IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
         DefaultAssigneeOperationRecord record = new DefaultAssigneeOperationRecord();
+        idGenerator.generate(record);
         record.setTaskInstanceId(taskId);
 
         // 获取任务实例以获取操作人
@@ -395,7 +401,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         removeTaskAssigneeCandidate(taskId, tenantId, taskAssigneeCandidateInstance);
 
         // 记录减签操作
+        IdGenerator idGenerator = processEngineConfiguration.getIdGenerator();
         DefaultAssigneeOperationRecord record = new DefaultAssigneeOperationRecord();
+        idGenerator.generate(record);
         record.setTaskInstanceId(taskId);
 
         // 获取任务实例以获取操作人
