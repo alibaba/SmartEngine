@@ -1,0 +1,15 @@
+# Global fallback owner
+* @geecoodeer
+
+# Core engine
+/core/ @geecoodeer
+
+# Extensions
+/extension/ @geecoodeer
+
+# Documentation and release assets
+/docs/ @geecoodeer
+/README.md @geecoodeer
+/README-zh.md @geecoodeer
+/CHANGELOG.md @geecoodeer
+/CHANGELOG-zh.md @geecoodeer
