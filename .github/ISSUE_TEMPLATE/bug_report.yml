@@ -1,0 +1,38 @@
+name: Bug report
+description: Report a reproducible bug in SmartEngine.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem description
+      description: What happened and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Provide minimal reproducible steps.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: SmartEngine version
+      placeholder: e.g. 3.7.0-SNAPSHOT
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: JDK, OS, DB, framework versions.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / stacktrace
+      render: shell
