@@ -26,6 +26,7 @@ import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeCandidateIn
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.configuration.TaskEventPublisher;
 import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 
 import org.slf4j.Logger;
@@ -101,6 +102,9 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
 
                 executionInstance.setTaskInstance(taskInstance);
 
+                // Fire TASK_ASSIGNED for each countersign task
+                fireTaskAssignedEvent(context, taskInstance, taskAssigneeInstanceList);
+
             }
 
         } else {
@@ -125,6 +129,9 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
                 //2.1 普通UserTask，只会创建出一个TI和可能多个TACI(TaskAssigneeCandidateInstance)
                 taskInstance.setTaskAssigneeInstanceList(taskAssigneeInstanceList);
                 executionInstance.setTaskInstance(taskInstance);
+
+                // Fire TASK_ASSIGNED for normal userTask (may have multiple assignees)
+                fireTaskAssignedEvent(context, taskInstance, taskAssigneeInstanceList);
             }
         }
 
@@ -311,6 +318,39 @@ public class UserTaskBehavior extends AbstractActivityBehavior<UserTask> {
             "Error args: passedTaskInstanceCount, rejectedTaskInstanceCount, totalInstanceCount each is :"
                 + passedTaskInstanceCount+"," + rejectedTaskInstanceCount+"," + totalInstanceCount+".";
         throw new EngineException(message);
+    }
+
+    /**
+     * Fire TASK_ASSIGNED via TaskEventPublisher SPI if configured.
+     * Does NOT use fireEvent/ListenerExecutor — TASK_* events are a separate channel
+     * from ACTIVITY_* events, published only through TaskEventPublisher.
+     *
+     * Called within engine transaction context. Downstream listeners should use
+     * @TransactionalEventListener(phase = AFTER_COMMIT) to ensure
+     * they only act after successful commit.
+     */
+    private void fireTaskAssignedEvent(ExecutionContext context,
+                                        TaskInstance taskInstance,
+                                        List<TaskAssigneeInstance> assignees) {
+        TaskEventPublisher publisher = context.getProcessEngineConfiguration().getTaskEventPublisher();
+        if (publisher == null) {
+            return;
+        }
+        try {
+            Map<String, Object> extra = new HashMap<>();
+            if (assignees != null) {
+                List<String> assigneeIds = new ArrayList<>();
+                for (TaskAssigneeInstance a : assignees) {
+                    assigneeIds.add(a.getAssigneeId());
+                }
+                extra.put("assigneeIds", assigneeIds);
+            }
+            publisher.publish(EventConstant.TASK_ASSIGNED, taskInstance,
+                    context.getProcessInstance().getTenantId(), extra);
+        } catch (Exception e) {
+            LOGGER.warn("Failed to publish TASK_ASSIGNED event for task {}: {}",
+                    taskInstance.getInstanceId(), e.getMessage());
+        }
     }
 
 }
