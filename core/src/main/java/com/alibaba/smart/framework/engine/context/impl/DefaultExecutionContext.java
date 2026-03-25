@@ -10,6 +10,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 
 import com.alibaba.smart.framework.engine.util.ObjectUtil;
 import lombok.Data;
@@ -29,6 +30,8 @@ public class DefaultExecutionContext implements ExecutionContext {
     private BaseElement baseElement;
 
     private ActivityInstance activityInstance;
+
+    private TaskInstance taskInstance;
 
     private ProcessDefinition processDefinition;
 
