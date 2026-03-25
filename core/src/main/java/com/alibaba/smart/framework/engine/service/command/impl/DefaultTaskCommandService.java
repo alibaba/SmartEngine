@@ -10,6 +10,8 @@ import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.common.util.InstanceUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
 import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
+import com.alibaba.smart.framework.engine.configuration.TaskEventPublisher;
+import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 import com.alibaba.smart.framework.engine.configuration.IdGenerator;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.configuration.aware.ProcessEngineConfigurationAware;
@@ -99,6 +101,8 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         taskInstance.setClaimUserId(userId);
         taskInstance.setClaimTime(DateUtil.getCurrentDate());
         taskInstanceStorage.update(taskInstance, processEngineConfiguration);
+        fireTaskEvent(EventConstant.TASK_CLAIMED, taskInstance, tenantId,
+                Map.of("claimUserId", userId));
     }
 
     @Override
@@ -111,6 +115,8 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         TaskInstance taskInstance = taskInstanceStorage.find(taskId,tenantId,processEngineConfiguration );
         MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
             request, taskInstanceStorage, processEngineConfiguration);
+
+        fireTaskEvent(EventConstant.TASK_COMPLETED, taskInstance, tenantId, Map.of());
 
         // 自动关闭该任务的所有督办
         try {
@@ -148,6 +154,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
     @Override
     public void transfer(String taskId, String fromUserId, String toUserId) {
         transfer(taskId,fromUserId,toUserId,null);
+        TaskInstance taskInstance = taskInstanceStorage.find(taskId, null, processEngineConfiguration);
+        fireTaskEvent(EventConstant.TASK_TRANSFERRED, taskInstance, null,
+                Map.of("fromUserId", fromUserId, "toUserId", toUserId));
     }
     @Override
     public void transfer(String taskId, String fromUserId, String toUserId,String tenantId) {
@@ -328,6 +337,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         record.setTenantId(tenantId);
 
         taskTransferRecordStorage.insert(record, processEngineConfiguration);
+        TaskInstance taskInstance = taskInstanceStorage.find(taskId, tenantId, processEngineConfiguration);
+        fireTaskEvent(EventConstant.TASK_TRANSFERRED, taskInstance, tenantId,
+                Map.of("fromUserId", fromUserId, "toUserId", toUserId, "reason", reason != null ? reason : ""));
     }
 
     @Override
@@ -393,6 +405,11 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         record.setTenantId(tenantId);
 
         assigneeOperationRecordStorage.insert(record, processEngineConfiguration);
+        if (taskInstance != null) {
+            fireTaskEvent(EventConstant.TASK_DELEGATED, taskInstance, tenantId,
+                    Map.of("newAssigneeId", taskAssigneeCandidateInstance.getAssigneeId(),
+                           "reason", reason != null ? reason : ""));
+        }
     }
 
     @Override
@@ -418,5 +435,18 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         record.setTenantId(tenantId);
 
         assigneeOperationRecordStorage.insert(record, processEngineConfiguration);
+        if (taskInstance != null) {
+            fireTaskEvent(EventConstant.TASK_REVOKED, taskInstance, tenantId,
+                    Map.of("removedAssigneeId", taskAssigneeCandidateInstance.getAssigneeId(),
+                           "reason", reason != null ? reason : ""));
+        }
+    }
+
+    private void fireTaskEvent(EventConstant event, TaskInstance taskInstance,
+                                String tenantId, Map<String, Object> extra) {
+        TaskEventPublisher publisher = processEngineConfiguration.getTaskEventPublisher();
+        if (publisher != null) {
+            publisher.publish(event, taskInstance, tenantId, extra != null ? extra : Map.of());
+        }
     }
 }
