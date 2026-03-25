@@ -50,6 +50,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private TaskAssigneeDispatcher taskAssigneeDispatcher;
 
+    private TaskEventPublisher taskEventPublisher;
+
     private VariablePersister variablePersister;
 
     private MultiInstanceCounter multiInstanceCounter;

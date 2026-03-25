@@ -107,6 +107,18 @@ public interface ProcessEngineConfiguration {
     TaskAssigneeDispatcher getTaskAssigneeDispatcher();
 
     /**
+     * Optional extension for task lifecycle events.
+     * When set, the engine will publish events (TASK_ASSIGNED, TASK_COMPLETED, etc.)
+     * at each task state change point.
+     *
+     * @param taskEventPublisher the publisher implementation
+     * @since 3.7.0
+     */
+    default void setTaskEventPublisher(TaskEventPublisher taskEventPublisher) {}
+
+    default TaskEventPublisher getTaskEventPublisher() { return null; }
+
+    /**
      * 主要用于持久化变量数据。
      * @param variablePersister
      */
