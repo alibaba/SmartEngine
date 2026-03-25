@@ -3,10 +3,13 @@ package com.alibaba.smart.framework.engine.behavior.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.alibaba.smart.framework.engine.SmartEngine;
+import com.alibaba.smart.framework.engine.configuration.TaskEventPublisher;
+import com.alibaba.smart.framework.engine.pvm.event.EventConstant;
 import com.alibaba.smart.framework.engine.bpmn.assembly.task.UserTask;
 import com.alibaba.smart.framework.engine.common.util.CollectionUtil;
 import com.alibaba.smart.framework.engine.common.util.MarkDoneUtil;
@@ -129,6 +132,13 @@ public class UserTaskBehaviorHelper {
 
             // 这里产生了db 读写访问,
             MarkDoneUtil.markDoneTaskInstance(taskInstance,TaskInstanceConstant.CANCELED,taskInstance.getStatus(),context.getRequest(),taskInstanceStorage,processEngineConfiguration);
+
+            // Fire TASK_CANCELED
+            TaskEventPublisher publisher = processEngineConfiguration.getTaskEventPublisher();
+            if (publisher != null) {
+                publisher.publish(EventConstant.TASK_CANCELED, taskInstance,
+                        executionInstance.getTenantId(), Map.of("reason", "countersign_decision"));
+            }
         }
     }
 
@@ -186,6 +196,19 @@ public class UserTaskBehaviorHelper {
                     taskAssigneeInstance.setProcessInstanceId(taskInstance.getProcessInstanceId());
                     taskAssigneeInstance.setTaskInstanceId(taskInstance.getInstanceId());
                     taskAssigneeStorage.insert(taskAssigneeInstance, processEngineConfiguration);
+                }
+
+                // Fire TASK_ASSIGNED for compensated sequential countersign task
+                TaskEventPublisher publisher = processEngineConfiguration.getTaskEventPublisher();
+                if (publisher != null) {
+                    Map<String, Object> extra = new HashMap<>();
+                    List<String> assigneeIds = new ArrayList<>();
+                    for (TaskAssigneeInstance tai : taskAssigneeInstanceList) {
+                        assigneeIds.add(tai.getAssigneeId());
+                    }
+                    extra.put("assigneeIds", assigneeIds);
+                    publisher.publish(EventConstant.TASK_ASSIGNED, taskInstance,
+                            activityInstance.getTenantId(), extra);
                 }
             }
         }
