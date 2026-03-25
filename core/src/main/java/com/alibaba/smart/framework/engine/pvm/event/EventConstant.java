@@ -17,8 +17,14 @@ public enum EventConstant {
     ACTIVITY_EXECUTE,
     ACTIVITY_END,
 
-
-
+    // Task lifecycle events (fired via TaskEventPublisher SPI)
+    TASK_ASSIGNED,       // Task created and assigned to candidate(s)
+    TASK_CLAIMED,        // Task claimed by a specific user
+    TASK_COMPLETED,      // Task completed (approved/processed)
+    TASK_CANCELED,       // Task canceled (e.g. countersign decision made by others)
+    TASK_TRANSFERRED,    // Task transferred to another user
+    TASK_DELEGATED,      // New assignee added to task
+    TASK_REVOKED,        // Assignee removed from task
 
 
 
