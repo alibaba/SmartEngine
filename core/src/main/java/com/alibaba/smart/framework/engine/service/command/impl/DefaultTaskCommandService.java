@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.service.command.impl;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,8 +102,9 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         taskInstance.setClaimUserId(userId);
         taskInstance.setClaimTime(DateUtil.getCurrentDate());
         taskInstanceStorage.update(taskInstance, processEngineConfiguration);
-        fireTaskEvent(EventConstant.TASK_CLAIMED, taskInstance, tenantId,
-                Map.of("claimUserId", userId));
+        Map<String, Object> claimExtra = new HashMap<String, Object>();
+        claimExtra.put("claimUserId", userId);
+        fireTaskEvent(EventConstant.TASK_CLAIMED, taskInstance, tenantId, claimExtra);
     }
 
     @Override
@@ -116,7 +118,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
         MarkDoneUtil.markDoneTaskInstance(taskInstance, TaskInstanceConstant.COMPLETED, TaskInstanceConstant.PENDING,
             request, taskInstanceStorage, processEngineConfiguration);
 
-        fireTaskEvent(EventConstant.TASK_COMPLETED, taskInstance, tenantId, Map.of());
+        fireTaskEvent(EventConstant.TASK_COMPLETED, taskInstance, tenantId, Collections.<String, Object>emptyMap());
 
         // 自动关闭该任务的所有督办
         try {
@@ -155,8 +157,10 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
     public void transfer(String taskId, String fromUserId, String toUserId) {
         transfer(taskId,fromUserId,toUserId,null);
         TaskInstance taskInstance = taskInstanceStorage.find(taskId, null, processEngineConfiguration);
-        fireTaskEvent(EventConstant.TASK_TRANSFERRED, taskInstance, null,
-                Map.of("fromUserId", fromUserId, "toUserId", toUserId));
+        Map<String, Object> transferExtra = new HashMap<String, Object>();
+        transferExtra.put("fromUserId", fromUserId);
+        transferExtra.put("toUserId", toUserId);
+        fireTaskEvent(EventConstant.TASK_TRANSFERRED, taskInstance, null, transferExtra);
     }
     @Override
     public void transfer(String taskId, String fromUserId, String toUserId,String tenantId) {
@@ -338,8 +342,11 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
         taskTransferRecordStorage.insert(record, processEngineConfiguration);
         TaskInstance taskInstance = taskInstanceStorage.find(taskId, tenantId, processEngineConfiguration);
-        fireTaskEvent(EventConstant.TASK_TRANSFERRED, taskInstance, tenantId,
-                Map.of("fromUserId", fromUserId, "toUserId", toUserId, "reason", reason != null ? reason : ""));
+        Map<String, Object> transferExtra2 = new HashMap<String, Object>();
+        transferExtra2.put("fromUserId", fromUserId);
+        transferExtra2.put("toUserId", toUserId);
+        transferExtra2.put("reason", reason != null ? reason : "");
+        fireTaskEvent(EventConstant.TASK_TRANSFERRED, taskInstance, tenantId, transferExtra2);
     }
 
     @Override
@@ -406,9 +413,10 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
         assigneeOperationRecordStorage.insert(record, processEngineConfiguration);
         if (taskInstance != null) {
-            fireTaskEvent(EventConstant.TASK_DELEGATED, taskInstance, tenantId,
-                    Map.of("newAssigneeId", taskAssigneeCandidateInstance.getAssigneeId(),
-                           "reason", reason != null ? reason : ""));
+            Map<String, Object> delegateExtra = new HashMap<String, Object>();
+            delegateExtra.put("newAssigneeId", taskAssigneeCandidateInstance.getAssigneeId());
+            delegateExtra.put("reason", reason != null ? reason : "");
+            fireTaskEvent(EventConstant.TASK_DELEGATED, taskInstance, tenantId, delegateExtra);
         }
     }
 
@@ -436,9 +444,10 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
 
         assigneeOperationRecordStorage.insert(record, processEngineConfiguration);
         if (taskInstance != null) {
-            fireTaskEvent(EventConstant.TASK_REVOKED, taskInstance, tenantId,
-                    Map.of("removedAssigneeId", taskAssigneeCandidateInstance.getAssigneeId(),
-                           "reason", reason != null ? reason : ""));
+            Map<String, Object> revokeExtra = new HashMap<String, Object>();
+            revokeExtra.put("removedAssigneeId", taskAssigneeCandidateInstance.getAssigneeId());
+            revokeExtra.put("reason", reason != null ? reason : "");
+            fireTaskEvent(EventConstant.TASK_REVOKED, taskInstance, tenantId, revokeExtra);
         }
     }
 
@@ -446,7 +455,7 @@ public class DefaultTaskCommandService implements TaskCommandService, LifeCycleH
                                 String tenantId, Map<String, Object> extra) {
         TaskEventPublisher publisher = processEngineConfiguration.getTaskEventPublisher();
         if (publisher != null) {
-            publisher.publish(event, taskInstance, tenantId, extra != null ? extra : Map.of());
+            publisher.publish(event, taskInstance, tenantId, extra != null ? extra : Collections.<String, Object>emptyMap());
         }
     }
 }

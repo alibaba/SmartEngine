@@ -3,17 +3,18 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/task
-        http://www.springframework.org/schema/task/spring-task.xsd">
+        http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd">
 
-    <!-- PostgreSQL DataSource -->
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/aura_meta?charSet=UTF8"/>
-        <property name="username" value="ghj"/>
-    </bean>
+    <!-- H2 DataSource -->
+    <jdbc:embedded-database id="dataSource" type="H2">
+        <jdbc:script location="classpath:sql/schema-h2-only-for-test.sql"/>
+        <jdbc:script location="classpath:sql/archive-schema-h2-only-for-test.sql"/>
+    </jdbc:embedded-database>
 
     <!-- MyBatis SqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"

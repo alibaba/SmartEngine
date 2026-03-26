@@ -136,8 +136,10 @@ public class UserTaskBehaviorHelper {
             // Fire TASK_CANCELED
             TaskEventPublisher publisher = processEngineConfiguration.getTaskEventPublisher();
             if (publisher != null) {
+                Map<String, Object> cancelExtra = new HashMap<String, Object>();
+                cancelExtra.put("reason", "countersign_decision");
                 publisher.publish(EventConstant.TASK_CANCELED, taskInstance,
-                        executionInstance.getTenantId(), Map.of("reason", "countersign_decision"));
+                        executionInstance.getTenantId(), cancelExtra);
             }
         }
     }
