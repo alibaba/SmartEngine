@@ -1,3 +1,28 @@
+# 3.7.0-SNAPSHOT
+1. [新功能] 新增数据库分片支持，包含索引表和雪花 ID 生成器
+2. [新功能] 新增 suspend/resume/claim API 到 SmartEngine 命令服务
+3. [新功能] 新增数据归档模块，支持 MySQL、Oracle 和 PostgreSQL
+4. [新功能] 新增 task_instance 动态查询支持，包含 domain_code 和 extra JSON 字段过滤
+5. [新功能] 新增链式查询 API，支持流式查询操作
+6. [新功能] 增强流式查询 API，支持高级过滤和分页
+7. [新功能][实验性] 新增数据库方言支持 - Oracle、DM（达梦）、PostgreSQL、MySQL、OceanBase、Kingbase（人大金仓）、SQL Server、H2
+8. [新功能] 新增 SmartIdTypeHandler，支持多种 ID 类型
+9. [新功能] 新增 NotificationQueryService 和 SupervisionQueryService
+10. [新功能] 新增 NotificationCommandService 和 SupervisionCommandService
+11. [新功能] 支持双存储模式（MEMORY + CUSTOM）
+12. [新功能] 新增 EventBasedGateway 和 IntermediateCatchEvent 支持，实现事件驱动分支
+13. [新功能] 新增 TaskEventPublisher SPI，支持任务生命周期事件（TASK_CREATED、TASK_ASSIGNED、TASK_CLAIMED、TASK_COMPLETED、TASK_CANCELED、TASK_TRANSFERRED、TASK_DELEGATED、TASK_REVOKED）
+14. [新功能] 新增任务操作记录表：转办记录、加减签操作记录、流程回退记录
+15. [新功能] 新增流程回退功能，通过 TaskCommandService#rollbackTask 实现
+16. [新功能] 为 se_process_instance 新增 complete_time 字段，精确记录流程完成时间
+17. [非兼容变更] StorageMode.MEMORY 重命名为 StorageMode.CUSTOM
+18. [重构] 废弃旧的 QueryService 方法，推荐使用流式查询 API
+19. [BUG 修复] 修复任务操作记录未生成 ID 导致 NOT NULL 约束违反的问题
+20. [BUG 修复] 将 Java 9+ 的 Map.of()/List.of() 替换为 Java 8 兼容代码
+21. [BUG 修复] 修复 H2 测试 Schema：补充缺失的 complete_time 列和 7 张缺失的表
+22. [改进] 将 dual 和 archive 模块的测试数据源从 PostgreSQL 切换为内嵌 H2，提升 CI 可移植性
+23. [文档] 全面更新文档，包含 API 指南、架构说明和数据库 Schema
+
 # 3.6.0-SNAPSHOT
 1. [功能增强] 增加多租户特性,谢谢  @yanricheng1 提交的 PR
 2. [模块调整] 移除 MongoDB Storage

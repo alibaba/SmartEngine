@@ -2,18 +2,26 @@
 1. [Feature] Add database sharding support with index tables and Snowflake ID generator
 2. [Feature] Add suspend/resume/claim APIs to SmartEngine command services
 3. [Feature] Add data archive module for MySQL, Oracle, and PostgreSQL
-4. [Feature] Add dynamic query support for task_instance
+4. [Feature] Add dynamic query support for task_instance with domain_code and extra JSON filtering
 5. [Feature] Add chain query API for fluent query operations
 6. [Feature] Enhance fluent query API with advanced filtering and pagination
-7. [Feature] Add database dialect support - Oracle, DM, PostgreSQL, MySQL, OceanBase, Kingbase, SQL Server, H2
+7. [Feature][Experimental] Add database dialect support - Oracle, DM, PostgreSQL, MySQL, OceanBase, Kingbase, SQL Server, H2
 8. [Feature] Add SmartIdTypeHandler for multiple ID type support
 9. [Feature] Add NotificationQueryService and SupervisionQueryService
 10. [Feature] Add NotificationCommandService and SupervisionCommandService
 11. [Feature] Support dual storage mode (MEMORY + CUSTOM)
-12. [Breaking Change] StorageMode.MEMORY renamed to StorageMode.CUSTOM
-13. [Refactor] Deprecate old QueryService methods in favor of fluent query API
-14. [Docs] Comprehensive documentation updates including API guide, architecture, and database schema
-15. [Feature] Add EventBasedGateway and IntermediateCatchEvent support for event-driven branching
+12. [Feature] Add EventBasedGateway and IntermediateCatchEvent support for event-driven branching
+13. [Feature] Add TaskEventPublisher SPI for task lifecycle events (TASK_CREATED, TASK_ASSIGNED, TASK_CLAIMED, TASK_COMPLETED, TASK_CANCELED, TASK_TRANSFERRED, TASK_DELEGATED, TASK_REVOKED)
+14. [Feature] Add task operation record tables: transfer record, assignee operation record, process rollback record
+15. [Feature] Add process rollback support via TaskCommandService#rollbackTask
+16. [Feature] Add complete_time field to se_process_instance for accurate process completion tracking
+17. [Breaking Change] StorageMode.MEMORY renamed to StorageMode.CUSTOM
+18. [Refactor] Deprecate old QueryService methods in favor of fluent query API
+19. [Bug Fix] Fix ID generation for task operation records to prevent NOT NULL constraint violations
+20. [Bug Fix] Replace Java 9+ Map.of()/List.of() with Java 8 compatible code
+21. [Bug Fix] Fix H2 test schema: add missing complete_time column and 7 missing tables
+22. [Improvement] Switch dual and archive module test datasource from PostgreSQL to embedded H2 for CI portability
+23. [Docs] Comprehensive documentation updates including API guide, architecture, and database schema
 
 # 3.6.0-SNAPSHOT
 1. [Feature Enhancement] Add multi-tenancy feature, thanks to @yanricheng1 for submitting the PR.
