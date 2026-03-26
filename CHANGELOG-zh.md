@@ -1,4 +1,4 @@
-# 3.7.0-SNAPSHOT
+# 4.0.0-SNAPSHOT
 1. [新功能] 新增数据库分片支持，包含索引表和雪花 ID 生成器
 2. [新功能] 新增 suspend/resume/claim API 到 SmartEngine 命令服务
 3. [新功能] 新增数据归档模块，支持 MySQL、Oracle 和 PostgreSQL

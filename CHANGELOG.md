@@ -1,4 +1,4 @@
-# 3.7.0-SNAPSHOT
+# 4.0.0-SNAPSHOT
 1. [Feature] Add database sharding support with index tables and Snowflake ID generator
 2. [Feature] Add suspend/resume/claim APIs to SmartEngine command services
 3. [Feature] Add data archive module for MySQL, Oracle, and PostgreSQL
