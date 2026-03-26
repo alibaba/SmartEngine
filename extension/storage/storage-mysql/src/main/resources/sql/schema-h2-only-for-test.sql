@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS `se_process_instance` (
   `comment` varchar(255) DEFAULT NULL   COMMENT 'comment' ,
   `title` varchar(255) DEFAULT NULL  COMMENT 'title' ,
   `tag` varchar(255) DEFAULT NULL  COMMENT 'tag' ,
+  `complete_time` datetime(6) DEFAULT NULL COMMENT 'complete time' ,
   `tenant_id` varchar(64) DEFAULT NULL  COMMENT 'tenant id' ,
 
   PRIMARY KEY (`id`)
@@ -117,5 +118,110 @@ CREATE TABLE IF NOT EXISTS `se_variable_instance` (
   `field_string_value` varchar(4000) DEFAULT NULL  COMMENT 'field string value' ,
   `tenant_id` varchar(64) DEFAULT NULL  COMMENT 'tenant id' ,
 
+  PRIMARY KEY (`id`)
+)  ;
+
+CREATE TABLE IF NOT EXISTS `se_task_transfer_record` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'PK' ,
+  `gmt_create` datetime(6) NOT NULL COMMENT 'create time' ,
+  `gmt_modified` datetime(6) NOT NULL COMMENT 'modification time' ,
+  `task_instance_id` bigint NOT NULL COMMENT 'task instance id' ,
+  `process_instance_id` bigint DEFAULT NULL COMMENT 'process instance id' ,
+  `from_user_id` varchar(255) NOT NULL COMMENT 'from user id' ,
+  `to_user_id` varchar(255) NOT NULL COMMENT 'to user id' ,
+  `transfer_reason` varchar(500) DEFAULT NULL COMMENT 'transfer reason' ,
+  `deadline` datetime(6) DEFAULT NULL COMMENT 'processing deadline' ,
+  `tenant_id` varchar(64) DEFAULT NULL COMMENT 'tenant id' ,
+  PRIMARY KEY (`id`)
+)  ;
+
+CREATE TABLE IF NOT EXISTS `se_assignee_operation_record` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'PK' ,
+  `gmt_create` datetime(6) NOT NULL COMMENT 'create time' ,
+  `gmt_modified` datetime(6) NOT NULL COMMENT 'modification time' ,
+  `task_instance_id` bigint NOT NULL COMMENT 'task instance id' ,
+  `process_instance_id` bigint DEFAULT NULL COMMENT 'process instance id' ,
+  `operation_type` varchar(64) NOT NULL COMMENT 'operation type' ,
+  `operator_user_id` varchar(255) NOT NULL COMMENT 'operator user id' ,
+  `target_user_id` varchar(255) NOT NULL COMMENT 'target user id' ,
+  `operation_reason` varchar(500) DEFAULT NULL COMMENT 'operation reason' ,
+  `tenant_id` varchar(64) DEFAULT NULL COMMENT 'tenant id' ,
+  PRIMARY KEY (`id`)
+)  ;
+
+CREATE TABLE IF NOT EXISTS `se_notification_instance` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'PK' ,
+  `gmt_create` datetime(6) NOT NULL COMMENT 'create time' ,
+  `gmt_modified` datetime(6) NOT NULL COMMENT 'modification time' ,
+  `process_instance_id` bigint NOT NULL COMMENT 'process instance id' ,
+  `task_instance_id` bigint DEFAULT NULL COMMENT 'task instance id' ,
+  `sender_user_id` varchar(255) NOT NULL COMMENT 'sender user id' ,
+  `receiver_user_id` varchar(255) NOT NULL COMMENT 'receiver user id' ,
+  `notification_type` varchar(64) NOT NULL COMMENT 'notification type' ,
+  `title` varchar(255) DEFAULT NULL COMMENT 'notification title' ,
+  `content` varchar(1000) DEFAULT NULL COMMENT 'notification content' ,
+  `read_status` varchar(64) NOT NULL DEFAULT 'unread' COMMENT 'read status' ,
+  `read_time` datetime(6) DEFAULT NULL COMMENT 'read time' ,
+  `tenant_id` varchar(64) DEFAULT NULL COMMENT 'tenant id' ,
+  PRIMARY KEY (`id`)
+)  ;
+
+CREATE TABLE IF NOT EXISTS `se_process_rollback_record` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'PK' ,
+  `gmt_create` datetime(6) NOT NULL COMMENT 'create time' ,
+  `gmt_modified` datetime(6) NOT NULL COMMENT 'modification time' ,
+  `process_instance_id` bigint NOT NULL COMMENT 'process instance id' ,
+  `task_instance_id` bigint NOT NULL COMMENT 'task instance id' ,
+  `rollback_type` varchar(64) NOT NULL COMMENT 'rollback type' ,
+  `from_activity_id` varchar(255) NOT NULL COMMENT 'from activity id' ,
+  `to_activity_id` varchar(255) NOT NULL COMMENT 'to activity id' ,
+  `operator_user_id` varchar(255) NOT NULL COMMENT 'operator user id' ,
+  `rollback_reason` varchar(500) DEFAULT NULL COMMENT 'rollback reason' ,
+  `tenant_id` varchar(64) DEFAULT NULL COMMENT 'tenant id' ,
+  PRIMARY KEY (`id`)
+)  ;
+
+CREATE TABLE IF NOT EXISTS `se_supervision_instance` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'PK' ,
+  `gmt_create` datetime(6) NOT NULL COMMENT 'create time' ,
+  `gmt_modified` datetime(6) NOT NULL COMMENT 'modification time' ,
+  `process_instance_id` bigint NOT NULL COMMENT 'process instance id' ,
+  `task_instance_id` bigint NOT NULL COMMENT 'task instance id' ,
+  `supervisor_user_id` varchar(255) NOT NULL COMMENT 'supervisor user id' ,
+  `supervision_reason` varchar(500) DEFAULT NULL COMMENT 'supervision reason' ,
+  `supervision_type` varchar(64) NOT NULL COMMENT 'supervision type' ,
+  `status` varchar(64) NOT NULL COMMENT 'status' ,
+  `close_time` datetime(6) DEFAULT NULL COMMENT 'close time' ,
+  `tenant_id` varchar(64) DEFAULT NULL COMMENT 'tenant id' ,
+  PRIMARY KEY (`id`)
+)  ;
+
+CREATE TABLE IF NOT EXISTS `se_user_task_index` (
+  `id` bigint NOT NULL AUTO_INCREMENT ,
+  `tenant_id` varchar(64) DEFAULT NULL ,
+  `assignee_id` varchar(255) NOT NULL ,
+  `assignee_type` varchar(128) NOT NULL DEFAULT 'user' ,
+  `task_instance_id` bigint NOT NULL ,
+  `process_instance_id` bigint NOT NULL ,
+  `process_definition_type` varchar(255) DEFAULT NULL ,
+  `domain_code` varchar(64) DEFAULT NULL ,
+  `extra` clob DEFAULT NULL COMMENT 'extra JSON data' ,
+  `task_status` varchar(64) NOT NULL ,
+  `task_gmt_modified` datetime(6) DEFAULT NULL ,
+  `title` varchar(255) DEFAULT NULL ,
+  `priority` int DEFAULT 500 ,
+  PRIMARY KEY (`id`)
+)  ;
+
+CREATE TABLE IF NOT EXISTS `se_user_notification_index` (
+  `id` bigint NOT NULL AUTO_INCREMENT ,
+  `tenant_id` varchar(64) DEFAULT NULL ,
+  `receiver_user_id` varchar(255) NOT NULL ,
+  `notification_id` bigint NOT NULL ,
+  `process_instance_id` bigint NOT NULL ,
+  `notification_type` varchar(64) NOT NULL ,
+  `title` varchar(255) DEFAULT NULL ,
+  `read_status` varchar(64) NOT NULL DEFAULT 'unread' ,
+  `gmt_create` datetime(6) NOT NULL ,
   PRIMARY KEY (`id`)
 )  ;

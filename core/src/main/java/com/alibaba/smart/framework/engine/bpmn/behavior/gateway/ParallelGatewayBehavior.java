@@ -36,8 +36,6 @@ public class ParallelGatewayBehavior extends AbstractActivityBehavior<ParallelGa
 
         //算法说明:ParallelGatewayBehavior 同时承担 fork 和 join 职责。所以说,如何判断是 fork 还是 join ?
         // 目前主要就看pvmActivity节点的 incomeTransition 和 outcomeTransition 数量差异。
-        // 如果 income 为1,则为 join 节点。
-        // 如果 outcome 为 1 ,则为 fork 节点。
         // 重要:在流程定义解析时,需要判断如果是 fork,则 outcome >=2, income=1; 类似的,如果是 join,则 outcome = 1,income>=2
 
         ParallelGateway parallelGateway = (ParallelGateway)pvmActivity.getModel();

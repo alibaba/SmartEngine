@@ -338,7 +338,7 @@ public class DialectTest {
     public void testH2JsonExtractText() {
         H2Dialect dialect = new H2Dialect();
         String result = dialect.jsonExtractText("task.extra", "category");
-        Assert.assertEquals("JSON_VALUE(task.extra FORMAT JSON, '$.category')", result);
+        Assert.assertEquals("REGEXP_REPLACE(REGEXP_SUBSTR(CAST(task.extra AS VARCHAR), '\"category\"\\s*:\\s*\"[^\"]*'), '.*\":\\s*\"', '')", result);
     }
 
     @Test

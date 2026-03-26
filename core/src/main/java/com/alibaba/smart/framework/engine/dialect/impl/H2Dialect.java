@@ -61,7 +61,9 @@ public class H2Dialect extends AbstractDialect {
 
     @Override
     public String jsonExtractText(String column, String key) {
-        return "JSON_VALUE(" + column + " FORMAT JSON, '$." + key + "')";
+        // H2 doesn't have JSON_VALUE. Use regex to extract JSON string values.
+        String castCol = "CAST(" + column + " AS VARCHAR)";
+        return "REGEXP_REPLACE(REGEXP_SUBSTR(" + castCol + ", '\"" + key + "\"\\s*:\\s*\"[^\"]*'), '.*\":\\s*\"', '')";
     }
 
     @Override

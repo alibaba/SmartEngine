@@ -2,7 +2,7 @@ package com.alibaba.smart.framework.engine.persister.database.dao;
 
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
 import com.alibaba.smart.framework.engine.constant.TaskInstanceConstant;
-import com.alibaba.smart.framework.engine.dialect.impl.PostgreSqlDialect;
+import com.alibaba.smart.framework.engine.dialect.impl.H2Dialect;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
 import com.alibaba.smart.framework.engine.service.param.query.JsonCondition;
@@ -30,7 +30,7 @@ public class TaskInstanceDomainCodeAndExtraTest extends BaseElementTest {
     TaskAssigneeDAO taskAssigneeDAO;
 
     private final String tenantId = "-5";
-    private final PostgreSqlDialect dialect = new PostgreSqlDialect();
+    private final H2Dialect dialect = new H2Dialect();
 
     private static <T> List<T> listOf(T... items) {
         List<T> list = new ArrayList<T>();
