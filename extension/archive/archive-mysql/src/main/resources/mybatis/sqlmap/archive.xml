@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.smart.framework.engine.archive.dao.ArchiveDAO">
+
+    <!-- ========== Query archivable process instances ========== -->
+
+    <select id="findArchivableProcessIds" resultType="long">
+        SELECT id FROM se_process_instance
+        WHERE status IN ('completed', 'aborted')
+          AND complete_time <![CDATA[<]]> #{completedBefore}
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+        ORDER BY id ASC
+        LIMIT #{limit}
+    </select>
+
+    <!-- ========== INSERT...SELECT archive operations ========== -->
+
+    <insert id="archiveProcessInstances">
+        INSERT INTO se_process_instance_archive
+            (id, gmt_create, gmt_modified, process_definition_id_and_version, process_definition_type,
+             status, complete_time, parent_process_instance_id, parent_execution_instance_id,
+             start_user_id, biz_unique_id, reason, comment, title, tag, tenant_id, archived_time)
+        SELECT id, gmt_create, gmt_modified, process_definition_id_and_version, process_definition_type,
+               status, complete_time, parent_process_instance_id, parent_execution_instance_id,
+               start_user_id, biz_unique_id, reason, comment, title, tag, tenant_id, CURRENT_TIMESTAMP(6)
+        FROM se_process_instance
+        WHERE id IN
+        <foreach item="id" collection="ids" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </insert>
+
+    <insert id="archiveTaskInstances">
+        INSERT INTO se_task_instance_archive
+            (id, gmt_create, gmt_modified, process_instance_id, process_definition_id_and_version,
+             process_definition_type, activity_instance_id, process_definition_activity_id,
+             execution_instance_id, claim_user_id, title, priority, tag, claim_time, complete_time,
+             status, comment, extension, domain_code, extra, tenant_id, archived_time)
+        SELECT id, gmt_create, gmt_modified, process_instance_id, process_definition_id_and_version,
+               process_definition_type, activity_instance_id, process_definition_activity_id,
+               execution_instance_id, claim_user_id, title, priority, tag, claim_time, complete_time,
+               status, comment, extension, domain_code, extra, tenant_id, CURRENT_TIMESTAMP(6)
+        FROM se_task_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </insert>
+
+    <insert id="archiveExecutionInstances">
+        INSERT INTO se_execution_instance_archive
+            (id, gmt_create, gmt_modified, process_instance_id, process_definition_id_and_version,
+             process_definition_activity_id, activity_instance_id, block_id, active, tenant_id, archived_time)
+        SELECT id, gmt_create, gmt_modified, process_instance_id, process_definition_id_and_version,
+               process_definition_activity_id, activity_instance_id, block_id, active, tenant_id, CURRENT_TIMESTAMP(6)
+        FROM se_execution_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </insert>
+
+    <insert id="archiveActivityInstances">
+        INSERT INTO se_activity_instance_archive
+            (id, gmt_create, gmt_modified, process_instance_id, process_definition_id_and_version,
+             process_definition_activity_id, tenant_id, archived_time)
+        SELECT id, gmt_create, gmt_modified, process_instance_id, process_definition_id_and_version,
+               process_definition_activity_id, tenant_id, CURRENT_TIMESTAMP(6)
+        FROM se_activity_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </insert>
+
+    <insert id="archiveVariableInstances">
+        INSERT INTO se_variable_instance_archive
+            (id, gmt_create, gmt_modified, process_instance_id, execution_instance_id,
+             field_key, field_type, field_double_value, field_long_value, field_string_value,
+             tenant_id, archived_time)
+        SELECT id, gmt_create, gmt_modified, process_instance_id, execution_instance_id,
+               field_key, field_type, field_double_value, field_long_value, field_string_value,
+               tenant_id, CURRENT_TIMESTAMP(6)
+        FROM se_variable_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </insert>
+
+    <insert id="archiveTaskAssigneeInstances">
+        INSERT INTO se_task_assignee_instance_archive
+            (id, gmt_create, gmt_modified, process_instance_id, task_instance_id,
+             assignee_id, assignee_type, tenant_id, archived_time)
+        SELECT id, gmt_create, gmt_modified, process_instance_id, task_instance_id,
+               assignee_id, assignee_type, tenant_id, CURRENT_TIMESTAMP(6)
+        FROM se_task_assignee_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </insert>
+
+    <insert id="archiveSupervisionInstances">
+        INSERT INTO se_supervision_instance_archive
+            (id, gmt_create, gmt_modified, process_instance_id, task_instance_id,
+             supervisor_user_id, supervision_reason, supervision_type, status,
+             close_time, tenant_id, archived_time)
+        SELECT id, gmt_create, gmt_modified, process_instance_id, task_instance_id,
+               supervisor_user_id, supervision_reason, supervision_type, status,
+               close_time, tenant_id, CURRENT_TIMESTAMP(6)
+        FROM se_supervision_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </insert>
+
+    <insert id="archiveNotificationInstances">
+        INSERT INTO se_notification_instance_archive
+            (id, gmt_create, gmt_modified, process_instance_id, task_instance_id,
+             sender_user_id, receiver_user_id, notification_type, title, content,
+             read_status, read_time, tenant_id, archived_time)
+        SELECT id, gmt_create, gmt_modified, process_instance_id, task_instance_id,
+               sender_user_id, receiver_user_id, notification_type, title, content,
+               read_status, read_time, tenant_id, CURRENT_TIMESTAMP(6)
+        FROM se_notification_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </insert>
+
+    <insert id="archiveTaskTransferRecords">
+        INSERT INTO se_task_transfer_record_archive
+            (id, gmt_create, gmt_modified, task_instance_id, process_instance_id, from_user_id, to_user_id,
+             transfer_reason, deadline, tenant_id, archived_time)
+        SELECT r.id, r.gmt_create, r.gmt_modified, r.task_instance_id, r.process_instance_id, r.from_user_id, r.to_user_id,
+               r.transfer_reason, r.deadline, r.tenant_id, CURRENT_TIMESTAMP(6)
+        FROM se_task_transfer_record r
+        WHERE r.task_instance_id IN (
+            SELECT t.id FROM se_task_instance t WHERE t.process_instance_id IN
+            <foreach item="id" collection="processIds" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        )
+        <if test="tenantId != null"> AND r.tenant_id = #{tenantId} </if>
+    </insert>
+
+    <insert id="archiveAssigneeOperationRecords">
+        INSERT INTO se_assignee_operation_record_archive
+            (id, gmt_create, gmt_modified, task_instance_id, process_instance_id, operation_type, operator_user_id,
+             target_user_id, operation_reason, tenant_id, archived_time)
+        SELECT r.id, r.gmt_create, r.gmt_modified, r.task_instance_id, r.process_instance_id, r.operation_type, r.operator_user_id,
+               r.target_user_id, r.operation_reason, r.tenant_id, CURRENT_TIMESTAMP(6)
+        FROM se_assignee_operation_record r
+        WHERE r.task_instance_id IN (
+            SELECT t.id FROM se_task_instance t WHERE t.process_instance_id IN
+            <foreach item="id" collection="processIds" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        )
+        <if test="tenantId != null"> AND r.tenant_id = #{tenantId} </if>
+    </insert>
+
+    <insert id="archiveProcessRollbackRecords">
+        INSERT INTO se_process_rollback_record_archive
+            (id, gmt_create, gmt_modified, process_instance_id, task_instance_id,
+             rollback_type, from_activity_id, to_activity_id, operator_user_id,
+             rollback_reason, tenant_id, archived_time)
+        SELECT id, gmt_create, gmt_modified, process_instance_id, task_instance_id,
+               rollback_type, from_activity_id, to_activity_id, operator_user_id,
+               rollback_reason, tenant_id, CURRENT_TIMESTAMP(6)
+        FROM se_process_rollback_record
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </insert>
+
+    <!-- ========== DELETE original table data (child tables first) ========== -->
+
+    <delete id="deleteTaskTransferRecords">
+        DELETE FROM se_task_transfer_record
+        WHERE task_instance_id IN (
+            SELECT id FROM se_task_instance WHERE process_instance_id IN
+            <foreach item="id" collection="processIds" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        )
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </delete>
+
+    <delete id="deleteAssigneeOperationRecords">
+        DELETE FROM se_assignee_operation_record
+        WHERE task_instance_id IN (
+            SELECT id FROM se_task_instance WHERE process_instance_id IN
+            <foreach item="id" collection="processIds" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        )
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </delete>
+
+    <delete id="deleteSupervisionInstances">
+        DELETE FROM se_supervision_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </delete>
+
+    <delete id="deleteNotificationInstances">
+        DELETE FROM se_notification_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </delete>
+
+    <delete id="deleteProcessRollbackRecords">
+        DELETE FROM se_process_rollback_record
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </delete>
+
+    <delete id="deleteTaskAssigneeInstances">
+        DELETE FROM se_task_assignee_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </delete>
+
+    <delete id="deleteVariableInstances">
+        DELETE FROM se_variable_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </delete>
+
+    <delete id="deleteTaskInstances">
+        DELETE FROM se_task_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </delete>
+
+    <delete id="deleteExecutionInstances">
+        DELETE FROM se_execution_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </delete>
+
+    <delete id="deleteActivityInstances">
+        DELETE FROM se_activity_instance
+        WHERE process_instance_id IN
+        <foreach item="id" collection="processIds" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </delete>
+
+    <delete id="deleteProcessInstances">
+        DELETE FROM se_process_instance
+        WHERE id IN
+        <foreach item="id" collection="ids" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        <if test="tenantId != null"> AND tenant_id = #{tenantId} </if>
+    </delete>
+
+</mapper>

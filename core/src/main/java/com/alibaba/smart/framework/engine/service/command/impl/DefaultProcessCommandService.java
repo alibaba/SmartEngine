@@ -27,6 +27,8 @@ import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.InstanceStatus;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
 import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
+import com.alibaba.smart.framework.engine.pvm.PvmActivity;
+import com.alibaba.smart.framework.engine.pvm.PvmProcessDefinition;
 import com.alibaba.smart.framework.engine.pvm.PvmProcessInstance;
 import com.alibaba.smart.framework.engine.pvm.impl.DefaultPvmProcessInstance;
 import com.alibaba.smart.framework.engine.service.command.ProcessCommandService;
@@ -228,6 +230,96 @@ public class DefaultProcessCommandService implements ProcessCommandService, Life
 
     }
 
+
+    @Override
+    public void suspend(String processInstanceId, String tenantId) {
+        ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId, tenantId, processEngineConfiguration);
+        if (processInstance == null) {
+            throw new IllegalArgumentException("ProcessInstance not found: " + processInstanceId);
+        }
+        if (processInstance.getStatus() != InstanceStatus.running) {
+            throw new IllegalStateException("Can only suspend a running process instance, current status: " + processInstance.getStatus());
+        }
+        processInstance.setStatus(InstanceStatus.suspended);
+        processInstanceStorage.update(processInstance, processEngineConfiguration);
+    }
+
+    @Override
+    public void resume(String processInstanceId, String tenantId) {
+        ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId, tenantId, processEngineConfiguration);
+        if (processInstance == null) {
+            throw new IllegalArgumentException("ProcessInstance not found: " + processInstanceId);
+        }
+        if (processInstance.getStatus() != InstanceStatus.suspended) {
+            throw new IllegalStateException("Can only resume a suspended process instance, current status: " + processInstance.getStatus());
+        }
+        processInstance.setStatus(InstanceStatus.running);
+        processInstanceStorage.update(processInstance, processEngineConfiguration);
+    }
+
+    @Override
+    public void jump(String processInstanceId, String targetNodeId, Map<String, Object> variables) {
+        String tenantId = null;
+        if (variables != null) {
+            tenantId = ObjectUtil.obj2Str(variables.get(RequestMapSpecialKeyConstant.TENANT_ID));
+        }
+
+        ProcessInstance processInstance = processInstanceStorage.findOne(processInstanceId, tenantId, processEngineConfiguration);
+        if (processInstance == null) {
+            throw new IllegalArgumentException("ProcessInstance not found: " + processInstanceId);
+        }
+
+        // 1. Cancel all active executions
+        List<ExecutionInstance> activeExecutions = executionInstanceStorage.findActiveExecution(
+                processInstanceId, tenantId, processEngineConfiguration);
+        if (activeExecutions != null) {
+            for (ExecutionInstance exec : activeExecutions) {
+                MarkDoneUtil.markDoneExecutionInstance(exec, executionInstanceStorage, processEngineConfiguration);
+            }
+        }
+
+        // 2. Cancel all pending tasks
+        TaskInstanceQueryParam taskQueryParam = new TaskInstanceQueryParam();
+        List<String> processInstanceIdList = new ArrayList<>(2);
+        processInstanceIdList.add(processInstanceId);
+        taskQueryParam.setProcessInstanceIdList(processInstanceIdList);
+        List<TaskInstance> taskInstances = taskInstanceStorage.findTaskList(taskQueryParam, processEngineConfiguration);
+        if (taskInstances != null) {
+            for (TaskInstance task : taskInstances) {
+                if (TaskInstanceConstant.COMPLETED.equals(task.getStatus())
+                        || TaskInstanceConstant.CANCELED.equals(task.getStatus())
+                        || TaskInstanceConstant.ABORTED.equals(task.getStatus())) {
+                    continue;
+                }
+                MarkDoneUtil.markDoneTaskInstance(task, TaskInstanceConstant.CANCELED, TaskInstanceConstant.PENDING,
+                        variables, taskInstanceStorage, processEngineConfiguration);
+            }
+        }
+
+        // 3. Resolve target PvmActivity and jump to it
+        PvmProcessDefinition pvmProcessDefinition = processDefinitionContainer.getPvmProcessDefinition(
+                processInstance.getProcessDefinitionId(), processInstance.getProcessDefinitionVersion(), tenantId);
+        if (pvmProcessDefinition == null) {
+            throw new IllegalArgumentException("PvmProcessDefinition not found for process: "
+                    + processInstance.getProcessDefinitionId());
+        }
+
+        Map<String, PvmActivity> activities = pvmProcessDefinition.getActivities();
+        PvmActivity targetActivity = activities.get(targetNodeId);
+        if (targetActivity == null) {
+            throw new IllegalArgumentException("Target node not found in process definition: " + targetNodeId);
+        }
+
+        if (variables == null) {
+            variables = new HashMap<>();
+        }
+
+        ExecutionContext executionContext = instanceContextFactory.createProcessContext(
+                processEngineConfiguration, processInstance, variables, null, null);
+
+        PvmProcessInstance pvmProcessInstance = new DefaultPvmProcessInstance();
+        pvmProcessInstance.jump(targetActivity, executionContext);
+    }
 
     private ProcessEngineConfiguration processEngineConfiguration;
     private  ProcessInstanceStorage processInstanceStorage;

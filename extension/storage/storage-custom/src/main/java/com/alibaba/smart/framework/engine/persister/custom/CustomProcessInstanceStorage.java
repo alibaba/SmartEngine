@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Created by 高海军 帝奇 74394 on 2017 February  11:54.
  */
-@ExtensionBinding(group = ExtensionConstant.COMMON, bindKey = ProcessInstanceStorage.class)
+@ExtensionBinding(group = ExtensionConstant.CUSTOM, bindKey = ProcessInstanceStorage.class)
 
 public class CustomProcessInstanceStorage implements ProcessInstanceStorage {
 

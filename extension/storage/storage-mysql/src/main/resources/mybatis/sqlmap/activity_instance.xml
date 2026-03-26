@@ -26,7 +26,7 @@
     <!--     <update id="update" parameterType="ActivityInstanceEntity">
             update  se_activity_instance
             <set>
-                gmt_modified=now(6)
+                gmt_modified=CURRENT_TIMESTAMP
                 <if test="status != null"> ,status = #{status}</if>
                 <if test="parentProcessInstanceId != null"> ,parent_process_instance_id = #{parentProcessInstanceId}</if>
             </set>

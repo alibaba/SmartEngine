@@ -10,7 +10,7 @@
 
     <insert id="insert" parameterType="RetryRecord"  keyProperty="id">
         insert into se_retry_record(<include refid="baseColumn"/>)
-        values (#{id}, now(), now(), #{instanceId}, #{retryTimes},#{retrySuccess},#{requestParams})
+        values (#{id}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, #{instanceId}, #{retryTimes},#{retrySuccess},#{requestParams})
     </insert>
 
     <delete id="delete" parameterType="long">
@@ -20,7 +20,7 @@
     <update id="update" parameterType="RetryRecord">
         update se_retry_record
         <set>
-            gmt_modified=now()
+            gmt_modified=CURRENT_TIMESTAMP
             <if test="retrySuccess != null">,retrySuccess = #{retrySuccess}</if>
             <if test="retryTimes != null">,retryTimes = #{retryTimes}</if>
         </set>

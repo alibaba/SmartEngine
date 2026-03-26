@@ -6,6 +6,8 @@ package com.alibaba.smart.framework.engine.extension.constant;
 public interface ExtensionConstant {
     String COMMON = "common";
 
+    String CUSTOM = "custom";
+
     String SERVICE = "SERVICE";
 
     String ELEMENT_PARSER = "element-parser";

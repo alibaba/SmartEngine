@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Proxy;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -21,9 +23,12 @@ import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanne
 import com.alibaba.smart.framework.engine.configuration.scanner.ExtensionBindingResult;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
+import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
+import com.alibaba.smart.framework.engine.storage.StorageRouter;
 import com.alibaba.smart.framework.engine.util.ClassUtil;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +43,9 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
     @Getter
     private Map<String, ExtensionBindingResult> scanResult = new HashMap<String, ExtensionBindingResult>();
+
+    @Setter
+    private StorageRouter storageRouter;
 
     private String[] packageNameList;
 
@@ -249,9 +257,35 @@ public class SimpleAnnotationScanner implements AnnotationScanner {
 
     @Override
     public <T> T getExtensionPoint(String group, Class<T> clazz) {
+        // For storage types registered in StorageRouter, return a dynamic proxy
+        // that routes based on current StorageMode at invocation time.
+        // This is critical because service classes cache the storage reference during init(),
+        // so a direct reference would be locked to a single mode.
+        if (storageRouter != null && ExtensionConstant.COMMON.equals(group)
+                && storageRouter.hasStorageType(clazz)) {
+            return createStorageProxy(clazz);
+        }
+
+        // Default behavior (unchanged)
         ExtensionBindingResult extensionBindingResult = this.scanResult.get(group);
         Map<Class, Object> bindingMap = extensionBindingResult.getBindingMap();
         return (T)bindingMap.get(clazz);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T createStorageProxy(Class<T> storageInterface) {
+        return (T) Proxy.newProxyInstance(
+            storageInterface.getClassLoader(),
+            new Class<?>[]{storageInterface},
+            (proxy, method, args) -> {
+                T realStorage = storageRouter.getStorage(storageInterface);
+                try {
+                    return method.invoke(realStorage, args);
+                } catch (InvocationTargetException e) {
+                    throw e.getCause();
+                }
+            }
+        );
     }
 
     @Override

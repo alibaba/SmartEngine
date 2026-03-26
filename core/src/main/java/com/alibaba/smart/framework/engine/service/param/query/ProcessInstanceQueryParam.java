@@ -1,5 +1,6 @@
 package com.alibaba.smart.framework.engine.service.param.query;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -19,13 +20,13 @@ public class ProcessInstanceQueryParam extends BaseQueryParam {
     private String startUserId;
     private String status ;
     private String processDefinitionType;
-    private String parentInstanceId;
+    private Serializable parentInstanceId;
     private String bizUniqueId;
     private String processDefinitionIdAndVersion;
     /**
      * 流程引擎实例id列表
      */
-    private List<String> processInstanceIdList;
+    private List<? extends Serializable> processInstanceIdList;
 
     /**
      * 查询启动时间在processStartTime之后的流程实例
@@ -36,4 +37,20 @@ public class ProcessInstanceQueryParam extends BaseQueryParam {
      * 查询启动时间在processEndTime之前的流程实例
      */
     private Date processEndTime;
+
+    /**
+     * 完成时间开始
+     */
+    private Date completeTimeStart;
+
+    /**
+     * 完成时间结束
+     */
+    private Date completeTimeEnd;
+
+    /**
+     * Filter by multiple process definition types (IN clause).
+     */
+    private List<String> processDefinitionTypeList;
+
 }

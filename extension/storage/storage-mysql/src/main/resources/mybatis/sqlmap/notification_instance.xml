@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.smart.framework.engine.persister.database.dao.NotificationInstanceDAO">
+
+    <sql id="baseColumn">
+        id, gmt_create, gmt_modified, process_instance_id, task_instance_id,
+        sender_user_id, receiver_user_id, notification_type, title, content,
+        read_status, read_time, tenant_id
+    </sql>
+
+    <sql id="query_condition">
+        <where>
+            <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+            <if test="senderUserId != null"> and sender_user_id = #{senderUserId} </if>
+            <if test="receiverUserId != null"> and receiver_user_id = #{receiverUserId} </if>
+            <if test="readStatus != null"> and read_status = #{readStatus} </if>
+            <if test="notificationType != null"> and notification_type = #{notificationType} </if>
+            <if test="taskInstanceIdList != null">
+                and task_instance_id in
+                <foreach item="item" index="index" separator="," open="(" close=")" collection="taskInstanceIdList">
+                    #{item, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.SmartIdTypeHandler}
+                </foreach>
+            </if>
+            <if test="processInstanceIdList != null">
+                and process_instance_id in
+                <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
+                    #{item, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.SmartIdTypeHandler}
+                </foreach>
+            </if>
+            <if test="notificationStartTime != null">and gmt_create <![CDATA[>=]]> #{notificationStartTime}</if>
+            <if test="notificationEndTime != null">and gmt_create <![CDATA[<]]> #{notificationEndTime}</if>
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.NotificationInstanceEntity"
+            keyProperty="id">
+        insert into se_notification_instance(<include refid="baseColumn"/>)
+        values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId}, #{taskInstanceId},
+        #{senderUserId}, #{receiverUserId}, #{notificationType}, #{title}, #{content},
+        #{readStatus}, #{readTime}, #{tenantId})
+    </insert>
+
+    <update id="update" parameterType="com.alibaba.smart.framework.engine.persister.database.entity.NotificationInstanceEntity">
+        update se_notification_instance
+        <set>
+            gmt_modified = CURRENT_TIMESTAMP
+            <if test="notificationInstanceEntity.title != null">,title = #{notificationInstanceEntity.title}</if>
+            <if test="notificationInstanceEntity.content != null">,content = #{notificationInstanceEntity.content}</if>
+            <if test="notificationInstanceEntity.readStatus != null">,read_status = #{notificationInstanceEntity.readStatus}</if>
+            <if test="notificationInstanceEntity.readTime != null">,read_time = #{notificationInstanceEntity.readTime}</if>
+        </set>
+        where id = #{notificationInstanceEntity.id}
+        <if test="notificationInstanceEntity.tenantId != null"> and tenant_id = #{notificationInstanceEntity.tenantId} </if>
+    </update>
+
+    <select id="findOne" resultType="com.alibaba.smart.framework.engine.persister.database.entity.NotificationInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from se_notification_instance 
+        where id = #{id}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </select>
+
+    <select id="findByReceiver" resultType="com.alibaba.smart.framework.engine.persister.database.entity.NotificationInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from se_notification_instance 
+        where receiver_user_id = #{receiverUserId}
+        <if test="readStatus != null"> and read_status = #{readStatus} </if>
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+        order by gmt_create desc
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
+    </select>
+
+    <select id="countByReceiver" resultType="int">
+        select count(*)
+        from se_notification_instance 
+        where receiver_user_id = #{receiverUserId}
+        <if test="readStatus != null"> and read_status = #{readStatus} </if>
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </select>
+
+    <select id="findBySender" resultType="com.alibaba.smart.framework.engine.persister.database.entity.NotificationInstanceEntity">
+        select
+        <include refid="baseColumn"/>
+        from se_notification_instance 
+        where sender_user_id = #{senderUserId}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+        order by gmt_create desc
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
+    </select>
+
+    <select id="countBySender" resultType="int">
+        select count(*)
+        from se_notification_instance 
+        where sender_user_id = #{senderUserId}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </select>
+
+    <update id="markAsRead">
+        update se_notification_instance
+        set read_status = 'read',
+            read_time = CURRENT_TIMESTAMP,
+            gmt_modified = CURRENT_TIMESTAMP
+        where id = #{id}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </update>
+
+    <update id="batchMarkAsRead">
+        update se_notification_instance
+        set read_status = 'read',
+            read_time = CURRENT_TIMESTAMP,
+            gmt_modified = CURRENT_TIMESTAMP
+        where id in
+        <foreach item="item" index="index" separator="," open="(" close=")" collection="ids">
+            #{item}
+        </foreach>
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </update>
+
+    <delete id="delete">
+        delete from se_notification_instance
+        where id = #{id}
+        <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
+    </delete>
+
+    <select id="findByQuery" resultType="com.alibaba.smart.framework.engine.persister.database.entity.NotificationInstanceEntity"
+            parameterType="com.alibaba.smart.framework.engine.service.param.query.NotificationQueryParam">
+        select <include refid="baseColumn"/>
+        from se_notification_instance
+        <include refid="query_condition"/>
+        <include refid="order_by"/>
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
+    </select>
+
+    <select id="countByQuery" resultType="int"
+            parameterType="com.alibaba.smart.framework.engine.service.param.query.NotificationQueryParam">
+        select count(*)
+        from se_notification_instance
+        <include refid="query_condition"/>
+    </select>
+
+    <!-- Dynamic order by support for fluent query API -->
+    <sql id="order_by">
+        <choose>
+            <when test="orderBySpecs != null and orderBySpecs.size() > 0">
+                ORDER BY
+                <foreach item="spec" collection="orderBySpecs" separator=",">
+                    ${spec.columnName} ${spec.directionSql}
+                </foreach>
+            </when>
+            <otherwise>
+                ORDER BY gmt_create DESC
+            </otherwise>
+        </choose>
+    </sql>
+
+</mapper>

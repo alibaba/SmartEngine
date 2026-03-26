@@ -13,7 +13,9 @@ import com.alibaba.smart.framework.engine.configuration.*;
 import com.alibaba.smart.framework.engine.configuration.impl.option.DefaultOptionContainer;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.constant.SmartBase;
+import com.alibaba.smart.framework.engine.dialect.Dialect;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
+import com.alibaba.smart.framework.engine.storage.StorageRouter;
 
 import lombok.Data;
 import org.slf4j.Logger;
@@ -48,6 +50,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private TaskAssigneeDispatcher taskAssigneeDispatcher;
 
+    private TaskEventPublisher taskEventPublisher;
+
     private VariablePersister variablePersister;
 
     private MultiInstanceCounter multiInstanceCounter;
@@ -68,6 +72,10 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private Map<String,Object> magicExtension;
 
+    private StorageRouter storageRouter;
+
+    private Dialect dialect;
+
     public DefaultProcessEngineConfiguration() {
         //说明:先默认设置一个id生成器,业务使用方可以根据自己的需要再覆盖掉这个值。
         this.idGenerator = new DefaultIdGenerator();
@@ -86,6 +94,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         this.optionContainer = new DefaultOptionContainer();
         optionContainer.put(ConfigurationOption.EXPRESSION_COMPILE_RESULT_CACHED_OPTION);
         optionContainer.put(ConfigurationOption.PROCESS_DEFINITION_MULTI_TENANT_SHARE_OPTION);
+
+        this.storageRouter = new StorageRouter(this);
 
         buildDefaultSupportNameSpace();
     }

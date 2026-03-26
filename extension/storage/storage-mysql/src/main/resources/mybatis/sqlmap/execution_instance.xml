@@ -16,7 +16,12 @@
         insert into se_execution_instance(<include refid="baseColumn"/>)
         values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId}, #{processDefinitionIdAndVersion},
         #{processDefinitionActivityId},
-        #{activityInstanceId},#{active},#{blockId},#{tenantId})
+        #{activityInstanceId},
+        CASE
+            WHEN #{active} THEN 1
+            ELSE 0
+        END,
+        #{blockId},#{tenantId})
     </insert>
 
     <delete id="delete" parameterType="long">
@@ -30,8 +35,14 @@
             parameterType="com.alibaba.smart.framework.engine.persister.database.entity.ExecutionInstanceEntity">
         update se_execution_instance
         <set>
-            gmt_modified=now(6)
-            <if test="active != null">,active = #{active}</if>
+            gmt_modified=CURRENT_TIMESTAMP
+            <if test="active != null">
+                ,active =
+                CASE
+                    WHEN #{active} THEN 1
+                    ELSE 0
+                END
+            </if>
         </set>
         where id=#{id}
         <if test="tenantId != null"> and tenant_id = #{tenantId} </if>

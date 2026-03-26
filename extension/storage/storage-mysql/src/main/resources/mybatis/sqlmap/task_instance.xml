@@ -5,7 +5,7 @@
 
     <sql id="baseColumn">
         id, gmt_create, gmt_modified,process_instance_id, process_definition_id_and_version,process_definition_type,
-        activity_instance_id, process_definition_activity_id, execution_instance_id,claim_user_id,priority,tag,claim_time,complete_time,status,comment,extension,title,tenant_id
+        activity_instance_id, process_definition_activity_id, execution_instance_id,claim_user_id,priority,tag,claim_time,complete_time,status,comment,extension,domain_code,extra,title,tenant_id
     </sql>
 
 
@@ -15,7 +15,7 @@
         values (#{id}, #{gmtCreate}, #{gmtModified}, #{processInstanceId},
         #{processDefinitionIdAndVersion},#{processDefinitionType},
         #{activityInstanceId},
-        #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status},#{comment},#{extension},#{title},
+        #{processDefinitionActivityId},#{executionInstanceId},#{claimUserId},#{priority},#{tag},#{claimTime},#{completeTime},#{status},#{comment},#{extension},#{domainCode},#{extra, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.JsonTypeHandler},#{title},
         #{tenantId})
     </insert>
 
@@ -28,7 +28,7 @@
 
     <sql id="update_sql">
         <set>
-            gmt_modified=now(6)
+            gmt_modified=CURRENT_TIMESTAMP
             <if test="taskInstanceEntity.claimUserId != null">,claim_user_id = #{taskInstanceEntity.claimUserId}</if>
             <if test="taskInstanceEntity.priority != null">,priority = #{taskInstanceEntity.priority}</if>
             <if test="taskInstanceEntity.claimTime != null">,claim_time = #{taskInstanceEntity.claimTime}</if>
@@ -37,6 +37,8 @@
             <if test="taskInstanceEntity.tag != null">, tag = #{taskInstanceEntity.tag}</if>
             <if test="taskInstanceEntity.comment != null">, comment = #{taskInstanceEntity.comment}</if>
             <if test="taskInstanceEntity.extension != null">, extension = #{taskInstanceEntity.extension}</if>
+            <if test="taskInstanceEntity.domainCode != null">, domain_code = #{taskInstanceEntity.domainCode}</if>
+            <if test="taskInstanceEntity.extra != null">, extra = #{taskInstanceEntity.extra, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.JsonTypeHandler}</if>
             <if test="taskInstanceEntity.title != null">, title = #{taskInstanceEntity.title}</if>
 
         </set>
@@ -80,7 +82,7 @@
         select distinct task.id, task.gmt_create, task.gmt_modified,task.process_instance_id,task.tenant_id,
         process_definition_id_and_version,
         activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag,
-        task.process_definition_type, claim_time,complete_time,status,comment,extension,title
+        task.process_definition_type, claim_time,complete_time,status,comment,extension,task.domain_code,task.extra,title
         from se_task_instance task,se_task_assignee_instance assignee where  task.id = assignee.task_instance_id
 
         <if test="tenantId != null">
@@ -96,7 +98,7 @@
 
         order by task.gmt_modified desc
 
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
 
     </select>
 
@@ -117,7 +119,7 @@
 
         <include refid="pending_task_assignee_choose_sql"/>
 
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
 
     </select>
 
@@ -152,10 +154,39 @@
 
     <sql id="pending_where_condition">
         <if test="processDefinitionType != null">and task.process_definition_type = #{processDefinitionType}</if>
+        <!-- Note: TaskInstanceQueryByAssigneeParam.processInstanceIdList is already List<Long> -->
         <if test="processInstanceIdList != null">
             and task.process_instance_id in
             <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
                 #{item}
+            </foreach>
+        </if>
+        <!-- domain_code filters -->
+        <if test="domainCode != null">and task.domain_code = #{domainCode}</if>
+        <if test="domainCodeLike != null">and task.domain_code like CONCAT('%', #{domainCodeLike}, '%')</if>
+        <if test="domainCodeList != null and domainCodeList.size() > 0">
+            and task.domain_code in
+            <foreach item="item" collection="domainCodeList" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- extra JSON conditions (Dialect-generated SQL expressions) -->
+        <if test="jsonConditions != null and jsonConditions.size() > 0">
+            <foreach item="jc" collection="jsonConditions">
+                and ${jc.sqlExpression} = #{jc.value}
+            </foreach>
+        </if>
+        <if test="jsonInConditions != null and jsonInConditions.size() > 0">
+            <foreach item="jic" collection="jsonInConditions">
+                and ${jic.sqlExpression} IN
+                <foreach item="v" collection="jic.values" separator="," open="(" close=")">
+                    #{v}
+                </foreach>
+            </foreach>
+        </if>
+        <if test="jsonLikeConditions != null and jsonLikeConditions.size() > 0">
+            <foreach item="jlc" collection="jsonLikeConditions">
+                and ${jlc.sqlExpression} LIKE CONCAT('%', #{jlc.value}, '%')
             </foreach>
         </if>
     </sql>
@@ -166,14 +197,14 @@
             parameterType="com.alibaba.smart.framework.engine.service.param.query.TaskInstanceQueryParam">
         select task.id, task.gmt_create, task.gmt_modified,task.process_instance_id,task.tenant_id, process_definition_id_and_version,
         activity_instance_id,process_definition_activity_id, execution_instance_id,claim_user_id,priority, task.tag,
-        task.process_definition_type, claim_time,complete_time,status,comment,extension,title
+        task.process_definition_type, claim_time,complete_time,status,comment,extension,task.domain_code,task.extra,title
         from se_task_instance task where 1=1
         <if test="tenantId != null"> and tenant_id = #{tenantId} </if>
 
         <include refid="where_condition"/>
 
-        order by task.gmt_modified desc
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+        <include refid="order_by"/>
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
 
     </select>
 
@@ -186,7 +217,7 @@
 
         <include refid="where_condition"/>
 
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
 
     </select>
 
@@ -195,23 +226,87 @@
         <if test="status != null">and task.status = #{status}</if>
         <if test="processDefinitionType != null">and task.process_definition_type = #{processDefinitionType}</if>
         <if test="claimUserId != null">and task.claim_user_id = #{claimUserId}</if>
+        <if test="claimUserIdLike != null">and task.claim_user_id like CONCAT('%', #{claimUserIdLike}, '%')</if>
+        <if test="unassigned != null and unassigned == true">and task.claim_user_id is null</if>
         <if test="tag != null">and task.tag = #{tag}</if>
         <if test="extension != null">and task.extension = #{extension}</if>
 
         <if test="title != null">and task.title = #{title}</if>
+        <if test="titleLike != null">and task.title like CONCAT('%', #{titleLike}, '%')</if>
         <if test="priority != null">and task.priority = #{priority}</if>
+        <if test="minPriority != null">and task.priority <![CDATA[>=]]> #{minPriority}</if>
+        <if test="maxPriority != null">and task.priority <![CDATA[<=]]> #{maxPriority}</if>
         <if test="comment != null">and task.comment = #{comment}</if>
 
-        <if test="activityInstanceId != null">and task.activity_instance_id = #{activityInstanceId}</if>
+        <if test="activityInstanceId != null">and task.activity_instance_id = #{activityInstanceId, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.SmartIdTypeHandler} </if>
         <if test="processDefinitionActivityId != null">and task.process_definition_activity_id =
             #{processDefinitionActivityId}
         </if>
+        <if test="completeTimeStart != null">and task.complete_time <![CDATA[>=]]> #{completeTimeStart}</if>
+        <if test="completeTimeEnd != null">and task.complete_time <![CDATA[<]]> #{completeTimeEnd}</if>
+        <if test="createTimeStart != null">and task.gmt_create <![CDATA[>=]]> #{createTimeStart}</if>
+        <if test="createTimeEnd != null">and task.gmt_create <![CDATA[<]]> #{createTimeEnd}</if>
         <if test="processInstanceIdList != null">
             and task.process_instance_id in
             <foreach item="item" index="index" separator="," open="(" close=")" collection="processInstanceIdList">
+                #{item, typeHandler=com.alibaba.smart.framework.engine.persister.database.handler.SmartIdTypeHandler}
+            </foreach>
+        </if>
+        <if test="statusList != null and statusList.size() > 0">
+            and task.status in
+            <foreach item="item" collection="statusList" separator="," open="(" close=")">
                 #{item}
             </foreach>
         </if>
+        <if test="processDefinitionTypeList != null and processDefinitionTypeList.size() > 0">
+            and task.process_definition_type in
+            <foreach item="item" collection="processDefinitionTypeList" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- domain_code filters -->
+        <if test="domainCode != null">and task.domain_code = #{domainCode}</if>
+        <if test="domainCodeLike != null">and task.domain_code like CONCAT('%', #{domainCodeLike}, '%')</if>
+        <if test="domainCodeList != null and domainCodeList.size() > 0">
+            and task.domain_code in
+            <foreach item="item" collection="domainCodeList" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- extra JSON conditions (Dialect-generated SQL expressions) -->
+        <if test="jsonConditions != null and jsonConditions.size() > 0">
+            <foreach item="jc" collection="jsonConditions">
+                and ${jc.sqlExpression} = #{jc.value}
+            </foreach>
+        </if>
+        <if test="jsonInConditions != null and jsonInConditions.size() > 0">
+            <foreach item="jic" collection="jsonInConditions">
+                and ${jic.sqlExpression} IN
+                <foreach item="v" collection="jic.values" separator="," open="(" close=")">
+                    #{v}
+                </foreach>
+            </foreach>
+        </if>
+        <if test="jsonLikeConditions != null and jsonLikeConditions.size() > 0">
+            <foreach item="jlc" collection="jsonLikeConditions">
+                and ${jlc.sqlExpression} LIKE CONCAT('%', #{jlc.value}, '%')
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- Dynamic order by support for fluent query API -->
+    <sql id="order_by">
+        <choose>
+            <when test="orderBySpecs != null and orderBySpecs.size() > 0">
+                ORDER BY
+                <foreach item="spec" collection="orderBySpecs" separator=",">
+                    task.${spec.columnName} ${spec.directionSql}
+                </foreach>
+            </when>
+            <otherwise>
+                ORDER BY task.gmt_modified DESC
+            </otherwise>
+        </choose>
     </sql>
 
 </mapper>

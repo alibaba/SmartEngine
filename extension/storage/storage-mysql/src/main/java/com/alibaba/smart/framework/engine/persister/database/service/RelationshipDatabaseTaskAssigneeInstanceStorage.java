@@ -3,6 +3,7 @@ package com.alibaba.smart.framework.engine.persister.database.service;
 import java.util.*;
 
 import com.alibaba.smart.framework.engine.common.util.DateUtil;
+import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
 import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
 import com.alibaba.smart.framework.engine.exception.EngineException;
 import com.alibaba.smart.framework.engine.extension.annotation.ExtensionBinding;
@@ -12,7 +13,11 @@ import com.alibaba.smart.framework.engine.instance.storage.TaskAssigneeStorage;
 import com.alibaba.smart.framework.engine.model.instance.TaskAssigneeInstance;
 import com.alibaba.smart.framework.engine.persister.database.builder.TaskAssigneeInstanceBuilder;
 import com.alibaba.smart.framework.engine.persister.database.dao.TaskAssigneeDAO;
+import com.alibaba.smart.framework.engine.persister.database.dao.TaskInstanceDAO;
+import com.alibaba.smart.framework.engine.persister.database.dao.UserTaskIndexDAO;
 import com.alibaba.smart.framework.engine.persister.database.entity.TaskAssigneeEntity;
+import com.alibaba.smart.framework.engine.persister.database.entity.TaskInstanceEntity;
+import com.alibaba.smart.framework.engine.persister.database.entity.UserTaskIndexEntity;
 import com.alibaba.smart.framework.engine.service.param.query.PendingTaskQueryParam;
 
 import static com.alibaba.smart.framework.engine.persister.common.constant.StorageConstant.NOT_IMPLEMENT_INTENTIONALLY;
@@ -100,6 +105,30 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
         TaskAssigneeInstance resultTaskAssigneeInstance = this.findOne(
                 entityId.toString(), taskAssigneeInstance.getTenantId(), processEngineConfiguration);
 
+        if (isShardingEnabled(processEngineConfiguration)) {
+            TaskInstanceDAO taskInstanceDAO = (TaskInstanceDAO) processEngineConfiguration.getInstanceAccessor().access("taskInstanceDAO");
+            TaskInstanceEntity taskEntity = taskInstanceDAO.findOne(
+                    Long.valueOf(taskAssigneeInstance.getTaskInstanceId()), taskAssigneeInstance.getTenantId());
+
+            if (taskEntity != null) {
+                UserTaskIndexDAO userTaskIndexDAO = (UserTaskIndexDAO) processEngineConfiguration.getInstanceAccessor().access("userTaskIndexDAO");
+                UserTaskIndexEntity indexEntity = new UserTaskIndexEntity();
+                indexEntity.setTenantId(taskAssigneeInstance.getTenantId());
+                indexEntity.setAssigneeId(taskAssigneeInstance.getAssigneeId());
+                indexEntity.setAssigneeType(taskAssigneeInstance.getAssigneeType());
+                indexEntity.setTaskInstanceId(Long.valueOf(taskAssigneeInstance.getTaskInstanceId()));
+                indexEntity.setProcessInstanceId(Long.valueOf(taskAssigneeInstance.getProcessInstanceId()));
+                indexEntity.setProcessDefinitionType(taskEntity.getProcessDefinitionType());
+                indexEntity.setDomainCode(taskEntity.getDomainCode());
+                indexEntity.setExtra(taskEntity.getExtra());
+                indexEntity.setTaskStatus(taskEntity.getStatus());
+                indexEntity.setTaskGmtModified(taskEntity.getGmtModified());
+                indexEntity.setTitle(taskEntity.getTitle());
+                indexEntity.setPriority(taskEntity.getPriority());
+                userTaskIndexDAO.insert(indexEntity);
+            }
+        }
+
         return resultTaskAssigneeInstance;
     }
 
@@ -128,12 +157,30 @@ public class RelationshipDatabaseTaskAssigneeInstanceStorage implements TaskAssi
     public void remove(String taskAssigneeInstanceId,String tenantId,
                        ProcessEngineConfiguration processEngineConfiguration) {
         TaskAssigneeDAO taskAssigneeDAO= (TaskAssigneeDAO) processEngineConfiguration.getInstanceAccessor().access("taskAssigneeDAO");
-        taskAssigneeDAO.delete(Long.valueOf(taskAssigneeInstanceId),tenantId);
 
+        if (isShardingEnabled(processEngineConfiguration)) {
+            // Find assignee info before deletion
+            TaskAssigneeEntity entity = taskAssigneeDAO.findOne(Long.valueOf(taskAssigneeInstanceId), tenantId);
+            taskAssigneeDAO.delete(Long.valueOf(taskAssigneeInstanceId), tenantId);
+            if (entity != null) {
+                UserTaskIndexDAO userTaskIndexDAO = (UserTaskIndexDAO) processEngineConfiguration.getInstanceAccessor().access("userTaskIndexDAO");
+                userTaskIndexDAO.deleteByAssigneeAndTask(entity.getAssigneeId(), entity.getTaskInstanceId(), tenantId);
+            }
+        } else {
+            taskAssigneeDAO.delete(Long.valueOf(taskAssigneeInstanceId), tenantId);
+        }
     }
 
     @Override
     public void removeAll(String taskInstanceId, String tenantId,ProcessEngineConfiguration processEngineConfiguration) {
         throw new EngineException(NOT_IMPLEMENT_INTENTIONALLY);
+    }
+
+    private boolean isShardingEnabled(ProcessEngineConfiguration config) {
+        if (config.getOptionContainer() == null) {
+            return false;
+        }
+        ConfigurationOption option = config.getOptionContainer().get("shardingModeEnabled");
+        return option != null && option.isEnabled();
     }
 }

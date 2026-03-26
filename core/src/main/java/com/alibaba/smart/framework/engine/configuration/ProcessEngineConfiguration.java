@@ -7,6 +7,8 @@ import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.annotation.Experiment;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
+import com.alibaba.smart.framework.engine.dialect.Dialect;
+import com.alibaba.smart.framework.engine.storage.StorageRouter;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -105,6 +107,18 @@ public interface ProcessEngineConfiguration {
     TaskAssigneeDispatcher getTaskAssigneeDispatcher();
 
     /**
+     * Optional extension for task lifecycle events.
+     * When set, the engine will publish events (TASK_ASSIGNED, TASK_COMPLETED, etc.)
+     * at each task state change point.
+     *
+     * @param taskEventPublisher the publisher implementation
+     * @since 3.7.0
+     */
+    default void setTaskEventPublisher(TaskEventPublisher taskEventPublisher) {}
+
+    default TaskEventPublisher getTaskEventPublisher() { return null; }
+
+    /**
      * 主要用于持久化变量数据。
      * @param variablePersister
      */
@@ -164,6 +178,12 @@ public interface ProcessEngineConfiguration {
 
     void setPvmActivityTaskFactory(PvmActivityTaskFactory pvmActivityTaskFactory);
     PvmActivityTaskFactory getPvmActivityTaskFactory();
+
+    default StorageRouter getStorageRouter() { return null; }
+    default void setStorageRouter(StorageRouter storageRouter) {}
+
+    default Dialect getDialect() { return null; }
+    default void setDialect(Dialect dialect) {}
 
     // 是否要干掉 用于配置扩展,默认可以为空。设计目的是根据自己的业务需求,来自定义存储(该机制会绕过引擎自带的各种Storage机制,powerful and a little UnSafe)。。
     //void setPersisterStrategy(PersisterStrategy persisterStrategy);

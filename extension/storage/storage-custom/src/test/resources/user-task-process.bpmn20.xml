@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:smart="http://smartengine.org/schema/process"
+             id="user-task-process"
+             targetNamespace="smart">
+    <process id="user-task-process" isExecutable="true" version="1.0">
+        <startEvent id="startEvent"/>
+        <sequenceFlow id="flow1" sourceRef="startEvent" targetRef="userTask1"/>
+
+        <userTask id="userTask1" name="User Task 1" smart:assignee="${assignee}">
+        </userTask>
+
+        <sequenceFlow id="flow2" sourceRef="userTask1" targetRef="endEvent"/>
+        <endEvent id="endEvent"/>
+    </process>
+</definitions>

@@ -8,6 +8,7 @@ import com.alibaba.smart.framework.engine.model.assembly.ProcessDefinition;
 import com.alibaba.smart.framework.engine.model.instance.ActivityInstance;
 import com.alibaba.smart.framework.engine.model.instance.ExecutionInstance;
 import com.alibaba.smart.framework.engine.model.instance.ProcessInstance;
+import com.alibaba.smart.framework.engine.model.instance.TaskInstance;
 
 
 public interface ExecutionContext {
@@ -30,6 +31,10 @@ public interface ExecutionContext {
     ActivityInstance getActivityInstance();
 
     void setActivityInstance(ActivityInstance activityInstance);
+
+    TaskInstance getTaskInstance();
+
+    void setTaskInstance(TaskInstance taskInstance);
 
     /* END 1 */
 

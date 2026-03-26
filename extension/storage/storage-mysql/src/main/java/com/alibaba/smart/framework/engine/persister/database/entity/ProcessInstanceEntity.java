@@ -19,6 +19,8 @@ public class ProcessInstanceEntity extends BaseProcessEntity {
 
     private String status;
 
+    private java.util.Date completeTime;
+
     private String processDefinitionType;
 
     private String bizUniqueId;

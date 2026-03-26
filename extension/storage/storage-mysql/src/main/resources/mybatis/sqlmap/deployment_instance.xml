@@ -50,7 +50,7 @@
     <update id="update"
             parameterType="com.alibaba.smart.framework.engine.persister.database.entity.DeploymentInstanceEntity">
         update se_deployment_instance set
-        gmt_modified = now(6)
+        gmt_modified = CURRENT_TIMESTAMP
         <if test="processDefinitionId != null">,process_definition_id = #{processDefinitionId}</if>
         <if test="processDefinitionVersion != null">,process_definition_version = #{processDefinitionVersion}</if>
         <if test="processDefinitionType != null">,process_definition_type = #{processDefinitionType}</if>
@@ -84,8 +84,8 @@
         <include refid="baseColumn"/>
         from se_deployment_instance
         <include refid="condition"/>
-        order by gmt_modified desc
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
+        <include refid="order_by"/>
+        <if test="pageOffset != null and pageSize != null">limit #{pageSize} offset #{pageOffset}</if>
 
     </select>
 
@@ -93,8 +93,21 @@
             parameterType="com.alibaba.smart.framework.engine.service.param.query.DeploymentInstanceQueryParam">
         select count(1) from se_deployment_instance
         <include refid="condition"/>
-        <if test="pageOffset != null and pageSize != null">limit #{pageOffset},#{pageSize}</if>
     </select>
 
+    <!-- Dynamic order by support for fluent query API -->
+    <sql id="order_by">
+        <choose>
+            <when test="orderBySpecs != null and orderBySpecs.size() > 0">
+                ORDER BY
+                <foreach item="spec" collection="orderBySpecs" separator=",">
+                    ${spec.columnName} ${spec.directionSql}
+                </foreach>
+            </when>
+            <otherwise>
+                ORDER BY gmt_modified DESC
+            </otherwise>
+        </choose>
+    </sql>
 
 </mapper>
